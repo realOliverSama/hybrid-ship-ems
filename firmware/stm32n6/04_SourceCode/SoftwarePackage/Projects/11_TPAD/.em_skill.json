@@ -1,0 +1,45 @@
+{
+  "skill_profiles": {
+    "build-cmake": {
+      "default": {
+        "source": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli",
+        "build_dir": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release",
+        "preset": "Release",
+        "generator": null,
+        "build_type": null,
+        "toolchain": null,
+        "target": null,
+        "artifact_path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release/11_TPAD_Appli.elf",
+        "artifact_kind": "elf",
+        "artifacts": [
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release/11_TPAD_Appli.elf",
+            "kind": "elf",
+            "size": 21760
+          },
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release/flash/11_TPAD_Appli.hex",
+            "kind": "hex",
+            "size": 16801
+          },
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release/flash/11_TPAD_Appli.bin",
+            "kind": "bin",
+            "size": 5964
+          },
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release/CMakeFiles/4.3.1/CMakeDetermineCompilerABI_CXX.bin",
+            "kind": "bin",
+            "size": 2124
+          },
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/11_TPAD/Appli/build/Release/CMakeFiles/4.3.1/CMakeDetermineCompilerABI_C.bin",
+            "kind": "bin",
+            "size": 2100
+          }
+        ],
+        "updated_at": "2026-07-19T09:40:14.727643+00:00"
+      }
+    }
+  }
+}

@@ -1,0 +1,31 @@
+[1/27] Building ASM object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Startup/startup_stm32n647xx.s.obj
+[2/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Src/sysmem.c.obj
+[3/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Src/syscalls.c.obj
+[4/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Drivers/BSP/SYS/sys.c.obj
+[5/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Drivers/BSP/LED/led.c.obj
+[6/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Drivers/BSP/BTIM/btim.c.obj
+[7/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Drivers/BSP/HyperRAM/hyperram.c.obj
+[8/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Src/main.c.obj
+[9/27] Building C object CMakeFiles/STM32_Drivers.dir/Core/Src/system_stm32n6xx_s.c.obj
+[10/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Src/stm32n6xx_hal_msp.c.obj
+[11/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Src/secure_nsc.c.obj
+[12/27] Building C object CMakeFiles/08_Basic_Timer_Appli.dir/Core/Src/stm32n6xx_it.c.obj
+[13/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_cortex.c.obj
+[14/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_gpio.c.obj
+[15/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_pwr.c.obj
+[16/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_pwr_ex.c.obj
+[17/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dma.c.obj
+[18/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_exti.c.obj
+[19/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal.c.obj
+[20/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_rcc.c.obj
+[21/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_dma_ex.c.obj
+[22/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_rif.c.obj
+[23/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_rcc_ex.c.obj
+[24/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_tim_ex.c.obj
+[25/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_xspi.c.obj
+[26/27] Building C object CMakeFiles/STM32_Drivers.dir/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Drivers/STM32N6xx_HAL_Driver/Src/stm32n6xx_hal_tim.c.obj
+[27/27] Linking C executable 08_Basic_Timer_Appli.elf
+/Applications/ArmGNUToolchain/14.2.rel1/arm-none-eabi/bin/../lib/gcc/arm-none-eabi/14.2.1/../../../../arm-none-eabi/bin/ld: warning: 08_Basic_Timer_Appli.elf has a LOAD segment with RWX permissions
+Memory region         Used Size  Region Size  %age Used
+             RAM:       36104 B      2047 KB      1.72%
+          EXTRAM:           0 B        32 MB      0.00%

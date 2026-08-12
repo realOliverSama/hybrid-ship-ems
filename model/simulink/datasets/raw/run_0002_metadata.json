@@ -1,0 +1,21 @@
+{
+  "run_id": "run_0002",
+  "scenario_id": "1",
+  "scenario_name": "S01_still_water",
+  "ems_mode": "1",
+  "target_speed": "5.66",
+  "voyage_distance": "5000",
+  "river_current": "0",
+  "resistance_profile": "const",
+  "resistance_change_position": "0",
+  "resistance_change_amplitude": "0",
+  "resistance_change_ramp_time_s": "0",
+  "initial_SOC": "0.6",
+  "random_seed": "43",
+  "model_version": "ModelA_MVP_K3_v1.0",
+  "parameter_file_hash": "ca1a5bb6464fe440481fee4e8e3186a8",
+  "sim_duration_s": "927.84",
+  "wall_time_s": "3.58581075",
+  "sample_period_s": "1",
+  "solver": "ode3 fixed 0.01s"
+}

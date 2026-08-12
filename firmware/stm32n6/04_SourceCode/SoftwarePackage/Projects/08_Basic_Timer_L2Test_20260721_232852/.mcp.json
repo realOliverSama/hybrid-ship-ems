@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "embedded-debugger": {
+      "command": "/Users/oliverlyu/Developer/embedded-debugger-mcp-stm32n6/target/release/embedded-debugger-mcp",
+      "args": ["serve"],
+      "lifecycle": "keep-alive",
+      "requestTimeoutMs": 120000
+    }
+  }
+}

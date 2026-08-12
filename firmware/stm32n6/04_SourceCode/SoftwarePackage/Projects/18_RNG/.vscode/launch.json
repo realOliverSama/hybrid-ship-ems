@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "stlinkgdbtarget",
+            "request": "launch",
+            "origin": "snippet",
+            "cwd": "${workspaceFolder}",
+            "deviceName": "STM32N647X0H3Q",
+            "deviceCore": "Cortex-M55",
+            "serverInterface": "SWD",
+            "runEntry": "main",
+            "name": "STM32N6: Debug SRAM (F5 / Ctrl+F5)",
+            "preLaunchTask": "STM32N6: Build Debug",
+            "imagesAndSymbols": [
+                {
+                    "imageFileName": "${workspaceFolder}/Appli/build/Debug/18_RNG_Appli.elf"
+                }
+            ]
+        }
+    ]
+}

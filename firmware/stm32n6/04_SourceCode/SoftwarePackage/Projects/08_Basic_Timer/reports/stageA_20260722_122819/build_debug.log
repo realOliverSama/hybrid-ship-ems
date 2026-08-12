@@ -1,0 +1,29 @@
+Build type: Debug
+-- Configuring done (0.0s)
+-- Generating done (0.0s)
+CMake Warning:
+  Manually-specified variables were not used by the project:
+
+    CMAKE_TOOLCHAIN_FILE
+
+
+-- Build files have been written to: /Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build/Debug
+[1/1] Linking C executable 08_Basic_Timer_Appli.elf
+/Users/oliverlyu/Library/Application Support/stm32cube/bundles/gnu-tools-for-stm32/14.3.1+st.2/bin/../lib/gcc/arm-none-eabi/14.3.1/../../../../arm-none-eabi/bin/ld: warning: 08_Basic_Timer_Appli.elf has a LOAD segment with RWX permissions
+Memory region         Used Size  Region Size  %age Used
+             RAM:       36040 B      2047 KB      1.72%
+          EXTRAM:           0 B        32 MB      0.00%
+ATK STM32N6 CMake prepare v3.3.0
+Running script: /Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Tools/atk_stm32n6_cmake_prepare.py
+Preparing project: /Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer
+Secure callback patch: not needed
+Detected BSP components: BTIM, HyperRAM, LED, SYS
+Already configured Debug linker: Appli/STM32N647XX_LRUN_RAMxspi1.ld
+Already configured Release linker: Appli/STM32N647XX_ROMxspi2_RAMxspi1.ld
+CMake automation blocks: already up to date
+VS Code workflow files: already up to date
+VS Code CMake source: ${workspaceFolder}/Appli
+VS Code Debug pre-launch task: STM32N6: Build Debug
++ /Users/oliverlyu/.vscode/extensions/stmicroelectronics.stm32cube-ide-build-cmake-1.46.0-darwin-arm64/resources/cube-cmake/darwin/aarch64/cube-cmake --preset Debug
++ /Users/oliverlyu/.vscode/extensions/stmicroelectronics.stm32cube-ide-build-cmake-1.46.0-darwin-arm64/resources/cube-cmake/darwin/aarch64/cube-cmake --build /Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build/Debug
+Verified Debug ELF address: 0x34000400

@@ -1,0 +1,5 @@
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l3a/CMakeFiles/08_Basic_Timer_Appli.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l3a/CMakeFiles/STM32_Drivers.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l3a/CMakeFiles/atk_release_flash_files.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l3a/CMakeFiles/edit_cache.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l3a/CMakeFiles/rebuild_cache.dir

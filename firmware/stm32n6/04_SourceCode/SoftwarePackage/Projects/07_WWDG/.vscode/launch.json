@@ -1,0 +1,44 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "stlinkgdbtarget",
+            "request": "launch",
+            "name": "STM32N6 Debug - 加载到 SRAM 并调试",
+            "origin": "snippet",
+            "cwd": "${workspaceFolder}",
+            "deviceName": "STM32N647X0H3Q",
+            "deviceCore": "Cortex-M55",
+            "serverInterface": "SWD",
+            "preBuild": "${command:st-stm32-ide-debug-launch.build}",
+            "runEntry": "main",
+            "imagesAndSymbols": [
+                {
+                    "imageFileName": "${command:st-stm32-ide-debug-launch.get-projects-binary-from-context1}"
+                }
+            ]
+        },
+        {
+            "type": "stlinkgdbtarget",
+            "request": "launch",
+            "name": "STM32N6 Release - 烧录外部 NOR Flash",
+            "origin": "snippet",
+            "cwd": "${workspaceFolder}",
+            "deviceName": "STM32N647X0H3Q",
+            "deviceCore": "Cortex-M55",
+            "serverInterface": "SWD",
+            "preBuild": "${command:st-stm32-ide-debug-launch.build}",
+            "serverExtLoader": [
+                {
+                    "loader": "${workspaceFolder}/../../External_Loader/MX25UM25645G_ATK-CNN647B/Binary/MX25UM25645G_ATK-CNN647B_ExtMemLoader.stldr",
+                    "initialize": true
+                }
+            ],
+            "imagesAndSymbols": [
+                {
+                    "imageFileName": "${command:st-stm32-ide-debug-launch.get-projects-binary-from-context1}"
+                }
+            ]
+        }
+    ]
+}

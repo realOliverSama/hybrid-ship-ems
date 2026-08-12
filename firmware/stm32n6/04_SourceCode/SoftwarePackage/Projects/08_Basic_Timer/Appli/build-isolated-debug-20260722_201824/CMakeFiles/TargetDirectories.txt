@@ -1,0 +1,4 @@
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-isolated-debug-20260722_201824/CMakeFiles/08_Basic_Timer_Appli.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-isolated-debug-20260722_201824/CMakeFiles/STM32_Drivers.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-isolated-debug-20260722_201824/CMakeFiles/edit_cache.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-isolated-debug-20260722_201824/CMakeFiles/rebuild_cache.dir

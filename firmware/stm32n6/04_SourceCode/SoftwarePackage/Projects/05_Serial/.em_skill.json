@@ -1,0 +1,32 @@
+{
+  "skill_profiles": {
+    "build-cmake": {
+      "default": {
+        "source": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/05_Serial",
+        "build_dir": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/05_Serial/build/Release",
+        "preset": "Release",
+        "generator": "Ninja",
+        "build_type": "Release",
+        "toolchain": null,
+        "target": null,
+        "artifact_path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/05_Serial/Appli/build/flash/05_Serial_Appli.hex",
+        "artifact_kind": "hex",
+        "artifacts": [
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/05_Serial/Appli/build/flash/05_Serial_Appli.hex",
+            "kind": "hex"
+          },
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/05_Serial/Appli/build/05_Serial_Appli.elf",
+            "kind": "elf"
+          },
+          {
+            "path": "/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/05_Serial/Appli/build/flash/05_Serial_Appli.bin",
+            "kind": "bin"
+          }
+        ],
+        "updated_at": "2026-07-19T16:09:25.796290+00:00"
+      }
+    }
+  }
+}

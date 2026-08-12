@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "embedded-debugger": {
+      "command": "/Users/oliverlyu/Developer/embedded-debugger-mcp-stm32n6/target/debug/embedded-debugger-mcp",
+      "lifecycle": "lazy"
+    }
+  }
+}

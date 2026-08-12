@@ -1,0 +1,4 @@
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer_L2Test_20260721_232852/Appli/Core/Src/fault_fixture.c:28:32:fault_trigger_hardfault	4	static
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer_L2Test_20260721_232852/Appli/Core/Src/fault_fixture.c:41:32:fault_startup_stall	4	static,ignoring_inline_asm
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer_L2Test_20260721_232852/Appli/Core/Src/fault_fixture.c:50:6:fault_fixture_pre_loop_hook	4	static
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer_L2Test_20260721_232852/Appli/Core/Src/fault_fixture.c:57:6:fault_fixture_loop_hook	4	static

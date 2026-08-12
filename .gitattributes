@@ -1,0 +1,23 @@
+# MATLAB / Simulink binary files
+
+*.slx binary
+*.mlx binary
+*.mat binary
+*.fig binary
+*.mlapp binary
+*.sldd binary
+*.slxp binary
+*.slreqx binary
+
+
+# Source files use LF line endings
+
+*.c text eol=lf
+*.h text eol=lf
+*.cpp text eol=lf
+*.hpp text eol=lf
+*.m text eol=lf
+*.py text eol=lf
+*.md text eol=lf
+*.txt text eol=lf
+*.cmake text eol=lf

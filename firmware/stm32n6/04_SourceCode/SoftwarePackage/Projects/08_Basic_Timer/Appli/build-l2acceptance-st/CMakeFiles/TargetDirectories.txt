@@ -1,0 +1,4 @@
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l2acceptance-st/CMakeFiles/08_Basic_Timer_Appli.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l2acceptance-st/CMakeFiles/STM32_Drivers.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l2acceptance-st/CMakeFiles/edit_cache.dir
+/Users/oliverlyu/Desktop/STM32N647/04_SourceCode/SoftwarePackage/Projects/08_Basic_Timer/Appli/build-l2acceptance-st/CMakeFiles/rebuild_cache.dir
