@@ -89,9 +89,9 @@
 ## 11. 验收核对
 - [通过] 原模型未被修改：hash=06676ea0516a (一致)
 - [通过] 模型独立打开+Update：OK
-- [通过] 产物存在: reports/legacy_model_audit.md：/Users/oliverlyu/ModelA_MVP_K3/reports/legacy_model_audit.md
-- [通过] 产物存在: reports/parameter_audit.csv：/Users/oliverlyu/ModelA_MVP_K3/reports/parameter_audit.csv
-- [通过] 产物存在: reports/smoke_summary.md：/Users/oliverlyu/ModelA_MVP_K3/reports/smoke_summary.md
+- [通过] 产物存在: reports/legacy_model_audit.md：/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink/reports/legacy_model_audit.md
+- [通过] 产物存在: reports/parameter_audit.csv：/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink/reports/parameter_audit.csv
+- [通过] 产物存在: reports/smoke_summary.md：/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink/reports/smoke_summary.md
 - [通过] 全部航次数据校验：18 个航次，0 个异常
 - [通过] Baseline vs AI 一致性 (persistence)：max|ΔP_gen|=0 kW (AI_Pred_Source=0 时两模式应一致)
 - [通过] AI 无效时自动回退 Baseline：AI_valid 全 0=1，max|ΔP_gen| vs Baseline=0 kW
