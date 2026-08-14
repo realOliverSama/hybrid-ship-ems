@@ -24,15 +24,22 @@
 # ==========================================================
 
 **/build/
+**/build-*/
 **/cmake-build-*/
 **/Debug/
 **/Release/
 
 **/*.elf
-**/*.hex
-**/*.bin
 **/*.map
 **/*.list
+
+# hex/bin 按语义目录区分（2026-08 修正，替代原全局 **/*.hex **/*.bin）：
+# - flash/ 下为 CMake 生成的烧录产物 → 忽略
+# - vendor SoftwarePackage 的 Binary/ 下为原厂随包提供的源资产
+#   （fsbl.hex / network-data.hex / appli.hex，SRAM/Flash 部署工作流直接依赖）
+#   → 允许 Git 管理，勿加全局规则
+**/flash/*.hex
+**/flash/*.bin
 
 
 # ==========================================================
