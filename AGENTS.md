@@ -132,6 +132,16 @@ Destructive operations: none   # 以 .pi/safety-audit.log（本地，不入库�
 - 调试/加载走 `debug-stm32n647-sram` skill：只做 SRAM 加载，**禁止**用通用 MCP flash 工具擦写外部 NOR
 - 烧录 Release 走 `release-stm32n647-appli` skill：禁止 mass erase，保留既有 FSBL
 - 固件构建走 `prepare-stm32n647-project` skill（离线，不碰板子）
+- vendor 包内的 `firmware/stm32n6/04_SourceCode/SoftwarePackage/AGENTS.md` 是其子树的项目规则（USER CODE 区域、.ioc 授权、硬件安全），在固件子树工作时同样适用
+
+### 固件提交质量门（commit 前置条件）
+
+- 完成固件功能后、提交前必须运行：`python3 firmware/gate/fw_gate.py <项目路径>`
+- 检查项：Debug/Release 构建、ELF 段布局地址契约（向量表 0x34000400 / 0x70100400）、
+  `.ioc` 未授权修改检测、违规副本检测、警告计数
+- 裁决写入 `firmware/gate/fw_gate_result.json`（运行时产物，不入库）：exit 0 才允许提交
+- 修改 `.ioc` 需用户授权后设 `FW_GATE_ALLOW_IOC=1` 重跑门禁
+- 门禁不含任何硬件操作；上板验证是独立阶段，由用户显式发起
 
 ## 8. 其他
 
