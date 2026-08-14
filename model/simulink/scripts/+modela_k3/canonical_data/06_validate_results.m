@@ -250,3 +250,9 @@ fclose(fid);
 fprintf('[06] 最终报告: %s\n', fullfile(ROOT, 'reports', 'ModelA_build_report.md'));
 if allPass, tAll = '全部通过'; else, tAll = '存在失败项'; end
 fprintf('[06] 验收%s\n', tAll);
+
+% ---- 门禁出口：FAIL 必须以 error 终止 ----
+if ~allPass
+    error('GATE:ValidateFailed', ...
+        '[06] 质量门 FAIL：验收存在失败项，禁止提交。详见 reports/ModelA_build_report.md');
+end

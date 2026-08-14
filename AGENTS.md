@@ -90,6 +90,13 @@ commit message 沿用仓库现有风格：`type(scope): 中文描述`，type ∈
 - 修改 `.slx` 时：必须先做结构差异自查（Simulink Model Comparison 或等效脚本），确认没有意外改动无关 block/参数，再提交
 - 任一项 FAIL → 停止提交，报告用户或继续修复
 
+### 机器可读门禁（禁止主观解读终端输出）
+
+- 阈值集中于 `config/ModelA_GateThresholds.m`（修改 = 改门禁标准，🟡 类）
+- 回归基线 `config/gate_baseline_smoke.json`（入库的 golden reference；重建需 🟡 批准）
+- 每次跑 `03` 产出 `results/gate_result.json`（运行时产物，不入库）：`overall=true` 才允许提交
+- `03`/`06` 在 FAIL 时以 `error('GATE:*')` 终止——Agent 必须以工具调用的失败为准，不得无视
+
 ## 5. 产物入库策略
 
 | 产物 | 策略 |
