@@ -1,5 +1,5 @@
 % modela_k3.ai_metrics — AI 对比航次指标计算
-function m = local_metrics(ds)
+function m = ai_metrics(ds)
 dt = [diff(ds.t); 0.01];
 m.fuel_kg = ds.fuel_total_kg(end);
 m.E_gen_kWh = sum(ds.P_gen_actual_kW .* dt) / 3600;

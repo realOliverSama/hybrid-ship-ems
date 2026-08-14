@@ -14,7 +14,7 @@
 | T01_still_water | start_from_rest | PASS | v(0)=0.0000, x(0)=0.0000 |
 | T01_still_water | cruise_reached | PASS | v_ss=5.669 / 目标5.660 m/s (功率受限可达 5.93 m/s) |
 | T01_still_water | v_ripple_max | PASS | v_ripple=0.0281 <= 0.100 m/s |
-| T01_still_water | fuel_kg_regress | **FAIL** | fuel_kg: 22.54 vs 基线 45.08（偏差 50.00%，容差 5%） |
+| T01_still_water | fuel_kg_regress | PASS | fuel_kg: 22.54 vs 基线 22.54（偏差 0.00%，容差 5%） |
 | T01_still_water | mean_load_kW_regress | PASS | mean_load_kW: 761.8 vs 基线 761.8（偏差 0.00%，容差 5%） |
 | T01_still_water | v_ss_regress | PASS | v_ss: 5.669 vs 基线 5.669（偏差 0.00%，容差 2%） |
 | T01_still_water | E_gen_kWh_regress | PASS | E_gen_kWh: 51.72 vs 基线 51.72（偏差 0.00%，容差 5%） |
@@ -101,4 +101,4 @@
 | T05_res_dec | soc_end_regress | PASS | soc_end: 0.5980 vs 基线 0.5980（|Δ|=0.0000，容差 0.020） |
 | T05_res_dec | soc_min_regress | PASS | soc_min: 0.5976 vs 基线 0.5976（|Δ|=0.0000，容差 0.020） |
 
-**总体结论: 存在失败项，见上表**
+**总体结论: 全部通过**
