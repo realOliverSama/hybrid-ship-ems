@@ -116,7 +116,7 @@ Generated:   <新增报告/数据路径>
 Remote:      pushed: origin/feat/xxx
 Main:        unchanged
 Working tree: clean        # git status --short 为空才可写 clean
-Destructive operations: none
+Destructive operations: none   # 以 .pi/safety-audit.log（本地，不入库）为取证依据
 ```
 
 ## 7. STM32 固件红线
@@ -129,4 +129,6 @@ Destructive operations: none
 ## 8. 其他
 
 - 本文件的任何修改本身属于 🟡 类，需用户批准
+- 技术强制层：`.pi/extensions/hybrid-ship-safety.ts`（hard-block / confirm-gate），
+  其拦截记录写入 `.pi/safety-audit.log`；扩展文件的修改同属 🟡 类
 - 多 Agent 并行工作时，各自使用独立 feature 分支，禁止跨 session 代提交他人改动
