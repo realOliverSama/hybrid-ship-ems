@@ -10,6 +10,7 @@ addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 modela_k3.ensure_canonical(ROOT);
 run(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
 run(fullfile(ROOT, 'config', 'ModelA_Scenarios.m'));
+run(fullfile(ROOT, 'config', 'ModelA_GateThresholds.m'));
 if ~exist(fullfile(ROOT, 'results'), 'dir'), mkdir(fullfile(ROOT, 'results')); end
 if ~exist(fullfile(ROOT, 'reports'), 'dir'), mkdir(fullfile(ROOT, 'reports')); end
 
@@ -43,6 +44,7 @@ TESTS(5) = struct('id', 5, 'name', 'T05_res_dec', 'scenario_id', 5, 'mode', 0, .
 
 allPass = true;
 results = cell(numel(TESTS), 1);
+gateMetrics = cell(numel(TESTS), 1);
 for k = 1:numel(TESTS)
     T = TESTS(k);
     SCN = SCENARIOS(T.scenario_id);
@@ -58,6 +60,8 @@ for k = 1:numel(TESTS)
         ds = modela_k3.extract_logsout(out);
         % 基本检查
         chk = modela_k3.check_run(ds, SCN, T.mode, T.stopTimeLimit);
+        % 门禁指标（供回归对比与基线持久化）
+        gateMetrics{T.id} = modela_k3.gate_metrics(ds); %#ok<AGROW>
         % 跨工况检查：顺水 vs 逆水
         if T.checkDownstream || T.checkUpstream
             if T.scenario_id == 2
@@ -117,6 +121,49 @@ if numel(results) >= 3 && ~isempty(results{2}) && ~isempty(results{3})
     if ~pass, allPass = false; end
 end
 
+% ---- 质量门：基线回归对比 + 机器可读裁决 ----
+baselinePath = fullfile(ROOT, GATE.baseline_file);
+baseline = [];
+if exist(baselinePath, 'file')
+    baseline = jsondecode(fileread(baselinePath));
+    fprintf('[03] 门禁基线: %s（回归模式）\n', baselinePath);
+else
+    fprintf('[03] 门禁基线不存在，本次运行将建立: %s\n', baselinePath);
+end
+newBaseline = struct();
+for k = 1:numel(TESTS)
+    if isempty(gateMetrics{k}), continue; end
+    gres = modela_k3.gate_compare(TESTS(k).name, gateMetrics{k}, baseline, GATE);
+    for r = 1:size(gres, 1)
+        tag = 'PASS'; if ~gres{r, 2}, tag = 'FAIL'; allPass = false; end
+        fprintf('[03]   [%s] %-22s %s\n', tag, [TESTS(k).name '/' gres{r, 1}], gres{r, 3});
+        results{k}.results{end+1, 1} = gres{r, 1};
+        results{k}.results{end, 2} = gres{r, 2};
+        results{k}.results{end, 3} = gres{r, 3};
+    end
+    newBaseline.(TESTS(k).name) = gateMetrics{k};
+end
+if isempty(baseline)
+    fid = fopen(baselinePath, 'w', 'n', 'UTF-8');
+    fprintf(fid, '%s', jsonencode(newBaseline, 'PrettyPrint', true));
+    fclose(fid);
+    fprintf('[03] 已建立门禁基线（请随提交入库）: %s\n', baselinePath);
+end
+
+% 机器可读裁决文件（Agent 以此为准，禁止主观解读终端输出）
+gateVerdict = struct('overall', allPass, 'timestamp', datestr(now, 'yyyy-mm-ddTHH:MM:SS'), 'tests', {{}});
+for k = 1:numel(TESTS)
+    for r = 1:size(results{k}.results, 1)
+        gateVerdict.tests{end+1} = struct('test', TESTS(k).name, ...
+            'check', results{k}.results{r, 1}, 'pass', logical(results{k}.results{r, 2}), ...
+            'detail', results{k}.results{r, 3}); %#ok<AGROW>
+    end
+end
+fid = fopen(fullfile(ROOT, 'results', 'gate_result.json'), 'w', 'n', 'UTF-8');
+fprintf(fid, '%s', jsonencode(gateVerdict, 'PrettyPrint', true));
+fclose(fid);
+fprintf('[03] 门禁裁决: %s\n', fullfile(ROOT, 'results', 'gate_result.json'));
+
 % ---- 汇总报告 ----
 fid = fopen(fullfile(ROOT, 'reports', 'smoke_summary.md'), 'w', 'n', 'UTF-8');
 fprintf(fid, '# 烟雾测试汇总 (smoke_summary.md)\n\n');
@@ -134,3 +181,9 @@ fclose(fid);
 fprintf('[03] 汇总报告: %s\n', fullfile(ROOT, 'reports', 'smoke_summary.md'));
 if allPass, tl2 = '全部通过'; else, tl2 = '存在失败项'; end
 fprintf('[03] 烟雾测试%s\n', tl2);
+
+% ---- 门禁出口：FAIL 必须以 error 终止（Agent 工具调用确定性失败） ----
+if ~allPass
+    error('GATE:SmokeFailed', ...
+        '[03] 质量门 FAIL：烟雾测试存在失败项，禁止提交。详见 results/gate_result.json');
+end

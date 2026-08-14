@@ -11,6 +11,7 @@ function ensure_canonical(ROOT)
     targets = {
         'config/ModelA_Parameters.m'
         'config/ModelA_Scenarios.m'
+        'config/ModelA_GateThresholds.m'
         'scripts/01_audit_legacy_model.m'
         'scripts/02_build_modelA.m'
         'scripts/03_run_smoke_tests.m'
