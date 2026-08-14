@@ -77,3 +77,27 @@ __pycache__/
 
 # Simulink 版本兼容文件
 **/*.slx.r*
+
+
+# ==========================================================
+# CMake/固件细节补充（2026-08，吸收自外部建议）
+# ==========================================================
+
+firmware/stm32n6/**/CMakeFiles/
+firmware/stm32n6/**/CMakeCache.txt
+firmware/stm32n6/**/cmake_install.cmake
+firmware/stm32n6/**/build.ninja
+firmware/stm32n6/**/.ninja_deps
+firmware/stm32n6/**/.ninja_log
+firmware/stm32n6/**/compile_commands.json
+
+firmware/stm32n6/**/*.o
+firmware/stm32n6/**/*.obj
+firmware/stm32n6/**/*.d
+firmware/stm32n6/**/*.su
+firmware/stm32n6/**/*.cyclo
+
+firmware/stm32n6/**/*.atk-backup
+firmware/stm32n6/**/*.bak_*
+firmware/stm32n6/**/*.build.log
+firmware/stm32n6/**/*.configure.log
