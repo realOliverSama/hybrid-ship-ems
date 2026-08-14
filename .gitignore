@@ -50,6 +50,7 @@
 
 # 质量门运行时裁决（每次运行重新生成；基线 config/gate_baseline_smoke.json 入库）
 model/simulink/results/gate_result.json
+firmware/gate/fw_gate_result.json
 
 # ==========================================================
 # Temporary files
