@@ -1,7 +1,7 @@
 parameter,value,unit,source,confidence,used_by,needs_confirmation
-ModelA_SystemScope,twin_string_equivalent,-,Model A 配置 (v2.0 双支路等效),high,全部,false
-EMS_MODE,0,-,Model A 配置,high,05_EMS_Controller,false
-AI_Pred_Source,0,-,Model A 配置,high,05_EMS_Controller,false
+Model_SystemScope,twin_string_equivalent,-,Model 配置 (v2.0 双支路等效),high,全部,false
+EMS_MODE,0,-,Model 配置,high,05_EMS_Controller,false
+AI_Pred_Source,0,-,Model 配置,high,05_EMS_Controller,false
 DRAWING_N_PropStrings,2,-,DRAWING: 双支路(用户确认),high,派生全部聚合额定,false
 V_dc_nom,750,V,DRAWING: 系统图,high,08_Power_Availability,false
 V_bat_nom,576,V,DRAWING: 系统图,high,07_Battery_Energy,false
@@ -13,9 +13,9 @@ Gen_P_max,1000,kW,DRAWING/LEGACY: 500×2 聚合,high,05/06/08,false
 Mot_P_nom,700,kW,DRAWING/LEGACY: 350×2 聚合,high,02/03/08,false
 P_hotel_nom,100,kW,LEGACY: EMS_P_Hotel,medium,01/04,true
 Ship_V_init,0,m/s,LEGACY: 原脚本,medium,03_Propulsion,false
-Ship_X_init,0,m,Model A 规格,high,03_Propulsion,false
+Ship_X_init,0,m,Model 规格,high,03_Propulsion,false
 Bat_SOC_init,0.6,-,LEGACY: 原脚本,medium,07_Battery_Energy,false
-Pgen_init,0,kW,Model A 规格,high,06_Genset,false
+Pgen_init,0,kW,Model 规格,high,06_Genset,false
 Ship_Mass,1000000,kg,LEGACY: 原脚本,medium,03_Propulsion,true
 Gear_Ratio,6.08,-,LEGACY: 原脚本,medium,03_Propulsion,true
 Gear_Eff,0.96,-,LEGACY: 原脚本(行业0.96~0.98),medium,03_Propulsion,true
@@ -36,7 +36,7 @@ K_Fv,1232.12108504574,N/(m/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsio
 K_Qw,37.4103363445928,Nm/(rad/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsion,true
 K_Qv,179.904595599937,Nm/(m/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsion,true
 F_env_const,0,N,LEGACY: 原脚本,medium,03_Propulsion,false
-omega_min_radps,0.01,rad/s,Model A 实现细节,high,03_Propulsion,false
+omega_min_radps,0.01,rad/s,Model 实现细节,high,03_Propulsion,false
 ASSUMED_Gen_TimeConstant,5,s,ASSUMED,low,06_Genset,true
 ASSUMED_Gen_MinStablePower,0,kW,ASSUMED,low,06_Genset,true
 ASSUMED_Bat_DischargeLimit,1000,kW,ASSUMED(500×2 聚合),low,07/08,true

@@ -9,17 +9,17 @@ ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-modela_k3.ensure_canonical(ROOT);
-run(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
-run(fullfile(ROOT, 'config', 'ModelA_Scenarios.m'));
+model.ensure_canonical(ROOT);
+run(fullfile(ROOT, 'config', 'Model_Parameters.m'));
+run(fullfile(ROOT, 'config', 'Model_Scenarios.m'));
 rawDir = fullfile(ROOT, 'datasets', 'raw');
 if ~exist(rawDir, 'dir'), mkdir(rawDir); end
 
-MDL = 'HybridShip_ModelA_MVP_K3';
+MDL = 'HybridShip_Model_MVP';
 load_system(fullfile(ROOT, 'model', [MDL '.slx']));
 
-paramHash = modela_k3.md5file(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
-modelVer = 'ModelA_MVP_K3_v1.0';
+paramHash = model.md5file(fullfile(ROOT, 'config', 'Model_Parameters.m'));
+modelVer = 'Model_MVP_v1.0';
 randomSeedBase = 42;
 
 runIdx = 0;
@@ -33,22 +33,22 @@ for s = 1:numel(SCENARIOS)
         fprintf('[04] (%d/%d) %s EMS_MODE=%d dist=%.0f m ... ', runIdx, total, SCN.name, mode, SCN.voyage_distance_m);
         tic;
         try
-            out = modela_k3.run_scenario_sim(MDL, SCN, mode, stopTimeLimit);
-            ds = modela_k3.extract_logsout(out);
+            out = model.run_scenario_sim(MDL, SCN, mode, stopTimeLimit);
+            ds = model.extract_logsout(out);
         catch err
             fprintf('失败: %s\n', err.message);
             continue;
         end
         wall = toc;
         % 1 s 重采样
-        ds1 = modela_k3.resample_1s(ds);
+        ds1 = model.resample_1s(ds);
         ds1.scenario_id = repmat(double(SCN.id), numel(ds1.t), 1);
         ds1.ems_mode = repmat(double(mode), numel(ds1.t), 1);
         fname = sprintf('run_%04d', runIdx);
         % .mat
         save(fullfile(rawDir, [fname '.mat']), 'ds1', 'SCN', 'mode');
         % .csv
-        modela_k3.write_run_csv(fullfile(rawDir, [fname '.csv']), ds1);
+        model.write_run_csv(fullfile(rawDir, [fname '.csv']), ds1);
         % metadata.json
         md = struct( ...
             'run_id', fname, ...
@@ -68,7 +68,7 @@ for s = 1:numel(SCENARIOS)
             'sim_duration_s', ds.t(end), 'wall_time_s', wall, ...
             'sample_period_s', 1.0, ...
             'solver', 'ode3 fixed 0.01s');
-        modela_k3.write_json(fullfile(rawDir, [fname '_metadata.json']), md);
+        model.write_json(fullfile(rawDir, [fname '_metadata.json']), md);
         fprintf('完成 t_end=%.0f s (%.1f s)\n', ds.t(end), wall);
     end
 end

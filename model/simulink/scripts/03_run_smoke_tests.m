@@ -7,14 +7,14 @@ ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-modela_k3.ensure_canonical(ROOT);
-run(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
-run(fullfile(ROOT, 'config', 'ModelA_Scenarios.m'));
-run(fullfile(ROOT, 'config', 'ModelA_GateThresholds.m'));
+model.ensure_canonical(ROOT);
+run(fullfile(ROOT, 'config', 'Model_Parameters.m'));
+run(fullfile(ROOT, 'config', 'Model_Scenarios.m'));
+run(fullfile(ROOT, 'config', 'Model_GateThresholds.m'));
 if ~exist(fullfile(ROOT, 'results'), 'dir'), mkdir(fullfile(ROOT, 'results')); end
 if ~exist(fullfile(ROOT, 'reports'), 'dir'), mkdir(fullfile(ROOT, 'reports')); end
 
-MDL = 'HybridShip_ModelA_MVP_K3';
+MDL = 'HybridShip_Model_MVP';
 load_system(fullfile(ROOT, 'model', [MDL '.slx']));
 
 % ---- 烟雾测试工况定义（距离缩短以便快速验证） ----
@@ -56,12 +56,12 @@ for k = 1:numel(TESTS)
     end
     fprintf('[03] ===== %s (S%02d, EMS_MODE=%d) =====\n', T.name, T.scenario_id, T.mode);
     try
-        out = modela_k3.run_scenario_sim(MDL, SCN, T.mode, T.stopTimeLimit);
-        ds = modela_k3.extract_logsout(out);
+        out = model.run_scenario_sim(MDL, SCN, T.mode, T.stopTimeLimit);
+        ds = model.extract_logsout(out);
         % 基本检查
-        chk = modela_k3.check_run(ds, SCN, T.mode, T.stopTimeLimit);
+        chk = model.check_run(ds, SCN, T.mode, T.stopTimeLimit);
         % 门禁指标（供回归对比与基线持久化）
-        gateMetrics{T.id} = modela_k3.gate_metrics(ds); %#ok<AGROW>
+        gateMetrics{T.id} = model.gate_metrics(ds); %#ok<AGROW>
         % 跨工况检查：顺水 vs 逆水
         if T.checkDownstream || T.checkUpstream
             if T.scenario_id == 2
@@ -91,7 +91,7 @@ for k = 1:numel(TESTS)
         results{k} = chk;
         % 结果图
         outdir = fullfile(ROOT, 'results', T.name);
-        modela_k3.plot_smoke(ds, SCN, outdir);
+        model.plot_smoke(ds, SCN, outdir);
         fprintf('[03]   结果图 -> %s\n', outdir);
         for r = 1:size(chk.results, 1)
             tag = 'PASS'; if ~chk.results{r, 2}, tag = 'FAIL'; allPass = false; end
@@ -133,7 +133,7 @@ end
 newBaseline = struct();
 for k = 1:numel(TESTS)
     if isempty(gateMetrics{k}), continue; end
-    gres = modela_k3.gate_compare(TESTS(k).name, gateMetrics{k}, baseline, GATE);
+    gres = model.gate_compare(TESTS(k).name, gateMetrics{k}, baseline, GATE);
     for r = 1:size(gres, 1)
         tag = 'PASS'; if ~gres{r, 2}, tag = 'FAIL'; allPass = false; end
         fprintf('[03]   [%s] %-22s %s\n', tag, [TESTS(k).name '/' gres{r, 1}], gres{r, 3});
