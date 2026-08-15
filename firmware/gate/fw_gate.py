@@ -221,6 +221,9 @@ class Gate:
              "--", str(self.project.relative_to(self.repo))],
             capture_output=True, text=True,
         )
+        if r.returncode != 0:
+            self.check("ioc_unchanged", False, f"git status 失败: {r.stderr.strip() or r.stdout.strip()}")
+            return
         touched = [ln for ln in r.stdout.splitlines() if ln[3:].strip().endswith(".ioc")]
         if touched:
             self.check(
