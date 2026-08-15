@@ -8,10 +8,10 @@
   ①  debug_build       Debug 构建成功（经 atk_stm32n6_cmake_prepare.py --build，
                         含 0x34000400 ELF 最低地址校验）
   ②  release_build     Release 构建成功（含 0x70100400 ELF/HEX 地址校验）
-  ③  debug_layout      Debug ELF 全部 PT_LOAD 段落在 SRAM 契约区间
+  ③  debug_layout      Debug ELF 全部 ALLOC 段（section，含 NOBITS）在 SRAM 契约区间
                         [0x34000400, 0x34200000)
-  ④  release_layout    Release ELF 全部 PT_LOAD 段落在外部 Flash 契约区间
-                        [0x70100400, 0x72000000)
+  ④  release_layout    Release ELF 全部 ALLOC 段（section，含 NOBITS）在外部 Flash / RAM 契约区间
+                        [0x70100400, 0x72000000) ∪ [0x34000000, 0x34200000)
   ⑤  ioc_unchanged     .ioc 相对 HEAD 未被修改（授权时设 FW_GATE_ALLOW_IOC=1）
   ⑥  no_forbidden_copy 项目内无 prepare 脚本 / BSP 的违规副本
   ⑦  warnings          构建警告计数（默认只记录；--max-warnings N 时超限 FAIL）
