@@ -22,7 +22,7 @@ Simulink 流水线入口（按序执行）：
 
 ```text
 model/simulink/scripts/
-  01_audit_legacy_model.m   → 02_build_modelA.m   → 03_run_smoke_tests.m
+  01_audit_legacy_model.m   → 02_build_model.m   → 03_run_smoke_tests.m
   04_run_scenarios.m        → 05_export_dataset.m → 06_validate_results.m
   07_run_ai_comparison.m
 ```
@@ -92,7 +92,7 @@ commit message 沿用仓库现有风格：`type(scope): 中文描述`，type ∈
 
 ### 机器可读门禁（禁止主观解读终端输出）
 
-- 阈值集中于 `config/ModelA_GateThresholds.m`（修改 = 改门禁标准，🟡 类）
+- 阈值集中于 `config/Model_GateThresholds.m`（修改 = 改门禁标准，🟡 类）
 - 回归基线 `config/gate_baseline_smoke.json`（入库的 golden reference；重建需 🟡 批准）
 - 每次跑 `03` 产出 `results/gate_result.json`（运行时产物，不入库）：`overall=true` 才允许提交
 - `03`/`06` 在 FAIL 时以 `error('GATE:*')` 终止——Agent 必须以工具调用的失败为准，不得无视

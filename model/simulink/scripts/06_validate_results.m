@@ -1,26 +1,26 @@
 %% ========================================================================
-%  06_validate_results.m — 最终验收校验 + ModelA_build_report.md（阶段19）
+%  06_validate_results.m — 最终验收校验 + Model_build_report.md（阶段19）
 %  校验项：
 %    1. 原模型与参数脚本未被修改（与 legacy_reference 副本哈希一致）
 %    2. 新模型可独立打开、参数加载后可 Update Diagram
-%    3. 02_build_modelA.m 可从零重建（由脚本运行记录佐证）
+%    3. 02_build_model.m 可从零重建（由脚本运行记录佐证）
 %    4. 全部航次数据完整性检查（复用 check_run）
 %    5. 功率守恒、方向性、AI 回退逻辑
 %    6. Baseline vs AI 对比（当前 persistence 预测源下应一致，如实报告）
-%  输出: reports/ModelA_build_report.md
+%  输出: reports/Model_build_report.md
 % ========================================================================
 ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-modela_k3.ensure_canonical(ROOT);
-run(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
-run(fullfile(ROOT, 'config', 'ModelA_Scenarios.m'));
+model.ensure_canonical(ROOT);
+run(fullfile(ROOT, 'config', 'Model_Parameters.m'));
+run(fullfile(ROOT, 'config', 'Model_Scenarios.m'));
 % MLP 权重（若存在）必须与模型构建时尺寸一致，覆盖参数文件中的占位零矩阵
-modela_k3.load_mlp_weights(ROOT);
+model.load_mlp_weights(ROOT);
 if ~exist(fullfile(ROOT, 'reports'), 'dir'), mkdir(fullfile(ROOT, 'reports')); end
 
-MDL = 'HybridShip_ModelA_MVP_K3';
+MDL = 'HybridShip_Model_MVP';
 mdlPath = fullfile(ROOT, 'model', [MDL '.slx']);
 res = {}; % {检查项, 通过, 说明}
 
@@ -28,8 +28,8 @@ res = {}; % {检查项, 通过, 说明}
 legacyRef = fullfile(ROOT, 'legacy_reference', 'HybridShip0730.slx');
 legacyOrig = '/Users/oliverlyu/Desktop/EMS硬件在环平台/04软件与仿真/003Simulink模型/船舶控制模型/0730/HybridShip0730.slx';
 if exist(legacyOrig, 'file')
-    h1 = modela_k3.md5file(legacyRef);
-    h2 = modela_k3.md5file(legacyOrig);
+    h1 = model.md5file(legacyRef);
+    h2 = model.md5file(legacyOrig);
     res{end+1, 1} = '原模型未被修改';
     hok = strcmp(h1, h2);
     res{end, 2} = hok;
@@ -119,13 +119,13 @@ SCN.voyage_distance_m = 400;
 try
     % AI 模式 + 无效预测源（source=2 且无有效数据）
     assignin('base', 'AI_Pred_Source', 2);
-    out = modela_k3.run_scenario_sim(MDL, SCN, 1, 1800);
-    dsAi = modela_k3.extract_logsout(out);
+    out = model.run_scenario_sim(MDL, SCN, 1, 1800);
+    dsAi = model.extract_logsout(out);
     fallbackOk = all(dsAi.AI_valid == 0);
     % 与 Baseline 对比
     assignin('base', 'AI_Pred_Source', 0);
-    out = modela_k3.run_scenario_sim(MDL, SCN, 0, 1800);
-    dsBs = modela_k3.extract_logsout(out);
+    out = model.run_scenario_sim(MDL, SCN, 0, 1800);
+    dsBs = model.extract_logsout(out);
     n = min(numel(dsBs.t), numel(dsAi.t));
     dP = max(abs(dsBs.P_gen_actual_kW(1:n) - dsAi.P_gen_actual_kW(1:n)));
     res{end+1, 1} = 'AI 无效时自动回退 Baseline';
@@ -145,13 +145,13 @@ for i = 1:size(res, 1)
 end
 
 %% ---- 生成最终报告 ----
-paramHash = modela_k3.md5file(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
-fid = fopen(fullfile(ROOT, 'reports', 'ModelA_build_report.md'), 'w', 'n', 'UTF-8');
+paramHash = model.md5file(fullfile(ROOT, 'config', 'Model_Parameters.m'));
+fid = fopen(fullfile(ROOT, 'reports', 'Model_build_report.md'), 'w', 'n', 'UTF-8');
 W = @(s) fprintf(fid, '%s\n', s);
-W('# Model A 构建报告 (ModelA_build_report.md)');
+W('# Model 构建报告 (Model_build_report.md)');
 W('');
 W('## 1. 概述');
-W('- 新模型: `model/HybridShip_ModelA_MVP_K3.slx`（HybridShip0730 高保真 HIL 模型的简化 MVP，用于硕士论文最小闭环验证）');
+W('- 新模型: `model/HybridShip_Model_MVP.slx`（HybridShip0730 高保真 HIL 模型的简化 MVP，用于硕士论文最小闭环验证）');
 W('- 求解器: Fixed-step ode3 @ 0.01 s；数据集导出采样 1 s；StopTime 上限 7200 s，由 11_Voyage_Stop_Logic 按航程终止。');
 W('- v2.1：双推进支路等效（电机 700 kW / 发电机 1000 kW / 电池 1200 kWh），服务航速 11 kn（公务船定位，R/W 校核），Hull_K_R≈1780 N/(m/s)^2；新增 S07 桥区机动 / S08 浅滩群 / S09 应急出动工况；');
 W('- AI 预测：MLP 环内推理（AI_Pred_Source=3，python/train_load_predictor.py 训练，窗口 22 s 经粗网格+二分细化自动选优，int8 TFLite 可部署 STM32N6），对比结果见 reports/AI_vs_Baseline_report.md。');
@@ -181,7 +181,7 @@ W('| 11_Voyage_Stop_Logic | 原模型无航程终止 |');
 W('| 12_Data_Logging | 原模型仅 Scope 记录，无 logsout |');
 W('');
 W('## 4. 已修复的原模型问题（详见 reports/legacy_model_audit.md）');
-W('- A. V_bat_nom(576 V) 与 V_dc_nom(750 V) 分离：Model A 不再合并 V_bus_nom。');
+W('- A. V_bat_nom(576 V) 与 V_dc_nom(750 V) 分离：Model 不再合并 V_bus_nom。');
 W('- D. EMS 负荷跟踪包含日用负荷：P_load_total = max(P_prop_actual,0) + P_hotel。');
 W('- E. 第二段直流母线移除：单母线功率平衡架构。');
 W('- F. 推进输入由电机转速改为目标航速闭环。');
@@ -247,12 +247,12 @@ W('');
 W('---');
 W('*本报告由 scripts/06_validate_results.m 生成。原模型与原参数脚本未被修改。*');
 fclose(fid);
-fprintf('[06] 最终报告: %s\n', fullfile(ROOT, 'reports', 'ModelA_build_report.md'));
+fprintf('[06] 最终报告: %s\n', fullfile(ROOT, 'reports', 'Model_build_report.md'));
 if allPass, tAll = '全部通过'; else, tAll = '存在失败项'; end
 fprintf('[06] 验收%s\n', tAll);
 
 % ---- 门禁出口：FAIL 必须以 error 终止 ----
 if ~allPass
     error('GATE:ValidateFailed', ...
-        '[06] 质量门 FAIL：验收存在失败项，禁止提交。详见 reports/ModelA_build_report.md');
+        '[06] 质量门 FAIL：验收存在失败项，禁止提交。详见 reports/Model_build_report.md');
 end

@@ -15,9 +15,9 @@ ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-modela_k3.ensure_canonical(ROOT);
-run(fullfile(ROOT, 'config', 'ModelA_Parameters.m'));
-run(fullfile(ROOT, 'config', 'ModelA_Scenarios.m'));
+model.ensure_canonical(ROOT);
+run(fullfile(ROOT, 'config', 'Model_Parameters.m'));
+run(fullfile(ROOT, 'config', 'Model_Scenarios.m'));
 
 % ---- 加载 MLP 权重 ----
 wfile = fullfile(ROOT, 'python', 'export', 'mlp_weights.mat');
@@ -34,7 +34,7 @@ end
 assignin('base', 'MLP_WeightsLoaded', 1);
 fprintf('[07] MLP 权重已加载 (window=%d, ch=%d)\n', W.MLP_Window, W.MLP_NCh);
 
-MDL = 'HybridShip_ModelA_MVP_K3';
+MDL = 'HybridShip_Model_MVP';
 load_system(fullfile(ROOT, 'model', [MDL '.slx']));
 
 outRoot = fullfile(ROOT, 'results', 'ai_compare');
@@ -56,9 +56,9 @@ for s = testScen
         end
         fprintf('[07] %s EMS_MODE=%d (AI_Pred_Source=%d) ... ', SCN.name, mode, evalin('base','AI_Pred_Source'));
         tic;
-        out = modela_k3.run_scenario_sim(MDL, SCN, mode, stopTimeLimit);
-        ds = modela_k3.extract_logsout(out);
-        m = modela_k3.ai_metrics(ds);
+        out = model.run_scenario_sim(MDL, SCN, mode, stopTimeLimit);
+        ds = model.extract_logsout(out);
+        m = model.ai_metrics(ds);
         fprintf('完成 t_end=%.0f s (%.1f s) | fuel=%.2f kg, E_bat_dis=%.2f kWh, SOC_end=%.3f\n', ...
             ds.t(end), toc, m.fuel_kg, m.E_bat_dis_kWh, m.SOC_end);
         RES{end+1} = struct('scen', SCN.name, 'mode', mode, 'ds', ds, 'm', m, 'SCN', SCN); %#ok<AGROW>
@@ -73,7 +73,7 @@ for s = testScen
     RB = RES{iB}; RA = RES{iA};
     sdir = fullfile(outRoot, sprintf('S%02d', s));
     if ~exist(sdir, 'dir'), mkdir(sdir); end
-    modela_k3.ai_plot_compare(RB, RA, sdir);
+    model.ai_plot_compare(RB, RA, sdir);
 end
 
 % ---- 汇总报告 ----
@@ -83,7 +83,7 @@ W2 = @(s) fprintf(fid, '%s\n', s);
 W2('# Baseline vs AI-Enhanced EMS 闭环对比报告');
 W2('');
 W2('## 1. 实验设置');
-W2('- 模型: `model/HybridShip_ModelA_MVP_K3.slx`（双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh）');
+W2('- 模型: `model/HybridShip_Model_MVP.slx`（双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh）');
 W2(sprintf('- 预测器: MLP %d→64→32→1（%d 参数，窗口 %d s 自动搜索最优），环内推理（AI_Pred_Source=3），', W.MLP_Window*5, numel(W.MLP_W1)+numel(W.MLP_W2)+numel(W.MLP_W3)+numel(W.MLP_b1)+numel(W.MLP_b2)+numel(W.MLP_b3), W.MLP_Window));
 W2('  输入为过去 60 s 的 [P_load_total, v_cmd, v_ship, accel, x_ship]（1 Hz 窗口），');
 W2('  输出为未来 60 s 负荷峰值相对当前负荷的增量 delta；P_gen_target_ai = max(base, P_load + min(K_ff·delta, 400))。');

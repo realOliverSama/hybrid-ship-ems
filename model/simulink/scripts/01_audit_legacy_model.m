@@ -9,7 +9,7 @@ if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir')
 end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-modela_k3.ensure_canonical(ROOT);
+model.ensure_canonical(ROOT);
 if ~exist(fullfile(ROOT, 'reports'), 'dir'), mkdir(fullfile(ROOT, 'reports')); end
 
 % ---- 定位原模型：优先当前打开模型，其次 legacy_reference 副本 ----
@@ -205,12 +205,12 @@ W('- 单位冲突：无单位标注；kW/W、rpm/rad/s 混用。');
 W('- 符号：R_hull=K·V_rel·|V_rel| 恒阻碍；F_prop_eff 顺水水涡轮效应自洽；电池 Pbat>0 放电符号正确；**无充放电效率区分**。');
 W('');
 W('## 9. 已知问题核查结论');
-W('- **A. V_bat_nom(576) 与 V_dc_nom(750) 混淆**：成立。全模型仅一个 V_bus_nom=576。Model A 已分离。');
+W('- **A. V_bat_nom(576) 与 V_dc_nom(750) 混淆**：成立。全模型仅一个 V_bus_nom=576。Model 已分离。');
 W('- **B. 参数来源**：Gen_P_max/Mot_P_nom/Gear_Ratio/Gear_Eff/Elec_Eff/Ship_Mass/EMS_Ramp_Rate 均来自 ship_parameters0616.m，已作为 LEGACY 参数带入。');
-W('- **C. 单支路额定**：图纸额定（600 kWh/576 V/750 V/500 kW/350 kW）与旧模型 535.68 kWh 不同；Model A 采用图纸额定 + 单支路等效。');
-W('- **D. EMS 遗漏日用负荷**：成立。Controller 只感知 Pprop（滞后一拍），EMS_P_Hotel 只在母线电流侧叠加。Model A 的 P_load_total 已含日用负荷。');
-W('- **E. 第二段直流母线不参与功率流**：成立。Constant 0 注入全部 I_*_2，V_Bus_2 悬空。Model A 为单母线功率平衡架构。');
-W('- **F. 推进输入为电机转速而非目标航速**：成立。n_cmd=1500 rpm 常量，无航速闭环。Model A 新增 02_Ship_Speed_Controller。');
+W('- **C. 单支路额定**：图纸额定（600 kWh/576 V/750 V/500 kW/350 kW）与旧模型 535.68 kWh 不同；Model 采用图纸额定 + 单支路等效。');
+W('- **D. EMS 遗漏日用负荷**：成立。Controller 只感知 Pprop（滞后一拍），EMS_P_Hotel 只在母线电流侧叠加。Model 的 P_load_total 已含日用负荷。');
+W('- **E. 第二段直流母线不参与功率流**：成立。Constant 0 注入全部 I_*_2，V_Bus_2 悬空。Model 为单母线功率平衡架构。');
+W('- **F. 推进输入为电机转速而非目标航速**：成立。n_cmd=1500 rpm 常量，无航速闭环。Model 新增 02_Ship_Speed_Controller。');
 W('');
 W('## 10. 可复用模块评估');
 W('| 模块 | 建议 | 说明 |');
@@ -221,18 +221,18 @@ W('| Gearbox_Plant / Ship_Dynamics_Plant | 复用逻辑（内联） | 增益与�
 W('| Electric_Drive_Plant | 复用逻辑、重建 | 保留 转速PI+功率/转矩限幅+效率折算 |');
 W('| Fuel_Consumption_Calc | 复用结构、重新参数化 | BSFC 表 → ASSUMED_BSFC_* |');
 W('| Battery_Pack_Plant | 重建 | 充放电效率、功率限制替代 ±500A 硬编码 |');
-W('| Methanol_Genset_Plant | 不复用 | Model A 采用平均功率模型 |');
+W('| Methanol_Genset_Plant | 不复用 | Model 采用平均功率模型 |');
 W('| DC_Grid_Node_Model | 不复用 | 功率平衡架构无需电压动态 |');
 W('| Controller | 重建 | Baseline + AI 变体，参数全部外置 |');
 W('| 工况输入 | 重建 | 01_Scenario_Manager |');
 W('');
-W('## 11. Model A 应重建的子系统');
+W('## 11. Model 应重建的子系统');
 W('01_Scenario_Manager / 02_Ship_Speed_Controller / 04_Load_Measurement / 05_EMS_Controller(含Variant) / 06_Genset_Average_Plant / 07_Battery_Energy_Plant / 08_Power_Availability_Limiter / 09_Power_Balance_Monitor / 10_Fuel_Consumption / 11_Voyage_Stop_Logic / 12_Data_Logging；物理内核（螺旋桨/船体/轴系/齿轮箱/驱动）复用并重新接线。');
 W('');
-W('## 12. 补充发现（Model A 设计输入）');
-W('- 原模型设计航速 8 kn 时稳态电功率约 380 kW > 单侧电机额定 350 kW（单支路 + η_prop_guess=0.55 标定不自洽），实际被 P_limit=350 限功率，稳态船速约 4.0 m/s。Model A v2.0 采用双支路等效（聚合 700 kW）并将 η_prop 修正为 0.60、增加海况裕量 15%，8 kn 恢复为合法设计点（电功率 ≈609 kW ≈ 87% 聚合额定）。');
-W('- EMS 内部 dt=0.1 s 与模型 0.01 s 步长不一致。Model A 统一为模型步长。');
-W('- 电池电流按 OCV 除算（随 SOC 变化），且充放电对称。Model A 改为功率/能量积分 + 效率区分。');
+W('## 12. 补充发现（Model 设计输入）');
+W('- 原模型设计航速 8 kn 时稳态电功率约 380 kW > 单侧电机额定 350 kW（单支路 + η_prop_guess=0.55 标定不自洽），实际被 P_limit=350 限功率，稳态船速约 4.0 m/s。Model v2.0 采用双支路等效（聚合 700 kW）并将 η_prop 修正为 0.60、增加海况裕量 15%，8 kn 恢复为合法设计点（电功率 ≈609 kW ≈ 87% 聚合额定）。');
+W('- EMS 内部 dt=0.1 s 与模型 0.01 s 步长不一致。Model 统一为模型步长。');
+W('- 电池电流按 OCV 除算（随 SOC 变化），且充放电对称。Model 改为功率/能量积分 + 效率区分。');
 W('');
 W('---');
 W('*本报告由 01_audit_legacy_model.m 生成；原模型与原参数脚本未被修改。*');

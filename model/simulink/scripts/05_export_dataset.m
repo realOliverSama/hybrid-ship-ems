@@ -11,7 +11,7 @@
 ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'scripts'));
-modela_k3.ensure_canonical(ROOT);
+model.ensure_canonical(ROOT);
 rawDir = fullfile(ROOT, 'datasets', 'raw');
 if ~exist(rawDir, 'dir'), error('先运行 scripts/04_run_scenarios.m'); end
 
@@ -19,15 +19,15 @@ trainScen = [1 2 4 7 8];
 valScen   = [3 5];
 testScen  = [6 9];
 
-trainFiles = modela_k3.pick_runs(rawDir, trainScen);
-valFiles   = modela_k3.pick_runs(rawDir, valScen);
-testFiles  = modela_k3.pick_runs(rawDir, testScen);
+trainFiles = model.pick_runs(rawDir, trainScen);
+valFiles   = model.pick_runs(rawDir, valScen);
+testFiles  = model.pick_runs(rawDir, testScen);
 fprintf('[05] train: %d runs, validation: %d runs, test: %d runs\n', ...
     numel(trainFiles), numel(valFiles), numel(testFiles));
 
-modela_k3.write_split(fullfile(ROOT, 'datasets', 'train.csv'), trainFiles);
-modela_k3.write_split(fullfile(ROOT, 'datasets', 'validation.csv'), valFiles);
-modela_k3.write_split(fullfile(ROOT, 'datasets', 'test.csv'), testFiles);
+model.write_split(fullfile(ROOT, 'datasets', 'train.csv'), trainFiles);
+model.write_split(fullfile(ROOT, 'datasets', 'validation.csv'), valFiles);
+model.write_split(fullfile(ROOT, 'datasets', 'test.csv'), testFiles);
 
 % 航次名称（用于 README 说明）
 grp = {trainFiles, valFiles, testFiles};

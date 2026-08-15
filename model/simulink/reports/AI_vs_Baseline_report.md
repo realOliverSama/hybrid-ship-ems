@@ -1,7 +1,7 @@
 # Baseline vs AI-Enhanced EMS 闭环对比报告
 
 ## 1. 实验设置
-- 模型: `model/HybridShip_ModelA_MVP_K3.slx`（双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh）
+- 模型: `model/HybridShip_Model_MVP.slx`（双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh）
 - 预测器: MLP 110→64→32→1（9217 参数，窗口 22 s 自动搜索最优），环内推理（AI_Pred_Source=3），
   输入为过去 60 s 的 [P_load_total, v_cmd, v_ship, accel, x_ship]（1 Hz 窗口），
   输出为未来 60 s 负荷峰值相对当前负荷的增量 delta；P_gen_target_ai = max(base, P_load + min(K_ff·delta, 400))。

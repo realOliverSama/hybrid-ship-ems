@@ -1,7 +1,7 @@
 # 原模型审计报告 (legacy_model_audit.md)
 
 - 审计对象：`HybridShip0730.slx`（当前打开/legacy_reference 中的原模型）
-- 模型路径：`/Users/oliverlyu/ModelA_MVP_K3/legacy_reference/HybridShip0730.slx`
+- 模型路径：`/Users/oliverlyu/Model_MVP/legacy_reference/HybridShip0730.slx`
 - 参数脚本：`legacy_reference/ship_parameters0616.m`（GBK 原始副本 + `_utf8.m` 可读副本）
 - 审计脚本：`scripts/01_audit_legacy_model.m`（本报告可由其重新生成）
 
@@ -192,12 +192,12 @@ Table | BPs=[0, 0.1, 0.2, 0.5, 0.8, 0.9, 1.0] | Tbl=[504, 558, 576, 594, 603, 62
 - 符号：R_hull=K·V_rel·|V_rel| 恒阻碍；F_prop_eff 顺水水涡轮效应自洽；电池 Pbat>0 放电符号正确；**无充放电效率区分**。
 
 ## 9. 已知问题核查结论
-- **A. V_bat_nom(576) 与 V_dc_nom(750) 混淆**：成立。全模型仅一个 V_bus_nom=576。Model A 已分离。
+- **A. V_bat_nom(576) 与 V_dc_nom(750) 混淆**：成立。全模型仅一个 V_bus_nom=576。Model 已分离。
 - **B. 参数来源**：Gen_P_max/Mot_P_nom/Gear_Ratio/Gear_Eff/Elec_Eff/Ship_Mass/EMS_Ramp_Rate 均来自 ship_parameters0616.m，已作为 LEGACY 参数带入。
-- **C. 单支路额定**：图纸额定（600 kWh/576 V/750 V/500 kW/350 kW）与旧模型 535.68 kWh 不同；Model A 采用图纸额定 + 单支路等效。
-- **D. EMS 遗漏日用负荷**：成立。Controller 只感知 Pprop（滞后一拍），EMS_P_Hotel 只在母线电流侧叠加。Model A 的 P_load_total 已含日用负荷。
-- **E. 第二段直流母线不参与功率流**：成立。Constant 0 注入全部 I_*_2，V_Bus_2 悬空。Model A 为单母线功率平衡架构。
-- **F. 推进输入为电机转速而非目标航速**：成立。n_cmd=1500 rpm 常量，无航速闭环。Model A 新增 02_Ship_Speed_Controller。
+- **C. 单支路额定**：图纸额定（600 kWh/576 V/750 V/500 kW/350 kW）与旧模型 535.68 kWh 不同；Model 采用图纸额定 + 单支路等效。
+- **D. EMS 遗漏日用负荷**：成立。Controller 只感知 Pprop（滞后一拍），EMS_P_Hotel 只在母线电流侧叠加。Model 的 P_load_total 已含日用负荷。
+- **E. 第二段直流母线不参与功率流**：成立。Constant 0 注入全部 I_*_2，V_Bus_2 悬空。Model 为单母线功率平衡架构。
+- **F. 推进输入为电机转速而非目标航速**：成立。n_cmd=1500 rpm 常量，无航速闭环。Model 新增 02_Ship_Speed_Controller。
 
 ## 10. 可复用模块评估
 | 模块 | 建议 | 说明 |
@@ -208,18 +208,18 @@ Table | BPs=[0, 0.1, 0.2, 0.5, 0.8, 0.9, 1.0] | Tbl=[504, 558, 576, 594, 603, 62
 | Electric_Drive_Plant | 复用逻辑、重建 | 保留 转速PI+功率/转矩限幅+效率折算 |
 | Fuel_Consumption_Calc | 复用结构、重新参数化 | BSFC 表 → ASSUMED_BSFC_* |
 | Battery_Pack_Plant | 重建 | 充放电效率、功率限制替代 ±500A 硬编码 |
-| Methanol_Genset_Plant | 不复用 | Model A 采用平均功率模型 |
+| Methanol_Genset_Plant | 不复用 | Model 采用平均功率模型 |
 | DC_Grid_Node_Model | 不复用 | 功率平衡架构无需电压动态 |
 | Controller | 重建 | Baseline + AI 变体，参数全部外置 |
 | 工况输入 | 重建 | 01_Scenario_Manager |
 
-## 11. Model A 应重建的子系统
+## 11. Model 应重建的子系统
 01_Scenario_Manager / 02_Ship_Speed_Controller / 04_Load_Measurement / 05_EMS_Controller(含Variant) / 06_Genset_Average_Plant / 07_Battery_Energy_Plant / 08_Power_Availability_Limiter / 09_Power_Balance_Monitor / 10_Fuel_Consumption / 11_Voyage_Stop_Logic / 12_Data_Logging；物理内核（螺旋桨/船体/轴系/齿轮箱/驱动）复用并重新接线。
 
-## 12. 补充发现（Model A 设计输入）
-- 原模型设计航速 8 kn 时稳态电功率约 380 kW > 单侧电机额定 350 kW（单支路 + η_prop_guess=0.55 标定不自洽），实际被 P_limit=350 限功率，稳态船速约 4.0 m/s。Model A v2.0 采用双支路等效（聚合 700 kW）并将 η_prop 修正为 0.60、增加海况裕量 15%，8 kn 恢复为合法设计点（电功率 ≈609 kW ≈ 87% 聚合额定）。
-- EMS 内部 dt=0.1 s 与模型 0.01 s 步长不一致。Model A 统一为模型步长。
-- 电池电流按 OCV 除算（随 SOC 变化），且充放电对称。Model A 改为功率/能量积分 + 效率区分。
+## 12. 补充发现（Model 设计输入）
+- 原模型设计航速 8 kn 时稳态电功率约 380 kW > 单侧电机额定 350 kW（单支路 + η_prop_guess=0.55 标定不自洽），实际被 P_limit=350 限功率，稳态船速约 4.0 m/s。Model v2.0 采用双支路等效（聚合 700 kW）并将 η_prop 修正为 0.60、增加海况裕量 15%，8 kn 恢复为合法设计点（电功率 ≈609 kW ≈ 87% 聚合额定）。
+- EMS 内部 dt=0.1 s 与模型 0.01 s 步长不一致。Model 统一为模型步长。
+- 电池电流按 OCV 除算（随 SOC 变化），且充放电对称。Model 改为功率/能量积分 + 效率区分。
 
 ---
 *本报告由 01_audit_legacy_model.m 生成；原模型与原参数脚本未被修改。*
