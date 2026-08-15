@@ -71,6 +71,12 @@ rm -rf <项目内任何路径>   # 删除一律用精确路径的单文件 rm �
 ## 3. 标准任务流程
 
 ```text
+0. 会话启动同步（每个新 session 必做，无需用户提醒）：
+   git fetch origin && git status -sb && git log --oneline -3
+   - 工作区干净且本地落后 → git pull --ff-only 后继续
+   - 工作区有未提交改动 → 停止并报告用户（可能是上个 session 遗留），
+     绝不自行清理（reset --hard / clean 本就在 🔴 红线内）
+   - 本地与远程分叉 → 停止并报告用户，由用户决定方向
 1. git checkout -b feat/<task>
 2. 修改代码/模型（Simulink 全部脚本化）
 3. 运行门槛测试（见 §4），FAIL 则继续修，禁止带着 FAIL 提交
