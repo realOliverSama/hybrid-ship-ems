@@ -1,7 +1,7 @@
 # 面向参数不确定性的多步负荷预测增强型 EMS Design
 
 Spec: `multistep-predictive-ems`  
-Status: design-draft（待用户批准）  
+Status: design-approved（2026-08-20 用户批准，含 λ_P 网格修正与 800 kW 分母）  
 Created: 2026-08-20  
 Brainstorm: `./brainstorm.md`  
 Requirements: `./requirements.md`（v1.2, approved）
