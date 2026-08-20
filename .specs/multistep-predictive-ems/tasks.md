@@ -30,7 +30,7 @@ Design: `./design.md`（v1, approved）
   - **因果性硬约束**：oracle SHALL 取自**外生需求负荷**（欠压降额/EMS 作用之前的负荷请求值），oracle 目标对 C0/C_P/C_MS 控制律选择不变；若现有负荷记录取自降额后实际负荷，必须改取降额前信号——禁止闭环因果污染
   - Validation: 对 S04/S07 生成 oracle，抽查 t=100 s 处 12 节点值与负荷记录前向窗一致（误差 < 1e-6）；**信号取点验证：确认所取信号位于 08_Undervolt_Derate 上游**（用降额激活时段的数据证明 oracle 序列不受 Vdc 影响）；`MSFF_Horizon_s` 改 config 即切换有效节点数；缺失数据触发 `pred_valid=0`
 
-- [ ] 4. EMS_MinFF 第四变体实现
+- [x] 4. EMS_MinFF 第四变体实现
   - ID: T-004
   - Requirement(s): FR-005, FR-006, FR-007, FR-008, FR-013A
   - Files/areas: `+model/build_model_cms.m` 新增 `EMS_CTRL_LAW=3` 变体 `EMS_MinFF`（沿用 EMS_ScheduledFF 插线模式）；`min_ff` MATLAB Function 块（可达性前向递推 dt_r=0.1 s、对分法 20 迭代、防抖 5 kW、`MSFF_InfoMode` peak/traj 折叠）；`P_bat_allowable` 双折点系数
