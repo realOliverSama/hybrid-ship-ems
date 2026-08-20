@@ -84,3 +84,14 @@ Created: 2026-08-20
 4. **OQ-1 GO 拆两类**：非劣化约束（全部必须满足）+ 收益判据（≥4 相邻参数组合 × ≥2 场景）；Baseline Vdc_min=689.9 V 本就高于 675 V 降额线，硬要 +5 V 会误杀有效点。
 5. **P_bat_allow → P_bat_allowable**：明确定位为 EMS 风险评估阈值（非电池命令、非物理极限），实际电池输出仍由底层下垂自治。
 6. **λ_P 分母锁定统一设计参考最大负荷** P_load,design,max，禁止逐场景自定义。
+
+---
+
+## 第三轮评审修订（2026-08-20，GPT 外部评审，用户裁决"修订后批准"，pi 全部接受）
+
+1. **新增 C_P Oracle Peak-only 对照（FR-013A）**：原 Phase 1 只有 Baseline vs Oracle-MultiStep，回答不了 RQ1（多步 vs 单峰值的边际价值）。三对照 C0/C_P/C_MS 同 oracle 源、同 horizon。pi 提出更优雅的实现留待 design：C_P 与 C_MS 共用 EMS_MinFF，仅把输入信息降级为全窗口恒值 P_peak（最坏时序假设），形成纯粹的信息含量递减实验，排除控制律差异混淆。
+2. **|ΔSOC_end| 0.02 → 0.005**：1200 kWh 电池下 0.02=24 kWh 过宽（S07 的 ΔSOC=0.010≈12 kWh 已是过度发电实证）；默认 0.005，design 重复性分析后可放宽至上限 0.01 并记录依据；不采纳 terminal-energy 折算方案（assumed BSFC 引入更多假设）。
+3. **λ_P 分母统一**：FR-002 与 FR-011 一致使用 P_load,design,max。
+4. **更名**：Phase 1 产物"AI 有效区域图"→"预测增强 EMS 有效工作区域图"（oracle 阶段不得称 AI）。
+
+用户批准状态：requirements v1.1 + v1.2 修订 → **requirements-approved**。design 阶段重点审核项：Fast/Nominal/Slow 三锚点取值、统一 P_load,design,max、f_SOC/f_V 折点、P_ff* 数值求解方法。
