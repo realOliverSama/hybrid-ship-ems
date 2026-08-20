@@ -107,3 +107,15 @@ Created: 2026-08-20
 - **C_P 实现**：EMS_MinFF 内 MSFF_InfoMode=peak 折叠轨迹为全窗口恒值 P_peak，同律同源同 horizon。
 - **f_SOC 折点 [0.30, 0.45]，f_V 折点 [690, 720] V**，ASSUMED(low)，±50% 敏感性抽查。
 - **仿真预算 ≈550 次**：1A=78（3 锚点×2 场景×13），1B≈470；FastRestart+parsim，降级顺序 S06→单因素密度。
+
+---
+
+## Tasks 批准修订（2026-08-20，用户裁决 approved-with-amendments，pi 全部接受）
+
+1. **T-003 oracle 因果性硬约束**：必须取自欠压降额上游的外生需求负荷，对控制律选择不变——否则 Vdc→降额→实际负荷 的闭环会污染"未来真值"。
+2. **T-006 欠压双阈值分离**：N_UV/T_UV @675 V（真实欠压，GO 判据⑤依据）与 N_stress/T_stress @700 V（压力区裕度）分开命名。
+3. **T-009 预算参数化 472~572 次**：由 T-008 入选 horizon 数决定；C0 跨 horizon 复用。
+4. **T-010 禁止自动放宽 SOC Gate**：重复性 FAIL 先定位非确定性来源；阈值放宽须重新过门。
+5. **执行模式裁决**：主 Agent 监督 + 单 implementation subagent 顺序施工，禁止多 subagent 并行操作同一 Simulink 工程；T-003/T-004 后主 Agent 审查，T-008/T-011 决策关卡。
+
+Status: tasks-approved。
