@@ -17,13 +17,13 @@ Design: `./design.md`（v1, approved）
   - Files/areas: `model/simulink_modelC_(oracle_ms)/`（全量复制自 `model/simulink_modelC/`，排除 `slprj/ results/ datasets/`）；`.slx` 重命名为 `HybridShip_ModelCms_DCBus.slx`；`scripts/+model/build_model_cms.m`（由 build_model_c.m 派生）；`20_build_modelCms.m`、`20b_smoke_modelCms.m`；内部所有 `simulink_modelC` 字符串引用替换
   - Validation: 运行 `20_build_modelCms.m` 从零重建 + `20b_smoke_modelCms.m` 全 PASS；临时 rename `model/simulink/` 与 `model/simulink_modelC/` 后仿真仍正常（AC-1 路径独立性）
 
-- [ ] 2. 发电机三参数 config 化与扫描覆写机制
+- [x] 2. 发电机三参数 config 化与扫描覆写机制
   - ID: T-002
   - Requirement(s): FR-002, FR-011
   - Files/areas: `config/Model_Parameters.m`（登记 `P_load_design_max=800`、`MSFF_*` 系列参数，标注假设等级）；实验脚本覆写 `Gen_P_max / Gen_Ramp_Up/Down / ASSUMED_Gen_TimeConstant` 的机制（confirm 不触发结构重建，FastRestart 兼容）
   - Validation: 修改 `Gen_Ramp_Up` 后模型行为变化（斜坡时间戳偏移）且无需 rebuild；参数登记表包含全部新增项
 
-- [ ] 3. oracle 多步预测通道
+- [x] 3. oracle 多步预测通道
   - ID: T-003
   - Requirement(s): FR-003, FR-004, FR-009
   - Files/areas: `+model/make_oracle_ms.m`（由 C0 基准运行负荷记录生成 N×13 `[t, P_5..P_60]`，端点保持）；`ai_predict_ms` 块（固定 12 节点宽度 + `valid_node_count=H/5` + `pred_valid`）；`AI_Pred_Source=1` 数据格式扩展
