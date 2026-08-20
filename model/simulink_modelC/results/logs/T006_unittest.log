@@ -1,0 +1,27 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+== [0] C0 基线 (law=0, 150 s) ==
+[0] P_load 关键点: t=20:800  40:800  60:800  80:800  100:800  120:800 kW
+
+== U1 正常定时触发 (FR-003) ==
+
+== U2 来不及→立即 (FR-004) ==
+
+== U3 低SOC提前 (FR-005) ==
+
+== U4a NaN失效回退 (FR-006) ==
+
+== U4b 非全自动回退 (FR-006) ==
+
+========== T-006 单元验证汇总 ==========
+U1    PASS   wait=0.0000 act=46.25 pred=46.25 ff_const=0.0000 ref0=0.00e+00 genmax=940.5
+U2    PASS   first=0.00 dP_err=0.00 conservative=1
+U3    PASS   act=42.82 pred=42.81 (U1=46.25, delta=3.43) wait=0.0000
+U4a   PASS   P_ff_max=0.00e+00 dPg=0.00e+00 valid_max=0.0
+U4b   PASS   dPg=0.00e+00 (P_ff_pre-gate max=1.50e+02)
+总体: true
+图表: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/schedff_unittest
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

@@ -1,7 +1,7 @@
 # Model B：直流母线电气层 + 安全/节能指标卡 + S10 工况 Tasks
 
 Spec: `model-b-dc-bus`  
-Status: implementation-in-progress
+Status: implementation-complete
 Created: 2026-08-19  
 Brainstorm: `./brainstorm.md`  
 Requirements: `./requirements.md`  
@@ -75,7 +75,7 @@ Design: `./design.md`
   - Files/areas: `reports/ems_control_flowcharts.md`（Baseline 规则门限流程 + AI 预测增强流程，ASCII）
   - Validation: 文件生成；流程图与代码实际逻辑逐步核对一致；同时在会话回复中贴出
 
-- [ ] 12. 提交、推送、收尾报告
+- [x] 12. 提交、推送、收尾报告
   - ID: T-012
   - Requirement(s): NFR-004
   - Files/areas: 分支 feat/model-b-dc-bus；`.specs/model-b-dc-bus/`（spec 文件入库）

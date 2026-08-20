@@ -1,0 +1,21 @@
+{
+  "run_id": "run_0007",
+  "scenario_id": "4",
+  "scenario_name": "S04_resistance_inc",
+  "ems_mode": "0",
+  "target_speed": "5.66",
+  "voyage_distance": "5000",
+  "river_current": "0",
+  "resistance_profile": "inc",
+  "resistance_change_position": "1500",
+  "resistance_change_amplitude": "0.4",
+  "resistance_change_ramp_time_s": "15",
+  "initial_SOC": "0.6",
+  "random_seed": "46",
+  "model_version": "ModelA_MVP_K3_v1.0",
+  "parameter_file_hash": "ca1a5bb6464fe440481fee4e8e3186a8",
+  "sim_duration_s": "979.87",
+  "wall_time_s": "2.437515083",
+  "sample_period_s": "1",
+  "solver": "ode3 fixed 0.01s"
+}

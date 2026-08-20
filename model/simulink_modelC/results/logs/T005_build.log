@@ -1,0 +1,10 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[10] 开始重建 /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/model/HybridShip_ModelC_DCBus.slx
+[10] 检测到 mlp_weights.mat：MLP_Window=22（权重与窗口已载入 base）
+[10] 更新图 (EMS_CTRL_LAW=0) 成功
+[10] 更新图 (EMS_CTRL_LAW=1) 成功
+[10] 更新图 (EMS_CTRL_LAW=2) 成功
+[10] 模型构建完成: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/model/HybridShip_ModelC_DCBus.slx
+[parameter_audit] 已生成 /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/reports/parameter_audit.csv（88 项）

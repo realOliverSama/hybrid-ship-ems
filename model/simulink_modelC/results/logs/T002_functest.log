@@ -1,0 +1,5 @@
+S1  t=0:  Ppred=100 exp100   t_peak=30 exp30  valid=1
+S1  t=25: Ppred=150 exp150   t_peak=30 exp30  valid=1
+S1  t=60: Ppred=220 exp300   t_peak=30 exp30  valid=1
+S1 2col t=25: Ppred=150 t_peak=0 exp0 valid=1
+S1 invalid: Ppred=500 exp500 t_peak=0 exp0 valid=0 exp0

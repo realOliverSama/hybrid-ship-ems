@@ -1,0 +1,87 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[12] MLP 权重已加载 (window=22, ch=5)
+
+[12] ========== S04_resistance_inc (S04) ==========
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E0 完成 (980 s, 97988 点): fuel=91.17 kg Vdc_min=689.9 V SOC_end=0.592 (11 s 仿真)
+[make_oracle_pred] S04_resistance_inc (复用 C0 ds, horizon=60 s) ...
+[make_oracle_pred] S04_resistance_inc: N=980 行, t_end=979 s
+  P_peak: [708.4, 800.0] kW
+  t_peak_rel: mean=7.7 s, median=1.0 s, <5s 占比=84.9%
+[12] oracle: N=980, P_peak∈[708,800] kW
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E1 完成 (980 s): fuel=92.21 kg Vdc_min=707.8 V (5 s 仿真)
+[12] E2 完成 (980 s): fuel=91.68 kg Vdc_min=707.8 V P_ff_active=7 s (4 s 仿真)
+[12] E3 完成 (980 s): fuel=91.33 kg Vdc_min=689.9 V P_ff_active=266 s (5 s 仿真)
+[12] E2 τ=5 完成: fuel=91.17 kg Vdc_min=689.9 V P_ff_active=0 s (4 s 仿真)
+[12] E2 τ=15 完成: fuel=91.68 kg Vdc_min=707.8 V P_ff_active=6 s (4 s 仿真)
+[12] E2 τ=20 完成: fuel=91.70 kg Vdc_min=707.8 V P_ff_active=13 s (4 s 仿真)
+[12][OK]   S04_resistance_inc: E1 Vdc_min=707.8 >= E0 689.9 - 0.5
+[12][FF]   S04_resistance_inc: E1 FF 活动=124 s, E2 FF 活动=7 s（定时应显著小于即时）
+[12] 图: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/S04/compare.png
+
+[12] ========== S06_resistance_step (S06) ==========
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E0 完成 (1063 s, 106268 点): fuel=99.67 kg Vdc_min=689.9 V SOC_end=0.592 (5 s 仿真)
+[make_oracle_pred] S06_resistance_step (复用 C0 ds, horizon=60 s) ...
+[make_oracle_pred] S06_resistance_step: N=1063 行, t_end=1062 s
+  P_peak: [709.0, 800.0] kW
+  t_peak_rel: mean=3.8 s, median=1.0 s, <5s 占比=91.8%
+[12] oracle: N=1063, P_peak∈[709,800] kW
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E1 完成 (1063 s): fuel=100.69 kg Vdc_min=707.8 V (5 s 仿真)
+[12] E2 完成 (1063 s): fuel=100.17 kg Vdc_min=707.8 V P_ff_active=7 s (5 s 仿真)
+[12] E3 完成 (1063 s): fuel=99.79 kg Vdc_min=689.9 V P_ff_active=272 s (5 s 仿真)
+[12] E2 τ=5 完成: fuel=99.67 kg Vdc_min=689.9 V P_ff_active=0 s (5 s 仿真)
+[12] E2 τ=15 完成: fuel=100.18 kg Vdc_min=707.8 V P_ff_active=8 s (5 s 仿真)
+[12] E2 τ=20 完成: fuel=100.22 kg Vdc_min=707.8 V P_ff_active=13 s (5 s 仿真)
+[12][OK]   S06_resistance_step: E1 Vdc_min=707.8 >= E0 689.9 - 0.5
+[12][FF]   S06_resistance_step: E1 FF 活动=69 s, E2 FF 活动=7 s（定时应显著小于即时）
+[12] 图: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/S06/compare.png
+
+[12] ========== S07_bridge_maneuver (S07) ==========
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E0 完成 (1011 s, 101114 点): fuel=78.36 kg Vdc_min=689.9 V SOC_end=0.593 (5 s 仿真)
+[make_oracle_pred] S07_bridge_maneuver (复用 C0 ds, horizon=60 s) ...
+[make_oracle_pred] S07_bridge_maneuver: N=1012 行, t_end=1011 s
+  P_peak: [100.0, 800.0] kW
+  t_peak_rel: mean=30.8 s, median=31.0 s, <5s 占比=38.2%
+[12] oracle: N=1012, P_peak∈[100,800] kW
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E1 完成 (1011 s): fuel=82.49 kg Vdc_min=707.8 V (5 s 仿真)
+[12] E2 完成 (1011 s): fuel=82.42 kg Vdc_min=707.8 V P_ff_active=100 s (4 s 仿真)
+[12] E3 完成 (1011 s): fuel=83.47 kg Vdc_min=689.9 V P_ff_active=775 s (5 s 仿真)
+[12][OK]   S07_bridge_maneuver: E1 Vdc_min=707.8 >= E0 689.9 - 0.5
+[12][FF]   S07_bridge_maneuver: E1 FF 活动=308 s, E2 FF 活动=100 s（定时应显著小于即时）
+[12] 图: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/S07/compare.png
+
+[12] ========== S09_emergency_sprint (S09) ==========
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E0 完成 (928 s, 92785 点): fuel=80.69 kg Vdc_min=689.9 V SOC_end=0.593 (4 s 仿真)
+[make_oracle_pred] S09_emergency_sprint (复用 C0 ds, horizon=60 s) ...
+[make_oracle_pred] S09_emergency_sprint: N=928 行, t_end=927 s
+  P_peak: [708.4, 800.0] kW
+  t_peak_rel: mean=22.5 s, median=1.0 s, <5s 占比=56.8%
+[12] oracle: N=928, P_peak∈[708,800] kW
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)] 
+[12] E1 完成 (928 s): fuel=81.21 kg Vdc_min=707.8 V (5 s 仿真)
+[12] E2 完成 (928 s): fuel=81.21 kg Vdc_min=707.8 V P_ff_active=7 s (4 s 仿真)
+[12] E3 完成 (928 s): fuel=81.45 kg Vdc_min=689.9 V P_ff_active=775 s (4 s 仿真)
+[12][OK]   S09_emergency_sprint: E1 Vdc_min=707.8 >= E0 689.9 - 0.5
+[12][FF]   S09_emergency_sprint: E1 FF 活动=69 s, E2 FF 活动=7 s（定时应显著小于即时）
+[12] 图: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/S09/compare.png
+
+[12] Phase 1 全部完成。CSV: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/phase1_metrics.csv
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

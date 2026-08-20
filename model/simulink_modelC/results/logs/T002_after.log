@@ -1,0 +1,7 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：82 项（含 37 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+AFTER done: t=97988 pts, has P_pred=1, t_peak=1, AI_valid=1
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

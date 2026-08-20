@@ -1,0 +1,13 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：84 项（含 37 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[10] 开始重建 /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/model/HybridShip_ModelC_DCBus.slx
+[10] 检测到 mlp_weights.mat：MLP_Window=22（权重与窗口已载入 base）
+[10] 更新图 (EMS_MODE=1) 成功
+[10] 构建失败: 无法打开 MAT 文件 "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/slprj/_jitprj/jitEngineAccessInfo.mat"。文件可能已损坏。
+    at build_model_c line 90
+{错误使用 model.build_model_c (第 90 行)
+无法打开 MAT 文件
+"/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/slprj/_jitprj/jitEngineAccessInfo.mat"。文
+件可能已损坏。
+} 

@@ -118,3 +118,11 @@ firmware/stm32n6/**/*.atk-backup
 firmware/stm32n6/**/*.bak_*
 firmware/stm32n6/**/*.build.log
 firmware/stm32n6/**/*.configure.log
+
+# ==========================================================
+# Model C (simulink_modelC) — venv symlink & heavy raw logs
+# ==========================================================
+model/simulink_modelC/.venv_tf
+model/simulink_modelC/.venv_tf/
+model/simulink_modelC/results/phase1/sensitivity/
+model/simulink_modelC/results/phase1/S*/
