@@ -1,40 +1,88 @@
 # 面向参数不确定性的多步负荷预测增强型 EMS Tasks
 
 Spec: `multistep-predictive-ems`  
-Status: tasks-draft  
+Status: tasks-draft（待用户批准）  
 Created: 2026-08-20  
-Brainstorm: `./brainstorm.md`
-Requirements: `./requirements.md`
-Design: `./design.md`
+Brainstorm: `./brainstorm.md`  
+Requirements: `./requirements.md`（v1.2, approved）  
+Design: `./design.md`（v1, approved）
 
 ## Implementation Plan
 
-Only include implementation tasks after requirements and design are accepted. Keep tasks small, ordered, and traceable.
+范围说明：本任务表仅覆盖 **Phase 1**（FR-001~014）。Phase 2/3（FR-015~019）在 Phase 1 GO 后另行细化任务。
 
-- [ ] 1. TODO: Prepare implementation foundation
+- [ ] 1. 建立独立工程副本 `simulink_modelC_(oracle_ms)/`
   - ID: T-001
   - Requirement(s): FR-001
-  - Files/areas: TODO
-  - Validation: TODO
+  - Files/areas: `model/simulink_modelC_(oracle_ms)/`（全量复制自 `model/simulink_modelC/`，排除 `slprj/ results/ datasets/`）；`.slx` 重命名为 `HybridShip_ModelCms_DCBus.slx`；`scripts/+model/build_model_cms.m`（由 build_model_c.m 派生）；`20_build_modelCms.m`、`20b_smoke_modelCms.m`；内部所有 `simulink_modelC` 字符串引用替换
+  - Validation: 运行 `20_build_modelCms.m` 从零重建 + `20b_smoke_modelCms.m` 全 PASS；临时 rename `model/simulink/` 与 `model/simulink_modelC/` 后仿真仍正常（AC-1 路径独立性）
 
-- [ ] 2. TODO: Implement core behavior
+- [ ] 2. 发电机三参数 config 化与扫描覆写机制
   - ID: T-002
-  - Requirement(s): FR-001, FR-002
-  - Files/areas: TODO
-  - Validation: TODO
+  - Requirement(s): FR-002, FR-011
+  - Files/areas: `config/Model_Parameters.m`（登记 `P_load_design_max=800`、`MSFF_*` 系列参数，标注假设等级）；实验脚本覆写 `Gen_P_max / Gen_Ramp_Up/Down / ASSUMED_Gen_TimeConstant` 的机制（confirm 不触发结构重建，FastRestart 兼容）
+  - Validation: 修改 `Gen_Ramp_Up` 后模型行为变化（斜坡时间戳偏移）且无需 rebuild；参数登记表包含全部新增项
 
-- [ ] 3. TODO: Add tests and documentation
+- [ ] 3. oracle 多步预测通道
   - ID: T-003
-  - Requirement(s): FR-001, FR-002, NFR-001
-  - Files/areas: TODO
-  - Validation: TODO
+  - Requirement(s): FR-003, FR-004, FR-009
+  - Files/areas: `+model/make_oracle_ms.m`（由 C0 基准运行负荷记录生成 N×13 `[t, P_5..P_60]`，端点保持）；`ai_predict_ms` 块（固定 12 节点宽度 + `valid_node_count=H/5` + `pred_valid`）；`AI_Pred_Source=1` 数据格式扩展
+  - Validation: 对 S04/S07 生成 oracle，抽查 t=100 s 处 12 节点值与负荷记录前向窗一致（误差 < 1e-6）；`MSFF_Horizon_s` 改 config 即切换有效节点数；缺失数据触发 `pred_valid=0`
+
+- [ ] 4. EMS_MinFF 第四变体实现
+  - ID: T-004
+  - Requirement(s): FR-005, FR-006, FR-007, FR-008, FR-013A
+  - Files/areas: `+model/build_model_cms.m` 新增 `EMS_CTRL_LAW=3` 变体 `EMS_MinFF`（沿用 EMS_ScheduledFF 插线模式）；`min_ff` MATLAB Function 块（可达性前向递推 dt_r=0.1 s、对分法 20 迭代、防抖 5 kW、`MSFF_InfoMode` peak/traj 折叠）；`P_bat_allowable` 双折点系数
+  - Validation: 变体编译通过；`EMS_CTRL_LAW=0/1/2` 行为与冻结基线逐点一致（回归，容差 1e-6）；结构差异检查记录
+
+- [ ] 5. 单元验证 U1–U6
+  - ID: T-005
+  - Requirement(s): FR-005~009, FR-013A（AC-2）
+  - Files/areas: `20c_unittest_minff.m`；`results/ms_unittest/`
+  - Validation: U1 可达性 vs 解析解 <1 kW；U2 R(τ)≤0 时与 Baseline 逐点一致；U3 合成阶跃下 P_ff*=手算最小值 ±0.5 kW；U4 peak 折叠与手算一致；U5 折点与单调性；U6 失效退化+计数。全 PASS 才允许进入实验阶段
+
+- [ ] 6. 指标体系扩展与结果工具链
+  - ID: T-006
+  - Requirement(s): FR-012, FR-013
+  - Files/areas: `+model/` 指标脚本扩展（`E_bat_throughput_kWh`、`N_UV/T_UV`（700 V 压力区）、`ff_active_s`、`R_max` 序列）；`results/ms_phase1/runs.csv` 写入器；区域图绘制脚本（λ_P×R_gen 热力图：ΔP_bat,peak% / ΔVdc_min / Δfuel%）
+  - Validation: 用既有 `results/phase1/` 数据离线回放，新增指标与手算抽查一致；热力图脚本在合成数据上出图
+
+- [ ] 7. Phase 1A：horizon×锚点×三对照实验（78 次仿真）
+  - ID: T-007
+  - Requirement(s): FR-010, FR-013A（AC-3）
+  - Files/areas: `21_run_ms_horizon.m`；`results/ms_phase1/phase1A/`
+  - Validation: 78 次运行全部落盘（3 锚点 × {S04,S07} × (1 C0 + 6 C_P + 6 C_MS)）；每锚点 C0 与冻结基线同场景 C0 回归比对（Nominal 容差 1e-6）；失败运行记录 NaN 不静默丢弃
+
+- [ ] 8. Phase 1A 判读与 horizon 选型
+  - ID: T-008
+  - Requirement(s): FR-010（AC-3）
+  - Files/areas: `reports/MSFF_phase1A_horizon.md`
+  - Validation: 报告给出 C_P vs C_MS 差值（RQ1 初步）、收益-H 曲线形态判读、2~3 个入选 horizon 及数据依据；**选型结论需主 Agent 审阅确认后才进入 T-009**（Escalation 点）
+
+- [ ] 9. Phase 1B：参数域扫描
+  - ID: T-009
+  - Requirement(s): FR-011, FR-012, FR-013（AC-4）
+  - Files/areas: `22_run_ms_paramsweep.m`；`results/ms_phase1/phase1B/`
+  - Validation: 主图 25 组合 × 4 场景 × 入选 horizon × (C0+C_MS)；τ_gen/SOC₀ 单因素各 36 次；C_P 于入选 H* 随同；总预算 ~470 次；区域图产出（AC-4）
+
+- [ ] 10. 重复性分析与折点敏感性抽查
+  - ID: T-010
+  - Requirement(s): FR-014（条款②）, NFR-002
+  - Files/areas: `results/ms_phase1/repeatability/`；报告章节
+  - Validation: 代表配置 3 次重复 SOC_end 极差 < 0.002（否则 |ΔSOC_end| 阈值按 FR-014 放宽至 0.01 并记录依据）；f_SOC/f_V 折点 ±50% 单点抽查结论不翻转
+
+- [ ] 11. GO/NO-GO 机器判定与 Phase 1 报告
+  - ID: T-011
+  - Requirement(s): FR-014（AC-5）
+  - Files/areas: `23_ms_gate_judge.m`；`results/ms_phase1/gate_result.json`；`reports/MSFF_phase1_gate_report.md`
+  - Validation: gate_result.json 含非劣化约束与收益判据逐项 PASS/FAIL + 证据链接；FAIL 时 `error('GATE:MSFF:*')`；报告含 RQ1/RQ2 回答、有效工作区域图、NO-GO 时的否定性结论框架；**判定结论需主 Agent 与用户确认**
 
 ## Verification Checklist
 
-- [ ] Requirements IDs are referenced by tasks.
-- [ ] Design testing strategy is represented by tasks.
-- [ ] Each task has a clear validation command or manual check.
-- [ ] Rollback/migration tasks are included when applicable.
+- [x] Requirements IDs are referenced by tasks（FR-001~014 全覆盖；FR-015~019 显式排除并注明 GO 后细化）。
+- [x] Design testing strategy is represented by tasks（T-005 单元 / T-007 回归 / T-010 重复性+敏感性 / T-011 Gate）。
+- [x] Each task has a clear validation command or manual check。
+- [x] Rollback：`simulink_modelC_(oracle_ms)/` 为纯新增目录，删除即回滚；T-004 含旧变体回归验证。
 
 ## Execution Notes
 
@@ -45,3 +93,5 @@ Only include implementation tasks after requirements and design are accepted. Ke
 - Complete tasks in order unless the user approves reordering.
 - Mark tasks complete only after validation passes.
 - Record deviations from design in design.md before implementing them.
+- T-008 与 T-011 为主 Agent 决策点，不得由执行者自行越过。
+- Simulink 红线适用：模型全部脚本驱动；Gate FAIL 不允许提交。
