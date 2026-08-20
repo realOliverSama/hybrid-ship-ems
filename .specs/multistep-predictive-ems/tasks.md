@@ -36,7 +36,7 @@ Design: `./design.md`（v1, approved）
   - Files/areas: `+model/build_model_cms.m` 新增 `EMS_CTRL_LAW=3` 变体 `EMS_MinFF`（沿用 EMS_ScheduledFF 插线模式）；`min_ff` MATLAB Function 块（可达性前向递推 dt_r=0.1 s、对分法 20 迭代、防抖 5 kW、`MSFF_InfoMode` peak/traj 折叠）；`P_bat_allowable` 双折点系数
   - Validation: 变体编译通过；`EMS_CTRL_LAW=0/1/2` 行为与冻结基线逐点一致（回归，容差 1e-6）；结构差异检查记录
 
-- [ ] 5. 单元验证 U1–U6
+- [x] 5. 单元验证 U1–U6
   - ID: T-005
   - Requirement(s): FR-005~009, FR-013A（AC-2）
   - Files/areas: `20c_unittest_minff.m`；`results/ms_unittest/`
