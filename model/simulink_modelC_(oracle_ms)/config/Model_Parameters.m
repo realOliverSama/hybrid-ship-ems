@@ -51,7 +51,7 @@ P_load_design_max = Mot_P_nom + P_hotel_nom; % 800 kW（DRAWING 派生）
 MSFF_Horizon_s = 30;     % 预测 horizon [s]（实验变量 {10,15,20,30,45,60}；valid_node_count = H/5）
 MSFF_dt_reach  = 0.1;    % 发电机可达性前向递推步长 [s]（≤ tau_gen/10 保证一阶离散稳定）
 MSFF_FF_Hyst_kW = 5;     % 前馈防抖阈值 [kW]（新 P_ff* 与保持值差 < 此值时维持原值）
-MSFF_InfoMode  = 'traj'; % C_P 信息降级开关：'traj'=完整轨迹 C_MS，'peak'=全窗口恒值 P_peak (C_P, FR-013A)
+MSFF_InfoMode  = 0;      % C_P 信息降级开关：0=traj(完整轨迹 C_MS), 1=peak(全窗口恒值 P_peak, FR-013A)
 MSFF_SOC_Knee  = [0.30 0.45];  % f_SOC 折点 [低, 高]：SOC≥高→1.0，SOC≤低→0.0，其间线性（ASSUMED(low)）
 MSFF_Vdc_Knee  = [690 720];    % f_V 折点 [低, 高]：Vdc≥高→1.0，Vdc≤低→0.0，其间线性（ASSUMED(low)）
 

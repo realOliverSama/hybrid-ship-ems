@@ -1,7 +1,7 @@
 parameter,value,unit,source,confidence,used_by,needs_confirmation
 Model_SystemScope,twin_string_equivalent,-,Model 配置 (v2.0 双支路等效),high,全部,false
 EMS_MODE,1,-,Model 配置(兼容列),high,05_EMS_Controller,false
-EMS_CTRL_LAW,2,-,Model C 配置 (T-003),high,05_EMS_Controller,false
+EMS_CTRL_LAW,3,-,Model C 配置 (T-003),high,05_EMS_Controller,false
 AI_Pred_Source,0,-,Model 配置,high,05_EMS_Controller,false
 AI_TPeak_Source,0,-,Model C 配置 (T-002),high,05_EMS_AI,false
 DRAWING_N_PropStrings,2,-,DRAWING: 双支路(用户确认),high,派生全部聚合额定,false
@@ -14,6 +14,13 @@ Bat_Cap_kWh,1200,kWh,DRAWING: 600×2 聚合,high,07_Battery_Energy,false
 Gen_P_max,1000,kW,DRAWING/LEGACY: 500×2 聚合,high,05/06/08,false
 Mot_P_nom,700,kW,DRAWING/LEGACY: 350×2 聚合,high,02/03/08,false
 P_hotel_nom,100,kW,LEGACY: EMS_P_Hotel,medium,01/04,true
+P_load_design_max,800,kW,DRAWING: Mot_P_nom+P_hotel 派生,high,MSFF λ_P 统一分母(FR-002),false
+MSFF_Horizon_s,30,s,MSFF 配置(T-002),high,05_EMS_MinFF,false
+MSFF_dt_reach,0.1,s,MSFF 配置(ASSUMED),low,05_EMS_MinFF,true
+MSFF_FF_Hyst_kW,5,kW,MSFF 配置(ASSUMED),low,05_EMS_MinFF,true
+MSFF_InfoMode,0,-,MSFF 配置(FR-013A),high,05_EMS_MinFF,false
+MSFF_SOC_Knee,[0.3 0.45],-,MSFF 配置(ASSUMED),low,05_EMS_MinFF,true
+MSFF_Vdc_Knee,[690 720],V,MSFF 配置(ASSUMED),low,05_EMS_MinFF,true
 Ship_V_init,0,m/s,LEGACY: 原脚本,medium,03_Propulsion,false
 Ship_X_init,0,m,Model 规格,high,03_Propulsion,false
 Bat_SOC_init,0.6,-,LEGACY: 原脚本,medium,07_Battery_Energy,false
