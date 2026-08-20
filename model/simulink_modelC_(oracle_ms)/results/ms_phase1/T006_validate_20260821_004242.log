@@ -1,0 +1,6 @@
+V1 replay: true | 所有共享字段 1e-6 一致，新字段合理
+V2 law3: Vdc_min=689.92 N_UV=0 N_stress=1 ff_active=9.00 -> true
+V3 region: cells=12/12 pngs=2 failrow=1 -> true
+SUMMARY V1: true
+SUMMARY V2: true
+SUMMARY V3: true
