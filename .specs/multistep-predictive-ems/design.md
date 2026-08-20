@@ -210,3 +210,8 @@ oracle 数据格式：`results/ms_phase1/oracle_<SID>.mat` → workspace 变量 
 - **C_P 折叠假设**：恒值折叠是"仅知峰值"的最坏时序解释，科学上最严格但可能低估"峰值+经验时序"的实际价值 → 在报告中明确该定义，避免过度宣称。
 - **f_SOC/f_V 折点为 ASSUMED(low)**：±50% 敏感性抽查兜底；若结论对折点敏感则 escalate。
 - **对分法单调性**：依赖 `R_max(P_ff)` 单调不增——爬坡/惯性/限幅下成立（P_ff 增大 ⇒ 可达轨迹处处不降）；若 implementation 发现反例（如 MinStablePower 非零引入死区）则 escalate。
+- **重复性纪律**：SOC_end 极差 FAIL 时禁止自动放宽 Gate，先定位非确定性来源（FastRestart 状态残留/persistent 未复位/workspace 残留/随机源），修复后重测；阈值放宽须重新过门。
+
+## Design Amendment Log
+
+- **v1.1（2026-08-20，随 tasks 批准修订）**：①oracle 因果性硬约束（取点在降额上游、控制律不变性）；②欠压双阈值命名分离（675 V 欠压 / 700 V 压力区）；③仿真预算参数化（472~572，C0 复用）；④重复性 FAIL 禁止自动放宽 SOC Gate。

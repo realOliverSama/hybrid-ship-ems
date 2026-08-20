@@ -1,7 +1,7 @@
 # 面向参数不确定性的多步负荷预测增强型 EMS Tasks
 
 Spec: `multistep-predictive-ems`  
-Status: tasks-draft（待用户批准）  
+Status: tasks-approved（2026-08-20 用户批准，含 v1.1 四项修订：oracle 因果性、欠压双阈值、参数化预算、禁止自动放宽 Gate）  
 Created: 2026-08-20  
 Brainstorm: `./brainstorm.md`  
 Requirements: `./requirements.md`（v1.2, approved）  
@@ -27,7 +27,8 @@ Design: `./design.md`（v1, approved）
   - ID: T-003
   - Requirement(s): FR-003, FR-004, FR-009
   - Files/areas: `+model/make_oracle_ms.m`（由 C0 基准运行负荷记录生成 N×13 `[t, P_5..P_60]`，端点保持）；`ai_predict_ms` 块（固定 12 节点宽度 + `valid_node_count=H/5` + `pred_valid`）；`AI_Pred_Source=1` 数据格式扩展
-  - Validation: 对 S04/S07 生成 oracle，抽查 t=100 s 处 12 节点值与负荷记录前向窗一致（误差 < 1e-6）；`MSFF_Horizon_s` 改 config 即切换有效节点数；缺失数据触发 `pred_valid=0`
+  - **因果性硬约束**：oracle SHALL 取自**外生需求负荷**（欠压降额/EMS 作用之前的负荷请求值），oracle 目标对 C0/C_P/C_MS 控制律选择不变；若现有负荷记录取自降额后实际负荷，必须改取降额前信号——禁止闭环因果污染
+  - Validation: 对 S04/S07 生成 oracle，抽查 t=100 s 处 12 节点值与负荷记录前向窗一致（误差 < 1e-6）；**信号取点验证：确认所取信号位于 08_Undervolt_Derate 上游**（用降额激活时段的数据证明 oracle 序列不受 Vdc 影响）；`MSFF_Horizon_s` 改 config 即切换有效节点数；缺失数据触发 `pred_valid=0`
 
 - [ ] 4. EMS_MinFF 第四变体实现
   - ID: T-004
@@ -44,7 +45,7 @@ Design: `./design.md`（v1, approved）
 - [ ] 6. 指标体系扩展与结果工具链
   - ID: T-006
   - Requirement(s): FR-012, FR-013
-  - Files/areas: `+model/` 指标脚本扩展（`E_bat_throughput_kWh`、`N_UV/T_UV`（700 V 压力区）、`ff_active_s`、`R_max` 序列）；`results/ms_phase1/runs.csv` 写入器；区域图绘制脚本（λ_P×R_gen 热力图：ΔP_bat,peak% / ΔVdc_min / Δfuel%）
+  - Files/areas: `+model/` 指标脚本扩展——`E_bat_throughput_kWh`、`ff_active_s`、`R_max` 序列；**欠压双阈值分离**：`N_UV/T_UV @ 675 V`（真实欠压降额线，FR-014 非劣化约束⑤以此判定）与 `N_stress/T_stress @ 700 V`（母线压力区/动态裕度分析），禁止混用命名；`results/ms_phase1/runs.csv` 写入器；区域图绘制脚本（λ_P×R_gen 热力图：ΔP_bat,peak% / ΔVdc_min / Δfuel%）
   - Validation: 用既有 `results/phase1/` 数据离线回放，新增指标与手算抽查一致；热力图脚本在合成数据上出图
 
 - [ ] 7. Phase 1A：horizon×锚点×三对照实验（78 次仿真）
@@ -63,13 +64,13 @@ Design: `./design.md`（v1, approved）
   - ID: T-009
   - Requirement(s): FR-011, FR-012, FR-013（AC-4）
   - Files/areas: `22_run_ms_paramsweep.m`；`results/ms_phase1/phase1B/`
-  - Validation: 主图 25 组合 × 4 场景 × 入选 horizon × (C0+C_MS)；τ_gen/SOC₀ 单因素各 36 次；C_P 于入选 H* 随同；总预算 ~470 次；区域图产出（AC-4）
+  - Validation: 主图 25 组合 × 4 场景 × 入选 horizon × (C0+C_MS)；τ_gen/SOC₀ 单因素各 36 次；C_P 仅于入选 H* 随同；**预算参数化：入选 2 个 horizon ≈472 次、3 个 ≈572 次，由 T-008 决策决定；C0 跨 horizon 复用不重复运行**；区域图产出（AC-4）
 
 - [ ] 10. 重复性分析与折点敏感性抽查
   - ID: T-010
   - Requirement(s): FR-014（条款②）, NFR-002
   - Files/areas: `results/ms_phase1/repeatability/`；报告章节
-  - Validation: 代表配置 3 次重复 SOC_end 极差 < 0.002（否则 |ΔSOC_end| 阈值按 FR-014 放宽至 0.01 并记录依据）；f_SOC/f_V 折点 ±50% 单点抽查结论不翻转
+  - Validation: 代表配置 3 次重复 SOC_end 极差 < 0.002。**重复性 FAIL 时禁止自动放宽 Gate**：先定位并消除非确定性来源（FastRestart 状态残留 / persistent 未复位 / workspace 残留 / solver 初始状态 / 随机源未固定），修复后重测；`|ΔSOC_end|` 阈值任何放宽（→0.01）必须由本任务出报告、经主 Agent/用户门禁批准，脚本不得自动修改；f_SOC/f_V 折点 ±50% 单点抽查结论不翻转（敏感则 escalate）
 
 - [ ] 11. GO/NO-GO 机器判定与 Phase 1 报告
   - ID: T-011
@@ -94,4 +95,5 @@ Design: `./design.md`（v1, approved）
 - Mark tasks complete only after validation passes.
 - Record deviations from design in design.md before implementing them.
 - T-008 与 T-011 为主 Agent 决策点，不得由执行者自行越过。
+- 执行模式（用户已裁决）：主 Agent 监督 + 单个 implementation subagent 顺序施工；禁止多 subagent 并行操作同一 Simulink 工程；T-003/T-004 实现后主 Agent 审查 oracle 因果性与结构；T-010 异常不得自行修改 Gate。
 - Simulink 红线适用：模型全部脚本驱动；Gate FAIL 不允许提交。
