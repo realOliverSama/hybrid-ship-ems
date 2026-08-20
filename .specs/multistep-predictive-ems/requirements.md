@@ -9,6 +9,7 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 ## Amendment Log
 
 - **v1（2026-08-20 draft）**：基于 timed-feedforward-ems Phase 1 NO-GO 实证与外部咨询对齐后的研究方向转向。用户已批准总体方案（brainstorm.md 中 D1–D8 固定决策 + 三处修正）。
+- **v1.1（2026-08-20 draft）**：外部评审（GPT）四条修正全部接受：①D4 控制律改写——`P_ff* = min P_ff s.t. R(τ) ≤ 0`（功率缺口约束），`Vdc` 回归闭环评价指标而非在线优化目标；②horizon 确定改为两级筛选（Phase 1A 三锚点 Fast/Nominal/Slow 粗筛 → Phase 1B 保留 2~3 个 H 进入参数扫描），撤回"单锚点先行"；③OQ-4 改为 5 s 等分辨率真实多步节点（H/5 个），废除末值保持；④OQ-1 GO 判据拆分为非劣化约束 + 收益判据两类；另 `P_bat_allow` 更名 `P_bat_allowable`（EMS 风险阈值，非电池命令），λ_P 分母锁定统一设计参考最大负荷。
 
 ## Overview
 
@@ -54,26 +55,26 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 ### 多步预测通道（Phase 1：oracle）
 
 - **FR-003**: THE 模型 SHALL 新增多步负荷预测通道：预测接口输出未来窗口内 K 个步长的负荷序列 `[P_{t+h1}, …, P_{t+hK}]`；Phase 1 预测源为 oracle（仿真内取自真实未来负荷轨迹，FromWorkspace 或等效机制），`AI_Pred_Source` 取值扩展并在结果元数据中记录预测源与 horizon。
-- **FR-004**: WHEN horizon H 作为实验变量变化（{10,15,20,30,45,60} s），THE 预测通道与 EMS SHALL 仅需修改 config 参数即可切换，无需改模型结构。
+- **FR-004**: WHEN horizon H 作为实验变量变化（{10,15,20,30,45,60} s），THE 预测通道与 EMS SHALL 仅需修改 config 参数即可切换，无需改模型结构；预测通道 SHALL 采用固定最大宽度 12 节点（5 s 分辨率 × 60 s）+ 有效节点数参数，EMS 仅消费前 H/5 个节点。
 
 ### 最小必要前馈控制律
 
-- **FR-005**: THE EMS SHALL 计算发电机可达功率轨迹 `P_gen,reachable(τ)`：从当前 `P_gen` 出发，受 `R_gen_max` 爬坡率、`tau_gen` 一阶惯性与 `[0, P_gen_rated]` 限幅约束的未来可达功率上界。
-- **FR-006**: THE EMS SHALL 计算电池允许瞬态功率 `P_bat_allow = f(SOC, Vdc, P_bat_max)`（函数形式为 design 阶段 OQ-2 决策项）。
-- **FR-007**: THE EMS SHALL 定义未来功率缺口风险 `R(τ) = P̂_load(t+τ) − P_gen,reachable(t+τ) − P_bat_allow`；仅 WHEN 存在 τ 使 `R(τ) > 0`（或越过 design 定义的安全阈值），THE EMS SHALL 施加前馈；否则保持 Baseline 行为。
-- **FR-008**: WHEN 需要干预，THE EMS SHALL 求解最小必要前馈量 `P_ff* = min P_ff`，满足 `Vdc ≥ V_safe`、电池功率约束与机组限幅；前馈叠加于 Baseline 基值并经既有 clamp/动态环节，底层电池下垂自治保持不变。
+- **FR-005**: THE EMS SHALL 计算发电机可达功率轨迹 `P_gen,reachable(τ; P_ff)`：从当前 `P_gen` 出发、施加候选前馈 `P_ff` 后，受 `R_gen_max` 爬坡率、`tau_gen` 一阶惯性与 `[0, P_gen_rated]` 限幅约束的未来可达功率上界；该计算 SHALL 通过一阶惯性 + 爬坡模型前向递推实现，复杂度满足 1 Hz 刷新与嵌入式部署。
+- **FR-006**: THE EMS SHALL 定义电池允许瞬态功率阈值 `P_bat_allowable = P_bat,max × f_SOC(SOC) × f_V(Vdc)`（分段线性系数函数，design 细化）；该参数是 **EMS 侧的风险评估阈值**（允许底层下垂电池在预测窗口内承担的瞬态功率上限），不是电池功率命令、不声称是电池物理极限，实际电池输出仍由底层 DC/DC 下垂自治决定。
+- **FR-007**: THE EMS SHALL 定义未来功率缺口风险 `R(τ) = P̂_load(t+τ) − P_gen,reachable(t+τ; P_ff) − P_bat_allowable`；仅 WHEN 存在 τ 使 `R(τ) > 0`，THE EMS SHALL 施加前馈；否则保持 Baseline 行为。
+- **FR-008**: WHEN 需要干预，THE EMS SHALL 求解最小必要前馈 `P_ff* = min P_ff` 使 `R(τ) ≤ 0, ∀τ∈[0,H]` 且 `0 ≤ P_gen,target ≤ P_rated`；**不要求在线求解 Vdc 约束**——Vdc 由母线电容与电池下垂自治动态闭环形成，`Vdc_min` 作为闭环安全评价指标与 GO/NO-GO 约束；前馈叠加于 Baseline 基值并经既有 clamp/动态环节，底层电池下垂自治保持不变。
 - **FR-009**: IF 预测无效（oracle 数据缺失/越界），THE EMS SHALL 退化为 Baseline 行为并记录无效事件计数。
 
 ### 实验与评价
 
-- **FR-010**: THE Phase 1 SHALL 先固定当前发电机参数（1000 kW / 40 kW/s / 5 s）执行 horizon 扫描 {10,15,20,30,45,60} s × 场景集，确定有效预测时间尺度；再固定最优 1~2 个 horizon 执行发电机参数扫描。
-- **FR-011**: THE 参数扫描 SHALL 覆盖 `lambda_P ∈ {0.7,0.8,0.9,1.0,1.1}`、`R_gen ∈ {20,30,40,50,60} kW/s`、`tau_gen ∈ {2,5,8,10} s`、`SOC₀ ∈ {0.4,0.5,0.6,0.7,0.8}` 的代表性组合（组合选择方法为 design 阶段 OQ-3 决策项），禁止全笛卡尔积。
+- **FR-010**: THE Phase 1 SHALL 采用两级 horizon 筛选：**Phase 1A** 在三个代表性发电机锚点（Fast：高爬坡/小惯性；Nominal：40 kW/s/5 s；Slow：低爬坡/大惯性，具体取值在 design 定案）分别扫描全部 6 档 horizon，识别普遍无效区/有效区/动态敏感区；**Phase 1B** 保留 2~3 个代表性 horizon 进入发电机参数扫描。禁止在单一 nominal 参数点定死唯一 horizon 后推广至全参数空间。
+- **FR-011**: THE 参数扫描 SHALL 以 `lambda_P × R_gen` 5×5 全因子为主有效区域图，`tau_gen` 与 `SOC₀` 各取代表值单因素补充，禁止全笛卡尔积；`lambda_P = P_gen_rated / P_load,design_max` 的分母 SHALL 为**统一设计参考最大负荷**（跨场景固定，在 config 登记），禁止逐场景自定义分母。
 - **FR-012**: THE 实验 SHALL 输出统一闭环指标体系：一级指标 `Vdc_min`、欠压事件次数/持续时间、`P_bat,peak`、`P_bat,RMS`、电池放电能量与吞吐量；二级指标 `SOC_min`、`SOC_end`、发电机爬坡饱和时间、未服务能量、船速 RMSE；约束指标 `fuel_total_kg`。全部结果以标准化 CSV/JSON + 图表输出至 `results/`。
 - **FR-013**: THE Phase 1 报告 SHALL 产出"AI 有效区域图"：`Benefit_AI = f(P_gen_rated, R_gen, SOC₀, 负荷动态)` 的可视化与定量结论，回答 RQ2。
 
 ### Phase 1 过门（GO/NO-GO）
 
-- **FR-014**: THE Phase 1 GO 判定 SHALL 同时满足（具体阈值在 design 阶段定量化并经用户确认，OQ-1）：在所扫描的合理参数区域内存在非平凡子区域，oracle 多步前馈相对 Baseline 满足——①`P_bat,peak` 显著下降；②`P_bat,RMS` 或电池吞吐量下降；③`Vdc_min` 或欠压裕度改善；④船速性能不下降；⑤`|ΔSOC_end|` 受控；⑥燃油代价 ≤ 可接受阈值。IF 六条不满足（完全知道未来负荷仍无闭环收益），THE 研究 SHALL 停止神经网络投入并输出否定性结论报告。
+- **FR-014**: THE Phase 1 GO 判定 SHALL 分为两类。**非劣化约束**（所有声称有效的参数点必须全部满足）：①船速 RMSE 退化 ≤1%；②`|ΔSOC_end|` ≤0.02；③燃油 ≤ C0×1.015；④`E_unserved` = 0；⑤不得产生 Baseline 没有的欠压事件。**收益判据**：在 λ_P×R_gen 网格至少 4 个相邻参数组合 × 至少 2 个场景中——⑥`P_bat,peak` 下降 ≥15%；⑦`P_bat,RMS` 或电池吞吐量下降 ≥10%；⑧对于 Baseline 已进入母线压力区（接近欠压降额线）的工况，`Vdc_min` 明显改善或欠压事件减少。GO = 非劣化约束全 PASS 且收益判据⑥⑦（压力区工况含⑧）成立；IF oracle 完全知道未来负荷仍无法满足，THE 研究 SHALL 停止神经网络投入并输出否定性结论报告。
 
 ### Phase 2 / Phase 3（需求框架，GO 后细化）
 
@@ -94,10 +95,10 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 ## Acceptance Criteria
 
 - [ ] AC-1（FR-001）：在 `simulink_modelC_(oracle_ms)/` 中运行构建脚本可从零重建模型并通过冒烟测试；临时断开 `model/simulink/` 与 `model/simulink_modelC/` 访问时仿真仍正常运行（路径依赖验证）。
-- [ ] AC-2（FR-002/005/007/008）：单元级验证：合成阶跃负荷 + 参数化发电机下，`P_gen,reachable(τ)` 与理论解析解一致；`R(τ)≤0` 时 EMS 与 Baseline 逐点一致；`R(τ)>0` 时 `P_ff` 为满足约束的最小值且 `Vdc ≥ V_safe`。
-- [ ] AC-3（FR-003/004/010）：horizon 扫描结果表：6 档 horizon × 场景集 × C0/C2ms 对照（一级/二级/约束指标齐全）。
-- [ ] AC-4（FR-011/012/013）：参数扫描结果表 + AI 有效区域图（至少 λ_P × R_gen 二维投影 + SOC₀ 分组）。
-- [ ] AC-5（FR-014）：GO/NO-GO 判定报告，六条判据逐条给出机器可读 PASS/FAIL 与证据链接。
+- [ ] AC-2（FR-002/005/007/008）：单元级验证：合成阶跃负荷 + 参数化发电机下，`P_gen,reachable(τ; P_ff)` 前向递推与理论解析解一致；`R(τ)≤0` 时 EMS 与 Baseline 逐点一致；`R(τ)>0` 时 `P_ff*` 为使 `R(τ)≤0, ∀τ` 的最小值且不越机组限幅。
+- [ ] AC-3（FR-003/004/010）：Phase 1A 三锚点 × 6 档 horizon 粗筛结果表与 Phase 1B 入选 horizon 的依据记录。
+- [ ] AC-4（FR-011/012/013）：参数扫描结果表 + AI 有效区域图（λ_P × R_gen 二维主图 + τ_gen/SOC₀ 单因素补充）。
+- [ ] AC-5（FR-014）：GO/NO-GO 判定报告，非劣化约束与收益判据逐条给出机器可读 PASS/FAIL 与证据链接。
 - [ ] AC-6（FR-015/016/017，Phase 2）：四模型精度表 + 闭环对照表 + x_ship 消融表；冷启动窗口纳入训练的证据。
 - [ ] AC-7（FR-018，Phase 2）：冷启动兜底消融：无兜底/仅兜底/兜底+NN 三组在 t<22 s 段的 Vdc_min 对比。
 - [ ] AC-8（FR-019，Phase 3）：STM32N6 部署报告（大小/RAM/延迟/映射率/INT8 精度损失）+ HIL 闭环结果。
@@ -108,7 +109,7 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 - 渐进负荷场景（无显著阶跃）：前馈结构性闲置为合法行为，不得为制造激活而调参。
 - 极端参数组合（λ_P=0.7 且 R_gen=20 kW/s）：发电机本身能力不足导致的欠压属于被控对象极限，报告须区分"EMS 失效"与"系统固有不可行"。
 - 多步预测越界（仿真末端不足 H）：沿用端点保持语义并记录。
-- SOC 接近下限时 `P_bat_allow → 0`：风险门槛自动收紧，前馈趋于即时前馈行为，须验证平滑过渡无抖振。
+- SOC 接近下限时 `P_bat_allowable → 0`：风险门槛自动收紧，前馈趋于即时前馈行为，须验证平滑过渡无抖振。
 - 参数扫描中模型重建：仅改 config 参数不得触发结构重建；扫描脚本须复用已编译模型（fast restart 或等效）。
 
 ## Dependencies and Constraints
@@ -121,7 +122,9 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 
 ## Open Questions
 
-- [ ] OQ-1：Phase 1 GO 判据六条的具体阈值（如 P_bat,peak 下降 ≥10%？燃油代价 ≤ C0+1.5%？）——design 阶段给出建议值，用户确认。
-- [ ] OQ-2：`P_bat_allow = f(SOC, Vdc, P_bat_max)` 的函数形式（建议：分段线性，SOC/Vdc 越低允许功率越小）——design 阶段细化。
-- [ ] OQ-3：参数扫描代表性组合的选择方法（建议：λ_P × R_gen 全因子 5×5=25 为主图，τ_gen 与 SOC₀ 各取 2~3 个代表点做单因素补充）——design 阶段定案。
-- [ ] OQ-4：多步预测步长集合（建议固定输出节点 {+5,+10,+15,+20,+30} s，H>30 时线性外推或重复末值；或按 H 动态取节点）——design 阶段定案。
+- [x] OQ-1（v1.1 已决）：GO 判据拆分为非劣化约束（船速 RMSE ≤1%、|ΔSOC_end|≤0.02、燃油 ≤C0×1.015、E_unserved=0、无新增欠压）+ 收益判据（≥4 相邻参数组合 × ≥2 场景：P_bat,peak ↓≥15% 且 RMS/吞吐量 ↓≥10%，压力区工况另要求 Vdc_min 改善）——已落入 FR-014。
+- [x] OQ-2（v1.1 已决）：`P_bat_allowable = P_bat,max × f_SOC(SOC) × f_V(Vdc)` 分段线性，定位为 EMS 风险评估阈值而非电池命令——已落入 FR-006；系数函数具体折点在 design 定案。
+- [x] OQ-3（v1.1 已决）：λ_P×R_gen 5×5 全因子主图 + τ_gen/SOC₀ 代表值单因素补充；λ_P 分母为统一设计参考最大负荷——已落入 FR-011。
+- [x] OQ-4（v1.1 已决）：5 s 等分辨率真实多步节点 [P_5,…,P_H]（H/5 个），通道固定最大宽度 12 节点 + 有效节点数参数；Phase 2 四网络统一输出 H*/5 个节点——已落入 FR-004/FR-015。
+- [ ] OQ-5：Phase 1A 三锚点（Fast/Nominal/Slow）的具体参数取值——design 阶段定案。
+- [ ] OQ-6：`P_load,design,max`（λ_P 统一分母）的取值——design 阶段依据场景负荷统计定案。

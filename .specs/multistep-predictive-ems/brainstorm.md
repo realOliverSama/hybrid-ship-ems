@@ -73,3 +73,14 @@ Created: 2026-08-20
 ## Decision
 
 - [ ] User approved creating the spec skeleton and drafting requirements.
+
+---
+
+## 第二轮评审修订（2026-08-20，GPT 外部评审，pi 裁决全部接受）
+
+1. **D4 改写**：R(τ) 是功率代数量，不能在线求解 Vdc 约束（Vdc 是母线电容+下垂自治的状态量）。控制律定为 `P_ff* = min P_ff s.t. R(τ)=P̂_load−P_gen,reachable(τ;P_ff)−P_bat,allowable ≤ 0, ∀τ∈[0,H]`；Vdc_min 回归闭环评价指标与 GO 约束。pi 认定原写法隐含不存在的 DC-bus 预测器，属实质错误。
+2. **撤回 pi 修正 1（horizon 单锚点先行）**：最优 H 依赖 R_gen/τ_gen，单点定死会污染 RQ2。改为两级筛选：Phase 1A 三锚点（Fast/Nominal/Slow）× 6 horizon 粗筛 → Phase 1B 保留 2~3 个 H 进参数扫描。
+3. **OQ-4 废除末值保持**（H>30 零新增信息，属自欺）：改 5 s 等分辨率真实节点 H/5 个；工程上通道固定最大宽度 12 节点 + 有效节点数参数。
+4. **OQ-1 GO 拆两类**：非劣化约束（全部必须满足）+ 收益判据（≥4 相邻参数组合 × ≥2 场景）；Baseline Vdc_min=689.9 V 本就高于 675 V 降额线，硬要 +5 V 会误杀有效点。
+5. **P_bat_allow → P_bat_allowable**：明确定位为 EMS 风险评估阈值（非电池命令、非物理极限），实际电池输出仍由底层下垂自治。
+6. **λ_P 分母锁定统一设计参考最大负荷** P_load,design,max，禁止逐场景自定义。
