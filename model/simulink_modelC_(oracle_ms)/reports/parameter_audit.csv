@@ -1,0 +1,89 @@
+parameter,value,unit,source,confidence,used_by,needs_confirmation
+Model_SystemScope,twin_string_equivalent,-,Model 配置 (v2.0 双支路等效),high,全部,false
+EMS_MODE,1,-,Model 配置(兼容列),high,05_EMS_Controller,false
+EMS_CTRL_LAW,2,-,Model C 配置 (T-003),high,05_EMS_Controller,false
+AI_Pred_Source,0,-,Model 配置,high,05_EMS_Controller,false
+AI_TPeak_Source,0,-,Model C 配置 (T-002),high,05_EMS_AI,false
+DRAWING_N_PropStrings,2,-,DRAWING: 双支路(用户确认),high,派生全部聚合额定,false
+V_dc_nom,750,V,DRAWING: 系统图,high,08_Power_Availability,false
+V_bat_nom,576,V,DRAWING: 系统图,high,07_Battery_Energy,false
+DRAWING_Bat_Cap_kWh_perString,600,kWh,DRAWING: 图纸额定/支路,high,派生 Bat_Cap_kWh,false
+DRAWING_Gen_P_max_perString,500,kW,DRAWING: 图纸额定/支路,high,派生 Gen_P_max,false
+DRAWING_Mot_P_nom_perString,350,kW,DRAWING: 图纸额定/支路,high,派生 Mot_P_nom,false
+Bat_Cap_kWh,1200,kWh,DRAWING: 600×2 聚合,high,07_Battery_Energy,false
+Gen_P_max,1000,kW,DRAWING/LEGACY: 500×2 聚合,high,05/06/08,false
+Mot_P_nom,700,kW,DRAWING/LEGACY: 350×2 聚合,high,02/03/08,false
+P_hotel_nom,100,kW,LEGACY: EMS_P_Hotel,medium,01/04,true
+Ship_V_init,0,m/s,LEGACY: 原脚本,medium,03_Propulsion,false
+Ship_X_init,0,m,Model 规格,high,03_Propulsion,false
+Bat_SOC_init,0.6,-,LEGACY: 原脚本,medium,07_Battery_Energy,false
+Pgen_init,0,kW,Model 规格,high,06_Genset,false
+Ship_Mass,1000000,kg,LEGACY: 原脚本,medium,03_Propulsion,true
+Gear_Ratio,6.08,-,LEGACY: 原脚本,medium,03_Propulsion,true
+Gear_Eff,0.96,-,LEGACY: 原脚本(行业0.96~0.98),medium,03_Propulsion,true
+Elec_Eff,0.92,-,LEGACY: 原脚本(行业0.90~0.94),medium,03_Propulsion,true
+Gen_Ramp_Up,40,kW/s,LEGACY: 20×2 聚合,medium,06_Genset,true
+Gen_Ramp_Down,40,kW/s,LEGACY: 20×2 聚合,medium,06_Genset,true
+Mot_RPM_nom,1500,rpm,LEGACY: 原脚本,medium,03_Propulsion,true
+Mot_T_max,4456.33840657307,Nm,LEGACY: 派生(×2),medium,03_Propulsion,true
+Prop_J,1600,kg*m^2,LEGACY: 800×2 聚合,low,03_Propulsion,true
+Shaft_B,0,Nm/(rad/s),LEGACY: 原脚本,low,03_Propulsion,true
+wake_fraction,0.15,-,LEGACY: 原脚本(双桨0.10~0.20),low,03_Propulsion,true
+ASSUMED_Prop_Efficiency,0.6,-,ASSUMED(行业0.55~0.65),low,派生 Hull_K_R,true
+ASSUMED_Sea_Margin,0.15,-,ASSUMED(设计惯例10~20%),low,派生 Hull_K_R,true
+V_design_kn,11,kn,公务船定位(11kn,R/W校核),medium,03_Propulsion,true
+Hull_K_R,1780.41496789109,N/(m/s)^2,重新标定: η·P_shaft/(1+m)/V^3,medium,03_Propulsion,true
+K_Fw,128.106967070834,N/(rad/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsion,true
+K_Fv,1232.12108504574,N/(m/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsion,true
+K_Qw,37.4103363445928,Nm/(rad/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsion,true
+K_Qv,179.904595599937,Nm/(m/s)^2,LEGACY: 派生(新设计点),medium,03_Propulsion,true
+F_env_const,0,N,LEGACY: 原脚本,medium,03_Propulsion,false
+omega_min_radps,0.01,rad/s,Model 实现细节,high,03_Propulsion,false
+ASSUMED_Gen_TimeConstant,5,s,ASSUMED,low,06_Genset,true
+ASSUMED_Gen_MinStablePower,0,kW,ASSUMED,low,06_Genset,true
+ASSUMED_Bat_DischargeLimit,1000,kW,ASSUMED(500×2 聚合),low,07/08,true
+ASSUMED_Bat_ChargeLimit,1000,kW,ASSUMED(500×2 聚合),low,07/08,true
+ASSUMED_Bat_Eff_Discharge,0.95,-,ASSUMED,low,07_Battery_Energy,true
+ASSUMED_Bat_Eff_Charge,0.95,-,ASSUMED,low,07_Battery_Energy,true
+ASSUMED_SOC_min,0.1,-,ASSUMED,low,07_Battery_Energy,true
+ASSUMED_SOC_max,0.95,-,ASSUMED,low,07_Battery_Energy,true
+ASSUMED_SOC_DisDerate_Start,0.25,-,ASSUMED,low,07_Battery_Energy,true
+ASSUMED_SOC_ChgDerate_Start,0.9,-,ASSUMED,low,07_Battery_Energy,true
+ASSUMED_SpeedPI_Kp,600,kW/(m/s),ASSUMED(×2),low,02_Ship_Speed,true
+ASSUMED_SpeedPI_Ki,20,kW/(m/s)/s,ASSUMED(×2),low,02_Ship_Speed,true
+ASSUMED_Speed_Ramp_Up,0.05,m/s^2,ASSUMED,low,01_Scenario,true
+ASSUMED_Drive_TimeConstant,0.5,s,ASSUMED,low,03_Propulsion,true
+ASSUMED_EMS_SOC_Ref,0.6,-,ASSUMED,low,05_EMS,true
+ASSUMED_EMS_SOC_Gain,200,kW/SOC,ASSUMED(×2),low,05_EMS,true
+ASSUMED_EMS_FF_Gain,1,-,ASSUMED,low,05_EMS_AI,true
+ASSUMED_EMS_FF_Max_kW,400,kW,ASSUMED(×2),low,05_EMS_AI,true
+ASSUMED_Pred_Bound_kW,2000,kW,ASSUMED(×2),low,05_EMS_AI,true
+ASSUMED_TFF_TauMargin,10,s,ASSUMED(T-004, 覆盖惯性τ=5s),low,05_EMS_ScheduledFF(C),true
+ASSUMED_TFF_SOC_Thresh,0.4,-,ASSUMED(T-004),low,05_EMS_ScheduledFF(C),true
+ASSUMED_TFF_SOC_AdvancePct,0.25,-,ASSUMED(T-004),low,05_EMS_ScheduledFF(C),true
+ASSUMED_BSFC_Breakpoints,[0 100 200 400 600 800 1000],kW,ASSUMED(原表断点×2),low,10_Fuel,true
+ASSUMED_BSFC_Table,[1200 700 550 480 450 430 460],g/kWh,ASSUMED(原模型查表),low,10_Fuel,true
+ASSUMED_TargetSpeed,5.66,m/s,ASSUMED(11 kn 服务航速),low,01_Scenario,true
+ASSUMED_VoyageDistance,5000,m,ASSUMED,low,11_Voyage_Stop,true
+ASSUMED_RiverCurrentSpeed,1,m/s,ASSUMED,low,01_Scenario,true
+ASSUMED_Resistance_Change_RampTime,15,s,ASSUMED,low,01_Scenario,true
+ASSUMED_Resistance_Change_Amplitude,0.4,-,ASSUMED,low,01_Scenario,true
+ASSUMED_AI_DataValid,false,-,ASSUMED,low,05_EMS_AI,true
+AI_Pred_Data,[0 0],[t,P,tp],预留接口(T-002 扩展 N×3),na,05_EMS_AI,true
+AI_Oracle_Data,[0 0 0;100000 0 0],[t,P,tp],FromWorkspace oracle 通道(T-002),na,05_EMS_AI,true
+AI_Pred_Data,[0 0],[t,P,tp],兼容保留(T-002 后不再引用),na,05_EMS_AI,true
+STM32_Pred_Data,[0 0],[t,P],预留接口,na,05_EMS_AI,true
+AI_Pred_Timeout_s,2,s,预留接口,na,05_EMS_AI,true
+MLP_WeightsLoaded,1,-,python/export/mlp_weights.mat,na,05_EMS_AI(source=3),false
+EMS_WORK_MODE,2,-,Model C 配置,high,05_EMS_Controller(C),false
+ASSUMED_C_bus,40,F,ASSUMED(0730 每段20F×2),low,13_DC_Bus(C),true
+ASSUMED_K_droop,10,kW/V,ASSUMED(灵敏度扫描固化),low,14_Battery_Converter(C),true
+ASSUMED_eta_rect,0.97,-,ASSUMED,low,06_Genset(C),true
+ASSUMED_eta_dcdc,0.97,-,ASSUMED,low,14_Battery_Converter(C),true
+ASSUMED_EMS_Manual_Pgen_kW,400,kW,ASSUMED,low,05_EMS(C,手动模式),true
+ASSUMED_V_floor,50,V,ASSUMED(除法保护),high,13/14(C),false
+ASSUMED_BSFC_Avg_gkWh,474,g/kWh,ASSUMED(表工作区均值),low,FEC 指标,true
+ASSUMED_k_eq_FEC,0.498947368421053,kg/kWh,ASSUMED(ECMS 折算),low,FEC 指标,true
+CCS_Vdc_Steady_Band,[675 795],V,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false
+CCS_Vdc_Transient_Band,[600 802.5],V,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false
+CCS_t_recovery_max,1.5,s,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false

@@ -11,7 +11,7 @@ Design: `./design.md`（v1, approved）
 
 范围说明：本任务表仅覆盖 **Phase 1**（FR-001~014）。Phase 2/3（FR-015~019）在 Phase 1 GO 后另行细化任务。
 
-- [ ] 1. 建立独立工程副本 `simulink_modelC_(oracle_ms)/`
+- [x] 1. 建立独立工程副本 `simulink_modelC_(oracle_ms)/`
   - ID: T-001
   - Requirement(s): FR-001
   - Files/areas: `model/simulink_modelC_(oracle_ms)/`（全量复制自 `model/simulink_modelC/`，排除 `slprj/ results/ datasets/`）；`.slx` 重命名为 `HybridShip_ModelCms_DCBus.slx`；`scripts/+model/build_model_cms.m`（由 build_model_c.m 派生）；`20_build_modelCms.m`、`20b_smoke_modelCms.m`；内部所有 `simulink_modelC` 字符串引用替换
