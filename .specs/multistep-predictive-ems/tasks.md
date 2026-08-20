@@ -42,7 +42,7 @@ Design: `./design.md`（v1, approved）
   - Files/areas: `20c_unittest_minff.m`；`results/ms_unittest/`
   - Validation: U1 可达性 vs 解析解 <1 kW；U2 R(τ)≤0 时与 Baseline 逐点一致；U3 合成阶跃下 P_ff*=手算最小值 ±0.5 kW；U4 peak 折叠与手算一致；U5 折点与单调性；U6 失效退化+计数。全 PASS 才允许进入实验阶段
 
-- [ ] 6. 指标体系扩展与结果工具链
+- [x] 6. 指标体系扩展与结果工具链
   - ID: T-006
   - Requirement(s): FR-012, FR-013
   - Files/areas: `+model/` 指标脚本扩展——`E_bat_throughput_kWh`、`ff_active_s`、`R_max` 序列；**欠压双阈值分离**：`N_UV/T_UV @ 675 V`（真实欠压降额线，FR-014 非劣化约束⑤以此判定）与 `N_stress/T_stress @ 700 V`（母线压力区/动态裕度分析），禁止混用命名；`results/ms_phase1/runs.csv` 写入器；区域图绘制脚本（λ_P×R_gen 热力图：ΔP_bat,peak% / ΔVdc_min / Δfuel%）
