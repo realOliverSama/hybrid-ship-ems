@@ -95,3 +95,15 @@ Created: 2026-08-20
 4. **更名**：Phase 1 产物"AI 有效区域图"→"预测增强 EMS 有效工作区域图"（oracle 阶段不得称 AI）。
 
 用户批准状态：requirements v1.1 + v1.2 修订 → **requirements-approved**。design 阶段重点审核项：Fast/Nominal/Slow 三锚点取值、统一 P_load,design,max、f_SOC/f_V 折点、P_ff* 数值求解方法。
+
+---
+
+## Design 阶段定案（2026-08-20，design.md v1 draft）
+
+- **OQ-5 三锚点**：Fast(60 kW/s, 2 s) / Nominal(40, 5) / Slow(20, 10)——D6 上下界 + 现状。
+- **OQ-6 P_load,design,max = 800 kW**：Mot_P_nom(700, 图纸聚合电机额定=推进电功率物理天花板) + hotel(100)。现状 1000 kW 机组 = λ_P 1.25。
+- **λ_P 网格修正 {0.7..1.1} → {0.8, 0.9, 1.0, 1.1, 1.25}**（偏离 D6 示例值，理由：原网格全部低于现状机组，区域图不含当前设计点）——列为 design 批准点。
+- **P_ff* 求解**：爬坡→一阶惯性前向递推（dt_r=0.1 s）+ 对分法 20 迭代（R_max 关于 P_ff 单调不增）。
+- **C_P 实现**：EMS_MinFF 内 MSFF_InfoMode=peak 折叠轨迹为全窗口恒值 P_peak，同律同源同 horizon。
+- **f_SOC 折点 [0.30, 0.45]，f_V 折点 [690, 720] V**，ASSUMED(low)，±50% 敏感性抽查。
+- **仿真预算 ≈550 次**：1A=78（3 锚点×2 场景×13），1B≈470；FastRestart+parsim，降级顺序 S06→单因素密度。
