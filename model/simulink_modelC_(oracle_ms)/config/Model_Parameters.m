@@ -40,6 +40,20 @@ Bat_Cap_kWh = DRAWING_Bat_Cap_kWh_perString * DRAWING_N_PropStrings; % 1200 kWh�
 Gen_P_max   = DRAWING_Gen_P_max_perString   * DRAWING_N_PropStrings; % 1000 kW（聚合）
 Mot_P_nom   = DRAWING_Mot_P_nom_perString   * DRAWING_N_PropStrings; % 700  kW（聚合）
 P_hotel_nom = 100;    % 全船日用/辅机负荷 [kW]（全船级负荷，不随支路翻倍；沿用原模型 EMS_P_Hotel=100）
+% 多步预测 EMS (MSFF) 统一设计参考最大负荷：推进电功率物理天花板(Mot_P_nom) + 日用负荷(P_hotel_nom)。
+% λ_P = Gen_P_max / P_load_design_max 的统一分母（跨场景固定，禁止逐场景自定义；spec FR-002/FR-011）
+P_load_design_max = Mot_P_nom + P_hotel_nom; % 800 kW（DRAWING 派生）
+
+%% ------------------------------------------------------------------------
+%  1b. MSFF（最小必要前馈 / 多步预测）配置 [ASSUMED/Model C 配置]
+%  对应 spec multistep-predictive-ems（FR-002/003/004/005/006）；T-002 登记，T-004 消费。
+% -------------------------------------------------------------------------
+MSFF_Horizon_s = 30;     % 预测 horizon [s]（实验变量 {10,15,20,30,45,60}；valid_node_count = H/5）
+MSFF_dt_reach  = 0.1;    % 发电机可达性前向递推步长 [s]（≤ tau_gen/10 保证一阶离散稳定）
+MSFF_FF_Hyst_kW = 5;     % 前馈防抖阈值 [kW]（新 P_ff* 与保持值差 < 此值时维持原值）
+MSFF_InfoMode  = 'traj'; % C_P 信息降级开关：'traj'=完整轨迹 C_MS，'peak'=全窗口恒值 P_peak (C_P, FR-013A)
+MSFF_SOC_Knee  = [0.30 0.45];  % f_SOC 折点 [低, 高]：SOC≥高→1.0，SOC≤低→0.0，其间线性（ASSUMED(low)）
+MSFF_Vdc_Knee  = [690 720];    % f_V 折点 [低, 高]：Vdc≥高→1.0，Vdc≤低→0.0，其间线性（ASSUMED(low)）
 
 %% ------------------------------------------------------------------------
 %  3. 初始状态 [LEGACY/DRAWING]
@@ -184,6 +198,13 @@ ParamMeta = {
   'Gen_P_max'                       'kW'       'DRAWING/LEGACY: 500×2 聚合'    'high'      '05/06/08'                   false
   'Mot_P_nom'                       'kW'       'DRAWING/LEGACY: 350×2 聚合'    'high'      '02/03/08'                   false
   'P_hotel_nom'                     'kW'       'LEGACY: EMS_P_Hotel'           'medium'    '01/04'                      true
+  'P_load_design_max'               'kW'       'DRAWING: Mot_P_nom+P_hotel 派生' 'high'    'MSFF λ_P 统一分母(FR-002)'  false
+  'MSFF_Horizon_s'                  's'        'MSFF 配置(T-002)'             'high'      '05_EMS_MinFF'               false
+  'MSFF_dt_reach'                   's'        'MSFF 配置(ASSUMED)'           'low'       '05_EMS_MinFF'               true
+  'MSFF_FF_Hyst_kW'                 'kW'       'MSFF 配置(ASSUMED)'           'low'       '05_EMS_MinFF'               true
+  'MSFF_InfoMode'                   '-'        'MSFF 配置(FR-013A)'           'high'      '05_EMS_MinFF'               false
+  'MSFF_SOC_Knee'                   '-'        'MSFF 配置(ASSUMED)'           'low'       '05_EMS_MinFF'               true
+  'MSFF_Vdc_Knee'                   'V'        'MSFF 配置(ASSUMED)'           'low'       '05_EMS_MinFF'               true
   'Ship_V_init'                     'm/s'      'LEGACY: 原脚本'                'medium'    '03_Propulsion'              false
   'Ship_X_init'                     'm'        'Model 规格'                  'high'      '03_Propulsion'              false
   'Bat_SOC_init'                    '-'        'LEGACY: 原脚本'                'medium'    '07_Battery_Energy'          false
