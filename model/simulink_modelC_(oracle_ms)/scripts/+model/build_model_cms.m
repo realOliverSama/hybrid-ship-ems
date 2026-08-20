@@ -667,7 +667,9 @@ function buildMinFFVariant(ch)
         'UpperLimit', 'Gen_P_max', 'LowerLimit', '0');
     add_line(ch, 'pick/1', 'clamp/1');
     add_line(ch, 'clamp/1', 'P_gen_ref_kW/1');
-    % 诊断输出接终结块（R_max、P_ff_raw 保留信号线便于记录）
+    % 诊断输出接终结块（P_ff_raw、R_max 保留信号线便于记录；P_ff_applied 已由 gate 消费）
+    add_block('simulink/Sinks/Terminator', [ch '/T_Pffraw'], 'Position', [380 10 400 30]);
+    add_line(ch, 'min_ff/1', 'T_Pffraw/1');
     add_block('simulink/Sinks/Terminator', [ch '/T_Rmax'], 'Position', [380 220 400 240]);
     add_line(ch, 'min_ff/3', 'T_Rmax/1');
     % 未使用输入接终结块
