@@ -1,7 +1,7 @@
 # Model C: 定时前馈 EMS（Peak + Time-to-Peak 预测调度） Requirements
 
 Spec: `timed-feedforward-ems`  
-Status: requirements-draft（v2 修订，待重新批准）  
+Status: **superseded**（2026-08-20：由 `.specs/multistep-predictive-ems/` 取代；v2 草稿作废，仅 FR-014 冷启动兜底以新 spec FR-018 形式保留）  
 Created: 2026-08-19  
 Amended: 2026-08-19（Phase 1 过门 NO-GO 后用户批准方向 (b) 转向）  
 Brainstorm: `./brainstorm.md`
