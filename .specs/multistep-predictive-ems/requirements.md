@@ -1,7 +1,7 @@
 # 面向参数不确定性的多步负荷预测增强型 EMS Requirements
 
 Spec: `multistep-predictive-ems`  
-Status: requirements-draft（待用户批准）  
+Status: requirements-approved（2026-08-20 用户批准，含 v1.2 三项修订）  
 Created: 2026-08-20  
 Brainstorm: `./brainstorm.md`  
 Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec 冻结归档）
@@ -10,6 +10,7 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 
 - **v1（2026-08-20 draft）**：基于 timed-feedforward-ems Phase 1 NO-GO 实证与外部咨询对齐后的研究方向转向。用户已批准总体方案（brainstorm.md 中 D1–D8 固定决策 + 三处修正）。
 - **v1.1（2026-08-20 draft）**：外部评审（GPT）四条修正全部接受：①D4 控制律改写——`P_ff* = min P_ff s.t. R(τ) ≤ 0`（功率缺口约束），`Vdc` 回归闭环评价指标而非在线优化目标；②horizon 确定改为两级筛选（Phase 1A 三锚点 Fast/Nominal/Slow 粗筛 → Phase 1B 保留 2~3 个 H 进入参数扫描），撤回"单锚点先行"；③OQ-4 改为 5 s 等分辨率真实多步节点（H/5 个），废除末值保持；④OQ-1 GO 判据拆分为非劣化约束 + 收益判据两类；另 `P_bat_allow` 更名 `P_bat_allowable`（EMS 风险阈值，非电池命令），λ_P 分母锁定统一设计参考最大负荷。
+- **v1.2（2026-08-20，用户批准后修订）**：外部评审第二轮三项修改全部接受：①新增 FR-013A——Phase 1 增加 C0/C_P(Oracle Peak-only)/C_MS 三对照，C_P 与 C_MS 同 oracle 源同 horizon，使 RQ1 可严格验证；②非劣化约束 `|ΔSOC_end|` 由 0.02 收紧至 0.005（1200 kWh ≈6 kWh；允许 design 重复性分析后放宽，上限 0.01 且须记录依据）——0.02 对应 24 kWh，会重新允许 S07 式"过度发电"伪优化；③FR-002 的 λ_P 分母统一为 `P_load,design,max`；另 Phase 1 产物更名"预测增强 EMS 有效工作区域图"（oracle 阶段不得称 AI）。
 
 ## Overview
 
@@ -26,7 +27,7 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 
 ### In Scope
 
-- **Phase 1（本 spec 主体）**：独立工程副本 `model/simulink_modelC_(oracle_ms)/`；发电机参数化改造；oracle 多步负荷预测通道；发电机可达性 + 电池功率裕度评估；最小必要前馈控制律 `EMS_MinFF`；horizon 扫描 {10,15,20,30,45,60} s；发电机参数与 SOC₀ 扫描；统一闭环指标体系；GO/NO-GO 判定与有效区域图。
+- **Phase 1（本 spec 主体）**：独立工程副本 `model/simulink_modelC_(oracle_ms)/`；发电机参数化改造；oracle 多步负荷预测通道；发电机可达性 + 电池功率裕度评估；最小必要前馈控制律 `EMS_MinFF`；horizon 扫描 {10,15,20,30,45,60} s；发电机参数与 SOC₀ 扫描；统一闭环指标体系；GO/NO-GO 判定与预测增强 EMS 有效工作区域图。
 - **Phase 2（需求层面定义，Phase 1 GO 后启动）**：MLP / CNN1D / small-TCN / GRU 四模型同一多步预测任务训练（含冷启动窗口）；闭环指标优先选型；x_ship 消融（with/without + 事件位置随机化）；冷启动规则兜底工程组件。
 - **Phase 3（需求层面定义，Phase 2 完成后启动）**：Top1~2 模型 INT8 量化 → STM32N6 Neural-ART NPU → UART/CAN/UDP 软硬件闭环。
 
@@ -50,7 +51,7 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 ### 工程与参数化
 
 - **FR-001**: THE 研究 SHALL 从冻结基线 `model/simulink_modelC/` 复制建立独立工程 `model/simulink_modelC_(oracle_ms)/`，全部文件与内部引用改用独立命名，消除对 `model/simulink/` 与 `model/simulink_modelC/` 的路径依赖；`.venv_tf` 以符号链接复用，`slprj/`、`results/` 不复制。
-- **FR-002**: THE 模型 SHALL 将发电机额定功率 `P_gen_rated`、最大爬坡率 `R_gen_max`、一阶惯性时间常数 `tau_gen` 从硬编码常数提升为 config 层参数（`Model_Parameters.m` 惯例），并支持以相对最大负荷的比例 `lambda_P = P_gen_rated / P_load,max` 定义额定功率档位；EMS 控制律 SHALL 在运行时读取这些参数，不得将其编译进 AI 预测接口。
+- **FR-002**: THE 模型 SHALL 将发电机额定功率 `P_gen_rated`、最大爬坡率 `R_gen_max`、一阶惯性时间常数 `tau_gen` 从硬编码常数提升为 config 层参数（`Model_Parameters.m` 惯例），并支持以比例 `lambda_P = P_gen_rated / P_load,design_max` 定义额定功率档位（分母为统一设计参考最大负荷，与 FR-011 一致）；EMS 控制律 SHALL 在运行时读取这些参数，不得将其编译进 AI 预测接口。
 
 ### 多步预测通道（Phase 1：oracle）
 
@@ -70,11 +71,12 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 - **FR-010**: THE Phase 1 SHALL 采用两级 horizon 筛选：**Phase 1A** 在三个代表性发电机锚点（Fast：高爬坡/小惯性；Nominal：40 kW/s/5 s；Slow：低爬坡/大惯性，具体取值在 design 定案）分别扫描全部 6 档 horizon，识别普遍无效区/有效区/动态敏感区；**Phase 1B** 保留 2~3 个代表性 horizon 进入发电机参数扫描。禁止在单一 nominal 参数点定死唯一 horizon 后推广至全参数空间。
 - **FR-011**: THE 参数扫描 SHALL 以 `lambda_P × R_gen` 5×5 全因子为主有效区域图，`tau_gen` 与 `SOC₀` 各取代表值单因素补充，禁止全笛卡尔积；`lambda_P = P_gen_rated / P_load,design_max` 的分母 SHALL 为**统一设计参考最大负荷**（跨场景固定，在 config 登记），禁止逐场景自定义分母。
 - **FR-012**: THE 实验 SHALL 输出统一闭环指标体系：一级指标 `Vdc_min`、欠压事件次数/持续时间、`P_bat,peak`、`P_bat,RMS`、电池放电能量与吞吐量；二级指标 `SOC_min`、`SOC_end`、发电机爬坡饱和时间、未服务能量、船速 RMSE；约束指标 `fuel_total_kg`。全部结果以标准化 CSV/JSON + 图表输出至 `results/`。
-- **FR-013**: THE Phase 1 报告 SHALL 产出"AI 有效区域图"：`Benefit_AI = f(P_gen_rated, R_gen, SOC₀, 负荷动态)` 的可视化与定量结论，回答 RQ2。
+- **FR-013**: THE Phase 1 报告 SHALL 产出"预测增强 EMS 有效工作区域图"（Predictive EMS Effective Region）：`Benefit_PredEMS = f(lambda_P, R_gen, tau_gen, SOC₀, 负荷动态)` 的可视化与定量结论，回答 RQ2；Phase 1 基于 oracle 而非真实 AI 模型，命名不得使用 "AI"。
+- **FR-013A**: THE Phase 1 SHALL 包含三个匹配的受控对照：`C0` Baseline（无预测）、`C_P` Oracle Peak-only、`C_MS` Oracle Multistep + EMS_MinFF；`C_P` 与 `C_MS` SHALL 从同一 oracle 负荷轨迹与同一 horizon 提取未来信息（`P_peak^oracle(H) = max_{τ∈(0,H]} P_load(t+τ)`），使 RQ1 严格隔离"多步时序信息 vs 单峰值信息"的边际控制价值，排除预测模型误差混淆；`C_P` 的控制律映射方式在 design 定案（建议与 EMS_MinFF 共用控制律、仅降级输入信息）。
 
 ### Phase 1 过门（GO/NO-GO）
 
-- **FR-014**: THE Phase 1 GO 判定 SHALL 分为两类。**非劣化约束**（所有声称有效的参数点必须全部满足）：①船速 RMSE 退化 ≤1%；②`|ΔSOC_end|` ≤0.02；③燃油 ≤ C0×1.015；④`E_unserved` = 0；⑤不得产生 Baseline 没有的欠压事件。**收益判据**：在 λ_P×R_gen 网格至少 4 个相邻参数组合 × 至少 2 个场景中——⑥`P_bat,peak` 下降 ≥15%；⑦`P_bat,RMS` 或电池吞吐量下降 ≥10%；⑧对于 Baseline 已进入母线压力区（接近欠压降额线）的工况，`Vdc_min` 明显改善或欠压事件减少。GO = 非劣化约束全 PASS 且收益判据⑥⑦（压力区工况含⑧）成立；IF oracle 完全知道未来负荷仍无法满足，THE 研究 SHALL 停止神经网络投入并输出否定性结论报告。
+- **FR-014**: THE Phase 1 GO 判定 SHALL 分为两类。**非劣化约束**（所有声称有效的参数点必须全部满足）：①船速 RMSE 退化 ≤1%；②`|ΔSOC_end|` ≤0.005（1200 kWh 电池 ≈6 kWh；IF design 阶段数值重复性分析证明过严，THEN 可放宽但不得超过 0.01 且 SHALL 记录依据）；③燃油 ≤ C0×1.015；④`E_unserved` = 0；⑤不得产生 Baseline 没有的欠压事件。**收益判据**：在 λ_P×R_gen 网格至少 4 个相邻参数组合 × 至少 2 个场景中——⑥`P_bat,peak` 下降 ≥15%；⑦`P_bat,RMS` 或电池吞吐量下降 ≥10%；⑧对于 Baseline 已进入母线压力区（接近欠压降额线）的工况，`Vdc_min` 明显改善或欠压事件减少。GO = 非劣化约束全 PASS 且收益判据⑥⑦（压力区工况含⑧）成立；IF oracle 完全知道未来负荷仍无法满足，THE 研究 SHALL 停止神经网络投入并输出否定性结论报告。
 
 ### Phase 2 / Phase 3（需求框架，GO 后细化）
 
@@ -96,8 +98,8 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 
 - [ ] AC-1（FR-001）：在 `simulink_modelC_(oracle_ms)/` 中运行构建脚本可从零重建模型并通过冒烟测试；临时断开 `model/simulink/` 与 `model/simulink_modelC/` 访问时仿真仍正常运行（路径依赖验证）。
 - [ ] AC-2（FR-002/005/007/008）：单元级验证：合成阶跃负荷 + 参数化发电机下，`P_gen,reachable(τ; P_ff)` 前向递推与理论解析解一致；`R(τ)≤0` 时 EMS 与 Baseline 逐点一致；`R(τ)>0` 时 `P_ff*` 为使 `R(τ)≤0, ∀τ` 的最小值且不越机组限幅。
-- [ ] AC-3（FR-003/004/010）：Phase 1A 三锚点 × 6 档 horizon 粗筛结果表与 Phase 1B 入选 horizon 的依据记录。
-- [ ] AC-4（FR-011/012/013）：参数扫描结果表 + AI 有效区域图（λ_P × R_gen 二维主图 + τ_gen/SOC₀ 单因素补充）。
+- [ ] AC-3（FR-003/004/010/013A）：Phase 1A 三锚点 × 6 档 horizon × C0/C_P/C_MS 三对照结果表与 Phase 1B 入选 horizon 的依据记录；C_P vs C_MS 对比明确回答 RQ1。
+- [ ] AC-4（FR-011/012/013）：参数扫描结果表 + 预测增强 EMS 有效工作区域图（λ_P × R_gen 二维主图 + τ_gen/SOC₀ 单因素补充）。
 - [ ] AC-5（FR-014）：GO/NO-GO 判定报告，非劣化约束与收益判据逐条给出机器可读 PASS/FAIL 与证据链接。
 - [ ] AC-6（FR-015/016/017，Phase 2）：四模型精度表 + 闭环对照表 + x_ship 消融表；冷启动窗口纳入训练的证据。
 - [ ] AC-7（FR-018，Phase 2）：冷启动兜底消融：无兜底/仅兜底/兜底+NN 三组在 t<22 s 段的 Vdc_min 对比。
