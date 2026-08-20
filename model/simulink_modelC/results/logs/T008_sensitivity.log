@@ -1,0 +1,47 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[13] MLP 权重已加载 (window=22, ch=5)
+
+[13] ========== S04_resistance_inc (S04) ==========
+[13] S04 δ=-20 完成 (980 s, 97988 点): fuel=91.79 kg Vdc_min=707.8 V P_ff_active=23 s (仿真 12 s)
+[13] S04 δ=-10 完成 (980 s, 97988 点): fuel=91.70 kg Vdc_min=707.8 V P_ff_active=13 s (仿真 5 s)
+[13] S04 δ= -5 完成 (980 s, 97988 点): fuel=91.68 kg Vdc_min=707.8 V P_ff_active=6 s (仿真 4 s)
+[13] S04 δ= +5 完成 (980 s, 97988 点): fuel=91.17 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+[13] S04 δ=+10 完成 (980 s, 97988 点): fuel=91.17 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+[13] S04 δ=+20 完成 (980 s, 97988 点): fuel=91.17 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+
+[13] ========== S06_resistance_step (S06) ==========
+[13] S06 δ=-20 完成 (1063 s, 106268 点): fuel=100.31 kg Vdc_min=707.8 V P_ff_active=23 s (仿真 4 s)
+[13] S06 δ=-10 完成 (1063 s, 106268 点): fuel=100.22 kg Vdc_min=707.8 V P_ff_active=13 s (仿真 4 s)
+[13] S06 δ= -5 完成 (1063 s, 106268 点): fuel=100.18 kg Vdc_min=707.8 V P_ff_active=8 s (仿真 5 s)
+[13] S06 δ= +5 完成 (1063 s, 106268 点): fuel=99.67 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+[13] S06 δ=+10 完成 (1063 s, 106268 点): fuel=99.67 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+[13] S06 δ=+20 完成 (1063 s, 106268 点): fuel=99.67 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+
+[13] ========== S09_emergency_sprint (S09) ==========
+[13] S09 δ=-20 完成 (928 s, 92785 点): fuel=81.21 kg Vdc_min=707.8 V P_ff_active=4 s (仿真 4 s)
+[13] S09 δ=-10 完成 (928 s, 92785 点): fuel=81.21 kg Vdc_min=707.8 V P_ff_active=4 s (仿真 4 s)
+[13] S09 δ= -5 完成 (928 s, 92785 点): fuel=81.21 kg Vdc_min=707.8 V P_ff_active=4 s (仿真 4 s)
+[13] S09 δ= +5 完成 (928 s, 92785 点): fuel=80.69 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+[13] S09 δ=+10 完成 (928 s, 92785 点): fuel=80.69 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+[13] S09 δ=+20 完成 (928 s, 92785 点): fuel=80.69 kg Vdc_min=689.9 V P_ff_active=0 s (仿真 4 s)
+
+[13] 汇总 CSV ...
+[13] CSV: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/tpeak_sensitivity.csv
+[13] 出图 ...
+[13] 图: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/sensitivity/sensitivity.png
+
+[13] ========== S04 附加诊断 ==========
+[D1] E0 Vdc_min=689.9 V 出现在 t=7.0 s
+[D1] 邻域 P_load=800..800 kW, v_ship=0.42..0.50 m/s, x_ship=1..2 m
+[D1] 初始加速段? x_ship=1 m (航程 5000 m)
+[D2] E2 在 t0±10 s 内 P_ff: 最大=400.0 kW, 激活采样数=700/1703
+[D2] E2 在 t0 时刻 P_ff=0.0 kW, P_gen_ref=800 kW, Vdc=711.1 V
+[D3] t0 时刻: MLP 预测幅值=932.8 kW vs oracle P_peak=800.0 kW, 偏差=+132.8 kW (+16.6%)
+[D3] 航次 MLP vs oracle P_peak: MAE=7.7 kW, 均值偏差=-2.9 kW, 低估样本占比=7.2%
+
+[13] T-008 敏感性分析全部结束。
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

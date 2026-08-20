@@ -1,0 +1,12 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：81 项（含 37 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[10b] T01C_S01_still: V_dc=[689.9, 750.0] V, dU_max=60.1 V, t_rec=0.00 s, 稳态越限=0.0 s, 瞬态越限=0.0 s -> true
+[10b] T04C_S04_res_inc: V_dc=[689.9, 750.0] V, dU_max=60.1 V, t_rec=0.00 s, 稳态越限=0.0 s, 瞬态越限=0.0 s -> true
+[10b] T10C_S10_current_reversal: 逆水段 V=745.9 < 顺水段 V=749.1 (dir_ok=1)
+[10b] T10C_S10_current_reversal: V_dc=[689.9, 754.3] V, dU_max=60.1 V, t_rec=0.00 s, 稳态越限=0.0 s, 瞬态越限=0.0 s -> true
+[10b] 报告: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/reports/modelC_smoke_summary.md
+[10b] Model C 烟雾测试全部通过
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

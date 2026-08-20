@@ -1,0 +1,10 @@
+checkcode: 4 messages, parse errors: 0
+{无法解析名称 'model.build_model_c'。
+
+出错 t002_check (第 7 行)
+c = model.build_model_c;
+    ^^^^^^^^^^^^^^^^^^^
+出错 run (第 100 行)
+evalin('caller', strcat(scriptStem, ';'));
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 

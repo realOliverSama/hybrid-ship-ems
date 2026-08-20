@@ -1,0 +1,55 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+fields: t, P_hotel_kW, resistance_multiplier, scenario_id, v_cmd_mps, v_current_mps, P_prop_demand_kW, F_prop_eff_N, P_prop_actual_kW, R_hull_N, acceleration_mps2, n_prop_rpm, v_ship_mps, x_ship_m, P_load_total_kW, AI_valid, P_pred_max_kW, t_peak_pred_s, P_gen_ref_kW, P_ff_kW, t_fire_latched, P_gen_actual_kW, P_prop_limit_kW, P_unserved_kW, P_bus_residual_kW, fuel_total_kg, V_dc_V, P_bat_actual_kW, P_bat_dis_avail_kW, SOC, alarm_steady, alarm_transient
+P_ff:  max=0.00 min=0.00
+P_pred: max=400.00 min=400.00
+t_peak_pred_s: max=60.00 min=0.00
+AI_valid: max=1.00 min=1.00
+P_load: max=800.00 min=100.00 (t=0:100.0 t=30:800.0 t=60:800.0)
+P_gen_ref: max=800.61
+t_fire_latched: max=42.50 (非-1样本数=100)
+t=0 P_load=100.0 dP=300.0 T_ramp=17.5 60-T_ramp=42.5
+t=3 P_load=798.3 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=6 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=9 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=12 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=15 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=18 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=21 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=24 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=27 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=30 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=33 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=36 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=39 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=42 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=45 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=48 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=51 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=54 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=57 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=60 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=63 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=66 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=69 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=72 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=75 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=78 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=81 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=84 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=87 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=90 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=93 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=96 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=99 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=102 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=105 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=108 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=111 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=114 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=117 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+t=120 P_load=800.0 dP=0.0 T_ramp=10.0 60-T_ramp=50.0
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

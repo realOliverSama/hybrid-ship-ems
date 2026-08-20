@@ -1,0 +1,19 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：84 项（含 37 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+REGR: pts=97988 max|dP_pred|=0 max|dP_gen_ref|=0
+SRC1 fields: t_peak=1 P_pred=1 AI_valid=1
+SRC1 t_peak: mean=30 min=30 max=30
+SRC1 P_pred@t=10: 109.99 (expect ~110)
+SRC1 P_pred@t=30: 129.99 (expect ~130)
+SRC1 P_pred@t=60: 159.99 (expect ~160)
+SRC1 P_pred@t=90: 190 (expect ~190)
+SRC1 P_pred@t=110: 209.99 (expect ~210)
+SRC1 vmean=1 (expect ~1) P_load_max=800
+OVR t_peak: mean=30 min=30 max=30 (expect 30)
+OVR vmean=1
+BASE smoke: pts=12001 Vdc=[689.917,750] fuel=10.391
+ALL T-002 ACCEPT TESTS COMPLETE
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

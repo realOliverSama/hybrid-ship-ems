@@ -1,0 +1,24 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[make_oracle_pred] S04_resistance_inc (C0, stop=2083 s, horizon=60 s) ...
+[make_oracle_pred] S04_resistance_inc: N=980 行, t_end=979 s
+  P_peak: [708.4, 800.0] kW
+  t_peak_rel: mean=7.7 s, median=1.0 s, <5s 占比=84.9%
+AC1: D size=[980 3]
+AC2: P_load range=100.0..800.0 kW, t_end=979 s
+AC2 t=200: D=[200.0 708.5 1.0] expect=[200.0 708.5 1.0] -> true
+AC2 t=500: D=[500.0 800.0 1.0] expect=[500.0 800.0 1.0] -> true
+AC2 t=900: D=[900.0 800.0 1.0] expect=[900.0 800.0 1.0] -> true
+AC2 overall: true
+[警告: tff_metrics: ds 缺少 P_ff_kW，P_ff_activated_s=NaN] 
+[> 位置：model.tff_metrics (第 52 行)
+位置: t005_accept (第 43 行)
+位置: run (第 100 行)] 
+AC3: t_sat_s=17.48 s, has_rampout=1, fuel=91.172 kg, Vdc_min=689.9, SOC_end=0.5921, E_bat_dis=8.752 kWh, P_bat_rms=70.63 kW, P_bat_peak=600.8 kW, E_unserved=0.0000 kWh, v_rmse=1.0133
+AC3: P_ff_activated_s=NaN (C0 应为 NaN)
+AC4: t_sat_s=17.48 s vs voyage=979 s -> 占比=1.79%
+T005_ACCEPT: true
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

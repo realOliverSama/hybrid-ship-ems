@@ -1,0 +1,21 @@
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1200 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：88 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 10 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[T2] law2-Src0 vs law0: N=12001 max|dP_gen_ref|=0.000e+00
+[T2] P_ff_kW max=0.000e+00 (应≈0)
+[T3] t_fire_actual=40.00 s  t_fire_theory=40.00 s  (P_load@fire=800.0 kW)
+[T3] 等待期(t<39.50) max|P_ff|=0.0000 kW (应≈0)
+[T3] 触发后 max|P_ff - dP_theory|=0.0000 kW (应≤1)
+[T3] P_gen_actual max slew=39.40 kW/s (应≤40*1.02)
+[T3] t_fire_latched first=40.00
+[T4] C1 首次前馈生效 t=0.00 s (应≈0, 立即响应)
+[T4] C1 前3s平均 ff=275.1 kW (应≈dP=400.0)
+
+===== T-004 验收结果 =====
+T2 空预测回归: PASS (max|dPg|=0.000e+00, maxPff=0.000e+00)
+T3 定时触发:   PASS (wait=0.0000, after=0.0000, slew=39.40)
+T4 C1 对照:    C1 first=0.00s, C2 first=40.00s
+总体: PASS
+[警告: 无法关闭模型 'HybridShip_ModelC_DCBus'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelC_DCBus',1)。要放弃更改，请使用
+close_system('HybridShip_ModelC_DCBus',0)。] 

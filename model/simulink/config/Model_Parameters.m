@@ -132,6 +132,23 @@ AI_Pred_Data   = [0 0];     % 离线预测数据 [t(s) P_pred(kW)]，预留（Fr
 STM32_Pred_Data = [0 0];    % 外部/STM32N6 预测数据 [t(s) P_pred(kW)]，预留
 AI_Pred_Timeout_s = 2;      % 外部通信超时阈值 [s]，预留
 
+%% 电气层（Model B，直流母线）—— 全部为待设计方核定的预置值
+EMS_WORK_MODE = 2;          % EMS 工作模式：0=手动(只监测) 1=半自动(规则分配) 2=全自动(含预测增强)
+ASSUMED_C_bus = 40;         % 母线等效电容 [F]（沿用 0730 每段 20 F × 2 段并联聚合）
+ASSUMED_K_droop = 10;       % 电池 DC/DC 下垂系数 [kW/V]（初值；经灵敏度扫描固化）
+ASSUMED_eta_rect = 0.97;    % 发电机整流效率 [-]
+ASSUMED_eta_dcdc = 0.97;    % 电池 DC/DC 变换效率 [-]
+ASSUMED_EMS_Manual_Pgen_kW = 400; % 手动模式发电机功率设定 [kW]
+ASSUMED_V_floor = 50;       % 功率-电流换算电压下限保护 [V]
+% FEC 等效燃油换算系数（ECMS 思想）：1 kWh 电池储能 ≈ k_eq kg 燃油
+ASSUMED_BSFC_Avg_gkWh = mean(ASSUMED_BSFC_Table(3:end)); % BSFC 表工作区均值 ≈474 [g/kWh]
+ASSUMED_k_eq_FEC = ASSUMED_BSFC_Avg_gkWh / (1000 * ASSUMED_Bat_Eff_Charge); % ≈0.499 [kg/kWh]
+
+%% CCS 2026《船舶应用直流综合电力系统指南》电能质量判据（来源：CCS 指南，置信度 high）
+CCS_Vdc_Steady_Band    = V_dc_nom * [0.90 1.06];   % 稳态 [675 795] V
+CCS_Vdc_Transient_Band = V_dc_nom * [0.80 1.07];   % 瞬态 [600 802.5] V
+CCS_t_recovery_max     = 1.5;                      % 恢复时间上限 [s]
+
 %% 嵌入式 ML 预测器占位参数（AI_Pred_Source=3 环内推理；由 07_run_ai_comparison.m 加载真实权重）
 MLP_WeightsLoaded = 0;     % 0/1 数值（勿用 logical，EMChart 参数类型推断问题）   % 权重是否已加载（false 时 source=3 自动回退 Baseline）
 MLP_W1 = zeros(300, 64); MLP_b1 = zeros(1, 64);
@@ -215,6 +232,18 @@ ParamMeta = {
   'STM32_Pred_Data'                 '[t,P]'    '预留接口'                      'na'        '05_EMS_AI'                  true
   'AI_Pred_Timeout_s'               's'        '预留接口'                      'na'        '05_EMS_AI'                  true
   'MLP_WeightsLoaded'               '-'        'python/export/mlp_weights.mat' 'na'        '05_EMS_AI(source=3)'        false
+  'EMS_WORK_MODE'                   '-'        'Model B 配置'                  'high'      '05_EMS_Controller(B)'       false
+  'ASSUMED_C_bus'                   'F'        'ASSUMED(0730 每段20F×2)'       'low'       '13_DC_Bus(B)'               true
+  'ASSUMED_K_droop'                 'kW/V'     'ASSUMED(灵敏度扫描固化)'       'low'       '14_Battery_Converter(B)'    true
+  'ASSUMED_eta_rect'                '-'        'ASSUMED'                       'low'       '06_Genset(B)'               true
+  'ASSUMED_eta_dcdc'                '-'        'ASSUMED'                       'low'       '14_Battery_Converter(B)'    true
+  'ASSUMED_EMS_Manual_Pgen_kW'      'kW'       'ASSUMED'                       'low'       '05_EMS(B,手动模式)'         true
+  'ASSUMED_V_floor'                 'V'        'ASSUMED(除法保护)'             'high'      '13/14(B)'                   false
+  'ASSUMED_BSFC_Avg_gkWh'           'g/kWh'    'ASSUMED(表工作区均值)'         'low'       'FEC 指标'                   true
+  'ASSUMED_k_eq_FEC'                'kg/kWh'   'ASSUMED(ECMS 折算)'            'low'       'FEC 指标'                   true
+  'CCS_Vdc_Steady_Band'             'V'        'CCS 2026 指南'                'high'      '15_Bus_Voltage_Monitor(B)'  false
+  'CCS_Vdc_Transient_Band'          'V'        'CCS 2026 指南'                'high'      '15_Bus_Voltage_Monitor(B)'  false
+  'CCS_t_recovery_max'              's'        'CCS 2026 指南'                'high'      '15_Bus_Voltage_Monitor(B)'  false
 };
 fprintf('[Model_Parameters] v2.0 双支路等效：电机 %.0f kW / 发电机 %.0f kW / 电池 %.0f kWh，Hull_K_R=%.0f N/(m/s)^2\n', ...
     Mot_P_nom, Gen_P_max, Bat_Cap_kWh, Hull_K_R);
