@@ -580,7 +580,7 @@ function buildMinFFVariant(ch)
     % ---- 1. ai_predict_ms（oracle 多步预测：读 MSFF_Oracle_Data N×13 → 12 节点）----
     fn = [ch '/ai_predict_ms'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [60 30 180 120]);
-    setMFCode(fn, CODE_AI_PREDICT_MS(), {'MSFF_Horizon_s'}, {'1'});
+    setMFCode(fn, CODE_AI_PREDICT_MS(), {}, {});
     chAI = sfroot().find('-isa', 'Stateflow.EMChart', 'Path', fn);
     chAI.ChartUpdate = 'DISCRETE';
     chAI.SampleTime = '0.01';
@@ -591,6 +591,13 @@ function buildMinFFVariant(ch)
     % FromWorkspace 输出为 12 宽向量：直接接 ai_predict_ms/2（P_hat_in）
     add_line(ch, 'oracle_src/1', 'ai_predict_ms/2');
     add_line(ch, 't/1', 'ai_predict_ms/1');
+    % T-004R: MSFF_Horizon_s / MSFF_InfoMode 从编译期 Parameter 改为 Constant 输入端口，
+    % 由 Constant 块驱动（值引用 base workspace 同名变量，每次模型更新重新求值）——
+    % 消除 sim() 循环中 Parameter 作用域数据不重编译导致的运行不可复现（T-007 根因）
+    add_block('simulink/Sources/Constant', [ch '/C_MSFF_Horizon'], 'Position', [20 60 60 80], 'Value', 'MSFF_Horizon_s', 'SampleTime', '-1', 'OutDataTypeStr', 'double');
+    add_block('simulink/Sources/Constant', [ch '/C_MSFF_InfoMode'], 'Position', [20 95 60 115], 'Value', 'MSFF_InfoMode', 'SampleTime', '-1', 'OutDataTypeStr', 'double');
+    add_line(ch, 'C_MSFF_Horizon/1', 'ai_predict_ms/3');
+    add_line(ch, 'C_MSFF_InfoMode/1', 'ai_predict_ms/4');
     % ---- 2. ems_target（Baseline 语义）----
     fn2 = [ch '/ems_target'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fn2, 'Position', [60 160 180 230]);
@@ -600,8 +607,8 @@ function buildMinFFVariant(ch)
     % ---- 3. min_ff 核心（离散 0.01 s，内部 1 Hz 决策刷新 + 防抖保持）----
     fn3 = [ch '/min_ff'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fn3, 'Position', [230 40 350 190]);
-    setMFCode(fn3, CODE_MIN_FF(), {'Gen_P_max','Gen_Ramp_Up','Gen_Ramp_Down','ASSUMED_Gen_TimeConstant','ASSUMED_Gen_MinStablePower','ASSUMED_Bat_DischargeLimit','MSFF_dt_reach','MSFF_FF_Hyst_kW','MSFF_Horizon_s','MSFF_InfoMode','MSFF_SOC_Knee','MSFF_Vdc_Knee','EMS_WORK_MODE'}, ...
-        {'','','','','','','','','','','[1 2]','[1 2]',''});
+    setMFCode(fn3, CODE_MIN_FF(), {'Gen_P_max','Gen_Ramp_Up','Gen_Ramp_Down','ASSUMED_Gen_TimeConstant','ASSUMED_Gen_MinStablePower','ASSUMED_Bat_DischargeLimit','MSFF_dt_reach','MSFF_FF_Hyst_kW','MSFF_SOC_Knee','MSFF_Vdc_Knee','EMS_WORK_MODE'}, ...
+        {'','','','','','','','','[1 2]','[1 2]',''});
     chMF = sfroot().find('-isa', 'Stateflow.EMChart', 'Path', fn3);
     chMF.ChartUpdate = 'DISCRETE';
     chMF.SampleTime = '0.01';
@@ -643,6 +650,8 @@ function buildMinFFVariant(ch)
     add_line(ch, 'P_load_total_kW/1', 'min_ff/6'); % P_load
     add_line(ch, 'SOC/1', 'min_ff/9');
     add_line(ch, 'V_dc_V/1', 'min_ff/10');
+    add_line(ch, 'C_MSFF_Horizon/1', 'min_ff/11');
+    add_line(ch, 'C_MSFF_InfoMode/1', 'min_ff/12');
     % ---- 4. 下游：P_ff_applied × 有效门控 → max(base, load+ff) → clamp ----
     % 门控：P_ff_applied × fullauto（min_ff 内部已含 pred_valid/valid_node_count 门控）
     add_block('simulink/Sources/Constant', [ch '/work_mode'], 'Position', [450 120 490 140], 'Value', 'EMS_WORK_MODE');
@@ -1335,10 +1344,11 @@ end
 
 function c = CODE_AI_PREDICT_MS()
 % ai_predict_ms：oracle 多步负荷预测通道（T-004, FR-003/004/009）
-% 输入: t, P_hat_in(1x12, FromWorkspace 读 MSFF_Oracle_Data N×13 的 12 宽向量)
+% 输入: t, P_hat_in(1x12, FromWorkspace 读 MSFF_Oracle_Data N×13 的 12 宽向量),
+%       MSFF_Horizon_s, MSFF_InfoMode（T-004R: 由 Constant 输入端口驱动，运行时可切换）
 % 输出: P_hat(1x12) 未来负荷节点 [P5..P60] kW；valid_node_count=H/5；pred_valid
     c = sprintf([ ...
-        'function [P_hat, valid_node_count, pred_valid] = ai_predict_ms(t, P_hat_in)\n' ...
+        'function [P_hat, valid_node_count, pred_valid] = ai_predict_ms(t, P_hat_in, MSFF_Horizon_s, MSFF_InfoMode)\n' ...
         '%% oracle 多步预测通道：P_hat_in 来自 FromWorkspace MSFF_Oracle_Data\n' ...
         '%% （N×13 = [t, P_5..P_60]，首列时间为绝对时间，后 12 列为节点负荷）\n' ...
         'P_hat = P_hat_in;  %% FromWorkspace 自动去首列时间，输入即 12 节点\n' ...
@@ -1352,7 +1362,8 @@ end
 function c = CODE_MIN_FF()
 % min_ff：最小必要前馈核心控制律（T-004, FR-005..008, FR-013A）
 % 输入: t, P_hat(1x12), valid_node_count, pred_valid, P_base, P_load,
-%       P_gen_now(当前实际机组输出), P_gen_ramp(当前爬坡状态), SOC, Vdc
+%       P_gen_now(当前实际机组输出), P_gen_ramp(当前爬坡状态), SOC, Vdc,
+%       MSFF_Horizon_s, MSFF_InfoMode（T-004R: 由 Constant 输入端口驱动，运行时可切换）
 % 输出: P_ff_raw(理论最小前馈), P_ff_applied(防抖后实际施加), R_max(当前功率缺口)
 % 刷新: 1 Hz 决策（与 ai_predict_ms 刷新对齐）；每 0.01 s 步输出保持值
 % 算法:
@@ -1367,7 +1378,7 @@ function c = CODE_MIN_FF()
 %   防抖：|P_ff_raw - 保持值| < MSFF_FF_Hyst_kW 时保持原值（工程门槛层）
 %   InfoMode='peak'：输入轨迹折叠为全窗口恒值 P_peak=max(P_hat(1:n))（C_P, FR-013A）
     c = sprintf([ ...
-        'function [P_ff_raw, P_ff_applied, R_max] = min_ff(t, P_hat, valid_node_count, pred_valid, P_base, P_load, P_gen_now, P_gen_ramp, SOC, Vdc)\n' ...
+        'function [P_ff_raw, P_ff_applied, R_max] = min_ff(t, P_hat, valid_node_count, pred_valid, P_base, P_load, P_gen_now, P_gen_ramp, SOC, Vdc, MSFF_Horizon_s, MSFF_InfoMode)\n' ...
         '%% 最小必要前馈决策（1 Hz 刷新 + 0.01 s 保持输出）\n' ...
         '%% 注：EMChart 局部函数不可见图级参数，全部内联（2026-08 调试结论）\n' ...
         'persistent lastT ff_held Rmax_last\n' ...

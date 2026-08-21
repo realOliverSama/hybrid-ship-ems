@@ -1,0 +1,13 @@
+AC1 law=3 S04 sim: true
+AC2 law=0 P/V/S: 0/0/0 -> true
+AC2 law=1 P/V/S: 0/0/0 -> true
+AC2 law=2 P/V/S: 0/0/0 -> true
+AC3 order=1 maxdiff=0.0000 kW -> true
+AC4 Rvals=[-2e+02 -2.4e+02 -2.7e+02 -2.7e+02 -2.7e+02 -2.7e+02 -2.7e+02 -2.7e+02 -2.7e+02 -2.7e+02] -> true
+AC5 S04 ff_peak=9000.0 ff_traj=9000.0 -> true
+AC5 S09 ff_peak=9000.0 ff_traj=9000.0 nontrivial=1 -> true
+SUMMARY AC1: true
+SUMMARY AC2: true
+SUMMARY AC3: true
+SUMMARY AC4: true
+SUMMARY AC5: true
