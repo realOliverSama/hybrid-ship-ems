@@ -2,6 +2,7 @@
 
 Spec: `multistep-predictive-ems`  
 Status: requirements-approved（2026-08-20 用户批准，含 v1.2 三项修订）  
+Closeout: **implementation-complete — Phase 1 NO-GO**（2026-08-21 用户正式接受；见文末「Closeout」节）  
 Created: 2026-08-20  
 Brainstorm: `./brainstorm.md`  
 Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec 冻结归档）
@@ -22,6 +23,11 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 - **RQ1**：短时多步负荷预测相比单一未来峰值预测，能否提供更有效的 EMS 前馈信息？
 - **RQ2**：发电机额定功率、动态爬坡能力及电池功率裕度如何影响预测增强 EMS 的实际收益？
 - **RQ3**：在不同动力系统参数与工况下，何种轻量网络能以较低 STM32N6 部署代价获得最佳闭环控制效果？
+
+**RQ 最终状态（2026-08-21 Closeout）**：
+- **RQ1：已回答**——合理参数域内不可区分（C_P 与 C_MS 逐位一致）；信息含量问题仅在“有权限工况”下有意义，本船型包络内不存在该工况（证据：Phase 1A 78 次 + lite 64 次 + T-008B 8 次）。
+- **RQ2：已回答**——有效工作区域在合理参数域内**为空**；物理边界为收益存在性预检不等式（gen 容量 + 电池瞬态裕度 vs 需求峰值，且缺口不在爬坡饱和段）。
+- **RQ3：未评估（NOT EVALUATED）**——因 Phase 1 NO-GO，按 FR-014 条款未进入网络训练与选型；**本 spec 不构成任何网络选型结论**。
 
 ## Scope
 
@@ -80,11 +86,16 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 
 ### Phase 2 / Phase 3（需求框架，GO 后细化）
 
-- **FR-015**: THE Phase 2 SHALL 训练四个候选模型（M0 MLP / M1 CNN1D / M2 small-TCN / M3 GRU）解决同一多步预测任务 `X_{t-L:t} → [P_{t+h1},…,P_{t+hK}]`，训练数据 SHALL 纳入冷启动窗口；不得使用 Test Set 参与训练或调参。
-- **FR-016**: THE 模型选型 SHALL 以闭环指标（Vdc_min 保持率、P_bat,peak、吞吐量、燃油代价）为第一判据，离线 MAE/RMSE 仅为参考；同时报告负荷低估误差、突变工况误差与未见工况泛化。
-- **FR-017**: THE Phase 2 SHALL 包含 x_ship 消融实验：with/without `x_ship` 输入 × 事件位置随机化对照，区分"动力状态预测"与"航线位置先验记忆"。
-- **FR-018**: THE Phase 2 SHALL 实现冷启动规则兜底：WHEN 历史窗口未填满（t < W s）或预测无效，IF v_cmd 出现显著正向阶跃, THEN THE EMS SHALL 施加基于 v_cmd→推进需求静态映射的规则式前馈（不依赖 NN），并单独评估其增量贡献。
-- **FR-019**: THE Phase 3 SHALL 将 Top1~2 模型 INT8 量化并经 ST Edge AI 部署至 STM32N6 Neural-ART NPU，评估模型大小、Activation RAM、INT8 精度损失、推理延迟、算子映射率与 1 Hz 实时稳定性，并通过 UART/CAN/UDP 与 Simulink 构成软硬件闭环验证。
+- **FR-015**: THE Phase 2 SHALL 训练四个候选模型（M0 MLP / M1 CNN1D / M2 small-TCN / M3 GRU）解决同一多步预测任务 `X_{t-L:t} → [P_{t+h1},…,P_{t+hK}]`，训练数据 SHALL 纳入冷启动窗口；不得使用 Test Set 参与训练或调参。  
+  **状态：NOT STARTED（Phase 1 NO-GO → 依 FR-014 不启动，2026-08-21）**
+- **FR-016**: THE 模型选型 SHALL 以闭环指标（Vdc_min 保持率、P_bat,peak、吞吐量、燃油代价）为第一判据，离线 MAE/RMSE 仅为参考；同时报告负荷低估误差、突变工况误差与未见工况泛化。  
+  **状态：NOT STARTED（同上）**
+- **FR-017**: THE Phase 2 SHALL 包含 x_ship 消融实验：with/without `x_ship` 输入 × 事件位置随机化对照，区分"动力状态预测"与"航线位置先验记忆"。  
+  **状态：NOT STARTED（同上）**
+- **FR-018**: THE Phase 2 SHALL 实现冷启动规则兜底：WHEN 历史窗口未填满（t < W s）或预测无效，IF v_cmd 出现显著正向阶跃, THEN THE EMS SHALL 施加基于 v_cmd→推进需求静态映射的规则式前馈（不依赖 NN），并单独评估其增量贡献。  
+  **状态：NOT STARTED（同上）**
+- **FR-019**: THE Phase 3 SHALL 将 Top1~2 模型 INT8 量化并经 ST Edge AI 部署至 STM32N6 Neural-ART NPU，评估模型大小、Activation RAM、INT8 精度损失、推理延迟、算子映射率与 1 Hz 实时稳定性，并通过 UART/CAN/UDP 与 Simulink 构成软硬件闭环验证。  
+  **状态：NOT STARTED（同上）**
 
 ## Non-Functional Requirements
 
@@ -96,14 +107,14 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 
 ## Acceptance Criteria
 
-- [ ] AC-1（FR-001）：在 `simulink_modelC_(oracle_ms)/` 中运行构建脚本可从零重建模型并通过冒烟测试；临时断开 `model/simulink/` 与 `model/simulink_modelC/` 访问时仿真仍正常运行（路径依赖验证）。
-- [ ] AC-2（FR-002/005/007/008）：单元级验证：合成阶跃负荷 + 参数化发电机下，`P_gen,reachable(τ; P_ff)` 前向递推与理论解析解一致；`R(τ)≤0` 时 EMS 与 Baseline 逐点一致；`R(τ)>0` 时 `P_ff*` 为使 `R(τ)≤0, ∀τ` 的最小值且不越机组限幅。
-- [ ] AC-3（FR-003/004/010/013A）：Phase 1A 三锚点 × 6 档 horizon × C0/C_P/C_MS 三对照结果表与 Phase 1B 入选 horizon 的依据记录；C_P vs C_MS 对比明确回答 RQ1。
-- [ ] AC-4（FR-011/012/013）：参数扫描结果表 + 预测增强 EMS 有效工作区域图（λ_P × R_gen 二维主图 + τ_gen/SOC₀ 单因素补充）。
-- [ ] AC-5（FR-014）：GO/NO-GO 判定报告，非劣化约束与收益判据逐条给出机器可读 PASS/FAIL 与证据链接。
-- [ ] AC-6（FR-015/016/017，Phase 2）：四模型精度表 + 闭环对照表 + x_ship 消融表；冷启动窗口纳入训练的证据。
-- [ ] AC-7（FR-018，Phase 2）：冷启动兜底消融：无兜底/仅兜底/兜底+NN 三组在 t<22 s 段的 Vdc_min 对比。
-- [ ] AC-8（FR-019，Phase 3）：STM32N6 部署报告（大小/RAM/延迟/映射率/INT8 精度损失）+ HIL 闭环结果。
+- [x] AC-1（FR-001）：在 `simulink_modelC_(oracle_ms)/` 中运行构建脚本可从零重建模型并通过冒烟测试；临时断开 `model/simulink/` 与 `model/simulink_modelC/` 访问时仿真仍正常运行（路径依赖验证）。——T-001 实测通过
+- [x] AC-2（FR-002/005/007/008）：单元级验证：合成阶跃负荷 + 参数化发电机下，`P_gen,reachable(τ; P_ff)` 前向递推与理论解析解一致；`R(τ)≤0` 时 EMS 与 Baseline 逐点一致；`R(τ)>0` 时 `P_ff*` 为使 `R(τ)≤0, ∀τ` 的最小值且不越机组限幅。——T-005 U1–U6 全 PASS
+- [x] AC-3（FR-003/004/010/013A）：Phase 1A 三锚点 × 6 档 horizon × C0/C_P/C_MS 三对照结果表与 Phase 1B 入选 horizon 的依据记录；C_P vs C_MS 对比明确回答 RQ1。——T-007/T-008 完成（78 次全零；horizon 选型 {20,45} 记录于 MSFF_phase1A_horizon.md；RQ1 已回答）
+- [x] AC-4（FR-011/012/013）：参数扫描结果表 + 预测增强 EMS 有效工作区域图（λ_P × R_gen 二维主图 + τ_gen/SOC₀ 单因素补充）。——**偏差：经用户裁决改为 T-009-lite 16 点稀疏网格**（lite_maps_S07/S09.png 双面板图：control-authority + envelope-margin），结论：有效区域为空
+- [x] AC-5（FR-014）：GO/NO-GO 判定报告，非劣化约束与收益判据逐条给出机器可读 PASS/FAIL 与证据链接。——`gate_result.json` verdict=NO-GO + MSFF_phase1_gate_report.md
+- [N/A] AC-6（FR-015/016/017，Phase 2）：**NOT STARTED**（Phase 1 NO-GO → 依 FR-014 不启动）
+- [N/A] AC-7（FR-018，Phase 2）：**NOT STARTED**（同上）
+- [N/A] AC-8（FR-019，Phase 3）：**NOT STARTED**（同上）
 
 ## Edge Cases
 
@@ -130,3 +141,14 @@ Supersedes: `.specs/timed-feedforward-ems/`（Phase 1 NO-GO 后转向，原 spec
 - [x] OQ-4（v1.1 已决）：5 s 等分辨率真实多步节点 [P_5,…,P_H]（H/5 个），通道固定最大宽度 12 节点 + 有效节点数参数；Phase 2 四网络统一输出 H*/5 个节点——已落入 FR-004/FR-015。
 - [ ] OQ-5：Phase 1A 三锚点（Fast/Nominal/Slow）的具体参数取值——design 阶段定案。
 - [ ] OQ-6：`P_load,design,max`（λ_P 统一分母）的取值——design 阶段依据场景负荷统计定案。
+
+---
+
+## Closeout（2026-08-21，用户正式接受 Phase 1 NO-GO）
+
+- **判定**：`gate_result.json` verdict=**NO-GO**——非劣化约束 74/74 配对全 PASS、0 violation；收益判据 0 组合 × 0 场景（阈值 ≥4×2）→ FAIL。报告：`model/simulink_modelC_(oracle_ms)/reports/MSFF_phase1_gate_report.md`。
+- **机理边界**：EMS_MinFF 控制权限真实存在（1900 kW 正对照：ff 提前 45 s=H 激活、P_ff*≈192 kW 最小必要、平台期 pre-ramp 709→900 kW、max|ΔP_gen_actual|=190.9 kW）；零收益为系统域属性（电池 1000 kW 瞬态裕度 + 机组容量覆盖全部场景需求，唯一真实缺口位于爬坡饱和段、幅值前馈物理不可达）。
+- **T-010**：WAIVED / NOT APPLICABLE BY GATE DECISION——重复性由 v5 跨进程逐位一致门禁覆盖并超越；折点敏感性在真实零权限域内无符号可翻转，不影响 Gate 结论。未标记为实验 PASS。
+- **Phase 2/3（FR-015~019）**：NOT STARTED / NOT APPLICABLE（FR-014 条款：oracle 完全知道未来负荷仍无收益 → 停止 NN 投入）。RQ3 未评估，不构成网络选型结论。
+- **证据链（全部入库）**：`results/ms_phase1/`{gate_result.json, phase1A/(78), phase1B_lite/(64+2), t008b/(8+正对照), repro/(v5 门禁), unittest/(U1–U6)}；报告两份；脚本 20c/21/21b/21c/22/22b/23。
+- **关闭范围声明**：本次仅关闭 multistep-predictive-ems / EMS_MinFF 研究线，不代表论文整体或边缘 AI EMS 方向关闭；不自动开启新方向，等待下一轮研究路线决策。

@@ -1,7 +1,7 @@
 # 面向参数不确定性的多步负荷预测增强型 EMS Tasks
 
 Spec: `multistep-predictive-ems`  
-Status: tasks-approved（2026-08-20 用户批准，含 v1.1 四项修订：oracle 因果性、欠压双阈值、参数化预算、禁止自动放宽 Gate）  
+Status: implementation-complete — Phase 1 NO-GO（2026-08-21 用户正式接受机器判定；gate_result.json verdict=NO-GO）  
 Created: 2026-08-20  
 Brainstorm: `./brainstorm.md`  
 Requirements: `./requirements.md`（v1.2, approved）  
@@ -54,25 +54,24 @@ Design: `./design.md`（v1, approved）
   - Files/areas: `21_run_ms_horizon.m`；`results/ms_phase1/phase1A/`
   - Validation: 78 次运行全部落盘（3 锚点 × {S04,S07} × (1 C0 + 6 C_P + 6 C_MS)）；每锚点 C0 与冻结基线同场景 C0 回归比对（Nominal 容差 1e-6）；失败运行记录 NaN 不静默丢弃
 
-- [ ] 8. Phase 1A 判读与 horizon 选型
+- [x] 8. Phase 1A 判读与 horizon 选型
   - ID: T-008
   - Requirement(s): FR-010（AC-3）
   - Files/areas: `reports/MSFF_phase1A_horizon.md`
   - Validation: 报告给出 C_P vs C_MS 差值（RQ1 初步）、收益-H 曲线形态判读、2~3 个入选 horizon 及数据依据；**选型结论需主 Agent 审阅确认后才进入 T-009**（Escalation 点）
 
-- [ ] 9. Phase 1B：参数域扫描
+- [x] 9. Phase 1B：参数域扫描
   - ID: T-009
   - Requirement(s): FR-011, FR-012, FR-013（AC-4）
   - Files/areas: `22_run_ms_paramsweep.m`；`results/ms_phase1/phase1B/`
   - Validation: 主图 25 组合 × 4 场景 × 入选 horizon × (C0+C_MS)；τ_gen/SOC₀ 单因素各 36 次；C_P 仅于入选 H* 随同；**预算参数化：入选 2 个 horizon ≈472 次、3 个 ≈572 次，由 T-008 决策决定；C0 跨 horizon 复用不重复运行**；区域图产出（AC-4）
 
-- [ ] 10. 重复性分析与折点敏感性抽查
+- [N/A] 10. 重复性分析与折点敏感性抽查 —— **WAIVED / NOT APPLICABLE BY GATE DECISION（2026-08-21 用户裁决），非实验 PASS**
   - ID: T-010
-  - Requirement(s): FR-014（条款②）, NFR-002
-  - Files/areas: `results/ms_phase1/repeatability/`；报告章节
-  - Validation: 代表配置 3 次重复 SOC_end 极差 < 0.002。**重复性 FAIL 时禁止自动放宽 Gate**：先定位并消除非确定性来源（FastRestart 状态残留 / persistent 未复位 / workspace 残留 / solver 初始状态 / 随机源未固定），修复后重测；`|ΔSOC_end|` 阈值任何放宽（→0.01）必须由本任务出报告、经主 Agent/用户门禁批准，脚本不得自动修改；f_SOC/f_V 折点 ±50% 单点抽查结论不翻转（敏感则 escalate）
+  - 豁免理由：① 重复性要求已由 v5 复现性硬门禁覆盖并超越（跨进程逐位一致 R1b/R2b PASS + 顺序无关 R2a + 冻结回归 R4 max-rel-diff=0，见 `results/ms_phase1/repro/v5_compare_20260821_082030.log`），优于原定的“3 次重复 SOC_end 极差 <0.002”；② 折点敏感性抽查的目的是确认“收益符号不随折点翻转”——实测域内全零收益（真实零权限域），无符号可翻转，敏感性分析 moot；③ 本豁免不改变任何 Gate 阈值，NO-GO 结论不依赖被豁免项
+  - （原 Validation 条款保留备查：代表配置 3 次重复 SOC_end 极差 < 0.002；折点 ±50% 抽查不翻转）
 
-- [ ] 11. GO/NO-GO 机器判定与 Phase 1 报告
+- [x] 11. GO/NO-GO 机器判定与 Phase 1 报告
   - ID: T-011
   - Requirement(s): FR-014（AC-5）
   - Files/areas: `23_ms_gate_judge.m`；`results/ms_phase1/gate_result.json`；`reports/MSFF_phase1_gate_report.md`
@@ -84,6 +83,13 @@ Design: `./design.md`（v1, approved）
 - [x] Design testing strategy is represented by tasks（T-005 单元 / T-007 回归 / T-010 重复性+敏感性 / T-011 Gate）。
 - [x] Each task has a clear validation command or manual check。
 - [x] Rollback：`simulink_modelC_(oracle_ms)/` 为纯新增目录，删除即回滚；T-004 含旧变体回归验证。
+
+## Closeout 记录（2026-08-21）
+
+- **T-009 lite 化**：经用户裁决由全量 472 次改为 64 次稀疏参数域确认（16 点 × S07/S09 × C0/CMS，H=45，边界点 H60 补测）——目标从“寻找有效区域”改为“验证 T-008B 包络分析预测的合理域内有效区域为空”，已确认（14/16 严格零 + 2 角点噪声瞬态）。
+- **T-008B 机理门禁**（T-008 补充验证，用户裁决）：最弱点 W1 全零 + 1900 kW 正对照证明控制权限真实存在 → 零收益为系统域属性。详见 `reports/MSFF_phase1A_horizon.md` §8。
+- **证据链保留**：正对照 `t008b/positive_control_S07_H45.mat`、T-008B 包络分析、64 次稀疏确认、`gate_result.json` 全部入库。
+- **关闭范围**：仅关闭 multistep-predictive-ems / EMS_MinFF 研究线；不代表论文整体或边缘 AI EMS 方向关闭。Phase 2/3 未启动，等待下一轮研究路线决策。
 
 ## Execution Notes
 
