@@ -1,0 +1,57 @@
+kind,scenario,H,t,value,unit,note
+summary,S07,C0,NaN,69.8917,kg,id=C0 t_end=1011
+summary,S07,CMS_H20,NaN,69.8917,kg,id=CMS_H20 t_end=1011
+summary,S07,CMS_H45,NaN,69.8917,kg,id=CMS_H45 t_end=1011
+summary,S07,CMS_H60,NaN,69.8917,kg,id=CMS_H60 t_end=1011
+summary,S09,C0,NaN,72.0605,kg,id=C0 t_end=928
+summary,S09,CMS_H20,NaN,72.0605,kg,id=CMS_H20 t_end=928
+summary,S09,CMS_H45,NaN,72.0605,kg,id=CMS_H45 t_end=928
+summary,S09,CMS_H60,NaN,72.0605,kg,id=CMS_H60 t_end=928
+summary,S07,20,1,0.0000,kW,max|dA|
+summary,S07,20,,NaN,s,first_div_summary,S07,20,,NaN,s,first_div_10kW
+summary,S07,45,1,0.0000,kW,max|dA|
+summary,S07,45,,NaN,s,first_div_summary,S07,45,,NaN,s,first_div_10kW
+summary,S07,60,1,0.0000,kW,max|dA|
+summary,S07,60,,NaN,s,first_div_summary,S07,60,,NaN,s,first_div_10kW
+summary,S09,20,1,0.0000,kW,max|dA|
+summary,S09,20,,NaN,s,first_div_summary,S09,20,,NaN,s,first_div_10kW
+summary,S09,45,1,0.0000,kW,max|dA|
+summary,S09,45,,NaN,s,first_div_summary,S09,45,,NaN,s,first_div_10kW
+summary,S09,60,1,0.0000,kW,max|dA|
+summary,S09,60,,NaN,s,first_div_summary,S09,60,,NaN,s,first_div_10kW
+event,S07,0,1,565.80,s,t_step
+event,S07,0,1,605.57,kW,step_mag
+event,S07,0,1,573.10,s,gen_rise
+event,S07,20,1,565.80,s,t_step
+event,S07,20,1,605.57,kW,step_mag
+event,S07,20,1,573.10,s,gen_rise
+event,S07,45,1,565.80,s,t_step
+event,S07,45,1,605.57,kW,step_mag
+event,S07,45,1,573.10,s,gen_rise
+event,S07,60,1,565.80,s,t_step
+event,S07,60,1,605.57,kW,step_mag
+event,S07,60,1,573.10,s,gen_rise
+event,S07,20,1,NaN,s,ff_start
+event,S07,20,1,NaN,s,ff_end
+event,S07,20,1,NaN,kW,ff_raw_peak
+event,S07,20,1,0,-,pre_ramp
+event,S07,45,1,NaN,s,ff_start
+event,S07,45,1,NaN,s,ff_end
+event,S07,45,1,NaN,kW,ff_raw_peak
+event,S07,45,1,0,-,pre_ramp
+event,S07,60,1,NaN,s,ff_start
+event,S07,60,1,NaN,s,ff_end
+event,S07,60,1,NaN,kW,ff_raw_peak
+event,S07,60,1,0,-,pre_ramp
+summary,S07,NaN,1,summary,S09,NaN,0,saturation,S07,20,1,1.0000,-,ramp_rate_sat_frac
+saturation,S07,20,2,1.0000,-,ref_gap_frac
+saturation,S07,45,1,1.0000,-,ramp_rate_sat_frac
+saturation,S07,45,2,1.0000,-,ref_gap_frac
+saturation,S07,60,1,1.0000,-,ramp_rate_sat_frac
+saturation,S07,60,2,1.0000,-,ref_gap_frac
+saturation,S09,20,1,1.0000,-,ramp_rate_sat_frac
+saturation,S09,20,2,1.0000,-,ref_gap_frac
+saturation,S09,45,1,1.0000,-,ramp_rate_sat_frac
+saturation,S09,45,2,1.0000,-,ref_gap_frac
+saturation,S09,60,1,1.0000,-,ramp_rate_sat_frac
+saturation,S09,60,2,1.0000,-,ref_gap_frac
