@@ -48,7 +48,7 @@ Design: `./design.md`（v1, approved）
   - Files/areas: `+model/` 指标脚本扩展——`E_bat_throughput_kWh`、`ff_active_s`、`R_max` 序列；**欠压双阈值分离**：`N_UV/T_UV @ 675 V`（真实欠压降额线，FR-014 非劣化约束⑤以此判定）与 `N_stress/T_stress @ 700 V`（母线压力区/动态裕度分析），禁止混用命名；`results/ms_phase1/runs.csv` 写入器；区域图绘制脚本（λ_P×R_gen 热力图：ΔP_bat,peak% / ΔVdc_min / Δfuel%）
   - Validation: 用既有 `results/phase1/` 数据离线回放，新增指标与手算抽查一致；热力图脚本在合成数据上出图
 
-- [ ] 7. Phase 1A：horizon×锚点×三对照实验（78 次仿真）
+- [x] 7. Phase 1A：horizon×锚点×三对照实验（78 次仿真）
   - ID: T-007
   - Requirement(s): FR-010, FR-013A（AC-3）
   - Files/areas: `21_run_ms_horizon.m`；`results/ms_phase1/phase1A/`
