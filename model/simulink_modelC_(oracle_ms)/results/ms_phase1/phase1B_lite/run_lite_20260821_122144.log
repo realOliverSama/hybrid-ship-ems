@@ -1,0 +1,64 @@
+lite_lP0.80_Rg20_S07_C0 OK fuel=69.891708 Vdc_min=681.7295 SOC_end=0.573104 wall=11.2
+lite_lP0.80_Rg20_S07_CMS_H45 OK fuel=69.891708 Vdc_min=681.7295 SOC_end=0.573104 ff_act=20.00 wall=5.6
+lite_lP0.80_Rg20_S09_C0 OK fuel=72.060483 Vdc_min=681.7295 SOC_end=0.572746 wall=4.5
+lite_lP0.80_Rg20_S09_CMS_H45 OK fuel=72.060483 Vdc_min=681.7295 SOC_end=0.572746 ff_act=20.00 wall=5.3
+lite_lP0.80_Rg30_S07_C0 OK fuel=70.030607 Vdc_min=683.3611 SOC_end=0.573516 wall=4.3
+lite_lP0.80_Rg30_S07_CMS_H45 OK fuel=70.030607 Vdc_min=683.3611 SOC_end=0.573516 ff_act=16.00 wall=4.7
+lite_lP0.80_Rg30_S09_C0 OK fuel=72.327027 Vdc_min=683.3611 SOC_end=0.573338 wall=3.6
+lite_lP0.80_Rg30_S09_CMS_H45 OK fuel=72.327027 Vdc_min=683.3611 SOC_end=0.573338 ff_act=16.00 wall=4.1
+lite_lP0.80_Rg40_S07_C0 OK fuel=70.030950 Vdc_min=684.7654 SOC_end=0.573565 wall=3.9
+lite_lP0.80_Rg40_S07_CMS_H45 OK fuel=70.030950 Vdc_min=684.7654 SOC_end=0.573565 ff_act=13.00 wall=5.2
+lite_lP0.80_Rg40_S09_C0 OK fuel=72.461058 Vdc_min=684.7654 SOC_end=0.573634 wall=3.8
+lite_lP0.80_Rg40_S09_CMS_H45 OK fuel=72.461058 Vdc_min=684.7654 SOC_end=0.573634 ff_act=13.00 wall=4.3
+lite_lP0.80_Rg60_S07_C0 OK fuel=70.044058 Vdc_min=687.1291 SOC_end=0.573634 wall=3.9
+lite_lP0.80_Rg60_S07_CMS_H45 OK fuel=70.044058 Vdc_min=687.1291 SOC_end=0.573634 ff_act=11.00 wall=4.3
+lite_lP0.80_Rg60_S09_C0 OK fuel=72.596088 Vdc_min=687.1291 SOC_end=0.573930 wall=3.4
+lite_lP0.80_Rg60_S09_CMS_H45 OK fuel=72.596088 Vdc_min=687.1291 SOC_end=0.573930 ff_act=11.00 wall=4.1
+lite_lP0.90_Rg20_S07_C0 OK fuel=76.010109 Vdc_min=681.7295 SOC_end=0.587281 wall=4.0
+lite_lP0.90_Rg20_S07_CMS_H45 OK fuel=76.010109 Vdc_min=681.7295 SOC_end=0.587281 ff_act=20.00 wall=4.6
+lite_lP0.90_Rg20_S09_C0 OK fuel=78.776617 Vdc_min=681.7295 SOC_end=0.588410 wall=3.6
+lite_lP0.90_Rg20_S09_CMS_H45 OK fuel=78.776617 Vdc_min=681.7295 SOC_end=0.588410 ff_act=20.00 wall=4.5
+lite_lP0.90_Rg30_S07_C0 OK fuel=76.195746 Vdc_min=683.3611 SOC_end=0.587835 wall=4.1
+lite_lP0.90_Rg30_S07_CMS_H45 OK fuel=76.195746 Vdc_min=683.3611 SOC_end=0.587835 ff_act=15.00 wall=4.9
+lite_lP0.90_Rg30_S09_C0 OK fuel=79.112418 Vdc_min=683.3611 SOC_end=0.589163 wall=3.7
+lite_lP0.90_Rg30_S09_CMS_H45 OK fuel=79.112418 Vdc_min=683.3611 SOC_end=0.589163 ff_act=15.00 wall=4.4
+lite_lP0.90_Rg40_S07_C0 OK fuel=76.201124 Vdc_min=684.7654 SOC_end=0.587909 wall=4.0
+lite_lP0.90_Rg40_S07_CMS_H45 OK fuel=76.201124 Vdc_min=684.7654 SOC_end=0.587909 ff_act=13.00 wall=4.9
+lite_lP0.90_Rg40_S09_C0 OK fuel=79.281233 Vdc_min=684.7654 SOC_end=0.589539 wall=3.7
+lite_lP0.90_Rg40_S09_CMS_H45 OK fuel=79.281233 Vdc_min=684.7654 SOC_end=0.589539 ff_act=13.00 wall=4.0
+lite_lP0.90_Rg60_S07_C0 OK fuel=76.230056 Vdc_min=687.1291 SOC_end=0.588024 wall=4.3
+lite_lP0.90_Rg60_S07_CMS_H45 OK fuel=76.230056 Vdc_min=687.1291 SOC_end=0.588024 ff_act=10.00 wall=5.4
+lite_lP0.90_Rg60_S09_C0 OK fuel=79.451077 Vdc_min=687.1291 SOC_end=0.589916 wall=4.3
+lite_lP0.90_Rg60_S09_CMS_H45 OK fuel=79.451077 Vdc_min=687.1291 SOC_end=0.589916 ff_act=10.00 wall=6.2
+lite_lP1.00_Rg20_S07_C0 OK fuel=77.640013 Vdc_min=681.7295 SOC_end=0.591252 wall=4.7
+lite_lP1.00_Rg20_S07_CMS_H45 OK fuel=77.640013 Vdc_min=681.7295 SOC_end=0.591252 ff_act=20.00 wall=5.8
+lite_lP1.00_Rg20_S09_C0 OK fuel=79.678691 Vdc_min=681.7295 SOC_end=0.590609 wall=4.6
+lite_lP1.00_Rg20_S09_CMS_H45 OK fuel=79.678691 Vdc_min=681.7295 SOC_end=0.590609 ff_act=20.00 wall=5.1
+lite_lP1.00_Rg30_S07_C0 OK fuel=77.956355 Vdc_min=683.3611 SOC_end=0.592123 wall=4.1
+lite_lP1.00_Rg30_S07_CMS_H45 OK fuel=77.956355 Vdc_min=683.3611 SOC_end=0.592123 ff_act=15.00 wall=4.7
+lite_lP1.00_Rg30_S09_C0 OK fuel=80.099249 Vdc_min=683.3611 SOC_end=0.591567 wall=3.7
+lite_lP1.00_Rg30_S09_CMS_H45 OK fuel=80.099249 Vdc_min=683.3611 SOC_end=0.591567 ff_act=15.00 wall=4.4
+lite_lP1.00_Rg40_S07_C0 OK fuel=78.004298 Vdc_min=684.7654 SOC_end=0.592299 wall=4.1
+lite_lP1.00_Rg40_S07_CMS_H45 OK fuel=78.004298 Vdc_min=684.7654 SOC_end=0.592299 ff_act=13.00 wall=4.8
+lite_lP1.00_Rg40_S09_C0 OK fuel=80.310780 Vdc_min=684.7654 SOC_end=0.592046 wall=3.6
+lite_lP1.00_Rg40_S09_CMS_H45 OK fuel=80.310780 Vdc_min=684.7654 SOC_end=0.592046 ff_act=13.00 wall=4.6
+lite_lP1.00_Rg60_S07_C0 OK fuel=78.076023 Vdc_min=687.1291 SOC_end=0.592517 wall=4.0
+lite_lP1.00_Rg60_S07_CMS_H45 OK fuel=78.076023 Vdc_min=687.1291 SOC_end=0.592517 ff_act=10.00 wall=4.8
+lite_lP1.00_Rg60_S09_C0 OK fuel=80.523594 Vdc_min=687.1291 SOC_end=0.592525 wall=4.3
+lite_lP1.00_Rg60_S09_CMS_H45 OK fuel=80.523594 Vdc_min=687.1291 SOC_end=0.592525 ff_act=10.00 wall=5.6
+lite_lP1.25_Rg20_S07_C0 OK fuel=77.664315 Vdc_min=681.7295 SOC_end=0.591302 wall=4.1
+lite_lP1.25_Rg20_S07_CMS_H45 OK fuel=77.664315 Vdc_min=681.7295 SOC_end=0.591302 ff_act=20.00 wall=6.3
+lite_lP1.25_Rg20_S09_C0 OK fuel=79.691234 Vdc_min=681.7295 SOC_end=0.590634 wall=4.7
+lite_lP1.25_Rg20_S09_CMS_H45 OK fuel=79.691234 Vdc_min=681.7295 SOC_end=0.590634 ff_act=20.00 wall=5.2
+lite_lP1.25_Rg30_S07_C0 OK fuel=77.978698 Vdc_min=683.3611 SOC_end=0.592168 wall=4.1
+lite_lP1.25_Rg30_S07_CMS_H45 OK fuel=77.978698 Vdc_min=683.3611 SOC_end=0.592168 ff_act=15.00 wall=5.0
+lite_lP1.25_Rg30_S09_C0 OK fuel=80.110549 Vdc_min=683.3611 SOC_end=0.591589 wall=4.8
+lite_lP1.25_Rg30_S09_CMS_H45 OK fuel=80.110549 Vdc_min=683.3611 SOC_end=0.591589 ff_act=15.00 wall=6.4
+lite_lP1.25_Rg40_S07_C0 OK fuel=78.025414 Vdc_min=684.7654 SOC_end=0.592343 wall=5.3
+lite_lP1.25_Rg40_S07_CMS_H45 OK fuel=78.025414 Vdc_min=684.7654 SOC_end=0.592343 ff_act=13.00 wall=6.9
+lite_lP1.25_Rg40_S09_C0 OK fuel=80.321199 Vdc_min=684.7654 SOC_end=0.592066 wall=4.6
+lite_lP1.25_Rg40_S09_CMS_H45 OK fuel=80.321199 Vdc_min=684.7654 SOC_end=0.592066 ff_act=13.00 wall=5.6
+lite_lP1.25_Rg60_S07_C0 OK fuel=78.095660 Vdc_min=687.1291 SOC_end=0.592557 wall=4.6
+lite_lP1.25_Rg60_S07_CMS_H45 OK fuel=78.106088 Vdc_min=687.1291 SOC_end=0.592581 ff_act=10.00 wall=5.5
+lite_lP1.25_Rg60_S09_C0 OK fuel=80.532959 Vdc_min=687.1291 SOC_end=0.592543 wall=3.7
+lite_lP1.25_Rg60_S09_CMS_H45 OK fuel=80.543439 Vdc_min=687.1291 SOC_end=0.592567 ff_act=10.00 wall=4.1
