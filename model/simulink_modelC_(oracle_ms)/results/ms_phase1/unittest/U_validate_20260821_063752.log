@@ -1,0 +1,8 @@
+U1: true | all cases < 1 kW  |  step-up-200: err=0.0000 kW -> true  |  step-up-sat: err=0.0000 kW -> true  |  ramp-down: err=0.0000 kW -> true  |  no-change: err=0.0000 kW -> true  |  clamp-msp: err=0.0078 kW -> true
+U2: true | dP_gen_ref=0 R_max_max=-292 P_ff_raw_max=0
+U3: true | hand=94.353 replica=94.368 diff=0.0143 R_after=-0.000 bounds=1
+U4: true | fold==const6:1 fold_neq12:1 peak_ge_traj:1 replica_logged:1 n=301
+U3-model: true | n=301 nontriv=9
+U5: true | fS=[0 0 0.5 1 1] fV=[0 0 0.5 1 1] Pb=[0 0 0 0 0;0 0 0 0 0;0 0 250 500 500;0 0 500 1000 1000;0 0 500 1000 1000]
+U6: true | valid_trans:1 dPg=0 events=1 ff=0
+OVERALL: true
