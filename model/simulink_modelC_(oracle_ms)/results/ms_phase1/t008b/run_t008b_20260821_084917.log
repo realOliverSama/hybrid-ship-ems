@@ -1,0 +1,8 @@
+t008b_W1_S07_C0 OK fuel=69.891708 Vdc_min=681.7295 SOC_end=0.573104 t_end=1011.1 wall=11.9
+t008b_W1_S07_CMS_H20 OK fuel=69.891708 Vdc_min=681.7295 SOC_end=0.573104 ff_act=20.00 t_end=1011.1 wall=6.0
+t008b_W1_S07_CMS_H45 OK fuel=69.891708 Vdc_min=681.7295 SOC_end=0.573104 ff_act=20.00 t_end=1011.1 wall=4.8
+t008b_W1_S07_CMS_H60 OK fuel=69.891708 Vdc_min=681.7295 SOC_end=0.573104 ff_act=20.00 t_end=1011.1 wall=4.9
+t008b_W1_S09_C0 OK fuel=72.060483 Vdc_min=681.7295 SOC_end=0.572746 t_end=927.8 wall=4.2
+t008b_W1_S09_CMS_H20 OK fuel=72.060483 Vdc_min=681.7295 SOC_end=0.572746 ff_act=20.00 t_end=927.8 wall=5.4
+t008b_W1_S09_CMS_H45 OK fuel=72.060483 Vdc_min=681.7295 SOC_end=0.572746 ff_act=20.00 t_end=927.8 wall=4.0
+t008b_W1_S09_CMS_H60 OK fuel=72.060483 Vdc_min=681.7295 SOC_end=0.572746 ff_act=20.00 t_end=927.8 wall=4.1
