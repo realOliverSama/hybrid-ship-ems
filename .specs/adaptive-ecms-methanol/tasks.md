@@ -11,32 +11,32 @@ Design: `./design.md`（v1.1 已批准）
 
 施工总纪律：冻结目录（`model/simulink/`、`model/simulink_modelC/`、`model/simulink_modelC_(oracle_ms)/`）全程只读；全部工作于分支 `feat/adaptive-ecms-methanol`；大型 .mat 不入库；每个任务完成后立即勾选。
 
-- [ ] 1. 建立 modelD 独立工程副本
+- [x] 1. 建立 modelD 独立工程副本
   - ID: T-001
   - Requirement(s): FR-001, NFR-001
   - Files/areas: `model/simulink_modelC/` → `model/simulink_modelD/`（排除 `.venv_tf`（符号链接复用）、`slprj`、`results`、`*.slxc`）；副本内 Model C 标识统一改 Model D（文件名+内部引用）；核对副本内 scripts 既有编号，确定 Phase 0 脚本编号段（设计建议 30 起，避让占用）
   - Validation: 副本可独立加载参数与场景配置（`Model_Parameters.m` + `Model_Scenarios.m` 运行无错）；`git status` 无冻结目录改动
 
-- [ ] 2. 真实参数修正 + BSFC 覆盖机制
+- [x] 2. 真实参数修正 + BSFC 覆盖机制
   - ID: T-002
   - Requirement(s): FR-002
   - Files/areas: `model/simulink_modelD/config/Model_Parameters.m`（`DRAWING_Bat_Cap_kWh_perString`→535.68、`Bat_Cap_kWh`→1071.36、充放电限值→1050、BSFC 额定锚点 460→453，ParamMeta 来源/置信度同步）；`10_Fuel` 查表覆盖 hook（`config/Ecms_Phase0_Config.m` 提供覆盖曲线时优先）
   - Validation: 参数加载打印值与修正清单一一对应；`parameter_audit.csv` 中修正项来源 = `DRAWING: 20260526设备参数.docx`
 
-- [ ] 3. modelD smoke 门禁（含基线重建）
+- [x] 3. modelD smoke 门禁（含基线重建）
   - ID: T-003
   - Requirement(s): FR-003
   - Files/areas: `model/simulink_modelD/scripts/03_run_smoke_tests.m`、`config/gate_baseline_smoke.json`
   - Validation: smoke overall=true。**注意**：基线重建属 🟡 操作，执行前须用户单独批准
   - Escalate if: 参数修正导致 smoke 出现非基线漂移类 FAIL（说明修正破坏了模型行为，而非参数平移）
 
-- [ ] 4. BSFC 曲线族生成器
+- [x] 4. BSFC 曲线族生成器
   - ID: T-004
   - Requirement(s): FR-004, FR-005
   - Files/areas: `model/simulink_modelD/scripts/+ecms/bsfc_family.m`、`31_build_bsfc_family.m`；输出 `results/ecms_phase0/bsfc/bsfc_family.mat` + PNG（一维三档叠加图、二维等高线图）
   - Validation: 自检全过——锚点偏差 <0.1%；[ξ_opt, 1] 区间单调不降；恶化档 d10>d25>d50≥0；加密采样无过冲（最优点为全域最小值）；二维 map 在转速维退化为 {1500} 时与一维曲线一致
 
-- [ ] 5. BSFC 锚点来源存档
+- [x] 5. BSFC 锚点来源存档
   - ID: T-005
   - Requirement(s): FR-018
   - Files/areas: `docs/bsfc_anchors_sources.md`（新建）：453 来源 = docx 条目；427 来源 = 潍柴 WH17ME 官方产品页 URL + 访问日期 2026-08-24 + 检索路径；尝试存档页面 PDF/截图
