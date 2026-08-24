@@ -13,8 +13,14 @@
 %  v2.1 变更（船型定位：长江危化品应急处置船/公务船）：
 %    服务航速 8 kn -> 11 kn。8 kn 对公务船偏慢；按功率预算与文献 R/W 区间交叉校核
 %    后取 11 kn（Fn∇≈0.57，R/W≈0.0058 处于瘦线型内河公务船合理带）。
-%    除发动机(500 kW/支路)、电池(600 kWh/支路)、推进电机(350 kW/支路)为图纸确定值外，
+%    除发动机(500 kW/支路)、电池(535.68 kWh/支路, 576V×930Ah)、推进电机(350 kW/支路)为图纸确定值外，
 %    其余水动力/质量参数均为估计值（ASSUMED/低置信度，需船模试验或 CFD 确认）。
+%  v2.2 变更（Model D / adaptive-ecms-methanol T-002，真实设备参数修正）：
+%    来源 20260526设备参数.docx（单侧值×2=聚合，见 data/20260526设备参数.md）：
+%    - 电池容量 600→535.68 kWh/支路（576 V × 930 Ah）；聚合 1200→1071.36 kWh
+%    - 电池充/放电上限 1000→1050 kW（瓶颈为双向 DC/DC 750V×700A=525 kW/侧×2；置信度升 high）
+%    - BSFC 额定针点 460→453 g/kWh @1000 kW 聚合（docx 453(+5%) @500 kW 单机）
+%    - 新增 ECMS Phase 0 BSFC 覆盖机制（ecms_bsfc_override.mat，见 §6 尾部）
 % ========================================================================
 
 %% ------------------------------------------------------------------------
@@ -33,10 +39,10 @@ AI_TPeak_Source = 0;  % t_peak 来源：0=按 AI_Pred_Source 语义，1=强制�
 DRAWING_N_PropStrings = 2;      % 推进支路数 [-]（左右舷双推进，用户确认；图纸单支路额定×2）
 V_dc_nom    = 750;    % 直流母线额定电压 [V]（DC/DC 接入母线侧；与电池电压分离）
 V_bat_nom   = 576;    % 动力电池簇标称电压 [V]（两支路并联，电压不变）
-DRAWING_Bat_Cap_kWh_perString = 600;    % 单支路电池簇标称容量 [kWh]（图纸额定）
+DRAWING_Bat_Cap_kWh_perString = 535.68; % 单支路电池簇标称容量 [kWh]（20260526设备参数.docx：576 V × 930 Ah）
 DRAWING_Gen_P_max_perString   = 500;    % 单支路发电机额定电功率 [kW]（图纸额定）
 DRAWING_Mot_P_nom_perString   = 350;    % 单支路推进电机额定电功率 [kW]（图纸额定）
-Bat_Cap_kWh = DRAWING_Bat_Cap_kWh_perString * DRAWING_N_PropStrings; % 1200 kWh（聚合）
+Bat_Cap_kWh = DRAWING_Bat_Cap_kWh_perString * DRAWING_N_PropStrings; % 1071.36 kWh（聚合）
 Gen_P_max   = DRAWING_Gen_P_max_perString   * DRAWING_N_PropStrings; % 1000 kW（聚合）
 Mot_P_nom   = DRAWING_Mot_P_nom_perString   * DRAWING_N_PropStrings; % 700  kW（聚合）
 P_hotel_nom = 100;    % 全船日用/辅机负荷 [kW]（全船级负荷，不随支路翻倍；沿用原模型 EMS_P_Hotel=100）
@@ -105,8 +111,8 @@ omega_min_radps = 0.01; % 转矩换算的最小角速度保护 [rad/s]（避免�
 % -------------------------------------------------------------------------
 ASSUMED_Gen_TimeConstant    = 5;    % 发电机平均模型一阶时间常数 [s]（原模型约1~3s，取保守值）
 ASSUMED_Gen_MinStablePower  = 0;    % 发电机最低稳定功率 [kW]（0=可怠速空载；真实机组通常为额定30~50%）
-ASSUMED_Bat_DischargeLimit  = 1000; % 电池聚合最大放电功率 [kW]（500×2；原 EMS 硬编码 500/支路）
-ASSUMED_Bat_ChargeLimit     = 1000; % 电池聚合最大充电功率 [kW]（500×2）
+ASSUMED_Bat_DischargeLimit  = 1050; % 电池聚合最大放电功率 [kW]（DC/DC 瓶颈 750V×700A=525 kW/侧×2，docx）
+ASSUMED_Bat_ChargeLimit     = 1050; % 电池聚合最大充电功率 [kW]（双向 DC/DC 同额定，docx）
 ASSUMED_Bat_Eff_Discharge   = 0.95; % 放电效率 [-]
 ASSUMED_Bat_Eff_Charge      = 0.95; % 充电效率 [-]
 ASSUMED_SOC_min             = 0.10; % SOC 下限 [-]
@@ -126,7 +132,17 @@ ASSUMED_TFF_TauMargin       = 10;   % 定时前馈到位裕量 [s]（覆盖机�
 ASSUMED_TFF_SOC_Thresh      = 0.40; % 定时前馈低SOC保守提前阈值 [-]（T-004）
 ASSUMED_TFF_SOC_AdvancePct  = 0.25; % 定时前馈低SOC爬坡时间放宽比例 [-]（T-004）
 ASSUMED_BSFC_Breakpoints    = [0 100 200 400 600 800 1000];      % BSFC 断点 [kW]（聚合功率，原断点×2）
-ASSUMED_BSFC_Table          = [1200 700 550 480 450 430 460];    % BSFC [g/kWh]（比油耗与单机相同）
+ASSUMED_BSFC_Table          = [1200 700 550 480 450 430 453];    % BSFC [g/kWh]（额定点 453 为 docx 真实针点，其余为待替代假定值）
+% --- ECMS Phase 0：BSFC 覆盖机制（design §2，保证 Baseline 与 DP 同口径，FR-006/010）---
+% 若 config/ecms_bsfc_override.mat 存在（由 +ecms/bsfc_family.m 生成，T-004），
+% 则用其中 BSFC_Breakpoints_kW / BSFC_Table_gkWh 覆盖默认假定表；不存在则静默用默认表。
+ecms_bsfc_override_file = fullfile(fileparts(mfilename('fullpath')), 'ecms_bsfc_override.mat');
+if exist(ecms_bsfc_override_file, 'file')
+    ecms_ov = load(ecms_bsfc_override_file);
+    ASSUMED_BSFC_Breakpoints = ecms_ov.BSFC_Breakpoints_kW;
+    ASSUMED_BSFC_Table       = ecms_ov.BSFC_Table_gkWh;
+    fprintf('[Model_Parameters] ECMS BSFC 覆盖生效：%s\n', ecms_ov.override_tag);
+end
 ASSUMED_TargetSpeed         = 5.66;  % 默认目标航速 [m/s]（11 kn 服务航速；功率受限极速 ≈11.5 kn）
 ASSUMED_VoyageDistance      = 5000; % 默认航程 [m]
 ASSUMED_RiverCurrentSpeed   = 1.0;  % 河流流速幅值 [m/s]（S02 顺水 +、S03 逆水 -）
@@ -177,10 +193,10 @@ ParamMeta = {
   'DRAWING_N_PropStrings'           '-'        'DRAWING: 双支路(用户确认)'     'high'      '派生全部聚合额定'           false
   'V_dc_nom'                        'V'        'DRAWING: 系统图'               'high'      '08_Power_Availability'      false
   'V_bat_nom'                       'V'        'DRAWING: 系统图'               'high'      '07_Battery_Energy'          false
-  'DRAWING_Bat_Cap_kWh_perString'   'kWh'      'DRAWING: 图纸额定/支路'        'high'      '派生 Bat_Cap_kWh'           false
+  'DRAWING_Bat_Cap_kWh_perString'   'kWh'      'DRAWING: 20260526设备参数.docx/支路' 'high'   '派生 Bat_Cap_kWh'           false
   'DRAWING_Gen_P_max_perString'     'kW'       'DRAWING: 图纸额定/支路'        'high'      '派生 Gen_P_max'             false
   'DRAWING_Mot_P_nom_perString'     'kW'       'DRAWING: 图纸额定/支路'        'high'      '派生 Mot_P_nom'             false
-  'Bat_Cap_kWh'                     'kWh'      'DRAWING: 600×2 聚合'           'high'      '07_Battery_Energy'          false
+  'Bat_Cap_kWh'                     'kWh'      'DRAWING: 535.68×2 聚合'        'high'      '07_Battery_Energy'          false
   'Gen_P_max'                       'kW'       'DRAWING/LEGACY: 500×2 聚合'    'high'      '05/06/08'                   false
   'Mot_P_nom'                       'kW'       'DRAWING/LEGACY: 350×2 聚合'    'high'      '02/03/08'                   false
   'P_hotel_nom'                     'kW'       'LEGACY: EMS_P_Hotel'           'medium'    '01/04'                      true
@@ -211,8 +227,8 @@ ParamMeta = {
   'omega_min_radps'                 'rad/s'    'Model 实现细节'              'high'      '03_Propulsion'              false
   'ASSUMED_Gen_TimeConstant'        's'        'ASSUMED'                       'low'       '06_Genset'                  true
   'ASSUMED_Gen_MinStablePower'      'kW'       'ASSUMED'                       'low'       '06_Genset'                  true
-  'ASSUMED_Bat_DischargeLimit'      'kW'       'ASSUMED(500×2 聚合)'           'low'       '07/08'                      true
-  'ASSUMED_Bat_ChargeLimit'         'kW'       'ASSUMED(500×2 聚合)'           'low'       '07/08'                      true
+  'ASSUMED_Bat_DischargeLimit'      'kW'       'DRAWING: DC/DC 750V×700A×2'    'high'      '07/08'                      false
+  'ASSUMED_Bat_ChargeLimit'         'kW'       'DRAWING: DC/DC 750V×700A×2'    'high'      '07/08'                      false
   'ASSUMED_Bat_Eff_Discharge'       '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
   'ASSUMED_Bat_Eff_Charge'          '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
   'ASSUMED_SOC_min'                 '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
@@ -232,7 +248,7 @@ ParamMeta = {
   'ASSUMED_TFF_SOC_Thresh'          '-'        'ASSUMED(T-004)'                'low'       '05_EMS_ScheduledFF(C)'      true
   'ASSUMED_TFF_SOC_AdvancePct'      '-'        'ASSUMED(T-004)'                'low'       '05_EMS_ScheduledFF(C)'      true
   'ASSUMED_BSFC_Breakpoints'        'kW'       'ASSUMED(原表断点×2)'           'low'       '10_Fuel'                    true
-  'ASSUMED_BSFC_Table'              'g/kWh'    'ASSUMED(原模型查表)'           'low'       '10_Fuel'                    true
+  'ASSUMED_BSFC_Table'              'g/kWh'    'ASSUMED(额定针点453=docx真实值)' 'low'    '10_Fuel'                    true
   'ASSUMED_TargetSpeed'             'm/s'      'ASSUMED(11 kn 服务航速)'     'low'       '01_Scenario'                true
   'ASSUMED_VoyageDistance'          'm'        'ASSUMED'                       'low'       '11_Voyage_Stop'             true
   'ASSUMED_RiverCurrentSpeed'       'm/s'      'ASSUMED'                       'low'       '01_Scenario'                true
