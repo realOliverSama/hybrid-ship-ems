@@ -11,9 +11,9 @@ function results = test_ecms_law(ROOT)
 %   6. law=5 SOC-Adaptive ECMS（离线）：SOC>ref 时 λ 下降（电池更便宜）、
 %      SOC<ref 时 λ 上升；与独立 λ_eff 穷举一致；K_soc=0 退化回 law=4
 %   7. Simulink 块（EMS_CTRL_LAW=5）与离线 ecms_law law=5 同输入同输出（容差 0）
-%   8. law=6 Oracle Predictive A-ECMS（离线，design §3.2）：ê_future>0 -> λ 升
-%      （保电方向 Pg 不降）且 ê_future<0 -> λ 降（Pg 不升）；与独立 λ_eff 穷举一致；
-%      K_E=0 退化回 law=5；e_hat=0 时 law=6 ≡ law=5
+%   8. law=6 Oracle Predictive A-ECMS（离线，design §3.2 + v1.1）：SOC_ref 通道——
+%      ê_future>0 -> SOC_ref 升 -> λ 升（保电方向 Pg 不降）且 ê_future<0 -> λ 降（Pg 不升）；
+%      λ_eff 下限钳位（K_S>0 时 max(λ_eff, floor)）；K_S=0 完全退化回 law=5
 %   9. Simulink 块（EMS_CTRL_LAW=6）与离线 ecms_law law=6 同输入同输出（容差 0）
 %
 %  前置: 10_build_modelD.m 已重建模型（含 law=4/5/6 变体）。
@@ -37,7 +37,7 @@ function results = test_ecms_law(ROOT)
                't5', 'Simulink块(law=4) vs 离线实现（容差0）', ...
                't6', 'law=5 自适应：SOC>ref λ降 / SOC<ref λ升 + 穷举一致', ...
                't7', 'Simulink块(law=5) vs 离线实现（容差0）', ...
-               't8', 'law=6 oracle：ê>0 λ升(保电) / ê<0 λ降 + 穷举一致 + 退化', ...
+               't8', 'law=6 v2 oracle：ê>0 λ升(保电) / ê<0 λ降 + 钳位 + 退化 + 穷举一致', ...
                't9', 'Simulink块(law=6) vs 离线实现（容差0）');
 
     %% ---- Test 1: 恒定需求稳态，与独立穷举一致（<2%）----
@@ -118,40 +118,52 @@ function results = test_ecms_law(ROOT)
     assert(Pg6d == Pg6c4, 'ECMS2:TEST', 'T6c FAIL: K_soc=0 应退化回 law=4（%g≠%g）', Pg6d, Pg6c4);
     r.t6 = Pg6b;
 
-    %% ---- Test 8: law=6 Oracle Predictive A-ECMS（离线，design §3.2，T-106）----
+    %% ---- Test 8: law=6 Oracle Predictive A-ECMS（离线，design §3.2 + v1.1，T-106）----
     lam8 = p.lambda;   % λ₀
-    % 8a: ê_future 高于均值 -> λ_eff 上升（保电方向：λ 升 -> Pg 不降）
-    le_hi6 = lam8 + p.k_soc * (p.soc_ref - 0.60) + p.k_e * 1.5;
-    le_lo6 = lam8 + p.k_soc * (p.soc_ref - 0.60) + p.k_e * (-1.5);
-    le_z6  = lam8 + p.k_soc * (p.soc_ref - 0.60);
-    fprintf('[T8a] λ₀=%.4f K_soc=%.2f K_E=%.4f: λ_eff(ê=+1.5)=%.4f λ_eff(ê=0)=%.4f λ_eff(ê=-1.5)=%.4f\n', ...
-        lam8, p.k_soc, p.k_e, le_hi6, le_z6, le_lo6);
-    assert(le_hi6 > le_z6 + 1e-12 && le_lo6 < le_z6 - 1e-12, 'ECMS2:TEST', ...
-        'T8a FAIL: 前瞻项方向错误（ê>0 应 λ 升、ê<0 应 λ 降）');
-    Pg8_hi = ecms2.ecms_law(700, 0.60, lam8, p, 6, 1.5);
-    Pg8_z  = ecms2.ecms_law(700, 0.60, lam8, p, 6, 0.0);
-    Pg8_lo = ecms2.ecms_law(700, 0.60, lam8, p, 6, -1.5);
+    p8 = p; p8.k_s = 0.05;   % 激活 oracle 通道（SOC_ref 调制 + 下限钳位）
+    % 8a: ê_future > 0 -> SOC_ref_eff 升 -> λ_eff 升（保电方向：λ 升 -> Pg 不降）；
+    %     ê_future < 0 -> SOC_ref_eff 降 -> λ_eff 降（Pg 不升）
+    le_hi8 = max(lam8 + p8.k_soc * (p8.soc_ref + p8.k_s * 1.5 - 0.60), p8.lambda_floor);
+    le_lo8 = max(lam8 + p8.k_soc * (p8.soc_ref + p8.k_s * (-1.5) - 0.60), p8.lambda_floor);
+    le_z8  = max(lam8 + p8.k_soc * (p8.soc_ref - 0.60), p8.lambda_floor);
+    fprintf('[T8a] λ₀=%.4f K_soc=%.2f K_S=%.2f floor=%.3f: λ_eff(ê=+1.5)=%.4f λ_eff(ê=0)=%.4f λ_eff(ê=-1.5)=%.4f\n', ...
+        lam8, p8.k_soc, p8.k_s, p8.lambda_floor, le_hi8, le_z8, le_lo8);
+    assert(le_hi8 > le_z8 + 1e-12 && le_lo8 <= le_z8 + 1e-12, 'ECMS2:TEST', ...
+        'T8a FAIL: SOC_ref 通道方向错误（ê>0 应 λ 升、ê<0 应 λ 不升）');
+    Pg8_hi = ecms2.ecms_law(700, 0.60, lam8, p8, 6, 1.5);
+    Pg8_z  = ecms2.ecms_law(700, 0.60, lam8, p8, 6, 0.0);
+    Pg8_lo = ecms2.ecms_law(700, 0.60, lam8, p8, 6, -1.5);
     fprintf('[T8a] P_load=700 SOC=0.60: Pg(ê=+1.5)=%g Pg(ê=0)=%g Pg(ê=-1.5)=%g\n', ...
         Pg8_hi, Pg8_z, Pg8_lo);
     assert(Pg8_hi >= Pg8_z && Pg8_lo <= Pg8_z, 'ECMS2:TEST', ...
         'T8a FAIL: 前瞻保电方向错误（ê>0 Pg 应不降、ê<0 Pg 应不升）');
-    % 8b: 与独立 λ_eff 穷举一致（<2%，同 T1 容差口径）
-    [Pg8r, J8r] = refArgmin(700, 0.60, le_hi6, p);
-    rel8 = abs(Pg8_hi - Pg8r) / max(Pg8r, 1);
-    fprintf('[T8b] ê=+1.5: law6 Pg*=%g | 独立 λ_eff 穷举 Pg*=%g (J=%.6g) | rel=%.4g\n', ...
-        Pg8_hi, Pg8r, J8r, rel8);
-    assert(rel8 < 0.02, 'ECMS2:TEST', ...
-        'T8b FAIL: law=6 Pg*=%.0f 与独立 λ_eff 穷举 %.0f 偏差 %.3g%% > 2%%', ...
-        Pg8_hi, Pg8r, 100 * rel8);
-    % 8c: K_E=0 -> law=6 退化回 law=5；e_hat=0 -> law6 ≡ law5
-    p8c = p; p8c.k_e = 0;
+    % 8b: λ_eff 下限钳位（design v1.1）：K_S>0 且 ê 很负 -> λ_eff = floor，且与独立穷举一致
+    le_fl = max(lam8 + p8.k_soc * (p8.soc_ref + p8.k_s * (-10) - 0.60), p8.lambda_floor);
+    Pg8b = ecms2.ecms_law(700, 0.60, lam8, p8, 6, -10.0);
+    [Pg8r, J8r] = refArgmin(700, 0.60, p8.lambda_floor, p8);
+    fprintf('[T8b] ê=-10: λ_eff=%g（floor=%g）Pg*=%g | 独立 floor 穷举 Pg*=%g (J=%.6g)\n', ...
+        le_fl, p8.lambda_floor, Pg8b, Pg8r, J8r);
+    assert(abs(le_fl - p8.lambda_floor) < 1e-12, 'ECMS2:TEST', ...
+        'T8b FAIL: ê 很负时 λ_eff 应钳到 floor=%g（实际 %g）', p8.lambda_floor, le_fl);
+    assert(Pg8b == Pg8r, 'ECMS2:TEST', ...
+        'T8b FAIL: 钳位点 Pg*=%g 与独立 floor 穷举 %g 不一致', Pg8b, Pg8r);
+    % 8c: K_S=0 -> law=6 完全退化为 law=5（任意 ê；方案 A 收尾语义）
+    p8c = p; p8c.k_s = 0;
     Pg8c5 = ecms2.ecms_law(700, 0.70, lam8, p, 5);
     Pg8d1 = ecms2.ecms_law(700, 0.70, lam8, p8c, 6, 2.0);
-    Pg8d2 = ecms2.ecms_law(700, 0.70, lam8, p, 6, 0.0);
-    fprintf('[T8c] K_E=0: law6 Pg=%g vs law5 Pg=%g | e_hat=0: law6 Pg=%g vs law5 Pg=%g\n', ...
-        Pg8d1, Pg8c5, Pg8d2, Pg8c5);
-    assert(Pg8d1 == Pg8c5, 'ECMS2:TEST', 'T8c FAIL: K_E=0 应退化回 law=5（%g≠%g）', Pg8d1, Pg8c5);
-    assert(Pg8d2 == Pg8c5, 'ECMS2:TEST', 'T8c FAIL: e_hat=0 时 law=6 应≡law=5（%g≠%g）', Pg8d2, Pg8c5);
+    Pg8d2 = ecms2.ecms_law(700, 0.70, lam8, p8c, 6, -3.0);
+    fprintf('[T8c] K_S=0: law6(ê=2) Pg=%g law6(ê=-3) Pg=%g vs law5 Pg=%g\n', ...
+        Pg8d1, Pg8d2, Pg8c5);
+    assert(Pg8d1 == Pg8c5 && Pg8d2 == Pg8c5, 'ECMS2:TEST', ...
+        'T8c FAIL: K_S=0 应完全退化回 law=5（%g/%g ≠ %g）', Pg8d1, Pg8d2, Pg8c5);
+    % 8d: 与独立 λ_eff（含钳位）穷举一致（<2%，同 T1 容差口径）
+    [Pg8r2, J8r2] = refArgmin(700, 0.60, le_hi8, p8);
+    rel8 = abs(Pg8_hi - Pg8r2) / max(Pg8r2, 1);
+    fprintf('[T8d] ê=+1.5: law6 Pg*=%g | 独立 λ_eff 穷举 Pg*=%g (J=%.6g) | rel=%.4g\n', ...
+        Pg8_hi, Pg8r2, J8r2, rel8);
+    assert(rel8 < 0.02, 'ECMS2:TEST', ...
+        'T8d FAIL: law=6 Pg*=%.0f 与独立 λ_eff 穷举 %.0f 偏差 %.3g%% > 2%%', ...
+        Pg8_hi, Pg8r2, 100 * rel8);
     r.t8 = Pg8_hi;
 
     %% ---- Test 5: Simulink 块（law=4） vs 离线实现（容差 0）----
@@ -244,6 +256,7 @@ function results = test_ecms_law(ROOT)
     ehatTest = 1.5 * sin(tTest / 40) + 0.6 * cos(tTest / 120);
     EfDummy  = 100 * ones(size(tTest));   % E_future 列仅作通道占位（law=6 取第 3 列 ê）
     assignin('base', 'ECMS_EHat_Data', [tTest, EfDummy, ehatTest]);
+    assignin('base', 'ECMS_K_S', 0.05);   % 激活 v2 oracle 通道（SOC_ref 调制 + 钳位）
     SCN.voyage_distance_m = 2000;
     stopTimeLimit = SCN.voyage_distance_m / SCN.target_speed_mps + 1800;
     out = model.run_scenario_sim(MDL, SCN, 6, stopTimeLimit);

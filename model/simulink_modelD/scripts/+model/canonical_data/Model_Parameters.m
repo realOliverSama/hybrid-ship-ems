@@ -166,10 +166,11 @@ ASSUMED_V_floor = 50;       % 功率-电流换算电压下限保护 [V]
 ASSUMED_BSFC_Avg_gkWh = mean(ASSUMED_BSFC_Table(3:end)); % BSFC 表工作区均值 ≈474 [g/kWh]
 ASSUMED_k_eq_FEC = ASSUMED_BSFC_Avg_gkWh / (1000 * ASSUMED_Bat_Eff_Charge); % ≈0.499 [kg/kWh]
 
-%% ECMS Phase 1（T-103~T-106，EMS_CTRL_LAW=4/5/6；design §3.1/§3.2，FR-104~107）
+%% ECMS Phase 1（T-103~T-106，EMS_CTRL_LAW=4/5/6；design §3.1/§3.2，FR-104~107；law=6 修订 v2 见 design Amendment Log v1.1）
 ECMS_Lambda = 0.425; % Fixed ECMS λ 常数 [kg/kWh]（T-104 标定：S01×tier2 使 SOC_end∈0.60±0.005）
 ECMS_K_soc = 30;   % SOC-Adaptive ECMS K_soc [kg/kWh/SOC]（law=5，design §3.2；T-105 标定注入）
-ECMS_K_E = 0;   % Oracle Predictive A-ECMS K_E [kg/kWh]（law=6，design §3.2；T-106 标定注入；oracle 上界验证，非实时可实现 E5）
+ECMS_K_S = 0.01;     % Oracle Predictive A-ECMS K_S [-]（law=6 v2：SOC_ref(t)=0.60+K_S·ê_future(t)，design v1.1；T-106 标定注入；oracle 上界验证，非实时可实现 E5）
+ECMS_Lambda_Floor = 0.43; % law=6 v2 λ_eff 下限钳位 [kg/kWh]（悬崖 0.41 + 0.02 裕量，防发电塌缩支路，design v1.1）
 ECMS_SOC_Ref           = 0.60;  % SOC-Adaptive ECMS SOC 参考值 [-]（law=5，design §3.2）
 ECMS_SOC_Discharge_Max = 0.105;  % SOC ≤ 此值禁放电（硬约束，优先于 λ，design §3.1）
 ECMS_SOC_Charge_Min    = 0.945;  % SOC ≥ 此值禁充电（硬约束）
@@ -202,7 +203,8 @@ ParamMeta = {
   'EMS_CTRL_LAW'                     '-'        'Model D 配置 (T-003)'        'high'      '05_EMS_Controller'          false
   'ECMS_Lambda'                      'kg/kWh'   'Phase 1 design §3.1（T-104 标定）' 'low'     '05_EMS_Controller(ECMS4/5)'  false
   'ECMS_K_soc'                       'kg/kWh/SOC' 'Phase 1 design §3.2（T-105 标定）' 'low'    '05_EMS_Controller(ECMS5)'   false
-  'ECMS_K_E'                         'kg/kWh'   'Phase 1 design §3.2（T-106 标定；oracle 上界验证，非实时可实现 E5）' 'low' '05_EMS_Controller(ECMS6)' false
+  'ECMS_K_S'                         '-'        'Phase 1 design v1.1（T-106 标定；oracle 上界验证，非实时可实现 E5）' 'low' '05_EMS_Controller(ECMS6)' false
+  'ECMS_Lambda_Floor'                'kg/kWh'   'Phase 1 design v1.1（λ 悬崖 0.41+0.02 裕量）' 'low'  '05_EMS_Controller(ECMS6)' false
   'ECMS_SOC_Ref'                     '-'        'Phase 1 design §3.2'        'low'       '05_EMS_Controller(ECMS5)'   false
   'ECMS_SOC_Discharge_Max'           '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
   'ECMS_SOC_Charge_Min'              '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false

@@ -161,3 +161,7 @@ recommendation:
 ## 9. 未决项
 
 - OQ-11 已在本版定案（§3.2 law=6 形式）；OQ-12 单点标定（§3.4）；OQ-13 不阻塞。
+
+## Design Amendment Log
+
+- v1.1（2026-08-24，T-106 实施修订，主 Agent 裁决）：law=6 前瞻律由 **additive λ 形式（λ += K_E·ê）改为 SOC_ref 通道形式**——SOC_ref(t) = 0.60 + K_S·ê_future(t)，λ(t) = λ₀ + K_soc·(SOC_ref(t) − SOC(t))，并加 λ_eff 下限钳位 max(λ_eff, 0.43)。原因：v1 在 S20 上所有非零 K_E 档均劣于 law=5（fuel_corr 随 K_E 单调恶化），机理为 λ 悬崖（~0.41）非对称响应——ê<0 支路把 λ 压过放电阈值导致发电塌缩透支 SOC，ê>0 支路发电抬升有限。v2 经已标定的 K_soc 反馈通路作用，避开悬崖。K_S 标定结果：K_S=0.01 合格，S20 fuel_corr 330.66→324.96 kg（**oracle 增量 +1.63 pp**），证明预测经 SOC_ref 通道有真实经济性价值。若 v2 也失败则接受“此 law 族无 oracle 增量”的 RQ3 结论——实际未触发。

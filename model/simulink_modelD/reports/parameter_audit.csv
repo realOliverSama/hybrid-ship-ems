@@ -4,7 +4,8 @@ EMS_MODE,1,-,Model 配置(兼容列),high,05_EMS_Controller,false
 EMS_CTRL_LAW,6,-,Model D 配置 (T-003),high,05_EMS_Controller,false
 ECMS_Lambda,0.425,kg/kWh,Phase 1 design §3.1（T-104 标定）,low,05_EMS_Controller(ECMS4/5),false
 ECMS_K_soc,30,kg/kWh/SOC,Phase 1 design §3.2（T-105 标定）,low,05_EMS_Controller(ECMS5),false
-ECMS_K_E,0.05,kg/kWh,Phase 1 design §3.2（T-106 标定；oracle 上界验证，非实时可实现 E5）,low,05_EMS_Controller(ECMS6),false
+ECMS_K_S,0,-,Phase 1 design v1.1（T-106 标定；oracle 上界验证，非实时可实现 E5）,low,05_EMS_Controller(ECMS6),false
+ECMS_Lambda_Floor,0.43,kg/kWh,Phase 1 design v1.1（λ 悬崖 0.41+0.02 裕量）,low,05_EMS_Controller(ECMS6),false
 ECMS_SOC_Ref,0.6,-,Phase 1 design §3.2,low,05_EMS_Controller(ECMS5),false
 ECMS_SOC_Discharge_Max,0.105,-,Phase 1 design §3.1 硬约束,low,05_EMS_Controller(ECMS4),false
 ECMS_SOC_Charge_Min,0.945,-,Phase 1 design §3.1 硬约束,low,05_EMS_Controller(ECMS4),false

@@ -11,11 +11,16 @@ function Pg_star = ecms_law(P_demand, SOC, lambda, params, law, e_hat)
 %   law=4（Fixed ECMS，T-103）：λ(t) = λ（常数输入）。
 %   law=5（SOC-Adaptive ECMS，T-105，design §3.2）：λ(t) = λ + K_soc·(SOC_ref − SOC)，
 %     其中 λ 为 λ₀（ECMS_Lambda），K_soc=params.k_soc，SOC_ref=params.soc_ref=0.60。
-%   law=6（Oracle Predictive A-ECMS，T-106，design §3.2）：law=5 叠加前瞻项
-%     λ(t) = λ + K_soc·(SOC_ref − SOC) + K_E·ê_future(t)，K_E=params.k_e（ECMS_K_E）；
+%   law=6（Oracle Predictive A-ECMS，T-106，design §3.2 + Amendment Log v1.1）：
+%     v2（定案）：预测改走 SOC_ref 通道，不再直接加在 λ 上——
+%       SOC_ref_eff(t) = SOC_ref + K_S·ê_future(t)（K_S=params.k_s，ECMS_K_S）
+%       λ(t) = λ₀ + K_soc·(SOC_ref_eff(t) − SOC(t))
+%       λ_eff 下限钳位：λ_eff = max(λ_eff, params.lambda_floor)（0.43，悬崖 0.41+0.02 裕量，
+%       防发电塌缩支路；机理：预测经已标定 K_soc 通路作用，避免直接戳 λ 悬崖）
 %     ê_future 由 +ecms2/oracle_future_energy.m 对真实未来需求剖面离线预计算
 %     （(E_future_H(t)−Ē_H)/E_scale，H=300 s）。
 %     **红线（E5，FR-107）**：oracle 前瞻信息非实时可实现，law=6 仅为上界/增量验证工具。
+%     （v1 直接加法 K_E·ê 已于 S20 标定证伪——透支电池致 fuel_corr 劣化，见 kE_calibration.json）
 %
 %   Simulink law=4 变体（EMS_Fixed_ECMS）、law=5 变体（EMS_SOC_Adaptive_ECMS）
 %   与 law=6 变体（EMS_Oracle_ECMS）的 MATLAB Function 块内联同一算法
@@ -34,7 +39,7 @@ function Pg_star = ecms_law(P_demand, SOC, lambda, params, law, e_hat)
 %
 %  用法: Pg = ecms2.ecms_law(700, 0.60, 0.425);           % law=4
 %        Pg = ecms2.ecms_law(700, 0.70, 0.425, p, 5);     % law=5（SOC 高于 ref）
-%        Pg = ecms2.ecms_law(700, 0.60, 0.425, p, 6, 1.5); % law=6（E_future 高于均值）
+%        Pg = ecms2.ecms_law(700, 0.60, 0.425, p, 6, 1.5); % law=6 v2（E_future 高于均值 -> SOC_ref 升）
     if nargin < 4 || isempty(params)
         params = ecms2.ecms_params();
     end
@@ -49,11 +54,19 @@ function Pg_star = ecms_law(P_demand, SOC, lambda, params, law, e_hat)
     end
     if law == 5 || law == 6
         % design §3.2：SOC 高于 SOC_ref -> λ 下降（电池更便宜）；低于 -> λ 上升
-        lambda = lambda + params.k_soc * (params.soc_ref - SOC);
+        soc_ref_eff = params.soc_ref;
         if law == 6
-            % design §3.2：未来高能量需求（ê_future>0）-> λ 上升 -> 保留电池（保电方向）
-            % 红线 E5：oracle 前瞻非实时可实现，仅上界验证
-            lambda = lambda + params.k_e * e_hat;
+            % design v1.1（T-106 v2）：预测经 SOC_ref 通道作用——ê>0（未来高需求）->
+            % SOC_ref 升 -> λ 升 -> 提前保留/回充电量（保电方向）
+            soc_ref_eff = params.soc_ref + params.k_s * e_hat;
+        end
+        lambda = lambda + params.k_soc * (soc_ref_eff - SOC);
+        if law == 6
+            % design v1.1：λ_eff 下限钳位（悬崖 0.41 + 0.02 裕量，防发电塌缩支路）。
+            % 仅当 oracle 通道激活（K_S≠0）时生效——K_S=0 时 law=6 ≡ law=5（方案 A 收尾语义）
+            if params.k_s ~= 0
+                lambda = max(lambda, params.lambda_floor);
+            end
         end
     end
     grid = params.grid_kW;
