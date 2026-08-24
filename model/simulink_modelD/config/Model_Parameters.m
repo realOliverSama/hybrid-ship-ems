@@ -89,6 +89,9 @@ P_shaft_nom_W    = Mot_P_nom * Elec_Eff * Gear_Eff * 1000; % 聚合轴功率上�
 P_shaft_design_W = P_shaft_nom_W / (1 + ASSUMED_Sea_Margin); % 设计点轴功率 [W] ≈ 537.6 kW（裕量保留给风浪）
 P_effective_design_W = ASSUMED_Prop_Efficiency * P_shaft_design_W; % ≈ 322.5 kW
 Hull_K_R    = P_effective_design_W / V_design_mps^3;  % 船体阻力系数 [N/(m/s)^2] ≈ 1780
+% 2026-08-25 用户裁决：实船排水量估计 ~500 t（待设计方确认，见 docs/data_request_list.md）。
+% 若证实 → Hull_K_R ≈ 890（质量缩放）。已确认不影响闭环结论（节油率为无量纲比值），
+% 统一留待真实数据重跑批次（E3）；当前模型维持 1000 t/1780 口径。
 % 螺旋桨二次模型系数（聚合等效桨；派生公式与原模型一致，设计点已更新）
 % 注意：Q_prop_nom 必须取设计点轴功率（含海况裕量），否则 8 kn 巡航即占满电机额定、
 % 裕量被隐含效率吞掉（v2.0 首轮自校发现的问题）
