@@ -149,3 +149,9 @@ P_min 档影响（8 场景均值，连续口径；图 `fig_pmin_sensitivity.png`
 ---
 
 *生成：主 Agent 撰写（T-016）；图表 scripts/36_make_phase0_report.m；数据 results/ecms_phase0/{runs.csv, gate_result.json, repro_check.json, convergence_S07.json}。*
+
+---
+
+## 附录：用户裁决（2026-08-24）
+
+机器判定 `DECISION_REQUIRED` 保持不变；用户人工裁决：**GO_TO_PHASE1**（brainstorm D13）。Phase 1 前置任务：复合航次场景构造（1~2h 多工况拼接）+ 设备方参数落地后冻结评估基准。研究诚信红线：不得人为恶化硬件参数/设计点匹配以膨胀收益；场景多样化仅走真实运行工况方向。

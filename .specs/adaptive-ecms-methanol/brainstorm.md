@@ -49,6 +49,7 @@ Created: 2026-08-24
 - D10（2026-08-24，采纳）：Gate 三档分级——GO_ROBUST（保守档 +30% 恶化下 ≥4/8 场景 ≥5% 且非平凡）/ DECISION_REQUIRED（含仅中高档达标的 CONDITIONAL）/ NO-GO（三档全 <2%）；
 - D11（2026-08-24，采纳）：Phase 2 不预设负荷预测；先研究 s* = f(SOC, 负荷, 工况, ...) 状态反馈自适应等效因子；预测仅在 Fixed/A-ECMS 与 DP 有明显 gap 且消融证明有效时加入；
 - D12（2026-08-24，采纳）：工程严谨性打包修正——终端 SOC 对称带 |ΔSOC|≤0.005；P_demand 因果隔离（降额上游提取 + 双控制律不变性验证）；DP/Baseline 同物理可行域条件校验；电池符号约定写死；427 锚点来源存档（FR-018）。
+- D13（2026-08-24，用户裁决）：**Phase 0 人工裁决 GO_TO_PHASE1**。机器 gate 保持 DECISION_REQUIRED 不变。Phase 1 前置任务：(1) 构造 1~2h 复合航次场景（离泊机动/加速/巡航/限速区/减速/靠泊拼接）并重跑 DP 上限；(2) 设备方参数（最低稳定负荷、爬坡率、分工况油耗点）落地后冻结 Phase 1 评估基准。Phase 1 顺序：Fixed ECMS → SOC-Adaptive ECMS → Oracle Predictive A-ECMS → NN Predictive A-ECMS（消融链 C0/C1/C2/C3/C4 + DP 标杆）；预测定位为分钟级能量分配而非秒级瞬态前馈；**研究诚信红线：不得人为恶化硬件参数/设计点匹配以膨胀收益，场景多样化只能走真实运行工况（如经济航速/慢速航行）方向，所有偏离设计点的设置必须在论文中明示**。
 
 ## Remaining Doubts（待澄清，按优先级）
 
