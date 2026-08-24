@@ -126,3 +126,17 @@ model/simulink_modelC/.venv_tf
 model/simulink_modelC/.venv_tf/
 model/simulink_modelC/results/phase1/sensitivity/
 model/simulink_modelC/results/phase1/S*/
+
+# ==========================================================
+# 本地数据与大型仿真产物加固（2026-08-25 用户批准，AGENTS.md §13）
+# ==========================================================
+
+# 本地原始数据与临时实验目录（本地暂存，永不入库）
+data/
+experiments/
+
+# modelD 仿真产物：大体积 .mat（profiles/dp/runs）与复现/门禁临时目录不入库
+# （runs.csv / *.json / *.png / *.md 报告仍入库）
+model/simulink_modelD/results/**/*.mat
+model/simulink_modelD/results/**/repro_tmp/
+model/simulink_modelD/results/**/_gate_ut/
