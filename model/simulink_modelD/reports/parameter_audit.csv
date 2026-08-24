@@ -1,7 +1,13 @@
 parameter,value,unit,source,confidence,used_by,needs_confirmation
 Model_SystemScope,twin_string_equivalent,-,Model 配置 (v2.0 双支路等效),high,全部,false
 EMS_MODE,1,-,Model 配置(兼容列),high,05_EMS_Controller,false
-EMS_CTRL_LAW,2,-,Model D 配置 (T-003),high,05_EMS_Controller,false
+EMS_CTRL_LAW,4,-,Model D 配置 (T-003),high,05_EMS_Controller,false
+ECMS_Lambda,0.4774,kg/kWh,Phase 1 design §3.1 λ₀,low,05_EMS_Controller(ECMS4),false
+ECMS_SOC_Discharge_Max,0.105,-,Phase 1 design §3.1 硬约束,low,05_EMS_Controller(ECMS4),false
+ECMS_SOC_Charge_Min,0.945,-,Phase 1 design §3.1 硬约束,low,05_EMS_Controller(ECMS4),false
+ECMS_Idle_Fuel_kgph,6.795,kg/h,Phase 1 design §3.1 / T-004,low,05_EMS_Controller(ECMS4),false
+ECMS_Grid_dP_kW,20,kW,Phase 1 design §3.1,low,05_EMS_Controller(ECMS4),false
+ECMS_dt_ctrl_s,1,s,Phase 1 design §3.1,low,05_EMS_Controller(ECMS4),false
 AI_Pred_Source,0,-,Model 配置,high,05_EMS_Controller,false
 AI_TPeak_Source,0,-,Model D 配置 (T-002),high,05_EMS_AI,false
 DRAWING_N_PropStrings,2,-,DRAWING: 双支路(用户确认),high,派生全部聚合额定,false

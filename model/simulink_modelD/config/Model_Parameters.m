@@ -28,7 +28,7 @@
 % -------------------------------------------------------------------------
 Model_SystemScope = "twin_string_equivalent"; % 双支路等效聚合模型（v2.0）
 EMS_MODE      = 0;    % 兼容列（= double(EMS_CTRL_LAW>0)），日志 ems_mode 用
-EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004)
+EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004) 4=EMS_Fixed_ECMS(T-103)
 AI_Pred_Source = 0;   % 预测源：0=Disabled/Persistence，1=FromWorkspace，2=External(STM32N6 预留)，3=EmbeddedML(环内推理)
 AI_TPeak_Source = 0;  % t_peak 来源：0=按 AI_Pred_Source 语义，1=强制取 AI_Oracle_Data 第3列(真值, E3 用)
 
@@ -166,6 +166,14 @@ ASSUMED_V_floor = 50;       % 功率-电流换算电压下限保护 [V]
 ASSUMED_BSFC_Avg_gkWh = mean(ASSUMED_BSFC_Table(3:end)); % BSFC 表工作区均值 ≈474 [g/kWh]
 ASSUMED_k_eq_FEC = ASSUMED_BSFC_Avg_gkWh / (1000 * ASSUMED_Bat_Eff_Charge); % ≈0.499 [kg/kWh]
 
+%% ECMS Phase 1（T-103，EMS_CTRL_LAW=4 Fixed ECMS；design §3.1，FR-104）
+ECMS_Lambda            = 0.4774; % Fixed ECMS λ 常数 [kg/kWh]（λ₀ 设计起点；T-104 标定注入）
+ECMS_SOC_Discharge_Max = 0.105;  % SOC ≤ 此值禁放电（硬约束，优先于 λ，design §3.1）
+ECMS_SOC_Charge_Min    = 0.945;  % SOC ≥ 此值禁充电（硬约束）
+ECMS_Idle_Fuel_kgph    = 6.795;  % 机组怠速燃油 [kg/h]（P_g=0，连续口径，与 T-004 fam 一致）
+ECMS_Grid_dP_kW        = 20;     % ECMS 控制网格步长 [kW]（可行集 [0:20:1000]，P_min=0 口径）
+ECMS_dt_ctrl_s         = 1;      % ECMS 控制周期 [s]（design §3.1 Δt_ctrl）
+
 %% CCS 2026《船舶应用直流综合电力系统指南》电能质量判据（来源：CCS 指南，置信度 high）
 CCS_Vdc_Steady_Band    = V_dc_nom * [0.90 1.06];   % 稳态 [675 795] V
 CCS_Vdc_Transient_Band = V_dc_nom * [0.80 1.07];   % 瞬态 [600 802.5] V
@@ -188,6 +196,12 @@ ParamMeta = {
   'Model_SystemScope'              '-'        'Model 配置 (v2.0 双支路等效)' 'high'      '全部'                     false
   'EMS_MODE'                        '-'        'Model 配置(兼容列)'          'high'      '05_EMS_Controller'          false
   'EMS_CTRL_LAW'                     '-'        'Model D 配置 (T-003)'        'high'      '05_EMS_Controller'          false
+  'ECMS_Lambda'                      'kg/kWh'   'Phase 1 design §3.1 λ₀'      'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_SOC_Discharge_Max'           '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_SOC_Charge_Min'              '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_Idle_Fuel_kgph'              'kg/h'     'Phase 1 design §3.1 / T-004' 'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_Grid_dP_kW'                  'kW'       'Phase 1 design §3.1'        'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_dt_ctrl_s'                   's'        'Phase 1 design §3.1'        'low'       '05_EMS_Controller(ECMS4)'   false
   'AI_Pred_Source'                  '-'        'Model 配置'                  'high'      '05_EMS_Controller'          false
   'AI_TPeak_Source'                 '-'        'Model D 配置 (T-002)'        'high'      '05_EMS_AI'                  false
   'DRAWING_N_PropStrings'           '-'        'DRAWING: 双支路(用户确认)'     'high'      '派生全部聚合额定'           false
