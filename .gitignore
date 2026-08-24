@@ -140,3 +140,7 @@ experiments/
 model/simulink_modelD/results/**/*.mat
 model/simulink_modelD/results/**/repro_tmp/
 model/simulink_modelD/results/**/_gate_ut/
+
+# 冻结目录 modelC_(oracle_ms) 的历史运行产物（目录本身冻结，规则只降噪）
+model/simulink_modelC_(oracle_ms)/results/**/*.mat
+model/simulink_modelC_(oracle_ms)/results/**/*.log
