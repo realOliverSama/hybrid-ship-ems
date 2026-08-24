@@ -40,9 +40,10 @@ function [BP_kW, table_gkWh, meta] = speed_cost_min(fam, tierIdx, use2d)
         assert(all(idxUnit == round(idxUnit)) && all(idxUnit >= 1) && ...
                all(idxUnit <= numel(iP)), 'ECMS:SPEED', '聚合断点/2 未落单机网格');
         eff_unit = min(T(idxUnit, :), [], 2);         % min over n
+        [~, nOptIdx] = min(T(idxUnit, :), [], 2);      % 每聚合功率点最优转速索引（T-013 修复：原 argmin 非 MATLAB 内建）
         table_gkWh = eff_unit;
         meta = struct('method', 'min_over_n_2d', 'tierIdx', tierIdx, ...
-            'n_opt_eff_rpm', fam.map2d.n_rpm(argmin(T(idxUnit, :), [], 2)));
+            'n_opt_eff_rpm', fam.map2d.n_rpm(nOptIdx));
     else
         meta = struct('method', 'identity_1d', 'tierIdx', tierIdx, ...
             'n_opt_eff_rpm', []);

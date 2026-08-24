@@ -22,6 +22,17 @@ fprintf('\n[33] ===== ECMS Phase 0 — 单因素扫描（T-011，FR-012，48 实
 fprintf('[33] ROOT = %s\n', ROOT);
 
 cfg  = Ecms_Phase0_Config();
+
+% T-015 复现性验证：可选输出目录覆盖（环境变量 ECMS_PHASE0_OUTPUT_ROOT；
+% 缺省 = config 输出路径）。仅此一处路径开关；输入（剖面/bsfc_family/既有
+% runs.csv）始终读取该覆盖目录（由 32 先重跑生成），不覆盖入库 runs.csv 原件。
+envOut = getenv('ECMS_PHASE0_OUTPUT_ROOT');
+if ~isempty(envOut)
+    cfg.output_root = envOut;
+    cfg.runs_dir    = fullfile(envOut, 'runs');
+    fprintf('[33] 输出目录覆盖（ECMS_PHASE0_OUTPUT_ROOT）→ %s\n', cfg.output_root);
+end
+
 fam  = load(fullfile(ROOT, 'results', 'ecms_phase0', 'bsfc', 'bsfc_family.mat'));
 md5str = @(s) sprintf('%02x', typecast(java.security.MessageDigest.getInstance('MD5').digest(uint8(s)), 'uint8'));
 cfgHash = @(c, tier) md5str(sprintf('mode=%s;Pmin=%.6g;R=%.6g;Cap=%.6g;Pl=%.6g;Cs=%.6g;dSOC=%.6g;dP=%.6g;S0=%.6g;band=%.6g;Pmax=%.6g;dt=%.6g;keq=%.6g;tier=%d', ...
