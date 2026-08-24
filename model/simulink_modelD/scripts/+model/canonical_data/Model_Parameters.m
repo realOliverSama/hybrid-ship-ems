@@ -28,7 +28,7 @@
 % -------------------------------------------------------------------------
 Model_SystemScope = "twin_string_equivalent"; % 双支路等效聚合模型（v2.0）
 EMS_MODE      = 0;    % 兼容列（= double(EMS_CTRL_LAW>0)），日志 ems_mode 用
-EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004) 4=EMS_Fixed_ECMS(T-103) 5=EMS_SOC_Adaptive_ECMS(T-105)
+EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004) 4=EMS_Fixed_ECMS(T-103) 5=EMS_SOC_Adaptive_ECMS(T-105) 6=EMS_Oracle_ECMS(T-106, 上界验证)
 AI_Pred_Source = 0;   % 预测源：0=Disabled/Persistence，1=FromWorkspace，2=External(STM32N6 预留)，3=EmbeddedML(环内推理)
 AI_TPeak_Source = 0;  % t_peak 来源：0=按 AI_Pred_Source 语义，1=强制取 AI_Oracle_Data 第3列(真值, E3 用)
 
@@ -166,15 +166,17 @@ ASSUMED_V_floor = 50;       % 功率-电流换算电压下限保护 [V]
 ASSUMED_BSFC_Avg_gkWh = mean(ASSUMED_BSFC_Table(3:end)); % BSFC 表工作区均值 ≈474 [g/kWh]
 ASSUMED_k_eq_FEC = ASSUMED_BSFC_Avg_gkWh / (1000 * ASSUMED_Bat_Eff_Charge); % ≈0.499 [kg/kWh]
 
-%% ECMS Phase 1（T-103~T-105，EMS_CTRL_LAW=4/5；design §3.1/§3.2，FR-104~106）
+%% ECMS Phase 1（T-103~T-106，EMS_CTRL_LAW=4/5/6；design §3.1/§3.2，FR-104~107）
 ECMS_Lambda = 0.425; % Fixed ECMS λ 常数 [kg/kWh]（T-104 标定：S01×tier2 使 SOC_end∈0.60±0.005）
 ECMS_K_soc = 30;   % SOC-Adaptive ECMS K_soc [kg/kWh/SOC]（law=5，design §3.2；T-105 标定注入）
+ECMS_K_E = 0;   % Oracle Predictive A-ECMS K_E [kg/kWh]（law=6，design §3.2；T-106 标定注入；oracle 上界验证，非实时可实现 E5）
 ECMS_SOC_Ref           = 0.60;  % SOC-Adaptive ECMS SOC 参考值 [-]（law=5，design §3.2）
 ECMS_SOC_Discharge_Max = 0.105;  % SOC ≤ 此值禁放电（硬约束，优先于 λ，design §3.1）
 ECMS_SOC_Charge_Min    = 0.945;  % SOC ≥ 此值禁充电（硬约束）
 ECMS_Idle_Fuel_kgph    = 6.795;  % 机组怠速燃油 [kg/h]（P_g=0，连续口径，与 T-004 fam 一致）
 ECMS_Grid_dP_kW        = 20;     % ECMS 控制网格步长 [kW]（可行集 [0:20:1000]，P_min=0 口径）
 ECMS_dt_ctrl_s         = 1;      % ECMS 控制周期 [s]（design §3.1 Δt_ctrl）
+ECMS_EHat_Data = [0 0 0; 100000 0 0]; % law=6 oracle 前瞻信号 [t(s) E_future(kWh) e_hat(-)]（From Workspace 块读取；T-106 运行时由 ecms2.oracle_future_energy 对真实未来需求剖面预计算赋值；占位全零 -> e_hat=0 等价 law=5）
 
 %% CCS 2026《船舶应用直流综合电力系统指南》电能质量判据（来源：CCS 指南，置信度 high）
 CCS_Vdc_Steady_Band    = V_dc_nom * [0.90 1.06];   % 稳态 [675 795] V
@@ -200,6 +202,7 @@ ParamMeta = {
   'EMS_CTRL_LAW'                     '-'        'Model D 配置 (T-003)'        'high'      '05_EMS_Controller'          false
   'ECMS_Lambda'                      'kg/kWh'   'Phase 1 design §3.1（T-104 标定）' 'low'     '05_EMS_Controller(ECMS4/5)'  false
   'ECMS_K_soc'                       'kg/kWh/SOC' 'Phase 1 design §3.2（T-105 标定）' 'low'    '05_EMS_Controller(ECMS5)'   false
+  'ECMS_K_E'                         'kg/kWh'   'Phase 1 design §3.2（T-106 标定；oracle 上界验证，非实时可实现 E5）' 'low' '05_EMS_Controller(ECMS6)' false
   'ECMS_SOC_Ref'                     '-'        'Phase 1 design §3.2'        'low'       '05_EMS_Controller(ECMS5)'   false
   'ECMS_SOC_Discharge_Max'           '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
   'ECMS_SOC_Charge_Min'              '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
@@ -275,6 +278,7 @@ ParamMeta = {
   'ASSUMED_AI_DataValid'            '-'        'ASSUMED'                       'low'       '05_EMS_AI'                  true
   'AI_Pred_Data'                    '[t,P,tp]'  '预留接口(T-002 扩展 N×3)'      'na'        '05_EMS_AI'                  true
   'AI_Oracle_Data'                  '[t,P,tp]'  'FromWorkspace oracle 通道(T-002)' 'na'  '05_EMS_AI'                  true
+  'ECMS_EHat_Data'                  '[t,Ef,eh]' 'FromWorkspace oracle 通道(law=6, T-106)' 'na' '05_EMS_Controller(ECMS6)' true
   'AI_Pred_Data'                    '[t,P,tp]'  '兼容保留(T-002 后不再引用)'      'na'        '05_EMS_AI'                  true
   'STM32_Pred_Data'                 '[t,P]'    '预留接口'                      'na'        '05_EMS_AI'                  true
   'AI_Pred_Timeout_s'               's'        '预留接口'                      'na'        '05_EMS_AI'                  true

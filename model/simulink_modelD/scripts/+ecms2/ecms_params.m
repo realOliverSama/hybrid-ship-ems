@@ -11,6 +11,8 @@ function p = ecms_params()
 %    eta_dis/eta_chg 电池放电/充电效率 [-]（0.95/0.95）
 %    lambda         λ 常数 [kg/kWh]（ECMS_Lambda，T-104 标定注入）
 %    k_soc          SOC-Adaptive ECMS K_soc [kg/kWh/SOC]（ECMS_K_soc，T-105）
+%    k_e            Oracle Predictive A-ECMS K_E [kg/kWh]（ECMS_K_E，T-106；
+%                   law=6 前瞻项系数，oracle 上界验证，非实时可实现 E5）
 %    soc_ref        SOC-Adaptive ECMS SOC 参考值 [-]（ECMS_SOC_Ref=0.60，design §3.2）
 %    idle_fuel_kgph 怠速燃油 [kg/h]（P_g=0，6.795，与 T-004 fam 一致）
 %    dP_kW/P_max_kW 控制网格步长/上限 [kW]（20 / 1000）
@@ -36,6 +38,7 @@ function p = ecms_params()
     p.eta_chg   = bval('ASSUMED_Bat_Eff_Charge', 0.95);
     p.lambda    = bval('ECMS_Lambda', 0.4774);
     p.k_soc     = bval('ECMS_K_soc', 1.0);
+    p.k_e       = bval('ECMS_K_E', 0.05);
     p.soc_ref   = bval('ECMS_SOC_Ref', 0.60);
     p.idle_fuel_kgph = bval('ECMS_Idle_Fuel_kgph', 6.795);
     p.dP_kW     = bval('ECMS_Grid_dP_kW', 20);

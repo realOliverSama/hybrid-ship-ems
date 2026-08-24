@@ -7,5 +7,7 @@
   "t5_max_diff_kW": "0",
   "t6_Pg_star_law5_kW": "0",
   "t7_max_diff_kW_law5": "0",
+  "t8_Pg_star_law6_kW": "820",
+  "t9_max_diff_kW_law6": "0",
   "pass": "1"
 }

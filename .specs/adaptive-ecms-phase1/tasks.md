@@ -23,20 +23,20 @@ Design: `./design.md`（v1）
   - Validation: 无降额事件（有则 Escalate）；能量闭合 <0.1%；DP 校验全过；报告 S20 的 DP 节油上限
   - Escalate if: S20 出现降额事件（功率需求超装备能力，需重审航段设计）
 
-- [ ] 3. Fixed ECMS 变体（law=4）+ 单元测试
+- [x] 3. Fixed ECMS 变体（law=4）+ 单元测试
   - ID: T-103
   - Requirement(s): FR-104, FR-108
   - Files/areas: `build_model_c.m`（05_EMS_Controller 新增变体）、`scripts/+ecms2/ecms_law.m`、`+ecms2/test_ecms_law.m`
   - Validation: 五项单测全过（design §3.5）；Simulink 块与离线实现一致性锁定；10b smoke 绿
   - Escalate if: coder.extrinsic 性能不可接受且内联展开与离线实现无法一致
 
-- [ ] 4. λ 标定
+- [x] 4. λ 标定
   - ID: T-104
   - Requirement(s): FR-105
   - Files/areas: `scripts/41_calibrate_lambda.m`、`results/ecms_phase1/lambda_calibration.json`
   - Validation: S01 上 SOC_end ∈ 0.60±0.005 收敛；迭代 ≤40 次；不收敛则 Escalate（不得放宽终端带）
 
-- [ ] 5. SOC-Adaptive ECMS（law=5）+ K_soc 标定
+- [x] 5. SOC-Adaptive ECMS（law=5）+ K_soc 标定
   - ID: T-105
   - Requirement(s): FR-106
   - Files/areas: 同 T-103 变体机制 + `41_calibrate_lambda.m` 扩展

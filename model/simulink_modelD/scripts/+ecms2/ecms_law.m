@@ -1,5 +1,5 @@
-function Pg_star = ecms_law(P_demand, SOC, lambda, params, law)
-% ecms2.ecms_law — ECMS 单步决策核心（design §3.1/§3.2，T-103~T-105，FR-104/106）
+function Pg_star = ecms_law(P_demand, SOC, lambda, params, law, e_hat)
+% ecms2.ecms_law — ECMS 单步决策核心（design §3.1/§3.2，T-103~T-106，FR-104~107）
 %
 %   P_g* = argmin_{P_g ∈ 可行集} [ mf_f(P_g) + lam(t) . mbe_bat,eq(P_g) ]
 %   可行集 = {0（怠速 mf_f = 6.795/3600 kg/s）} ∪ [0 : 20 : 1000] kW（P_min=0 口径）
@@ -11,22 +11,30 @@ function Pg_star = ecms_law(P_demand, SOC, lambda, params, law)
 %   law=4（Fixed ECMS，T-103）：λ(t) = λ（常数输入）。
 %   law=5（SOC-Adaptive ECMS，T-105，design §3.2）：λ(t) = λ + K_soc·(SOC_ref − SOC)，
 %     其中 λ 为 λ₀（ECMS_Lambda），K_soc=params.k_soc，SOC_ref=params.soc_ref=0.60。
+%   law=6（Oracle Predictive A-ECMS，T-106，design §3.2）：law=5 叠加前瞻项
+%     λ(t) = λ + K_soc·(SOC_ref − SOC) + K_E·ê_future(t)，K_E=params.k_e（ECMS_K_E）；
+%     ê_future 由 +ecms2/oracle_future_energy.m 对真实未来需求剖面离线预计算
+%     （(E_future_H(t)−Ē_H)/E_scale，H=300 s）。
+%     **红线（E5，FR-107）**：oracle 前瞻信息非实时可实现，law=6 仅为上界/增量验证工具。
 %
-%   Simulink law=4 变体（EMS_Fixed_ECMS）与 law=5 变体（EMS_SOC_Adaptive_ECMS）
-%   的 MATLAB Function 块内联同一算法（脚本 CODE_ECMS_FIXED/CODE_ECMS_ADAPTIVE），
-%   逐位一致性由 +ecms2/test_ecms_law.m 单测 5/7（容差 0）锁定。
+%   Simulink law=4 变体（EMS_Fixed_ECMS）、law=5 变体（EMS_SOC_Adaptive_ECMS）
+%   与 law=6 变体（EMS_Oracle_ECMS）的 MATLAB Function 块内联同一算法
+%   （脚本 CODE_ECMS_FIXED/CODE_ECMS_ADAPTIVE/CODE_ECMS_ORACLE），
+%   逐位一致性由 +ecms2/test_ecms_law.m 单测 5/7/9（容差 0）锁定。
 %
 %  输入:
 %    P_demand  需求功率 [kW]（模型内取 P_load_total，与 Baseline 同一信号）
 %    SOC       电池荷电状态 [-]（law=5 时用于 λ 自适应）
 %    lambda    λ₀ 常数 [kg/kWh]（ECMS_Lambda；缺省用 params.lambda）
 %    params    可选 ecms2.ecms_params() 输出（缺省自动解析）
-%    law       变体序号：4=Fixed ECMS（缺省），5=SOC-Adaptive ECMS
+%    law       变体序号：4=Fixed ECMS（缺省），5=SOC-Adaptive ECMS，6=Oracle Predictive A-ECMS
+%    e_hat     ê_future(t) 无量纲前瞻信号（law=6 专用；缺省 0，law=4/5 忽略）
 %  输出:
 %    Pg_star   最优发电机功率设定 [kW]（供 06_Genset 爬坡/惯性环节）
 %
 %  用法: Pg = ecms2.ecms_law(700, 0.60, 0.425);           % law=4
 %        Pg = ecms2.ecms_law(700, 0.70, 0.425, p, 5);     % law=5（SOC 高于 ref）
+%        Pg = ecms2.ecms_law(700, 0.60, 0.425, p, 6, 1.5); % law=6（E_future 高于均值）
     if nargin < 4 || isempty(params)
         params = ecms2.ecms_params();
     end
@@ -36,9 +44,17 @@ function Pg_star = ecms_law(P_demand, SOC, lambda, params, law)
     if nargin < 5 || isempty(law)
         law = 4;
     end
-    if law == 5
+    if nargin < 6 || isempty(e_hat)
+        e_hat = 0;
+    end
+    if law == 5 || law == 6
         % design §3.2：SOC 高于 SOC_ref -> λ 下降（电池更便宜）；低于 -> λ 上升
         lambda = lambda + params.k_soc * (params.soc_ref - SOC);
+        if law == 6
+            % design §3.2：未来高能量需求（ê_future>0）-> λ 上升 -> 保留电池（保电方向）
+            % 红线 E5：oracle 前瞻非实时可实现，仅上界验证
+            lambda = lambda + params.k_e * e_hat;
+        end
     end
     grid = params.grid_kW;
     N = numel(grid);
