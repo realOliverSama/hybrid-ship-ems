@@ -1,7 +1,7 @@
 # 边缘AI自适应ECMS甲醇EMS — Phase 0 Tasks
 
 Spec: `adaptive-ecms-methanol`
-Status: tasks-draft
+Status: tasks-approved (v1，2026-08-24 用户批准；用户已授权执行任务委派 subagent)
 Created: 2026-08-24
 Brainstorm: `./brainstorm.md`
 Requirements: `./requirements.md`（v1.1 已批准）
