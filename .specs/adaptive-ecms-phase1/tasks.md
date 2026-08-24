@@ -1,7 +1,7 @@
 # Phase 1 实时 ECMS 控制器链 — Tasks
 
 Spec: `adaptive-ecms-phase1`
-Status: tasks-approved（依据用户 2026-08-24 批量授权——brainstorm E4）
+Status: implementation-complete
 Created: 2026-08-24
 Brainstorm: `./brainstorm.md`
 Requirements: `./requirements.md`（v1）
@@ -42,32 +42,32 @@ Design: `./design.md`（v1）
   - Files/areas: 同 T-103 变体机制 + `41_calibrate_lambda.m` 扩展
   - Validation: 单测通过；K_soc 标定收敛；10b smoke 绿
 
-- [ ] 6. Oracle Predictive A-ECMS（law=6）
+- [x] 6. Oracle Predictive A-ECMS（law=6）
   - ID: T-106
   - Requirement(s): FR-107
   - Files/areas: `+ecms2/oracle_future_energy.m`（E_future_H 预计算）、law=6 变体
   - Validation: 单测通过；E_future 信号与剖面积分交叉验证（随机 10 时刻手算比对 <0.1%）
 
-- [ ] 7. 实验矩阵
+- [x] 7. 实验矩阵
   - ID: T-107
   - Requirement(s): FR-109
   - Files/areas: `scripts/42_run_phase1_matrix.m`；输出 `results/ecms_phase1/runs_phase1.csv`
   - Validation: 主矩阵 {C0,C1,C2,C3}×{S20,S01,S02,S07} + 回归 {C0,C1,C2}×8 场景无缺项；C1 为负节油如实记录不掩盖
   - Escalate if: 仿真总时长超 2 h（NFR-102）
 
-- [ ] 8. Phase 1 Gate 判定
+- [x] 8. Phase 1 Gate 判定
   - ID: T-108
   - Requirement(s): FR-110
   - Files/areas: `scripts/43_phase1_gate_judge.m`；输出 `results/ecms_phase1/gate_result.json`
   - Validation: 字段完整（capture_rate/oracle_increment_pp/recommendation）；判定函数构造用例单测
 
-- [ ] 9. 复现性验证
+- [x] 9. 复现性验证
   - ID: T-109
   - Requirement(s): FR-114
   - Files/areas: 42 重跑对比（环境变量输出目录切换，沿用 T-015 模式）
   - Validation: 双跑逐位一致（除 wall_time）
 
-- [ ] 10. Phase 1 报告 + 验收
+- [x] 10. Phase 1 报告 + 验收
   - ID: T-110
   - Requirement(s): FR-111, FR-112, FR-113, AC-1~AC-6
   - Files/areas: `model/simulink_modelD/reports/ECMS_phase1_ecms_vs_dp.md`（主 Agent 撰写）
