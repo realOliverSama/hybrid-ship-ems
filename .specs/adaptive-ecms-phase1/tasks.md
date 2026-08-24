@@ -9,14 +9,14 @@ Design: `./design.md`（v1）
 
 ## Implementation Plan
 
-- [ ] 1. 场景框架时间序列扩展 + S20 复合航次定义
+- [x] 1. 场景框架时间序列扩展 + S20 复合航次定义
   - ID: T-101
   - Requirement(s): FR-101, FR-102
   - Files/areas: `model/simulink_modelD/scripts/+model/build_model_c.m`（01_Scenario 时间序列路径）、`config/Model_Scenarios.m`（SCENARIOS(20)）+ canonical_data 镜像同步、`scripts/+ecms2/voyage_s20.m`
   - Validation: S01 Baseline 重跑 P_demand 与 Phase 0 剖面逐位一致（回归）；S20 可构建可仿真
   - Escalate if: 时间序列路径无法在不破坏既有场景的前提下加入
 
-- [ ] 2. S20 Baseline 剖面 + DP 上限
+- [x] 2. S20 Baseline 剖面 + DP 上限
   - ID: T-102
   - Requirement(s): FR-103
   - Files/areas: 复用 `30_export_load_profiles.m` / `+ecms/`；输出 `results/ecms_phase1/profiles/S20_composite_voyage.mat` + DP（tier2，连续口径，P_min ∈ {0,400}）

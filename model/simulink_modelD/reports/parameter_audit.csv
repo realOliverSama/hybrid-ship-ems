@@ -7,10 +7,10 @@ AI_TPeak_Source,0,-,Model D 配置 (T-002),high,05_EMS_AI,false
 DRAWING_N_PropStrings,2,-,DRAWING: 双支路(用户确认),high,派生全部聚合额定,false
 V_dc_nom,750,V,DRAWING: 系统图,high,08_Power_Availability,false
 V_bat_nom,576,V,DRAWING: 系统图,high,07_Battery_Energy,false
-DRAWING_Bat_Cap_kWh_perString,600,kWh,DRAWING: 图纸额定/支路,high,派生 Bat_Cap_kWh,false
+DRAWING_Bat_Cap_kWh_perString,535.68,kWh,DRAWING: 20260526设备参数.docx/支路,high,派生 Bat_Cap_kWh,false
 DRAWING_Gen_P_max_perString,500,kW,DRAWING: 图纸额定/支路,high,派生 Gen_P_max,false
 DRAWING_Mot_P_nom_perString,350,kW,DRAWING: 图纸额定/支路,high,派生 Mot_P_nom,false
-Bat_Cap_kWh,1200,kWh,DRAWING: 600×2 聚合,high,07_Battery_Energy,false
+Bat_Cap_kWh,1071.36,kWh,DRAWING: 535.68×2 聚合,high,07_Battery_Energy,false
 Gen_P_max,1000,kW,DRAWING/LEGACY: 500×2 聚合,high,05/06/08,false
 Mot_P_nom,700,kW,DRAWING/LEGACY: 350×2 聚合,high,02/03/08,false
 P_hotel_nom,100,kW,LEGACY: EMS_P_Hotel,medium,01/04,true
@@ -41,8 +41,8 @@ F_env_const,0,N,LEGACY: 原脚本,medium,03_Propulsion,false
 omega_min_radps,0.01,rad/s,Model 实现细节,high,03_Propulsion,false
 ASSUMED_Gen_TimeConstant,5,s,ASSUMED,low,06_Genset,true
 ASSUMED_Gen_MinStablePower,0,kW,ASSUMED,low,06_Genset,true
-ASSUMED_Bat_DischargeLimit,1000,kW,ASSUMED(500×2 聚合),low,07/08,true
-ASSUMED_Bat_ChargeLimit,1000,kW,ASSUMED(500×2 聚合),low,07/08,true
+ASSUMED_Bat_DischargeLimit,1050,kW,DRAWING: DC/DC 750V×700A×2,high,07/08,false
+ASSUMED_Bat_ChargeLimit,1050,kW,DRAWING: DC/DC 750V×700A×2,high,07/08,false
 ASSUMED_Bat_Eff_Discharge,0.95,-,ASSUMED,low,07_Battery_Energy,true
 ASSUMED_Bat_Eff_Charge,0.95,-,ASSUMED,low,07_Battery_Energy,true
 ASSUMED_SOC_min,0.1,-,ASSUMED,low,07_Battery_Energy,true
@@ -62,7 +62,7 @@ ASSUMED_TFF_TauMargin,10,s,ASSUMED(T-004, 覆盖惯性τ=5s),low,05_EMS_Schedule
 ASSUMED_TFF_SOC_Thresh,0.4,-,ASSUMED(T-004),low,05_EMS_ScheduledFF(C),true
 ASSUMED_TFF_SOC_AdvancePct,0.25,-,ASSUMED(T-004),low,05_EMS_ScheduledFF(C),true
 ASSUMED_BSFC_Breakpoints,[0 100 200 400 600 800 1000],kW,ASSUMED(原表断点×2),low,10_Fuel,true
-ASSUMED_BSFC_Table,[1200 700 550 480 450 430 460],g/kWh,ASSUMED(原模型查表),low,10_Fuel,true
+ASSUMED_BSFC_Table,[1200 700 550 480 450 430 453],g/kWh,ASSUMED(额定针点453=docx真实值),low,10_Fuel,true
 ASSUMED_TargetSpeed,5.66,m/s,ASSUMED(11 kn 服务航速),low,01_Scenario,true
 ASSUMED_VoyageDistance,5000,m,ASSUMED,low,11_Voyage_Stop,true
 ASSUMED_RiverCurrentSpeed,1,m/s,ASSUMED,low,01_Scenario,true
@@ -82,8 +82,8 @@ ASSUMED_eta_rect,0.97,-,ASSUMED,low,06_Genset(C),true
 ASSUMED_eta_dcdc,0.97,-,ASSUMED,low,14_Battery_Converter(C),true
 ASSUMED_EMS_Manual_Pgen_kW,400,kW,ASSUMED,low,05_EMS(C,手动模式),true
 ASSUMED_V_floor,50,V,ASSUMED(除法保护),high,13/14(C),false
-ASSUMED_BSFC_Avg_gkWh,474,g/kWh,ASSUMED(表工作区均值),low,FEC 指标,true
-ASSUMED_k_eq_FEC,0.498947368421053,kg/kWh,ASSUMED(ECMS 折算),low,FEC 指标,true
+ASSUMED_BSFC_Avg_gkWh,472.6,g/kWh,ASSUMED(表工作区均值),low,FEC 指标,true
+ASSUMED_k_eq_FEC,0.497473684210526,kg/kWh,ASSUMED(ECMS 折算),low,FEC 指标,true
 CCS_Vdc_Steady_Band,[675 795],V,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false
 CCS_Vdc_Transient_Band,[600 802.5],V,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false
 CCS_t_recovery_max,1.5,s,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false

@@ -15,6 +15,11 @@
 %    resistance_bands: [起点m 终点m 幅值] × 最多 4 段（起点 -1 表示结束）
 %    current_knots_x / current_knots_v: 水流剖面里程节点 [m] / 水流速度 [m/s]（最多 4 个，-1 结束；默认单节点=恒定水流）
 %  v2.1：服务航速 11 kn（5.66 m/s）；新增 S07 桥区机动 / S08 浅滩群 / S09 应急出动
+%  v3.0（ECMS Phase 1 T-101）：新增时间序列航速剖面支持（S20 复合航次）：
+%    speed_profile_mode: 'distance'（缺省，既有）| 'time'（时间序列表）
+%    v_time_s / v_value_mps: 时间航速路点（分段恒定，过渡由 01_Scenario Rate Limiter 平滑）
+%    current_time_s / current_value_mps: 时间水流路点（仅 S20 段 9 逆水 -1 m/s）
+%    stop_time_s: 时间终止条件（S20 主终止；voyage_distance_m 放宽作里程核对）
 % ========================================================================
 
 if ~exist('ASSUMED_TargetSpeed', 'var')
@@ -194,6 +199,48 @@ SCENARIOS(10) = struct( ...
     'accel_ramp_mps2', RAMP_NORM, 'decel_ramp_mps2', RAMP_NORM, ...
     'resistance_bands', DEF_BANDS, ...
     'current_knots_x', [0 2500 2585 -1], 'current_knots_v', [-1 -1 1 0]);
+
+% ---- S20 复合航次（ECMS Phase 1 T-101/T-102；参数唯一源 scripts/+ecms2/voyage_s20.m）----
+%  时间序列航速剖面（speed_profile_mode='time'）：11 航段 / 5520 s（~92 min，design §2.1）；
+%  航次以时间终止（stop_time_s=5520）为主，里程作完整性核对（voyage_distance_m 放宽至
+%  40000 m，防止 11_Voyage_Stop_Logic 在时间条件前提前停机）；速度过渡由 Rate Limiter 平滑。
+try
+    S20DEF = ecms2.voyage_s20();
+catch ME
+    error('Model_Scenarios:S20Dep', ...
+        'SCENARIOS(20) 依赖 +ecms2/voyage_s20.m（scripts/ 须在 MATLAB path）：%s', ME.message);
+end
+SCENARIOS(20) = struct( ...
+    'id', 20, 'name', S20DEF.name, ...
+    'target_speed_mps', S20DEF.v_value_mps(end), 'voyage_distance_m', 40000, ...
+    'river_current_mps', 0.0, ...
+    'resistance_profile', 'const', 'profile_code', 0, ...
+    'resistance_change_position_m', 0, 'resistance_change_amplitude', 0, ...
+    'resistance_change_ramp_time_s', 0, ...
+    'hotel_kW', S20DEF.hotel_kW, 'initial_SOC', 0.60, 'random_seed', 42, ...
+    'notes', '复合航次（design §2.1）：11航段/5520s 时间序列航速剖面；段9逆水-1m/s；时间终止(主)+里程核对；速度过渡由RateLimiter平滑(0.15/0.05)', ...
+    'v_knots_x', DEF_VX, 'v_knots_v', [S20DEF.v_value_mps(end) 0 0 0 0 0], ...
+    'accel_ramp_mps2', S20DEF.accel_ramp_mps2, 'decel_ramp_mps2', S20DEF.decel_ramp_mps2, ...
+    'resistance_bands', DEF_BANDS, ...
+    'current_knots_x', [0 -1 -1 -1], 'current_knots_v', [0.0 0 0 0]);
+
+% ---- struct array 同构字段（v3.0 时间序列扩展）：既有场景仅补默认字段，行为不变 ----
+%  MATLAB struct array 要求所有元素字段一致；SCENARIOS(20) 携带时间序列字段，
+%  既有 1~19 场景补惰性默认值（speed_profile_mode='distance'），不改动其原定义字面量。
+SCENARIOS(20).speed_profile_mode = 'time';
+SCENARIOS(20).v_time_s           = S20DEF.v_time_s;
+SCENARIOS(20).v_value_mps        = S20DEF.v_value_mps;
+SCENARIOS(20).current_time_s     = S20DEF.current_time_s;
+SCENARIOS(20).current_value_mps  = S20DEF.current_value_mps;
+SCENARIOS(20).stop_time_s        = S20DEF.stop_time_s;
+for k = 1:19
+    SCENARIOS(k).speed_profile_mode = 'distance';
+    SCENARIOS(k).v_time_s           = [0 1];
+    SCENARIOS(k).v_value_mps        = [0 0];
+    SCENARIOS(k).current_time_s     = [0 1];
+    SCENARIOS(k).current_value_mps  = [0 0];
+    SCENARIOS(k).stop_time_s        = 0;
+end
 
 % ---- 默认工况：S01 ---------------------------------------------
 SCN = SCENARIOS(1);
