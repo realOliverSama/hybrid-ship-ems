@@ -1,8 +1,10 @@
 parameter,value,unit,source,confidence,used_by,needs_confirmation
 Model_SystemScope,twin_string_equivalent,-,Model 配置 (v2.0 双支路等效),high,全部,false
 EMS_MODE,1,-,Model 配置(兼容列),high,05_EMS_Controller,false
-EMS_CTRL_LAW,4,-,Model D 配置 (T-003),high,05_EMS_Controller,false
-ECMS_Lambda,0.4774,kg/kWh,Phase 1 design §3.1 λ₀,low,05_EMS_Controller(ECMS4),false
+EMS_CTRL_LAW,5,-,Model D 配置 (T-003),high,05_EMS_Controller,false
+ECMS_Lambda,0.425,kg/kWh,Phase 1 design §3.1（T-104 标定）,low,05_EMS_Controller(ECMS4/5),false
+ECMS_K_soc,1,kg/kWh/SOC,Phase 1 design §3.2（T-105 标定）,low,05_EMS_Controller(ECMS5),false
+ECMS_SOC_Ref,0.6,-,Phase 1 design §3.2,low,05_EMS_Controller(ECMS5),false
 ECMS_SOC_Discharge_Max,0.105,-,Phase 1 design §3.1 硬约束,low,05_EMS_Controller(ECMS4),false
 ECMS_SOC_Charge_Min,0.945,-,Phase 1 design §3.1 硬约束,low,05_EMS_Controller(ECMS4),false
 ECMS_Idle_Fuel_kgph,6.795,kg/h,Phase 1 design §3.1 / T-004,low,05_EMS_Controller(ECMS4),false
@@ -67,8 +69,8 @@ ASSUMED_Pred_Bound_kW,2000,kW,ASSUMED(×2),low,05_EMS_AI,true
 ASSUMED_TFF_TauMargin,10,s,ASSUMED(T-004, 覆盖惯性τ=5s),low,05_EMS_ScheduledFF(C),true
 ASSUMED_TFF_SOC_Thresh,0.4,-,ASSUMED(T-004),low,05_EMS_ScheduledFF(C),true
 ASSUMED_TFF_SOC_AdvancePct,0.25,-,ASSUMED(T-004),low,05_EMS_ScheduledFF(C),true
-ASSUMED_BSFC_Breakpoints,[0 100 200 400 600 800 1000],kW,ASSUMED(原表断点×2),low,10_Fuel,true
-ASSUMED_BSFC_Table,[1200 700 550 480 450 430 453],g/kWh,ASSUMED(额定针点453=docx真实值),low,10_Fuel,true
+ASSUMED_BSFC_Breakpoints,[501x1 double],kW,ASSUMED(原表断点×2),low,10_Fuel,true
+ASSUMED_BSFC_Table,[501x1 double],g/kWh,ASSUMED(额定针点453=docx真实值),low,10_Fuel,true
 ASSUMED_TargetSpeed,5.66,m/s,ASSUMED(11 kn 服务航速),low,01_Scenario,true
 ASSUMED_VoyageDistance,5000,m,ASSUMED,low,11_Voyage_Stop,true
 ASSUMED_RiverCurrentSpeed,1,m/s,ASSUMED,low,01_Scenario,true
@@ -88,8 +90,8 @@ ASSUMED_eta_rect,0.97,-,ASSUMED,low,06_Genset(C),true
 ASSUMED_eta_dcdc,0.97,-,ASSUMED,low,14_Battery_Converter(C),true
 ASSUMED_EMS_Manual_Pgen_kW,400,kW,ASSUMED,low,05_EMS(C,手动模式),true
 ASSUMED_V_floor,50,V,ASSUMED(除法保护),high,13/14(C),false
-ASSUMED_BSFC_Avg_gkWh,472.6,g/kWh,ASSUMED(表工作区均值),low,FEC 指标,true
-ASSUMED_k_eq_FEC,0.497473684210526,kg/kWh,ASSUMED(ECMS 折算),low,FEC 指标,true
+ASSUMED_BSFC_Avg_gkWh,548.45145816532,g/kWh,ASSUMED(表工作区均值),low,FEC 指标,true
+ASSUMED_k_eq_FEC,0.577317324384548,kg/kWh,ASSUMED(ECMS 折算),low,FEC 指标,true
 CCS_Vdc_Steady_Band,[675 795],V,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false
 CCS_Vdc_Transient_Band,[600 802.5],V,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false
 CCS_t_recovery_max,1.5,s,CCS 2026 指南,high,15_Bus_Voltage_Monitor(C),false

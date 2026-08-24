@@ -4,12 +4,12 @@
   "lambda": "0.4774",
   "bsfc_source": "workspace",
   "duration_s": "927.84",
-  "fuel_total_kg": "87.36168419",
-  "SOC_end": "0.6081440882",
-  "SOC_min": "0.5958866342",
-  "SOC_max": "0.6081440882",
+  "fuel_total_kg": "87.13621927",
+  "SOC_end": "0.608799164",
+  "SOC_min": "0.5965113358",
+  "SOC_max": "0.608799164",
   "Vdc_min_V": "684.3752285",
-  "P_gen_ref_max_kW": "800",
+  "P_gen_ref_max_kW": "820",
   "P_bat_max_kW": "656.2477151",
-  "wall_time_s": "10.7885505"
+  "wall_time_s": "14.27966338"
 }

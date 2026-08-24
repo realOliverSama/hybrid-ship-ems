@@ -1,5 +1,5 @@
 function p = ecms_params()
-% ecms2.ecms_params — ECMS 参数解析（design §3.1，T-103，FR-104）
+% ecms2.ecms_params — ECMS 参数解析（design §3.1/§3.2，T-103~T-105，FR-104~106）
 %
 %  优先取 base workspace（config/Model_Parameters.m 已运行）数值，
 %  否则用 design 定案缺省值。BSFC 表经 ecms2.ensure_bsfc_params 注入链解析
@@ -9,7 +9,9 @@ function p = ecms_params()
 %    eta_rect       整流器效率 [-]（0.97）
 %    eta_dcdc       DC/DC 效率 [-]（0.97）
 %    eta_dis/eta_chg 电池放电/充电效率 [-]（0.95/0.95）
-%    lambda         λ 常数 [kg/kWh]（ECMS_Lambda，缺省 0.4774，T-104 标定注入）
+%    lambda         λ 常数 [kg/kWh]（ECMS_Lambda，T-104 标定注入）
+%    k_soc          SOC-Adaptive ECMS K_soc [kg/kWh/SOC]（ECMS_K_soc，T-105）
+%    soc_ref        SOC-Adaptive ECMS SOC 参考值 [-]（ECMS_SOC_Ref=0.60，design §3.2）
 %    idle_fuel_kgph 怠速燃油 [kg/h]（P_g=0，6.795，与 T-004 fam 一致）
 %    dP_kW/P_max_kW 控制网格步长/上限 [kW]（20 / 1000）
 %    dt_ctrl_s      控制周期 [s]（1）
@@ -33,6 +35,8 @@ function p = ecms_params()
     p.eta_dis   = bval('ASSUMED_Bat_Eff_Discharge', 0.95);
     p.eta_chg   = bval('ASSUMED_Bat_Eff_Charge', 0.95);
     p.lambda    = bval('ECMS_Lambda', 0.4774);
+    p.k_soc     = bval('ECMS_K_soc', 1.0);
+    p.soc_ref   = bval('ECMS_SOC_Ref', 0.60);
     p.idle_fuel_kgph = bval('ECMS_Idle_Fuel_kgph', 6.795);
     p.dP_kW     = bval('ECMS_Grid_dP_kW', 20);
     p.P_max_kW  = bval('Gen_P_max', 1000);
