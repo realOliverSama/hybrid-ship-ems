@@ -1,7 +1,7 @@
 # 边缘AI自适应ECMS甲醇EMS — Phase 0 Design
 
 Spec: `adaptive-ecms-methanol`
-Status: design-draft（v1.1 修订：采纳 GPT 外部评审，待批准）
+Status: design-approved (v1.1，2026-08-24 用户批准)
 Created: 2026-08-24
 Requirements: `./requirements.md`（v1 已批准）
 
