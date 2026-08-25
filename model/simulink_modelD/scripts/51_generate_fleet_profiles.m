@@ -35,7 +35,7 @@ run(fullfile(ROOT, 'config', 'Model_Parameters.m'));
 run(fullfile(ROOT, 'config', 'Model_Scenarios.m'));
 
 seed = ECMS_FLEET_SEED;
-useParsim = exist('parsim', 'file') == 2;
+useParsim = exist('parsim', 'file') > 0;   % parsim 为 p 码时 exist 返回 6，勿用 ==2
 if exist('FLEET_N', 'var') && ~isempty(FLEET_N)
     N = FLEET_N;
 elseif useParsim
