@@ -1,0 +1,9 @@
+{
+  "t1_max_delta_y_norm": "1.221245327e-14",
+  "t2_max_diff_kW_law7_fallback": "0",
+  "t3_fuel_total_kg": "91.2317939",
+  "t3_SOC_end": "0.6144745028",
+  "t3_Vdc_min_V": "683.3179505",
+  "t3_duration_s": "927.84",
+  "pass": "1"
+}
