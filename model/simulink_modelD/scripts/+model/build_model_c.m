@@ -128,14 +128,17 @@ function buildScenarioManager(mdl, pos)
     % 目标航速剖面（T-101）：距离节点（既有）+ 时间序列表（S20，design §2.1）
     %   speed_profile_mode='time' 时函数按 SCN.v_time_s/v_value_mps 时间节点分段恒定
     %   （等效 1-D Lookup on t），过渡由下游 Rate Limiter 平滑；既有场景 mode=0 路径不变。
+    %   T-201 注入改造：时间表 Constant 块改读 base 变量 VOYAGE_*（仿真编译期求值，
+    %   Simulink.SimulationInput.setVariable 可逐航次注入；默认值=S20，见 Model_Scenarios.m），
+    %   避免为每个生成航次重建模型（200 航次 x 2 min 不可接受）。
     fnv = [sys '/v_cmd_profile'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fnv, 'Position', [30 30 130 80]);
     setMFCode(fnv, CODE_VPROFILE, {});
     add_block('simulink/Sources/Clock', [sys '/t_clock'], 'Position', [20 250 50 270]);
     vconsts = {'kx','SCN.v_knots_x'; 'kv','SCN.v_knots_v'; 'vdef','SCN.target_speed_mps'; ...
-        'tt','ecms2.scn_field(SCN,''v_time_s'',[0 1])'; ...
-        'tv','ecms2.scn_field(SCN,''v_value_mps'',[0 0])'; ...
-        'vmode','double(strcmp(ecms2.scn_field(SCN,''speed_profile_mode'',''distance''),''time''))'};
+        'tt','VOYAGE_V_TIME_S'; ...
+        'tv','VOYAGE_V_VALUE_MPS'; ...
+        'vmode','VOYAGE_SPEED_MODE'};
     vports = [4 5 6 7 8 3];   % 函数签名端口顺序: 1=x 2=t 3=mode 4=kx 5=kv 6=v_def 7=tt 8=tv
     add_line(sys, 'x_ship_m/1', 'v_cmd_profile/1');
     add_line(sys, 't_clock/1', 'v_cmd_profile/2');
@@ -154,9 +157,9 @@ function buildScenarioManager(mdl, pos)
     add_block('simulink/User-Defined Functions/MATLAB Function', fnc, 'Position', [200 240 320 300]);
     setMFCode(fnc, CODE_CURRENT, {});
     cconsts = {'ckx','SCN.current_knots_x'; 'ckv','SCN.current_knots_v'; 'cdef','SCN.river_current_mps'; ...
-        'ctt','ecms2.scn_field(SCN,''current_time_s'',[0 1])'; ...
-        'ctv','ecms2.scn_field(SCN,''current_value_mps'',[0 0])'; ...
-        'cvmode','double(strcmp(ecms2.scn_field(SCN,''speed_profile_mode'',''distance''),''time''))'};
+        'ctt','VOYAGE_CURRENT_TIME_S'; ...
+        'ctv','VOYAGE_CURRENT_VALUE_MPS'; ...
+        'cvmode','VOYAGE_CURRENT_MODE'};
     cports = [4 5 6 7 8 3];   % 函数签名端口顺序: 1=x 2=t 3=mode 4=ckx 5=ckv 6=cdef 7=ctt 8=ctv
     add_line(sys, 'x_ship_m/1', 'current_profile/1');
     add_line(sys, 't_clock/1', 'current_profile/2');

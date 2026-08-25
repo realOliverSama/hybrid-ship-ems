@@ -181,6 +181,7 @@ ECMS_Idle_Fuel_kgph    = 6.795;  % 机组怠速燃油 [kg/h]（P_g=0，连续口
 ECMS_Grid_dP_kW        = 20;     % ECMS 控制网格步长 [kW]（可行集 [0:20:1000]，P_min=0 口径）
 ECMS_dt_ctrl_s         = 1;      % ECMS 控制周期 [s]（design §3.1 Δt_ctrl）
 ECMS_EHat_Data = [0 0 0; 100000 0 0]; % law=6 oracle 前瞻信号 [t(s) E_future(kWh) e_hat(-)]（From Workspace 块读取；T-106 运行时由 ecms2.oracle_future_energy 对真实未来需求剖面预计算赋值；占位全零 -> e_hat=0 等价 law=5）
+ECMS_FLEET_SEED = 20260825; % T-201 参数化航次生成器种子（固定可复现；design §2 / FR-201；50_voyage_generator.m 读取）
 
 %% CCS 2026《船舶应用直流综合电力系统指南》电能质量判据（来源：CCS 指南，置信度 high）
 CCS_Vdc_Steady_Band    = V_dc_nom * [0.90 1.06];   % 稳态 [675 795] V
@@ -214,6 +215,7 @@ ParamMeta = {
   'ECMS_Idle_Fuel_kgph'              'kg/h'     'Phase 1 design §3.1 / T-004' 'low'       '05_EMS_Controller(ECMS4)'   false
   'ECMS_Grid_dP_kW'                  'kW'       'Phase 1 design §3.1'        'low'       '05_EMS_Controller(ECMS4)'   false
   'ECMS_dt_ctrl_s'                   's'        'Phase 1 design §3.1'        'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_FLEET_SEED'                  '-'        'Phase 2 design §2（T-201）'  'high'      '50_voyage_generator'        false
   'AI_Pred_Source'                  '-'        'Model 配置'                  'high'      '05_EMS_Controller'          false
   'AI_TPeak_Source'                 '-'        'Model D 配置 (T-002)'        'high'      '05_EMS_AI'                  false
   'DRAWING_N_PropStrings'           '-'        'DRAWING: 双支路(用户确认)'     'high'      '派生全部聚合额定'           false

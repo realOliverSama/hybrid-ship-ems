@@ -7,6 +7,17 @@ function out = run_scenario_sim(mdl, SCN, mode, stopTimeLimit)
     assignin('base', 'EMS_CTRL_LAW', double(mode));
     assignin('base', 'EMS_MODE', double(mode > 0));   % 兼容列（日志 ems_mode）
     assignin('base', 'Bat_SOC_init', SCN.initial_SOC);
+    % T-201 注入机制配套同步（主 Agent 修复 2026-08-25）：build_model_c 将 01_Scenario
+    % 时间模式表改读 base 变量 VOYAGE_*（供 SimulationInput.setVariable 逐航次注入），
+    % 因此每个 SCN 切换点必须同步 VOYAGE_*，否则距离模式场景会误用 Model_Scenarios.m
+    % 中的 S20 默认时间剖面（行为污染）。51 批量路径不经本函数（自行 setVariable）。
+    isTimeMode = strcmp(ecms2.scn_field(SCN, 'speed_profile_mode', 'distance'), 'time');
+    assignin('base', 'VOYAGE_SPEED_MODE', double(isTimeMode));
+    assignin('base', 'VOYAGE_V_TIME_S', ecms2.scn_field(SCN, 'v_time_s', [0 1]));
+    assignin('base', 'VOYAGE_V_VALUE_MPS', ecms2.scn_field(SCN, 'v_value_mps', [0 0]));
+    assignin('base', 'VOYAGE_CURRENT_MODE', double(isTimeMode));
+    assignin('base', 'VOYAGE_CURRENT_TIME_S', ecms2.scn_field(SCN, 'current_time_s', [0 1]));
+    assignin('base', 'VOYAGE_CURRENT_VALUE_MPS', ecms2.scn_field(SCN, 'current_value_mps', [0 0]));
     % 固定步长 0.01 s：StopTime 需为步长整数倍
     stopTimeLimit = floor(stopTimeLimit * 100) / 100;
     set_param(mdl, 'StopTime', sprintf('%.2f', stopTimeLimit));

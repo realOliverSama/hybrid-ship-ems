@@ -242,6 +242,19 @@ for k = 1:19
     SCENARIOS(k).stop_time_s        = 0;
 end
 
+% ---- T-201 sim 期注入默认值（01_Scenario_Manager 时间模式表改读 VOYAGE_* 变量）----
+%  build_model_c 不再把 SCN 时间表字面量固化在构建期：Constant 块 Value 引用
+%  VOYAGE_V_TIME_S / VOYAGE_V_VALUE_MPS / VOYAGE_SPEED_MODE / VOYAGE_CURRENT_*，
+%  在仿真编译期从 base workspace 求值（Simulink.SimulationInput.setVariable 可注入）。
+%  默认值 = S20 时间模式，保证既有脚本（10b/40/12/13/42）不设 VOYAGE_* 时行为不变
+%  （S20 回归红线：P_demand 与 results/ecms_phase1/profiles/S20_composite_voyage.mat 逐位一致）。
+VOYAGE_SPEED_MODE        = double(strcmp(SCENARIOS(20).speed_profile_mode, 'time'));
+VOYAGE_V_TIME_S          = SCENARIOS(20).v_time_s;
+VOYAGE_V_VALUE_MPS       = SCENARIOS(20).v_value_mps;
+VOYAGE_CURRENT_MODE      = VOYAGE_SPEED_MODE;
+VOYAGE_CURRENT_TIME_S    = SCENARIOS(20).current_time_s;
+VOYAGE_CURRENT_VALUE_MPS = SCENARIOS(20).current_value_mps;
+
 % ---- 默认工况：S01 ---------------------------------------------
 SCN = SCENARIOS(1);
 
