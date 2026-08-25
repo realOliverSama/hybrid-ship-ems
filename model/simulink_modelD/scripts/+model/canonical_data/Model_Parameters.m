@@ -28,7 +28,7 @@
 % -------------------------------------------------------------------------
 Model_SystemScope = "twin_string_equivalent"; % 双支路等效聚合模型（v2.0）
 EMS_MODE      = 0;    % 兼容列（= double(EMS_CTRL_LAW>0)），日志 ems_mode 用
-EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004) 4=EMS_Fixed_ECMS(T-103) 5=EMS_SOC_Adaptive_ECMS(T-105) 6=EMS_Oracle_ECMS(T-106, 上界验证)
+EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004) 4=EMS_Fixed_ECMS(T-103) 5=EMS_SOC_Adaptive_ECMS(T-105) 6=EMS_Oracle_ECMS(T-106, 上界验证) 7=EMS_NN_AECMS(T-204, NN 预测型)
 AI_Pred_Source = 0;   % 预测源：0=Disabled/Persistence，1=FromWorkspace，2=External(STM32N6 预留)，3=EmbeddedML(环内推理)
 AI_TPeak_Source = 0;  % t_peak 来源：0=按 AI_Pred_Source 语义，1=强制取 AI_Oracle_Data 第3列(真值, E3 用)
 
@@ -183,6 +183,21 @@ ECMS_dt_ctrl_s         = 1;      % ECMS 控制周期 [s]（design §3.1 Δt_ctrl
 ECMS_EHat_Data = [0 0 0; 100000 0 0]; % law=6 oracle 前瞻信号 [t(s) E_future(kWh) e_hat(-)]（From Workspace 块读取；T-106 运行时由 ecms2.oracle_future_energy 对真实未来需求剖面预计算赋值；占位全零 -> e_hat=0 等价 law=5）
 ECMS_FLEET_SEED = 20260825; % T-201 参数化航次生成器种子（固定可复现；design §2 / FR-201；50_voyage_generator.m 读取）
 
+%% Phase 2 NN-A-ECMS（T-204，EMS_CTRL_LAW=7；design §5，FR-208）——占位默认值
+% 真实权重/归一化经 52_integrate_law7.m 从 results/ecms_phase2/models/selected_model_weights.json
+% + datasets/fleet_norm.json 生成 config/ecms_nn_weights.mat 注入（mat 不入库；
+% ecms2.ensure_nn_params 在构建/运行时装载并置 ECMS_NN_WeightsOK=1）。
+% 本处为占位默认：全零权重 + WeightsOK=0 -> 块内 ê=0（≡law=5 行为，FR-208 回退），模型编译不失败。
+% 权重布局（Keras Dense 行优先）：W1[302,128] b1[128] | W2[128,64] b2[64] | W3[64,1] b3[1]
+ECMS_NN_WeightsOK = 0;    % 0/1 数值（勿用 logical，EMChart 参数类型推断问题）——1=权重已注入
+ECMS_NN_W1 = zeros(302, 128); ECMS_NN_b1 = zeros(1, 128);
+ECMS_NN_W2 = zeros(128, 64);  ECMS_NN_b2 = zeros(1, 64);
+ECMS_NN_W3 = zeros(64, 1);    ECMS_NN_b3 = 0;
+ECMS_NN_XMean = zeros(302, 1); ECMS_NN_XStd = ones(302, 1); % per-feature z-score（fleet_norm.json，fit-on-train）
+ECMS_NN_YMean = 0; ECMS_NN_YStd = 1;                       % 目标反归一化（y_mean=34.5663/y_std=17.2269 由 mat 注入）
+ECMS_NN_Ebar_H_kWh = 36.893333753896165;  % S20 Ē_H [kWh]（与 law=6 相同标幺常数，source: results/ecms_phase1/kS_calibration.json oracle）
+ECMS_NN_Escale_kWh = 20.506967855122674;  % S20 E_scale [kWh]（同上；ê_NN=(Ê_NN−Ē_H)/E_scale，design §5 端点口径声明）
+
 %% CCS 2026《船舶应用直流综合电力系统指南》电能质量判据（来源：CCS 指南，置信度 high）
 CCS_Vdc_Steady_Band    = V_dc_nom * [0.90 1.06];   % 稳态 [675 795] V
 CCS_Vdc_Transient_Band = V_dc_nom * [0.80 1.07];   % 瞬态 [600 802.5] V
@@ -286,6 +301,14 @@ ParamMeta = {
   'AI_Pred_Data'                    '[t,P,tp]'  '预留接口(T-002 扩展 N×3)'      'na'        '05_EMS_AI'                  true
   'AI_Oracle_Data'                  '[t,P,tp]'  'FromWorkspace oracle 通道(T-002)' 'na'  '05_EMS_AI'                  true
   'ECMS_EHat_Data'                  '[t,Ef,eh]' 'FromWorkspace oracle 通道(law=6, T-106)' 'na' '05_EMS_Controller(ECMS6)' true
+  'ECMS_NN_WeightsOK'              '-'        'Phase 2 design §5（T-204；52_integrate_law7 生成 mat 注入）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_W1'                      '-'        'Phase 2 T-203 入选模型（selected_model_weights.json）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_XMean'                   'kW/mps'   'Phase 2 fleet_norm.json（fit-on-train per-feature）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_XStd'                    'kW/mps'   'Phase 2 fleet_norm.json（fit-on-train per-feature）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_YMean'                   'kWh'      'Phase 2 fleet_norm.json（target 反归一化）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_YStd'                    'kWh'      'Phase 2 fleet_norm.json（target 反归一化）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_Ebar_H_kWh'              'kWh'      'S20 Ē_H（与 law=6 相同标幺常数，kS_calibration.json）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_Escale_kWh'              'kWh'      'S20 E_scale（与 law=6 相同标幺常数，kS_calibration.json）' 'high' '05_EMS_Controller(ECMS7)' false
   'AI_Pred_Data'                    '[t,P,tp]'  '兼容保留(T-002 后不再引用)'      'na'        '05_EMS_AI'                  true
   'STM32_Pred_Data'                 '[t,P]'    '预留接口'                      'na'        '05_EMS_AI'                  true
   'AI_Pred_Timeout_s'               's'        '预留接口'                      'na'        '05_EMS_AI'                  true
