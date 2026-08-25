@@ -60,7 +60,7 @@ PLOT_DIR = OUT_DIR / "plots"
 LOG_CSV = OUT_DIR / "training_log.csv"
 
 SEED = 42
-SCRIPT_VERSION = "1.1.0"
+SCRIPT_VERSION = "1.2.0"    # v1.2: --only 模型族筛选（T-204B N=200 MLP 复训）+ training_log 追加模式
 
 RUN_KEYS = [
     "mlp_h64_32_lr1e-3", "mlp_h64_32_lr3e-4",
@@ -344,12 +344,15 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
 
 def write_csv(records):
     OUT_DIR.mkdir(parents=True, exist_ok=True)
-    with open(LOG_CSV, "w", newline="", encoding="utf-8") as f:
+    is_new = (not LOG_CSV.exists()) or LOG_CSV.stat().st_size == 0
+    with open(LOG_CSV, "w" if is_new else "a", newline="", encoding="utf-8") as f:
         w = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES, extrasaction="ignore")
-        w.writeheader()
+        if is_new:
+            w.writeheader()
         for r in records:
             w.writerow(r)
-    print("training_log.csv -> %s" % LOG_CSV, flush=True)
+    print("training_log.csv -> %s（append=%s，历史 N=80 记录保留不覆盖）"
+          % (LOG_CSV, not is_new), flush=True)
 
 
 def read_records_from_csv():
@@ -513,7 +516,7 @@ def export_weights_json(best, model, data, run_utc, verify_n=100):
 
 
 def export_selection_json(records, best, data, run_utc, decision_status,
-                          main_agent_ruling=None):
+                          main_agent_ruling=None, scope_note=None):
     ok = sorted([r for r in records if r.get("status") == "OK"],
                 key=lambda r: float(r["val_rmse_kwh"]))
     all_rows = []
@@ -577,6 +580,7 @@ def export_selection_json(records, best, data, run_utc, decision_status,
                           "LSTM 输入仅 [300,1] P_demand 窗口（design §4 批准口径），"
                           "未使用 v_ship/accel，差异已在 training_log.csv Notes 声明。",
         "decision_status": decision_status,
+        "scope_note": scope_note,
         "main_agent_ruling": main_agent_ruling,
         "selected": selected_block,
         "predictability_reference": {
@@ -625,6 +629,22 @@ def run_full(args, data):
                                 "notes": "LSTM 输入仅 [300,1] P_demand 窗口（design §4 对照口径），v_ship/accel 未使用；其余数据条件与 MLP 一致。"}),
     ]
 
+    # T-204B: 模型族筛选（--only）。LSTM 对照组结论已在 N=80 建立，不复训。
+    scope_note = None
+    if args.only == "mlp":
+        groups = [g for g in groups if g[1]["kind"] == "mlp"]
+        scope_note = ("T-204B: 本批仅复训 4 组 MLP（N=200 数据集，140/30/30 split）；"
+                      "LSTM 对照组结论已在 N=80 建立，本次不复训（见 dataset_manifest "
+                      "split.ratio_history）。")
+    elif args.only == "lstm":
+        groups = [g for g in groups if g[1]["kind"] == "lstm"]
+        scope_note = "T-204B: 本批仅训练 LSTM 组（N=200 数据集）；MLP 组不训练。"
+    if scope_note is not None:
+        print("\nSCOPE: %s\n" % scope_note, flush=True)
+        groups = [(k, dict(cfg, notes=((scope_note + "；" + cfg["notes"])
+                                       if cfg["notes"] else scope_note)))
+                  for k, cfg in groups]
+
     records, models, histories = [], {}, {}
     for i, (key, cfg) in enumerate(groups, 1):
         rec, model, hist = run_experiment(key, cfg, data, args, run_utc, i, len(groups))
@@ -643,17 +663,19 @@ def run_full(args, data):
         best["run_id"], best["val_rmse_kwh"], best["val_mae_kwh"], best["under_freq"]), flush=True)
 
     if issues:
-        export_selection_json(records, None, data, run_utc, decision_status="pending")
+        export_selection_json(records, None, data, run_utc, decision_status="pending",
+                              scope_note=scope_note)
         for iss in issues:
             print("ESCALATE_REQUIRED [%s]: %s" % (iss["type"], iss.get("detail", "")), flush=True)
         print("最终产物待主 Agent 裁决后以 --finalize 生成", flush=True)
         return 1
 
     # 无需裁决 -> 直接定稿
-    return finalize(args, data, records=records, selected_run_id=best["run_id"])
+    return finalize(args, data, records=records, selected_run_id=best["run_id"],
+                    scope_note=scope_note)
 
 
-def finalize(args, data, records=None, selected_run_id=None):
+def finalize(args, data, records=None, selected_run_id=None, scope_note=None):
     if records is None:
         records = read_records_from_csv()
     if selected_run_id is None:
@@ -691,7 +713,7 @@ def finalize(args, data, records=None, selected_run_id=None):
     else:
         print("注意: 入选模型为 LSTM，selected_model_weights.json 不导出（导出格式由 T-204 定义）", flush=True)
     export_selection_json(records, best, data, run_utc, decision_status="finalized",
-                          main_agent_ruling=ruling)
+                          main_agent_ruling=ruling, scope_note=scope_note)
 
     print("\n=== 定稿 ===", flush=True)
     print("入选: %s | val RMSE=%.3f kWh | MAE=%.3f kWh | under_freq=%.3f | ruling=%s" % (
@@ -711,6 +733,10 @@ def main():
                     help="定稿模式：从已保存 .keras 重新生成最终产物（不重训）")
     ap.add_argument("--select-run-id", type=str, default=None,
                     choices=RUN_KEYS, help="定稿时指定的入选 run_id")
+    ap.add_argument("--only", type=str, default="all",
+                    choices=("all", "mlp", "lstm"),
+                    help="仅训练指定模型族（T-204B: N=200 复训用 --only mlp；"
+                         "LSTM 对照不复训）")
     ap.add_argument("--decision-note", type=str, default=None,
                     help="主 Agent 裁决记录（写入 selection.json main_agent_ruling）")
     args = ap.parse_args()

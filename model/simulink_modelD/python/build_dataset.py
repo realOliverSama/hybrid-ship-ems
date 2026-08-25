@@ -5,7 +5,7 @@ build_dataset.py — Phase 2 窗口数据集构建 + 泄漏检查（T-202，FR-2
 ================================================================================
 
 Spec:    nn-predictive-ecms-phase2（design §3 / requirements FR-203/204）
-输入:    results/ecms_phase2/fleet_profiles/voyage_001..080.mat
+输入:    results/ecms_phase2/fleet_profiles/voyage_001..200.mat
          （全部 law=0 Baseline、零降额、已验收；字段 t_s / P_demand_kW /
            v_ship_mps / voyage_id / duration_s）
 输出:
@@ -13,7 +13,7 @@ Spec:    nn-predictive-ecms-phase2（design §3 / requirements FR-203/204）
                                      后的 X/y（float32）+ 逐窗口 voyage_id
     datasets/fleet_norm.json      —— 归一化参数（per-feature mean/std、y mean/std）
                                      + 公式说明（仅在 train 拟合，AI_MODELING §7）
-    results/ecms_phase2/dataset_manifest.json —— 窗口计数、split 名单（全 80 航次）、
+    results/ecms_phase2/dataset_manifest.json —— 窗口计数、split 名单（全 200 航次）、
                                      归一化统计、泄漏检查结论、输入 md5、生成时间
 
 窗口定义（design §3，T-202 任务批准）:
@@ -23,10 +23,11 @@ Spec:    nn-predictive-ecms-phase2（design §3 / requirements FR-203/204）
     y(t) = Ê_H(t) = Σ_{s=t+1}^{t+300} P_demand(s) / 3600   [kWh]（未来 300 s 能量）
     丢弃历史不足 300 s 或未来不足 300 s 的端部窗口；窗口只在一个航次内构建，不跨航次。
 
-Split（航次级，seed=20260825，比例 50/15/15 航次）:
-    design §3 原 140/30/30（N=200 版本，即 70/15/15%）；本批 N=80，
-    按 T-202 任务批准采用 50/15/15 航次（50+15+15=80，62.5/18.75/18.75%），
-    该调整在 manifest 中记录。
+Split（航次级，seed=20260825，N=200 比例 70/15/15 航次）:
+    本批 N=200，按 design §3 原案 140/30/30 航次（即 70/15/15%，
+    140+30+30=200）。沿革：早期 N=80 批曾按 T-202 任务批准等比缩放采用
+    50/15/15（62.5/18.75/18.75%）；本次恢复 design §3 原案比例。
+    两次调整沿革均记录于 manifest 的 split.ratio_history。
 
 归一化（AI_MODELING §7）:
     per-feature z-score（X 的 302 个特征各用各自 mean/std）、y z-score；
@@ -65,9 +66,9 @@ HORIZON = 300       # 预测时域 [s]
 STEP = 10           # 窗口步长 [s]
 N_FEATURES = HIST + 2        # 300 P + v_ship + accel
 SPLIT_SEED = 20260825        # 航次级 split 打乱种子（与航次生成种子一致）
-N_TRAIN, N_VAL, N_TEST = 50, 15, 15
+N_TRAIN, N_VAL, N_TEST = 140, 30, 30    # design §3 原案：N=200 时 70/15/15%
 N_VOYAGES = N_TRAIN + N_VAL + N_TEST
-SCRIPT_VERSION = "1.0.0"
+SCRIPT_VERSION = "2.0.0"    # v2: N=80(50/15/15) → N=200(140/30/30)；seed/窗口规则不变
 P_SAT_KW = 800.0            # P_demand 饱和上限（speed PI 饱和封顶，design §2）
 Y_UPPER_KWH = P_SAT_KW * HORIZON / 3600.0   # ≈ 66.7 kWh
 Y_LOWER_KWH = 100.0 * HORIZON / 3600.0      # ≈ 8.33 kWh（P_demand ≥ hotel 100 kW）
@@ -97,7 +98,7 @@ def md5_file(path):
 
 
 def load_profiles():
-    """读取并校验 80 个航次剖面。返回 {voyage_id: dict} + 输入文件清单。"""
+    """读取并校验 N_VOYAGES 个航次剖面。返回 {voyage_id: dict} + 输入文件清单。"""
     profiles = {}
     inputs = []
     for vid in range(1, N_VOYAGES + 1):
@@ -164,7 +165,7 @@ def build_windows(prof):
 
 
 def split_voyages():
-    """航次级 split：seed 打乱 1..80，前 50 train / 中 15 val / 后 15 test。"""
+    """航次级 split：seed 打乱 1..N_VOYAGES，前 N_TRAIN train / 中 N_VAL val / 后 N_TEST test。"""
     rng = np.random.RandomState(SPLIT_SEED)
     ids = np.arange(1, N_VOYAGES + 1)
     rng.shuffle(ids)
@@ -177,7 +178,7 @@ def split_voyages():
     assert s_tr & s_va == set() and s_tr & s_te == set() and s_va & s_te == set(), \
         "split 航次集合互斥断言失败"
     assert s_tr | s_va | s_te == set(range(1, N_VOYAGES + 1)), \
-        "split 未覆盖全部 80 个航次"
+        "split 未覆盖全部 %d 个航次" % N_VOYAGES
     return {"train": tr, "val": va, "test": te}
 
 
@@ -306,13 +307,13 @@ def main():
         "window_cross_voyage": False,     # 按航次构建，边界断言已过
         "voyage_in_multiple_splits": False,
         "every_voyage_in_exactly_one_split": True,
-        "n_voyages_covered": 80,
+        "n_voyages_covered": N_VOYAGES,
         "normalization_fit_train_only": True,
         "val_test_transform_only": True,
         "s20_s01_s02_s07_in_dataset": False,
         "future_info_in_features": False,   # 特征仅含 t 及更早信息
         "structural_declaration": (
-            "FR-204 结构性声明：本数据集全部 80 个航次（voyage_001..080）由 "
+            "FR-204 结构性声明：本数据集全部 200 个航次（voyage_001..200）由 "
             "51_generate_fleet_profiles.m + 航次定义集（seed=20260825，"
             "results/ecms_phase2/fleet/voyages_seed20260825.json）独立随机生成，"
             "与 Phase 1 固定评估场景 S20/S01/S02/S07 的剖面数据无共享样本、无共享"
@@ -343,7 +344,7 @@ def main():
         "script_version": SCRIPT_VERSION,
         "generated_utc": datetime.datetime.now(datetime.timezone.utc)
                         .isoformat(timespec="seconds"),
-        "fit_on": "train split only（50 航次，seed=%d）" % SPLIT_SEED,
+        "fit_on": "train split only（%d 航次，seed=%d）" % (N_TRAIN, SPLIT_SEED),
         "transform_formula": (
             "x_norm[f] = (x[f] - mean[f]) / std[f]；"
             "y_norm = (y - y_mean) / y_std；恢复: x = x_norm*std+mean, "
@@ -418,12 +419,17 @@ def main():
         },
         "split": {
             "method": (
-                "航次级：np.random.RandomState(seed=%d).shuffle(1..80)，"
-                "前 50 train / 中 15 val / 后 15 test" % SPLIT_SEED),
-            "ratio_note": (
-                "design §3 原 140/30/30（N=200 版本，即 70/15/15%）；本批 N=80 "
-                "按 T-202 任务批准等比缩放调整采用 50/15/15 航次"
-                "（50+15+15=80，即 62.5/18.75/18.75%），此处记录该调整"),
+                "航次级：np.random.RandomState(seed=%d).shuffle(1..%d)，"
+                "前 %d train / 中 %d val / 后 %d test" % (
+                    SPLIT_SEED, N_VOYAGES, N_TRAIN, N_VAL, N_TEST)),
+            "ratio_history": [
+                {"dataset_generation": "N=80 批（T-202）", "counts": "50/15/15",
+                 "note": "design §3 原案为 N=200 140/30/30；N=80 批按 T-202 任务批准"
+                         "等比缩放采用 50/15/15（62.5/18.75/18.75%）"},
+                {"dataset_generation": "本批 N=200（T-204B）", "counts": "140/30/30",
+                 "note": "恢复 design §3 原案比例 70/15/15%（140+30+30=200）；"
+                         "seed=20260825、窗口规则、泄漏断言全部不变（仅航次数与比例）"},
+            ],
             "counts": {"train": len(split["train"]), "val": len(split["val"]),
                        "test": len(split["test"])},
             "train_voyages": split["train"],
@@ -432,7 +438,7 @@ def main():
             "assertions": {
                 "every_voyage_exactly_one_split": True,
                 "splits_disjoint": True,
-                "all_80_covered": True,
+                "all_%d_covered" % N_VOYAGES: True,
             },
         },
         "window_counts": {
@@ -450,7 +456,7 @@ def main():
             "属同分布族的合理抽样方差，非异常；z-score 归一化良定义（std=17.2>>0），"
             "不构成 escalate 条件。"),
         "normalization": {
-            "fit_on": "train only（50 航次，seed=%d）" % SPLIT_SEED,
+            "fit_on": "train only（%d 航次，seed=%d）" % (N_TRAIN, SPLIT_SEED),
             "x_302_feat_max_abs_mean": allmax_abs_mean,
             "x_302_feat_max_abs_std_minus_1": allmax_abs_std1,
             "x_std_min": float(x_std.min()),
@@ -473,9 +479,10 @@ def main():
 
     # ---- 汇总 ----
     print("=" * 72)
-    print("汇总：航次 80（train 50 / val 15 / test 15）；窗口 %d"
+    print("汇总：航次 %d（train %d / val %d / test %d）；窗口 %d"
           "（train %d / val %d / test %d）"
-          % (total_windows, len(normed["train"]["y"]),
+          % (N_VOYAGES, N_TRAIN, N_VAL, N_TEST,
+             total_windows, len(normed["train"]["y"]),
              len(normed["val"]["y"]), len(normed["test"]["y"])))
     print("泄漏检查：%s（窗口不跨航次 / split 互斥 / 归一化仅 train / 无 S20 场景数据）"
           % leak["conclusion"])
