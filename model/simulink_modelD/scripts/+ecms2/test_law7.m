@@ -1,19 +1,25 @@
 function results = test_law7(ROOT)
-% ecms2.test_law7 — T-204 law=7 NN-A-ECMS 单元测试（design §5，FR-208）
+% ecms2.test_law7 — T-204 law=7 NN-A-ECMS 单元测试（design §5，FR-208；Amendment v1.2 extrinsic 兜底）
 %
-%  T1 块内前向 vs Python 推理：Simulink 前向 harness（与产品 law=7 块共用
-%     ecms2.nn_forward_code() 语句文本，位一致）vs .venv_tf/bin/python
-%     （train_predictor.py 同款 _np_mlp_forward），100 组随机输入，
-%     归一化空间 max|Δ| < 1e-5。
-%  T2 回退路径（缺权重 -> ê=0）：ECMS_NN_WeightsOK=0 时块 P_gen_ref ≡ 离线
-%     ecms2.ecms_law(law=6, e_hat=0)（容差 0）。ê=0 时 SOC_ref_eff=SOC_ref，
-%     λ 下限钳位按 law=6 v2 语义仍生效（K_S=0.01≠0）——与 law=5 仅差 λ floor
-%     （0.43 vs 0.425，design v1.1），即“预测通道惰性”意义上的 law=5 行为。
+%  T1 ecms2.nn_predict_ehat vs Python 推理：直接调用函数（含 300 s P_load 环形缓冲/
+%     归一化/MLP 前向持久状态），逐测试点喂入 300 个时间升序样本后捕获输出，与
+%     .venv_tf/bin/python（train_predictor.py 同款 _np_mlp_forward）对比，
+%     100 组随机输入，归一化空间 max|Δ| < 1e-5。函数特征布局与
+%     datasets/fleet_norm.json feature_layout 一致（302 维时间升序 + v_ship + accel）。
+%  T2 回退路径（权重 mat 缺失 -> ê=0）：临时 rename config/ecms_nn_weights.mat，
+%     短 S01 × law=7 闭环试跑，P_gen_ref ≡ 离线 ecms2.ecms_law(law=6, e_hat=0)
+%     （容差 0）。ê=0 时 SOC_ref_eff=SOC_ref，λ 下限钳位按 law=6 v2 语义仍生效
+%     （K_S=0.01≠0）——与 law=5 仅差 λ floor（0.43 vs 0.425，design v1.1），
+%     即“预测通道惰性”意义上的 law=5 行为。测试后恢复 mat。
 %  T3 law=7 全闭环 S01 试跑（真实权重）：fuel/SOC_end/Vdc_min 合理，
 %     SOC_end ∈ [0.55, 0.65]（验收判据），Vdc_min ≥ 600 V（CCS 瞬态带下限）。
 %
-%  前置: 10_build_modelD.m 已重建模型（含 law=7 变体）；52_integrate_law7.m
-%        已生成 config/ecms_nn_weights.mat（真实权重）。
+%  新仿真自动重置：ecms2.nn_predict_ehat 以 t<lastT 识别新仿真并重置缓冲/权重缓存，
+%  故 T1→T2（mat 缺失回退）→T3（mat 恢复重载）无需 clear 函数（R2026a 下
+%  clear <pkg>.<func> 不清除包函数 persistent，已实证）。
+%
+%  前置: 10_build_modelD.m 已重建模型（含 law=7 extrinsic 变体）；
+%        52_integrate_law7.m 已生成 config/ecms_nn_weights.mat（真实权重）。
 %  用法: r = ecms2.test_law7();   % ROOT 缺省 model/simulink_modelD
 %  失败: error('ECMS2:TEST', ...) 非零退出；成功时写入
 %        results/ecms_phase2/test_law7.json 并返回 r（r.pass=true）。
@@ -22,13 +28,13 @@ function results = test_law7(ROOT)
     end
     addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-    fprintf('\n[ecms2.test_law7] ===== T-204 law=7 NN-A-ECMS 单元测试（design §5，FR-208） =====\n');
+    fprintf('\n[ecms2.test_law7] ===== T-204 law=7 NN-A-ECMS 单元测试（Amendment v1.2 extrinsic 兜底） =====\n');
 
     r = struct('t1_max_delta_y_norm', NaN, 't2_max_diff_kW', NaN, ...
         't3_fuel_kg', NaN, 't3_SOC_end', NaN, 't3_Vdc_min_V', NaN, ...
         't3_duration_s', NaN, 'pass', false);
-    t = struct('t1', '块内前向 vs Python（100 组随机输入，归一化空间 |Δ|<1e-5）', ...
-               't2', '回退路径：缺权重 WeightsOK=0 -> ê=0（块 ≡ 离线 law=6-ehat=0，容差 0）', ...
+    t = struct('t1', 'nn_predict_ehat vs Python（100 组随机输入，归一化空间 |Δ|<1e-5）', ...
+               't2', '回退路径：权重 mat 缺失 -> ê=0（块 ≡ 离线 law=6-ehat=0，容差 0）', ...
                't3', 'law=7 全闭环 S01 试跑（SOC_end∈[0.55,0.65]，Vdc_min≥600V）');
 
     %% ---- 公共准备：参数 + 权重 ----
@@ -55,21 +61,38 @@ function results = test_law7(ROOT)
     assert(~isempty(v7), 'ECMS2:TEST', ...
         'T1 FAIL: 模型缺少 EMS_NN_AECMS 变体（模型未含 law=7，请重建）');
 
-    %% ================= T1: 块内前向 vs Python =================
-    fprintf('\n[ecms2.test_law7] ---- T1: 前向一致性（块 vs Python） ----\n');
+    %% ================= T1: nn_predict_ehat vs Python =================
+    fprintf('\n[ecms2.test_law7] ---- T1: ecms2.nn_predict_ehat vs Python（100 组随机输入） ----\n');
     N = 100;
     rng(204, 'twister');
-    xP = 100 + 800 * rand(300, N);       % P 历史 100~900 kW
-    vS = 0.1 + 5.9 * rand(1, N);         % v_ship 0.1~6 m/s
-    aS = -0.3 + 0.6 * rand(1, N);        % accel ±0.3 m/s^2
-    x_raw = [xP; vS; aS];                % 302×N 原始特征（与 fleet_norm layout 一致）
+    P_hist = 100 + 800 * rand(300, N);   % 每列一个测试点的 300 s P 历史（时间升序喂入）
+    v_test = 0.1 + 5.9 * rand(1, N);     % 测试点船速 v(t) [m/s]
+    a_test = -0.3 + 0.6 * rand(1, N);    % 测试点 accel(t) = v(t)-v(t-1) [m/s^2]
+    x_raw = [P_hist; v_test; a_test];    % 302×N（fleet_norm.json feature_layout 同序）
 
+    % -- 直接驱动函数（含持久环形缓冲；t 单调递增，捕获每测试点第 300 样本输出）--
+    e_mat = zeros(1, N);
+    tt = 0;
+    for j = 1:N
+        for s = 1:300
+            tt = tt + 1;
+            if s < 300
+                vv = v_test(j) - a_test(j);   % 使第 300 样本处 accel = v(t)-v(t-1) = a_test(j)
+            else
+                vv = v_test(j);
+            end
+            eh = ecms2.nn_predict_ehat(tt, P_hist(s, j), vv);
+            if s == 300
+                e_mat(j) = eh;
+            end
+        end
+    end
+
+    % -- Python 参考（.venv_tf，同款 _np_mlp_forward 数学）--
     tmpDir = tempname; mkdir(tmpDir);
     try
-        % -- 写二进制输入（MATLAB 列主序）--
         xbin = fullfile(tmpDir, 'x_raw.bin');
         fid = fopen(xbin, 'w'); fwrite(fid, x_raw, 'double'); fclose(fid);
-        % -- 写 Python 推理脚本（float64，与 JSON 权重同精度）--
         pyScript = fullfile(tmpDir, 'law7_infer.py');
         fid = fopen(pyScript, 'w', 'n', 'UTF-8');
         fprintf(fid, '%s\n', ...
@@ -91,8 +114,7 @@ function results = test_law7(ROOT)
             'y.tofile(sys.argv[3])', ...
             'print("n=%d max|y|=%g" % (y.size, float(np.max(np.abs(y)))), flush=True)');
         fclose(fid);
-        % -- 运行 Python --
-        venvPy = fullfile(fileparts(fileparts(ROOT)), 'simulink', '.venv_tf', 'bin', 'python');
+        venvPy = fullfile(fileparts(ROOT), 'simulink', '.venv_tf', 'bin', 'python');
         assert(exist(venvPy, 'file') == 2, 'ECMS2:TEST', ...
             'T1 FAIL: .venv_tf Python 不存在: %s', venvPy);
         ybin = fullfile(tmpDir, 'y_py.bin');
@@ -105,107 +127,65 @@ function results = test_law7(ROOT)
         fprintf('[T1] %s', strtrim(so));
         fid = fopen(ybin, 'r'); y_py = fread(fid, 'double'); fclose(fid);
         assert(numel(y_py) == N, 'ECMS2:TEST', 'T1 FAIL: Python 输出 %d 点（预期 %d）', numel(y_py), N);
-
-        % -- Simulink 前向 harness（与产品块共用 ecms2.nn_forward_code 文本）--
-        H = 'law7_fwd_harness';
-        if bdIsLoaded(H), close_system(H, 0); end
-        hFile = fullfile(tmpDir, [H '.slx']);
-        if exist(hFile, 'file'), delete(hFile); end
-        new_system(H);
-        set_param(H, 'SolverType', 'Fixed-step', 'Solver', 'ode3', ...
-            'FixedStep', '0.01', 'StopTime', '0.01', 'AlgebraicLoopMsg', 'error');
-        add_block('simulink/Sources/Constant', [H '/xin'], 'Position', [20 40 60 70], 'Value', 'NN_XIN');
-        fn = [H '/fwd'];
-        add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [100 20 220 90]);
-        rt = sfroot;
-        ch = rt.find('-isa', 'Stateflow.EMChart', 'Path', fn);
-        code = sprintf([ ...
-            'function y_norm = nn_fwd(x, W1, b1, W2, b2, W3, b3, XMean, XStd)\n' ...
-            '%% 前向 harness（T-204 T1）：与产品 law=7 块共用 ecms2.nn_forward_code() 语句，位一致\n' ...
-            '%s' ...
-            'y_norm = y_norm(:);\n' ...
-            'end\n'], ecms2.nn_forward_code());
-        ch.Script = code;
-        ds = ch.find('-isa', 'Stateflow.Data');
-        pNames = {'W1','b1','W2','b2','W3','b3','XMean','XStd'};
-        pSizes = {'[302 128]','[1 128]','[128 64]','[1 64]','[64 1]','[1 1]','[302 1]','[302 1]'};
-        for q = 1:numel(pNames)
-            d = [];
-            for j = 1:numel(ds)
-                if strcmp(ds(j).Name, pNames{q}), d = ds(j); break; end
-            end
-            if isempty(d)
-                d = Stateflow.Data(ch);
-                d.Name = pNames{q};
-            end
-            d.Scope = 'Parameter';
-            d.Props.Array.Size = pSizes{q};
-        end
-        add_block('simulink/Sinks/Out1', [H '/y'], 'Position', [260 20 290 50]);
-        add_block('simulink/Sinks/To Workspace', [H '/simout'], 'Position', [300 20 360 50], ...
-            'VariableName', 'law7_y', 'SaveFormat', 'Array');
-        add_line(H, 'xin/1', 'fwd/1');
-        add_line(H, 'fwd/1', 'y/1');
-        add_line(H, 'fwd/1', 'simout/1');
-        save_system(H, hFile);
-        % 权重/输入注入 base（参数 + 常量）
-        assignin('base', 'W1', Wm.ECMS_NN_W1); assignin('base', 'b1', Wm.ECMS_NN_b1);
-        assignin('base', 'W2', Wm.ECMS_NN_W2); assignin('base', 'b2', Wm.ECMS_NN_b2);
-        assignin('base', 'W3', Wm.ECMS_NN_W3); assignin('base', 'b3', Wm.ECMS_NN_b3);
-        assignin('base', 'XMean', Wm.ECMS_NN_XMean); assignin('base', 'XStd', Wm.ECMS_NN_XStd);
-        assignin('base', 'NN_XIN', x_raw);
-        sim(H);
-        y_blk = evalin('base', 'law7_y');
-        y_blk = y_blk(end, :).';
-        maxDelta = max(abs(y_blk - y_py));
-        fprintf('[T1] 比对 %d 组随机输入：块 vs Python max|Δ| = %.6g（阈值 1e-5，归一化空间）\n', ...
-            N, maxDelta);
-        assert(maxDelta < 1e-5, 'ECMS2:TEST', ...
-            'T1 FAIL: 块 vs Python 最大偏差 %.6g ≥ 1e-5', maxDelta);
-        r.t1_max_delta_y_norm = maxDelta;
-        close_system(H, 0);
     catch err
-        if bdIsLoaded('law7_fwd_harness'), close_system('law7_fwd_harness', 0); end
         rmdir(tmpDir, 's');
         rethrow(err);
     end
     rmdir(tmpDir, 's');
+    % -- 比对（归一化空间）：函数输出 e_hat -> 反推 y_norm，与 Python y_norm 对比 --
+    y_blk = (e_mat .* Wm.ECMS_NN_Escale_kWh + Wm.ECMS_NN_Ebar_H_kWh - Wm.ECMS_NN_YMean) ./ Wm.ECMS_NN_YStd;
+    maxDelta = max(abs(y_blk(:) - y_py(:)));
+    fprintf('[T1] 比对 %d 组随机输入：函数 vs Python max|Δ| = %.6g（阈值 1e-5，归一化空间）\n', ...
+        N, maxDelta);
+    assert(maxDelta < 1e-5, 'ECMS2:TEST', ...
+        'T1 FAIL: 函数 vs Python 最大偏差 %.6g ≥ 1e-5', maxDelta);
+    r.t1_max_delta_y_norm = maxDelta;
 
-    %% ================= T2: 回退路径（缺权重 -> ê=0） =================
-    fprintf('\n[ecms2.test_law7] ---- T2: 回退路径（WeightsOK=0 -> ê=0） ----\n');
-    assignin('base', 'ECMS_NN_WeightsOK', 0);   % 模拟权重/归一化缺失
-    set_param(MDL, 'SimulationCommand', 'update');   % 强制以当前工作区参数重编译
-    SCN = evalin('base', 'SCENARIOS(1)');
-    SCN.voyage_distance_m = 2000;
-    stopTimeLimit = SCN.voyage_distance_m / SCN.target_speed_mps + 1800;
-    out = model.run_scenario_sim(MDL, SCN, 7, stopTimeLimit);
-    ds = model.extract_logsout(out);
-    assert(isfield(ds, 'P_gen_ref_kW'), 'ECMS2:TEST', ...
-        'T2 FAIL: logsout 缺少 P_gen_ref_kW（law=7 记录未生效）');
-    ti = ds.t;
-    idx = find(abs(ti - round(ti)) < 1e-6);
-    P_load_s = ds.P_load_total_kW(idx);
-    SOC_s    = ds.SOC(idx);
-    P_ref_blk = ds.P_gen_ref_kW(idx);
-    lamT2 = evalin('base', 'ECMS_Lambda');
-    pT2 = ecms2.ecms_params();
-    maxDiff2 = 0;
-    nCmp2 = numel(idx);
-    for k = 1:nCmp2
-        Pg_off = ecms2.ecms_law(P_load_s(k), SOC_s(k), lamT2, pT2, 6, 0.0); % ê=0
-        d = abs(Pg_off - P_ref_blk(k));
-        if d > maxDiff2, maxDiff2 = d; end
+    %% ================= T2: 回退路径（权重 mat 缺失 -> ê=0） =================
+    fprintf('\n[ecms2.test_law7] ---- T2: 回退路径（mat 缺失 -> ê=0） ----\n');
+    matBak = [matFile '.bak_t204'];
+    if exist(matBak, 'file'), delete(matBak); end
+    movefile(matFile, matBak);
+    try
+        % 新仿真 t=0 < lastT（T1 结束于 t=30000）-> 函数重置并重试 load（缺失 -> ê=0）
+        set_param(MDL, 'SimulationCommand', 'update');
+        SCN = evalin('base', 'SCENARIOS(1)');
+        SCN.voyage_distance_m = 2000;
+        stopTimeLimit = SCN.voyage_distance_m / SCN.target_speed_mps + 1800;
+        out = model.run_scenario_sim(MDL, SCN, 7, stopTimeLimit);
+        ds = model.extract_logsout(out);
+        assert(isfield(ds, 'P_gen_ref_kW'), 'ECMS2:TEST', ...
+            'T2 FAIL: logsout 缺少 P_gen_ref_kW（law=7 记录未生效）');
+        ti = ds.t;
+        idx = find(abs(ti - round(ti)) < 1e-6);
+        P_load_s = ds.P_load_total_kW(idx);
+        SOC_s    = ds.SOC(idx);
+        P_ref_blk = ds.P_gen_ref_kW(idx);
+        lamT2 = evalin('base', 'ECMS_Lambda');
+        pT2 = ecms2.ecms_params();
+        maxDiff2 = 0;
+        nCmp2 = numel(idx);
+        for k = 1:nCmp2
+            Pg_off = ecms2.ecms_law(P_load_s(k), SOC_s(k), lamT2, pT2, 6, 0.0); % ê=0
+            d = abs(Pg_off - P_ref_blk(k));
+            if d > maxDiff2, maxDiff2 = d; end
+        end
+        fprintf('[T2] 比对 %d 个整数秒采样点：块(law=7, ê=0) vs 离线 law=6-ehat=0 max|Δ| = %.6g kW（容差 0）\n', ...
+            nCmp2, maxDiff2);
+        fprintf('[T2] 语义说明：ê=0 -> SOC_ref_eff=SOC_ref（预测通道惰性 ≡ law=5）；λ floor 按 law=6 v2 仍生效\n');
+        assert(maxDiff2 == 0, 'ECMS2:TEST', ...
+            'T2 FAIL: 回退路径块与离线实现最大偏差 %.6g kW ≠ 0', maxDiff2);
+        r.t2_max_diff_kW = maxDiff2;
+    catch err
+        movefile(matBak, matFile);   % 异常路径也恢复 mat
+        rethrow(err);
     end
-    fprintf('[T2] 比对 %d 个整数秒采样点：块(law=7, ê=0) vs 离线 law=6-ehat=0 max|Δ| = %.6g kW（容差 0）\n', ...
-        nCmp2, maxDiff2);
-    fprintf('[T2] 语义说明：ê=0 -> SOC_ref_eff=SOC_ref（预测通道惰性 ≡ law=5）；λ floor 按 law=6 v2 仍生效\n');
-    assert(maxDiff2 == 0, 'ECMS2:TEST', ...
-        'T2 FAIL: 回退路径块与离线实现最大偏差 %.6g kW ≠ 0', maxDiff2);
-    r.t2_max_diff_kW = maxDiff2;
+    movefile(matBak, matFile);
+    fprintf('[T2] 已恢复 %s\n', matFile);
 
     %% ================= T3: law=7 全闭环 S01 试跑（真实权重） =================
     fprintf('\n[ecms2.test_law7] ---- T3: law=7 全闭环 S01 试跑（真实权重） ----\n');
-    sNN = ecms2.ensure_nn_params(ROOT);   % 重新装载真实权重（WeightsOK=1）
+    sNN = ecms2.ensure_nn_params(ROOT);   % 重新装载真实权重（WeightsOK=1；extrinsic 经 t<lastT 重置后重载 mat）
     assert(sNN.ok == 1, 'ECMS2:TEST', 'T3 FAIL: 权重重新装载失败');
     set_param(MDL, 'SimulationCommand', 'update');
     SCN = evalin('base', 'SCENARIOS(1)');          % 完整 S01（5000 m，initial_SOC=0.60）

@@ -183,13 +183,15 @@ ECMS_dt_ctrl_s         = 1;      % ECMS 控制周期 [s]（design §3.1 Δt_ctrl
 ECMS_EHat_Data = [0 0 0; 100000 0 0]; % law=6 oracle 前瞻信号 [t(s) E_future(kWh) e_hat(-)]（From Workspace 块读取；T-106 运行时由 ecms2.oracle_future_energy 对真实未来需求剖面预计算赋值；占位全零 -> e_hat=0 等价 law=5）
 ECMS_FLEET_SEED = 20260825; % T-201 参数化航次生成器种子（固定可复现；design §2 / FR-201；50_voyage_generator.m 读取）
 
-%% Phase 2 NN-A-ECMS（T-204，EMS_CTRL_LAW=7；design §5，FR-208）——占位默认值
+%% Phase 2 NN-A-ECMS（T-204，EMS_CTRL_LAW=7；design §5，FR-208；Amendment v1.2）——占位默认值
 % 真实权重/归一化经 52_integrate_law7.m 从 results/ecms_phase2/models/selected_model_weights.json
-% + datasets/fleet_norm.json 生成 config/ecms_nn_weights.mat 注入（mat 不入库；
-% ecms2.ensure_nn_params 在构建/运行时装载并置 ECMS_NN_WeightsOK=1）。
-% 本处为占位默认：全零权重 + WeightsOK=0 -> 块内 ê=0（≡law=5 行为，FR-208 回退），模型编译不失败。
+% + datasets/fleet_norm.json 生成 config/ecms_nn_weights.mat（mat 不入库）。
+% **Amendment v1.2（extrinsic 兑底）后图内不再需要 ECMS_NN_* 图级参数**：law=7 的 NN 前向
+% 由 coder.extrinsic 调 ecms2.nn_predict_ehat 在运行期自 load config/ecms_nn_weights.mat
+% （T-204 后不再读本占位）。本处保留占位仅为参数审计/文档完整性（全零权重 + WeightsOK=0
+% 语义已废止：回退路径改为 mat 缺失 -> ê=0 ≡ law=5 行为，FR-208）。
 % 权重布局（Keras Dense 行优先）：W1[302,128] b1[128] | W2[128,64] b2[64] | W3[64,1] b3[1]
-ECMS_NN_WeightsOK = 0;    % 0/1 数值（勿用 logical，EMChart 参数类型推断问题）——1=权重已注入
+ECMS_NN_WeightsOK = 0;    % 0/1 数值（仅审计/兼容保留；extrinsic 路径不再读取）
 ECMS_NN_W1 = zeros(302, 128); ECMS_NN_b1 = zeros(1, 128);
 ECMS_NN_W2 = zeros(128, 64);  ECMS_NN_b2 = zeros(1, 64);
 ECMS_NN_W3 = zeros(64, 1);    ECMS_NN_b3 = 0;

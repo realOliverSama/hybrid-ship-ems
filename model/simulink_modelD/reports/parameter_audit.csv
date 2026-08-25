@@ -1,7 +1,7 @@
 parameter,value,unit,source,confidence,used_by,needs_confirmation
 Model_SystemScope,twin_string_equivalent,-,Model 配置 (v2.0 双支路等效),high,全部,false
 EMS_MODE,1,-,Model 配置(兼容列),high,05_EMS_Controller,false
-EMS_CTRL_LAW,6,-,Model D 配置 (T-003),high,05_EMS_Controller,false
+EMS_CTRL_LAW,7,-,Model D 配置 (T-003),high,05_EMS_Controller,false
 ECMS_Lambda,0.425,kg/kWh,Phase 1 design §3.1（T-104 标定）,low,05_EMS_Controller(ECMS4/5),false
 ECMS_K_soc,30,kg/kWh/SOC,Phase 1 design §3.2（T-105 标定）,low,05_EMS_Controller(ECMS5),false
 ECMS_K_S,0.01,-,Phase 1 design v1.1（T-106 标定；oracle 上界验证，非实时可实现 E5）,low,05_EMS_Controller(ECMS6),false
@@ -83,6 +83,14 @@ ASSUMED_AI_DataValid,false,-,ASSUMED,low,05_EMS_AI,true
 AI_Pred_Data,[0 0],[t,P,tp],预留接口(T-002 扩展 N×3),na,05_EMS_AI,true
 AI_Oracle_Data,[0 0 0;100000 0 0],[t,P,tp],FromWorkspace oracle 通道(T-002),na,05_EMS_AI,true
 ECMS_EHat_Data,[0 0 0;100000 0 0],[t,Ef,eh],FromWorkspace oracle 通道(law=6, T-106),na,05_EMS_Controller(ECMS6),true
+ECMS_NN_WeightsOK,1,-,Phase 2 design §5（T-204；52_integrate_law7 生成 mat 注入）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_W1,[302x128 double],-,Phase 2 T-203 入选模型（selected_model_weights.json）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_XMean,[302x1 double],kW/mps,Phase 2 fleet_norm.json（fit-on-train per-feature）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_XStd,[302x1 double],kW/mps,Phase 2 fleet_norm.json（fit-on-train per-feature）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_YMean,33.5862197696759,kWh,Phase 2 fleet_norm.json（target 反归一化）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_YStd,17.8686192645255,kWh,Phase 2 fleet_norm.json（target 反归一化）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_Ebar_H_kWh,36.8933337538962,kWh,S20 Ē_H（与 law=6 相同标幺常数，kS_calibration.json）,high,05_EMS_Controller(ECMS7),false
+ECMS_NN_Escale_kWh,20.5069678551227,kWh,S20 E_scale（与 law=6 相同标幺常数，kS_calibration.json）,high,05_EMS_Controller(ECMS7),false
 AI_Pred_Data,[0 0],[t,P,tp],兼容保留(T-002 后不再引用),na,05_EMS_AI,true
 STM32_Pred_Data,[0 0],[t,P],预留接口,na,05_EMS_AI,true
 AI_Pred_Timeout_s,2,s,预留接口,na,05_EMS_AI,true
