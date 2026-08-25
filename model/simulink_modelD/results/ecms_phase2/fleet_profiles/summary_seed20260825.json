@@ -1,0 +1,776 @@
+{
+  "meta": {
+    "seed": 20260825,
+    "requested_N": 80,
+    "start": 1,
+    "law": 0,
+    "parsim": false,
+    "injection": "SimulationInput.setVariable (fast path)",
+    "n_ok": 76,
+    "n_rejected": 0,
+    "n_skip": 4,
+    "deep_check_rule": "every 20th voyage: Vdc_min>=675V and closure<0.1%",
+    "generated": "2026-08-25 15:23:44"
+  },
+  "voyages": [{
+      "voyage": 5,
+      "name": "voyage_005",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3789,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.19339423e-06,
+      "n_derate_samples": 0,
+      "wall_s": 37.32195683
+    },{
+      "voyage": 6,
+      "name": "voyage_006",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4105,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.828491937e-06,
+      "n_derate_samples": 0,
+      "wall_s": 50.67800608
+    },{
+      "voyage": 7,
+      "name": "voyage_007",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4382,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.165585112e-07,
+      "n_derate_samples": 0,
+      "wall_s": 59.97003925
+    },{
+      "voyage": 8,
+      "name": "voyage_008",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4348,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.039354175e-06,
+      "n_derate_samples": 0,
+      "wall_s": 47.28472358
+    },{
+      "voyage": 9,
+      "name": "voyage_009",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3699,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -9.760935455e-06,
+      "n_derate_samples": 0,
+      "wall_s": 33.22230867
+    },{
+      "voyage": 10,
+      "name": "voyage_010",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5006,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.014330859e-05,
+      "n_derate_samples": 0,
+      "wall_s": 58.87154171
+    },{
+      "voyage": 11,
+      "name": "voyage_011",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4009,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.674361367e-06,
+      "n_derate_samples": 0,
+      "wall_s": 60.23604471
+    },{
+      "voyage": 12,
+      "name": "voyage_012",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4430,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.19740223e-06,
+      "n_derate_samples": 0,
+      "wall_s": 86.42061579
+    },{
+      "voyage": 13,
+      "name": "voyage_013",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3726,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.255201619e-05,
+      "n_derate_samples": 0,
+      "wall_s": 60.79446708
+    },{
+      "voyage": 14,
+      "name": "voyage_014",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4460,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -8.65419542e-06,
+      "n_derate_samples": 0,
+      "wall_s": 98.508684
+    },{
+      "voyage": 15,
+      "name": "voyage_015",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5073,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.017623721e-05,
+      "n_derate_samples": 0,
+      "wall_s": 72.355126
+    },{
+      "voyage": 16,
+      "name": "voyage_016",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4306,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.260144944e-05,
+      "n_derate_samples": 0,
+      "wall_s": 46.24355621
+    },{
+      "voyage": 17,
+      "name": "voyage_017",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4581,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.660519646e-06,
+      "n_derate_samples": 0,
+      "wall_s": 51.74344296
+    },{
+      "voyage": 18,
+      "name": "voyage_018",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4800,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -8.171625192e-06,
+      "n_derate_samples": 0,
+      "wall_s": 52.01998125
+    },{
+      "voyage": 19,
+      "name": "voyage_019",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5352,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.659355924e-06,
+      "n_derate_samples": 0,
+      "wall_s": 75.73950692
+    },{
+      "voyage": 20,
+      "name": "voyage_020",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3691,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.040141046e-05,
+      "n_derate_samples": 0,
+      "wall_s": 55.18709121
+    },{
+      "voyage": 21,
+      "name": "voyage_021",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3884,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -8.508799143e-06,
+      "n_derate_samples": 0,
+      "wall_s": 66.8531515
+    },{
+      "voyage": 22,
+      "name": "voyage_022",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3920,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.877294992e-05,
+      "n_derate_samples": 0,
+      "wall_s": 103.9979154
+    },{
+      "voyage": 23,
+      "name": "voyage_023",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4816,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.550847499e-06,
+      "n_derate_samples": 0,
+      "wall_s": 93.54837837
+    },{
+      "voyage": 24,
+      "name": "voyage_024",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4611,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.948007275e-06,
+      "n_derate_samples": 0,
+      "wall_s": 53.88377783
+    },{
+      "voyage": 25,
+      "name": "voyage_025",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4441,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.75330264e-06,
+      "n_derate_samples": 0,
+      "wall_s": 53.53872517
+    },{
+      "voyage": 26,
+      "name": "voyage_026",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4241,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.704907102e-05,
+      "n_derate_samples": 0,
+      "wall_s": 44.29505575
+    },{
+      "voyage": 27,
+      "name": "voyage_027",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4410,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.971607851e-06,
+      "n_derate_samples": 0,
+      "wall_s": 49.15449137
+    },{
+      "voyage": 28,
+      "name": "voyage_028",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3754,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.144732129e-06,
+      "n_derate_samples": 0,
+      "wall_s": 33.91855137
+    },{
+      "voyage": 29,
+      "name": "voyage_029",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5738,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.683737611e-06,
+      "n_derate_samples": 0,
+      "wall_s": 142.4613131
+    },{
+      "voyage": 30,
+      "name": "voyage_030",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4464,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.606887686e-05,
+      "n_derate_samples": 0,
+      "wall_s": 48.37673633
+    },{
+      "voyage": 31,
+      "name": "voyage_031",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4362,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.157468388e-06,
+      "n_derate_samples": 0,
+      "wall_s": 42.30752258
+    },{
+      "voyage": 32,
+      "name": "voyage_032",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4648,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.804041926e-06,
+      "n_derate_samples": 0,
+      "wall_s": 43.973501
+    },{
+      "voyage": 33,
+      "name": "voyage_033",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4144,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.238738433e-06,
+      "n_derate_samples": 0,
+      "wall_s": 36.10567712
+    },{
+      "voyage": 34,
+      "name": "voyage_034",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3916,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -8.837736791e-06,
+      "n_derate_samples": 0,
+      "wall_s": 32.37012929
+    },{
+      "voyage": 35,
+      "name": "voyage_035",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4933,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.214507216e-06,
+      "n_derate_samples": 0,
+      "wall_s": 86.02969617
+    },{
+      "voyage": 36,
+      "name": "voyage_036",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4185,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.004979263e-05,
+      "n_derate_samples": 0,
+      "wall_s": 69.16308688
+    },{
+      "voyage": 37,
+      "name": "voyage_037",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4636,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.101434051e-06,
+      "n_derate_samples": 0,
+      "wall_s": 103.3976861
+    },{
+      "voyage": 38,
+      "name": "voyage_038",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4656,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.103068726e-06,
+      "n_derate_samples": 0,
+      "wall_s": 84.15690592
+    },{
+      "voyage": 39,
+      "name": "voyage_039",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3768,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.937679629e-06,
+      "n_derate_samples": 0,
+      "wall_s": 37.23357917
+    },{
+      "voyage": 40,
+      "name": "voyage_040",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4439,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.157367925e-06,
+      "n_derate_samples": 0,
+      "wall_s": 46.3977405
+    },{
+      "voyage": 41,
+      "name": "voyage_041",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3607,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -9.222423716e-06,
+      "n_derate_samples": 0,
+      "wall_s": 31.11346775
+    },{
+      "voyage": 42,
+      "name": "voyage_042",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4424,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.307500428e-05,
+      "n_derate_samples": 0,
+      "wall_s": 53.8206695
+    },{
+      "voyage": 43,
+      "name": "voyage_043",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4235,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.963893659e-06,
+      "n_derate_samples": 0,
+      "wall_s": 53.76210275
+    },{
+      "voyage": 44,
+      "name": "voyage_044",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4201,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.410008008e-05,
+      "n_derate_samples": 0,
+      "wall_s": 54.54101092
+    },{
+      "voyage": 45,
+      "name": "voyage_045",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4778,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.652679451e-06,
+      "n_derate_samples": 0,
+      "wall_s": 70.16958908
+    },{
+      "voyage": 46,
+      "name": "voyage_046",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3898,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.962065113e-07,
+      "n_derate_samples": 0,
+      "wall_s": 39.165939
+    },{
+      "voyage": 47,
+      "name": "voyage_047",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4920,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.857960816e-06,
+      "n_derate_samples": 0,
+      "wall_s": 60.36405342
+    },{
+      "voyage": 48,
+      "name": "voyage_048",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5509,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.88885761e-06,
+      "n_derate_samples": 0,
+      "wall_s": 75.95265487
+    },{
+      "voyage": 49,
+      "name": "voyage_049",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4477,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.708617581e-06,
+      "n_derate_samples": 0,
+      "wall_s": 48.86913525
+    },{
+      "voyage": 50,
+      "name": "voyage_050",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4780,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.340069851e-06,
+      "n_derate_samples": 0,
+      "wall_s": 79.44525579
+    },{
+      "voyage": 51,
+      "name": "voyage_051",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4022,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -9.605799125e-06,
+      "n_derate_samples": 0,
+      "wall_s": 73.77436117
+    },{
+      "voyage": 52,
+      "name": "voyage_052",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3820,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.751877524e-06,
+      "n_derate_samples": 0,
+      "wall_s": 59.20640717
+    },{
+      "voyage": 53,
+      "name": "voyage_053",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3887,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -9.562816333e-06,
+      "n_derate_samples": 0,
+      "wall_s": 89.01547492
+    },{
+      "voyage": 54,
+      "name": "voyage_054",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5016,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.836374427e-06,
+      "n_derate_samples": 0,
+      "wall_s": 140.3061043
+    },{
+      "voyage": 55,
+      "name": "voyage_055",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 6074,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.434796907e-06,
+      "n_derate_samples": 0,
+      "wall_s": 86.61074283
+    },{
+      "voyage": 56,
+      "name": "voyage_056",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5070,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.81882463e-06,
+      "n_derate_samples": 0,
+      "wall_s": 59.43013842
+    },{
+      "voyage": 57,
+      "name": "voyage_057",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4289,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.486399911e-06,
+      "n_derate_samples": 0,
+      "wall_s": 42.51959488
+    },{
+      "voyage": 58,
+      "name": "voyage_058",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3862,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.610192691e-06,
+      "n_derate_samples": 0,
+      "wall_s": 45.34342183
+    },{
+      "voyage": 59,
+      "name": "voyage_059",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3764,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.620671836e-05,
+      "n_derate_samples": 0,
+      "wall_s": 52.82608575
+    },{
+      "voyage": 60,
+      "name": "voyage_060",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3860,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.845824851e-06,
+      "n_derate_samples": 0,
+      "wall_s": 102.5425436
+    },{
+      "voyage": 61,
+      "name": "voyage_061",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4805,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -6.002388553e-06,
+      "n_derate_samples": 0,
+      "wall_s": 67.03175692
+    },{
+      "voyage": 62,
+      "name": "voyage_062",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3752,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.796107113e-06,
+      "n_derate_samples": 0,
+      "wall_s": 36.45228717
+    },{
+      "voyage": 63,
+      "name": "voyage_063",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4953,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.375996789e-06,
+      "n_derate_samples": 0,
+      "wall_s": 57.32142392
+    },{
+      "voyage": 64,
+      "name": "voyage_064",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3973,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.095957914e-06,
+      "n_derate_samples": 0,
+      "wall_s": 37.03726542
+    },{
+      "voyage": 65,
+      "name": "voyage_065",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5715,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.726045345e-06,
+      "n_derate_samples": 0,
+      "wall_s": 73.19473358
+    },{
+      "voyage": 66,
+      "name": "voyage_066",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4171,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.067145046e-05,
+      "n_derate_samples": 0,
+      "wall_s": 64.37146867
+    },{
+      "voyage": 67,
+      "name": "voyage_067",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5336,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -7.168815347e-06,
+      "n_derate_samples": 0,
+      "wall_s": 124.4102718
+    },{
+      "voyage": 68,
+      "name": "voyage_068",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4971,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.9402899e-06,
+      "n_derate_samples": 0,
+      "wall_s": 92.39234729
+    },{
+      "voyage": 69,
+      "name": "voyage_069",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5682,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.804012785e-06,
+      "n_derate_samples": 0,
+      "wall_s": 162.750875
+    },{
+      "voyage": 70,
+      "name": "voyage_070",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4082,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.178680053e-05,
+      "n_derate_samples": 0,
+      "wall_s": 63.90563633
+    },{
+      "voyage": 71,
+      "name": "voyage_071",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4144,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -1.435728949e-05,
+      "n_derate_samples": 0,
+      "wall_s": 74.61101462
+    },{
+      "voyage": 72,
+      "name": "voyage_072",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3634,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.340113142e-06,
+      "n_derate_samples": 0,
+      "wall_s": 57.98514238
+    },{
+      "voyage": 73,
+      "name": "voyage_073",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4374,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.623764829e-06,
+      "n_derate_samples": 0,
+      "wall_s": 77.89701083
+    },{
+      "voyage": 74,
+      "name": "voyage_074",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4377,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -9.717502431e-06,
+      "n_derate_samples": 0,
+      "wall_s": 66.64223712
+    },{
+      "voyage": 75,
+      "name": "voyage_075",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 5676,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -2.038115356e-06,
+      "n_derate_samples": 0,
+      "wall_s": 173.1601215
+    },{
+      "voyage": 76,
+      "name": "voyage_076",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 6290,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.89681403e-06,
+      "n_derate_samples": 0,
+      "wall_s": 264.693458
+    },{
+      "voyage": 77,
+      "name": "voyage_077",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4353,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -5.747466245e-06,
+      "n_derate_samples": 0,
+      "wall_s": 85.94589929
+    },{
+      "voyage": 78,
+      "name": "voyage_078",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 3970,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -3.619088693e-06,
+      "n_derate_samples": 0,
+      "wall_s": 41.39426
+    },{
+      "voyage": 79,
+      "name": "voyage_079",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4725,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -4.423888509e-06,
+      "n_derate_samples": 0,
+      "wall_s": 54.9338845
+    },{
+      "voyage": 80,
+      "name": "voyage_080",
+      "rejected": false,
+      "reason": "",
+      "duration_s": 4091,
+      "Vdc_min_V": 689.9168887,
+      "closure_frac": -8.938459069e-06,
+      "n_derate_samples": 0,
+      "wall_s": 42.18614129
+    }]
+}
