@@ -7,20 +7,20 @@ Brainstorm: `./brainstorm.md` | Requirements: `./requirements.md`（v1）| Desig
 
 ## Implementation Plan
 
-- [ ] 1. 航次生成器 + 数据生成
+- [x] 1. 航次生成器 + 数据生成
   - ID: T-201
   - Requirement(s): FR-201, FR-202
   - Files/areas: `scripts/50_voyage_generator.m`、`scripts/51_generate_fleet_profiles.m`、`config/`（ECMS_FLEET_SEED）、`results/ecms_phase2/fleet/`
   - Validation: 航次定义 JSON 入库；解析预检零超功率；抽样 Simulink 验证零降额；种子复现同一航次集
   - Escalate if: parsim 不可用且串行预算 >2 h（降级 N≥80 需记录）
 
-- [ ] 2. 数据集构建 + 泄漏检查
+- [x] 2. 数据集构建 + 泄漏检查
   - ID: T-202
   - Requirement(s): FR-203, FR-204
   - Files/areas: `python/build_dataset.py`、`datasets/fleet_windows.npz`（不入库）、`results/ecms_phase2/dataset_manifest.json`
   - Validation: split 名单入库（S20/S01/S02/S07 不在 train）；归一化仅 fit train；窗口不跨航次断言
 
-- [ ] 3. MLP/LSTM 训练 + val 选模
+- [x] 3. MLP/LSTM 训练 + val 选模
   - ID: T-203
   - Requirement(s): FR-205, FR-206, FR-207
   - Files/areas: `python/train_predictor.py`、`results/ecms_phase2/training_log.csv`、`models/`（.keras 不入库，权重 JSON 入库）
