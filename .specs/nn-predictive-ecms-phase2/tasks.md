@@ -1,7 +1,7 @@
 # Phase 2 NN 预测型 A-ECMS — Tasks
 
 Spec: `nn-predictive-ecms-phase2`
-Status: tasks-approved（用户 2026-08-25 确认 Q1/Q2；F6 工期门槛：>2h 不立即施工）
+Status: implementation-complete
 Created: 2026-08-25
 Brainstorm: `./brainstorm.md` | Requirements: `./requirements.md`（v1）| Design: `./design.md`（v1）
 
@@ -27,19 +27,19 @@ Brainstorm: `./brainstorm.md` | Requirements: `./requirements.md`（v1）| Desig
   - Validation: §19 全字段记录；val 指标 + 高/低估分解；失败实验保留
   - Escalate if: LSTM 显著优于 MLP（Simulink 内联复杂度裁决归主 Agent）
 
-- [ ] 4. law=7 集成 + 单测
+- [x] 4. law=7 集成 + 单测
   - ID: T-204
   - Requirement(s): FR-208, FR-212
   - Files/areas: `scripts/52_integrate_law7.m`、`build_model_c.m`（05_EMS_Controller 第 7 变体）、`+ecms2/test_law7.m`
   - Validation: 块 vs Python 前向 100 随机输入 |Δ|<1e-5；回退行为正确；10b smoke 绿
 
-- [ ] 5. C4 矩阵 + Phase 2 Gate
+- [x] 5. C4 矩阵 + Phase 2 Gate
   - ID: T-205
   - Requirement(s): FR-209, FR-210
   - Files/areas: `scripts/53_run_phase2_matrix.m`、`54_phase2_gate_judge.m`、`results/ecms_phase2/runs_phase2.csv`、`gate_result.json`
   - Validation: {C2,C3,C4}×{S20,S01,S02,S07} + 10 个 test 航次泛化行；gate 构造单测；C4 S20 数值与标定一致性抽查
 
-- [ ] 6. 复现 + Phase 2 报告
+- [x] 6. 复现 + Phase 2 报告
   - ID: T-206
   - Requirement(s): FR-211, FR-212, FR-213, AC-1~6
   - Files/areas: `reports/NN_phase2_report.md`（主 Agent 撰写）、repro_check

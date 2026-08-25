@@ -234,6 +234,6 @@
     "generalization_metric": "C4 vs C2 saving diff: (fuel_C2−fuel_C4)/fuel_C2×100 per test voyage"
   },
   "config_hash": "a1c7384254049101c5945cc947b9f537",
-  "generated": "2026-08-26 00:54:46",
+  "generated": "2026-08-26 01:11:32",
   "notes": "FR-210 机器可读判定：nn_oracle_capture（S20）为主判定指标，泛化摘要为附列。C3（law=6 oracle）为离线上界（E5：非实时可实现）；C4（law=7 NN-A-ECMS）为实时可实现预测。recommendation 仅依据 nn_oracle_capture；判读归用户（design §6 注）。capture=0.3704 ∈ [0.30, 0.50)"
 }
