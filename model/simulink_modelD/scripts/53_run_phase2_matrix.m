@@ -224,19 +224,17 @@ for k = 1:numel(todoIdx)
 end
 
 %% ======================= 执行（parsim 优先，串行降级） =======================
-useParsim = exist('parsim', 'file') > 0;
-setupStr = sprintf(['cd(''%s''); addpath(fullfile(pwd,''config''), fullfile(pwd,''scripts''));' ...
-    ' run(fullfile(pwd,''config'',''Model_Parameters.m''));' ...
-    ' run(fullfile(pwd,''config'',''Model_Scenarios.m''));' ...
-    ' ecms2.ensure_bsfc_params(pwd); ecms2.ensure_nn_params(pwd);' ...
-    ' load_system(fullfile(pwd,''model'',''HybridShip_ModelD_DCBus.slx''));'], ROOT);
+% SetupFcn 用显式函数 model.parsim_setup（2026-08-26 Mac 端修复）：
+% 原 '@() eval(setupStr)' 在 worker 上失败——eval 在匿名函数静态 workspace
+% 执行，run() 创建的新变量（如 Model_SystemScope）报「静态工作区」错误，且
+% 变量进不了 base，模型参数解析失败。见 handoff_mac_issues.md 问题 3。
 
 outs = cell(numel(todoIdx), 1);
 tBatch = tic;
 if useParsim && ~isempty(in)
     fprintf('[53] parsim 启动（%d 行）: %s\n', numel(todoIdx), datestr(now, 'HH:MM:SS'));
     try
-        simOuts = parsim(in, 'ShowProgress', 'on', 'SetupFcn', @() eval(setupStr), ...
+        simOuts = parsim(in, 'ShowProgress', 'on', 'SetupFcn', @() model.parsim_setup(ROOT), ...
             'TransferBaseWorkspaceVariables', 'off');
         for k = 1:numel(todoIdx), outs{k} = simOuts(k); end
         fprintf('[53] parsim 完成: %.1f s（均值 %.1f s/行）\n', toc(tBatch), toc(tBatch) / max(numel(todoIdx), 1));

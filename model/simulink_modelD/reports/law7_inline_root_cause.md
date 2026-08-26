@@ -229,3 +229,23 @@ full_verify2 已通过调整验证顺序规避；根因待 Phase 3 定位。
   仅历史调试用）；主流程注释同步。
 - `.slx`：内联 law=7 重建产物（md5 dd7fe119…，替代 HEAD ada8a732…）。
 - `test_law7.m`：venv python 路径跨平台探测（Windows Scripts / Unix bin）。
+
+### 8.5 Mac 端补跑（2026-08-26，handoff_mac_issues.md 执行）
+
+Windows 端因缺 .venv_tf 未能运行的 T1 已在 Mac 端补跑完成，**T1/T2/T3 全绿**：
+
+| 项 | 结果 |
+|---|---|
+| T1 nn_predict_ehat vs Python | max\|Δ\| = 1.22125e-14 < 1e-5（与 Windows 证据 511f28ae 逐位一致） |
+| T2 回退路径（mat 缺失 → ê=0） | 块 ≡ 离线 law=6-ehat=0，max\|Δ\| = 0 kW（容差 0） |
+| T3 law=7 S01 全闭环 | fuel=91.2317939 kg（逐位 == golden），SOC_end=0.6145，Vdc_min=683.3 V |
+
+**新发现（内联版对 T2 的机制适配）**：内联版（§8.3）的权重经 nnconst_* Constant
+从 base workspace 的 `ECMS_NN_*` 显式信号传入，回退门控为 `ECMS_NN_WeightsOK`。
+原 T2 仅 rename mat、依赖外置版函数惰性 load 的语义——内联版下 rename mat 不会撤回
+已注入 base 的权重，导致 T2 期间 NN 仍活跃（实测 P_gen_ref 饱和 1000 kW、max\|Δ\|=220 kW，
+回退路径根本没被测到）。修复：T2 在 rename mat 后同步调用 `ecms2.ensure_nn_params(ROOT)`
+（此时 mat 缺失 → WeightsOK=0，回退真正生效）。
+
+**SMOKE-STAGE POISON 未在 Mac 复现**：本次未按 smoke→law7 顺序执行（遵循 §8.3
+规避顺序：功能验证在前），未触发退化；POISON 根因仍待 Phase 3 定位。

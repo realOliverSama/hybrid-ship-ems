@@ -153,6 +153,12 @@ function results = test_law7(ROOT)
     matBak = [matFile '.bak_t204'];
     if exist(matBak, 'file'), delete(matBak); end
     movefile(matFile, matBak);
+    % 内联版（2026-08-26）：权重/归一化常数经变体内 Constant 引用 base 的 ECMS_NN_*
+    % 显式信号传入，回退门控为 ECMS_NN_WeightsOK；仅 rename mat 不会撤回已注入的
+    % 权重信号。必须同步重跑 ensure_nn_params（此时 mat 缺失 -> WeightsOK=0），
+    % 回退路径（FR-208， ê=0 ≡law5）才真正生效。
+    sFb = ecms2.ensure_nn_params(ROOT);
+    assert(sFb.ok == 0, 'ECMS2:TEST', 'T2 FAIL: 权重 mat 已移除但 WeightsOK 未归零');
     try
         % 新仿真 t=0 < lastT（T1 结束于 t=30000）-> 函数重置并重试 load（缺失 -> ê=0）
         set_param(MDL, 'SimulationCommand', 'update');
