@@ -114,9 +114,16 @@ function results = test_law7(ROOT)
             'y.tofile(sys.argv[3])', ...
             'print("n=%d max|y|=%g" % (y.size, float(np.max(np.abs(y)))), flush=True)');
         fclose(fid);
-        venvPy = fullfile(fileparts(ROOT), 'simulink', '.venv_tf', 'bin', 'python');
-        assert(exist(venvPy, 'file') == 2, 'ECMS2:TEST', ...
-            'T1 FAIL: .venv_tf Python 不存在: %s', venvPy);
+        venvBase = fullfile(fileparts(ROOT), 'simulink', '.venv_tf');
+        venvPy = '';
+        candW = fullfile(venvBase, 'Scripts', 'python');   % Windows layout
+        candU = fullfile(venvBase, 'bin', 'python');       % Unix layout
+        if exist(candW, 'file') == 2
+            venvPy = candW;
+        elseif exist(candU, 'file') == 2
+            venvPy = candU;
+        end
+        assert(~isempty(venvPy), 'ECMS2:TEST', 'T1 FAIL: .venv_tf python not found under %s', venvBase);
         ybin = fullfile(tmpDir, 'y_py.bin');
         wJson = fullfile(ROOT, 'results', 'ecms_phase2', 'models', 'selected_model_weights.json');
         cmd = sprintf('"%s" "%s" "%s" "%s" "%s"', venvPy, pyScript, wJson, xbin, ybin);

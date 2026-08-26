@@ -191,8 +191,41 @@ xP = [buf(k:300); buf(1:k-1)];   % 与 datasets/fleet_norm.json feature_layout �
 机器可读证据：`results/ecms_phase2/debug_law7/inline_verification.json`。
 脚本：`scripts/debug_law7/exp_verify_inline.m`（内存改图，.slx 零改动）。
 
-### 8.3 产品化状态
+### 8.3 产品化落地（2026-08-26 同日第三阶段）
 
-内联修复版已具备切换条件，但仍未写入产品构建脚本（build_model_c.m CODE_ECMS_NN()
-当前仍为 extrinsic 版）：切换属 Phase 3 设计决策，需用户裁决；若切换，T-205 矩阵
-与 gate 结论需基于内联版重跑刷新。
+数值验证通过后实施产品切换，过程中又暴露并解决了两颗隐藏问题：
+
+1. **生成器遗漏别名块**：sprintf 重构时丢失 `W1 = ECMS_NN_W1; ...` 别名段，
+   fwd 引用的标识符变成未定义 → 解析失败。已补回。
+2. **R2026a Parameter 端口固化缺陷（新发现）**：新建块+单遍写入路径下，
+   `Scope=Parameter` 的 Data 不会从函数签名中收缩，而是固化为悬空输入端口
+   （收 0 而非 workspace 值）→ fuel=85.83 ≠ golden。内存注入路径因图继承自
+   成熟接口而侥幸正确，导致该问题仅在产品重建路径暴露。
+
+**最终方案：权重/归一化常数改为显式信号线传入**——CODE_ECMS_NN 签名扩为
+24 输入（11 原始信号 + 13 个 ECMS_NN_*），law=7 变体内新增 13 个 nnconst_*
+Constant 块（Value='ECMS_NN_W1' 等引用 workspace）接入第 12~24 号口。
+彻底绕开 Parameter 持久化机制，天然兼容 HIL/代码生成（显式接口本为 MBD 最佳实践）。其余
+6 个变体不动（框架本就容忍变体间接口差异）。
+
+**最终全链验证（full_verify2.m，全绿）**：
+
+| 阶段 | 结果 |
+|---|---|
+| F1 rebuild（7 变体全部构建+update 成功） | PASS |
+| F2 结构核对（20 图；19 图与 HEAD 逐字一致；law=7 匹配 24 输入方案） | PASS |
+| F3 10b smoke（T01C/T04C/T10C 全部 true；移至最后执行） | PASS |
+| F4 law=7 S01 黄金值 | **fuel=91.2317939047896 逐位 == golden** |
+| F5 test_law7 T1/T2/T3 | 本机 .venv_tf Python 缺失，T1 无法运行（环境限制）；其等价性已由 F4 承载；环境重建后可补跑 |
+
+**新发现的遗留问题（Phase 3 必读）**：10b smoke 会污染同进程内后续 law=7 运行
+（bisect 实证：rebuild→sim = 91.23 逐位正确；smoke→sim = 85.83 退化）。
+full_verify2 已通过调整验证顺序规避；根因待 Phase 3 定位。
+
+### 8.4 交付清单变更
+
+- `build_model_c.m`：CODE_ECMS_NN 内联化（24 输入签名）；buildNNECMSVariant
+  新增 13 个 nnconst_* Constant；setMFCode 增加 twoPass 可选参数（默认 false，
+  仅历史调试用）；主流程注释同步。
+- `.slx`：内联 law=7 重建产物（md5 dd7fe119…，替代 HEAD ada8a732…）。
+- `test_law7.m`：venv python 路径跨平台探测（Windows Scripts / Unix bin）。
