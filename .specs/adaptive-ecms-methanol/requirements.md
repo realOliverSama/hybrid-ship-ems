@@ -21,7 +21,7 @@ Phase 0 的全部产出是：机器可读的 GO/NO-GO 证据（JSON + 报告）�
 
 ### In Scope
 
-- 新建独立工程副本 `model/simulink_modelD/`（自 `model/simulink_modelC/` 复制），并按设备真实参数（`data/20260526设备参数.md`，源自 `20260526设备参数.docx`）完成参数修正；
+- 新建独立工程副本 `model/simulink_modelD/`（自 `model/simulink_modelC/` 复制），并按设备真实参数（`docs/reference/20260526设备参数.md`，源自 `20260526设备参数.docx`）完成参数修正；
 - BSFC 曲线族构造：文献典型中速甲醇机曲线形状 + 双真实锚点标定（最优 427 g/kWh / 额定 453(+5%) g/kWh @ 500 kW·1500 rpm 单机）+ 低负荷恶化三档敏感性；
 - 各场景直流母排需求负荷剖面 P_demand(t) 的提取（用修正后模型跑 Baseline EMS 导出）；
 - 离线动态规划（DP）燃油下限求解器：SOC 状态网格 × P_gen 控制网格 ×（二维时含转速网格），含爬坡、SOC 边界、最低稳定负荷、电池功率限制、电量维持终端约束；
@@ -129,7 +129,7 @@ Phase 0 的全部产出是：机器可读的 GO/NO-GO 证据（JSON + 报告）�
 
 ## Dependencies and Constraints
 
-- 设备真实参数来源：`data/20260526设备参数.md`（MarkItDown 转换自 `20260526设备参数.docx`，单侧值 ×2 = 聚合）；
+- 设备真实参数来源：`docs/reference/20260526设备参数.md`（MarkItDown 转换自 `20260526设备参数.docx`，单侧值 ×2 = 聚合；2026-08-27 自 `data/` 迁入）；
 - BSFC 锚点来源：docx 额定点 453(+5%) g/kWh；潍柴 WH17ME 公开资料最优点 427 g/kWh（机型大概率为 6WH17C680ME5，500 kW @ 1500 rpm）；
 - MATLAB R2026a（`/Applications/MATLAB_R2026a.app/bin/matlab -batch`；数字开头脚本须 `eval(fileread(...))`）；
 - 场景定义沿用 `Model_Scenarios.m`（S01~S10，服务航速 11 kn，航程 5000 m）；
