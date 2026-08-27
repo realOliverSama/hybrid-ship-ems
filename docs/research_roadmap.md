@@ -202,13 +202,13 @@ REQUIRED → GO        TO_PHASE2_NN          （已裁决进 Phase 3）
 - **选模**：MLP 302-128-64-1（47,105 参数）击败 LSTM 对照（val RMSE 9.30 vs 10.68）
 - **泄漏检查**：窗口不跨航次、split 互斥、首尾裁剪——全过
 
-### 6.4 Simulink 集成：内联失败 → extrinsic 兜底
+### 6.4 Simulink 集成：内联受挫 → 显式信号线接口破局
 
-**原方案**：MLP 前向内联进 MATLAB Function 块（Stateflow EML）。遭遇 `Stateflow:cdr:ErrorsParsingEmlFcn` 解析失败——系统性攻坚排除了代码语法、图对象、接线、参数值、转置形式、尺寸声明（证据链存档），根因为 **R2026a EMChart 跨块变量数据流缺陷**（已备 MathWorks 提交材料）。
+**攻坚过程**：MLP 前向内联进 MATLAB Function 块（Stateflow EML）时遭遇 `Stateflow:cdr:ErrorsParsingEmlFcn` 解析失败——系统性攻坚排除了代码语法、图对象、接线、参数值、转置形式、尺寸声明（证据链存档），根因锁定为 **R2026a EMChart 跨块变量数据流缺陷**（MathWorks 提交材料已备）。
 
-**兜底方案**（Amendment v1.2）：NN 前向改 `coder.extrinsic` 调用 MATLAB 函数。科学上零损失（消融语义不变），且 extrinsic 边界恰好对应 Phase 3 的 NPU 推理 / MCU 控制分工。
+**最终方案（内联版，已产品化）**：NN 权重不经跨块变量数据流，改经 `nnconst_*` Constant 块以**显式信号线**传入 MATLAB Function 块，绕开缺陷；过程中另发现并修正权重重排序方向问题，回退门控 `ECMS_NN_WeightsOK` 与权重注入架构对齐。原 Amendment v1.2 的 `coder.extrinsic` 兜底保留为备案方案（本轮未启用）：科学上零损失（消融语义不变），extrinsic 边界仍对应 Phase 3 的 NPU 推理 / MCU 控制分工。
 
-**验证链**：build law 0~7 全编译；T1 函数 vs Python max|Δ|=1.2e-14；T2 回退逐位 ≡ law=6(ê=0)；T3 S01 闭环 fuel=91.23 kg（与 golden 逐位一致）。
+**验证链**：build law 0~7 全编译；T1 函数 vs Python max|Δ|=1.2e-14（与 Windows 证据逐位一致）；T2 回退逐位 ≡ law=6(ê=0)；T3 S01 闭环 fuel=91.23 kg（与 golden 逐位一致）；内联版与兜底版 S01 结果逐位一致；Mac 端补跑全绿复现。
 
 ### 6.5 结果（S20 复合航次）
 
@@ -286,7 +286,7 @@ REQUIRED → GO        TO_PHASE2_NN          （已裁决进 Phase 3）
 - 前两轮 NO-GO 完整记录（不是只报成功）
 - Phase 2 的 PARTIAL（37%）如实呈现，包含失败模式分析（S07 恶化、低估偏向）
 - 留出泛化 median −0.23% 如实报告（"平均不优于 C2"）
-- law=7 内联失败的完整证据链存档（MathWorks bug 材料已备）
+- law=7 内联攻坚的完整证据链存档（R2026a EMChart 缺陷定位 → 显式信号线修复；MathWorks bug 材料已备）
 
 ### 8.3 优化假目标红线
 
