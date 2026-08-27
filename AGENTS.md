@@ -966,7 +966,7 @@ Subagent 是执行者，不是系统设计者。
 
 ## 20. 目录索引 README 维护规范
 
-项目每个一级子目录（`data/`、`docs/`、`experiments/`、`firmware/`、`model/`、`tools/` 等，隐藏目录除外）
+项目每个一级子目录（`data/`、`docs/`、`experiments/`、`firmware/`、`model/`、`tools/` 等；隐藏目录中 `.specs/` 必须纳入，其余隐藏目录不强制）
 必须包含一个目录索引文件 `README.md`，用于说明：
 
 - 本目录的用途与入库策略（入库 / 不入库 / 永不入库）；
