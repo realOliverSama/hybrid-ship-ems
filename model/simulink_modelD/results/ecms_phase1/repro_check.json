@@ -1,0 +1,11 @@
+{
+  "pass": true,
+  "n_rows": 40,
+  "compare": "runs_phase1.csv 双跑逐位一致（除 wall_time_s 列）",
+  "n_diff_fields": 0,
+  "diffs": [],
+  "default_csv": "results/ecms_phase1/runs_phase1.csv",
+  "repro_csv": "results/ecms_phase1/repro_tmp/runs_phase1.csv",
+  "generated": "2026-08-25 02:55:00",
+  "notes": "T-109（FR-114）：双跑 40 行 × 15 列（除 wall_time_s）逐位一致。修复史：42 复现块 rds=struct() 1x1 陷阱导致比较错位（首文件落入 rds(2)），主 Agent 修复为 0x0 带字段初始化并以独立驱动验证 pass=1/ndiff=0。"
+}

@@ -126,3 +126,55 @@ model/simulink_modelC/.venv_tf
 model/simulink_modelC/.venv_tf/
 model/simulink_modelC/results/phase1/sensitivity/
 model/simulink_modelC/results/phase1/S*/
+
+# ==========================================================
+# 本地数据与大型仿真产物加固（2026-08-25 用户批准，AGENTS.md §13）
+# ==========================================================
+
+# 本地原始数据与临时实验目录（本地暂存，永不入库）
+data/
+experiments/
+
+# modelD 仿真产物：大体积 .mat（profiles/dp/runs）与复现/门禁临时目录不入库
+# （runs.csv / *.json / *.png / *.md 报告仍入库）
+model/simulink_modelD/results/**/*.mat
+model/simulink_modelD/results/**/repro_tmp/
+model/simulink_modelD/results/**/_gate_ut/
+
+# Phase 2 训练数据集（衍生大产物，不入库；生成脚本与 manifest 入库）
+model/simulink_modelD/datasets/*.npz
+
+# 冻结目录 modelC_(oracle_ms) 的历史运行产物（目录本身冻结，规则只降噪）
+model/simulink_modelC_(oracle_ms)/results/**/*.mat
+model/simulink_modelC_(oracle_ms)/results/**/*.log
+
+# ==========================================================
+# 一次性实验/调试产物（2026-08-26 用户授权整理，AGENTS.md §13）
+# 原则：每次实验/调试都会重新生成的文件不入库，避免后续 diff 冲突
+# ==========================================================
+
+# Pi agent 远程会话运行时数据
+.pi/remote-pi/
+
+# modelC_(oracle_ms)（冻结目录）历史 INVALID 实验结果（一次性产物）
+model/simulink_modelC_(oracle_ms)/results/ms_phase1/phase1A_INVALID_20260821/
+model/simulink_modelC_(oracle_ms)/results/ms_phase1/phase1A_MINI_INVALID_20260821/
+
+# modelC_(oracle_ms) 冻结目录下的一次性调试脚本（头部均标注"临时"）
+model/simulink_modelC_(oracle_ms)/scripts/bisect_full.m
+model/simulink_modelC_(oracle_ms)/scripts/bisect_inj.m
+model/simulink_modelC_(oracle_ms)/scripts/bisect_seq.m
+model/simulink_modelC_(oracle_ms)/scripts/bisect_seq2.m
+model/simulink_modelC_(oracle_ms)/scripts/bisect_state.m
+model/simulink_modelC_(oracle_ms)/scripts/debug_runms.m
+model/simulink_modelC_(oracle_ms)/scripts/mini_div.m
+model/simulink_modelC_(oracle_ms)/scripts/mini_inspect.m
+model/simulink_modelC_(oracle_ms)/scripts/mini_vs_v5.m
+model/simulink_modelC_(oracle_ms)/scripts/probe_model.m
+model/simulink_modelC_(oracle_ms)/scripts/r3_evidence.m
+
+# Phase 2 训练模型权重（每次训练重新生成；入选权重 selected_model_weights.json 已入库）
+model/simulink_modelD/results/ecms_phase2/models/*/
+
+# Phase 2 训练过程图（每次训练重新生成）
+model/simulink_modelD/results/ecms_phase2/plots/

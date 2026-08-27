@@ -1,0 +1,35 @@
+{
+  "best_window": 22,
+  "log": [
+    {
+      "window": 15,
+      "val_rmse": 5.533944606781006,
+      "phase": "coarse"
+    },
+    {
+      "window": 30,
+      "val_rmse": 11.59956169128418,
+      "phase": "coarse"
+    },
+    {
+      "window": 60,
+      "val_rmse": 13.990944862365723,
+      "phase": "coarse"
+    },
+    {
+      "window": 90,
+      "val_rmse": 12.429034233093262,
+      "phase": "coarse"
+    },
+    {
+      "window": 120,
+      "val_rmse": 14.314281463623047,
+      "phase": "coarse"
+    },
+    {
+      "window": 22,
+      "val_rmse": 5.313664436340332,
+      "phase": "refine"
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+
+[51] ===== ECMS Phase 2 — 批量 Baseline 闭环仿真（T-201，FR-202） =====
+[51] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD
+[51] 开始: 2026-08-25 16:02:27
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：100 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[51] 航次集：seed=20260825 共 200 个，本批 1~200（200 个），parsim=1
+[51] 模型加载（单次，不随航次重建）: HybridShip_ModelD_DCBus
+[51] 待仿真 120 个（跳过已完成 80 个）
+[51] parsim 启动（SetupFcn 注入 config）: 16:03:11
+[25-Aug-2026 16:03:13] 正在检查并行池的可用性...
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+2026-08-25 16:04:42: 作业已排队。正在等待 ID 为 1 的并行池作业启动...
+2026-08-25 16:05:43: 作业已排队。正在等待 ID 为 1 的并行池作业启动...
+2026-08-25 16:06:56: 作业正在运行。正在等待并行池工作单元连接...
+已连接到具有 8 个工作单元的并行池。
+[25-Aug-2026 16:08:59] 正在并行工作单元上启动 Simulink...
+[25-Aug-2026 16:12:24] 正在并行工作单元上配置仿真缓存文件夹...
+[25-Aug-2026 16:12:33] 正在并行工作单元上运行 SetupFcn...
+[25-Aug-2026 16:12:52] 正在清理并行工作单元...
+[51] parsim 失败（执行 SetupFcn 时出错）-> 串行降级
+[51] 串行进度 1/120（最近 169.7 s/航次 | 16:15:58）
+[51] 串行进度 5/120（最近 97.3 s/航次 | 16:21:53）
+[51] 串行进度 10/120（最近 68.3 s/航次 | 16:27:54）
+[51] 串行进度 15/120（最近 40.8 s/航次 | 16:31:23）
+[51] 串行进度 20/120（最近 54.7 s/航次 | 16:37:07）
+[51] 串行进度 25/120（最近 24.6 s/航次 | 16:40:26）
+已达到 IdleTimeout。
+使用 'Processes' 配置文件的并行池正在关闭。
+[51] 串行进度 30/120（最近 73.9 s/航次 | 16:46:14）
+[51] 串行进度 35/120（最近 74.1 s/航次 | 16:52:52）
+[51] 串行进度 40/120（最近 59.9 s/航次 | 16:58:08）
+[51] 串行进度 45/120（最近 73.0 s/航次 | 17:04:56）
+[51] 串行进度 50/120（最近 80.4 s/航次 | 17:10:33）
+[51] 串行进度 55/120（最近 78.8 s/航次 | 17:17:20）
+[51] 串行进度 60/120（最近 69.4 s/航次 | 17:23:33）
+[51] 串行进度 65/120（最近 35.7 s/航次 | 17:30:37）
+[51] 串行进度 70/120（最近 92.2 s/航次 | 17:36:11）
+[51] 串行进度 75/120（最近 96.0 s/航次 | 17:43:54）
+[51] 串行进度 80/120（最近 97.2 s/航次 | 17:51:47）
+[51] 串行进度 85/120（最近 115.1 s/航次 | 18:01:45）
+[51] 串行进度 90/120（最近 124.2 s/航次 | 18:09:53）
+[51] 串行进度 95/120（最近 76.1 s/航次 | 18:17:51）
+[51] 串行进度 100/120（最近 95.8 s/航次 | 18:25:46）
+[51] 串行进度 105/120（最近 74.9 s/航次 | 18:31:00）
+[51] 串行进度 110/120（最近 53.6 s/航次 | 18:36:43）
+[51] 串行进度 115/120（最近 16.7 s/航次 | 18:39:36）
+[51] 串行进度 120/120（最近 20.3 s/航次 | 18:41:10）
+[51] 串行完成: 9479.3 s
+[51] voyage_081/200 dur=4335s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[51] voyage_082/200 dur=4841s Pmax=800kW Vdc_min=689.9V closure=-0.0001% derate=0
+[51] voyage_083/200 dur=5357s Pmax=800kW Vdc_min=689.9V closure=-0.0001% derate=0
+[51] voyage_084/200 dur=4415s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_085/200 dur=4595s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_086/200 dur=3988s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_087/200 dur=5723s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_088/200 dur=5968s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_089/200 dur=4720s Pmax=800kW Vdc_min=689.9V closure=-0.0000% derate=0
+[51] voyage_090/200 dur=5131s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_091/200 dur=3851s Pmax=800kW Vdc_min=689.9V closure=-0.0017% derate=0
+[51] voyage_092/200 dur=4812s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_093/200 dur=4973s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_094/200 dur=5032s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_095/200 dur=5254s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_096/200 dur=3755s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_097/200 dur=3707s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_098/200 dur=3778s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_099/200 dur=3680s Pmax=800kW Vdc_min=689.9V closure=-0.0012% derate=0
+[51] voyage_100/200 dur=4176s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_101/200 dur=5276s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_102/200 dur=3617s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_103/200 dur=3958s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_104/200 dur=3795s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_105/200 dur=3888s Pmax=800kW Vdc_min=689.9V closure=-0.0027% derate=0
+[51] voyage_106/200 dur=4902s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_107/200 dur=4743s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_108/200 dur=4983s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_109/200 dur=4515s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_110/200 dur=6035s Pmax=800kW Vdc_min=689.9V closure=-0.0002% derate=0
+[51] voyage_111/200 dur=3911s Pmax=800kW Vdc_min=689.9V closure=-0.0012% derate=0
+[51] voyage_112/200 dur=3684s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[51] voyage_113/200 dur=5298s Pmax=800kW Vdc_min=689.9V closure=-0.0001% derate=0
+[51] voyage_114/200 dur=6067s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_115/200 dur=4646s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_116/200 dur=3901s Pmax=800kW Vdc_min=689.9V closure=-0.0012% derate=0
+[51] voyage_117/200 dur=3785s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_118/200 dur=4028s Pmax=800kW Vdc_min=689.9V closure=-0.0014% derate=0
+[51] voyage_119/200 dur=4249s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[51] voyage_120/200 dur=3766s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_121/200 dur=5094s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_122/200 dur=5605s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_123/200 dur=4900s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_124/200 dur=4482s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[51] voyage_125/200 dur=4252s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[51] voyage_126/200 dur=4891s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_127/200 dur=3706s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_128/200 dur=4199s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_129/200 dur=3849s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_130/200 dur=4420s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_131/200 dur=4417s Pmax=800kW Vdc_min=689.9V closure=-0.0001% derate=0
+[51] voyage_132/200 dur=3787s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_133/200 dur=4560s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_134/200 dur=3839s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_135/200 dur=3756s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_136/200 dur=4509s Pmax=800kW Vdc_min=689.9V closure=-0.0001% derate=0
+[51] voyage_137/200 dur=6401s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_138/200 dur=3718s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_139/200 dur=4021s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_140/200 dur=4330s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_141/200 dur=3670s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_142/200 dur=5685s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_143/200 dur=4764s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_144/200 dur=4157s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_145/200 dur=3673s Pmax=800kW Vdc_min=689.9V closure=-0.0017% derate=0
+[51] voyage_146/200 dur=4549s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_147/200 dur=5225s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_148/200 dur=5373s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_149/200 dur=5076s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_150/200 dur=3834s Pmax=800kW Vdc_min=689.9V closure=-0.0002% derate=0
+[51] voyage_151/200 dur=4318s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[51] voyage_152/200 dur=4483s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_153/200 dur=4068s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_154/200 dur=4402s Pmax=800kW Vdc_min=689.9V closure=-0.0012% derate=0
+[51] voyage_155/200 dur=4522s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[51] voyage_156/200 dur=3958s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_157/200 dur=4021s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[51] voyage_158/200 dur=4444s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_159/200 dur=3619s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_160/200 dur=4088s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_161/200 dur=3910s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_162/200 dur=4702s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_163/200 dur=4917s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[51] voyage_164/200 dur=5195s Pmax=800kW Vdc_min=689.9V closure=-0.0000% derate=0
+[51] voyage_165/200 dur=5025s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_166/200 dur=3712s Pmax=800kW Vdc_min=689.9V closure=-0.0014% derate=0
+[51] voyage_167/200 dur=3841s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_168/200 dur=3720s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_169/200 dur=4302s Pmax=800kW Vdc_min=689.9V closure=-0.0012% derate=0
+[51] voyage_170/200 dur=4424s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_171/200 dur=4795s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_172/200 dur=3662s Pmax=800kW Vdc_min=689.9V closure=-0.0014% derate=0
+[51] voyage_173/200 dur=4172s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_174/200 dur=5167s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_175/200 dur=3667s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_176/200 dur=5044s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_177/200 dur=4989s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_178/200 dur=4833s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_179/200 dur=3963s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[51] voyage_180/200 dur=4693s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[51] voyage_181/200 dur=4173s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[51] voyage_182/200 dur=4429s Pmax=800kW Vdc_min=689.9V closure=-0.0001% derate=0
+[51] voyage_183/200 dur=3634s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[51] voyage_184/200 dur=4143s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_185/200 dur=5221s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_186/200 dur=5617s Pmax=800kW Vdc_min=689.9V closure=0.0000% derate=0
+[51] voyage_187/200 dur=4909s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_188/200 dur=5966s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] voyage_189/200 dur=3819s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[51] voyage_190/200 dur=4053s Pmax=800kW Vdc_min=689.9V closure=-0.0020% derate=0
+[51] voyage_191/200 dur=5439s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_192/200 dur=3787s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[51] voyage_193/200 dur=4503s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[51] voyage_194/200 dur=4370s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[51] voyage_195/200 dur=3734s Pmax=800kW Vdc_min=689.9V closure=-0.0015% derate=0
+[51] voyage_196/200 dur=3877s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_197/200 dur=4094s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[51] voyage_198/200 dur=5890s Pmax=800kW Vdc_min=689.9V closure=-0.0002% derate=0
+[51] voyage_199/200 dur=4313s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[51] voyage_200/200 dur=5237s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[51] 汇总已写入 /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase2/fleet_profiles/summary_seed20260825.json
+
+[51] FLEET COMPLETE n_ok=120 n_rejected=0 n_skip=80 (seed=20260825, 2026-08-25 20:53:35)

@@ -1,0 +1,109 @@
+function P = ecms_nn(t, P_load, v_ship, SOC, lambda, K_soc, SOC_ref, K_S, Lambda_Floor, bsfc_bp, bsfc_tbl)
+% NN Predictive A-ECMS（law=7，T-204，design §5，FR-208；2026-08-26 内联恢复）：
+%   与 law=6 v2 完全同构：SOC_ref_eff = SOC_ref + K_S·ê_NN；λ_eff = λ₀ + K_soc·(SOC_ref_eff−SOC)；
+%   λ_eff = max(λ_eff, Lambda_Floor)（K_S≠0 时生效）。唯一差别是 ê 来源：law=6 从 oracle
+%   端口读真值，law=7 由内联 MLP 实时计算（C3/C4 消融唯一差异）。
+%   ê_NN = (Ê_NN − Ē_H)/E_scale；Ē_H/E_scale 为与 law=6 相同的 S20 常数。
+%   控制周期 ECMS_dt_ctrl_s=1 s：P_load 300 s 环形缓冲 1 s 门控更新；
+%   accel = v(t)−v(t−1)（fleet_norm.json feature 口径）；t<lastT 识别新仿真并重置。
+%   回退（FR-208）：权重缺失（ECMS_NN_WeightsOK=0）或输入含 NaN -> ê=0（≡law=5 行为）。
+persistent lastT Pheld buf k vprev
+if isempty(lastT)
+    lastT = -1e9;
+    Pheld = Pgen_init;
+    k = 1;
+    buf = zeros(300, 1);
+    buf(:) = P_load;
+    vprev = v_ship;
+end
+if t < lastT
+    % 新仿真开始：重置缓冲/写指针/速度差基线（与 ecms2.nn_predict_ehat 同语义）
+    lastT = t;
+    k = 1;
+    buf(:) = P_load;
+    vprev = v_ship;
+end
+P = Pheld;
+if t - lastT < ECMS_dt_ctrl_s - 1e-9
+    return;
+end
+lastT = t;
+if isfinite(P_load)
+    buf(k) = P_load;
+end
+k = mod(k, 300) + 1;
+accel = v_ship - vprev;
+vprev = v_ship;
+ok = nn_ok > 0.5 && isfinite(P_load) && isfinite(v_ship) && isfinite(accel);
+% x 构造必须无条件（EMChart 编译器跨块变量缺陷绕过，见报告 §2/§8）；
+% 升序重排与 fleet_norm.json feature_layout 一致：xP(1)=P(t-299)...xP(300)=P(t)
+xP = [buf(k:300); buf(1:k-1)];
+x = [xP; v_ship; accel];
+ok = ok && all(isfinite(x));
+if ok
+xnorm = (x - XMean(:)) ./ XStd(:);
+h1 = max(W1.' * xnorm + b1(:), 0);
+h2 = max(W2.' * h1 + b2(:), 0);
+y_norm = W3.' * h2 + b3;
+    Ehat_kWh = y_norm * YStd + YMean;
+    e_hat = (Ehat_kWh - Ebar) / Escale;
+else
+    % 回退：权重缺失或输入非有限 -> ê=0（≡law=5 行为，FR-208）
+    e_hat = 0;
+end
+% 与 law=6 v2 完全一致：自适应 λ（SOC_ref 通道）+ 下限钳位 + 单步网格穷举
+soc_ref_eff = SOC_ref + K_S * e_hat;
+lam = lambda + K_soc * (soc_ref_eff - SOC);
+if K_S ~= 0
+    lam = max(lam, Lambda_Floor);
+end
+N = floor(Gen_P_max / ECMS_Grid_dP_kW) + 1;
+Pbest = 0;
+Jbest = inf;
+nb = numel(bsfc_bp);
+for i = 1:N
+    Pg = (i - 1) * ECMS_Grid_dP_kW;
+    Pbat = P_load - ASSUMED_eta_rect * Pg;
+    if SOC <= ECMS_SOC_Discharge_Max
+        if Pbat > 1e-9
+            continue;
+        end
+        Pbest = Pg;
+        break;
+    end
+    if SOC >= ECMS_SOC_Charge_Min && Pbat < 0
+        continue;
+    end
+    if Pg < 1e-9
+        mf = ECMS_Idle_Fuel_kgph / 3600;
+    else
+        bsfc = bsfc_tbl(1);
+        if Pg >= bsfc_bp(nb)
+            bsfc = bsfc_tbl(nb);
+        elseif Pg > bsfc_bp(1)
+            ii = 1;
+            while ii < nb - 1 && bsfc_bp(ii + 1) < Pg
+                ii = ii + 1;
+            end
+            w = (Pg - bsfc_bp(ii)) / (bsfc_bp(ii + 1) - bsfc_bp(ii));
+            bsfc = bsfc_tbl(ii) + w * (bsfc_tbl(ii + 1) - bsfc_tbl(ii));
+        end
+        mf = Pg * bsfc / 3.6e6;
+    end
+    if Pbat > 0
+        mbe = Pbat / (ASSUMED_eta_dcdc * ASSUMED_Bat_Eff_Discharge) / 3600;
+    else
+        mbe = Pbat * (ASSUMED_eta_dcdc * ASSUMED_Bat_Eff_Charge) / 3600;
+    end
+    J = mf + lam * mbe;
+    if J < Jbest
+        Jbest = J;
+        Pbest = Pg;
+    end
+end
+if SOC <= ECMS_SOC_Discharge_Max && Pbest < 1e-9 && P_load > ASSUMED_eta_rect * Gen_P_max
+    Pbest = Gen_P_max;
+end
+P = Pbest;
+Pheld = Pbest;
+end
