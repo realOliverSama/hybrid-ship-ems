@@ -141,6 +141,16 @@ model/simulink_modelD/results/**/*.mat
 model/simulink_modelD/results/**/repro_tmp/
 model/simulink_modelD/results/**/_gate_ut/
 
+# 例外（2026-08-28 用户指令：实验原始数据入库，供审查/换设备续任务）：
+# fleet_profiles 原始剖面（v1/v2）入库；.venv_tf 环境本体仍永不入库
+!model/simulink_modelD/results/ecms_phase2/fleet_profiles/*.mat
+!model/simulink_modelD/results/ecms_phase25/fleet_profiles/*.mat
+# ecms_phase25 本机临时运维件（看门狗/日志/临时脚本）不入库
+model/simulink_modelD/results/ecms_phase25/*.log
+model/simulink_modelD/results/ecms_phase25/run_chunks.m
+model/simulink_modelD/results/ecms_phase25/watchdog_fleet.py
+model/simulink_modelD/results/ecms_phase25/ps_check.ps1
+
 # Phase 2 训练数据集（衍生大产物，不入库；生成脚本与 manifest 入库）
 model/simulink_modelD/datasets/*.npz
 
