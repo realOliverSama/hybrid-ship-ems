@@ -75,7 +75,7 @@ Design: `./design.md`
   - Acceptance: manifest_v2 泄漏检查 conclusion=PASS 且含近邻重复审计结论。
   - Escalate If: y 分布断言失败或窗口计数异常。
 
-- [ ] 4. 训练管线扩展：--arch / --quantiles / --dataset 参数
+- [x] 4. 训练管线扩展：--arch / --quantiles / --dataset 参数
   - ID: T-304
   - Requirement(s): FR-305, FR-306, FR-307, FR-317
   - Goal: `python/train_predictor.py` 增加 `--arch {mlp,tcn,cnn_mlp,nbeats}`、
