@@ -126,10 +126,12 @@ rush 段弱流与 M0 拒绝规则联合作用（如 11.5 kn + 逆向 0.3 m/s 将
 
 - 航次级 `k_res ∈ [0.95, 1.15]`（航次内恒定）：季节水位、吃水变化、污底的
   航次间差异；对 P 线性（±10~15%）。
-- **实现通道（决策点，见 §7-D3）**：现 harness 无逐航次阻力变量（阻力是场景级
-  通道）。提议为模型新增一个标量输入通道 `VOYAGE_RESISTANCE_MULT`（默认 1.0，
-  缺省时行为与现状逐位一致），走既有 VOYAGE_* 注入模式。这是**模型结构小改**，
-  须走 02_build_model + 结构差异检查 + 03_run_smoke_tests 流程。
+- **实现通道（2026-08-28 实现决策：无需模型手术）**：侦察发现模型 `resist_profile`
+  MATLAB Function（build_model_c CODE_RESIST）已支持 `profile_code=4`（bands，距离触发，
+  幅值=倍率增量）。航次级恒定 k_res 用既有通道实现：`SCN.profile_code=4`、
+  `resistance_bands=[−100 1e6 k_res−1; −1 0 0; …]`、`rampT=1 s`（起点设负值 → x=0 即
+  全程 k_res）。**不新增 VOYAGE_RESISTANCE_MULT 通道，零模型改动、零 rebuild**
+  （D3 授权保留但未动用，物理等价，符合最小必要修改）。
 - 段级浅水阻力带（浅滩段 +10%）：**v2.0 暂缓**，若 T-302 后 K-shape 审计显示
   覆盖仍不足再立项（避免一次引入过多维度难以归因）。
 
@@ -186,8 +188,8 @@ clipped 质量）。
 
 - **D1 扰动机制与范围**：APPROVED——M0~M3 按本文范围实施；**M4 从主数据集删除**。
 - **D2 规模与种子**：APPROVED——N=400、split 280/60/60、seed=20260829。
-- **D3 模型小改授权**：APPROVED——新增 `VOYAGE_RESISTANCE_MULT` 通道
-  （默认 1.0 时逐位等价现状；走 02 build + 结构 diff + 03 smoke 验证）。
+- **D3 模型小改授权**：APPROVED——侦察后改用**既有 bands 通道**实现（零模型改动，
+  见 §4 M3 实现决策）；VOYAGE_RESISTANCE_MULT 授权保留未动用。
 - **D4 拒绝规则**：APPROVED（2026-08-28 裁决 + 澄清）——硬规则
   **非逆水段 P_calc > 700 kW ⇒ reject and resample**；逆水段允许饱和
   （V_rel ≤ 7.06 m/s 包络，v1 语义一致）。
