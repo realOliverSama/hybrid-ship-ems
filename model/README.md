@@ -28,7 +28,8 @@
 | `simulink/` | 目录 | **主力模型工作区**——MVP 最小闭环验证模型 + ModelA/ModelB（静止起步→巡航→固定航程；MLP 负荷预测 AI 闭环验证；07 步流水线 + 08/09 ModelB 扩展脚本） |
 | `simulink_modelC/` | 目录 | Model C——定时前馈 EMS 研究副本（`HybridShip_ModelC_DCBus.slx`） |
 | `simulink_modelC_(oracle_ms)/` | 目录 | Model C 的 oracle 多步（multi-step）变体研究副本（`HybridShip_ModelCms_DCBus.slx`） |
-| `simulink_modelD/` | 目录 | Model D——定时前馈 EMS 研究副本（`HybridShip_ModelD_DCBus.slx`，含 `experiments/` 子目录） |
+| `simulink_modelD/` | 目录 | Model D——定时前馈 EMS 研究副本（`HybridShip_ModelD_DCBus.slx`，含 `experiments/` 子目录）；Phase 2 后冻结（纯 Phase 2 状态） |
+| `simulink_modelD_(EMS_NN_AECMS)/` | 目录 | Model D 本体 + 神经网络预测型 A-ECMS（Phase 2.5 起，TCN 主推多分位数预测 + NPU 导向；自 `simulink_modelD` 完整复制独立演进，spec：`.specs/nn-predictive-ecms-phase25`） |
 | `scripts/` | 目录 | 预留（当前为空） |
 | `parameters/` | 目录 | 预留（当前为空） |
 | `*.slxc` | 文件 | 各模型 Simulink 编译缓存，自动生成，不入库 |

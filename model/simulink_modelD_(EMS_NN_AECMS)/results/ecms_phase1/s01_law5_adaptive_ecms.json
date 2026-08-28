@@ -1,0 +1,17 @@
+{
+  "scenario": "S01_still_water",
+  "law": "5",
+  "lambda_0": "0.425",
+  "K_soc": "30",
+  "SOC_ref": "0.6",
+  "bsfc_source": "workspace",
+  "duration_s": "927.84",
+  "fuel_total_kg": "83.72551802",
+  "SOC_end": "0.6002359918",
+  "SOC_min": "0.596402167",
+  "SOC_max": "0.6008151217",
+  "Vdc_min_V": "683.3179505",
+  "P_gen_ref_max_kW": "820",
+  "P_bat_max_kW": "666.8204946",
+  "wall_time_s": "9.044652333"
+}

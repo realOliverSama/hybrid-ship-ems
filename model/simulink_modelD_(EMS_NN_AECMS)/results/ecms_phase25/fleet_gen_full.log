@@ -1,0 +1,22 @@
+
+[61] ===== Phase 2.5 — 数据集 v2 批量 Baseline 闭环仿真（T-302，FR-301） =====
+[61] ROOT = E:\User\Tommy\Desktop\hybrid-ship-ems\model\simulink_modelD
+[61] 开始: 2026-08-28 20:54:46
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[61] 航次集：seed=20260829 共 400 个，本批 1~400（400 个），parsim=1
+ERROR: MATLAB error Exit Status: 0x00000001
+
+===== RETRY 1 =====
+
+[61] ===== Phase 2.5 — 数据集 v2 批量 Baseline 闭环仿真（T-302，FR-301） =====
+[61] ROOT = E:\User\Tommy\Desktop\hybrid-ship-ems\model\simulink_modelD
+[61] 开始: 2026-08-28 21:09:19
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[61] 航次集：seed=20260829 共 400 个，本批 1~400（400 个），parsim=1
+ERROR: MATLAB error Exit Status: 0x00000001

@@ -3,6 +3,11 @@
 Spec: `nn-predictive-ecms-phase25`
 Status: tasks-approved（2026-08-28 外部评审 4+1 项修订后批准实施）
 Created: 2026-08-28
+
+> **路径迁移（2026-08-29）**：T-302 起的全部工作路径位于
+> `model/simulink_modelD_(EMS_NN_AECMS)/`（旧 simulink_modelD 冻结于 Phase 2）。
+> 本文各任务 Scope 中的 `scripts/...`、`results/ecms_phase25/...`、`python/...`
+> 均指新文件夹下的相对路径。
 Brainstorm: `./brainstorm.md`
 Requirements: `./requirements.md`
 Design: `./design.md`
@@ -38,7 +43,7 @@ Design: `./design.md`
   - Acceptance: 论证文档经用户/主 Agent 批准；OQ-1 关闭。
   - Escalate If: 扰动机制需要改动船体/阻力模型物理假设。
 
-- [ ] 2. 生成器扩展实现 + 数据集 v2 生成 + K-shape 覆盖度审计
+- [x] 2. 生成器扩展实现 + 数据集 v2 生成 + K-shape 覆盖度审计
   - ID: T-302
   - Requirement(s): FR-301, FR-302, FR-303
   - Goal: 按 T-301 批准清单实现生成器扩展（新种子、新输出目录 `results/ecms_phase25/`），

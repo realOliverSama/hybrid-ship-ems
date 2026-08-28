@@ -1,0 +1,61 @@
+
+[53] ===== ECMS Phase 2 — C4 实验矩阵 + 泛化（T-205，FR-209，design §6） =====
+[53] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD | 开始: 2026-08-26 00:34:24
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms2.ensure_nn_params] law=7 权重已载入 (source=config/ecms_nn_weights.mat): W1 302x128 | W2 128x64 | W3 64x1 | YStd=17.8686 | Ebar=36.8933 kWh | Escale=20.5070 kWh
+[53] Phase 1 复用：C0/C2/C3 × 4 场景（12 行）；S20 C2=330.6620 kg / C3=324.9570 kg（runs_phase1.csv）
+[53] test 航次（前 10）：4, 7, 11, 13, 17, 19, 21, 28, 35, 47
+[53] 新跑 24 行（主矩阵 C4×4 + 泛化 20），缓存跳过 0 行
+[53] parsim 启动（24 行）: 00:34:46
+[26-Aug-2026 00:34:48] 正在检查并行池的可用性...
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+已连接到具有 8 个工作单元的并行池。
+[26-Aug-2026 00:35:49] 正在并行工作单元上启动 Simulink...
+[26-Aug-2026 00:36:23] 正在并行工作单元上配置仿真缓存文件夹...
+[26-Aug-2026 00:36:26] 正在并行工作单元上运行 SetupFcn...
+[26-Aug-2026 00:36:30] 正在清理并行工作单元...
+[53] parsim 失败（执行 SetupFcn 时出错）-> 串行降级
+[53] 串行进度 1/24（最近 36.5 s/行 | 00:37:10）
+[53] 串行进度 5/24（最近 13.7 s/行 | 00:37:36）
+[53] 串行进度 10/24（最近 14.8 s/行 | 00:38:49）
+[53] 串行进度 15/24（最近 17.8 s/行 | 00:40:06）
+[53] 串行进度 20/24（最近 13.4 s/行 | 00:41:19）
+[53] 串行完成: 459.7 s
+[53] C4_S20_composite_voyage_matrix               law=7 fuel_corr=328.5489 kg SOC_end=0.6006 Vdc_min=683.4 V n_der=0 wall=29.3 s
+[53] C4_S01_still_water_matrix                    law=7 fuel_corr=83.7556 kg SOC_end=0.6145 Vdc_min=683.4 V n_der=0 wall=1.3 s
+[53] C4_S02_downstream_matrix                     law=7 fuel_corr=54.7036 kg SOC_end=0.6593 Vdc_min=683.4 V n_der=0 wall=1.2 s
+[53] C4_S07_bridge_maneuver_matrix                law=7 fuel_corr=81.9646 kg SOC_end=0.6097 Vdc_min=683.4 V n_der=0 wall=1.4 s
+[53] C2_test_voyage_004_gen                       law=5 fuel_corr=187.8173 kg SOC_end=0.5996 Vdc_min=683.4 V n_der=0 wall=15.5 s
+[53] C4_test_voyage_004_gen                       law=7 fuel_corr=186.6378 kg SOC_end=0.5940 Vdc_min=683.4 V n_der=0 wall=15.7 s
+[53] C2_test_voyage_007_gen                       law=5 fuel_corr=302.4423 kg SOC_end=0.5994 Vdc_min=682.1 V n_der=0 wall=19.8 s
+[53] C4_test_voyage_007_gen                       law=7 fuel_corr=298.7924 kg SOC_end=0.6299 Vdc_min=683.4 V n_der=0 wall=20.2 s
+[53] C2_test_voyage_011_gen                       law=5 fuel_corr=209.9468 kg SOC_end=0.6000 Vdc_min=683.4 V n_der=0 wall=17.1 s
+[53] C4_test_voyage_011_gen                       law=7 fuel_corr=210.5171 kg SOC_end=0.5928 Vdc_min=683.4 V n_der=0 wall=17.0 s
+[53] C2_test_voyage_013_gen                       law=5 fuel_corr=160.3347 kg SOC_end=0.5989 Vdc_min=683.0 V n_der=0 wall=14.9 s
+[53] C4_test_voyage_013_gen                       law=7 fuel_corr=161.0107 kg SOC_end=0.5940 Vdc_min=683.4 V n_der=0 wall=15.2 s
+[53] C2_test_voyage_017_gen                       law=5 fuel_corr=253.6121 kg SOC_end=0.5988 Vdc_min=683.4 V n_der=0 wall=23.0 s
+[53] C4_test_voyage_017_gen                       law=7 fuel_corr=253.5821 kg SOC_end=0.6084 Vdc_min=683.4 V n_der=0 wall=21.9 s
+[53] C2_test_voyage_019_gen                       law=5 fuel_corr=317.2647 kg SOC_end=0.5991 Vdc_min=683.4 V n_der=0 wall=28.8 s
+[53] C4_test_voyage_019_gen                       law=7 fuel_corr=317.8742 kg SOC_end=0.5944 Vdc_min=683.4 V n_der=0 wall=28.8 s
+[53] C2_test_voyage_021_gen                       law=5 fuel_corr=199.9064 kg SOC_end=0.5994 Vdc_min=683.4 V n_der=0 wall=16.2 s
+[53] C4_test_voyage_021_gen                       law=7 fuel_corr=202.0252 kg SOC_end=0.6053 Vdc_min=683.4 V n_der=0 wall=16.2 s
+[53] C2_test_voyage_028_gen                       law=5 fuel_corr=216.1207 kg SOC_end=0.6000 Vdc_min=683.4 V n_der=0 wall=15.0 s
+[53] C4_test_voyage_028_gen                       law=7 fuel_corr=217.1618 kg SOC_end=0.6068 Vdc_min=683.4 V n_der=0 wall=15.2 s
+[53] C2_test_voyage_035_gen                       law=5 fuel_corr=267.1104 kg SOC_end=0.5988 Vdc_min=683.4 V n_der=0 wall=25.4 s
+[53] C4_test_voyage_035_gen                       law=7 fuel_corr=269.2392 kg SOC_end=0.6026 Vdc_min=683.4 V n_der=0 wall=25.2 s
+[53] C2_test_voyage_047_gen                       law=5 fuel_corr=193.1252 kg SOC_end=0.6000 Vdc_min=683.4 V n_der=0 wall=25.2 s
+[53] C4_test_voyage_047_gen                       law=7 fuel_corr=192.3109 kg SOC_end=0.5911 Vdc_min=683.4 V n_der=0 wall=25.4 s
+[53] 已写入 /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase2/runs_phase2.csv（12 复用 + 24 新跑 = 36 行 + 表头）
+{错误使用 索引
+此容器中不存在指定的键。
+} 
+
+[53] NOTE (2026-08-26 ~00:55): 首轮 nohup 运行（PID 86909）parsim SetupFcn 失败→串行降级完成 24 行仿真；
+     CSV 写出后因 metMap 键名笔误（'C4_S20_composite_voyage' 缺 _matrix 后缀）抛 KeyError；
+     修复后基于断点缓存重跑（0 新仿真，test 航次未重跑，FR-204），
+     [53] MATRIX COMPLETE n_ok=24 n_sim=24 n_reuse=12（seed=20260825）。
+     S20 C4(law=7): fuel_corr=328.5489 kg | SOC_end=0.6006 | Vdc_min=683.4 V | n_der=0
