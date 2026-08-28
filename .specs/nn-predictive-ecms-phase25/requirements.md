@@ -1,0 +1,160 @@
+# Phase 2.5 NPU 导向模型族优化与工况识别门控 — Requirements
+
+Spec: `nn-predictive-ecms-phase25`
+Status: requirements-draft
+Created: 2026-08-28
+Brainstorm: `./brainstorm.md`
+Branch: `models-research`
+
+## Overview
+
+Phase 2 结论（`nn-predictive-ecms-phase2`，implementation-complete）：MLP 302-128-64-1 预测
+未来 300 s 能量 Ê_H，经 SOC_ref 前馈通道驱动 A-ECMS（law=7，控制器 C4）。Gate 判定
+**PARTIAL**：S20 nn_oracle_capture = 0.3704 < 0.50；留出航次泛化中性（median −0.23%）；
+部署预算完全满足。失败模式：低估偏向（under_freq=0.426）耦合航次结构 → S07 桥区场景回退。
+
+Phase 2.5 目标（用户三答，2026-08-28）：
+
+1. **capture 尽量高**（省油，主指标）；
+2. **预测精度指标好**（RMSE/MAE/R²，副指标）；
+3. **在 1 Hz 实时性前提下模型尽量复杂/精确**，体现 STM32N6 Neural-ART NPU 算力优势。
+
+研究定位不变：**纯历史外推预测**（预测器输入仅含部署时可得的历史/当前量）。
+工况信息经由**在线工况识别器**进入控制器（门控/参数切换），不作为预测器的未来信息输入。
+
+## Scope
+
+### In Scope
+
+- 数据集 v2：内河工况导向的生成器多样性扩展 + K-shape 覆盖度审计 + 窗口化重建；
+- NPU 导向模型族：TCN（主推）→ CNN-MLP → N-BEATS 对照，全部带多分位数输出头；
+- 模型规模扫描：在 NPU 实时预算内放大容量，产出 params/latency/accuracy 权衡；
+- 在线工况识别器（CNN/MLP 分类器，输入为部署时可得历史窗口）；
+- 失败模式门控设计（S07 类模式保护），经主 Agent 设计门后集成；
+- 闭环验证：capture 主指标（S20 判定 + S01/S02/S07 消融 + 留出航次）；
+- NPU 部署验证：int8 量化 + STEdgeAI 编译 + N6 实测（与 Phase 3 衔接）。
+
+### Out of Scope
+
+- ❌ 航次计划先验特征（"开船前已知航线规划"作为预测器输入）——用户明确否决；
+- ❌ 海况/波浪扰动建模——本船为内河船（长江危化品应急处置船），不适用；
+- ❌ NMPC 替换 A-ECMS 骨架——A-ECMS oracle 6.89% vs DP 9.51%，替换边际收益不确定、
+  M55 实时求解成本高、研究风险大（文献思想仅吸收"工况识别→参数调整"部分）；
+- ❌ LSTM/GRU 路线扩展——Neural-ART NPU 无确认硬件加速（CPU 回落），且 Phase 2 已实测
+  LSTM 败于 MLP；与"体现 NPU"目标冲突；
+- ❌ DP/PMP 模仿学习 λ 网络（沈崇崇路线）——列为后续候选评估项，不在本 Phase 主线；
+- ❌ STM32 固件集成与 Flash 烧录——属 Phase 3。
+
+## User Stories
+
+- As a 研究者, I want NPU 原生模型族（TCN/CNN-MLP/N-BEATS）与 Phase 2 MLP 基线的公平对照,
+  so that 模型选择有完整的架构-精度-部署权衡证据链。
+- As a 研究者, I want 数据集 v2 的内河工况多样性与 K-shape 覆盖度审计,
+  so that 模型上限不被数据集分布过窄所限制（用户核心关切）。
+- As a 研究者, I want 在线工况识别 + 失败模式门控,
+  so that S07 类场景的 −1.2 kg 回退被消除，C4 可以安全携带进 Phase 3。
+- As a 部署工程师, I want int8 量化 + NPU 实测时延,
+  so that Phase 3 硬件集成有经过验证的模型与预算数据。
+
+## Functional Requirements
+
+### 数据集 v2
+
+- **FR-301**: THE 数据集 v2 生成器 SHALL 在原 7 类段积木基础上扩展内河工况多样性；
+  所有新增扰动机制 SHALL 先经物理论证（内河船适用性：流速变化/航道交通/水位阻力等），
+  论证文档经主 Agent 批准后方向可实现。
+- **FR-302**: 数据集 v2 SHALL 保持 Phase 2 全部泄漏纪律：航次级 split（种子固定）、
+  窗口不跨航次、归一化 fit-on-train、test 零参与、S20/S01/S02/S07 结构性隔离；
+  每次生成 SHALL 产出 manifest（含逐文件 md5、split 名单、泄漏断言）。
+- **FR-303**: THE 数据集 v2 SHALL 附带 K-shape（或经批准的等效时序聚类）覆盖度审计报告：
+  航次聚类分布、类间距离、与 v1 数据集的覆盖对比、发现的分布缺口。
+- **FR-304**: IF 数据集 v2 与 v1 并存, THE 实验记录 SHALL 明确标注每个模型训练所用的
+  数据集版本（v1 模型在 v2 上重训/重测时须保持公平条件，见 FR-307）。
+
+### 模型族与选模
+
+- **FR-305**: THE 预测模型族 SHALL 按序实现并对照：TCN（扩张因果卷积+残差块+MLP 头，主推）
+  → CNN-MLP 混合 → N-BEATS 式全连接栈；基线为 Phase 2 选定 MLP 302-128-64-1。
+- **FR-306**: 所有预测模型 SHALL 输出多分位数（至少 q10/q50/q90），
+  以支持低估偏向分析（under_freq）与门控不确定性依据；点预测指标基于 q50。
+- **FR-307**: 模型对照 SHALL 保持公平纪律（AI_MODELING §14）：同数据集版本、同 split、
+  同输入、同目标、同归一化原则、同评价指标；test 集零参与训练/选模/调参。
+- **FR-308**: THE 模型规模扫描 SHALL 在 NPU 实时预算内进行：对主推架构产出
+  参数/时延/精度权衡曲线（至少 3 个规模点）；预算推导方法见 design §5。
+- **FR-309**: 模型结构 SHALL 仅使用 Neural-ART NPU 原生算子族（Conv1D/Dense/池化/逐点激活），
+  不得引入需 CPU 回落的循环层（LSTM/GRU）；注意力类结构如引入须先验证工具链可编译。
+
+### 工况识别与门控
+
+- **FR-310**: THE 工况识别器 SHALL 仅以部署时可得量为输入（历史功率/船速窗口），
+  输出当前工况类别；训练标签来源（生成器段型真值或聚类标签）须在 design 中固定。
+- **FR-311**: THE 失败模式门控 SHALL 针对 Phase 2 §6 记录的 S07 模式
+  （长时低功率段+突发操纵）提供保护机制（通道增益限幅/回退至 law=5 或 law=6(ê=0)）；
+  门控设计 SHALL 经主 Agent 设计门批准后方可集成。
+
+### 闭环验证与部署
+
+- **FR-312**: THE 闭环评估 SHALL 以 capture 为主判定指标：S20 复合航次为唯一设计判定场景
+  （沿用 Phase 2 判定口径），S01/S02/S07 为消融场景，留出航次为泛化检验；
+  预测指标（RMSE/MAE/R²/under_freq/分位数校准）为辅指标。
+- **FR-313**: THE 最终选定模型 SHALL 完成 int8 量化 + STEdgeAI 编译验证，
+  并在 STM32N6 上实测推理时延（或出具经批准的离线估算）；
+  fp32 vs int8 精度差 SHALL 记录（AI_MODELING §15）。
+- **FR-314**: THE 实验链 SHALL 可复现：脚本化执行、种子固定、manifest/md5 溯源、
+  干净进程重跑关键阶段结果一致（沿用 Phase 2 repro_check 模式）。
+- **FR-315**: 失败实验 SHALL 完整保留记录（training_log + 报告失败清单），不得删除。
+
+## Non-Functional Requirements
+
+- **NFR-301 实时性**：预测器 1 Hz 更新；单次推理预算目标 ≤10 ms（STM32N6 NPU int8，
+  待实测修正）；识别器同频或更低频，合计推理预算 ≤20 ms。
+- **NFR-302 资源**：模型 int8 权重 + 激活 RAM 应落在 STM32N6 预算内
+  （Phase 2 参考：47 KB 权重 / <4 KB 激活；本 Phase 允许放大 1~2 个数量级，上限待
+  NFR-301 实测约束反推）。
+- **NFR-303 可维护性**：所有新脚本沿用 `model/simulink_modelD/` 现有脚本编号与目录约定；
+  新增文件同步登记目录 README（AGENTS.md §20）。
+
+## Acceptance Criteria
+
+- [ ] AC-1（FR-301~303）：数据集 v2 manifest 泄漏断言全过；K-shape 审计报告存在且
+  结论明确；v2 与 v1 的覆盖差异被量化记录。
+- [ ] AC-2（FR-305~309）：模型对照表（至少 MLP 基线/TCN/CNN-MLP/N-BEATS）含
+  val/test RMSE、MAE、R²、under_freq、分位数校准、参数量、估算/实测时延；
+  公平纪律声明齐全。
+- [ ] AC-3（FR-310/311）：工况识别器 test 精度报告；门控设计文档经主 Agent 批准；
+  S07 消融场景下 C4 不再出现 Phase 2 §6 的 −1.2 kg 级回退（或回退被量化并论证可接受）。
+- [ ] AC-4（FR-312）：S20 capture 复测 + 三消融场景 + 留出航次分布全部记录；
+  无论 capture 是否 ≥0.50，结论诚实记录（PASS/PARTIAL/FAIL 均可接受，
+  隐藏失败不可接受）。
+- [ ] AC-5（FR-313）：int8 vs fp32 精度差 + STEdgeAI 编译结果 + N6 时延数据归档。
+- [ ] AC-6（FR-314/315）：repro 检查通过；training_log 含全部失败实验。
+
+## Edge Cases
+
+- 数据集 v2 生成器改动导致 P_demand 分布漂移 → y 分布统计断言（沿用 v1 的同分布族检查）
+  可能失败；此时必须停下评审，不得放宽断言蒙混（AGENTS.md §6）。
+- TCN 感受野 <300 s 时信息截断 → design 中必须给出感受野 ≥300 s 的层数/扩张率推导。
+- 工况识别器在段切换瞬态的误识别 → 门控需含迟滞/确认机制（design §7）。
+- 留出航次 capture 分布方差大（小样本）→ 沿用 Phase 2 惯例：S20 为唯一判定指标，
+  留出航次只报分布不做单航次解读。
+- N6 实测时延超预算 → 回退规模点，不得以超实时为代价保精度。
+
+## Dependencies and Constraints
+
+- 依赖 Phase 2 产物：`fleet_windows.npz`（v1，md5 ec7d8a45…已校验）、
+  `dataset_manifest.json`、`selected_model_weights.json`、`51_generate_fleet_profiles.m`、
+  `python/build_dataset.py`、`python/train_predictor.py`、law=7 集成（52_integrate_law7.m）、
+  闭环矩阵脚本（53_run_phase2_matrix.m）、gate 判定（54_phase2_gate_judge.m）。
+- Python 环境：`model/simulink/python/.venv_tf`（AI_MODELING 规定，不得另建）。
+- Simulink 纪律：模型改动脚本驱动；03_run_smoke_tests + gate_result.json overall=true
+  为提交门禁（AGENTS.md §9/§12）。
+- 文献锚点：Yan et al. 2025 (doi:10.3390/jmse13020269)；沈崇崇等 2026
+  (doi:10.11990/jheu.202503040)。本地转换稿在用户文献目录（不入库）。
+
+## Open Questions
+
+- [ ] OQ-1：数据集 v2 具体扰动机制与 N 规模（200→400?）——design 阶段物理论证后定。
+- [ ] OQ-2：TCN 规模上限——需 N6 NPU int8 实测或 STEdgeAI 离线分析数据后定。
+- [ ] OQ-3：工况类别集合——直接用生成器 7 段型真值，还是聚类重划分（参照 Yan et al.
+  K-means 4 类）？design 阶段定（影响 FR-310 标签来源）。
+- [ ] OQ-4：DP 模仿学习 λ 路线（沈崇崇对照）是否立项后续 Phase——本 Phase 末评审。
