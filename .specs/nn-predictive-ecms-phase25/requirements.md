@@ -188,7 +188,12 @@ Phase 2.5 目标（用户三答，2026-08-28）：
 
 ## Open Questions
 
-- [ ] OQ-1：数据集 v2 具体扰动机制与 N 规模（200→400?）——design 阶段物理论证后定。
+- [x] OQ-1：已定（2026-08-28，T-301 论证文档批准）：M0 统一硬拒绝规则
+  （任一段 P_calc>700 kW ⇒ reject and resample，无饱和样本进 v2 舰队）+
+  M1 段速度随机化 + M2 水流扩展（逆水 −[0.6,1.2] / 其余 ±[0,0.3] m/s）+
+  M3 航次级阻力乘子 k_res∈[0.95,1.15]（VOYAGE_RESISTANCE_MULT 通道）；
+  M4 避让台阶从主数据集删除（用户裁决）；N=400、split 280/60/60、seed=20260829。
+  详见 t301_dataset_v2_perturbation.md。
 - [ ] OQ-2：TCN 规模上限——中间阶段可用 STEdgeAI 离线分析/Developer Cloud 估算，
   但最终以 N6 板上实测为准（FR-319）；板上资源可用性为 T-311 前置依赖。
 - [ ] OQ-3：工况类别集合——直接用生成器 7 段型真值，还是聚类重划分（参照 Yan et al.

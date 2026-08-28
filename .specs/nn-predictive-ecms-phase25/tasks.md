@@ -26,7 +26,7 @@ Design: `./design.md`
 > 另加 FR-318 留出航次 non-degradation 强制门禁；④ T-311 最终验收必须真实 N6 板上
 > int8 验证（离线估算仅中间证据）；⑤ T-303 增加跨 split 近邻重复审计（FR-316）。
 
-- [ ] 1. 数据集 v2 扰动机制物理论证（主 Agent 设计门，无代码）
+- [x] 1. 数据集 v2 扰动机制物理论证（主 Agent 设计门，无代码）
   - ID: T-301
   - Requirement(s): FR-301, OQ-1
   - Goal: 产出 `docs/` 或 spec 附录级论证文档：内河船适用的数据集 v2 扰动机制清单
