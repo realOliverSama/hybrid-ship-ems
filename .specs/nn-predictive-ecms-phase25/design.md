@@ -1,7 +1,7 @@
 # Phase 2.5 NPU 导向模型族优化与工况识别门控 — Design
 
 Spec: `nn-predictive-ecms-phase25`
-Status: design-draft
+Status: design-approved（2026-08-28 外部评审 4+1 项修订后批准）
 Created: 2026-08-28
 Brainstorm: `./brainstorm.md`
 Requirements: `./requirements.md`
@@ -92,6 +92,12 @@ Pgen/Pbat/λ；SOC_ref 通道是预测影响控制的唯一路径；门控只调
   （含逐文件 md5、split 名单、泄漏断言、y 分布同族检查）。
 - K-shape 审计（FR-303）：对 v2 全航次的 P_demand 剖面聚类，报告类数、类内/类间距离、
   v1 vs v2 覆盖对比图；结论入 manifest。
+- **交叉 split 近邻重复审计（FR-316，v1.1）**：生成航次可能是同模板微调参数，须防止
+  train/test 出现模板级近重复。方法：以航次 P_demand 剖面为对象，复用 K-shape/距离
+  设施计算**跨 split** 航次对相似度；输出跨 split 最近邻航次对清单 + 相似度分布，并与
+  split 内最近邻分布对比；判定规则（T-303 实现时固定并写入 manifest）：跨 split 最近邻
+  距离显著小于 split 内分布低分位（如 < p1）者标记为疑似模板泄漏；处置（保留并声明 /
+  换种子重抽）记录于 manifest，不得静默忽略。
 - 存储策略：`.mat` 与 `.npz` 不入库（沿用 v1 惯例），manifest/norm/审计报告入库。
 
 ### 模型族（FR-305~309）
@@ -109,25 +115,75 @@ Pgen/Pbat/λ；SOC_ref 通道是预测影响控制的唯一路径；门控只调
 规模扫描（FR-308）：主推架构至少 3 个规模点（如 channels ∈ {32, 64, 128}），
 每点记录 params / int8 大小 / val 指标 / 时延估算或实测。
 
+### 选模协议（FR-317，v1.1）
+
+```text
+① prediction qualification
+   val 指标（RMSE/MAE/R²/under_freq/分位数校准）仅作资格筛选，淘汰明显劣势配置
+        ↓
+② closed-loop selection
+   闭环 capture（S20）+ 消融（S01/S02/S07）+ 留出门禁（FR-318）
+        ↓
+③ NPU Pareto selection
+   闭环合格者按部署成本（int8 大小/时延/HW coverage）做 Pareto 前沿
+   最终 Winner 由主 Agent 综合裁决（精度 × 闭环 × 部署三维）
+```
+
+原则：最终目标不是“预测数字最准”，而是“闭环表现最好且能在 STM32N6 高效运行”。
+val RMSE 单独排名仅适用于 v1 回归保护（--dataset v1 复现 Phase 2 的 9.303 kWh），
+不得作为 v2 最终 Winner 的唯一依据。
+
 ### 工况识别器（FR-310）
 
 - 输入：与预测器相同的历史窗口（可降采样，如 10 s 重采样到 30 点以缩小模型）。
-- 标签来源（OQ-3，T-306 前须定）：首选**生成器段型真值**（7 类，仿真内天然可得、
+- 标签来源（OQ-3，T-308 前须定）：首选**生成器段型真值**（7 类，仿真内天然可得、
   无标注成本）；备选 K-means/聚类重划分（参照 Yan et al.，需额外论证）。
 - 架构：小型 Conv1D 分类器（参照 Yan et al. 3 conv + pooling + FC；ECA 注意力可选，
   引入前须过 STEdgeAI 编译验证）。
-- 评估：test split 分类准确率/混淆矩阵 + 段切换瞬态误识别率。
+- **定位（v1.1）**：识别器是**候选**门控组件，不预设进入最终架构——最小复杂度原则：
+  能用简单机制解决就不部署第二个神经网络。是否纳入最终方案由 T-309/T-310 的
+  G0~G3 消融裁决。
+- 评估（v1.1 扩展）：test split 的 macro-F1、per-class recall、失败敏感类
+  （桥区/靠离泊）recall、段切换窗口识别率、transition latency；
+  overall accuracy ≥80% 不得作为唯一验收门槛（必须排除“常见工况 95% + 危险工况 40%”
+  的平均数掩盖）。
 
-### 门控（FR-311，T-307 设计门）
+### 门控（FR-311，T-309 设计门）
 
-设计空间（主 Agent 在 T-307 裁决其一或组合）：
+设计空间（主 Agent 在 T-309 裁决其一或组合）：
 - (a) 工况门控：识别为桥区/靠离泊类 → 预测通道增益 K_S→0（回退 law=5 语义）；
 - (b) 分位数门控：q90−q10 不确定性超阈值 → 通道降增益；
 - (c) 组合。
 约束：门控逻辑必须确定性的、可单元测试的（沿用 law 框架 + test_ecms_law 模式）；
 不得引入新的不可复现状态。
 
+**消融矩阵（v1.1，T-310 闭环必跑）**：
+
+| 配置 | 分位数门控 | 工况识别门控 | 用途 |
+|---|---|---|---|
+| G0 | ✗ | ✗ | 基线（纯预测通道） |
+| G1 | ✓ | ✗ | 单机制消融 |
+| G2 | ✗ | ✓ | 单机制消融 |
+| G3 | ✓ | ✓ | 组合 |
+
+决策规则：仅当 G2/G3 相对 G1 展现**明确闭环增量**（S07 回退消除 + S20 capture 不显著
+损失 + 留出门禁通过）时，工况识别器才进入最终部署架构；否则最终形态为
+Predictor + 分位数门控 + A-ECMS。
+
 ## API / Interface Changes
+
+### NPU on-target 验证（FR-319，v1.1）
+
+- 中间证据：STEdgeAI desktop 分析 / Developer Cloud 估算（HW coverage、内存池、
+  估算时延）允许用于 T-307 规模扫描与迭代决策；
+- 最终验收：必须在真实 STM32N6 板上完成 int8 推理验证，记录：int8 模型大小、
+  activation RAM、weight memory、Neural-ART HW coverage、SW/HYBRID fallback 算子
+  清单、实测推理时延、fp32 vs int8 精度差、板上输出 vs Python reference 一致性误差；
+- 官方警告（ST 文档）：落 CPU 的算子可能比 NPU 慢 1~2 个数量级，参数量/MAC 数
+  不能替代 target validation；
+- 固件侧操作分阶段授权（AGENTS.md §11）：Build / fw_gate / Debug / Flash 各自独立授权，
+  板上验证前需用户明确批准对应阶段；无板可用时 T-311 停在中间证据并 Escalate，
+  不得以估算充最终验收。
 
 - 新脚本沿用编号约定：`scripts/60_*`（数据集 v2）、`scripts/61_*`（模型族训练入口可
   复用 `python/train_predictor.py` 加 `--arch` 参数）、`scripts/62_*`（识别器）、
@@ -165,7 +221,7 @@ Pgen/Pbat/λ；SOC_ref 通道是预测影响控制的唯一路径；门控只调
 
 - 分支 `models-research` 全程；数据集 v2 与 v1 并存（目录/文件名加 v2 后缀，
   不覆盖 v1 产物）；Phase 2 报告与权重不动。
-- 每个 T-3xx 完成即勾选；T-301/T-307 为主 Agent 设计门（不产生代码或由主 Agent 撰写）。
+- 每个 T-3xx 完成即勾选；T-301/T-309 为主 Agent 设计门（不产生代码或由主 Agent 撰写）。
 
 ## Requirements Traceability
 
@@ -186,6 +242,10 @@ Pgen/Pbat/λ；SOC_ref 通道是预测影响控制的唯一路径；门控只调
 | FR-313 | int8 + STEdgeAI + N6 | 部署报告 |
 | FR-314 | repro_check v2 | 干净进程复跑一致 |
 | FR-315 | 失败实验保留 | training_log 完整性 |
+| FR-316 | 跨 split 近邻重复审计（T-303） | 审计报告 + manifest 处置记录 |
+| FR-317 | 三级选模协议（T-310 裁决） | selection_v2.json 协议声明 |
+| FR-318 | 留出 non-degradation 门禁（T-310） | gate_result_v2.json 双条件 |
+| FR-319 | on-target 强制验收（T-311） | 板上验证报告 |
 
 ## Risks and Trade-offs
 
@@ -197,3 +257,7 @@ Pgen/Pbat/λ；SOC_ref 通道是预测影响控制的唯一路径；门控只调
 - R4：门控可能牺牲 S20 capture 换 S07 安全；缓解：判定矩阵同时报 S20 capture 与
   S07 回退量，由主 Agent 权衡裁决（不自动判定 PASS/FAIL 之外的结论）。
 - R5：scope 蔓延（DP 模仿学习诱惑）→ 缓解：Non-Goals 明确排除，OQ-4 留到 Phase 末评审。
+- R6（v1.1）：T-311 依赖真实 STM32N6 板可用性与固件阶段授权；板上窗口不可控时
+  最终验收顺延，中间证据先行归档，不以估算冒充 on-target 结论。
+- R7（v1.1）：多组件堆叠（预测 NN + 识别 NN + 门控）导致复杂度失控 → 缓解：
+  最小复杂度原则 + G0~G3 消融裁决，识别器不预设入最终架构。
