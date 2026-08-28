@@ -13,7 +13,7 @@
 | `adaptive-ecms-methanol/` | 目录 | 边缘 AI 自适应 ECMS 甲醇混合动力船舶 EMS（当前活跃研究主线，同名分支） |
 | `adaptive-ecms-phase1/` | 目录 | Phase 1 实时 ECMS 控制器链与 DP gap 测量 |
 | `nn-predictive-ecms-phase2/` | 目录 | Phase 2 NN 预测型 A-ECMS（SOC_ref 前瞻通道） |
-| `nn-predictive-ecms-phase25/` | 目录 | Phase 2.5 NPU 导向模型族优化（TCN 主推）+ 数据集 v2 内河工况扩展 + 工况识别门控（models-research 分支，tasks-draft） |
+| `nn-predictive-ecms-phase25/` | 目录 | Phase 2.5 NPU 导向模型族优化（TCN 主推）+ 数据集 v2 内河工况扩展 + 工况识别门控（models-research 分支，tasks-approved / Amendment v1.1） |
 | `multistep-predictive-ems/` | 目录 | 面向参数不确定性的多步负荷预测增强型 EMS |
 | `timed-feedforward-ems/` | 目录 | Model C 定时前馈 EMS（Peak + Time-to-Peak 预测调度） |
 | `model-b-dc-bus/` | 目录 | Model B 直流母线电气层 + 安全/节能指标卡 + S10 工况 |

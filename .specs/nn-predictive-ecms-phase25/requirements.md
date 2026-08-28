@@ -1,7 +1,7 @@
 # Phase 2.5 NPU 导向模型族优化与工况识别门控 — Requirements
 
 Spec: `nn-predictive-ecms-phase25`
-Status: requirements-draft
+Status: requirements-approved（2026-08-28 外部评审 4+1 项修订后批准）
 Created: 2026-08-28
 Brainstorm: `./brainstorm.md`
 Branch: `models-research`
@@ -88,21 +88,52 @@ Phase 2.5 目标（用户三答，2026-08-28）：
 
 - **FR-310**: THE 工况识别器 SHALL 仅以部署时可得量为输入（历史功率/船速窗口），
   输出当前工况类别；训练标签来源（生成器段型真值或聚类标签）须在 design 中固定。
+  （v1.1）识别器为**候选**门控组件，不预设进入最终架构；评估指标 SHALL 包含
+  macro-F1、per-class recall、失败敏感类（桥区/靠离泊）recall、段切换窗口识别率与
+  transition latency；overall accuracy ≥80% 不得作为唯一验收门槛。
 - **FR-311**: THE 失败模式门控 SHALL 针对 Phase 2 §6 记录的 S07 模式
   （长时低功率段+突发操纵）提供保护机制（通道增益限幅/回退至 law=5 或 law=6(ê=0)）；
   门控设计 SHALL 经主 Agent 设计门批准后方可集成。
+  （v1.1）门控评估 SHALL 包含消融矩阵 G0（无门控）/G1（仅分位数门控）/
+  G2（仅工况识别门控）/G3（组合）；仅当 G2/G3 相对 G1 展现明确闭环增量价值时，
+  工况识别器才进入最终部署架构（最小复杂度原则）。
 
 ### 闭环验证与部署
 
-- **FR-312**: THE 闭环评估 SHALL 以 capture 为主判定指标：S20 复合航次为唯一设计判定场景
-  （沿用 Phase 2 判定口径），S01/S02/S07 为消融场景，留出航次为泛化检验；
+- **FR-312**: THE 闭环评估 SHALL 以 capture 为主判定指标：S20 复合航次为 capture benefit
+  的判定场景（沿用 Phase 2 判定口径），S01/S02/S07 为消融场景；
   预测指标（RMSE/MAE/R²/under_freq/分位数校准）为辅指标。
-- **FR-313**: THE 最终选定模型 SHALL 完成 int8 量化 + STEdgeAI 编译验证，
-  并在 STM32N6 上实测推理时延（或出具经批准的离线估算）；
+  （v1.1）S20 决定 benefit 是否改善，但最终 PASS 还须满足 FR-318 留出航次
+  non-degradation 门禁——两者同为必要条件。
+- **FR-313**: THE 最终选定模型 SHALL 完成 int8 量化 + STEdgeAI 编译验证；
   fp32 vs int8 精度差 SHALL 记录（AI_MODELING §15）。
+  （v1.1 修订）离线 STEdgeAI / Developer Cloud 估算仅作中间证据；最终验收的
+  on-target 强制要求见 FR-319。
 - **FR-314**: THE 实验链 SHALL 可复现：脚本化执行、种子固定、manifest/md5 溯源、
   干净进程重跑关键阶段结果一致（沿用 Phase 2 repro_check 模式）。
 - **FR-315**: 失败实验 SHALL 完整保留记录（training_log + 报告失败清单），不得删除。
+
+### Amendment v1.1 增补需求（2026-08-28 外部评审裁决）
+
+- **FR-316 交叉 split 近邻重复审计**: THE 数据集 v2 SHALL 包含 train/val/test 跨 split
+  近邻重复审计：对航次 P_demand 剖面计算跨 split 相似度（复用 FR-303 聚类/距离设施），
+  输出最相似跨 split 航次对清单与相似度分布；IF 发现模板级近重复（判定方法见 design），
+  THEN 须在 manifest 中记录处置（保留并声明 / 重抽），不得静默忽略。
+- **FR-317 三级选模协议**: THE Phase 2.5 模型选择 SHALL 采用三级协议：
+  ① prediction qualification——val 指标仅作资格筛选，淘汰明显劣势配置；
+  ② closed-loop selection——以 capture/消融/留出表现为主（FR-312/FR-318）；
+  ③ NPU Pareto selection——闭环合格者中按部署成本（大小/时延/HW coverage）做
+  Pareto 权衡，最终 Winner 由主 Agent 综合裁决。
+  val RMSE 单独排名仅适用于 v1 回归保护（--dataset v1），不得作为 v2 最终 Winner
+  的唯一依据。
+- **FR-318 留出航次 non-degradation 门禁**: THE 最终模型 SHALL 通过 ≥10 留出航次门禁：
+  零新增降额、零 SOC 越限、无 EMS 异常；C4' vs C2 节油差分布记录中位数/最小值；
+  初始判定阈值 median ≥ −0.5%、min ≥ −1.5%（🟡 门限变更仅主 Agent 可裁决）。
+- **FR-319 最终部署验收必须 on-target**: THE Phase 2.5 最终部署验收 SHALL 包含真实
+  STM32N6 板上 int8 推理验证，至少记录：int8 模型大小、activation RAM、weight memory、
+  Neural-ART HW coverage、SW/HYBRID fallback 算子清单、实测推理时延、fp32 vs int8
+  精度差、板上输出与 Python reference 的一致性误差。
+  固件侧操作遵守 AGENTS.md §11 红线（Build/Gate/Debug/Flash 分阶段授权）。
 
 ## Non-Functional Requirements
 
@@ -118,16 +149,20 @@ Phase 2.5 目标（用户三答，2026-08-28）：
 
 - [ ] AC-1（FR-301~303）：数据集 v2 manifest 泄漏断言全过；K-shape 审计报告存在且
   结论明确；v2 与 v1 的覆盖差异被量化记录。
-- [ ] AC-2（FR-305~309）：模型对照表（至少 MLP 基线/TCN/CNN-MLP/N-BEATS）含
-  val/test RMSE、MAE、R²、under_freq、分位数校准、参数量、估算/实测时延；
-  公平纪律声明齐全。
-- [ ] AC-3（FR-310/311）：工况识别器 test 精度报告；门控设计文档经主 Agent 批准；
-  S07 消融场景下 C4 不再出现 Phase 2 §6 的 −1.2 kg 级回退（或回退被量化并论证可接受）。
-- [ ] AC-4（FR-312）：S20 capture 复测 + 三消融场景 + 留出航次分布全部记录；
-  无论 capture 是否 ≥0.50，结论诚实记录（PASS/PARTIAL/FAIL 均可接受，
-  隐藏失败不可接受）。
-- [ ] AC-5（FR-313）：int8 vs fp32 精度差 + STEdgeAI 编译结果 + N6 时延数据归档。
+- [ ] AC-2（FR-305~309, FR-317）：模型对照表（至少 MLP 基线/TCN/CNN-MLP/N-BEATS）含
+  val/test RMSE、MAE、R²、under_freq、分位数校准、参数量、估算时延；
+  公平纪律声明齐全；选模按三级协议执行（val 仅资格筛选）。
+- [ ] AC-3（FR-310/311）：工况识别器 test 报告含 macro-F1/per-class recall/失败敏感类
+  recall/切换窗口识别率/transition latency；门控消融 G0/G1/G2/G3 全部有闭环数据；
+  门控设计文档经主 Agent 批准；S07 消融场景下 C4 不再出现 Phase 2 §6 的 −1.2 kg 级
+  回退（或回退被量化并论证可接受）。
+- [ ] AC-4（FR-312/318）：S20 capture 复测 + 三消融场景 + 留出航次 non-degradation
+  门禁结果全部记录；无论是否 PASS，结论诚实记录。
+- [ ] AC-5（FR-313/319）：int8 vs fp32 精度差 + STEdgeAI 编译记录归档；
+  最终验收含真实 STM32N6 板上 int8 推理数据（HW coverage/fallback/内存/时延/
+  reference 一致性）。
 - [ ] AC-6（FR-314/315）：repro 检查通过；training_log 含全部失败实验。
+- [ ] AC-7（FR-316）：跨 split 近邻重复审计报告存在，发现的近重复对有处置记录。
 
 ## Edge Cases
 
@@ -154,7 +189,8 @@ Phase 2.5 目标（用户三答，2026-08-28）：
 ## Open Questions
 
 - [ ] OQ-1：数据集 v2 具体扰动机制与 N 规模（200→400?）——design 阶段物理论证后定。
-- [ ] OQ-2：TCN 规模上限——需 N6 NPU int8 实测或 STEdgeAI 离线分析数据后定。
+- [ ] OQ-2：TCN 规模上限——中间阶段可用 STEdgeAI 离线分析/Developer Cloud 估算，
+  但最终以 N6 板上实测为准（FR-319）；板上资源可用性为 T-311 前置依赖。
 - [ ] OQ-3：工况类别集合——直接用生成器 7 段型真值，还是聚类重划分（参照 Yan et al.
   K-means 4 类）？design 阶段定（影响 FR-310 标签来源）。
 - [ ] OQ-4：DP 模仿学习 λ 路线（沈崇崇对照）是否立项后续 Phase——本 Phase 末评审。
