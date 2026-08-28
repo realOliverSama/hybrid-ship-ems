@@ -26,6 +26,19 @@ train_predictor.py — T-203: MLP/LSTM 训练 + val 选模（nn-predictive-ecms-
 
 数据可能被重建（fleet 扩展至 200 航次，split 变 140/30/30，路径不变）——
 本脚本不硬编码航次数/比例，直接读取 npz 中 X_train/y_train/X_val/y_val。
+
+T-304（nn-predictive-ecms-phase25）扩展：
+  --arch {mlp,tcn,cnn_mlp,nbeats}（逗号分隔可多选，默认 "mlp,lstm"=v1 矩阵）
+  --dataset {v1,v2}（默认 v1）
+  --quantiles（默认关：单输出 MSE；开：q10/q50/q90 pinball 三头）
+输出隔离：
+  默认（无新参数）= v1 逐位一致（写 results/ecms_phase2/*，training_log.csv）
+  显式 --arch/--dataset/--quantiles（v1 回归或 v2）= 写隔离目录
+    v1 回归（--arch mlp --dataset v1）-> results/ecms_phase2/models_repro_t304/ + training_log_v2.csv
+    v2（--dataset v2）            -> results/ecms_phase25/models/ + training_log_v2.csv
+  Phase 2 既有文件（training_log.csv / selection.json / results/ecms_phase2/models/*）绝不读写。
+  编码：全部 JSON/CSV 读写显式 encoding='utf-8'（本机 GBK 控制台下 read_text() 默认
+  locale 编码会 UnicodeDecodeError——T-304 回归阻断修复）。
 """
 
 import argparse
@@ -50,7 +63,9 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
-BASE = Path(__file__).resolve().parent.parent  # model/simulink_modelD
+import architectures   # Phase 2.5 模型族（T-304，同目录）
+
+BASE = Path(__file__).resolve().parent.parent  # model/simulink_modelD_(EMS_NN_AECMS)
 NPZ = BASE / "datasets" / "fleet_windows.npz"
 NORM_JSON = BASE / "datasets" / "fleet_norm.json"
 MANIFEST_JSON = BASE / "results" / "ecms_phase2" / "dataset_manifest.json"
@@ -59,15 +74,17 @@ MODEL_DIR = OUT_DIR / "models"
 PLOT_DIR = OUT_DIR / "plots"
 LOG_CSV = OUT_DIR / "training_log.csv"
 
+# ---- T-304 输出隔离：作用域相关全局（默认 = v1 路径，逐位一致） ----
+SELECTION_NAME = "selection.json"      # v1 默认文件名
+WEIGHTS_NAME = "selected_model_weights.json"
+CSV_FIELDNAMES_ACTIVE = None           # None => 用 CSV_FIELDNAMES（v1）
+DATA_NPZ = NPZ
+DATA_NORM_JSON = NORM_JSON
+DATA_MANIFEST_JSON = MANIFEST_JSON
+DATA_DATASET_VERSION = "v1"
+
 SEED = 42
-SCRIPT_VERSION = "1.2.0"    # v1.2: --only 模型族筛选（T-204B N=200 MLP 复训）+ training_log 追加模式
-
-RUN_KEYS = [
-    "mlp_h64_32_lr1e-3", "mlp_h64_32_lr3e-4",
-    "mlp_h128_64_lr1e-3", "mlp_h128_64_lr3e-4",
-    "lstm_u32_lr1e-3", "lstm_u64_lr1e-3",
-]
-
+SCRIPT_VERSION = "1.3.0"    # v1.3: T-304 --arch/--dataset/--quantiles（默认路径逐位不变）+ utf-8 读写
 CSV_FIELDNAMES = [
     "run_id", "model", "hyperparameters", "dataset", "dataset_version", "split",
     "input", "history_window", "forecast_horizon", "target", "seed",
@@ -95,20 +112,23 @@ def git_sha():
         return "Unknown"
 
 
-def load_data():
-    """读取 npz + norm + manifest，返回训练所需的数组与 §19 元数据。"""
-    if not NPZ.exists():
-        raise FileNotFoundError("缺失数据集: %s" % NPZ)
-    if not NORM_JSON.exists():
-        raise FileNotFoundError("缺失归一化参数: %s" % NORM_JSON)
+def load_data(args):
+    """读取 npz + norm + manifest（按 --dataset 作用域路径），返回数组与 §19 元数据。"""
+    npz_path = DATA_NPZ
+    norm_path = DATA_NORM_JSON
+    man_path = DATA_MANIFEST_JSON
+    if not npz_path.exists():
+        raise FileNotFoundError("缺失数据集: %s" % npz_path)
+    if not norm_path.exists():
+        raise FileNotFoundError("缺失归一化参数: %s" % norm_path)
 
-    d = np.load(NPZ)
-    norm = json.loads(NORM_JSON.read_text())
-    md5 = hashlib.md5(NPZ.read_bytes()).hexdigest()
+    d = np.load(npz_path)
+    norm = json.loads(norm_path.read_text(encoding="utf-8"))
+    md5 = hashlib.md5(npz_path.read_bytes()).hexdigest()
 
     manifest = {}
-    if MANIFEST_JSON.exists():
-        m = json.loads(MANIFEST_JSON.read_text())
+    if man_path.exists():
+        m = json.loads(man_path.read_text(encoding="utf-8"))
         meta = m.get("meta", {})
         manifest = {
             "task": meta.get("task"),
@@ -124,6 +144,7 @@ def load_data():
         len(d["y_train"]), n_train_v, len(d["y_val"]), n_val_v,
         len(d["y_test"]), n_test_v, norm.get("split_seed"))
 
+    ds_name = npz_path.name
     return {
         "X_train": d["X_train"], "y_train": d["y_train"],
         "X_val": d["X_val"], "y_val": d["y_val"],
@@ -132,11 +153,12 @@ def load_data():
         "X_mean": np.asarray(norm["X_mean"], dtype=np.float64),
         "X_std": np.asarray(norm["X_std"], dtype=np.float64),
         "npz_md5": md5, "manifest": manifest, "norm": norm,
-        "dataset_str": "fleet_windows.npz（N=%d 航次, md5=%s, manifest commit=%s）" % (
-            n_train_v + n_val_v + n_test_v, md5[:12], manifest.get("git_commit_sha")),
-        "dataset_version": "npz md5=%s | build_dataset %s @ commit %s | generated %s" % (
-            md5, manifest.get("script_version"), manifest.get("git_commit_sha"),
-            manifest.get("generated_utc")),
+        "dataset_str": "%s（N=%d 航次, md5=%s, manifest commit=%s）" % (
+            ds_name, n_train_v + n_val_v + n_test_v, md5[:12],
+            manifest.get("git_commit_sha")),
+        "dataset_version": "%s npz md5=%s | build_dataset %s @ commit %s | generated %s" % (
+            DATA_DATASET_VERSION, md5, manifest.get("script_version"),
+            manifest.get("git_commit_sha"), manifest.get("generated_utc")),
         "split": split_str,
         "input_desc": "302 维 = [P_demand(t-299..t) x300（1 s 升序）+ v_ship(t) + accel(t)]",
         "history_window": "300 s（1 s 采样）",
@@ -184,6 +206,40 @@ def val_metrics(pred_norm, true_norm, y_mean, y_std):
         "val_mae_kwh": round(mae, 4), "val_rmse_kwh": round(rmse, 4),
         "under_freq": round(under_freq, 4),
         "under_mag_kwh": round(under_mag, 4), "over_mag_kwh": round(over_mag, 4),
+    }
+
+
+def val_metrics_quantiles(pred_norm, true_norm, y_mean, y_std):
+    """分位数模型 val 指标：q50 反归一化计算 RMSE/MAE（与单输出可比），
+    另加 q10/q90 覆盖率与平均 pinball（归一化空间）。pred_norm shape (N,3)。"""
+    q = pred_norm.astype(np.float64)          # (N,3): q10/q50/q90
+    true = true_norm.astype(np.float64)
+    q50 = q[:, 1]
+    pred = q50 * y_std + y_mean
+    t_kwh = true * y_std + y_mean
+    err = pred - t_kwh
+    rmse = float(np.sqrt(np.mean(err ** 2)))
+    mae = float(np.mean(np.abs(err)))
+    under = err < 0.0
+    under_freq = float(np.mean(under))
+    under_mag = float(np.mean(t_kwh[under] - pred[under])) if under.any() else 0.0
+    over_mag = float(np.mean(pred[~under] - t_kwh[~under])) if (~under).any() else 0.0
+    # 覆盖率：q10 <= y <= q90
+    q10 = q[:, 0]
+    q90 = q[:, 2]
+    coverage = float(np.mean((q10 <= true) & (true <= q90)))
+    # pinball（归一化空间，三头平均）
+    e10 = true - q10
+    e50 = true - q50
+    e90 = true - q90
+    pb = (np.mean(np.maximum(0.1 * e10, -0.9 * e10)) +
+          np.mean(np.maximum(0.5 * e50, -0.5 * e50)) +
+          np.mean(np.maximum(0.9 * e90, -0.1 * e90))) / 3.0
+    return {
+        "val_mae_kwh": round(mae, 4), "val_rmse_kwh": round(rmse, 4),
+        "under_freq": round(under_freq, 4),
+        "under_mag_kwh": round(under_mag, 4), "over_mag_kwh": round(over_mag, 4),
+        "q_coverage": round(coverage, 4), "q_pinball_norm": round(float(pb), 6),
     }
 
 
@@ -262,18 +318,30 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
         "runtime_s": "", "metrics": "", "model_size": "", "export": "",
         "status": "RUN", "notes": cfg["notes"], "run_utc": run_utc,
         "hidden": cfg.get("hidden"), "lr": cfg.get("lr"),
+        "arch": cfg["kind"], "quantiles": args.quantiles,
     }
 
     t0 = time.time()
     model, hist = None, None
     try:
-        if cfg["kind"] == "mlp":
-            Xtr, Xva = data["X_train"], data["X_val"]
+        kind = cfg["kind"]
+        Xtr, Xva = data["X_train"], data["X_val"]
+        if kind == "mlp":
             model = build_mlp(cfg["hidden"], cfg["lr"])
-        else:
+        elif kind == "lstm":
             Xtr = data["X_train"][:, :300].reshape(-1, 300, 1)
             Xva = data["X_val"][:, :300].reshape(-1, 300, 1)
             model = build_lstm(cfg["units"], cfg["lr"])
+        elif kind in ("tcn", "cnn_mlp", "nbeats"):
+            # 分路输入：P (N,300,1) + 标量 v/accel (N,2)
+            Xtr = (data["X_train"][:, :300].reshape(-1, 300, 1),
+                   data["X_train"][:, 300:])
+            Xva = (data["X_val"][:, :300].reshape(-1, 300, 1),
+                   data["X_val"][:, 300:])
+            builder = architectures.BUILDERS[kind]
+            model = builder(lr=cfg["lr"], quantiles=args.quantiles)
+        else:
+            raise ValueError("未知 arch: %s" % kind)
 
         es = tf.keras.callbacks.EarlyStopping(
             monitor="val_loss", patience=args.patience,
@@ -288,15 +356,26 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
             raise ValueError("val loss 发散（含 NaN/Inf）")
 
         best_epoch = int(np.argmin(vl)) + 1
-        pred = model.predict(Xva, batch_size=4096, verbose=0).ravel()
-        m = val_metrics(pred, data["y_val"], data["y_mean"], data["y_std"])
+        pred = model.predict(Xva, batch_size=4096, verbose=0)
+        if args.quantiles and kind in ("tcn", "cnn_mlp", "nbeats"):
+            m = val_metrics_quantiles(pred, data["y_val"], data["y_mean"], data["y_std"])
+        else:
+            m = val_metrics(pred.ravel(), data["y_val"], data["y_mean"], data["y_std"])
 
         n_params = int(model.count_params())
         w_bytes = n_params * 4
-        act_bytes = est_activation_bytes(model, Xtr.shape[1:])
-        ms_tf = round(time_tf_forward(model, Xva[:1]), 4)
+        if kind == "mlp":
+            act_bytes = est_activation_bytes(model, Xtr.shape[1:])
+        else:
+            act_bytes = 0   # 新架构：激活内存估算留待 T-307 NPU 环节，此处仅权重
+        ms_tf = ""
         ms_np = ""
-        if cfg["kind"] == "mlp":
+        if kind in ("tcn", "cnn_mlp", "nbeats"):
+            # 双输入：time_tf_forward 需完整输入元组（各取 1 样本）
+            ms_tf = round(time_tf_forward(
+                model, ([Xva[0][:1]], [Xva[1][:1]])), 4)
+        elif kind == "mlp":
+            ms_tf = round(time_tf_forward(model, Xva[:1]), 4)
             dense_layers = [l for l in model.layers if isinstance(l, tf.keras.layers.Dense)]
             weights = [l.get_weights() for l in dense_layers]
             ms_np = round(time_np_forward_mlp(Xva[:1], weights), 5)
@@ -317,9 +396,12 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
             "est_ram_kb": round((w_bytes + act_bytes) / 1024.0, 1),
             "infer_ms_tf": ms_tf, "infer_ms_numpy_inline": ms_np,
             "metrics": ("val MAE=%.3f kWh, RMSE=%.3f kWh, under_freq=%.3f, "
-                        "under_mag=%.3f kWh, over_mag=%.3f kWh" % (
+                        "under_mag=%.3f kWh, over_mag=%.3f kWh%s" % (
                             m["val_mae_kwh"], m["val_rmse_kwh"], m["under_freq"],
-                            m["under_mag_kwh"], m["over_mag_kwh"])),
+                            m["under_mag_kwh"], m["over_mag_kwh"],
+                            (", q10-q90 coverage=%.3f, pinball=%.4f" % (
+                                m["q_coverage"], m["q_pinball_norm"]))
+                            if "q_coverage" in m else "")),
             "model_size": ("%d params | %.1f KB fp32 | est RAM ~%.1f KB | "
                            "TF %s ms/sample%s" % (
                                n_params, w_bytes / 1024.0,
@@ -344,15 +426,16 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
 
 def write_csv(records):
     OUT_DIR.mkdir(parents=True, exist_ok=True)
+    fieldnames = CSV_FIELDNAMES_ACTIVE if CSV_FIELDNAMES_ACTIVE is not None else CSV_FIELDNAMES
     is_new = (not LOG_CSV.exists()) or LOG_CSV.stat().st_size == 0
     with open(LOG_CSV, "w" if is_new else "a", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=CSV_FIELDNAMES, extrasaction="ignore")
+        w = csv.DictWriter(f, fieldnames=fieldnames, extrasaction="ignore")
         if is_new:
             w.writeheader()
         for r in records:
             w.writerow(r)
-    print("training_log.csv -> %s（append=%s，历史 N=80 记录保留不覆盖）"
-          % (LOG_CSV, not is_new), flush=True)
+    print("%s -> %s（append=%s，历史记录保留不覆盖）"
+          % (LOG_CSV.name, LOG_CSV, not is_new), flush=True)
 
 
 def read_records_from_csv():
@@ -391,12 +474,23 @@ def make_plots(records, histories, data):
         best = min(ok, key=lambda r: float(r["val_rmse_kwh"]))
         run_id = best["run_id"]
         keras_path = MODEL_DIR / run_id / (run_id + ".keras")
-        model = tf.keras.models.load_model(str(keras_path))
-        if run_id.startswith("lstm"):
+        try:
+            model = tf.keras.models.load_model(
+                str(keras_path), custom_objects=architectures.PINBALL_OBJECTS)
+        except (ValueError, TypeError):
+            model = tf.keras.models.load_model(str(keras_path))
+        kind = best.get("arch", "mlp")
+        if kind in ("tcn", "cnn_mlp", "nbeats"):
+            Xva = (data["X_val"][:, :300].reshape(-1, 300, 1),
+                   data["X_val"][:, 300:])
+        elif kind == "lstm":
             Xva = data["X_val"][:, :300].reshape(-1, 300, 1)
         else:
             Xva = data["X_val"]
-        pred = model.predict(Xva, batch_size=4096, verbose=0).ravel()
+        pred = model.predict(Xva, batch_size=4096, verbose=0)
+        if pred.ndim > 1:
+            pred = pred[:, 1]     # 分位数头：取 q50
+        pred = np.asarray(pred).ravel()
         pred_kwh = pred * data["y_std"] + data["y_mean"]
         true_kwh = data["y_val"].astype(np.float64) * data["y_std"] + data["y_mean"]
         fig, ax = plt.subplots(figsize=(6, 6))
@@ -509,9 +603,9 @@ def export_weights_json(best, model, data, run_utc, verify_n=100):
         },
     }
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    out = MODEL_DIR / "selected_model_weights.json"
+    out = MODEL_DIR / WEIGHTS_NAME
     out.write_text(json.dumps(obj, indent=2), encoding="utf-8")
-    print("selected_model_weights.json -> %s (自检 max|Δ|=%.2e)" % (out, max_delta), flush=True)
+    print("%s -> %s (自检 max|Δ|=%.2e)" % (WEIGHTS_NAME, out, max_delta), flush=True)
     return out, max_delta
 
 
@@ -557,7 +651,7 @@ def export_selection_json(records, best, data, run_utc, decision_status,
             "best_epoch": best["best_epoch"],
             "export": {
                 "keras": best["export"],
-                "weights_json": "results/ecms_phase2/models/selected_model_weights.json"
+                "weights_json": str(MODEL_DIR / WEIGHTS_NAME)
                                  if best["model"].startswith("MLP") else None,
             },
         }
@@ -591,18 +685,18 @@ def export_selection_json(records, best, data, run_utc, decision_status,
         "failed_experiments": failed,
     }
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
-    out = MODEL_DIR / "selection.json"
+    out = MODEL_DIR / SELECTION_NAME
     out.write_text(json.dumps(obj, indent=2), encoding="utf-8")
-    print("selection.json -> %s (decision_status=%s)" % (out, decision_status), flush=True)
+    print("%s -> %s (decision_status=%s)" % (SELECTION_NAME, out, decision_status), flush=True)
     return out
 
 
 # ---------------------------------------------------------------- 主流程
 
-def run_full(args, data):
-    run_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
-
-    groups = [
+def build_groups(args):
+    """构造实验组。默认（无新参数）= v1 六组逐位一致；
+    显式 --arch/--dataset/--quantiles 时按 --arch 列表构造（mlp/lstm 同 v1 配置）。"""
+    MLP_GROUPS = [
         ("mlp_h64_32_lr1e-3",  {"kind": "mlp", "model": "MLP 302-64-32-1",
                                 "hidden": (64, 32), "lr": 1e-3,
                                 "hp": "hidden=(64,32), lr=1e-3, batch=%d, epochs_cap=%d, patience=%d" % (args.batch, args.epochs, args.patience),
@@ -619,6 +713,8 @@ def run_full(args, data):
                                 "hidden": (128, 64), "lr": 3e-4,
                                 "hp": "hidden=(128,64), lr=3e-4, batch=%d, epochs_cap=%d, patience=%d" % (args.batch, args.epochs, args.patience),
                                 "notes": ""}),
+    ]
+    LSTM_GROUPS = [
         ("lstm_u32_lr1e-3",    {"kind": "lstm", "model": "LSTM 32 [300,1]->1",
                                 "units": 32, "lr": 1e-3,
                                 "hp": "units=32, lr=1e-3, batch=%d, epochs_cap=%d, patience=%d" % (args.batch, args.epochs, args.patience),
@@ -628,22 +724,70 @@ def run_full(args, data):
                                 "hp": "units=64, lr=1e-3, batch=%d, epochs_cap=%d, patience=%d" % (args.batch, args.epochs, args.patience),
                                 "notes": "LSTM 输入仅 [300,1] P_demand 窗口（design §4 对照口径），v_ship/accel 未使用；其余数据条件与 MLP 一致。"}),
     ]
+    TCN_GROUPS = [
+        ("tcn_f64_lr1e-3",    {"kind": "tcn", "model": "TCN f64 d1-2-4-8",
+                               "filters": 64, "lr": 1e-3,
+                               "hp": "filters=64, kernel=3, dilations=(1,2,4,8), lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-304 基线配置；规模扫描见 T-305。"}),
+    ]
+    CNN_GROUPS = [
+        ("cnn_f32_lr1e-3",    {"kind": "cnn_mlp", "model": "CNN-MLP 32-64-128",
+                               "filters1": 32, "kernel1": 7, "filters2": 64, "kernel2": 5, "lr": 1e-3,
+                               "hp": "conv(32,k7)-pool-conv(64,k5)-pool-dense128, lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-304 基线配置。"}),
+    ]
+    NBEATS_GROUPS = [
+        ("nbeats_f256_lr1e-3", {"kind": "nbeats", "model": "N-BEATS generic 4x2x256",
+                                "n_stacks": 4, "blocks_per_stack": 2, "fcs": 256, "lr": 1e-3,
+                                "hp": "4 stack x2 block FC256, lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
+                                "notes": "T-304 基线配置。"}),
+    ]
+    FAMILIES = {"mlp": MLP_GROUPS, "lstm": LSTM_GROUPS,
+                "tcn": TCN_GROUPS, "cnn_mlp": CNN_GROUPS, "nbeats": NBEATS_GROUPS}
 
-    # T-204B: 模型族筛选（--only）。LSTM 对照组结论已在 N=80 建立，不复训。
-    scope_note = None
-    if args.only == "mlp":
-        groups = [g for g in groups if g[1]["kind"] == "mlp"]
-        scope_note = ("T-204B: 本批仅复训 4 组 MLP（N=200 数据集，140/30/30 split）；"
-                      "LSTM 对照组结论已在 N=80 建立，本次不复训（见 dataset_manifest "
-                      "split.ratio_history）。")
-    elif args.only == "lstm":
-        groups = [g for g in groups if g[1]["kind"] == "lstm"]
-        scope_note = "T-204B: 本批仅训练 LSTM 组（N=200 数据集）；MLP 组不训练。"
-    if scope_note is not None:
-        print("\nSCOPE: %s\n" % scope_note, flush=True)
-        groups = [(k, dict(cfg, notes=((scope_note + "；" + cfg["notes"])
-                                       if cfg["notes"] else scope_note)))
-                  for k, cfg in groups]
+    # 默认（无新参数）：v1 六组逐位一致 + --only 过滤（既有语义）
+    if not args.scoped:
+        groups = MLP_GROUPS + LSTM_GROUPS
+        scope_note = None
+        if args.only == "mlp":
+            groups = MLP_GROUPS
+            scope_note = ("T-204B: 本批仅复训 4 组 MLP（N=200 数据集，140/30/30 split）；"
+                          "LSTM 对照组结论已在 N=80 建立，本次不复训（见 dataset_manifest "
+                          "split.ratio_history）。")
+        elif args.only == "lstm":
+            groups = LSTM_GROUPS
+            scope_note = "T-204B: 本批仅训练 LSTM 组（N=200 数据集）；MLP 组不训练。"
+        if scope_note is not None:
+            print("\nSCOPE: %s\n" % scope_note, flush=True)
+            groups = [(k, dict(cfg, notes=((scope_note + "；" + cfg["notes"])
+                                           if cfg["notes"] else scope_note)))
+                      for k, cfg in groups]
+        return groups, scope_note
+
+    # 作用域模式：按 --arch 列表（逗号分隔）
+    archs = [a.strip() for a in args.arch.split(",") if a.strip()]
+    groups = []
+    for a in archs:
+        if a not in FAMILIES:
+            raise SystemExit("--arch 无效: %s" % a)
+        groups.extend(FAMILIES[a])
+    if not groups:
+        raise SystemExit("--arch 为空")
+    scope_note = "T-304 scoped: dataset=%s arch=%s quantiles=%s" % (
+        args.dataset, args.arch, args.quantiles)
+    if args.dataset == "v1":
+        scope_note += "；v1 回归隔离目录 results/ecms_phase2/models_repro_t304/"
+    print("\nSCOPE: %s\n" % scope_note, flush=True)
+    groups = [(k, dict(cfg, notes=((scope_note + "；" + cfg["notes"])
+                                   if cfg["notes"] else scope_note)))
+              for k, cfg in groups]
+    return groups, scope_note
+
+
+def run_full(args, data):
+    run_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+
+    groups, scope_note = build_groups(args)
 
     records, models, histories = [], {}, {}
     for i, (key, cfg) in enumerate(groups, 1):
@@ -692,15 +836,27 @@ def finalize(args, data, records=None, selected_run_id=None, scope_note=None):
     keras_path = MODEL_DIR / selected_run_id / (selected_run_id + ".keras")
     if not keras_path.exists():
         raise SystemExit("缺失 %s —— 需先执行完整训练" % keras_path)
-    model = tf.keras.models.load_model(str(keras_path))
+    try:
+        model = tf.keras.models.load_model(
+            str(keras_path),
+            custom_objects=architectures.PINBALL_OBJECTS)
+    except (ValueError, TypeError):
+        model = tf.keras.models.load_model(str(keras_path))
 
     # 用保存的模型重算 val 指标（与 training_log.csv 交叉验证）
-    if selected_run_id.startswith("lstm"):
+    kind = best.get("arch", "mlp")
+    if kind in ("tcn", "cnn_mlp", "nbeats"):
+        Xva = (data["X_val"][:, :300].reshape(-1, 300, 1),
+               data["X_val"][:, 300:])
+    elif kind == "lstm":
         Xva = data["X_val"][:, :300].reshape(-1, 300, 1)
     else:
         Xva = data["X_val"]
-    pred = model.predict(Xva, batch_size=4096, verbose=0).ravel()
-    m = val_metrics(pred, data["y_val"], data["y_mean"], data["y_std"])
+    pred = model.predict(Xva, batch_size=4096, verbose=0)
+    if best.get("quantiles") and kind in ("tcn", "cnn_mlp", "nbeats"):
+        m = val_metrics_quantiles(pred, data["y_val"], data["y_mean"], data["y_std"])
+    else:
+        m = val_metrics(pred.ravel(), data["y_val"], data["y_mean"], data["y_std"])
     assert abs(float(m["val_rmse_kwh"]) - float(best["val_rmse_kwh"])) < 1e-3, (
         "重算 val RMSE 与 CSV 不一致: %s vs %s" % (m["val_rmse_kwh"], best["val_rmse_kwh"]))
     assert abs(float(m["val_mae_kwh"]) - float(best["val_mae_kwh"])) < 1e-3
@@ -722,8 +878,49 @@ def finalize(args, data, records=None, selected_run_id=None, scope_note=None):
     return 0
 
 
+def resolve_scope(args):
+    """T-304 输出隔离。默认（无新参数）= v1 路径逐位不变；
+    v1 回归（显式 --arch/--dataset v1）= repro 目录；v2 = ecms_phase25 目录。
+    修改模块级全局路径（NPZ/NORM/MANIFEST/OUT_DIR/MODEL_DIR/PLOT_DIR/LOG_CSV/文件名）。"""
+    global NPZ, NORM_JSON, MANIFEST_JSON, OUT_DIR, MODEL_DIR, PLOT_DIR, LOG_CSV
+    global SELECTION_NAME, WEIGHTS_NAME, CSV_FIELDNAMES_ACTIVE
+    global DATA_NPZ, DATA_NORM_JSON, DATA_MANIFEST_JSON, DATA_DATASET_VERSION
+
+    explicit = (args.arch_explicit or args.dataset_explicit or args.quantiles)
+    args.scoped = bool(explicit)
+    if not explicit:
+        # v1 默认：路径全局已是 v1，仅确保文件名默认
+        SELECTION_NAME, WEIGHTS_NAME = "selection.json", "selected_model_weights.json"
+        CSV_FIELDNAMES_ACTIVE = None
+        DATA_DATASET_VERSION = "v1"
+        return
+
+    CSV_FIELDNAMES_ACTIVE = CSV_FIELDNAMES + ["arch", "quantiles"]
+    if args.dataset == "v1":
+        # v1 回归隔离：不触碰 Phase 2 任何文件
+        OUT_DIR = BASE / "results" / "ecms_phase2" / "models_repro_t304"
+        MODEL_DIR = OUT_DIR
+        PLOT_DIR = BASE / "results" / "ecms_phase2" / "plots_repro_t304"
+        LOG_CSV = BASE / "results" / "ecms_phase2" / "training_log_v2.csv"
+        SELECTION_NAME, WEIGHTS_NAME = "selection.json", "selected_model_weights.json"
+        DATA_DATASET_VERSION = "v1"
+        print("\n[T-304 scoped v1 回归] 输出隔离 -> %s（Phase 2 文件零触碰）\n" % OUT_DIR, flush=True)
+    else:
+        OUT_DIR = BASE / "results" / "ecms_phase25"
+        MODEL_DIR = OUT_DIR / "models"
+        PLOT_DIR = OUT_DIR / "plots"
+        LOG_CSV = OUT_DIR / "training_log_v2.csv"
+        SELECTION_NAME, WEIGHTS_NAME = "selection_v2.json", "selected_model_weights_v2.json"
+        NPZ = BASE / "datasets" / "fleet_windows_v2.npz"
+        NORM_JSON = BASE / "datasets" / "fleet_norm_v2.json"
+        MANIFEST_JSON = BASE / "results" / "ecms_phase25" / "dataset_manifest_v2.json"
+        DATA_DATASET_VERSION = "v2"
+        print("\n[T-304 scoped v2] 输出 -> %s（Phase 2 文件零触碰）\n" % OUT_DIR, flush=True)
+    DATA_NPZ, DATA_NORM_JSON, DATA_MANIFEST_JSON = NPZ, NORM_JSON, MANIFEST_JSON
+
+
 def main():
-    ap = argparse.ArgumentParser(description="T-203 MLP/LSTM 训练 + val 选模")
+    ap = argparse.ArgumentParser(description="T-203 MLP/LSTM 训练 + val 选模（T-304 扩展模型族）")
     ap.add_argument("--epochs", type=int, default=100)
     ap.add_argument("--patience", type=int, default=10)
     ap.add_argument("--batch", type=int, default=256)
@@ -732,21 +929,38 @@ def main():
     ap.add_argument("--finalize", action="store_true",
                     help="定稿模式：从已保存 .keras 重新生成最终产物（不重训）")
     ap.add_argument("--select-run-id", type=str, default=None,
-                    choices=RUN_KEYS, help="定稿时指定的入选 run_id")
+                    help="定稿时指定的入选 run_id")
     ap.add_argument("--only", type=str, default="all",
                     choices=("all", "mlp", "lstm"),
                     help="仅训练指定模型族（T-204B: N=200 复训用 --only mlp；"
                          "LSTM 对照不复训）")
     ap.add_argument("--decision-note", type=str, default=None,
                     help="主 Agent 裁决记录（写入 selection.json main_agent_ruling）")
+    # ---- T-304 新参数（默认 None => 检测“是否显式给定”） ----
+    ap.add_argument("--arch", type=str, default=None,
+                    help="模型族（逗号分隔，可多选）：mlp,tcn,cnn_mlp,nbeats,lstm；"
+                         "默认(不给)=v1 矩阵 mlp,lstm")
+    ap.add_argument("--dataset", type=str, default=None, choices=("v1", "v2"),
+                    help="数据集版本（默认 v1）")
+    ap.add_argument("--quantiles", action="store_true",
+                    help="分位数头（q10/q50/q90, pinball loss）；默认单输出 MSE")
     args = ap.parse_args()
     args.seed = SEED  # 任务规定种子固定 42
+    args.arch_explicit = args.arch is not None
+    args.dataset_explicit = args.dataset is not None
+    if args.arch is None:
+        args.arch = "mlp,lstm"
+    if args.dataset is None:
+        args.dataset = "v1"
+
+    resolve_scope(args)
 
     print("=== T-203 train_predictor v%s ===" % SCRIPT_VERSION, flush=True)
-    print("git sha:", git_sha(), "| epochs_cap=%d patience=%d batch=%d seed=%d" % (
-        args.epochs, args.patience, args.batch, args.seed), flush=True)
+    print("git sha:", git_sha(), "| epochs_cap=%d patience=%d batch=%d seed=%d | scoped=%s" % (
+        args.epochs, args.patience, args.batch, args.seed, args.scoped), flush=True)
+    print("arch=%s dataset=%s quantiles=%s" % (args.arch, args.dataset, args.quantiles), flush=True)
 
-    data = load_data()
+    data = load_data(args)
     print("dataset:", data["dataset_str"], flush=True)
     print("split:", data["split"], flush=True)
 

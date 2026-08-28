@@ -1,0 +1,120 @@
+{
+  "spec": "nn-predictive-ecms-phase2",
+  "task": "T-203",
+  "script": "python/train_predictor.py",
+  "script_version": "1.3.0",
+  "created_utc": "2026-08-28T20:43:09Z",
+  "git_commit_sha": "8a03cba501cef968a8232ad95c4c868bdc07032a",
+  "dataset": {
+    "path": "datasets/fleet_windows.npz",
+    "md5": "ec7d8a45a29ae50567f8e26a8baced23",
+    "split": "train 54461 \u7a97/140 \u822a\u6b21, val 11716 \u7a97/30 \u822a\u6b21, test 11409 \u7a97/30 \u822a\u6b21\uff08\u822a\u6b21\u7ea7, seed=20260825\uff09",
+    "manifest_commit": "5553b779d00a387ba8ea7c3e94f94aaec397282e"
+  },
+  "selection_rule": "\u6210\u529f\u5b9e\u9a8c\u4e2d val RMSE \u6700\u5c0f\u8005\u5165\u9009\uff1btest \u96c6\u4e0d\u53c2\u4e0e\u4efb\u4f55\u51b3\u7b56\uff08T-205 \u4e00\u6b21\u6027\u4f7f\u7528\uff09",
+  "test_usage": "test \u96c6\u672a\u7528\u4e8e\u6307\u6807/\u9009\u6a21/\u8c03\u53c2\uff1b\u4ec5\u8bb0\u5f55\u7a97\u53e3\u6570\uff0811409\uff09\u3002",
+  "fairness_notes": "MLP/LSTM \u540c Dataset/\u540c Split/\u540c\u5f52\u4e00\u5316\uff08fit-on-train\uff09/\u540c\u6307\u6807\uff1bLSTM \u8f93\u5165\u4ec5 [300,1] P_demand \u7a97\u53e3\uff08design \u00a74 \u6279\u51c6\u53e3\u5f84\uff09\uff0c\u672a\u4f7f\u7528 v_ship/accel\uff0c\u5dee\u5f02\u5df2\u5728 training_log.csv Notes \u58f0\u660e\u3002",
+  "decision_status": "finalized",
+  "scope_note": "T-304 scoped: dataset=v1 arch=mlp quantiles=False\uff1bv1 \u56de\u5f52\u9694\u79bb\u76ee\u5f55 results/ecms_phase2/models_repro_t304/",
+  "main_agent_ruling": "n/a\uff08\u673a\u68b0\u89c4\u5219\u9009\u6a21\uff0c\u672a\u89e6\u53d1\u88c1\u51b3\uff09",
+  "selected": {
+    "run_id": "mlp_h128_64_lr3e-4",
+    "model": "MLP 302-128-64-1",
+    "config": "hidden=(128,64), lr=3e-4, batch=256, epochs_cap=100, patience=10",
+    "seed": 42,
+    "val_metrics_kWh": {
+      "mae": 5.5931,
+      "rmse": 9.2675,
+      "under_freq": 0.3745,
+      "under_mag": 7.8475,
+      "over_mag": 4.2431
+    },
+    "model_size": {
+      "n_params": 47105,
+      "size_kb_fp32": 184.0,
+      "est_ram_kb": 185.9,
+      "infer_ms_tf": 2.1234,
+      "infer_ms_numpy_inline": 0.01285
+    },
+    "best_epoch": 67,
+    "export": {
+      "keras": "results\\ecms_phase2\\models_repro_t304\\mlp_h128_64_lr3e-4\\mlp_h128_64_lr3e-4.keras",
+      "weights_json": "E:\\User\\Tommy\\Desktop\\hybrid-ship-ems\\model\\simulink_modelD_(EMS_NN_AECMS)\\results\\ecms_phase2\\models_repro_t304\\selected_model_weights.json"
+    }
+  },
+  "predictability_reference": {
+    "val_y_std_kWh": 17.8686,
+    "val_naive_mean_mae_kWh": 15.4281
+  },
+  "all_experiments_sorted_by_val_rmse": [
+    {
+      "run_id": "mlp_h128_64_lr3e-4",
+      "model": "MLP 302-128-64-1",
+      "config": "hidden=(128,64), lr=3e-4, batch=256, epochs_cap=100, patience=10",
+      "best_epoch": 67,
+      "val_mae_kwh": 5.5931,
+      "val_rmse_kwh": 9.2675,
+      "under_freq": 0.3745,
+      "under_mag_kwh": 7.8475,
+      "over_mag_kwh": 4.2431,
+      "n_params": 47105,
+      "size_kb_fp32": 184.0,
+      "est_ram_kb": 185.9,
+      "infer_ms_tf": 2.1234,
+      "infer_ms_numpy_inline": 0.01285,
+      "runtime_s": 40.2
+    },
+    {
+      "run_id": "mlp_h64_32_lr1e-3",
+      "model": "MLP 302-64-32-1",
+      "config": "hidden=(64,32), lr=1e-3, batch=256, epochs_cap=100, patience=10",
+      "best_epoch": 52,
+      "val_mae_kwh": 5.8261,
+      "val_rmse_kwh": 9.2834,
+      "under_freq": 0.327,
+      "under_mag_kwh": 8.8819,
+      "over_mag_kwh": 4.3414,
+      "n_params": 21505,
+      "size_kb_fp32": 84.0,
+      "est_ram_kb": 85.6,
+      "infer_ms_tf": 2.5221,
+      "infer_ms_numpy_inline": 0.0135,
+      "runtime_s": 26.9
+    },
+    {
+      "run_id": "mlp_h128_64_lr1e-3",
+      "model": "MLP 302-128-64-1",
+      "config": "hidden=(128,64), lr=1e-3, batch=256, epochs_cap=100, patience=10",
+      "best_epoch": 54,
+      "val_mae_kwh": 5.6506,
+      "val_rmse_kwh": 9.2844,
+      "under_freq": 0.3458,
+      "under_mag_kwh": 8.0467,
+      "over_mag_kwh": 4.3842,
+      "n_params": 47105,
+      "size_kb_fp32": 184.0,
+      "est_ram_kb": 185.9,
+      "infer_ms_tf": 2.2436,
+      "infer_ms_numpy_inline": 0.01681,
+      "runtime_s": 33.6
+    },
+    {
+      "run_id": "mlp_h64_32_lr3e-4",
+      "model": "MLP 302-64-32-1",
+      "config": "hidden=(64,32), lr=3e-4, batch=256, epochs_cap=100, patience=10",
+      "best_epoch": 54,
+      "val_mae_kwh": 5.6583,
+      "val_rmse_kwh": 9.3422,
+      "under_freq": 0.383,
+      "under_mag_kwh": 7.4446,
+      "over_mag_kwh": 4.5495,
+      "n_params": 21505,
+      "size_kb_fp32": 84.0,
+      "est_ram_kb": 85.6,
+      "infer_ms_tf": 2.2897,
+      "infer_ms_numpy_inline": 0.01615,
+      "runtime_s": 27.4
+    }
+  ],
+  "failed_experiments": []
+}
