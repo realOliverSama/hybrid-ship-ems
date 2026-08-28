@@ -60,7 +60,7 @@ Design: `./design.md`
   - Acceptance: manifest_v2 草案（含逐文件 md5）；审计报告含 v1 vs v2 覆盖对比。
   - Escalate If: 改动会改变 v1 生成结果；仿真出现降额/Vdc 越限无法通过参数范围解决。
 
-- [ ] 3. 数据集 v2 窗口化 + 泄漏断言 + manifest 定稿
+- [x] 3. 数据集 v2 窗口化 + 泄漏断言 + manifest 定稿
   - ID: T-303
   - Requirement(s): FR-302, FR-304, FR-316
   - Goal: `python/build_dataset_v2.py`（复制改造自 v1）：窗口化（HIST=300/HORIZON=300/
