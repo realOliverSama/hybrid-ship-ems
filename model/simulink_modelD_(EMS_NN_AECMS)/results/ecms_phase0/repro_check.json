@@ -1,0 +1,14 @@
+{
+  "pass": true,
+  "criterion": "32/33 重跑 runs.csv 与入库 runs.csv 除 wall_time_s 外全部列逐位一致（FR-016）",
+  "compared_rows": 240,
+  "compared_columns": 22,
+  "excluded_columns": [
+    "wall_time_s"
+  ],
+  "mismatched_rows": 0,
+  "mismatched_fields": 0,
+  "old_csv": "results/ecms_phase0/runs.csv",
+  "rerun_csv": "results/ecms_phase0/repro_tmp/runs.csv",
+  "generated": "2026-08-24 21:56:24"
+}

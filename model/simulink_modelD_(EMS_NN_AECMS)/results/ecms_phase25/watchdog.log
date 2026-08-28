@@ -1,0 +1,9 @@
+[watchdog 00:16:21] WATCHDOG V2 START
+[watchdog 00:16:21] attempt 1: profiles missing 261 (e.g. [140, 141, 142]), launching chunk runner
+[watchdog-v3 01:37:31] WATCHDOG V3 START (hang timeout 1500s)
+[watchdog-v3 01:37:31] attempt 1: missing 161 (e.g. [240, 241, 242]), launching chunk runner
+[watchdog-v3 03:30:31] matlab exited rc=0
+[watchdog-v3 03:30:31] after run: missing=0
+[watchdog-v3 03:30:31] consolidation pass: FLEET_START=1 FLEET_N=400 (all skip)
+[watchdog-v3 03:31:03] consolidation done, summary total=400
+[watchdog-v3 03:31:03] WATCHDOG V3 COMPLETE

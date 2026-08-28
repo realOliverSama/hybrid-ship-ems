@@ -1,0 +1,95 @@
+=== T-203 train_predictor v1.2.0 ===
+git sha: 5553b779d00a387ba8ea7c3e94f94aaec397282e | epochs_cap=100 patience=10 batch=2048 seed=42
+dataset: fleet_windows.npz（N=200 航次, md5=ec7d8a45a29a, manifest commit=5553b779d00a387ba8ea7c3e94f94aaec397282e）
+split: train 54461 窗/140 航次, val 11716 窗/30 航次, test 11409 窗/30 航次（航次级, seed=20260825）
+
+SCOPE: T-204B: 本批仅复训 4 组 MLP（N=200 数据集，140/30/30 split）；LSTM 对照组结论已在 N=80 建立，本次不复训（见 dataset_manifest split.ratio_history）。
+
+[1/4] mlp_h64_32_lr1e-3      status=OK   rmse=9.4564 mae=5.6649 runtime=5.2s
+[2/4] mlp_h64_32_lr3e-4      status=OK   rmse=9.3713 mae=5.9222 runtime=10.5s
+WARNING:tensorflow:5 out of the last 7 calls to <function TensorFlowTrainer.make_predict_function.<locals>.one_step_on_data_distributed at 0x138272160> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+WARNING:tensorflow:6 out of the last 9 calls to <function TensorFlowTrainer.make_predict_function.<locals>.one_step_on_data_distributed at 0x138272160> triggered tf.function retracing. Tracing is expensive and the excessive number of tracings could be due to (1) creating @tf.function repeatedly in a loop, (2) passing tensors with different shapes, (3) passing Python objects instead of tensors. For (1), please define your @tf.function outside of the loop. For (2), @tf.function has reduce_retracing=True option that can avoid unnecessary retracing. For (3), please refer to https://www.tensorflow.org/guide/function#controlling_retracing and https://www.tensorflow.org/api_docs/python/tf/function for  more details.
+[3/4] mlp_h128_64_lr1e-3     status=OK   rmse=9.394 mae=5.771 runtime=6.1s
+[4/4] mlp_h128_64_lr3e-4     status=OK   rmse=9.3034 mae=5.7358 runtime=12.9s
+training_log.csv -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase2/training_log.csv（append=True，历史 N=80 记录保留不覆盖）
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 24402 (\N{CJK UNIFIED IDEOGRAPH-5F52}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 31354 (\N{CJK UNIFIED IDEOGRAPH-7A7A}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 38388 (\N{CJK UNIFIED IDEOGRAPH-95F4}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 32452 (\N{CJK UNIFIED IDEOGRAPH-7EC4}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 23454 (\N{CJK UNIFIED IDEOGRAPH-5B9E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 39564 (\N{CJK UNIFIED IDEOGRAPH-9A8C}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 35757 (\N{CJK UNIFIED IDEOGRAPH-8BAD}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 32451 (\N{CJK UNIFIED IDEOGRAPH-7EC3}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 26354 (\N{CJK UNIFIED IDEOGRAPH-66F2}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:385: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 24402 (\N{CJK UNIFIED IDEOGRAPH-5F52}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 19968 (\N{CJK UNIFIED IDEOGRAPH-4E00}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 21270 (\N{CJK UNIFIED IDEOGRAPH-5316}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 31354 (\N{CJK UNIFIED IDEOGRAPH-7A7A}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 38388 (\N{CJK UNIFIED IDEOGRAPH-95F4}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 32452 (\N{CJK UNIFIED IDEOGRAPH-7EC4}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 23454 (\N{CJK UNIFIED IDEOGRAPH-5B9E}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 39564 (\N{CJK UNIFIED IDEOGRAPH-9A8C}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 35757 (\N{CJK UNIFIED IDEOGRAPH-8BAD}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 32451 (\N{CJK UNIFIED IDEOGRAPH-7EC3}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 26354 (\N{CJK UNIFIED IDEOGRAPH-66F2}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:386: UserWarning: Glyph 32447 (\N{CJK UNIFIED IDEOGRAPH-7EBF}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "training_curves.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:411: UserWarning: Glyph 30495 (\N{CJK UNIFIED IDEOGRAPH-771F}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:411: UserWarning: Glyph 23454 (\N{CJK UNIFIED IDEOGRAPH-5B9E}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:411: UserWarning: Glyph 39044 (\N{CJK UNIFIED IDEOGRAPH-9884}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:411: UserWarning: Glyph 27979 (\N{CJK UNIFIED IDEOGRAPH-6D4B}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:411: UserWarning: Glyph 25955 (\N{CJK UNIFIED IDEOGRAPH-6563}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:411: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  fig.tight_layout()
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:412: UserWarning: Glyph 39044 (\N{CJK UNIFIED IDEOGRAPH-9884}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "val_pred_scatter_selected.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:412: UserWarning: Glyph 27979 (\N{CJK UNIFIED IDEOGRAPH-6D4B}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "val_pred_scatter_selected.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:412: UserWarning: Glyph 25955 (\N{CJK UNIFIED IDEOGRAPH-6563}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "val_pred_scatter_selected.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:412: UserWarning: Glyph 28857 (\N{CJK UNIFIED IDEOGRAPH-70B9}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "val_pred_scatter_selected.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:412: UserWarning: Glyph 30495 (\N{CJK UNIFIED IDEOGRAPH-771F}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "val_pred_scatter_selected.png", dpi=110)
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/python/train_predictor.py:412: UserWarning: Glyph 23454 (\N{CJK UNIFIED IDEOGRAPH-5B9E}) missing from font(s) DejaVu Sans.
+  fig.savefig(PLOT_DIR / "val_pred_scatter_selected.png", dpi=110)
+plots -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase2/plots
+
+=== 机械选模（val RMSE 最小）===
+入选: mlp_h128_64_lr3e-4 (val RMSE=9.303 kWh, MAE=5.736 kWh, under_freq=0.426)
+selected_model_weights.json -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase2/models/selected_model_weights.json (自检 max|Δ|=1.43e-06)
+selection.json -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase2/models/selection.json (decision_status=finalized)
+
+=== 定稿 ===
+入选: mlp_h128_64_lr3e-4 | val RMSE=9.303 kWh | MAE=5.736 kWh | under_freq=0.426 | ruling=n/a（机械规则选模，未触发裁决）

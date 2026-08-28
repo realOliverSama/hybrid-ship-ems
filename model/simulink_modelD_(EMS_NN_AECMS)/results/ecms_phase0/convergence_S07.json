@@ -1,0 +1,35 @@
+{
+  "pass": true,
+  "criterion": "全程燃油（前向轨迹）差 < 0.5%（FR-011 / design §4.5-4）",
+  "scenario": "S07_bridge_maneuver",
+  "tier": 2,
+  "mode": "continuous",
+  "P_min_stable_kW": 400,
+  "fuel_base_kg": 82.04619275,
+  "fuel_refined_kg": 81.67184141,
+  "fuel_diff_pct": 0.4562689889,
+  "tol_pct": 0.5,
+  "grid_base": {
+    "Nsoc": 171,
+    "Np": 31,
+    "dSOC": 0.005,
+    "dP_kW": 20
+  },
+  "grid_refined": {
+    "Nsoc": 341,
+    "Np": 61,
+    "dSOC": 0.0025,
+    "dP_kW": 10
+  },
+  "checks_pass_base": true,
+  "checks_pass_refined": true,
+  "saving_pct_base": 0.9649263479,
+  "saving_pct_refined": 1.416792677,
+  "baseline_feasible": false,
+  "wall_time_s": {
+    "base": 0.628839,
+    "refined": 0.9518723333
+  },
+  "config_hash": "8a99a5e096b01cea95af517db8c40d20",
+  "generated": "2026-08-24 21:29:08"
+}

@@ -1,0 +1,221 @@
+{
+  "capture_rate_c1": 0.7260422633,
+  "capture_rate_c2": 0.552859253,
+  "capture_rate_c3": 0.7248364634,
+  "ecms_capture_rate": 0.7260422633,
+  "oracle_increment_pp": 1.634661119,
+  "recommendation": "PROCEED_TO_PHASE2_NN",
+  "per_scenario": {
+    "S20_composite_voyage": {
+      "C0": {
+        "fuel_raw_kg": 337.93,
+        "fuel_corr_kg": 349.002,
+        "SOC_end": 0.578353,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 26.8593
+      },
+      "C1": {
+        "fuel_raw_kg": 242.783,
+        "fuel_corr_kg": 324.917,
+        "SOC_end": 0.439415,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 210.335
+      },
+      "C2": {
+        "fuel_raw_kg": 330.742,
+        "fuel_corr_kg": 330.662,
+        "SOC_end": 0.600157,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 198.828
+      },
+      "C3": {
+        "fuel_raw_kg": 326.937,
+        "fuel_corr_kg": 324.957,
+        "SOC_end": 0.603871,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 194.433
+      },
+      "fuel_dp_kg": 315.829,
+      "saving_pct": {
+        "C1": 6.901106584,
+        "C2": 5.254984212,
+        "C3": 6.889645332
+      },
+      "capture_rate": {
+        "C1": 0.7260422633,
+        "C2": 0.552859253,
+        "C3": 0.7248364634
+      },
+      "oracle_increment_pp": 1.634661119
+    },
+    "S01_still_water": {
+      "C0": {
+        "fuel_raw_kg": 80.2659,
+        "fuel_corr_kg": 84.3198,
+        "SOC_end": 0.592074,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 7.82654
+      },
+      "C1": {
+        "fuel_raw_kg": 85.0363,
+        "fuel_corr_kg": 82.7569,
+        "SOC_end": 0.604457,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 14.248
+      },
+      "C2": {
+        "fuel_raw_kg": 83.7255,
+        "fuel_corr_kg": 83.6048,
+        "SOC_end": 0.600236,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 14.5501
+      },
+      "C3": {
+        "fuel_raw_kg": 88.5611,
+        "fuel_corr_kg": 83.191,
+        "SOC_end": 0.6105,
+        "Vdc_min_V": 684.375,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 19.0123
+      },
+      "fuel_dp_kg": 81.3239,
+      "saving_pct": {
+        "C1": 1.853538552,
+        "C2": 0.8479621631,
+        "C3": 1.338712853
+      },
+      "capture_rate": {
+        "C1": 0.5216796288,
+        "C2": 0.2386595013,
+        "C3": 0.3767816015
+      },
+      "oracle_increment_pp": 0.4907506896
+    },
+    "S02_downstream": {
+      "C0": {
+        "fuel_raw_kg": 61.3963,
+        "fuel_corr_kg": 64.3204,
+        "SOC_end": 0.594283,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 6.15091
+      },
+      "C1": {
+        "fuel_raw_kg": 15.9675,
+        "fuel_corr_kg": 62.8441,
+        "SOC_end": 0.508349,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 95.9406
+      },
+      "C2": {
+        "fuel_raw_kg": 60.6966,
+        "fuel_corr_kg": 60.9674,
+        "SOC_end": 0.599471,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 58.4315
+      },
+      "C3": {
+        "fuel_raw_kg": 86.4585,
+        "fuel_corr_kg": 54.9743,
+        "SOC_end": 0.661557,
+        "Vdc_min_V": 684.375,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 78.3412
+      },
+      "fuel_dp_kg": 59.0083,
+      "saving_pct": {
+        "C1": 2.295228264,
+        "C2": 5.212965094,
+        "C3": 14.53053775
+      },
+      "capture_rate": {
+        "C1": 0.2779126899,
+        "C2": 0.6312004669,
+        "C3": 1.759398355
+      },
+      "oracle_increment_pp": 9.317572652
+    },
+    "S07_bridge_maneuver": {
+      "C0": {
+        "fuel_raw_kg": 79.0078,
+        "fuel_corr_kg": 82.8431,
+        "SOC_end": 0.592501,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 9.44841
+      },
+      "C1": {
+        "fuel_raw_kg": 77.9926,
+        "fuel_corr_kg": 80.6645,
+        "SOC_end": 0.594776,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 22.798
+      },
+      "C2": {
+        "fuel_raw_kg": 81.0124,
+        "fuel_corr_kg": 80.7452,
+        "SOC_end": 0.600522,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 24.2605
+      },
+      "C3": {
+        "fuel_raw_kg": 87.9947,
+        "fuel_corr_kg": 80.6989,
+        "SOC_end": 0.614264,
+        "Vdc_min_V": 684.375,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "bat_throughput_kWh": 29.9287
+      },
+      "fuel_dp_kg": 78.9195,
+      "saving_pct": {
+        "C1": 2.629790532,
+        "C2": 2.53237747,
+        "C3": 2.588266253
+      },
+      "capture_rate": {
+        "C1": 0.5552553777,
+        "C2": 0.5346875319,
+        "C3": 0.5464879193
+      },
+      "oracle_increment_pp": 0.05588878253
+    }
+  },
+  "judge_params": {
+    "main_scenario": "S20_composite_voyage",
+    "oracle_proceed_threshold_pp": 0.5,
+    "oracle_limited_threshold_pp": 0.2,
+    "n_rows_total": 40,
+    "n_matrix_rows": 16,
+    "n_regression_rows": 24
+  },
+  "config_hash": "87be48321f3e4d35e5b910e619bf1edf",
+  "generated": "2026-08-25 02:25:39",
+  "notes": "RQ1~3 机器可读测量：capture_rate 为诊断指标非过门条件；判读归用户（design §5）。C3 使用离线 oracle 前瞻（E5：非实时可实现，仅上界/增量验证）"
+}

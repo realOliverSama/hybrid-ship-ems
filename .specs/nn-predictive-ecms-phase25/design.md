@@ -172,6 +172,11 @@ Predictor + 分位数门控 + A-ECMS。
 
 ## API / Interface Changes
 
+> **路径迁移（2026-08-29）**：Phase 2.5 全部工作已迁至
+> `model/simulink_modelD_(EMS_NN_AECMS)/`（完整复制自 simulink_modelD，旧文件夹
+> 冻结于 Phase 2 状态）。本文提及的 `scripts/60_*`、`scripts/61_*`、
+> `results/ecms_phase25/`、`python/` 等路径均指新文件夹下的相对路径。
+
 ### NPU on-target 验证（FR-319，v1.1）
 
 - 中间证据：STEdgeAI desktop 分析 / Developer Cloud 估算（HW coverage、内存池、

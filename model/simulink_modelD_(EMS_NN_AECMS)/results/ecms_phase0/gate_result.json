@@ -1,0 +1,86 @@
+{
+  "overall": "DECISION_REQUIRED",
+  "criteria": {
+    "tier": "NONE",
+    "robust_ge5pct_scenarios": 0,
+    "mid_ge5pct_scenarios": 0,
+    "severe_ge5pct_scenarios": 0,
+    "all_configs_lt_2pct": false,
+    "nontrivial_check_pass": true
+  },
+  "per_scenario": {
+    "S01_still_water": {
+      "tier1": 3.40427,
+      "tier2": 3.55603,
+      "tier3": 3.72837
+    },
+    "S02_downstream": {
+      "tier1": 4.21792,
+      "tier2": 4.01284,
+      "tier3": 3.83551
+    },
+    "S03_upstream": {
+      "tier1": 2.68921,
+      "tier2": 2.76307,
+      "tier3": 2.83951
+    },
+    "S04_resistance_inc": {
+      "tier1": 3.09278,
+      "tier2": 3.24332,
+      "tier3": 3.19616
+    },
+    "S07_bridge_maneuver": {
+      "tier1": 1.45612,
+      "tier2": 0.964926,
+      "tier3": 0.497295
+    },
+    "S08_shoal_series": {
+      "tier1": 3.18271,
+      "tier2": 3.26306,
+      "tier3": 3.46209
+    },
+    "S09_emergency_sprint": {
+      "tier1": 3.40427,
+      "tier2": 3.55603,
+      "tier3": 3.72837
+    },
+    "S10_current_reversal": {
+      "tier1": 3.32758,
+      "tier2": 3.35386,
+      "tier3": 3.38923
+    }
+  },
+  "reference_by_pmin": {
+    "pmin0": {
+      "tier1_mean_pct": 3.64208375,
+      "tier2_mean_pct": 4.09836875,
+      "tier3_mean_pct": 4.6117325
+    },
+    "pmin300": {
+      "tier1_mean_pct": 3.1284575,
+      "tier2_mean_pct": 3.16709625,
+      "tier3_mean_pct": 3.20917875
+    },
+    "pmin400": {
+      "tier1_mean_pct": 3.0968575,
+      "tier2_mean_pct": 3.089142,
+      "tier3_mean_pct": 3.084566875
+    },
+    "pmin500": {
+      "tier1_mean_pct": 2.37667625,
+      "tier2_mean_pct": 2.475085125,
+      "tier3_mean_pct": 2.568366912
+    }
+  },
+  "judge_params": {
+    "main_pmin_kW": 400,
+    "ge5_threshold_pct": 5,
+    "ge5_count_threshold": 4,
+    "lt2_threshold_pct": 2,
+    "n_rows_used": 96,
+    "n_rows_total": 240
+  },
+  "config_hash": "af79ff57349d70ff6e980f55e0341e91",
+  "generated": "2026-08-24 21:53:56",
+  "notes": "聚合单机口径；双机独立调度为未探索自由度（brainstorm D8）"
+}

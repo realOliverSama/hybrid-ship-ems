@@ -1,0 +1,101 @@
+
+[61] ===== Phase 2.5 — 数据集 v2 批量 Baseline 闭环仿真（T-302，FR-301） =====
+[61] ROOT = E:\User\Tommy\Desktop\hybrid-ship-ems\model\simulink_modelD
+[61] 开始: 2026-08-28 21:15:14
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[61] 航次集：seed=20260829 共 400 个，本批 11~60（50 个），parsim=1
+[61] 模型加载（单次，不随航次重建）: HybridShip_ModelD_DCBus
+[61] 待仿真 50 个（跳过已完成 0 个）
+[61] parsim 启动（SetupFcn 注入 config）: 21:15:22
+[28-Aug-2026 21:15:23] 正在检查并行池的可用性...
+[28-Aug-2026 21:15:24] 正在运行 SetupFcn...
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms2.ensure_nn_params] law=7 权重已载入 (source=config/ecms_nn_weights.mat): W1 302x128 | W2 128x64 | W3 64x1 | YStd=17.8686 | Ebar=36.8933 kWh | Escale=20.5070 kWh
+[28-Aug-2026 21:15:24] 正在运行仿真...
+[28-Aug-2026 21:15:42] 已完成 1 次仿真运行，共 50 次
+[28-Aug-2026 21:15:51] 已完成 2 次仿真运行，共 50 次
+[28-Aug-2026 21:16:03] 已完成 3 次仿真运行，共 50 次
+[28-Aug-2026 21:16:15] 已完成 4 次仿真运行，共 50 次
+[28-Aug-2026 21:16:25] 已完成 5 次仿真运行，共 50 次
+[28-Aug-2026 21:16:37] 已完成 6 次仿真运行，共 50 次
+[28-Aug-2026 21:16:48] 已完成 7 次仿真运行，共 50 次
+[28-Aug-2026 21:16:56] 已完成 8 次仿真运行，共 50 次
+[28-Aug-2026 21:17:06] 已完成 9 次仿真运行，共 50 次
+[28-Aug-2026 21:17:18] 已完成 10 次仿真运行，共 50 次
+[28-Aug-2026 21:17:28] 已完成 11 次仿真运行，共 50 次
+[28-Aug-2026 21:17:40] 已完成 12 次仿真运行，共 50 次
+[28-Aug-2026 21:17:50] 已完成 13 次仿真运行，共 50 次
+[28-Aug-2026 21:18:01] 已完成 14 次仿真运行，共 50 次
+[28-Aug-2026 21:18:11] 已完成 15 次仿真运行，共 50 次
+[28-Aug-2026 21:18:20] 已完成 16 次仿真运行，共 50 次
+[28-Aug-2026 21:18:29] 已完成 17 次仿真运行，共 50 次
+[28-Aug-2026 21:18:41] 已完成 18 次仿真运行，共 50 次
+[28-Aug-2026 21:18:54] 已完成 19 次仿真运行，共 50 次
+[28-Aug-2026 21:19:06] 已完成 20 次仿真运行，共 50 次
+[28-Aug-2026 21:19:14] 已完成 21 次仿真运行，共 50 次
+[28-Aug-2026 21:19:27] 已完成 22 次仿真运行，共 50 次
+[28-Aug-2026 21:19:37] 已完成 23 次仿真运行，共 50 次
+[28-Aug-2026 21:19:46] 已完成 24 次仿真运行，共 50 次
+[28-Aug-2026 21:19:54] 已完成 25 次仿真运行，共 50 次
+[28-Aug-2026 21:20:04] 已完成 26 次仿真运行，共 50 次
+[28-Aug-2026 21:20:14] 已完成 27 次仿真运行，共 50 次
+[28-Aug-2026 21:20:29] 已完成 28 次仿真运行，共 50 次
+[28-Aug-2026 21:20:38] 已完成 29 次仿真运行，共 50 次
+[28-Aug-2026 21:20:47] 已完成 30 次仿真运行，共 50 次
+[28-Aug-2026 21:20:58] 已完成 31 次仿真运行，共 50 次
+[28-Aug-2026 21:21:09] 已完成 32 次仿真运行，共 50 次
+[28-Aug-2026 21:21:19] 已完成 33 次仿真运行，共 50 次
+[28-Aug-2026 21:21:29] 已完成 34 次仿真运行，共 50 次
+[28-Aug-2026 21:21:39] 已完成 35 次仿真运行，共 50 次
+[28-Aug-2026 21:21:48] 已完成 36 次仿真运行，共 50 次
+[28-Aug-2026 21:22:04] 已完成 37 次仿真运行，共 50 次
+[28-Aug-2026 21:22:16] 已完成 38 次仿真运行，共 50 次
+[28-Aug-2026 21:22:28] 已完成 39 次仿真运行，共 50 次
+[28-Aug-2026 21:22:41] 已完成 40 次仿真运行，共 50 次
+[28-Aug-2026 21:22:50] 已完成 41 次仿真运行，共 50 次
+[28-Aug-2026 21:23:00] 已完成 42 次仿真运行，共 50 次
+[28-Aug-2026 21:23:11] 已完成 43 次仿真运行，共 50 次
+[28-Aug-2026 21:23:20] 已完成 44 次仿真运行，共 50 次
+[28-Aug-2026 21:23:32] 已完成 45 次仿真运行，共 50 次
+[28-Aug-2026 21:23:43] 已完成 46 次仿真运行，共 50 次
+[28-Aug-2026 21:23:56] 已完成 47 次仿真运行，共 50 次
+[28-Aug-2026 21:24:07] 已完成 48 次仿真运行，共 50 次
+[28-Aug-2026 21:24:19] 已完成 49 次仿真运行，共 50 次
+[28-Aug-2026 21:24:30] 已完成 50 次仿真运行，共 50 次
+[61] parsim 完成: 548.5 s（均值 11.0 s/航次）
+[61] voyage_011/060 dur=3703s Pmax=800kW Vdc_min=689.9V closure=-0.0010% derate=0
+[61] voyage_012/060 dur=3844s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[61] voyage_013/060 dur=5544s Pmax=800kW Vdc_min=689.9V closure=-0.0005% derate=0
+[61] voyage_014/060 dur=5429s Pmax=800kW Vdc_min=690.1V closure=-0.0003% derate=0
+[61] voyage_015/060 dur=4161s Pmax=800kW Vdc_min=690.5V closure=-0.0007% derate=0
+[61] voyage_016/060 dur=5640s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[61] voyage_017/060 dur=4677s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[61] voyage_018/060 dur=3642s Pmax=800kW Vdc_min=689.9V closure=-0.0022% derate=0
+[61] voyage_019/060 dur=4172s Pmax=800kW Vdc_min=689.9V closure=-0.0023% derate=0
+[61] voyage_020/060 dur=5463s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[61] voyage_021/060 dur=4475s Pmax=800kW Vdc_min=689.9V closure=-0.0006% derate=0
+[61] voyage_022/060 dur=5059s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[61] voyage_023/060 dur=4316s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[61] voyage_024/060 dur=4801s Pmax=800kW Vdc_min=689.9V closure=-0.0003% derate=0
+[61] voyage_025/060 dur=3838s Pmax=800kW Vdc_min=689.9V closure=-0.0012% derate=0
+[61] voyage_026/060 dur=4001s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[61] voyage_027/060 dur=3949s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[61] voyage_028/060 dur=5146s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[61] voyage_029/060 dur=5656s Pmax=800kW Vdc_min=689.9V closure=-0.0008% derate=0
+[61] voyage_030/060 dur=4426s Pmax=800kW Vdc_min=690.0V closure=-0.0008% derate=0
+[61] voyage_031/060 dur=3614s Pmax=800kW Vdc_min=689.9V closure=-0.0018% derate=0
+[61] voyage_032/060 dur=5261s Pmax=800kW Vdc_min=689.9V closure=-0.0004% derate=0
+[61] voyage_033/060 dur=3833s Pmax=800kW Vdc_min=689.9V closure=-0.0011% derate=0
+[61] voyage_034/060 dur=3771s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[61] voyage_035/060 dur=3634s Pmax=800kW Vdc_min=689.9V closure=-0.0013% derate=0
+[61] voyage_036/060 dur=3872s Pmax=800kW Vdc_min=689.9V closure=-0.0009% derate=0
+[61] voyage_037/060 dur=3927s Pmax=800kW Vdc_min=689.9V closure=-0.0015% derate=0
+[61] voyage_038/060 dur=6277s Pmax=800kW Vdc_min=689.9V closure=-0.0007% derate=0
+[61] voyage_039/060 dur=3610s Pmax=800kW Vdc_min=689.9V closure=-0.0021% derate=0

@@ -1,0 +1,73 @@
+{
+  "model": "MLP 110-64-32-1 (Dense+ReLU)",
+  "best_window_s": 22,
+  "window_sweep": [
+    {
+      "window": 15,
+      "val_rmse": 5.533944606781006,
+      "phase": "coarse"
+    },
+    {
+      "window": 30,
+      "val_rmse": 11.59956169128418,
+      "phase": "coarse"
+    },
+    {
+      "window": 60,
+      "val_rmse": 13.990944862365723,
+      "phase": "coarse"
+    },
+    {
+      "window": 90,
+      "val_rmse": 12.429034233093262,
+      "phase": "coarse"
+    },
+    {
+      "window": 120,
+      "val_rmse": 14.314281463623047,
+      "phase": "coarse"
+    },
+    {
+      "window": 22,
+      "val_rmse": 5.313664436340332,
+      "phase": "refine"
+    }
+  ],
+  "params": 9217,
+  "channels": [
+    "P_load_total_kW",
+    "v_cmd_mps",
+    "v_ship_mps",
+    "acceleration_mps2",
+    "x_ship_m"
+  ],
+  "label": "P_load_future_max_60s（训练目标为相对当前负荷的增量 delta）",
+  "train_samples": 8750,
+  "val_samples": 3656,
+  "test_samples": 3658,
+  "metrics": {
+    "validation": {
+      "mae_kw": 2.880021810531616,
+      "rmse_kw": 5.442447662353516,
+      "persistence_mae_kw": 0.2953619062900543,
+      "persistence_rmse_kw": 1.2264108657836914
+    },
+    "test": {
+      "mae_kw": 6.9295830726623535,
+      "rmse_kw": 16.662839889526367,
+      "persistence_mae_kw": 3.060248613357544,
+      "persistence_rmse_kw": 16.49172592163086
+    },
+    "int8_validation": {
+      "mae_kw": 2.8528125286102295,
+      "rmse_kw": 5.3720574378967285
+    }
+  },
+  "exports": {
+    "keras": "/Users/oliverlyu/ModelA_MVP_K3/python/export/load_predictor.keras",
+    "tflite_fp32": "/Users/oliverlyu/ModelA_MVP_K3/python/export/load_predictor_fp32.tflite",
+    "tflite_int8": "/Users/oliverlyu/ModelA_MVP_K3/python/export/load_predictor_int8.tflite",
+    "matlab_weights": "/Users/oliverlyu/ModelA_MVP_K3/python/export/mlp_weights.mat"
+  },
+  "stm32n6_notes": "将 load_predictor_int8.tflite 导入 ST Edge AI Developer Cloud 或本地 stedgeai (target=stm32n6) 生成 C 代码；输入为 5W 维 int8 时间主序窗口（归一化参数见 mlp_weights.mat 中 MLP_FeatMean/Std，需在固件预处理中实现 z-score；输出反归一化用 MLP_YMean/YStd）。"
+}
