@@ -21,6 +21,9 @@
 每个 spec 目录内典型文件：`brainstorm.md`（意图与方案门）、`requirements.md`（需求）、
 `design.md`（设计）、`tasks.md`（任务清单与勾选），部分含 `reviews/`（评审记录）。
 
+`nn-predictive-ecms-phase25/` 附加文件：`t301_dataset_v2_perturbation.md`
+（T-301 论证文档：数据集 v2 扰动机制清单与参数范围，FR-301/OQ-1，待用户批准）。
+
 ## 维护规则
 
 新增/移动/重命名/删除本目录内任何文件或文件夹，必须同步更新本 README（见 `AGENTS.md` §20）；
