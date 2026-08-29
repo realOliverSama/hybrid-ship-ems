@@ -556,9 +556,10 @@ def export_weights_json(best, model, data, run_utc, verify_n=100):
     max_delta = float(np.max(np.abs(yk - yn)))
 
     hidden = best.get("hidden") or "(hidden 从 keras 恢复)"
+    is_v2 = (data.get("dataset_version") == "v2")
     obj = {
-        "spec": "nn-predictive-ecms-phase2",
-        "task": "T-203",
+        "spec": "nn-predictive-ecms-phase25" if is_v2 else "nn-predictive-ecms-phase2",
+        "task": "T-305" if is_v2 else "T-203",
         "script": "python/train_predictor.py",
         "script_version": SCRIPT_VERSION,
         "model": "MLP",
@@ -656,15 +657,17 @@ def export_selection_json(records, best, data, run_utc, decision_status,
             },
         }
 
+    is_v2 = (data.get("dataset_version") == "v2")
     obj = {
-        "spec": "nn-predictive-ecms-phase2",
-        "task": "T-203",
+        "spec": "nn-predictive-ecms-phase25" if is_v2 else "nn-predictive-ecms-phase2",
+        "task": "T-305" if is_v2 else "T-203",
         "script": "python/train_predictor.py",
         "script_version": SCRIPT_VERSION,
         "created_utc": run_utc,
         "git_commit_sha": git_sha(),
         "dataset": {
-            "path": "datasets/fleet_windows.npz", "md5": data["npz_md5"],
+            "path": "datasets/fleet_windows_v2.npz" if is_v2 else "datasets/fleet_windows.npz",
+            "md5": data["npz_md5"],
             "split": data["split"],
             "manifest_commit": data["manifest"].get("git_commit_sha"),
         },
@@ -742,6 +745,11 @@ def build_groups(args):
                                "hp": "filters=128, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs=%d, patience=%d" %
                               (args.quantiles, args.batch, args.epochs, args.patience),
                                "notes": "T-305 规模扫描最大点（精度上限探测，M1 恢复；int8 约 500 KB）。"}),
+        ("tcn_f256",          {"kind": "tcn", "model": "TCN f256 d1-2-4-8-16-32-32",
+                               "filters": 256, "lr": 1e-3,
+                               "hp": "filters=256, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs=%d, patience=%d" %
+                              (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-305 规模扫描扩展点（用户裁决补测；f512/f1024 经主 Agent 裁决不跑：边际收益进入跨机噪声区间且 NPU Pareto 预期被杀）。"}),
     ]
     CNN_GROUPS = [
         ("cnn_f32_lr1e-3",    {"kind": "cnn_mlp", "model": "CNN-MLP 32-64-128",
@@ -811,7 +819,9 @@ def run_full(args, data):
 
     records, models, histories = [], {}, {}
     for i, (key, cfg) in enumerate(groups, 1):
-        rec, model, hist = run_experiment(key, cfg, data, args, run_utc, i, len(groups))
+        # 非 42 seed 的重复实验（T-306 噪声底）追加 _sNN 后缀，避免覆盖官方 s42 产物
+        eff_key = key if int(args.seed) == SEED else "%s_s%d" % (key, args.seed)
+        rec, model, hist = run_experiment(eff_key, cfg, data, args, run_utc, i, len(groups))
         records.append(rec)
         models[key] = model
         histories[key] = hist
