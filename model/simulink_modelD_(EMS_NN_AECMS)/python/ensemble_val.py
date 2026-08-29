@@ -14,6 +14,11 @@ BASE = os.path.dirname(os.path.abspath(__file__))
 MD = os.path.join(BASE, "..", "results", "ecms_phase25", "models")
 
 def main():
+    # 显式设置 v2 作用域全局（与 main() 中 v2 分支一致），避免 load_data 走 v1 默认路径
+    tp.DATA_NPZ = tp.BASE / "datasets" / "fleet_windows_v2.npz"
+    tp.DATA_NORM_JSON = tp.BASE / "datasets" / "fleet_norm_v2.json"
+    tp.DATA_MANIFEST_JSON = tp.BASE / "results" / "ecms_phase25" / "dataset_manifest_v2.json"
+    tp.DATA_DATASET_VERSION = "v2"
     args = argparse.Namespace(dataset="v2", arch="tcn", quantiles=True,
                               batch=512, epochs=100, patience=10, seed=42,
                               only="all", no_plots=True, scoped=True,
