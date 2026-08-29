@@ -77,7 +77,7 @@ def main():
 
     es = tf.keras.callbacks.EarlyStopping(monitor="val_loss", patience=6,
                                           restore_best_weights=True)
-    model.fit([Ptr, Str], ytr, validation_data=([Pva, Sva], yva),
+    model.fit([Ptr, Str], ytr - 1, validation_data=([Pva, Sva], yva - 1),
               epochs=EPOCHS, batch_size=BATCH, class_weight=cw,
               callbacks=[es], verbose=2)
 
