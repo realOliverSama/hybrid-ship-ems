@@ -725,10 +725,18 @@ def build_groups(args):
                                 "notes": "LSTM 输入仅 [300,1] P_demand 窗口（design §4 对照口径），v_ship/accel 未使用；其余数据条件与 MLP 一致。"}),
     ]
     TCN_GROUPS = [
-        ("tcn_f64_lr1e-3",    {"kind": "tcn", "model": "TCN f64 d1-2-4-8",
+        ("tcn_f16",           {"kind": "tcn", "model": "TCN f16 d1-2-4-8-16-32-32",
+                               "filters": 16, "lr": 1e-3,
+                               "hp": "filters=16, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-305 规模扫描最小点（NPU 轻量偏好验证）。"}),
+        ("tcn_f32",           {"kind": "tcn", "model": "TCN f32 d1-2-4-8-16-32-32",
+                               "filters": 32, "lr": 1e-3,
+                               "hp": "filters=32, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-305 规模扫描点 2/4。"}),
+        ("tcn_f64",           {"kind": "tcn", "model": "TCN f64 d1-2-4-8-16-32-32",
                                "filters": 64, "lr": 1e-3,
-                               "hp": "filters=64, kernel=3, dilations=(1,2,4,8), lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
-                               "notes": "T-304 基线配置；规模扫描见 T-305。"}),
+                               "hp": "filters=64, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-305 规模扫描中点；沿用 T-304 基线 filters=64。"}),
     ]
     CNN_GROUPS = [
         ("cnn_f32_lr1e-3",    {"kind": "cnn_mlp", "model": "CNN-MLP 32-64-128",
@@ -773,6 +781,13 @@ def build_groups(args):
         groups.extend(FAMILIES[a])
     if not groups:
         raise SystemExit("--arch 为空")
+    # T-305：作用域模式下支持 --only 单组过滤（例：--arch tcn --only tcn_f16），
+    # 用于本机逐组推进 / 跨机接力时避免自动启动后续配置
+    if args.only and args.only != "all":
+        only_keys = {k.strip() for k in args.only.split(",")}
+        groups = [(k, c) for k, c in groups if k in only_keys]
+        if not groups:
+            raise SystemExit("--only 与 --arch 无交集: %s" % args.only)
     scope_note = "T-304 scoped: dataset=%s arch=%s quantiles=%s" % (
         args.dataset, args.arch, args.quantiles)
     if args.dataset == "v1":
