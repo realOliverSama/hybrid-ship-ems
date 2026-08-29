@@ -45,7 +45,8 @@ Model_MVP/
 ├── python/           train_load_predictor.py（STM32N6 导向训练程序）
 │                     export/（.keras / fp32+int8 .tflite / mlp_weights.mat / training_report.json）
 ├── scenarios/        工况数据（预留，SCN 由 config 生成，S01~S09）
-├── results/          烟雾测试图 results/T0*/*.png；AI 对比 results/ai_compare/S0*/*.png
+├── results/          烟雾测试图 results/T0*/*.png；AI 对比 results/ai_compare/S0*/*.png；
+│                     ecms_phase25/（T-305 训练产物：training_log_v2.csv、models/、logs/、fleet_profiles/ 等）
 ├── datasets/         航次数据 raw/run_XXXX.{mat,csv,metadata.json}；train/val/test
 ├── reports/          legacy_model_audit.md, parameter_audit.csv, Model_build_report.md,
 │                     smoke_summary.md, AI_vs_Baseline_report.md, ai/*.png
