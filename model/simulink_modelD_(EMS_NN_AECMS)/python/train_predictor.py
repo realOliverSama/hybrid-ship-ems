@@ -737,6 +737,11 @@ def build_groups(args):
                                "filters": 64, "lr": 1e-3,
                                "hp": "filters=64, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs_cap=%d, patience=%d" % (args.quantiles, args.batch, args.epochs, args.patience),
                                "notes": "T-305 规模扫描中点；沿用 T-304 基线 filters=64。"}),
+        ("tcn_f128",          {"kind": "tcn", "model": "TCN f128 d1-2-4-8-16-32-32",
+                               "filters": 128, "lr": 1e-3,
+                               "hp": "filters=128, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=%s, batch=%d, epochs=%d, patience=%d" %
+                              (args.quantiles, args.batch, args.epochs, args.patience),
+                               "notes": "T-305 规模扫描最大点（精度上限探测，M1 恢复；int8 约 500 KB）。"}),
     ]
     CNN_GROUPS = [
         ("cnn_f32_lr1e-3",    {"kind": "cnn_mlp", "model": "CNN-MLP 32-64-128",

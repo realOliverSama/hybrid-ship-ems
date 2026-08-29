@@ -13,13 +13,13 @@
 - 数据集 v2 已就绪：400 航次闭环仿真（零拒绝）、155,087 窗口、
   split 280/60/60（seed 20260829）、fit-on-train 归一化。数据文件**已入库**，无需传输。
 - T-305 扫描协议（主 Agent 定稿，勿改）：
-  - 配置：`tcn_f16 / tcn_f32 / tcn_f64`（filters=16/32/64，kernel=3，
-    dilations=[1,2,4,8,16,32,32]，感受野 R=381≥300，Adam 1e-3）
-  - 训练参数：`--batch 512 --epochs 40`（预算性 cap，非永久算法约束；
-    若 learning curve 显示未收敛，回到统一 early-stopping protocol 再议）
+  - 配置（**四组全跑，M1 统一协议**）：`tcn_f16 / tcn_f32 / tcn_f64 / tcn_f128`
+    （kernel=3，dilations=[1,2,4,8,16,32,32]，R=381≥300，Adam 1e-3）
+  - 训练参数：`--batch 512 --epochs 100`（统一 early-stopping：patience 10，
+    val 决定实际停止；四组同协议保证可比性）
   - `--quantiles` 全开（q10/q50/q90 pinball）
-  - f128 已砍（CPU 预算）；如 M1 速度快可加回 `tcn_f128` 作为精度上限探测点
-    （在 train_predictor.py FAMILIES 恢复该条目，属主 Agent 职责，先询问用户）
+  - **Windows 主机上的 f16（40 epoch）结果仅为跨机 sanity anchor，不进正式选模**；
+    正式选模数据以 M1 上四配置统一协议结果为准
 
 ## 2. 关键历史（为什么代码长这样——勿"顺手改回"）
 
@@ -69,12 +69,12 @@ python python/train_predictor.py --arch tcn --only tcn_f64 --dataset v2 \
   --quantiles --no-plots --batch 512 --epochs 40 2>&1 | tee t305_f64_m1.log
 ```
 
-### f64 硬门（用户 2026-08-29 设立，不得跳过）
+### 异常硬门（用户 2026-08-29 设立，不得跳过）
 
-- **若 f32 val RMSE 仍 ≈16~17 kWh**（接近修复前塌缩水平）→ **禁止启动 f64**，
-  回报主 Agent/用户并做 tiny-subset overfit 复测；
-- **若 f32 显著改善且 learning curve 健康下降**（预期 <12 kWh，参考 f16 结果）→ 允许 f64；
-- 判定依据：`results/ecms_phase25/training_log_v2.csv` 中 tcn_f32 行的
+- 任一配置 val RMSE > 14.7 kWh（persistence 水平）或 pred 接近常数
+  （q_coverage 异常）→ **停止后续配置**，回报用户并做 tiny-overfit 复测；
+- 正常预期：f16 ≈ Windows anchor 水平或更好，随 filters 增大单调改善或持平；
+- 判定依据：`results/ecms_phase25/training_log_v2.csv` 各行的
   `val_rmse_kwh / val_mae_kwh / q_coverage / q_pinball_norm`。
 
 ### 记录要求（T-305 验收）
