@@ -1,0 +1,16 @@
+
+[T-304 scoped v2] 输出 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25（Phase 2 文件零触碰）
+
+=== T-203 train_predictor v1.3.0 ===
+git sha: 40e6fb03770188f964a2b7f439c4e03a1e64364d | epochs_cap=100 patience=10 batch=512 seed=42 | scoped=True
+arch=tcn dataset=v2 quantiles=True
+dataset: fleet_windows_v2.npz（N=400 航次, md5=6d187aeab7a4, manifest commit=3f27841b921fd1322d150428532b7360feb6ec98）
+split: train 107997 窗/280 航次, val 23807 窗/60 航次, test 23283 窗/60 航次（航次级, seed=20260829）
+
+SCOPE: T-304 scoped: dataset=v2 arch=tcn quantiles=True
+
+/opt/anaconda3/envs/tf219/lib/python3.11/site-packages/keras/src/models/functional.py:259: UserWarning: The structure of `inputs` doesn't match the expected structure.
+Expected: ['P_window_300x1', 'V_scale_2']
+Received: inputs=(['Tensor(shape=(1, 300, 1))'], ['Tensor(shape=(1, 2))'])
+  warnings.warn(msg)
+[1/4] tcn_f16                status=OK   rmse=11.3896 mae=6.2627 runtime=15439.7s
