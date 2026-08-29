@@ -946,9 +946,8 @@ def main():
     ap.add_argument("--select-run-id", type=str, default=None,
                     help="定稿时指定的入选 run_id")
     ap.add_argument("--only", type=str, default="all",
-                    choices=("all", "mlp", "lstm"),
-                    help="仅训练指定模型族（T-204B: N=200 复训用 --only mlp；"
-                         "LSTM 对照不复训）")
+                    help="仅训练指定模型族/配置（T-204B: --only mlp；T-305 scoped: "
+                         "--only tcn_f16 单组过滤，逗号分隔多选）")
     ap.add_argument("--decision-note", type=str, default=None,
                     help="主 Agent 裁决记录（写入 selection.json main_agent_ruling）")
     # ---- T-304 新参数（默认 None => 检测“是否显式给定”） ----
