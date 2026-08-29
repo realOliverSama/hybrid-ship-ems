@@ -3,8 +3,8 @@
   "task": "T-203",
   "script": "python/train_predictor.py",
   "script_version": "1.3.0",
-  "created_utc": "2026-08-29T15:55:50Z",
-  "git_commit_sha": "5bc644be37e9ded90108ec8530c329054ce075fd",
+  "created_utc": "2026-08-29T16:07:58Z",
+  "git_commit_sha": "387b6e71f6621923097d51ec9d3d30f900ed9ec7",
   "dataset": {
     "path": "datasets/fleet_windows.npz",
     "md5": "6d187aeab7a481e7b3a51a6389805ddb",
@@ -18,27 +18,27 @@
   "scope_note": "T-304 scoped: dataset=v2 arch=tcn quantiles=True",
   "main_agent_ruling": "n/a\uff08\u673a\u68b0\u89c4\u5219\u9009\u6a21\uff0c\u672a\u89e6\u53d1\u88c1\u51b3\uff09",
   "selected": {
-    "run_id": "tcn_f128",
-    "model": "TCN f128 d1-2-4-8-16-32-32",
-    "config": "filters=128, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=True, batch=512, epochs=100, patience=10",
+    "run_id": "tcn_f256",
+    "model": "TCN f256 d1-2-4-8-16-32-32",
+    "config": "filters=256, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=True, batch=512, epochs=100, patience=10",
     "seed": 42,
     "val_metrics_kWh": {
-      "mae": 4.8806,
-      "rmse": 9.8791,
-      "under_freq": 0.6143,
-      "under_mag": 3.9492,
-      "over_mag": 6.3637
+      "mae": 4.9493,
+      "rmse": 10.0914,
+      "under_freq": 0.4194,
+      "under_mag": 5.7575,
+      "over_mag": 4.3654
     },
     "model_size": {
-      "n_params": 650395,
-      "size_kb_fp32": 2540.6,
-      "est_ram_kb": 2540.6,
-      "infer_ms_tf": 46.6325,
+      "n_params": 2577947,
+      "size_kb_fp32": 10070.1,
+      "est_ram_kb": 10070.1,
+      "infer_ms_tf": 59.1161,
       "infer_ms_numpy_inline": ""
     },
-    "best_epoch": 62,
+    "best_epoch": 15,
     "export": {
-      "keras": "results/ecms_phase25/models/tcn_f128/tcn_f128.keras",
+      "keras": "results/ecms_phase25/models/tcn_f256/tcn_f256.keras",
       "weights_json": null
     }
   },
@@ -48,21 +48,21 @@
   },
   "all_experiments_sorted_by_val_rmse": [
     {
-      "run_id": "tcn_f128",
-      "model": "TCN f128 d1-2-4-8-16-32-32",
-      "config": "filters=128, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=True, batch=512, epochs=100, patience=10",
-      "best_epoch": 62,
-      "val_mae_kwh": 4.8806,
-      "val_rmse_kwh": 9.8791,
-      "under_freq": 0.6143,
-      "under_mag_kwh": 3.9492,
-      "over_mag_kwh": 6.3637,
-      "n_params": 650395,
-      "size_kb_fp32": 2540.6,
-      "est_ram_kb": 2540.6,
-      "infer_ms_tf": 46.6325,
+      "run_id": "tcn_f256",
+      "model": "TCN f256 d1-2-4-8-16-32-32",
+      "config": "filters=256, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=True, batch=512, epochs=100, patience=10",
+      "best_epoch": 15,
+      "val_mae_kwh": 4.9493,
+      "val_rmse_kwh": 10.0914,
+      "under_freq": 0.4194,
+      "under_mag_kwh": 5.7575,
+      "over_mag_kwh": 4.3654,
+      "n_params": 2577947,
+      "size_kb_fp32": 10070.1,
+      "est_ram_kb": 10070.1,
+      "infer_ms_tf": 59.1161,
       "infer_ms_numpy_inline": "",
-      "runtime_s": 850.4
+      "runtime_s": 708.4
     }
   ],
   "failed_experiments": []
