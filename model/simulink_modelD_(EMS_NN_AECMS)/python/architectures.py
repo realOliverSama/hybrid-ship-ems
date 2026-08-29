@@ -74,6 +74,22 @@ def split_inputs(X):
     return P, S
 
 
+@tf.keras.utils.register_keras_serializable(package="phase25")
+class LastTimeStep(tf.keras.layers.Layer):
+    """取序列末时刻特征（T-305）：causal 卷积末步已聚合全部感受野历史。
+
+    用注册层而非 Lambda：keras 3 默认 safe_mode 拒绝反序列化裸 lambda，
+    导致训练后 finalize 导出崩潧（2026-08-29 f16 实证）；注册层可安全往返，
+    且 slice 语义对 TFLite/EdgeAI 友好。
+    """
+
+    def call(self, x):
+        return x[:, -1, :]
+
+    def compute_output_shape(self, input_shape):
+        return (input_shape[0], input_shape[2])
+
+
 def _head(x, quantiles):
     if quantiles:
         return tf.keras.layers.Dense(3, name="E_hat_q10_50_90")(x)
@@ -126,8 +142,8 @@ def build_tcn(filters=64, kernel=3, dilations=(1, 2, 4, 8, 16, 32, 32), lr=1e-3,
     # 导致 q50 collapse 到无条件中位数（val RMSE=16.88≈naive-median 16.87 实证）。
     # 改取末时刻特征：causal 卷积保证末步已聚合 R=381≥300 全部历史，
     # 保留“当前时刻 t”定位（design §4 允许“全局池化/末时刻取特征”，取后者）。
-    # slice 实现等价于末位 1×1 Conv 取出，TFLite/EdgeAI 内置 slice 算子支持。
-    x = tf.keras.layers.Lambda(lambda t: t[:, -1, :], name="tcn_last_step")(x)
+    # LastTimeStep 为注册自定义层（Lambda 裸函数会被 safe_mode 拒绝反序列化）。
+    x = LastTimeStep(name="tcn_last_step")(x)
     s = tf.keras.layers.Dense(8, activation="relu", name="scalar_dense8")(inp_s)
     z = tf.keras.layers.Concatenate(name="tcn_concat")([x, s])
     z = tf.keras.layers.Dense(64, activation="relu", name="tcn_head64")(z)
