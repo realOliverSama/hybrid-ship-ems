@@ -58,5 +58,7 @@ def poll():
 
 
 if __name__ == "__main__":
-    mode = sys.argv[1] if len(sys.argv) > 1 else "launch"
+    # colab-cli exec -f 会把 '-f'/文件路径残留在 VM 的 sys.argv 中，只认合法模式字
+    modes = [a for a in sys.argv[1:] if a in ("launch", "poll")]
+    mode = modes[0] if modes else "launch"
     {"launch": launch, "poll": poll}[mode]()
