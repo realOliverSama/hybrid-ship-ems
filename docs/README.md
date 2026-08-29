@@ -16,6 +16,7 @@
 | `data_request_list.md` | 文件 | 设备方/设计方数据索取清单（活文档，随项目演进持续更新） |
 | `bsfc_anchors_sources.md` | 文件 | BSFC 双锚点来源登记（adaptive-ecms-methanol / FR-018） |
 | `MathWorks_bug_report_EMChart_crossblock.md` | 文件 | MathWorks Bug Report 待提交包（EMChart 跨 block 问题，含复现代码） |
+| `t305_handoff_macbook.md` | 文件 | T-305 跨机交接文档——MacBook M1 接手 TCN 扫描的环境搭建/命令/硬门/STOP 条件（2026-08-29） |
 | `agent/` | 目录 | AI Agent 领域规则：`AI_MODELING.md`（MLP/LSTM、数据集、训练、模型导出）、`STM32N6_ARCHITECTURE.md`（STM32N6、FreeRTOS、固件、调试、硬件） |
 | `reference/` | 目录 | 设备/厂商参考资料（入库保存的研究依据）：`20260526设备参数.md`（设备参数表，模型标定原始依据）、`bsfc_1d_concept.png`（BSFC 一维概念图）、`weichai_WH17ME_page.html`（潍柴 WH17ME 机组网页存档）；2026-08-27 自 `data/` 迁入 |
 | `assets/` | 目录 | 文档配套资料存档（如 `weichai_WH17ME_20260824.html` 厂商网页存档） |
