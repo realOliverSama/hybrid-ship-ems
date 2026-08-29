@@ -44,24 +44,22 @@ def pinball_loss(q):
 
 @tf.keras.utils.register_keras_serializable()
 def quantile_loss_3():
-    """q10/q50/q90 三头联合 pinball（各头等权平均）。"""
-    l10 = pinball_loss(0.1)
-    l50 = pinball_loss(0.5)
-    l90 = pinball_loss(0.9)
+    """q10/q50/q90 三头联合 pinball（各头等权平均）。
 
+    T-305 诊断修订（2026-08-29）：原实现 e10 = y1 - q10 中 y1 为 (N,1)、q10 为 (N,)，
+    广播成 (N,N) 逐对交叉矩阵，损失退化为全局中位数回归（collapse-to-median 实锤）。
+    修正：e = y1 - p 保持 (N,3) 逐样本逐头。tiny-overfit 验证：TCN-MSE 8.64 / 修后 TCN-pinball 应同水平。
+    """
     @functools.wraps(quantile_loss_3)
     def loss(y_true, y_pred):
         y = tf.cast(y_true, tf.float32)
-        p = tf.cast(y_pred, tf.float32)
-        q10, q50, q90 = p[..., 0], p[..., 1], p[..., 2]
-        y1 = tf.expand_dims(y, -1)          # 便于广播：以下按逐列取 err
-        e10 = y1 - q10
-        e50 = y1 - q50
-        e90 = y1 - q90
-        l = (tf.reduce_mean(tf.maximum(0.1 * e10, -0.9 * e10)) +
-             tf.reduce_mean(tf.maximum(0.5 * e50, -0.5 * e50)) +
-             tf.reduce_mean(tf.maximum(0.9 * e90, -0.1 * e90))) / 3.0
-        return l
+        p = tf.cast(y_pred, tf.float32)            # (N,3)
+        y1 = tf.reshape(y, [-1, 1])                # (N,1)
+        e = y1 - p                                  # (N,3) 逐样本逐头，禁止 (N,1)-(N,)
+        l10 = tf.reduce_mean(tf.maximum(0.1 * e[..., 0], -0.9 * e[..., 0]))
+        l50 = tf.reduce_mean(tf.maximum(0.5 * e[..., 1], -0.5 * e[..., 1]))
+        l90 = tf.reduce_mean(tf.maximum(0.9 * e[..., 2], -0.1 * e[..., 2]))
+        return (l10 + l50 + l90) / 3.0
 
     return loss
 
@@ -110,14 +108,26 @@ def tcn_block(x, filters, kernel, dilation, name):
     return tf.keras.layers.ReLU(name=name + "_out")(out)
 
 
-def build_tcn(filters=64, kernel=3, dilations=(1, 2, 4, 8), lr=1e-3, quantiles=False):
-    """TCN：4 残差块（dilation 1,2,4,8）+ GAP；v/accel 经 Dense(8) concat；Dense(64) -> 头。"""
+def build_tcn(filters=64, kernel=3, dilations=(1, 2, 4, 8, 16, 32, 32), lr=1e-3, quantiles=False):
+    """TCN：7 残差块（dilation 1,2,4,8,16,32,32）+ GAP；v/accel 经 Dense(8) concat；Dense(64) -> 头。
+
+    T-305 感受野推导（FR-305，必须 ≥ 300）：
+      R = 1 + Σ_layers (k−1)·d_l
+        每块 2 层，k=3 → 每块贡献 2·(k−1)·d = 4·d；7 块 dilation=[1,2,4,8,16,32,32]：
+      R = 1 + 4·(1+2+4+8+16+32+32) = 1 + 4·95 = 381 ≥ 300  ✓
+      （末端重复 dilation=32 补足序列，全块无下采样，输出 T=300。）
+    """
     inp_p = tf.keras.Input(shape=(300, 1), name="P_window_300x1")
     inp_s = tf.keras.Input(shape=(2,), name="V_scale_2")
     x = inp_p
     for i, d in enumerate(dilations):
         x = tcn_block(x, filters, kernel, d, name="tcn_block%d" % i)
-    x = tf.keras.layers.GlobalAveragePooling1D(name="tcn_gap")(x)
+    # T-305 诊断修订（2026-08-29）：原 GlobalAveragePooling1D 会抹平时刻位置信息，
+    # 导致 q50 collapse 到无条件中位数（val RMSE=16.88≈naive-median 16.87 实证）。
+    # 改取末时刻特征：causal 卷积保证末步已聚合 R=381≥300 全部历史，
+    # 保留“当前时刻 t”定位（design §4 允许“全局池化/末时刻取特征”，取后者）。
+    # slice 实现等价于末位 1×1 Conv 取出，TFLite/EdgeAI 内置 slice 算子支持。
+    x = tf.keras.layers.Lambda(lambda t: t[:, -1, :], name="tcn_last_step")(x)
     s = tf.keras.layers.Dense(8, activation="relu", name="scalar_dense8")(inp_s)
     z = tf.keras.layers.Concatenate(name="tcn_concat")([x, s])
     z = tf.keras.layers.Dense(64, activation="relu", name="tcn_head64")(z)
