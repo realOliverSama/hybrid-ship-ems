@@ -30,7 +30,7 @@ print("GPU devices:", gpus)
 if not gpus and "CUDA_VISIBLE_DEVICES" not in os.environ:
     print("!! metal 插件未生效（无 GPU 设备）——本探针结果是纯 CPU 路径")
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", ".."))
+ROOT = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), ".."))
 npz = os.path.join(ROOT, "datasets", "fleet_windows_v2.npz")
 d = np.load(npz)
 N = 16000
