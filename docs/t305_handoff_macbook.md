@@ -61,12 +61,9 @@ val RMSE 应显著 <16.5 kWh 即说明环境正常；若 ≈16.9 说明环境/�
 
 ```bash
 cd "model/simulink_modelD_(EMS_NN_AECMS)"
-# f32（约几十分钟 on M1）
-python python/train_predictor.py --arch tcn --only tcn_f32 --dataset v2 \
-  --quantiles --no-plots --batch 512 --epochs 40 2>&1 | tee t305_f32_m1.log
-# f64（启动前必须先过 f32 硬门，见下）
-python python/train_predictor.py --arch tcn --only tcn_f64 --dataset v2 \
-  --quantiles --no-plots --batch 512 --epochs 40 2>&1 | tee t305_f64_m1.log
+# 四配置统一协议（M1 预计总共 1~3 小时，一条命令依次跑完）
+python python/train_predictor.py --arch tcn --dataset v2 \
+  --quantiles --no-plots --batch 512 --epochs 100 2>&1 | tee t305_m1_scan.log
 ```
 
 ### 异常硬门（用户 2026-08-29 设立，不得跳过）
