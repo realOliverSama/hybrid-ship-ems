@@ -91,7 +91,7 @@ Design: `./design.md`
   - Acceptance: 回归通过 + 新参数帮助文档。
   - Escalate If: 复跑偏差超容差（说明改动影响了默认路径）。
 
-- [ ] 5. TCN 实现 + 训练 + val 选模（主推架构）
+- [x] 5. TCN 实现 + 训练 + val 选模（主推架构）
   - ID: T-305
   - Requirement(s): FR-305, FR-306, FR-309
   - Goal: TCN（因果扩张 Conv1D 残差堆叠，感受野 ≥300 的推导写入注释）+ MLP 头 +
@@ -103,7 +103,7 @@ Design: `./design.md`
     （仅为资格筛选排名，最终 Winner 由 T-310 按 FR-317 裁决）。
   - Escalate If: 需要白名单外算子才能达到可比精度。
 
-- [ ] 6. CNN-MLP 与 N-BEATS 对照训练 + MLP 基线 v2 重训
+- [x] 6. CNN-MLP 与 N-BEATS 对照训练 + MLP 基线 v2 重训
   - ID: T-306
   - Requirement(s): FR-305, FR-306, FR-307
   - Goal: 两个对照架构同条件训练；MLP 基线在 v2 重训（公平基线）；汇总四架构对照表。
