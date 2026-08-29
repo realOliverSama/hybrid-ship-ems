@@ -91,6 +91,18 @@ python python/train_predictor.py --arch tcn --dataset v2 \
 - N6 硬件（T-311）：板子+ST-LINK 接在哪台机就在哪台做
 - 运维脚本已入库：`results/ecms_phase25/{run_chunks.m, watchdog_fleet.py, ps_check.ps1}`
 
+## 4c. 主 Agent 裁决（2026-08-29，探针数据后）
+
+- 探针实测（16k×1ep 稳态）：M1 GPU 39.0 s ≈ M1 CPU 41.8 s ≈ Windows CPU 32.5 s——
+  模型小，GPU 收益被开销吃掉；"10~30x" 预期作废，正式预期如下
+- **裁决：GPU 路径 + 四配置 + 100 cap + patience 10 + batch 512，顺序一条命令跑完**
+- 时长预期：f16/f32/f64 合计约 24 h；f128 再约 26 h（排最后，时间不可接受可中途
+  砍掉，三配置已满足 T-305 验收 ≥3）
+- 首配置前段特别慢是 metal 着色器编译（可达 10+ min），属正常，勿杀
+- 异常硬门不变：任一配置 val RMSE > 14.7 kWh 即停
+- 每个配置完成即检查 training_log_v2.csv 新行并中途 push 一次（分批上云，防单点）
+- probe_m1.py 的 ROOT 路径 bug 由 M1 agent 随 T-305 产物一并提交修复
+
 ## 5. Git 纪律（摘自 AGENTS.md §7，接手 agent 必须遵守）
 
 - 允许：`git add <具体文件>`（逐个）、`git commit`、`git push origin models-research`
