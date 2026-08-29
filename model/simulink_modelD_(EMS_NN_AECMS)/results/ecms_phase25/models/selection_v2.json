@@ -1,0 +1,69 @@
+{
+  "spec": "nn-predictive-ecms-phase2",
+  "task": "T-203",
+  "script": "python/train_predictor.py",
+  "script_version": "1.3.0",
+  "created_utc": "2026-08-29T12:27:18Z",
+  "git_commit_sha": "08eb441d70fd68112e9abd1746bb31e2806baf37",
+  "dataset": {
+    "path": "datasets/fleet_windows.npz",
+    "md5": "6d187aeab7a481e7b3a51a6389805ddb",
+    "split": "train 107997 \u7a97/280 \u822a\u6b21, val 23807 \u7a97/60 \u822a\u6b21, test 23283 \u7a97/60 \u822a\u6b21\uff08\u822a\u6b21\u7ea7, seed=20260829\uff09",
+    "manifest_commit": "3f27841b921fd1322d150428532b7360feb6ec98"
+  },
+  "selection_rule": "\u6210\u529f\u5b9e\u9a8c\u4e2d val RMSE \u6700\u5c0f\u8005\u5165\u9009\uff1btest \u96c6\u4e0d\u53c2\u4e0e\u4efb\u4f55\u51b3\u7b56\uff08T-205 \u4e00\u6b21\u6027\u4f7f\u7528\uff09",
+  "test_usage": "test \u96c6\u672a\u7528\u4e8e\u6307\u6807/\u9009\u6a21/\u8c03\u53c2\uff1b\u4ec5\u8bb0\u5f55\u7a97\u53e3\u6570\uff0823283\uff09\u3002",
+  "fairness_notes": "MLP/LSTM \u540c Dataset/\u540c Split/\u540c\u5f52\u4e00\u5316\uff08fit-on-train\uff09/\u540c\u6307\u6807\uff1bLSTM \u8f93\u5165\u4ec5 [300,1] P_demand \u7a97\u53e3\uff08design \u00a74 \u6279\u51c6\u53e3\u5f84\uff09\uff0c\u672a\u4f7f\u7528 v_ship/accel\uff0c\u5dee\u5f02\u5df2\u5728 training_log.csv Notes \u58f0\u660e\u3002",
+  "decision_status": "finalized",
+  "scope_note": "T-304 scoped: dataset=v2 arch=tcn quantiles=True",
+  "main_agent_ruling": "n/a\uff08\u673a\u68b0\u89c4\u5219\u9009\u6a21\uff0c\u672a\u89e6\u53d1\u88c1\u51b3\uff09",
+  "selected": {
+    "run_id": "tcn_f16",
+    "model": "TCN f16 d1-2-4-8-16-32-32",
+    "config": "filters=16, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=True, batch=512, epochs_cap=100, patience=10",
+    "seed": 42,
+    "val_metrics_kWh": {
+      "mae": 4.778,
+      "rmse": 9.8315,
+      "under_freq": 0.4344,
+      "under_mag": 5.4834,
+      "over_mag": 4.2362
+    },
+    "model_size": {
+      "n_params": 165851,
+      "size_kb_fp32": 647.9,
+      "est_ram_kb": 647.9,
+      "infer_ms_tf": 40.8999,
+      "infer_ms_numpy_inline": ""
+    },
+    "best_epoch": 59,
+    "export": {
+      "keras": "results/ecms_phase25/models/tcn_f16/tcn_f16.keras",
+      "weights_json": null
+    }
+  },
+  "predictability_reference": {
+    "val_y_std_kWh": 16.4951,
+    "val_naive_mean_mae_kWh": 13.7167
+  },
+  "all_experiments_sorted_by_val_rmse": [
+    {
+      "run_id": "tcn_f16",
+      "model": "TCN f16 d1-2-4-8-16-32-32",
+      "config": "filters=16, kernel=3, dilations=(1,2,4,8,16,32,32), R=381, lr=1e-3, quantiles=True, batch=512, epochs_cap=100, patience=10",
+      "best_epoch": 59,
+      "val_mae_kwh": 4.778,
+      "val_rmse_kwh": 9.8315,
+      "under_freq": 0.4344,
+      "under_mag_kwh": 5.4834,
+      "over_mag_kwh": 4.2362,
+      "n_params": 165851,
+      "size_kb_fp32": 647.9,
+      "est_ram_kb": 647.9,
+      "infer_ms_tf": 40.8999,
+      "infer_ms_numpy_inline": "",
+      "runtime_s": 414.0
+    }
+  ],
+  "failed_experiments": []
+}
