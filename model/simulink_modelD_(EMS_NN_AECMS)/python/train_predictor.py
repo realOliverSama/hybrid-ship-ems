@@ -169,14 +169,15 @@ def load_data(args):
 
 # ---------------------------------------------------------------- 模型构建
 
-def build_mlp(hidden, lr):
+def build_mlp(hidden, lr, quantiles=False):
     inp = tf.keras.Input(shape=(302,), name="P_in_302")
     x = inp
     for h in hidden:
         x = tf.keras.layers.Dense(h, activation="relu")(x)
-    out = tf.keras.layers.Dense(1, name="E_hat_norm")(x)
+    out = tf.keras.layers.Dense(3 if quantiles else 1, name="E_hat_norm")(x)
     model = tf.keras.Model(inp, out)
-    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss="mse")
+    loss = architectures.quantile_loss_3() if quantiles else "mse"
+    model.compile(optimizer=tf.keras.optimizers.Adam(learning_rate=lr), loss=loss)
     return model
 
 
@@ -327,7 +328,7 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
         kind = cfg["kind"]
         Xtr, Xva = data["X_train"], data["X_val"]
         if kind == "mlp":
-            model = build_mlp(cfg["hidden"], cfg["lr"])
+            model = build_mlp(cfg["hidden"], cfg["lr"], quantiles=args.quantiles)
         elif kind == "lstm":
             Xtr = data["X_train"][:, :300].reshape(-1, 300, 1)
             Xva = data["X_val"][:, :300].reshape(-1, 300, 1)
@@ -357,7 +358,7 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
 
         best_epoch = int(np.argmin(vl)) + 1
         pred = model.predict(Xva, batch_size=4096, verbose=0)
-        if args.quantiles and kind in ("tcn", "cnn_mlp", "nbeats"):
+        if args.quantiles and kind in ("tcn", "cnn_mlp", "nbeats", "mlp"):
             m = val_metrics_quantiles(pred, data["y_val"], data["y_mean"], data["y_std"])
         else:
             m = val_metrics(pred.ravel(), data["y_val"], data["y_mean"], data["y_std"])
@@ -819,8 +820,13 @@ def run_full(args, data):
 
     records, models, histories = [], {}, {}
     for i, (key, cfg) in enumerate(groups, 1):
-        # 非 42 seed 的重复实验（T-306 噪声底）追加 _sNN 后缀，避免覆盖官方 s42 产物
+        # 非 42 seed 的重复实验（T-306 噪声底）追加 _sNN 后缀，避免覆盖官方 s42 产物；
+        # MLP+quantiles 加 _q、卷积族无 quantiles 加 _mse（T-307 损失配对对照），同理防覆盖
         eff_key = key if int(args.seed) == SEED else "%s_s%d" % (key, args.seed)
+        if args.quantiles and cfg["kind"] == "mlp":
+            eff_key += "_q"
+        if (not args.quantiles) and cfg["kind"] in ("tcn", "cnn_mlp", "nbeats"):
+            eff_key += "_mse"
         rec, model, hist = run_experiment(eff_key, cfg, data, args, run_utc, i, len(groups))
         records.append(rec)
         models[key] = model
@@ -883,7 +889,7 @@ def finalize(args, data, records=None, selected_run_id=None, scope_note=None):
     else:
         Xva = data["X_val"]
     pred = model.predict(Xva, batch_size=4096, verbose=0)
-    if best.get("quantiles") and kind in ("tcn", "cnn_mlp", "nbeats"):
+    if best.get("quantiles") and kind in ("tcn", "cnn_mlp", "nbeats", "mlp"):
         m = val_metrics_quantiles(pred, data["y_val"], data["y_mean"], data["y_std"])
     else:
         m = val_metrics(pred.ravel(), data["y_val"], data["y_mean"], data["y_std"])
@@ -894,8 +900,10 @@ def finalize(args, data, records=None, selected_run_id=None, scope_note=None):
     run_utc = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
     ruling = args.decision_note if args.decision_note else "n/a（机械规则选模，未触发裁决）"
 
-    if best["model"].startswith("MLP"):
+    if best["model"].startswith("MLP") and not best.get("quantiles"):
         export_weights_json(best, model, data, run_utc)
+    elif best["model"].startswith("MLP"):
+        print("注意: 入选模型为 MLP 分位数头，selected_model_weights.json 不导出（导出格式由 T-307 定义）", flush=True)
     else:
         print("注意: 入选模型为 LSTM，selected_model_weights.json 不导出（导出格式由 T-204 定义）", flush=True)
     export_selection_json(records, best, data, run_utc, decision_status="finalized",
