@@ -1,0 +1,116 @@
+{
+  "task": "T-307",
+  "generated": "2026-08-29T14:30:33Z",
+  "git_commit_sha": "31885058f0e9719b40b36719942dadbed8db9a35",
+  "quant_calib": "val 前 1000 样本（仅校准）",
+  "candidates": [
+    {
+      "name": "MLP-MSE",
+      "run_id": "mlp_h64_32_lr3e-4",
+      "quantiles": false,
+      "params": 21505,
+      "size_fp32_kb": 279.3,
+      "float_val": {
+        "val_mae_kwh": 5.6691,
+        "val_rmse_kwh": 9.1479,
+        "under_freq": 0.4631,
+        "under_mag_kwh": 6.2555,
+        "over_mag_kwh": 5.1632
+      },
+      "size_int8_kb": 26.1,
+      "tflite_path": "models\\mlp_h64_32_lr3e-4\\mlp_h64_32_lr3e-4_int8.tflite",
+      "int8_val": {
+        "val_mae_kwh": 5.7153,
+        "val_rmse_kwh": 9.1701,
+        "under_freq": 0.4553,
+        "under_mag_kwh": 6.3374,
+        "over_mag_kwh": 5.1952
+      },
+      "delta_rmse_pct": 0.24
+    },
+    {
+      "name": "MLP-Q",
+      "run_id": "mlp_h64_32_lr3e-4_q",
+      "quantiles": true,
+      "params": 21571,
+      "size_fp32_kb": 280.2,
+      "float_val": {
+        "val_mae_kwh": 4.9444,
+        "val_rmse_kwh": 9.9359,
+        "under_freq": 0.547,
+        "under_mag_kwh": 4.7343,
+        "over_mag_kwh": 5.1981,
+        "q_coverage": 0.8148,
+        "q_pinball_norm": 0.1028
+      },
+      "size_int8_kb": 26.3,
+      "tflite_path": "models\\mlp_h64_32_lr3e-4_q\\mlp_h64_32_lr3e-4_q_int8.tflite",
+      "int8_val": {
+        "val_mae_kwh": 5.0385,
+        "val_rmse_kwh": 9.9659,
+        "under_freq": 0.518,
+        "under_mag_kwh": 5.1933,
+        "over_mag_kwh": 4.872,
+        "q_coverage": 0.7905,
+        "q_pinball_norm": 0.1043
+      },
+      "delta_rmse_pct": 0.3
+    },
+    {
+      "name": "TCN-f16",
+      "run_id": "tcn_f16",
+      "quantiles": true,
+      "params": 165851,
+      "size_fp32_kb": 2125.5,
+      "float_val": {
+        "val_mae_kwh": 4.7749,
+        "val_rmse_kwh": 9.8352,
+        "under_freq": 0.4338,
+        "under_mag_kwh": 5.485,
+        "over_mag_kwh": 4.2307,
+        "q_coverage": 0.7456,
+        "q_pinball_norm": 0.0994
+      },
+      "size_int8_kb": 220.9,
+      "tflite_path": "models\\tcn_f16\\tcn_f16_int8.tflite",
+      "int8_val": {
+        "val_mae_kwh": 4.9327,
+        "val_rmse_kwh": 10.0153,
+        "under_freq": 0.5038,
+        "under_mag_kwh": 5.0183,
+        "over_mag_kwh": 4.8458,
+        "q_coverage": 0.6251,
+        "q_pinball_norm": 0.1102
+      },
+      "delta_rmse_pct": 1.83
+    },
+    {
+      "name": "TCN-f64",
+      "run_id": "tcn_f64",
+      "quantiles": true,
+      "params": 165851,
+      "size_fp32_kb": 2125.5,
+      "float_val": {
+        "val_mae_kwh": 4.8659,
+        "val_rmse_kwh": 9.8557,
+        "under_freq": 0.5754,
+        "under_mag_kwh": 4.3904,
+        "over_mag_kwh": 5.5103,
+        "q_coverage": 0.8444,
+        "q_pinball_norm": 0.1007
+      },
+      "size_int8_kb": 220.9,
+      "tflite_path": "models\\tcn_f64\\tcn_f64_int8.tflite",
+      "int8_val": {
+        "val_mae_kwh": 5.0106,
+        "val_rmse_kwh": 9.94,
+        "under_freq": 0.3635,
+        "under_mag_kwh": 6.4396,
+        "over_mag_kwh": 4.1947,
+        "q_coverage": 0.6919,
+        "q_pinball_norm": 0.1076
+      },
+      "delta_rmse_pct": 0.86
+    }
+  ]
+}

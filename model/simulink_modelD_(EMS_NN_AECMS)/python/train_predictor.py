@@ -340,7 +340,28 @@ def run_experiment(key, cfg, data, args, run_utc, group_idx, n_groups):
             Xva = (data["X_val"][:, :300].reshape(-1, 300, 1),
                    data["X_val"][:, 300:])
             builder = architectures.BUILDERS[kind]
-            model = builder(lr=cfg["lr"], quantiles=args.quantiles)
+            # T-307 修订（2026-08-29）：原实现只传 lr/quantiles，cfg["filters"] 等超参被
+            # 静默丢弃 —— 全部 TCN 配置实际都用默认 filters=64 训练（实证：五配置
+            # count_params 均=165851，逐层 conv filters 全=64）。修复：按白名单转发
+            # cfg 中的构建超参。CNN-MLP/N-BEATS 的 cfg 恰等于函数默认值，其历史结果不受影响。
+            _BUILD_KEYS = ("filters", "kernel", "dilations", "filters1", "kernel1",
+                           "filters2", "kernel2", "n_stacks", "blocks_per_stack", "fcs")
+            kwargs = {k: cfg[k] for k in _BUILD_KEYS if k in cfg}
+            model = builder(lr=cfg["lr"], quantiles=args.quantiles, **kwargs)
+            # 硬闸（T-307 事故后新增）：构建后必须逐层验证超参真实生效，
+            # 防止“参数被静默丢弃”类缺陷再次漏网（本次事故：五配置均被默认 64 训练）
+            _convs = [l for l in model.layers if isinstance(l, tf.keras.layers.Conv1D)]
+            if "filters" in cfg:
+                assert _convs and _convs[0].filters == cfg["filters"], (
+                    "BUILD 硬闸失败: 期望 filters=%d, 实际首层 Conv1D=%s（模型=%s）"
+                    % (cfg["filters"], [c.filters for c in _convs[:3]], key))
+            if "filters1" in cfg:
+                assert _convs and _convs[0].filters == cfg["filters1"], (
+                    "BUILD 硬闸失败: 期望 filters1=%d, 实际=%s（模型=%s）"
+                    % (cfg["filters1"], [c.filters for c in _convs[:3]], key))
+            print("BUILD %s params=%d conv_filters=%s kwargs=%s" % (
+                key, model.count_params(),
+                sorted({c.filters for c in _convs}), sorted(kwargs.keys())), flush=True)
         else:
             raise ValueError("未知 arch: %s" % kind)
 
@@ -820,14 +841,15 @@ def run_full(args, data):
 
     records, models, histories = [], {}, {}
     for i, (key, cfg) in enumerate(groups, 1):
+        key_eff = key
         # 非 42 seed 的重复实验（T-306 噪声底）追加 _sNN 后缀，避免覆盖官方 s42 产物；
         # MLP+quantiles 加 _q、卷积族无 quantiles 加 _mse（T-307 损失配对对照），同理防覆盖
-        eff_key = key if int(args.seed) == SEED else "%s_s%d" % (key, args.seed)
+        key_eff = key_eff if int(args.seed) == SEED else "%s_s%d" % (key_eff, args.seed)
         if args.quantiles and cfg["kind"] == "mlp":
-            eff_key += "_q"
+            key_eff += "_q"
         if (not args.quantiles) and cfg["kind"] in ("tcn", "cnn_mlp", "nbeats"):
-            eff_key += "_mse"
-        rec, model, hist = run_experiment(eff_key, cfg, data, args, run_utc, i, len(groups))
+            key_eff += "_mse"
+        rec, model, hist = run_experiment(key_eff, cfg, data, args, run_utc, i, len(groups))
         records.append(rec)
         models[key] = model
         histories[key] = hist
