@@ -83,6 +83,14 @@ python python/train_predictor.py --arch tcn --dataset v2 \
 - 完成后：spec 勾选（`.specs/nn-predictive-ecms-phase25/tasks.md` T-305）、
   开发日志（`项目开发进展.md` 顶部追加）、git commit+push（见 Git 纪律）。
 
+## 4b. 环境同源性（两机均可用性确认，2026-08-29）
+
+- MATLAB：两机均为 R2026a Update 3（用户确认同时安装、未更新）→ Simulink 闭环
+  （T-307/310）两机均可执行，数值同源；届时在 PC 还是 M1 由用户决策
+- Python：两机各自 venv（M1 用 tensorflow-metal），训练类任务 M1 优先
+- N6 硬件（T-311）：板子+ST-LINK 接在哪台机就在哪台做
+- 运维脚本已入库：`results/ecms_phase25/{run_chunks.m, watchdog_fleet.py, ps_check.ps1}`
+
 ## 5. Git 纪律（摘自 AGENTS.md §7，接手 agent 必须遵守）
 
 - 允许：`git add <具体文件>`（逐个）、`git commit`、`git push origin models-research`
