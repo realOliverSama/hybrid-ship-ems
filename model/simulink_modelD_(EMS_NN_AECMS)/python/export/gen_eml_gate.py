@@ -60,7 +60,7 @@ y_norm = W3.' * h2 + b3;                       % [3x1] = [q10;q50;q90]（归一�
             for kk = 1:3
                 jj = jt - 3 + kk;
                 if jj >= 1
-                    acc = acc + p1(jj, :) * reshape(C2W(kk, :, jf), [], 1);
+                    acc = acc + p1(jj, :) * reshape(C2W(kk, :, jf), 16, 1);
                 end
             end
             c2(jt, jf) = max(acc, 0);
@@ -77,7 +77,7 @@ y_norm = W3.' * h2 + b3;                       % [3x1] = [q10;q50;q90]（归一�
             for kk = 1:3
                 jj = jt - 3 + kk;
                 if jj >= 1
-                    acc = acc + p2(jj, :) * reshape(C3W(kk, :, jf), [], 1);
+                    acc = acc + p2(jj, :) * reshape(C3W(kk, :, jf), 32, 1);
                 end
             end
             c3(jt, jf) = max(acc, 0);
@@ -152,6 +152,7 @@ def mat_lit(A, name):
 
 def main():
     no_clf = "--no-clf" in sys.argv
+    clf_stub = "--clf-stub" in sys.argv
     tpl = open(TPL, encoding="utf-8").read()
     tpl = tpl.split("----\n", 1)[1]
     j = json.load(open(DEP, encoding="utf-8"))
@@ -159,15 +160,28 @@ def main():
     G = j["gate"]
     S1, S2 = G["S1_kwh"], G["S2_kwh"]
 
-    # 1) 标记剥离（先于任何替换）
-    g2begin = NEW_FWD.find('@@G2BEGIN@@')
-    g2end = NEW_FWD.find('@@G2END@@')
-    assert g2begin > 0 and g2end > g2begin, 'G2 标记缺失'
-    tail_from = g2end + len('@@G2END@@')
-    fwd_with = NEW_FWD[:g2begin] + NEW_FWD[tail_from:]
-    fwd_without = (NEW_FWD[:g2begin] + "    K_w = 1;   % --no-clf：识别器关闭\n"
-                   + NEW_FWD[tail_from:])
-    assert "@@" not in fwd_with and "@@" not in fwd_without, 'NEW_FWD 标记未剥离'
+    # 1) 标记剥离（行级：fwd_with 保留 G2 段只删标记行；fwd_without/stub 删段）
+    nf_lines = NEW_FWD.splitlines(True)
+    in_g2 = False
+    g2_lines = []
+    fwd_with_lines = []
+    for _l in nf_lines:
+        _s = _l.strip()
+        if _s == '@@G2BEGIN@@':
+            in_g2 = True
+            continue
+        if _s == '@@G2END@@':
+            in_g2 = False
+            continue
+        fwd_with_lines.append(_l)
+        if in_g2:
+            g2_lines.append(_l)
+    g2_body = ''.join(g2_lines)
+    fwd_with = ''.join(fwd_with_lines)
+    assert '@@' not in fwd_with, '标记未剥离'
+    assert 'Pdec = xP(1:10:300);' in fwd_with, 'G2 前向代码缺失（生成器回归）'
+    fwd_without = fwd_with.replace(g2_body, "    K_w = 1;   % --no-clf：识别器关闭\n")
+    g2stub = fwd_with.replace(g2_body, "    cls = 3;   % --clf-stub：分类器固定 eco\n")
 
     # 2) 常数块
     consts = []
@@ -191,13 +205,31 @@ def main():
 
     # 3) 模式循环：先换前向，再换常数与模式
     os.makedirs(OUTD, exist_ok=True)
-    modes = [0] if no_clf else [0, 1, 2, 3]
-    suffix = "_noclf" if no_clf else ""
+    modes = [0, 1, 2, 3]
+    suffix = "_noclf" if no_clf else ("_stub" if clf_stub else "")
     for mode in modes:
-        fwd = fwd_without if no_clf else fwd_with
+        fwd = fwd_without if no_clf else (g2stub if clf_stub else fwd_with)
         tpl_m = tpl.replace(OLD_FWD, fwd)
         tpl_m = tpl_m.replace("persistent lastT Pheld buf k vprev",
                               consts_str + "\npersistent lastT Pheld buf k vprev cls_eff run_cls run_cnt")
+        # codegen 要求：迟滞持久变量须在 isempty(lastT) 初始化分支全路径定义（T-310）
+        tpl_m = tpl_m.replace("""if isempty(lastT)
+    lastT = -1e9;
+    Pheld = Pgen_init;
+    k = 1;
+    buf = zeros(300, 1);
+    buf(:) = P_load;
+    vprev = v_ship;
+end""",
+"""if isempty(lastT)
+    lastT = -1e9;
+    Pheld = Pgen_init;
+    k = 1;
+    buf = zeros(300, 1);
+    buf(:) = P_load;
+    vprev = v_ship;
+    cls_eff = -1; run_cls = -1; run_cnt = 0;
+end""")
         tpl_m = tpl_m.replace("""if t < lastT
     % 新仿真开始：重置缓冲/写指针/速度差基线（与 ecms2.nn_predict_ehat 同语义）
     lastT = t;
