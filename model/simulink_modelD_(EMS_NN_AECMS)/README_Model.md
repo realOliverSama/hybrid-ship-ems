@@ -1,10 +1,3 @@
-<!-- ============================================================
-     Phase 2.5 演化副本（2026-08-29 自 simulink_modelD 完整复制独立演进）
-     本体：HybridShip_ModelD_DCBus.slx（沿用 ModelD 被控对象，未改）
-     变化：预测方法换代——TCN 主推多分位数预测（q10/q50/q90）+ NPU 导向
-     spec：.specs/nn-predictive-ecms-phase25（T-302 起任务在本目录执行）
-     ============================================================ -->
-
 # HybridShip Model D — 定时前馈 EMS 研究副本
 
 > **Model D（本项目）**：由 Model B（直流母线电气层）封存基线复制而来、完全独立命名的研究工程。
@@ -45,8 +38,7 @@ Model_MVP/
 ├── python/           train_load_predictor.py（STM32N6 导向训练程序）
 │                     export/（.keras / fp32+int8 .tflite / mlp_weights.mat / training_report.json）
 ├── scenarios/        工况数据（预留，SCN 由 config 生成，S01~S09）
-├── results/          烟雾测试图 results/T0*/*.png；AI 对比 results/ai_compare/S0*/*.png；
-│                     ecms_phase25/（T-305 训练产物：training_log_v2.csv、models/、logs/、fleet_profiles/ 等）
+├── results/          烟雾测试图 results/T0*/*.png；AI 对比 results/ai_compare/S0*/*.png
 ├── datasets/         航次数据 raw/run_XXXX.{mat,csv,metadata.json}；train/val/test
 ├── reports/          legacy_model_audit.md, parameter_audit.csv, Model_build_report.md,
 │                     smoke_summary.md, AI_vs_Baseline_report.md, ai/*.png
