@@ -986,6 +986,20 @@ Subagent 是执行者，不是系统设计者。
 
 新增/修改模型或预测模型时，必须**同步更新两层文档**：`README.md` 更新"用了哪些模型"一行，`README_Model.md` 更新对应章节。
 
+### 20.2 路径纪律（禁绝对路径，2026-08-30 用户指令）
+
+仓库内所有**可执行脚本**（`.py` / `.m` / `.sh` / `.ps1` / `.yaml` 等）**禁止硬编码绝对路径**（如 `E:\\...`、`/Users/...`、`/home/...`），一律使用**相对路径**：
+
+- MATLAB 脚本：用 `mfilename('fullpath')` 推导（脚本在 `scripts/` 下 = 2 层 fileparts 到工作区根；`scripts/+pkg/` 下 = 3 层），并**必须加 pwd 兜底**（`eval(fileread(...))` / `-batch` 顶层时 mfilename 为空）：
+  ```matlab
+  ROOT = fileparts(fileparts(mfilename('fullpath')));
+  if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
+  ```
+- Python 脚本：基于 `os.path.dirname(os.path.abspath(__file__))` 推导仓库根。
+- 仓库外依赖（如外部平台原始模型路径）用**环境变量注入**（`getenv('EMS_HIL_LEGACY_ORIG')`），缺失时优雅降级，禁止写死路径。
+- 注释里的示例命令同样不得含绝对路径。
+- 主 Agent 在 §14 验收时用扫描确认（`grep -rE '[A-Za-z]:[\\/]|/Users/|/home/'` 排除 URL/env），遗漏视为任务未完成。
+
 强制规则：
 
 1. **新增**任何文件或文件夹时，必须同步更新其所在目录的 `README.md`（条目与说明），并尽量与功能修改放在同一提交中；

@@ -20,7 +20,8 @@
 %    AND max|dP_gen_ref| <= 5 kW (one grid step)
 %% ========================================================================
 clearvars; close all; clc;
-ROOT   = 'E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD';
+ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
 MDL    = 'HybridShip_ModelD_DCBus';
 slx    = fullfile(ROOT, 'model', [MDL '.slx']);
 outDir = fullfile(ROOT, 'results', 'ecms_phase2', 'debug_law7');

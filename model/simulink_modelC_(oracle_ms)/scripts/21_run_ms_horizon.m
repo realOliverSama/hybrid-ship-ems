@@ -27,7 +27,7 @@ model.load_mlp_weights(ROOT);   % 与 12/20c 一致，双保险
 run(fullfile(ROOT,'config','Model_Scenarios.m'));
 
 MDL = 'HybridShip_ModelCms_DCBus';
-FROZEN_METRICS = '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/S04/E0.mat';
+FROZEN_METRICS = fullfile(fileparts(ROOT), 'simulink_modelC', 'results', 'phase1', 'S04', 'E0.mat');
 
 % 最小批次（T-004R 验收用）：V1A_MINI=1 时只跑 Nominal×S04 的 C0+CP H30+CMS H30
 MINI = strcmp(getenv('V1A_MINI'), '1');

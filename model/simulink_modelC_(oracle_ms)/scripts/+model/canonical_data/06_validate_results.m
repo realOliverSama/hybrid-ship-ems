@@ -26,8 +26,12 @@ res = {}; % {检查项, 通过, 说明}
 
 %% ---- 1. 原模型只读校验 ----
 legacyRef = fullfile(ROOT, 'legacy_reference', 'HybridShip0730.slx');
-legacyOrig = '/Users/oliverlyu/Desktop/EMS硬件在环平台/04软件与仿真/003Simulink模型/船舶控制模型/0730/HybridShip0730.slx';
-if exist(legacyOrig, 'file')
+% 外部平台原始模型路径（仓库外依赖，可配置；不存在则跳过哈希对比，不阻断验证）
+legacyOrig = getenv('EMS_HIL_LEGACY_ORIG');
+if isempty(legacyOrig)
+    legacyOrig = '';
+end
+if ~isempty(legacyOrig) && exist(legacyOrig, 'file')
     h1 = model.md5file(legacyRef);
     h2 = model.md5file(legacyOrig);
     res{end+1, 1} = '原模型未被修改';

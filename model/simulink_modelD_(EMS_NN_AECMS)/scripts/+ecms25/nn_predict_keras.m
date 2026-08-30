@@ -6,8 +6,12 @@ function ehat = nn_predict_keras(x, model_id, XMean, XStd, YMean, YStd, Ebar, Es
 % 首调初始化 py 桥；之后缓存。单步开销 ~10-50ms。
 persistent inited
 if isempty(inited)
-    pyenv('Version', 'E:\User\Tommy\Desktop\hybrid-ship-ems\model\simulink\python\.venv_tf\Scripts\python.exe');
-    py.sys.path().insert(int32(0), 'E:\User\Tommy\Desktop\hybrid-ship-ems\model\simulink_modelD_(EMS_NN_AECMS)\python');
+    % 相对路径推导：本文件 -> +ecms25 -> scripts -> 工作区根（禁绝对路径，AGENTS 纪律）
+    thisDir = fileparts(mfilename('fullpath'));
+    rootDir = fileparts(fileparts(thisDir));   % .../simulink_modelD_(EMS_NN_AECMS)
+    pyExe = fullfile(rootDir, '..', 'simulink', 'python', '.venv_tf', 'Scripts', 'python.exe');
+    pyenv('Version', pyExe);
+    py.sys.path().insert(int32(0), fullfile(rootDir, 'python'));
     LM = py.importlib.import_module('load_models_mcp');
     inited = true;
 end

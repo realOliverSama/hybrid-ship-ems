@@ -25,7 +25,7 @@ logf = @(fmt,varargin) fprintf(fid, fmt, varargin{:});
 results = {};
 logp = @(s) fprintf('[T006] %s\n', s);
 
-OLD = '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1';
+OLD = fullfile(fileparts(ROOT), 'simulink_modelC', 'results', 'phase1');
 
 %% ---------------- V1: 离线回放一致性 ----------------
 logp('=== V1: offline replay on old phase1 (S04 E0/E1/E2) ===');

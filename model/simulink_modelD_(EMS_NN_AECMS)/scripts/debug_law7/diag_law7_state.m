@@ -7,7 +7,8 @@
 %    Also probes the first-gate behavior by logging P_gen_ref statistics.
 %% ========================================================================
 clearvars; close all; clc;
-ROOT = 'E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD';
+ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
 MDL  = 'HybridShip_ModelD_DCBus';
 slx  = fullfile(ROOT, 'model', [MDL '.slx']);
 

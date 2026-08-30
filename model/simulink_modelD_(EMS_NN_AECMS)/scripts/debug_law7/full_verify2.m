@@ -12,8 +12,9 @@
 %  F5  ecms2.test_law7 full suite (T1/T2/T3)
 %% ========================================================================
 clearvars; close all; clc;
-ROOT = 'E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD';
-REPO = 'E:/User/Tommy/Desktop/hybrid-ship-ems';
+ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
+REPO = fileparts(ROOT);
 MDL  = 'HybridShip_ModelD_DCBus';
 slx  = fullfile(ROOT, 'model', [MDL '.slx']);
 outDir = fullfile(ROOT, 'results', 'ecms_phase2', 'debug_law7');
