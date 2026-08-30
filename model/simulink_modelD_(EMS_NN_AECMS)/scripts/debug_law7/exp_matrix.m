@@ -13,10 +13,11 @@
 %
 %  SAFETY: all edits in memory; close_system(MDL, 0) NEVER saves the .slx.
 %  Run:
-%    matlab -batch "run('E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD/scripts/debug_law7/exp_matrix.m')"
+%    matlab -batch "run(fullfile(ROOT,'scripts','debug_law7','exp_matrix.m'))"
 % ========================================================================
 clearvars; close all; clc;
-ROOT   = 'E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD';
+ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
 MDL    = 'HybridShip_ModelD_DCBus';
 slx    = fullfile(ROOT, 'model', [MDL '.slx']);
 outDir = fullfile(ROOT, 'results', 'ecms_phase2', 'debug_law7');

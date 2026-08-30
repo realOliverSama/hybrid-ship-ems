@@ -11,7 +11,8 @@
 %    G2_ASCII : keep all lines but strip every non-ASCII char from them
 %% ========================================================================
 clearvars; close all; clc;
-ROOT = 'E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD';
+ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
 MDL  = 'HybridShip_ModelD_DCBus';
 slx  = fullfile(ROOT, 'model', [MDL '.slx']);
 genFile = fullfile(ROOT, 'results', 'ecms_phase2', 'debug_law7', 'ecms_step_generated.m');

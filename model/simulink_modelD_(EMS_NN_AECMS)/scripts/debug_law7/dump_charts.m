@@ -10,7 +10,8 @@ src = getenv('CHART_SNAP_SRC');
 out = getenv('CHART_SNAP_OUT');
 assert(~isempty(src) && ~isempty(out), 'DUMP:ENV', 'CHART_SNAP_SRC/OUT not set');
 MDL = 'HybridShip_ModelD_DCBus';
-ROOT = 'E:/User/Tommy/Desktop/hybrid-ship-ems/model/simulink_modelD';
+ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
 
 try, bdclose('all'); catch, end          % purge every loaded model / SF machine
 load_system(src);

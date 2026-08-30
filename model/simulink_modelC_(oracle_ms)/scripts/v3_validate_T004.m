@@ -18,7 +18,7 @@ run(fullfile(ROOT,'config','Model_Parameters.m'));
 model.load_mlp_weights(ROOT);   % law=1 需要真实 MLP 权重
 run(fullfile(ROOT,'config','Model_Scenarios.m'));
 MDL = 'HybridShip_ModelCms_DCBus';
-FROZEN = '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC';
+FROZEN = fullfile(fileparts(ROOT), 'simulink_modelC');
 TS = datestr(now,'yyyymmdd_HHMMSS');
 LOGF = fullfile(ROOT,'results','ms_phase1',sprintf('T004_validate_%s.log',TS));
 if ~exist(fileparts(LOGF),'dir'), mkdir(fileparts(LOGF)); end

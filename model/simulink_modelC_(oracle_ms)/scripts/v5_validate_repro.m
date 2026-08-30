@@ -23,7 +23,7 @@ model.ensure_canonical(ROOT);
 run(fullfile(ROOT,'config','Model_Parameters.m'));
 run(fullfile(ROOT,'config','Model_Scenarios.m'));
 MDL = 'HybridShip_ModelCms_DCBus';
-FROZEN = '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC/results/phase1/S04/E0.mat';
+FROZEN = fullfile(fileparts(ROOT), 'simulink_modelC', 'results', 'phase1', 'S04', 'E0.mat');
 
 OUTDIR = fullfile(ROOT,'results','ms_phase1','repro');
 if ~exist(OUTDIR,'dir'), mkdir(OUTDIR); end

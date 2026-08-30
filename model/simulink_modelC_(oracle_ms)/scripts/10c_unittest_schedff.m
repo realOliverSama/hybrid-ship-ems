@@ -7,7 +7,8 @@
 %  本脚本为纯脚本（无局部函数），按仓库惯例以 eval(fileread(...)) 运行。
 %  输出: 图表 -> results/schedff_unittest/*.png；断言表 -> stdout
 % ========================================================================
-ROOT = '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelC_(oracle_ms)';
+ROOT = fileparts(fileparts(mfilename('fullpath')));
+if isempty(ROOT) || ~exist(fullfile(ROOT,'config'),'dir'), ROOT = pwd; end
 cd(ROOT);
 addpath(fullfile(ROOT,'config'), fullfile(ROOT,'scripts'));
 run(fullfile(ROOT,'config','Model_Parameters.m'));
