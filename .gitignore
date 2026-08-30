@@ -188,3 +188,16 @@ model/simulink_modelD/results/ecms_phase2/models/*/
 
 # Phase 2 训练过程图（每次训练重新生成）
 model/simulink_modelD/results/ecms_phase2/plots/
+
+# ==========================================================
+# 本机/会话残留（2026-08-30 用户指令：清理隐患，不入库）
+# ==========================================================
+
+# MATLAB 会话日志
+.matlab_session.log
+
+# Pi agent 本地配置（本机专属）
+.pi/settings.json
+
+# Phase 2.5 门控集成中间产物（63 生成，可随时重建；gate_result_v2.json 等结论产物已入库）
+model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
