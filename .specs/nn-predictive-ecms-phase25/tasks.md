@@ -146,7 +146,7 @@ Design: `./design.md`
   - Acceptance: 用户/主 Agent 批准；OQ-3 遗留关闭。
   - Escalate If: 需要新增 law=8 或改动 law=4/5 内核（设计层，主 Agent 自决）。
 
-- [ ] 10. 门控集成 + 闭环矩阵 v2 + capture 判定 + Phase 2.5 报告
+- [x] 10. 门控集成 + 闭环矩阵 v2 + capture 判定 + Phase 2.5 报告
   - ID: T-310
   - Requirement(s): FR-311, FR-312, FR-315, FR-317, FR-318
   - Goal: 按 T-309 批准方案集成（Simulink 脚本驱动）；G0~G3 消融矩阵全跑；
