@@ -647,6 +647,27 @@ firmware/stm32n6/04_SourceCode/SoftwarePackage/
 
 原则上只读。
 
+### EMS 工程工作区（Phase 3 起，2026-08-31 设立）
+
+Phase 3 起，EMS 固件工程统一放在 Vendor Package 内的专用工作区：
+
+```text
+firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/
+```
+
+- **一个 EMS 工程一个独立子文件夹**，组织方式类比 `SoftwarePackage/Projects/` 下的
+  CubeMX/CMake 工程；新建工程子文件夹按本规则直接执行（常设授权），删除或
+  重命名既有工程须用户批准；
+- `EMS_Projects/` 及其子目录是**用户自有工作区（非 vendor 资产）**，其中文件可按
+  工程需要修改；设立依据：用户决定（2026-08-31），构成对 Vendor 只读原则的
+  显式例外（同步登记于 `docs/agent/STM32N6_ARCHITECTURE.md` §2）；
+- Vendor 其余内容仍保持只读；
+- EMS 工程必须遵守 Vendor 子树 AGENTS.md：不得复制 prepare 脚本与 BSP 进工程、
+  保留 SoftwarePackage 整体结构、`.ioc` 修改需用户授权、生成代码只改
+  USER CODE 区域；
+- 工程内新文件按其所在工程登记（vendor 子树豁免 §20 目录索引机制，
+  但每个 EMS 工程根必须有自己的 README.md 说明结构与产物）。
+
 同时必须遵守 Vendor 子树中的：
 
 ```text

@@ -84,6 +84,16 @@ READ-ONLY
 
 实现功能。
 
+### EMS 工程工作区例外（2026-08-31 设立）
+
+```text
+firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/
+```
+
+是用户自有 EMS 固件工程工作区，不适用上述 Vendor READ-ONLY 限制：
+Phase 3 起 EMS 工程每个一个独立子文件夹，组织类比 `Projects/`。
+规则见项目 `AGENTS.md` §11「EMS 工程工作区」；Vendor 其余内容仍按 READ-ONLY 原则处理。
+
 ---
 
 ## 3. FreeRTOS 架构
