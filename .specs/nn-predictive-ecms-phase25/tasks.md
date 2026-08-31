@@ -202,3 +202,20 @@ Design: `./design.md`
 - 任务按序执行；T-301/T-309 为主 Agent 设计门（无代码）。
 - 每个任务验证通过后立即勾选；偏离 design 须先记录于 design.md。
 - 实施由低成本执行模型完成；主 Agent 负责每个任务的验收（AGENTS.md §14）。
+
+## 收口后去向（Post-completion handoff，2026-08-31 补记）
+
+> 本节为导航补记，不改变本 spec 范围（T-301~T-312）与任何任务状态。
+
+1. **收口条件**：T-311（N6 板上 int8 实测，需用户在场）→ T-312（报告+审）完成
+   后，Phase 2.5 正式结束，产物冻结入库（用户 2026-08-30 澄清：时间线澄清条目）。
+2. **Phase 3（下一个研究项目，不在本 spec）**：CHIL 全模型大表（TCN/N-BEATS/
+   集成/大 MLP 重入闭环）+ trajectory-aware EMS（B 线优先）+ 蒸馏/集成/在线自适应
+   + 生成器 v3（法规语义差异化，根治 bridge/harbor 观察等价）+ N6 落地。
+   规划已补充至 `docs/research_roadmap.md` §8（2026-08-31，含 HIL 资料清单与
+   sample time 决策依据）；将新开 spec 与新任务编号，不复用 T-3xx。
+   本 spec 出口产物 MLP-Q G2（capture 0.589，`results/ecms_phase25/gating/`）
+   为 CHIL 平台交叉验证基准。
+3. **Phase 4（已立项 draft）**：`.specs/phase4-model-e/`（Model E：面向 HIL 的
+   模型重构与实时化，T-401~T-407 草稿 + 6 条开放问题；tasks-draft，未批准
+   不得实施）。与 Phase 3 并行不阻塞，汇合点为 CHIL plant 切换 Model E-RT。
