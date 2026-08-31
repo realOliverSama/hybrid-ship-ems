@@ -488,6 +488,11 @@ STM32N647（AlienTek，Cortex-M55 @800MHz + Neural-ART 600 GOPS + 4.2MB SRAM + N
 （ST Edge AI / X-CUBE-AI）+ 模型热切换 → ECMS 逻辑移植（CPU）→ CHIL 平台
 （N6↔plant 通信 + 步进同步）→ 逐个换模型跑场景矩阵。
 
+**固件工程位置（用户 2026-08-31 决定）**：Phase 3 起 EMS 固件工程统一放
+`firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/<工程名>/`
+（一个工程一个子文件夹，组织类比 `Projects/`；用户自有工作区，Vendor 只读原则的
+显式例外，规则见 `AGENTS.md` §11「EMS 工程工作区」）。
+
 已知风险：plant 连续 vs N6 离散同步机制；N-BEATS int8 算子支持需 ST Edge AI 确认
 （Dense 为主，预期 OK）；固件工作量（模型加载 + ECMS 移植）为 Phase 3 前置工程。
 
