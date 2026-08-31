@@ -15,6 +15,7 @@
 | `nn-predictive-ecms-phase2/` | 目录 | Phase 2 NN 预测型 A-ECMS（SOC_ref 前瞻通道） |
 | `nn-predictive-ecms-phase25/` | 目录 | Phase 2.5 NPU 导向模型族优化（TCN 主推）+ 数据集 v2 内河工况扩展 + 工况识别门控（models-research 分支，tasks-approved / Amendment v1.1） |
 | `phase4-model-e/` | 目录 | Phase 4 Model E：面向 HIL 的模型重构与实时化（**全 draft**：tasks.md 含 T-401~T-407 草稿与开放问题，待用户与本地模型讨论定稿，未批准不得实施；规划背景见 `docs/research_roadmap.md` §8） |
+| `ems01-chil-ecms-v1/` | 目录 | EMS01_CHIL_ECMS 固件 v1（Phase 3 CHIL 控制器侧，models-research 分支）：M1 = CMake 骨架 + STEdgeAI + MLP-Q int8 板上验证（兼关闭 phase25 T-311）；M2 = ECMS+G2 移植 + 本地激励验证；热切换→v2、CHIL 通信→v3 |
 | `multistep-predictive-ems/` | 目录 | 面向参数不确定性的多步负荷预测增强型 EMS |
 | `timed-feedforward-ems/` | 目录 | Model C 定时前馈 EMS（Peak + Time-to-Peak 预测调度） |
 | `model-b-dc-bus/` | 目录 | Model B 直流母线电气层 + 安全/节能指标卡 + S10 工况 |
