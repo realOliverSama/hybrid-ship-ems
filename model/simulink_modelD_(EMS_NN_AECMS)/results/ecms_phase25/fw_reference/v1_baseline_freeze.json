@@ -1,0 +1,13 @@
+{
+ "baseline": "v1 (pre workclf-caliber amendment)",
+ "commit": "2d6b16f2b131978de9a9ae7aa190827793f00274",
+ "files": {
+  "ref_G2_S20_composite_voyage_matrix.csv": "9b9b121c8a1a7a95e94db5dda40a4fd10f2db11b2748d88fb874114c41698e87",
+  "ref_G2_test_voyage_002_v2.csv": "8c7023978dd6de8d68a8b1b84e6643833c00dc04e1c0aae03a96865cbea4f007",
+  "meta_G2_S20_composite_voyage_matrix.json": "aec0e09d21e425ea29f9f394c47bf7e2a3e119c07076b177e3d444b7292425d2",
+  "meta_G2_test_voyage_002_v2.json": "3db3d251c390d776f3a428eb2d3065d80241a51eed1cc6dc7713c7c1745efd78",
+  "ecms_nn_dbg.m": "741e8aad919fc69ff261860ba097e7507636e92243361bdec876aab3bdd943df",
+  "../gating/gate_result_v2.json": "86e88e7548bd3590e4f53413aee4f9f16e91ddaf1a07637354fffb8f45bab585",
+  "gating/eml_ecms_step_mode2.m": "25fa60f8e0db872f84415a86088d530fd144826fbf4d6fb0e45d8a4248f10589"
+ }
+}

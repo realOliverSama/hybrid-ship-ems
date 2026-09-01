@@ -19,7 +19,7 @@
       "max_abs_d_kW": 0.0,
       "n_held": 0,
       "n_not_ok": 0,
-      "diag_e_hat_max_abs_d": 0.013115631834939245,
+      "diag_e_hat_max_abs_d": 0.01311563183493969,
       "diag_K_mismatch": 0,
       "diag_cls_eff_mismatch": 0,
       "diag_q_diff_distinct": {
@@ -48,7 +48,7 @@
       "max_abs_d_kW": 0.0,
       "n_held": 0,
       "n_not_ok": 0,
-      "diag_e_hat_max_abs_d": 0.013115631834938801,
+      "diag_e_hat_max_abs_d": 0.013115631834939523,
       "diag_K_mismatch": 0,
       "diag_cls_eff_mismatch": 0,
       "diag_q_diff_distinct": {

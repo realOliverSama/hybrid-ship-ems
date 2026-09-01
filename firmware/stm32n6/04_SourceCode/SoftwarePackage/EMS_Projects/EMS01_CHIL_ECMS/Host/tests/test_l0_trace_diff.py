@@ -20,6 +20,7 @@
 退出码：0 = 全部 run 门禁通过；1 = 任一失败（不得为 PASS 调整任何阈值）。
 """
 import csv
+import hashlib
 import json
 import math
 import os
@@ -94,6 +95,46 @@ def run_trace(exe, rows):
     if len(out) != len(rows):
         raise AssertionError("STEP 行数 %d != tick 数 %d" % (len(out), len(rows)))
     return out
+
+
+def check_baseline_manifest():
+    """D-4 混态防护：参考数据 sha256 与基线清单逐一比对。
+
+    清单 fw_reference/baseline_manifest.json 存在时，对其 files 中每个相对路径
+    （相对 fw_reference/）重算 sha256 并比对；不一致 → AssertionError（防
+    ref_*.csv 与基线清单分属新旧口径的混态比对）。清单不存在（参考数据尚未
+    冻结基线）时跳过并打印提示。
+    """
+    mpath = os.path.join(REF_DIR, "baseline_manifest.json")
+    if not os.path.isfile(mpath):
+        print("[L0] baseline_manifest.json 不存在 → 跳过基线指纹校验"
+              "（参考数据未冻结基线清单；混态防护未启用）")
+        return
+    with open(mpath, "r", encoding="utf-8") as f:
+        manifest = json.load(f)
+    files = manifest.get("files")
+    if not isinstance(files, dict) or not files:
+        raise AssertionError(
+            "baseline_manifest.json 缺少非空 files 字典: %s" % mpath)
+    bad = []
+    for rel in sorted(files):
+        fpath = os.path.normpath(os.path.join(REF_DIR, rel))
+        if not os.path.isfile(fpath):
+            bad.append("%s: 清单内文件缺失" % rel)
+            continue
+        with open(fpath, "rb") as f:
+            got = hashlib.sha256(f.read()).hexdigest()
+        want = files[rel]
+        if isinstance(want, dict):   # 兼容 {"sha256": ...} 对象型条目
+            want = want.get("sha256")
+        if want != got:
+            bad.append("%s: sha256 不一致（清单=%s 实际=%s）"
+                       % (rel, str(want)[:16], got[:16]))
+    if bad:
+        raise AssertionError(
+            "参考数据与基线清单不一致——混态防护，重新生成基线清单或排查:\n  "
+            + "\n  ".join(bad))
+    print("[L0] 基线清单指纹校验 OK（%d 个文件）" % len(files))
 
 
 def diff_run(name, csv_path, exe, build_dir):
@@ -191,6 +232,7 @@ def main():
                   if f.startswith("ref_") and f.endswith(".csv"))
     if not csvs:
         raise SystemExit("ERROR: 未找到参考 CSV（先运行 66_export_fw_reference.m）")
+    check_baseline_manifest()  # D-4 混态防护：ref CSV 与基线清单指纹比对
     build_dir = tempfile.mkdtemp(prefix="ems01_l0_trace_")
     exe = compile_driver("-O2", build_dir)
     results = []

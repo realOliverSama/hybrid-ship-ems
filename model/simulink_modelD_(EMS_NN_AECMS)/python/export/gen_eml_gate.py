@@ -35,7 +35,7 @@ y_norm = W3.' * h2 + b3;                       % [3x1] = [q10;q50;q90]（归一�
 
 @@G2BEGIN@@
     % ---- G2：工况识别门控（workclf_v1，T-308；仅 upstream 可辨识，T-309 修订）----
-    Pdec = xP(1:10:300);                           % 30x1（10 s 重采样，与训练一致）
+    Pdec = xnorm(1:10:300);                        % 30x1（归一化域切片，与 T-312 训练口径一致；2026-09 口径修订，原 xP(1:10:300) raw 口径致 int8 标定错配坍缩，AI_MODELING §22）
     c1 = zeros(30, 16);
     for jf = 1:16
         for jt = 1:30
@@ -84,7 +84,7 @@ y_norm = W3.' * h2 + b3;                       % [3x1] = [q10;q50;q90]（归一�
         end
     end
     gfeat = mean(c3, 1)';                          % GAP [32x1]
-    s8 = max(F1W' * [v_ship; accel] + F1B(:), 0);  % [8x1]
+    s8 = max(F1W' * [xnorm(301); xnorm(302)] + F1B(:), 0);  % [8x1]（归一化 v/accel，口径修订）
     hcl = max(F2W' * [gfeat; s8] + F2B(:), 0);     % [64x1]
     ocl = F3W' * hcl + F3B(:);                     % [7x1]
     [~, cls] = max(ocl);                           % 1..7（1=depart..6=upstream..7=berth）
@@ -179,7 +179,7 @@ def main():
     g2_body = ''.join(g2_lines)
     fwd_with = ''.join(fwd_with_lines)
     assert '@@' not in fwd_with, '标记未剥离'
-    assert 'Pdec = xP(1:10:300);' in fwd_with, 'G2 前向代码缺失（生成器回归）'
+    assert 'Pdec = xnorm(1:10:300);' in fwd_with, 'G2 前向代码缺失（生成器回归）'
     fwd_without = fwd_with.replace(g2_body, "    K_w = 1;   % --no-clf：识别器关闭\n")
     g2stub = fwd_with.replace(g2_body, "    cls = 3;   % --clf-stub：分类器固定 eco\n")
 

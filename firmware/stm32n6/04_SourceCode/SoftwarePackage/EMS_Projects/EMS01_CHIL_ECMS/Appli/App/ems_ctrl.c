@@ -322,13 +322,18 @@ double ems_ctrl_step(ems_ctrl_t *st, const ems_ctrl_in_t *in, ems_ctrl_out_t *ou
             const double s_q = q90 - q10;                    /* EML:72 */
             const double k_q = ems_ctrl_gate_kq(s_q);
 
-            /* ---- EML:81-134 G2 工况识别（原始物理量输入，EML:82） ---- */
+            /* ---- EML:81-134 G2 工况识别（归一化域输入，2026-09 口径修订）----
+             * 修订前：raw 物理量（xP(1:10:300) + v_ship + accel，EML:82-105 原语义）。
+             * T-508 判别实验实证：raw 喂入口径 ≠ T-312 训练口径（xnorm 切片），int8 输入
+             * 量化（标定集=归一化样本）饱和坝缩（docs/agent/AI_MODELING.md §22）。
+             * 本修订统一三口径（训练=部署喂入=int8 标定）：切片 xnorm[10*j]/[300]/[301]
+             * 与训练 X[:, :300:10] + X[:, 300:] 索引序严格一致（升序、无重排）。 */
             double pdec30[30];
             for (int j = 0; j < 30; j++) {
-                pdec30[j] = xP[10 * j];                      /* EML:82 xP(1:10:300) */
+                pdec30[j] = xnorm[10 * j];     /* xnorm(1:10:300)，与 T-312 训练切片一致 */
             }
             int cls = 0;
-            if (ems_infer_workclf(pdec30, in->v_ship, accel, &cls, NULL, NULL) != 0) {
+            if (ems_infer_workclf(pdec30, xnorm[300], xnorm[301], &cls, NULL, NULL) != 0) {
                 ok = 0; /* 识别推理失败 → ê=0 回退（design Error Handling） */
             }
 

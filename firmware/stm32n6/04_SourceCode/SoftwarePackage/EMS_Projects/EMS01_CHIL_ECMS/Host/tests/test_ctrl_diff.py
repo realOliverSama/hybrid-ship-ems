@@ -348,8 +348,11 @@ class Mirror:
             e_hat_raw = (q50 - self.ebar) / self.escale
             s_q = q90 - q10
             k_q = self.gate_kq(s_q)
-            pdec = [xP[10 * j] for j in range(30)]
-            cls = self.workclf(pdec, v_ship, accel)
+            # 2026-09 口径修订：workclf 输入 = 同一 xnorm 的切片（xnorm[10*j]、
+            # xnorm[300]/[301]，与固件 ems_ctrl.c 一致；T-312 训练口径
+            # X[:, :300:10]+X[:,300:]；修订前 raw 口径致 int8 饱和坍缩）。
+            pdec = [xnorm[10 * j] for j in range(30)]
+            cls = self.workclf(pdec, xnorm[300], xnorm[301])
             if 1 <= cls <= 7:
                 self.hysteresis(self.g, cls)
                 cls_inv = 0
@@ -827,16 +830,21 @@ def test_mlpq_mirror(ctx):
 
 @case
 def test_workclf_mirror(ctx):
-    """R11b workclf 前向逐位镜像（因果 conv/pool 丢尾/GAP/旁路融合，EML:82-134）。"""
+    """R11b workclf 前向逐位镜像（因果 conv/pool 丢尾/GAP/旁路融合，EML:82-134）。
+
+    2026-09 口径修订：固件喂入已改为归一化切片（xnorm[10*j] + xnorm[300]/[301]，
+    与 T-312 训练口径一致），直喂用例输入取归一化域典型范围 uniform(-3,3)；
+    修订前用例为 raw 量纲（pd 0..900 / v 0..9 / a -0.5..0.5）。
+    """
     import numpy as np
     d = Driver(ctx["exe"])
     m = Mirror(ctx["data"])
     try:
         rng = np.random.default_rng(20260901)
         for _ in range(20):
-            pd = rng.uniform(0.0, 900.0, 30)
-            v = rng.uniform(0.0, 9.0)
-            a = rng.uniform(-0.5, 0.5)
+            pd = rng.uniform(-3.0, 3.0, 30)
+            v = rng.uniform(-3.0, 3.0)
+            a = rng.uniform(-3.0, 3.0)
             r = d.cmd("workclf %s %.17g %.17g" % (
                 " ".join(repr(float(x)) for x in pd), v, a))
             want = m.workclf([float(x) for x in pd], float(v), float(a))

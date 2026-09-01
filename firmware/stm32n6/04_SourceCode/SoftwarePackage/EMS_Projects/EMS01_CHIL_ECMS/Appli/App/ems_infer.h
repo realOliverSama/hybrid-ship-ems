@@ -7,8 +7,9 @@
  * 职责边界（design R8，防双后端代码漂移）：后端只做张量前向。
  * 预处理（滑窗/归一化/Pdec 抽取）只在 ems_ctrl.c 实现一份：
  *   - mlpq 输入 x302 为归一化后窗口（ems_ctrl 完成 (x-mean)/std）；
- *   - workclf 输入为原始物理量（Pdec 10s 重采样 30 点 + v_ship + accel），
- *     与 EML:82-134 一致（识别器不吃归一化）。
+ *   - workclf 输入为同一 xnorm 的切片（Pdec 10s 重采样 30 点 + v_ship + accel 的
+ *     归一化值），与 T-312 训练口径一致（2026-09 口径修订；修订前为原始物理量，
+ *     导致 int8 输入量化饱和坝缩，见 docs/agent/AI_MODELING.md §22）。
  *
  * 返回值：0 = 成功；非 0 = 推理失败（触发 ems_ctrl 的 ê=0 回退，design Error Handling）。
  * us：推理耗时 [μs] 输出（DWT CYCCNT 由目标侧封装；REF/host 侧写 0），可为 NULL。
@@ -27,7 +28,8 @@ extern "C" {
  * 反归一化 q*Y_STD+Y_MEAN 属 ems_ctrl，对应 EML:64-68）。 */
 int ems_infer_mlpq(const double x302[302], double q3[3], uint32_t *us);
 
-/* workclf 前向：pdec30（原始 Pdec，10 s 重采样）+ v_ship + accel → cls ∈ 1..7
+/* workclf 前向：pdec30（归一化域 Pdec 30 点切片，xnorm(1:10:300)）+ 归一化
+ * [v_ship, accel]（xnorm[300:302]）→ cls ∈ 1..7
  * （1..7，MATLAB max 语义平局取首，EML:134）。out_logits[7] 可为 NULL：非 NULL 时
  * 回填 7 类 logits（NPU 后端 = 内部 clf_out；REF 后端 = ocl 前向值 f32 截断），
  * 供 CMD_WC_TEST（0x08）回显与 T-507 类别一致率测量；控制律路径传 NULL 不变。 */
