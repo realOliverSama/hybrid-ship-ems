@@ -1,0 +1,12 @@
+{
+ "baseline": "v1.1 (workclf normalized-caliber amendment 2026-09-07/08)",
+ "commit": "2d6b16f2b131978de9a9ae7aa190827793f00274",
+ "files": {
+  "ref_G2_S20_composite_voyage_matrix.csv": "71440e1ca4076b28117c5d7977ca841c77fcff898437b901e22f0eb67907a66c",
+  "ref_G2_test_voyage_002_v2.csv": "a8db392fe434082c972feb71183ffd79ff9693d5cafbabb6385922cfc50b9a62",
+  "meta_G2_S20_composite_voyage_matrix.json": "463463b732bc5ef69c0e419058f34fafdd7b71abef1bf8a805b33a352ebda1b8",
+  "meta_G2_test_voyage_002_v2.json": "9417dd03af39305f749143a24ad88b8f0890bdc262c985ea685481349e0e201a",
+  "../gating/eml_ecms_step_mode2.m": "ee74280bed916f8dd27d9b8c6f15c6c97d0ce45bfb2a92a094b575beee5ceb8c",
+  "../gating/gate_result_v2.json": "015d053d9b688bdc935438962d62302f2aa0f9dfe17a47826152ff17d60ef37a"
+ }
+}

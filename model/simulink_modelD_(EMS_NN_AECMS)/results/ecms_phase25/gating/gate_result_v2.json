@@ -1,6 +1,6 @@
 {
   "task": "T-310",
-  "generated": "2026-08-30 16:11:33",
+  "generated": "2026-09-02 01:32:54",
   "capture_formula": "(fuel_C2 - fuel_C4)/(fuel_C2 - fuel_C3) on S20",
   "capture_thresholds": [
     0.5,
@@ -29,8 +29,8 @@
     {
       "mode": 2,
       "name": "G2",
-      "capture_S20": 0.5893,
-      "fuel_S20_kg": 327.3001,
+      "capture_S20": 0.4447,
+      "fuel_S20_kg": 328.125,
       "sim_errors": 0,
       "s07_derate": 0,
       "fr318_pass": true
@@ -38,8 +38,8 @@
     {
       "mode": 3,
       "name": "G3",
-      "capture_S20": 0.5362,
-      "fuel_S20_kg": 327.6029,
+      "capture_S20": 0.3966,
+      "fuel_S20_kg": 328.3996,
       "sim_errors": 0,
       "s07_derate": 0,
       "fr318_pass": true
@@ -63,16 +63,16 @@
       "pass": true
     },
     "G2": {
-      "saving_pct_median": 3.7816,
-      "saving_pct_min": -0.3798,
+      "saving_pct_median": 3.1941,
+      "saving_pct_min": -0.8518,
       "zero_new_derate": true,
       "zero_new_undervolt": true,
       "soc_ok": true,
       "pass": true
     },
     "G3": {
-      "saving_pct_median": 3.7816,
-      "saving_pct_min": -0.2731,
+      "saving_pct_median": 3.4981,
+      "saving_pct_min": 1.2653,
       "zero_new_derate": true,
       "zero_new_undervolt": true,
       "soc_ok": true,

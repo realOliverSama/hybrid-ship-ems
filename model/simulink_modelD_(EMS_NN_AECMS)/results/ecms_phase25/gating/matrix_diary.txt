@@ -1,0 +1,201 @@
+[64] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 00:38:07
+[modela] 已从权威副本恢复 1 个文件: README_Model.md
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[64] holdout voyages (first 10) : [2;3;5;25;31;35;36;40;43;50]
+[64] rows total 66 | new 0 | cached 66
+[64] MODEUSE_PARSIM  parsim 
+
+[64] ===== MODE G0 (GATE_MODE=0)=====
+>>MARK chart-switch mode 0 done (reloaded)
+[64] chart Script  mode0
+[64] MODE
+
+[64] ===== MODE G1 (GATE_MODE=1)=====
+>>MARK chart-switch mode 1 done (reloaded)
+[64] chart Script  mode1
+[64] MODE
+
+[64] ===== MODE G2 (GATE_MODE=2)=====
+>>MARK chart-switch mode 2 done (reloaded)
+[64] chart Script  mode2
+[64] MODE
+
+[64] ===== MODE G3 (GATE_MODE=3)=====
+>>MARK chart-switch mode 3 done (reloaded)
+[64] chart Script  mode3
+[64] MODE
+[64] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/gating/runs_gate_v2.csv
+[64] gate_result_v2 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/gating/gate_result_v2.json
+[64] : G1 (quantile gating)
+[64] MATRIX COMPLETE
+[64] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 00:47:19
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[64] holdout voyages (first 10) : [2;3;5;25;31;35;36;40;43;50]
+[64] rows total 66 | new 66 | cached 0
+[64] MODEUSE_PARSIM  parsim 
+
+[64] ===== MODE G0 (GATE_MODE=0)=====
+>>MARK chart-switch mode 0 done (reloaded)
+[64] chart Script  mode0
+>>MARK sims to run in mode 0: 24
+>>MARK serial 1/24 done
+>>MARK serial 2/24 done
+>>MARK serial 3/24 done
+>>MARK serial 4/24 done
+>>MARK serial 5/24 done
+>>MARK serial 6/24 done
+>>MARK serial 7/24 done
+>>MARK serial 8/24 done
+>>MARK serial 9/24 done
+>>MARK serial 10/24 done
+>>MARK serial 11/24 done
+>>MARK serial 12/24 done
+>>MARK serial 13/24 done
+>>MARK serial 14/24 done
+>>MARK serial 15/24 done
+>>MARK serial 16/24 done
+>>MARK serial 17/24 done
+>>MARK serial 18/24 done
+>>MARK serial 19/24 done
+>>MARK serial 20/24 done
+>>MARK serial 21/24 done
+>>MARK serial 22/24 done
+>>MARK serial 23/24 done
+>>MARK serial 24/24 done
+[64] G0_S20_composite_voyage_matrix           law=7 fuel_corr=328.0757 SOC_end=0.6010 n_der=0
+[64] G0_S01_still_water_matrix                law=7 fuel_corr=50.2352 SOC_end=0.5937 n_der=0
+[64] G0_S02_downstream_matrix                 law=7 fuel_corr=50.2352 SOC_end=0.5937 n_der=0
+[64] G0_S07_bridge_maneuver_matrix            law=7 fuel_corr=50.2352 SOC_end=0.5937 n_der=0
+[64] G0_test_voyage_002_v2                    law=7 fuel_corr=224.0862 SOC_end=0.6785 n_der=0
+[64] G0_test_voyage_003_v2                    law=7 fuel_corr=259.0169 SOC_end=0.6267 n_der=0
+[64] G0_test_voyage_005_v2                    law=7 fuel_corr=137.9534 SOC_end=0.5924 n_der=0
+[64] G0_test_voyage_025_v2                    law=7 fuel_corr=163.4779 SOC_end=0.5948 n_der=0
+[64] G0_test_voyage_031_v2                    law=7 fuel_corr=159.1158 SOC_end=0.5887 n_der=0
+[64] G0_test_voyage_035_v2                    law=7 fuel_corr=153.4316 SOC_end=0.5923 n_der=0
+[64] G0_test_voyage_036_v2                    law=7 fuel_corr=178.3570 SOC_end=0.5967 n_der=0
+[64] G0_test_voyage_040_v2                    law=7 fuel_corr=221.6273 SOC_end=0.6187 n_der=0
+[64] G0_test_voyage_043_v2                    law=7 fuel_corr=235.7167 SOC_end=0.6104 n_der=0
+[64] G0_test_voyage_050_v2                    law=7 fuel_corr=208.4444 SOC_end=0.6714 n_der=0
+[64] C2_test_voyage_002_v2                    law=5 fuel_corr=239.8216 SOC_end=0.5990 n_der=0
+[64] C2_test_voyage_003_v2                    law=5 fuel_corr=267.4275 SOC_end=0.5998 n_der=0
+[64] C2_test_voyage_005_v2                    law=5 fuel_corr=138.9917 SOC_end=0.5992 n_der=0
+[64] C2_test_voyage_025_v2                    law=5 fuel_corr=166.0108 SOC_end=0.5994 n_der=0
+[64] C2_test_voyage_031_v2                    law=5 fuel_corr=167.7088 SOC_end=0.6001 n_der=0
+[64] C2_test_voyage_035_v2                    law=5 fuel_corr=151.1472 SOC_end=0.5988 n_der=0
+[64] C2_test_voyage_036_v2                    law=5 fuel_corr=184.9711 SOC_end=0.5988 n_der=0
+[64] C2_test_voyage_040_v2                    law=5 fuel_corr=222.9890 SOC_end=0.6000 n_der=0
+[64] C2_test_voyage_043_v2                    law=5 fuel_corr=243.6308 SOC_end=0.5993 n_der=0
+[64] C2_test_voyage_050_v2                    law=5 fuel_corr=223.2711 SOC_end=0.5987 n_der=0
+
+[64] ===== MODE G1 (GATE_MODE=1)=====
+>>MARK chart-switch mode 1 done (reloaded)
+[64] chart Script  mode1
+>>MARK sims to run in mode 1: 14
+>>MARK serial 1/14 done
+>>MARK serial 2/14 done
+>>MARK serial 3/14 done
+>>MARK serial 4/14 done
+>>MARK serial 5/14 done
+>>MARK serial 6/14 done
+>>MARK serial 7/14 done
+>>MARK serial 8/14 done
+>>MARK serial 9/14 done
+>>MARK serial 10/14 done
+>>MARK serial 11/14 done
+>>MARK serial 12/14 done
+>>MARK serial 13/14 done
+>>MARK serial 14/14 done
+[64] G1_S20_composite_voyage_matrix           law=7 fuel_corr=328.3501 SOC_end=0.6010 n_der=0
+[64] G1_S01_still_water_matrix                law=7 fuel_corr=51.1857 SOC_end=0.5998 n_der=0
+[64] G1_S02_downstream_matrix                 law=7 fuel_corr=51.1857 SOC_end=0.5998 n_der=0
+[64] G1_S07_bridge_maneuver_matrix            law=7 fuel_corr=51.1857 SOC_end=0.5998 n_der=0
+[64] G1_test_voyage_002_v2                    law=7 fuel_corr=223.0851 SOC_end=0.6812 n_der=0
+[64] G1_test_voyage_003_v2                    law=7 fuel_corr=258.4973 SOC_end=0.6270 n_der=0
+[64] G1_test_voyage_005_v2                    law=7 fuel_corr=136.9514 SOC_end=0.5967 n_der=0
+[64] G1_test_voyage_025_v2                    law=7 fuel_corr=161.6892 SOC_end=0.5967 n_der=0
+[64] G1_test_voyage_031_v2                    law=7 fuel_corr=158.0723 SOC_end=0.5970 n_der=0
+[64] G1_test_voyage_035_v2                    law=7 fuel_corr=150.8540 SOC_end=0.5894 n_der=0
+[64] G1_test_voyage_036_v2                    law=7 fuel_corr=177.2311 SOC_end=0.5998 n_der=0
+[64] G1_test_voyage_040_v2                    law=7 fuel_corr=221.0092 SOC_end=0.6184 n_der=0
+[64] G1_test_voyage_043_v2                    law=7 fuel_corr=234.7789 SOC_end=0.6123 n_der=0
+[64] G1_test_voyage_050_v2                    law=7 fuel_corr=208.4444 SOC_end=0.6714 n_der=0
+
+[64] ===== MODE G2 (GATE_MODE=2)=====
+>>MARK chart-switch mode 2 done (reloaded)
+[64] chart Script  mode2
+>>MARK sims to run in mode 2: 14
+>>MARK serial 1/14 done
+>>MARK serial 2/14 done
+>>MARK serial 3/14 done
+>>MARK serial 4/14 done
+>>MARK serial 5/14 done
+>>MARK serial 6/14 done
+>>MARK serial 7/14 done
+>>MARK serial 8/14 done
+>>MARK serial 9/14 done
+>>MARK serial 10/14 done
+>>MARK serial 11/14 done
+>>MARK serial 12/14 done
+>>MARK serial 13/14 done
+>>MARK serial 14/14 done
+[64] G2_S20_composite_voyage_matrix           law=7 fuel_corr=328.1250 SOC_end=0.5999 n_der=0
+[64] G2_S01_still_water_matrix                law=7 fuel_corr=50.2352 SOC_end=0.5937 n_der=0
+[64] G2_S02_downstream_matrix                 law=7 fuel_corr=50.2352 SOC_end=0.5937 n_der=0
+[64] G2_S07_bridge_maneuver_matrix            law=7 fuel_corr=50.2352 SOC_end=0.5937 n_der=0
+[64] G2_test_voyage_002_v2                    law=7 fuel_corr=224.0862 SOC_end=0.6785 n_der=0
+[64] G2_test_voyage_003_v2                    law=7 fuel_corr=259.0169 SOC_end=0.6267 n_der=0
+[64] G2_test_voyage_005_v2                    law=7 fuel_corr=137.9534 SOC_end=0.5924 n_der=0
+[64] G2_test_voyage_025_v2                    law=7 fuel_corr=163.4779 SOC_end=0.5948 n_der=0
+[64] G2_test_voyage_031_v2                    law=7 fuel_corr=159.1056 SOC_end=0.5889 n_der=0
+[64] G2_test_voyage_035_v2                    law=7 fuel_corr=152.4347 SOC_end=0.5900 n_der=0
+[64] G2_test_voyage_036_v2                    law=7 fuel_corr=178.3570 SOC_end=0.5967 n_der=0
+[64] G2_test_voyage_040_v2                    law=7 fuel_corr=221.5012 SOC_end=0.6162 n_der=0
+[64] G2_test_voyage_043_v2                    law=7 fuel_corr=235.7292 SOC_end=0.6101 n_der=0
+[64] G2_test_voyage_050_v2                    law=7 fuel_corr=208.4444 SOC_end=0.6714 n_der=0
+
+[64] ===== MODE G3 (GATE_MODE=3)=====
+>>MARK chart-switch mode 3 done (reloaded)
+[64] chart Script  mode3
+>>MARK sims to run in mode 3: 14
+>>MARK serial 1/14 done
+>>MARK serial 2/14 done
+>>MARK serial 3/14 done
+>>MARK serial 4/14 done
+>>MARK serial 5/14 done
+>>MARK serial 6/14 done
+>>MARK serial 7/14 done
+>>MARK serial 8/14 done
+>>MARK serial 9/14 done
+>>MARK serial 10/14 done
+>>MARK serial 11/14 done
+>>MARK serial 12/14 done
+>>MARK serial 13/14 done
+>>MARK serial 14/14 done
+[64] G3_S20_composite_voyage_matrix           law=7 fuel_corr=328.3996 SOC_end=0.5999 n_der=0
+[64] G3_S01_still_water_matrix                law=7 fuel_corr=51.1857 SOC_end=0.5998 n_der=0
+[64] G3_S02_downstream_matrix                 law=7 fuel_corr=51.1857 SOC_end=0.5998 n_der=0
+[64] G3_S07_bridge_maneuver_matrix            law=7 fuel_corr=51.1857 SOC_end=0.5998 n_der=0
+[64] G3_test_voyage_002_v2                    law=7 fuel_corr=223.0884 SOC_end=0.6812 n_der=0
+[64] G3_test_voyage_003_v2                    law=7 fuel_corr=258.4973 SOC_end=0.6270 n_der=0
+[64] G3_test_voyage_005_v2                    law=7 fuel_corr=136.9514 SOC_end=0.5967 n_der=0
+[64] G3_test_voyage_025_v2                    law=7 fuel_corr=161.6892 SOC_end=0.5967 n_der=0
+[64] G3_test_voyage_031_v2                    law=7 fuel_corr=158.0795 SOC_end=0.5969 n_der=0
+[64] G3_test_voyage_035_v2                    law=7 fuel_corr=149.1190 SOC_end=0.5894 n_der=0
+[64] G3_test_voyage_036_v2                    law=7 fuel_corr=177.2311 SOC_end=0.5998 n_der=0
+[64] G3_test_voyage_040_v2                    law=7 fuel_corr=220.1675 SOC_end=0.6159 n_der=0
+[64] G3_test_voyage_043_v2                    law=7 fuel_corr=234.7216 SOC_end=0.6121 n_der=0
+[64] G3_test_voyage_050_v2                    law=7 fuel_corr=208.4444 SOC_end=0.6714 n_der=0
+[64] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/gating/runs_gate_v2.csv
+[64] gate_result_v2 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/gating/gate_result_v2.json
+[64] : G1 (quantile gating)
+[64] MATRIX COMPLETE

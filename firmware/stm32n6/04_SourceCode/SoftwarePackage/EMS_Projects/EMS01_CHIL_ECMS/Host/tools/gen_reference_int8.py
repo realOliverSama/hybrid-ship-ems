@@ -12,11 +12,13 @@
 #   3) --trace CSV --out CSV  模式 B：以 ems_ctrl.c 为语义基准逐 tick 复刻固件
 #      NN 特征构造（窗口/门控/迟滞）→ MLP-Q int8 + workclf int8 逐 tick CSV。
 #
-# workclf 输入口径说明：控制环内识别器输入 = 原始物理量 pdec30 + [v_ship, accel]
-#   （ems_ctrl.c:326-333, EML ecms_nn_dbg.m:82-105，design R8 "识别器不吃归一化"）；
-#   而 workclf_v1.keras/T-312 指标按训练数据管线（归一化数据集特征）测得。
-#   本工具两套口径都支持：模式 A 同步给出 cls_raw（固件口径）与 cls_norm（T-312
-#   口径诊断列）；模式 B 按固件语义（原始物理量）逐 tick 输出。
+# workclf 输入口径说明：控制环内识别器输入 = 同一 xnorm 的切片——Pdec 10s 重采样
+#   30 点 xnorm[10*j] + v/accel 归一化值 xnorm[300]/xnorm[301]（ems_ctrl.c 已同步
+#   修订），与 T-312 训练口径 X[:, :300:10]+X[:,300:] 严格一致（2026-09 口径修订；
+#   修订前 raw 口径致 int8 饱和坍缩，docs/agent/AI_MODELING.md §22）。
+#   模式 A 保留 cls_raw/cls_norm 两列：修订后固件口径 = 归一化（=cls_norm），
+#   cls_raw 列留作修订前 raw 口径对照；模式 B 按修订后固件语义（归一化切片）
+#   逐 tick 输出。
 #   路径纪律：全部由 __file__ 相对推导，禁止硬编码绝对路径。
 
 import argparse
@@ -261,6 +263,8 @@ def mode_a_val200(out_dir):
     Xs = Xs_in
     qn = tflite_eval(make_interp(MLPQ_TFLITE), Xs)
     q_kwh = qn.astype(np.float64) * y_std + y_mean
+    # workclf 双口径参考（2026-09 口径修订后固件 = 归一化 = cls_norm；cls_raw
+    # 列保留，仅作修订前 raw 口径对照，不删除）。
     logits_raw = workclf_eval_prep(make_interp(WORKCLF_TFLITE),
                                    Xr32[:, 0:300:10], Xr32[:, 300:])
     logits_norm = workclf_eval_prep(make_interp(WORKCLF_TFLITE),
@@ -482,13 +486,19 @@ def mode_b_write_csv(rows, out_csv):
 
 
 def mode_b_main(trace_csv, out_csv, dt_ctrl):
-    """模式 B：特征收集 → 批量 int8 前向 → 迟滞/门控装配 → 写 CSV。"""
+    """模式 B：特征收集 → 批量 int8 前向 → 迟滞/门控装配 → 写 CSV。
+
+    workclf 输入 = 归一化切片 xnorm[:300:10] + xnorm[300:302]（2026-09 口径修订，
+    与 T-312 训练口径 X[:, :300:10]+X[:,300:] 一致；修订前为 raw 口径，见文件头）。
+    """
     m, feats, data, ebar, escale = mode_b_trace(trace_csv, dt_ctrl=dt_ctrl)
     y_mean, y_std = float(data["y_mean"]), float(data["y_std"])
     inf = [i for i, (_, _, _, ft) in enumerate(feats) if ft["ok"]]
     Xn = np.stack([feats[i][3]["xnorm"] for i in inf]).astype(np.float32)
-    Pr = np.stack([feats[i][3]["pdec30"] for i in inf]).astype(np.float32)
-    Sva = np.stack([[feats[i][3]["v"], feats[i][3]["accel"]]
+    # 2026-09 口径修订：workclf 输入 = 同一 xnorm 的切片（与 T-312 训练口径
+    # X[:, :300:10]+X[:,300:] 一致；修订前 raw 口径致 int8 饱和坍缩，§22）。
+    Pr = np.stack([feats[i][3]["xnorm"][:300:10] for i in inf]).astype(np.float32)
+    Sva = np.stack([[feats[i][3]["xnorm"][300], feats[i][3]["xnorm"][301]]
                     for i in inf]).astype(np.float32)
     qn = tflite_eval(make_interp(MLPQ_TFLITE), Xn)
     logits = workclf_eval_prep(make_interp(WORKCLF_TFLITE), Pr, Sva)
