@@ -1,0 +1,112 @@
+ST Edge AI Core v2.2.0-20266 2adc00962
+Created date          : 2026-09-01 19:34:41
+Parameters            : generate --no-inputs-allocation --no-outputs-allocation --model mlp_q.tflite --target stm32n6 --st-neural-art default@user_neuralart.json
+
+Model name - mlp_q
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+m_id   layer (original)               oshape         param/size          macc                connected to 
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+0      serving_default_P_in_3020 ()   [b:1,c:302]                                                         
+       conversion_0 (QUANTIZE)        [b:1,c:302]                         604   serving_default_P_in_3020 
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+1      tfl_pseudo_qconst5 ()          [b:64,c:302]   19,328/19,328                                        
+       tfl_pseudo_qconst4 ()          [b:64]         64/256                                               
+       gemm_1 (FULLY_CONNECTED)       [b:1,c:64]                       19,392                conversion_0 
+                                                                                       tfl_pseudo_qconst5 
+                                                                                       tfl_pseudo_qconst4 
+       nl_1_nl (FULLY_CONNECTED)      [b:1,c:64]                           64                      gemm_1 
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+2      tfl_pseudo_qconst3 ()          [b:32,c:64]    2,048/2,048                                          
+       tfl_pseudo_qconst2 ()          [b:32]         32/128                                               
+       gemm_2 (FULLY_CONNECTED)       [b:1,c:32]                        2,080                     nl_1_nl 
+                                                                                       tfl_pseudo_qconst3 
+                                                                                       tfl_pseudo_qconst2 
+       nl_2_nl (FULLY_CONNECTED)      [b:1,c:32]                           32                      gemm_2 
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+3      tfl_pseudo_qconst1 ()          [b:3,c:32]     96/96                                                
+       tfl_pseudo_qconst ()           [b:3]          3/12                                                 
+       gemm_3 (FULLY_CONNECTED)       [b:1,c:3]                            99                     nl_2_nl 
+                                                                                       tfl_pseudo_qconst1 
+                                                                                        tfl_pseudo_qconst 
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+4      conversion_4 (DEQUANTIZE)      [b:1,c:3]                             6                      gemm_3 
+------ ------------------------------ -------------- --------------- -------- --------------------------- 
+model: macc=22,277 weights=21,868 activations=-- io=--
+
+
+
+
+
+Compilation details
+------------------------------------------------------------------------------------
+Compiler version: 1.1.1-14
+Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/mlp_q_OE_3_3_0.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/mlp_q_OE_3_3_0_Q.json -g network.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/my_mpools/stm32n6.mpool --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws/neural_art__network/stm32n6.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws/neural_art__network/ --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json
+====================================================================================
+
+Memory usage information 
+------------------------------------------------------------------------------------
+	npuRAM3    [0x34200000 - 0x34270000]:        368  B /    448.000 kB  (  0.08 % used) -- weights:          0  B (  0.00 % used)  activations:        368  B (  0.08 % used)
+	npuRAM4    [0x34270000 - 0x342E0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM5    [0x342E0000 - 0x34350000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM6    [0x34350000 - 0x343C0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	octoFlash  [0x70200000 - 0x70300000]:     21.032 kB /      1.000 MB  (  2.05 % used) -- weights:     21.032 kB (  2.05 % used)  activations:          0  B (  0.00 % used)
+	hyperRAM   [0x90000000 - 0x91000000]:          0  B /     16.000 MB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+---
+Total:                                            21.392 kB                                  -- weights:     21.032 kB                  activations:        368  B                   
+====================================================================================
+
+Memory to be allocated by the user: inputs (1.188 kB), outputs (32  B)
+	Input [0]:      1.188 kB
+	Output[0]:         32  B
+====================================================================================
+
+
+Used memory ranges
+------------------------------------------------------------------------------------
+	npuRAM3    [0x34200000 - 0x34270000]: 0x34200000-0x34200170
+	octoFlash  [0x70200000 - 0x70300000]: 0x70200000-0x70205430
+====================================================================================
+
+Epochs details
+------------------------------------------------------------------------------------
+Total number of epochs: 6 of which 2 implemented in software
+---
+epoch ID   HW/SW/EC Operation (SW only)
+epoch 1      -SW-   (   QuantizeLinear   )
+epoch 2       EC    
+epoch 3       EC    
+epoch 4       EC    
+epoch 5       EC    
+epoch 6      -SW-   (  DequantizeLinear  )
+==================================================================================== 
+ Requested memory size by section - "stm32n6npu" target
+ ------------------------------- ------- -------- ------ ------- 
+ module                             text   rodata   data     bss 
+ ------------------------------- ------- -------- ------ ------- 
+ network.o                           406    6,980      0       8 
+ NetworkRuntime1020_CM55_GCC.a     3,068        0      0       0 
+ ll_aton_reloc_network.o               0        0      0       0 
+ lib (toolchain)*                    988      624      0       0 
+ ll atonn runtime                  3,600    6,127      0      13 
+ ------------------------------- ------- -------- ------ ------- 
+ RT total**                        8,062   13,731      0      21 
+ ------------------------------- ------- -------- ------ ------- 
+ weights                               0   21,537      0       0 
+ activations                           0        0      0     368 
+ io                                    0        0      0   1,220 
+ ------------------------------- ------- -------- ------ ------- 
+ TOTAL                             8,062   35,268      0   1,609 
+ ------------------------------- ------- -------- ------ ------- 
+ *  toolchain objects (libm/libgcc*)
+ ** RT AI runtime objects (kernels+infrastructure)
+  
+  Summary - "stm32n6npu" target
+  --------------------------------------------------
+               FLASH (ro)      %*   RAM (rw)      % 
+  --------------------------------------------------
+  RT total         21,793   50.3%         21   1.3% 
+  --------------------------------------------------
+  TOTAL            43,330              1,609        
+  --------------------------------------------------
+  *  rt/total
+

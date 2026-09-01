@@ -1,0 +1,65 @@
+### T-507 stage 1: read-only NOR region check (no erase/write/reset/run)
+### started: 2026-08-31 21:07:12 +0800
+### CLI: /Users/oliverlyu/Library/Application Support/stm32cube/bundles/programmer/2.23.0/bin/STM32_Programmer_CLI
+### LOADER: /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/External_Loader/MX25UM25645G_ATK-CNN647B/Binary/MX25UM25645G_ATK-CNN647B_ExtMemLoader.stldr
+### loader sha256 (verified pre-flight): 0bce846a1f25e4e967d572efb5a3f97f8a839817b53bf60d837aadfee740dcb5
+### ops: -u 0x70200000 0x6000 -> nor_0x70200000_pre.bin ; -u 0x70400000 0x2000 -> nor_0x70400000_pre.bin ; -r32 0x70200000 0x40 ; -r32 0x70400000 0x40
++ '/Users/oliverlyu/Library/Application Support/stm32cube/bundles/programmer/2.23.0/bin/STM32_Programmer_CLI' -c port=SWD -el /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/External_Loader/MX25UM25645G_ATK-CNN647B/Binary/MX25UM25645G_ATK-CNN647B_ExtMemLoader.stldr -u 0x70200000 0x6000 '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/deploy/nor_evidence_t507/nor_0x70200000_pre.bin' -u 0x70400000 0x2000 '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/deploy/nor_evidence_t507/nor_0x70400000_pre.bin' -r32 0x70200000 0x40 -r32 0x70400000 0x40
+[36m[01m      -------------------------------------------------------------------
+[39;49m[0m[36m[01m                        STM32CubeProgrammer v2.23.0                  
+[39;49m[0m[36m[01m      -------------------------------------------------------------------
+
+[39;49m[0m[39;49m[0m[90mST-LINK SN  : 300047000E31353032303242
+[39;49m[0m[90mST-LINK FW  : V2J48S7
+[39;49m[0m[90mBoard       : --
+[39;49m[0m[90mVoltage     : 3.14V
+[39;49m[0m[90mSWD freq    : 4000 KHz
+[39;49m[0m[90mConnect mode: Normal
+[39;49m[0m[90mReset mode  : Software reset
+[39;49m[0m[90mDevice ID   : 0x486
+[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[90mRevision ID : Rev B
+[39;49m[0m[39;49m[0m[39;49mDevice name : ST32N647
+[39;49m[0m[39;49mDevice type : MCU
+[39;49m[0m[39;49mDevice CPU  : Cortex-M55
+[39;49m[0m[39;49mBL Version  : --
+[39;49m[0m[39;49m
+[39;49m[0m[39;49m
+UPLOADING ...
+[39;49m[0m[39;49m  File          : /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/deploy/nor_evidence_t507/nor_0x70200000_pre.bin
+[39;49m[0m[39;49m  Size          : 24576 Bytes
+[39;49m[0m[39;49m  Address:      : 0x70200000
+[39;49m[0m[39;49mRead progress:
+[39;49m[0m[00;32m[==================================================] 100% [39;49m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m
+
+[39;49m[0m[00;32mData read successfully
+[39;49m[0m[39;49mTime elapsed during read operation is: 00:00:00.548
+[39;49m[0m[39;49m
+UPLOADING ...
+[39;49m[0m[39;49m  File          : /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/deploy/nor_evidence_t507/nor_0x70400000_pre.bin
+[39;49m[0m[39;49m  Size          : 8192 Bytes
+[39;49m[0m[39;49m  Address:      : 0x70400000
+[39;49m[0m[39;49mRead progress:
+[39;49m[0m[00;32m[==================================================] 100% [39;49m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m[0m[39;49m
+
+[39;49m[0m[00;32mData read successfully
+[39;49m[0m[39;49mTime elapsed during read operation is: 00:00:01.136
+[39;49m[0m[39;49m
+Reading 32-bit memory content
+[39;49m[0m[39;49m  Size          : 64 Bytes
+[39;49m[0m[39;49m  Address:      : 0x70200000
+[39;49m[0m[39;49m0x70200000 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m0x70200010 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m0x70200020 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m0x70200030 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m
+Reading 32-bit memory content
+[39;49m[0m[39;49m  Size          : 64 Bytes
+[39;49m[0m[39;49m  Address:      : 0x70400000
+[39;49m[0m[39;49m0x70400000 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m0x70400010 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m0x70400020 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m0x70400030 : FFFFFFFF FFFFFFFF FFFFFFFF FFFFFFFF
+[39;49m[0m[39;49m[0m+ RC=0
++ set +x
+### STAGE1_EXIT_CODE=0
+### finished: 2026-08-31 21:07:16 +0800

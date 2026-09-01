@@ -1,0 +1,70 @@
+{
+  "task": "T-504",
+  "spec": "ems01-chil-ecms-v1",
+  "gate_definition": ">=99% tick 同网格点(20 kW) 且 max|dP|<=20 kW (design 固定，不得为 PASS 调整)",
+  "gate_grid_rate": 0.99,
+  "gate_max_abs_kW": 20.0,
+  "compile": "gcc -std=c11 -O2/-O0 -Wall -Wextra -ffp-contract=off (ems_ctrl + ems_infer_ref + ems_params + test_driver)",
+  "all_pass": true,
+  "diag_e_hat_offset_finding": "已确认：q50/q90/e_hat 遥测差异为常量偏移（ref−fw: q50=0.268961840, q90=0.272098251 kWh, q10=0，多 tick 仅浮点末位抖动），与 EML 行向量 b3 隐式扩张预测 (b3(1)-b3(j))*YStd 逐项吻合——chart 实际语义为 三分位数共用偏置 b3(1)（Ehat_q 线性索引取 [3x3] 第 1 列），而 T-503 C 为逐头偏置（设计意图）。P_gen_ref 不受影响（bit-exact）。",
+  "runs": [
+    {
+      "run": "G2_S20_composite_voyage_matrix",
+      "csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv",
+      "n_ticks": 5521,
+      "n_exact_bit": 5521,
+      "exact_rate": 1.0,
+      "n_grid_match": 5521,
+      "grid_rate": 1.0,
+      "max_abs_d_kW": 0.0,
+      "n_held": 0,
+      "n_not_ok": 0,
+      "diag_e_hat_max_abs_d": 0.013115631834939245,
+      "diag_K_mismatch": 0,
+      "diag_cls_eff_mismatch": 0,
+      "diag_q_diff_distinct": {
+        "q10": 1,
+        "q50": 1,
+        "q90": 1
+      },
+      "diag_q_diff_median": {
+        "q10": 0.0,
+        "q50": -0.26896184043867777,
+        "q90": -0.27209825089161654
+      },
+      "gate": true,
+      "deviation_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/l0_deviation_G2_S20_composite_voyage_matrix.csv",
+      "n_dev_ticks": 0,
+      "o0_vs_o2_P_mismatch": 0
+    },
+    {
+      "run": "G2_test_voyage_002_v2",
+      "csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_test_voyage_002_v2.csv",
+      "n_ticks": 4212,
+      "n_exact_bit": 4212,
+      "exact_rate": 1.0,
+      "n_grid_match": 4212,
+      "grid_rate": 1.0,
+      "max_abs_d_kW": 0.0,
+      "n_held": 0,
+      "n_not_ok": 0,
+      "diag_e_hat_max_abs_d": 0.013115631834938801,
+      "diag_K_mismatch": 0,
+      "diag_cls_eff_mismatch": 0,
+      "diag_q_diff_distinct": {
+        "q10": 1,
+        "q50": 1,
+        "q90": 1
+      },
+      "diag_q_diff_median": {
+        "q10": 0.0,
+        "q50": -0.26896184043867777,
+        "q90": -0.27209825089161654
+      },
+      "gate": true,
+      "deviation_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/l0_deviation_G2_test_voyage_002_v2.csv",
+      "n_dev_ticks": 0,
+      "o0_vs_o2_P_mismatch": 0
+    }
+  ]
+}

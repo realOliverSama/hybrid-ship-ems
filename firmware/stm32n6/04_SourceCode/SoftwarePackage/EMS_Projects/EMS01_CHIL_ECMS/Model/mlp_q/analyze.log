@@ -1,0 +1,8 @@
+Exception in thread Thread-2:
+Traceback (most recent call last):
+  File "/Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/macarm/lib/python3.9/threading.py", line 980, in _bootstrap_inner
+    self.run()
+  File "/Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/macarm/lib/python3.9/threading.py", line 917, in run
+    self._target(*self._args, **self._kwargs)
+  File "build/utilities/stats.py", line 89, in ild.utilities.stats._ask_user_tracking.get_input
+EOFError: EOF when reading a line

@@ -1,0 +1,1015 @@
+{
+  "task": "workclf 真 int8 量化重导出（T-308 缺陷修复，EMS01 CHIL ECMS v1 前置）",
+  "script": "python/t312_workclf_int8.py",
+  "generated": "2026-08-31T05:38:49Z",
+  "git_commit_sha": "fa6b509538984a9fd7ba172e353afe85b24b7f93",
+  "reuse_semantics": "workclf_v1.keras 权重固定仅重导出，未重训练（--reuse 语义）",
+  "defect_record": {
+    "was_named": "workclf_v1_int8.tflite",
+    "now_named": "workclf_v1_float.tflite",
+    "sha256": "3dd5a031d4d52f6a680fd0f60fef043d8f232c38b4c9f84b024493fc5f6fd739",
+    "evidence_file_sha256": "3dd5a031d4d52f6a680fd0f60fef043d8f232c38b4c9f84b024493fc5f6fd739",
+    "evidence_sha_matches": true,
+    "actual_dtype": "float32（解释器输入/输出 float32，quantization 全零）",
+    "size_kb": 39.1,
+    "root_cause": "train_workclf.py 导出段裸 TFLiteConverter.from_keras_model(model).convert() 无任何量化参数；T-307 int8 量化只覆盖负荷预测候选，从未覆盖 workclf 分类器",
+    "disposition": "误标文件改名留证；train_workclf.py 裸 convert 输出已改名 workclf_v1_float.tflite，真 int8 统一由本脚本产出"
+  },
+  "model": {
+    "keras_path": "results/ecms_phase25/classifier/workclf_v1.keras",
+    "keras_sha256": "adcc1c3f832de4c8f98f4e71a429a0020bf2cb38bc61b07a4817677bb7bf1a20",
+    "params": 7871
+  },
+  "quant_config": {
+    "method": "复刻 T-307（t307_int8.py）口径",
+    "optimizations": [
+      "tf.lite.Optimize.DEFAULT"
+    ],
+    "representative_dataset": "fleet_windows_v2.npz val 前 1000 样本（仅校准，与 T-307 口径一致；严禁 test）",
+    "rep_order": "[V_accel(2), P_dec30(30,1)] = 本模型转换器校准入口顺序；形状决定性验证：[P_dec30, V_accel] 顺序触发 calibrator PAD rank 错误转换失败，[V_accel, P_dec30] 顺序成功（机器判据，非按指标挑选）；解释器评估按输入 name 匹配",
+    "form": "QDQ：float I/O + 内部量化节点（与 mlp_q int8 对照）",
+    "fallback_select_tf_ops": false,
+    "output_dtype_note": "未设 inference_input_type/int8 输出，保持 QDQ float I/O"
+  },
+  "output": {
+    "path": "results/ecms_phase25/classifier/workclf_v1_int8.tflite",
+    "sha256": "7c3571e4eb7c9f0f2834a758c5b35b0a8cad0bd6921bf8ab7d10a0e4418f293d"
+  },
+  "size": {
+    "keras_fp32_kb": 147.5,
+    "old_mislabeled_float_kb": 39.1,
+    "int8_kb": 21.9
+  },
+  "float_vs_int8": {
+    "val": {
+      "float": {
+        "accuracy": 0.8439,
+        "macro_f1": 0.6172,
+        "confusion_matrix": [
+          [
+            29,
+            20,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            3668,
+            7,
+            5,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            182,
+            10032,
+            11,
+            0,
+            24,
+            0
+          ],
+          [
+            1,
+            69,
+            116,
+            4856,
+            0,
+            36,
+            0
+          ],
+          [
+            0,
+            3074,
+            2,
+            2,
+            0,
+            6,
+            0
+          ],
+          [
+            0,
+            38,
+            52,
+            0,
+            0,
+            1506,
+            0
+          ],
+          [
+            0,
+            65,
+            2,
+            2,
+            0,
+            0,
+            0
+          ]
+        ],
+        "per_class_recall": {
+          "depart": 0.5918,
+          "harbor": 0.9962,
+          "eco": 0.9788,
+          "rush": 0.9563,
+          "bridge": 0.0,
+          "upstream": 0.9436,
+          "berth": 0.0
+        }
+      },
+      "int8": {
+        "accuracy": 0.8437,
+        "macro_f1": 0.6182,
+        "confusion_matrix": [
+          [
+            30,
+            19,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            3669,
+            7,
+            5,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            189,
+            10032,
+            11,
+            0,
+            17,
+            0
+          ],
+          [
+            2,
+            70,
+            120,
+            4855,
+            0,
+            31,
+            0
+          ],
+          [
+            0,
+            3074,
+            2,
+            2,
+            0,
+            6,
+            0
+          ],
+          [
+            0,
+            38,
+            59,
+            0,
+            0,
+            1499,
+            0
+          ],
+          [
+            0,
+            65,
+            2,
+            2,
+            0,
+            0,
+            0
+          ]
+        ],
+        "per_class_recall": {
+          "depart": 0.6122,
+          "harbor": 0.9965,
+          "eco": 0.9788,
+          "rush": 0.9561,
+          "bridge": 0.0,
+          "upstream": 0.9392,
+          "berth": 0.0
+        }
+      }
+    },
+    "test": {
+      "float": {
+        "accuracy": 0.7987,
+        "macro_f1": 0.6175,
+        "confusion_matrix": [
+          [
+            57,
+            28,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            3540,
+            5,
+            2,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            200,
+            9282,
+            9,
+            0,
+            23,
+            0
+          ],
+          [
+            1,
+            67,
+            124,
+            4147,
+            0,
+            24,
+            0
+          ],
+          [
+            0,
+            4061,
+            6,
+            2,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            27,
+            43,
+            9,
+            0,
+            1571,
+            0
+          ],
+          [
+            0,
+            51,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "per_class_recall": {
+          "depart": 0.6706,
+          "harbor": 0.9975,
+          "eco": 0.9756,
+          "rush": 0.9505,
+          "bridge": 0.0,
+          "upstream": 0.9521,
+          "berth": 0.0
+        }
+      },
+      "int8": {
+        "accuracy": 0.7988,
+        "macro_f1": 0.6226,
+        "confusion_matrix": [
+          [
+            61,
+            24,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          [
+            0,
+            3540,
+            5,
+            2,
+            0,
+            2,
+            0
+          ],
+          [
+            0,
+            204,
+            9287,
+            8,
+            0,
+            15,
+            0
+          ],
+          [
+            1,
+            76,
+            127,
+            4145,
+            0,
+            14,
+            0
+          ],
+          [
+            0,
+            4061,
+            6,
+            2,
+            0,
+            1,
+            0
+          ],
+          [
+            0,
+            27,
+            48,
+            10,
+            0,
+            1565,
+            0
+          ],
+          [
+            0,
+            51,
+            1,
+            0,
+            0,
+            0,
+            0
+          ]
+        ],
+        "per_class_recall": {
+          "depart": 0.7176,
+          "harbor": 0.9975,
+          "eco": 0.9761,
+          "rush": 0.95,
+          "bridge": 0.0,
+          "upstream": 0.9485,
+          "berth": 0.0
+        }
+      }
+    }
+  },
+  "delta": {
+    "val_acc_pp": -0.02,
+    "test_acc_pp": 0.01
+  },
+  "structure": {
+    "workclf_int8": {
+      "inputs": [
+        {
+          "name": "serving_default_V_accel:0",
+          "dtype": "float32",
+          "shape": [
+            1,
+            2
+          ],
+          "quantization": {
+            "scale": 0.0,
+            "zero_point": 0
+          }
+        },
+        {
+          "name": "serving_default_P_dec30:0",
+          "dtype": "float32",
+          "shape": [
+            1,
+            30,
+            1
+          ],
+          "quantization": {
+            "scale": 0.0,
+            "zero_point": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "StatefulPartitionedCall_1:0",
+          "dtype": "float32",
+          "shape": [
+            1,
+            7
+          ],
+          "quantization": {
+            "scale": 0.0,
+            "zero_point": 0
+          }
+        }
+      ],
+      "tensor_dtype_histogram": {
+        "float32": 3,
+        "int32": 14,
+        "int8": 32
+      },
+      "int8_weight_kernels": [
+        {
+          "name": "functional_1/seg_1/MatMul",
+          "shape": [
+            7,
+            64
+          ]
+        },
+        {
+          "name": "functional_1/dense_1_2/MatMul",
+          "shape": [
+            64,
+            40
+          ]
+        },
+        {
+          "name": "functional_1/dense_1/MatMul",
+          "shape": [
+            8,
+            2
+          ]
+        },
+        {
+          "name": "functional_1/conv1d_2_1/convolution",
+          "shape": [
+            32,
+            1,
+            3,
+            32
+          ]
+        },
+        {
+          "name": "functional_1/conv1d_1_2/convolution",
+          "shape": [
+            32,
+            1,
+            3,
+            16
+          ]
+        },
+        {
+          "name": "functional_1/conv1d_1/convolution",
+          "shape": [
+            16,
+            1,
+            5,
+            1
+          ]
+        }
+      ],
+      "int8_activation_quantizers": [
+        {
+          "name": "tfl.quantize",
+          "shape": [
+            1,
+            2
+          ],
+          "quantization": {
+            "scale": [
+              0.053495
+            ],
+            "zero_point": [
+              -19
+            ]
+          }
+        },
+        {
+          "name": "tfl.quantize1",
+          "shape": [
+            1,
+            30,
+            1
+          ],
+          "quantization": {
+            "scale": [
+              0.012573
+            ],
+            "zero_point": [
+              -22
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1/Pad",
+          "shape": [
+            1,
+            34,
+            1
+          ],
+          "quantization": {
+            "scale": [
+              0.012573
+            ],
+            "zero_point": [
+              -22
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1/convolution/ExpandDims",
+          "shape": [
+            1,
+            1,
+            34,
+            1
+          ],
+          "quantization": {
+            "scale": [
+              0.012573
+            ],
+            "zero_point": [
+              -22
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1/Relu;functional_1/conv1d_1/BiasAdd;functional_1/conv1d_1/convolution/Squeeze;functional_1/conv1d_1/Squeeze;functional_1/conv1d_1/convolution1",
+          "shape": [
+            1,
+            1,
+            30,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1/Relu;functional_1/conv1d_1/BiasAdd;functional_1/conv1d_1/convolution/Squeeze;functional_1/conv1d_1/Squeeze",
+          "shape": [
+            1,
+            30,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/max_pooling1d_1/MaxPool1d/ExpandDims",
+          "shape": [
+            1,
+            1,
+            30,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/max_pooling1d_1/MaxPool1d",
+          "shape": [
+            1,
+            1,
+            15,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/max_pooling1d_1/MaxPool1d/Squeeze1",
+          "shape": [
+            1,
+            15,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1_2/Pad",
+          "shape": [
+            1,
+            17,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1_2/convolution/ExpandDims",
+          "shape": [
+            1,
+            1,
+            17,
+            16
+          ],
+          "quantization": {
+            "scale": [
+              0.009253
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1_2/Relu;functional_1/conv1d_1_2/BiasAdd;functional_1/conv1d_1_2/convolution/Squeeze;functional_1/conv1d_1_2/Squeeze;functional_1/conv1d_1_2/convolution1",
+          "shape": [
+            1,
+            1,
+            15,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_1_2/Relu;functional_1/conv1d_1_2/BiasAdd;functional_1/conv1d_1_2/convolution/Squeeze;functional_1/conv1d_1_2/Squeeze",
+          "shape": [
+            1,
+            15,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/max_pooling1d_1_2/MaxPool1d/ExpandDims",
+          "shape": [
+            1,
+            1,
+            15,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/max_pooling1d_1_2/MaxPool1d",
+          "shape": [
+            1,
+            1,
+            7,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/max_pooling1d_1_2/MaxPool1d/Squeeze",
+          "shape": [
+            1,
+            7,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_2_1/Pad",
+          "shape": [
+            1,
+            9,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_2_1/convolution/ExpandDims",
+          "shape": [
+            1,
+            1,
+            9,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.009415
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_2_1/Relu;functional_1/conv1d_2_1/BiasAdd;functional_1/conv1d_2_1/convolution/Squeeze;functional_1/conv1d_2_1/Squeeze;functional_1/conv1d_2_1/convolution1",
+          "shape": [
+            1,
+            1,
+            7,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.027429
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/conv1d_2_1/Relu;functional_1/conv1d_2_1/BiasAdd;functional_1/conv1d_2_1/convolution/Squeeze;functional_1/conv1d_2_1/Squeeze",
+          "shape": [
+            1,
+            7,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.027429
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/global_average_pooling1d_1/Mean",
+          "shape": [
+            1,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.041903
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/dense_1/MatMul;functional_1/dense_1/Relu;functional_1/dense_1/BiasAdd",
+          "shape": [
+            1,
+            8
+          ],
+          "quantization": {
+            "scale": [
+              0.041903
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/concatenate_1/concat",
+          "shape": [
+            1,
+            40
+          ],
+          "quantization": {
+            "scale": [
+              0.041903
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/dense_1_2/MatMul;functional_1/dense_1_2/Relu;functional_1/dense_1_2/BiasAdd",
+          "shape": [
+            1,
+            64
+          ],
+          "quantization": {
+            "scale": [
+              0.030115
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1/seg_1/MatMul;functional_1/seg_1/BiasAdd",
+          "shape": [
+            1,
+            7
+          ],
+          "quantization": {
+            "scale": [
+              0.20769
+            ],
+            "zero_point": [
+              73
+            ]
+          }
+        },
+        {
+          "name": "StatefulPartitionedCall_1:01",
+          "shape": [
+            1,
+            7
+          ],
+          "quantization": {
+            "scale": [
+              0.003906
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        }
+      ],
+      "note": "权重核为逐通道 int8（解释器对逐通道常量标量 quantization 显示哨兵值 0.0，逐通道 scale 存于 flatbuffer）；输入量化节点 scale 即校准参数"
+    },
+    "mlp_q_int8_reference": {
+      "inputs": [
+        {
+          "name": "serving_default_P_in_302:0",
+          "dtype": "float32",
+          "shape": [
+            1,
+            302
+          ],
+          "quantization": {
+            "scale": 0.0,
+            "zero_point": 0
+          }
+        }
+      ],
+      "outputs": [
+        {
+          "name": "StatefulPartitionedCall_1:0",
+          "dtype": "float32",
+          "shape": [
+            1,
+            3
+          ],
+          "quantization": {
+            "scale": 0.0,
+            "zero_point": 0
+          }
+        }
+      ],
+      "tensor_dtype_histogram": {
+        "float32": 2,
+        "int32": 3,
+        "int8": 7
+      },
+      "int8_weight_kernels": [
+        {
+          "name": "tfl.pseudo_qconst1",
+          "shape": [
+            3,
+            32
+          ]
+        },
+        {
+          "name": "tfl.pseudo_qconst3",
+          "shape": [
+            32,
+            64
+          ]
+        },
+        {
+          "name": "tfl.pseudo_qconst5",
+          "shape": [
+            64,
+            302
+          ]
+        }
+      ],
+      "int8_activation_quantizers": [
+        {
+          "name": "tfl.quantize",
+          "shape": [
+            1,
+            302
+          ],
+          "quantization": {
+            "scale": [
+              0.053495
+            ],
+            "zero_point": [
+              -19
+            ]
+          }
+        },
+        {
+          "name": "functional_1_1/dense_2_1/MatMul;functional_1_1/dense_2_1/Relu;functional_1_1/dense_2_1/BiasAdd",
+          "shape": [
+            1,
+            64
+          ],
+          "quantization": {
+            "scale": [
+              0.057925
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "functional_1_1/dense_3_1/MatMul;functional_1_1/dense_3_1/Relu;functional_1_1/dense_3_1/BiasAdd",
+          "shape": [
+            1,
+            32
+          ],
+          "quantization": {
+            "scale": [
+              0.037495
+            ],
+            "zero_point": [
+              -128
+            ]
+          }
+        },
+        {
+          "name": "StatefulPartitionedCall_1:01",
+          "shape": [
+            1,
+            3
+          ],
+          "quantization": {
+            "scale": [
+              0.015376
+            ],
+            "zero_point": [
+              -25
+            ]
+          }
+        }
+      ],
+      "note": "权重核为逐通道 int8（解释器对逐通道常量标量 quantization 显示哨兵值 0.0，逐通道 scale 存于 flatbuffer）；输入量化节点 scale 即校准参数"
+    },
+    "note": "workclf Conv1D 权重应与 mlp_q 同为 QDQ 形态：float I/O + int8 权重张量；Conv1D SW fallback 属预期内（design.md R2）"
+  },
+  "compliance": {
+    "test_usage": "test 仅评估记录（与 T-308/T-307 既有口径同性质），未参与训练/校准/调参/量化配置选择",
+    "val_usage": "val 前 1000 样本仅作校准集 + float/int8 对照评估",
+    "no_retrain": true,
+    "no_metric_redefinition": true
+  }
+}

@@ -1,0 +1,8 @@
+build
+mx.scratch
+!.settings
+
+# STEdgeAI 工具工作区缓存（analyze/generate 自产，39MB，不入库）
+st_ai_ws/# 机器本地 agent 配置与 spec 符号链接（不入库；仓库根 .specs 已单独跟踪）
+.pi/
+.specs/

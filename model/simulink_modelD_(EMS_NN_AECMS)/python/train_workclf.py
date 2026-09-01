@@ -88,8 +88,11 @@ def main():
                   callbacks=[es], verbose=2)
         os.makedirs(OUT, exist_ok=True)
         model.save(kpath)
+        # 缺陷修复（2026-08-31）：裸 convert 无量化参数，产物是 float32；
+        # 严禁再命名为 *_int8.tflite（历史误标文件已改名 workclf_v1_float.tflite 留证）。
+        # 真 int8 量化由 python/t312_workclf_int8.py 复刻 T-307 口径执行。
         tfl = tf.lite.TFLiteConverter.from_keras_model(model).convert()
-        open(os.path.join(OUT, "workclf_v1_int8.tflite"), "wb").write(tfl)
+        open(os.path.join(OUT, "workclf_v1_float.tflite"), "wb").write(tfl)
 
     n_params = int(model.count_params())
     print("classifier params:", n_params, flush=True)
