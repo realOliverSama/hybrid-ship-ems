@@ -1,0 +1,30 @@
+{
+ "rows": 5521,
+ "errors": {
+  "timeout": 0,
+  "crcerr": 0,
+  "idx_mismatch": 0
+ },
+ "compare": {
+  "int8": {
+   "n_cmp": 5521,
+   "max_de_hat": 1.645186,
+   "max_dK": 1.0,
+   "cls_match_rate": 0.9960152146350298,
+   "pgen": {
+    "n_cmp": 5521,
+    "exact_rate": 0.9619634124252853,
+    "within_1grid_rate": 0.9929360623075529,
+    "max_dP_kW": 220.0
+   },
+   "layer2_pgen_pass": true
+  },
+  "sim": {
+   "n_cmp": 5521,
+   "exact_rate": 0.4220249954718348,
+   "within_1grid_rate": 0.45499003803658755,
+   "max_dP_kW": 820.0
+  }
+ },
+ "out_csv": "fw_compare.csv"
+}

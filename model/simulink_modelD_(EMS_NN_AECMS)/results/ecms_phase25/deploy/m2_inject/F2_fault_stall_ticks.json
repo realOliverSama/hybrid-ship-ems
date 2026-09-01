@@ -1,0 +1,58 @@
+{
+ "scenario": "F2_fault_stall_ticks",
+ "params": {
+  "port": "/dev/cu.usbserial-1130",
+  "trace": "ref_G2_test_voyage_002_v2.csv",
+  "rsp_timeout_ms": 500,
+  "stall_s": 3.0,
+  "warmup": 12,
+  "post": 12
+ },
+ "counts": {
+  "n_rows": 26,
+  "n_nack": 0,
+  "n_dump_lines": 2
+ },
+ "dump_text": [
+  "EVT seq=1 tick=12 ms=10408597 type=STALE aux=0",
+  "EVT total=1 kept=1 cap=32"
+ ],
+ "dump_raw_hex": "455654207365713d31207469636b3d3132206d733d313034303835393720747970653d5354414c45206175783d300d0a45565420746f74616c3d31206b6570743d31206361703d33320d0aaa557f0100078c55",
+ "observations": {
+  "pre_stall": {
+   "phase": "pre_stall",
+   "tick": 12,
+   "flags": 0,
+   "P_gen_kW": 820.0,
+   "e_hat": 0.0,
+   "K": 0.0,
+   "cls_eff": 6,
+   "err": ""
+  },
+  "stall_tick": {
+   "phase": "stall_tick",
+   "tick": 13,
+   "flags": 1,
+   "P_gen_kW": 820.0,
+   "e_hat": 0.0,
+   "K": 0.0,
+   "cls_eff": 6,
+   "err": ""
+  },
+  "stall_P_equals_pre": true,
+  "post_flags": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ]
+ }
+}
