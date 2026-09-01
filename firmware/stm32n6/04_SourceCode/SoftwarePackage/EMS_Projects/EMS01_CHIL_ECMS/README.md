@@ -77,17 +77,28 @@ EMS01_CHIL_ECMS/
     │                          #   + WC_TEST 批量（B2 --wc-test）+ --selftest pty 离线链路；
     │                          #   infer/wc 载荷带 seq 自动计数、RSP 按 seq 配对陈旧帧跳过、
     │                          #   --retry 重发；产物 fw/infer/wc_compare.csv/json）
+    ├── ems_fault_inject.py    # T-508：FR-508 故障注入 CLI（NaN 输入/停发超时/
+    │                          #   垃圾帧/CMD_RESET 恢复四场景；协议复用 ems_inject
+    │                          #   + test_proto_loopback 冻结源；逐场景 CSV/JSON +
+    │                          #   CMD_DUMP 事件环文本；--selftest pty mock 自测）
     ├── tools/gen_fw_params.py # 参数生成器（5 只读源 → Appli/App/ems_params.*，单一来源）
     ├── tools/gen_reference_int8.py  # T-506：Python int8 参考（val200 抽样 seed=20260831
     │                          #   + 轨迹全程 int8；复现 T-307/T-312 冻结指标硬门；
     │                          #   B2：另写 reference_int8_val200_logits.csv）
+    ├── tools/gen_host_int8_pgen.py  # T-508：host-int8 全链路 P_gen 参考生成（模式 B
+    │                          #   NN 输出作 stub 后端 + gcc 编译同一 ems_ctrl.c →
+    │                          #   逐 tick reference_int8_pgen_*.csv，层②对拍参考）
     ├── reference/             # T-506 生成：val200 向量（raw/norm）+ int8 参考 CSV
     │                          #   + logits 参考（B2，WC_TEST 对拍）
+    │                          #   + P_gen 参考（T-508 reference_int8_pgen_*.csv）
     └── tests/                 # L0 单测（T-503）：test_ctrl_diff.py（22 用例全过）+
                                #   test_driver.c（白盒驱动）+ eml_c_mapping.md（映射表）；
                                #   T-506：test_proto_loopback.py + test_proto_driver.c
                                #   （ems_proto 环回 14 用例：CRC 正反/截断/垃圾流/STALE/
-                               #   seq 回显布局/WC_TEST 回环）
+                               #   seq 回显布局/WC_TEST 回环）；
+                               #   T-508：test_driver_int8ref.c（层② P_gen 参考驱动：
+                               #   模式 B stub 后端 + 同一 ems_ctrl.c，由
+                               #   tools/gen_host_int8_pgen.py 编译驱动）
 ```
 
 构建 / 门禁入口（同 Vendor 规约）：
