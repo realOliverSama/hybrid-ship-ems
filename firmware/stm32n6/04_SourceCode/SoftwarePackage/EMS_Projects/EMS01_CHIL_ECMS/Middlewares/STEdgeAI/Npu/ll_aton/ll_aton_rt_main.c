@@ -24,23 +24,6 @@
 #include "ll_aton_rt_user_api.h"
 
 #include <stdint.h>
-#include <stdio.h>
-
-/* FR-505 归因临时（验收后移除）：逐 epoch 块调用墙钟计时环形日志。
- * 本工程 LL_ATON_RT_Main 为单次调用、内部 do-while 逐 epoch 推进（ST 模板），
- * 故逐次插桩点在循环内 RunEpochBlock 返回处：chunk[i] = 相邻两次 epoch-block
- * 调用出口的 DWT CYCCNT 差（EC epoch 的 NPU 异步执行时间经 WFE 等待落入下一
- * chunk），DONE 时清零索引，下一次推理从 chunk0 重新计。 */
-uint32_t ems_epoch_cycles[32];
-uint8_t  ems_epoch_idx;
-static uint32_t ems_epoch_last;
-void ems_epoch_dump(void)
-{
-    printf("FR505 epoch chunks (us, chunk0=推理起点对齐chunk含帧间空窗,忽略):\r\n");
-    for (int i = 0; i < ems_epoch_idx; i++)
-        printf("  [%d] %lu us\r\n", i,
-               (unsigned long)(ems_epoch_cycles[i] / (SystemCoreClock / 1000000u)));
-}
 
 /*** Main Template ***/
 
@@ -73,20 +56,6 @@ void LL_ATON_RT_Main(NN_Instance_TypeDef *network_instance)
     ll_aton_rt_ret = LL_ATON_RT_RunEpochBlock(network_instance);
 
     /*** Start of user event handling code ***/
-
-    /* FR-505 归因临时（验收后移除）：本函数唯一插桩点，位于 do-while 循环体内、
-     * RunEpochBlock 返回之后 WFE 之前——循环体每轮恰好执行一次，即每次
-     * epoch-block 调用恰好记一次（函数为 void 单循环，无其他出口；顶部
-     * network_instance NULL assert 属早退路径，按规格忽略不计）。 */
-    {
-        uint32_t now = DWT->CYCCNT;
-        if (ems_epoch_idx < 32)
-            ems_epoch_cycles[ems_epoch_idx] = now - ems_epoch_last;
-        ems_epoch_last = now;
-        ems_epoch_idx++;
-        if (ll_aton_rt_ret == LL_ATON_RT_DONE)
-            ems_epoch_idx = 0; /* 下一次推理从 0 重新计 */
-    }
 
     /*** End of user event handling code ***/
 

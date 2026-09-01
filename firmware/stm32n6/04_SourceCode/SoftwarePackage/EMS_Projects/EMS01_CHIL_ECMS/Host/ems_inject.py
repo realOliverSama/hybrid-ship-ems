@@ -124,7 +124,12 @@ class SerialSession:
             self.ser = io
         else:
             import serial
-            self.ser = serial.Serial(dev, baud, timeout=timeout_ms / 1000.0)
+            # 2026-09-01 晚（bug#5 根因修复）：macOS AppleUSBCHCOM.dext 对阻塞式
+            # 读（长 VTIME）的 RX 交付延迟 ~2s，对高频轮询读即时交付（实测
+            # 阻塞读 ACK@2006ms vs 轮询读 ACK@56ms，A/B 复现）。串口 read 超时
+            # 强制 50ms 轮询节奏；--rsp-timeout-ms 语义不变（wait_reply 自有
+            # deadline 逻辑，不依赖单次 read 阻塞时长）。
+            self.ser = serial.Serial(dev, baud, timeout=0.05)
         self.rx = bytearray()
         self.tx_seq = 0        # 下一个测试命令载荷 seq（仅 0x04/0x08 消费）
         self.n_stale_skip = 0  # wait_reply 跳过的 seq 不匹配陈旧帧计数

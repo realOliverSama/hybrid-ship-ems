@@ -246,33 +246,11 @@ int main(void)
    * WFE 等待 NPU 完成期间存储体时钟门控会死锁 NPU AXI 事务，T-507 根因②）。
    * RIF 隔离不在此处调用：生成的 SystemIsolation_Config() 已在上方外设初始化区
    * 执行（先于 NPU 时钟，顺序同 991:704-705/730 单次调用），NPU 从端 RISUP +
-   * NPU 主端 RIMC（USER CODE RIF_Init 1）均为 991 同款属性，CHK3 只读实证。 */
+   * NPU 主端 RIMC（USER CODE RIF_Init 1）均为 991 同款属性。 */
   npu_ram_init();
   npu_config();
   npu_cache_config();
   npu_low_power_clock_config();
-
-  /* T-507 启动自检 v3（临时诊断，验收后移除）：全部只读回检，不再含 CPU 直写
-   * npuRAM3 探针（v2 实证该访问会硬挂总线）。 */
-  printf("CHK1 MEMENR=0x%08lX (expect 0x000013FF)\r\n",
-         (unsigned long)RCC->MEMENR);
-  printf("CHK2 RAMCFG3/4/5/6_CR=0x%08lX 0x%08lX 0x%08lX 0x%08lX (expect 0)\r\n",
-         (unsigned long)RAMCFG_SRAM3_AXI->CR, (unsigned long)RAMCFG_SRAM4_AXI->CR,
-         (unsigned long)RAMCFG_SRAM5_AXI->CR, (unsigned long)RAMCFG_SRAM6_AXI->CR);
-  {
-    /* 现有 RIF 配置执行过的实证：生成区 SystemIsolation_Config()（先于本 NPU 块
-     * 执行，顺序同 991）已配 NPU 主端 RIMC（RIF_CID_1/SEC/PRIV）+ 从端 RISUP。
-     * HAL_RIF_RIMC_GetMasterAttributes 不存在（hal_rif.h 无声明），按 spec 回退
-     * 直读 per-master 寄存器 RIMC_ATTRx[NPU]（hal_rif.c:280 同款写法）。RIMC_ATTRx
-     * 字段（stm32n647xx.h）：MCID bits[6:4]、MSEC bit8、MPRIV bit9。期望 0x310。 */
-    printf("CHK3 RIMC_ATTRx[NPU]=0x%08lX (expect 0x310: MCID=1/SEC/PRIV)\r\n",
-           (unsigned long)RIFSC->RIMC_ATTRx[RIF_MASTER_INDEX_NPU]);
-  }
-  {
-    volatile uint32_t *wts = (volatile uint32_t *)0x70200000UL;
-    printf("CHK4 NOR wts=0x%08lX 0x%08lX (expect 3F31EC3B F9192630)\r\n",
-           (unsigned long)wts[0], (unsigned long)wts[1]);
-  }
 #endif
 
   ems_app_init(); /* 控制律状态复位 + 协议解析复位（ems_app.c，T-505） */

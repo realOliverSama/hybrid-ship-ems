@@ -162,7 +162,7 @@ Design: `./design.md`
     PARTIAL/FAIL 均可）。
   - Escalate If: S01 回归失败或门控引入新失败模式。
 
-- [ ] 11. NPU 部署验证：int8 量化 + STEdgeAI 编译 + N6 实测/估算
+- [x] 11. NPU 部署验证：int8 量化 + STEdgeAI 编译 + N6 实测/估算
   - ID: T-311
   - Requirement(s): FR-313, FR-319, NFR-301, NFR-302
   - Goal: 最终选定模型 int8 量化（fp32 vs int8 精度对照）；STEdgeAI 编译记录
