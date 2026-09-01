@@ -8,6 +8,11 @@
 #      RSP_TICK（--rsp-timeout-ms，默认 500；超时记 TIMEOUT 继续）。对拍：
 #      --ref-int8（gen_reference_int8 模式 B CSV）比 e_hat/K/cls_eff（层②）；
 #      --ref（Simulink 参考 CSV）比 P_gen_ref（层①/③：exact-match / ≤1 网格步）。
+#      T-508 层②扩展：--ref-int8 CSV 含 P_gen_kW 列（gen_host_int8_pgen 产物
+#      reference_int8_pgen_*.csv）时，compare.int8 追加 board vs host-int8 P_gen
+#      网格步统计（pgen: n_cmp/exact_rate/within_1grid_rate/max_dP_kW）+ 硬门禁
+#      标志 layer2_pgen_pass（within_1grid_rate ≥ LAYER2_PGEN_GATE=0.99，
+#      GRID_STEP_KW=20 design 固定）；无该列时行为与现状完全一致。
 #   2) INFER_TEST 批量（--infer-test DIR|CSV，FR-504 M1 用）：逐向量发
 #      CMD_INFER_TEST（载荷 [seq u32][302×f32]，send 自动加 seq 头）→ 收
 #      RSP_INFER_TEST（[seq 回显][q10/q50/q90 kWh + infer_us]）→ 与同目录
@@ -49,6 +54,7 @@ from test_proto_loopback import (  # noqa: E402
 )
 
 GRID_STEP_KW = 20.0  # design 固定：P_gen 网格步 20 kW（层②/③门禁单位）
+LAYER2_PGEN_GATE = 0.99  # T-508 design 固定：层② P_gen 网格步硬门禁（≥99%）
 MOCK_ERR_LEN = 0x03  # ems_proto.h EMS_PROTO_ERR_LEN（mock 固件 LEN 守卫用）
 
 
@@ -326,7 +332,8 @@ def load_vectors_raw(path):
 
 def load_ref_int8(path):
     """Host int8 参考（层②）：模式 A 目录（reference_int8_val200.csv）或
-    模式 B 轨迹 CSV（tick,…,e_hat,K,…,cls_eff,…）。按 tick/idx 索引。"""
+    模式 B 轨迹 CSV（tick,…,e_hat,K,…,cls_eff,…）。按 tick/idx 索引。
+    T-508：含 P_gen_kW 列（gen_host_int8_pgen 产物）时同读，供层② P_gen 对拍。"""
     p = path
     if os.path.isdir(p):
         p = os.path.join(p, "reference_int8_val200.csv")
@@ -341,6 +348,8 @@ def load_ref_int8(path):
                 "e_hat": float(r["e_hat"]) if r.get("e_hat") else None,
                 "K": float(r["K"]) if r.get("K") else None,
                 "cls": int(float(r.get("cls_eff") or r.get("cls_raw") or -1)),
+                # T-508 层②：P_gen_kW 列存在才读（无该列时 None，行为不变）
+                "P_gen_kW": float(r["P_gen_kW"]) if r.get("P_gen_kW") else None,
             }
     return ref
 
@@ -378,6 +387,8 @@ def compare_tick(out_rows, ref_int8, ref_sim):
     st = {"int8": {}, "sim": {}}
     if ref_int8:
         de, dk, cm, nc = [], [], 0, 0
+        n_pg = ex_pg = w1_pg = 0      # T-508 层② P_gen 网格步统计（可选列）
+        maxdp_pg = 0.0
         for r in out_rows:
             q = ref_int8.get(r["idx"])
             if q is None or "err" in r:
@@ -389,10 +400,25 @@ def compare_tick(out_rows, ref_int8, ref_sim):
                 dk.append(abs(r["K"] - q["K"]))
             if q["cls"] >= 1 and r["cls"] == q["cls"]:
                 cm += 1
+            if q.get("P_gen_kW") is not None:
+                n_pg += 1
+                dp = abs(r["P_gen_ref"] - q["P_gen_kW"])
+                maxdp_pg = max(maxdp_pg, dp)
+                if dp < 1e-6:
+                    ex_pg += 1
+                if dp <= GRID_STEP_KW + 1e-9:
+                    w1_pg += 1
         st["int8"] = {"n_cmp": nc,
                       "max_de_hat": max(de) if de else None,
                       "max_dK": max(dk) if dk else None,
                       "cls_match_rate": (cm / nc) if nc else None}
+        if n_pg:  # T-508 层②：board vs host-int8 P_gen（GRID_STEP_KW 用法镜像 sim 块）
+            st["int8"]["pgen"] = {"n_cmp": n_pg,
+                                  "exact_rate": ex_pg / n_pg,
+                                  "within_1grid_rate": w1_pg / n_pg,
+                                  "max_dP_kW": maxdp_pg}
+        st["int8"]["layer2_pgen_pass"] = ((w1_pg / n_pg) >= LAYER2_PGEN_GATE
+                                          if n_pg else None)
     if ref_sim:
         exact = within1 = nc = 0
         maxdp = 0.0
