@@ -124,15 +124,33 @@ class SerialSession:
             self.ser = io
         else:
             import serial
-            # 2026-09-01 晚（bug#5 根因修复）：macOS AppleUSBCHCOM.dext 对阻塞式
-            # 读（长 VTIME）的 RX 交付延迟 ~2s，对高频轮询读即时交付（实测
-            # 阻塞读 ACK@2006ms vs 轮询读 ACK@56ms，A/B 复现）。串口 read 超时
-            # 强制 50ms 轮询节奏；--rsp-timeout-ms 语义不变（wait_reply 自有
-            # deadline 逻辑，不依赖单次 read 阻塞时长）。
-            self.ser = serial.Serial(dev, baud, timeout=0.05)
+            # 2026-09-01 晚（bug#5 修复 v2，用户判别实验定根因）：pyserial
+            # read(size) 攒满 size 字节或吃满 timeout 才返回——固定 timeout=2.0
+            # 只改长度实测：read(7)=4.0ms（7B=ACK 帧长，到齐即返）vs
+            # read(64)=2006.3ms（8B 到齐但 <64 → 吃满 timeout）；in_waiting
+            # 真值 first_byte=6.4ms（ACK 真实 ~6ms 到达，无任何驱动延迟）。
+            # 故串口打开为非阻塞（timeout=0），收向一律走 _read_some；帧完整性
+            # 由 parse_stream 保证，事务超时由 wait_reply deadline
+            # （--rsp-timeout-ms）承担，与单次 read 阻塞时长彻底解耦（跨
+            # macOS/Windows/Linux 行为一致）。
+            self.ser = serial.Serial(dev, baud, timeout=0)
         self.rx = bytearray()
         self.tx_seq = 0        # 下一个测试命令载荷 seq（仅 0x04/0x08 消费）
         self.n_stale_skip = 0  # wait_reply 跳过的 seq 不匹配陈旧帧计数
+
+    def _read_some(self):
+        """非阻塞收字节（bug#5 v2）：in_waiting 即到即读，空转 2ms 轮询。
+
+        禁止用大 size + 长 timeout 的阻塞 read（pyserial 攒字节语义会吃满
+        timeout——bug#5 根因，2026-09-01 用户判别实验证实）；帧完整性由
+        parse_stream 保证。FdIO（--selftest）无 in_waiting，走 select 短读。"""
+        in_waiting = getattr(self.ser, "in_waiting", None)
+        if in_waiting is not None:
+            if in_waiting:
+                return self.ser.read(in_waiting)
+            time.sleep(0.002)
+            return b""
+        return self.ser.read(4096)  # FdIO：select(10ms) + os.read 即到即返
 
     def close(self):
         if self.ser is not None:
@@ -167,7 +185,7 @@ class SerialSession:
                     self.n_stale_skip += 1
                     continue  # 陈旧/错位帧：seq 不匹配，继续等本 seq
                 return f["payload"]
-            chunk = self.ser.read(256)
+            chunk = self._read_some()
             if chunk:
                 self.rx.extend(chunk)
         return None
