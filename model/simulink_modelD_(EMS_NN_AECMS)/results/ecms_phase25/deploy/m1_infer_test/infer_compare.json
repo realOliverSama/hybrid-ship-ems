@@ -1,5 +1,5 @@
 {
- "rows": 20,
+ "rows": 200,
  "errors": {
   "timeout": 0,
   "bad_rsp": 0,
@@ -7,19 +7,19 @@
   "stale_skip": 0
  },
  "compare": {
-  "n_cmp": 20,
+  "n_cmp": 200,
   "max_dq10": 5.579992609741211,
-  "max_dq50": 1.2681804219360355,
-  "max_dq90": 1.5218164162597656,
-  "mean_ref_q50": 35.13473785,
+  "max_dq50": 1.5218185285644523,
+  "max_dq90": 2.2827230537109386,
+  "mean_ref_q50": 32.93444509,
   "gate_lsb": {
-   "mean_abs": 1.4,
+   "mean_abs": 1.06,
    "p99": 5.0,
-   "max": 5.0,
-   "signed_mean": -0.1
+   "max": 6.0,
+   "signed_mean": -0.11
   },
   "hard_gate_fr504": true,
-  "rmse_ratio": 0.0128
+  "rmse_ratio": 0.0102
  },
  "out_csv": "infer_compare.csv"
 }
