@@ -199,7 +199,7 @@ phase25 spec T-311 要求：*int8 模型大小 / activation RAM / weight memory 
 | 09-01 | `fc43db07` | B1/B2（seq 回显 + CMD_WC_TEST / logits 出参）；换线后 ×200 干净数据采集（零超时零重试） | 进展日志 09-01 续② |
 | 09-01 | `a1326b51` | B3 FR-505 插桩（RunEpochBlock CYCCNT 环形数组），归因数据来源 | 进展日志 09-01 续② |
 | 09-01 晚 | `a1326b51`（FR-511 重构建，逐字节一致） | FR-511 换模型流程实证（§8.3） | 本报告 §8 |
-| 09-01 晚 | `d3ea1da2` | FR-505 插桩清扫后重建（fw_gate 7/7）；INFER_TEST ×200 复测全绿（mean 1.06/p99 5/max 6 LSB，hard_gate_fr504=True）+ WC ×200（cls 200/200），与 a1326b51 下午数据逐项一致 → 清扫零回归闭环；当晚另修复主机侧 CH340 驱动阻塞读 ~2s 交付延迟（bug#5，详见进展日志） | 本报告 §8.3；进展日志 09-01（晚） |
+| 09-01 晚 | `d3ea1da2` | FR-505 插桩清扫后重建（fw_gate 7/7）；INFER_TEST ×200 复测全绿（mean 1.06/p99 5/max 6 LSB，hard_gate_fr504=True）+ WC ×200（cls 200/200），与 a1326b51 下午数据逐项一致 → 清扫零回归闭环；当晚另修复主机侧 pyserial read(size) 攒字节伪延迟（bug#5，详见进展日志） | 本报告 §8.3；进展日志 09-01（晚） |
 
 ### 9.2 T-507 三阶段证据（Level A → Level C → SRAM）
 
