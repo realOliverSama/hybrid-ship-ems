@@ -1,7 +1,7 @@
 # EMS01 CHIL ECMS 固件 v1 — Tasks
 
 Spec: `ems01-chil-ecms-v1`
-Status: tasks-approved（2026-08-31 用户批准实施）
+Status: implementation-complete
 Created: 2026-08-31
 Brainstorm: `./brainstorm.md`
 Requirements: `./requirements.md`
@@ -218,7 +218,7 @@ Design: `./design.md`
   - Escalate If: 烧录工具/外部加载器异常（停止，不得试随机地址/随机配置）；
     NPU 推理失败且根因不明；FR-504 系统性超差（疑输入语义/量化配置问题）。
 
-- [ ] 8. 板上 M2 注入比对 + 故障注入（同会话延续，需用户在场）
+- [x] 8. 板上 M2 注入比对 + 故障注入（同会话延续，需用户在场）
   - ID: T-508
   - Requirement(s): FR-508, FR-509, FR-513（M2）, NFR-504
   - Goal: ① REF 模式注入（层① 板上复核，预期与 L0 一致）；② NPU 模式注入
@@ -234,7 +234,7 @@ Design: `./design.md`
   - Acceptance: M2 报告归档且层②通过；主 Agent §14 验收。
   - Escalate If: 层②超门禁；故障注入暴露 design 状态机未覆盖的行为（设计层）。
 
-- [ ] 9. 收尾：Gate + 文档同步 + 提交
+- [x] 9. 收尾：Gate + 文档同步 + 提交
   - ID: T-509
   - Requirement(s): FR-512, FR-513, NFR-507
   - Goal: 最终 `python3 firmware/gate/fw_gate.py $P` exit 0；文档同步：
