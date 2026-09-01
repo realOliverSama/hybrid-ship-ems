@@ -14,10 +14,10 @@
   "n_dump_lines": 2
  },
  "dump_text": [
-  "EVT seq=1 tick=11 ms=10409178 type=CRC aux=6",
+  "EVT seq=1 tick=11 ms=213254 type=CRC aux=6",
   "EVT total=1 kept=1 cap=32"
  ],
- "dump_raw_hex": "455654207365713d31207469636b3d3131206d733d313034303931373820747970653d435243206175783d360d0a45565420746f74616c3d31206b6570743d31206361703d33320d0aaa557f0100078c55",
+ "dump_raw_hex": "455654207365713d31207469636b3d3131206d733d32313332353420747970653d435243206175783d360d0a45565420746f74616c3d31206b6570743d31206361703d33320d0aaa557f0100078c55",
  "observations": {
   "garbage_nack": null,
   "garbage_nack_silent": true,
@@ -30,14 +30,14 @@
    "phase": "post_garbage",
    "tick": 12,
    "flags": 0,
-   "P_gen_kW": 820.0,
-   "e_hat": 0.0,
-   "K": 0.0,
-   "cls_eff": 6,
+   "P_gen_kW": 1000.0,
+   "e_hat": 1.6451858282089233,
+   "K": 1.0,
+   "cls_eff": 2,
    "err": ""
   },
   "dump_lines_head": [
-   "EVT seq=1 tick=11 ms=10409178 type=CRC aux=6",
+   "EVT seq=1 tick=11 ms=213254 type=CRC aux=6",
    "EVT total=1 kept=1 cap=32"
   ]
  }

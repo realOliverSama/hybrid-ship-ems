@@ -14,19 +14,19 @@
   "n_dump_lines": 2
  },
  "dump_text": [
-  "EVT seq=1 tick=13 ms=10405309 type=INFER_FAIL aux=4",
+  "EVT seq=1 tick=13 ms=209381 type=INFER_FAIL aux=4",
   "EVT total=1 kept=1 cap=32"
  ],
- "dump_raw_hex": "455654207365713d31207469636b3d3133206d733d313034303533303920747970653d494e4645525f4641494c206175783d340d0a45565420746f74616c3d31206b6570743d31206361703d33320d0aaa557f0100078c55",
+ "dump_raw_hex": "455654207365713d31207469636b3d3133206d733d32303933383120747970653d494e4645525f4641494c206175783d340d0a45565420746f74616c3d31206b6570743d31206361703d33320d0aaa557f0100078c55",
  "observations": {
   "baseline": {
    "phase": "baseline",
    "tick": 12,
    "flags": 0,
-   "P_gen_kW": 820.0,
-   "e_hat": 0.0,
-   "K": 0.0,
-   "cls_eff": 6,
+   "P_gen_kW": 1000.0,
+   "e_hat": 1.6451858282089233,
+   "K": 1.0,
+   "cls_eff": 2,
    "err": ""
   },
   "nan_tick": {
@@ -36,7 +36,7 @@
    "P_gen_kW": 0.0,
    "e_hat": 0.0,
    "K": 1.0,
-   "cls_eff": 6,
+   "cls_eff": 2,
    "err": ""
   },
   "post_flags": [
