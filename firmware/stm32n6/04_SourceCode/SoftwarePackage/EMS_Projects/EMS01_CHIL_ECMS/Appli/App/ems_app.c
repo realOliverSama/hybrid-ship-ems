@@ -54,10 +54,6 @@
 
 extern UART_HandleTypeDef huart1; /* CubeMX 生成（main.c），BSP/it.c 同款引用 */
 
-/* FR-505 归因临时（验收后移除）：LL_ATON 逐 epoch 块墙钟环形日志导出
- * （定义在 ll_aton_rt_main.c；WC_TEST 推理完成后、发送响应前调用） */
-extern void ems_epoch_dump(void);
-
 static ems_proto_t ems_proto_st; /* 协议会话（单实例：解析/会话/事件环） */
 static ems_ctrl_t ems_ctrl_st;   /* 控制律状态（T-506 CMD_TICK/CMD_RESET 驱动） */
 static void ems_handle_cmd_tick(const uint8_t *payload, uint16_t len);
@@ -180,10 +176,6 @@ static void ems_handle_wc_test(const uint8_t *payload, uint16_t len)
                             EMS_PROTO_ERR_INFER);
         return;
     }
-
-    /* FR-505 归因临时（验收后移除）：逐 epoch 块墙钟 chunk 环形日志，
-     * 推理完成（cls/logits/us 已取得）、发送响应前导出 */
-    ems_epoch_dump();
 
     uint8_t rsp[EMS_PROTO_RSP_WC_LEN];
     ems_proto_enc_rsp_wc(rsp, seq, (uint8_t)cls, logits, us);

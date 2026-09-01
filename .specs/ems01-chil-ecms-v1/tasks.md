@@ -186,7 +186,7 @@ Design: `./design.md`
   - Escalate If: int8 参考与 T-307 报告数值对不上（可能 tflite runtime 版本差异 →
     返回主 Agent，不得自行换 runtime）。
 
-- [ ] 7. 板上会话：权重烧录 + M1 验证 + 换模型流程走通（需用户在场）
+- [x] 7. 板上会话：权重烧录 + M1 验证 + 换模型流程走通（需用户在场）
   - ID: T-507
   - Requirement(s): FR-504, FR-505, FR-511, FR-513（M1）, FR-514, NFR-501, NFR-502, NFR-504
   - Goal: 按授权执行唯一 Level C + Level B 会话：

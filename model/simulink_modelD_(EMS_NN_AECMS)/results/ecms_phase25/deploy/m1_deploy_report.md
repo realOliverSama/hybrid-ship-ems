@@ -178,7 +178,13 @@ phase25 spec T-311 要求：*int8 模型大小 / activation RAM / weight memory 
 - 产物四件 `network.c` / `network_ecblobs.h` / `network_data.xSPI2.bin` / `Binary/network-data-mlpq.hex` **sha256 逐字节一致**；唯一差异为 `network.h` 的 `@date` 时间戳（2026-09-01 19:34:34）→ **工具链完全确定性**。
 - 重构建 ELF sha256 `a1326b51…` 与上一镜像**逐字节一致**（构建同样确定）。
 - **NOR 权重区无需重烧**：NOR 回读哈希 `0cca9d72…`（stage2 独立回读存档）与再生成 bin 一致，即 2026-08-31 烧录镜像仍有效。
-- 【待填】清扫后干净镜像 INFER_TEST ×200 复测结果：待主 Agent 板上会话执行后回填本小节（含 FR-504 LSB 分布复测值与新镜像哈希）。
+- **清扫后干净镜像 INFER_TEST ×200 复测（d3ea1da2 板上，2026-09-01 晚）**：
+  - 镜像身份：清扫后重建 ELF sha256 `d3ea1da2ec0b1d3b…`（工作区 build 产物与板上 SRAM 加载源一致）；
+  - 注入 200/200，错误零：`timeout=0 / bad_rsp=0 / resend=0 / stale_skip=0`；
+  - FR-504 LSB 分布复测：`mean_abs=1.06`（门 ≤1.5）/ `p99=5.0`（≤6）/ `max=6.0`（≤8）/ `|signed_mean|=0.11`（≤0.5），**hard_gate_fr504 = True**；`rmse_ratio=0.0102`（≤1.1）；
+  - 与下午 a1326b51 ×200 数据**逐项一致** → 插桩清扫零回归，板上推理等价性闭环。
+  - 同晚 WC_TEST 复测：注入 200/200 零错误，`cls_match_rate=1.0`（200/200），`max_logit_abs_delta=5e-7`。
+  - 数据：`m1_infer_test/infer_compare.csv[.json]`（prefix `clean200`）、`wc_compare.csv[.json]`（prefix `wc200_retest`）。
 
 > 结论：FR-511 换模型流程已实际走通（再生成 → 哈希判定 → 重构建 → SRAM 加载 → 复测框架），同模型重跑零副作用。换**新模型**时，除上述步骤外还须按新输出 scale 重推 FR-504 LSB 门禁并更新 analyze 资源记录（design 明文要求）。
 
@@ -193,7 +199,7 @@ phase25 spec T-311 要求：*int8 模型大小 / activation RAM / weight memory 
 | 09-01 | `fc43db07` | B1/B2（seq 回显 + CMD_WC_TEST / logits 出参）；换线后 ×200 干净数据采集（零超时零重试） | 进展日志 09-01 续② |
 | 09-01 | `a1326b51` | B3 FR-505 插桩（RunEpochBlock CYCCNT 环形数组），归因数据来源 | 进展日志 09-01 续② |
 | 09-01 晚 | `a1326b51`（FR-511 重构建，逐字节一致） | FR-511 换模型流程实证（§8.3） | 本报告 §8 |
-| 09-01 晚 | 清扫后新镜像【待填】 | FR-505 插桩清扫后重建；当前工作区 Debug ELF sha256 `d3ea1da2…`【待核：待主 Agent 确认为清扫后镜像】；复测待回填 | 当前 build 产物 |
+| 09-01 晚 | `d3ea1da2` | FR-505 插桩清扫后重建（fw_gate 7/7）；INFER_TEST ×200 复测全绿（mean 1.06/p99 5/max 6 LSB，hard_gate_fr504=True）+ WC ×200（cls 200/200），与 a1326b51 下午数据逐项一致 → 清扫零回归闭环；当晚另修复主机侧 CH340 驱动阻塞读 ~2s 交付延迟（bug#5，详见进展日志） | 本报告 §8.3；进展日志 09-01（晚） |
 
 ### 9.2 T-507 三阶段证据（Level A → Level C → SRAM）
 
