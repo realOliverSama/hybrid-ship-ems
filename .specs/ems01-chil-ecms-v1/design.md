@@ -12,7 +12,11 @@ Requirements: `./requirements.md`
 
 EMS01 v1 在 STM32N647（ATK-DNN647）上实现预测型 A-ECMS 控制器侧：以 Vendor
 `Projects/05_Serial` 为工程起点，移植 `99_Applications/991` 的 NPU 集成模式
-（ST Edge AI Core v2.2.0 CLI 生成部署包 + NetworkRuntime1000 + legacy LL_ATON API），
+（ST Edge AI Core v2.2.0 CLI 生成部署包 + **NetworkRuntime1020** + legacy LL_ATON API——
+**2026-08-31 更正**：v2.2.0 配套运行库为 1020/atonn 1.1.1，vendor `Middlewares/AI`
+为 2.0.x 时代的 1000/atonn 1.0.0，跨代不兼容；EMS01 改用 **2.2.0 安装自带中间件栈**，
+复制进 `$P/Middlewares/STEdgeAI/`（工程自有区、相对路径、可入库），vendor `Middlewares/AI`
+保持只读且**不引用**；原“2.2.0↔NetworkRuntime1000”假设作废），
 控制律以 EML 为语义基准**手工移植为 C**（方案 A，用户 2026-08-31 按 token 成本裁决，
 放弃 MATLAB Coder codegen 方案 B），并以**双推理后端**分层验证：
 
@@ -126,7 +130,7 @@ flowchart LR
 | NOR FSBL | 0x70000000 | 既有 FSBL | **不动** |
 | NOR Appli XIP | 0x70100400 | Release appli（仅构建验证，不烧录） | fw_gate Release 契约 |
 | NOR 权重 | **0x70200000** | MLP-Q int8 权重 bin（26.2KB，预留 1MB） | FR-514 授权烧录 |
-| NOR 权重 | **0x70400000** | workclf int8 权重 bin（39.1KB，预留 1MB） | FR-514 授权烧录 |
+| NOR 权重 | **0x70400000** | workclf int8 权重 bin（21.9KB，预留 1MB；2026-08-31 更正：原注 39.1KB 源自误标 float32 导出文件，真 int8 由 t312 重导出，见 `WS/results/ecms_phase25/classifier/workclf_int8_report.json`） | FR-514 授权烧录 |
 | AXISRAM3~6 | 0x34200000 起 | NPU 激活/工作区（mpool vendor 默认，运行时地址） | 不占 ELF 段 |
 | Internal SRAM | 0x34000400 起 | Debug 全部段（fw_gate 契约）/ Release RAM | ems_params ~200KB 在内 |
 | HyperRAM | 0x90000000 | mpool 溢出区（v1 两小模型预期用不到） | 禁止链为 ELF 段 |
@@ -138,14 +142,17 @@ flowchart LR
 
 ### CMake 集成（Appli/CMakeLists.txt 用户维护块）
 
-prepare 脚本**不会**自动接 `Middlewares/AI`（非扁平中间件）→ 手写块（marker 注释包围，
-与 ATK AUTO 三块并存互不覆盖）：
+prepare 脚本**不会**自动接 AI 中间件 → 手写块（marker 注释包围，
+与 ATK AUTO 三块并存互不覆盖）。中间件来源（2026-08-31 修订）：
+`$P/Middlewares/STEdgeAI/` = STEdgeAI 2.2.0 安装（`/Users/oliverlyu/ST/STEdgeAI/2.2/Middlewares/ST/AI/`）
+的自洽子集副本（Inc + Lib/GCC/ARMCortexM55/NetworkRuntime1020_CM55_GCC.a +
+Npu/Devices/STM32N6XX 驱动源），入库保存保证 NFR-503 可复现：
 
 - `target_sources`：`App/*.c`、`Model/mlp_q/network.c`、`Model/workclf/network.c`、
-  `Middlewares/AI/Npu/Devices/STM32N6XX/npu_cache.c`（**引用 vendor 原路径，不复制**）；
-- `target_include_directories`：`Middlewares/AI/Inc`、`.../Npu/Devices/STM32N6XX`、
+  `$P/Middlewares/STEdgeAI/Npu/Devices/STM32N6XX/npu_cache.c`（工程内相对路径）；
+- `target_include_directories`：`$P/Middlewares/STEdgeAI/Inc`、`.../Npu/Devices/STM32N6XX`、
   `Model/mlp_q`、`Model/workclf`、`App`；
-- `target_link_libraries`：`Middlewares/AI/Lib/GCC/ARMCortexM55/NetworkRuntime1000_CM55_GCC.a`；
+- `target_link_libraries`：`$P/Middlewares/STEdgeAI/Lib/GCC/ARMCortexM55/NetworkRuntime1020_CM55_GCC.a`；
 - 两模型的 `LL_ATON_DECLARE_NAMED_NN_INSTANCE_AND_INTERFACE` 经宏区分实例名
   （mlp_q / workclf），`ems_infer_npu.c` 封装为后端接口。
 
@@ -162,6 +169,12 @@ prepare 脚本**不会**自动接 `Middlewares/AI`（非扁平中间件）→ �
 | `results/ecms_phase1/kS_calibration.json` | λ₀=0.425、K_soc=30、K_S=0.01、Λ_floor=0.43、SOC_ref=0.60、Ē_H=36.8933…、E_scale=20.5069… |
 | `config/ecms_bsfc_override.mat` | BSFC 501 点表（tag `ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0`；**必须用 override 表**，7 点默认表数值差异大） |
 | `config/Model_Parameters.m`（人工核对清单） | η_rect=η_dcdc=0.97、Bat_Eff=0.95/0.95、SOC 限 0.105/0.945、Idle_Fuel=6.795、Grid dP=20、Gen_P_max=1000、Pgen_init=0、dt_ctrl=1 |
+
+> **2026-08-31 T-504 发现（遥测偏差，已记录，不影响 L0/部署决策）**：Simulink chart 的
+> `Ehat_q` 线性索引取 [3x3] 矩阵第 1 列 → 三分位数实际共用偏置 b3(1)（MATLAB 行向量隐式扩张伪影）；
+> T-503 C 移植按设计意图实现逐头偏置。结果：ref−fw 遥测常量偏移 q50=+0.26896 / q90=+0.27210 kWh、q10=0。
+> G2 部署模式下 K_w 不依赖 e_hat 偏置，P_gen_ref 双航次 bit-exact，L0 门禁 PASS；
+> **若未来启用 G1/G3（K_q 依赖 s_q），Simulink 侧 chart 该行为与设计意图不一致，届时须先在 Model D 域裁决修正 chart 还是改设计**（phase25 域问题，不在本 spec 内修复）。
 
 → 生成 `ems_params.c/.h`（文件头含各源文件 sha256 + 生成时间，"GENERATED DO NOT EDIT"），
 **提交入库**（构建不依赖 Python 即可复现；源变更 → 重跑脚本 → diff 可审）。
@@ -200,12 +213,20 @@ Simulink 参考在常数层面天然一致。
 | 0x01 | H→F | CMD_RESET | — | 复位控制状态（下一 tick 平 fill）；回 ACK |
 | 0x02 | H→F | CMD_TICK | tick_idx u32 + 7×f32 [t,P_load,SOC,v_cmd,v_ship,accel,x_ship] | 一个控制拍 |
 | 0x03 | F→H | RSP_TICK | tick_idx u32 + P_gen_ref f32 + e_hat f32 + K f32 + cls_eff u8 + infer_us u32 + ctrl_us u32 + flags u8 | 控制遥测 |
-| 0x04 | H→F | CMD_INFER_TEST | 302×f32 原始特征（物理量） | M1 一致性自测：固件归一化→NPU 推理 |
-| 0x05 | F→H | RSP_INFER_TEST | q10/q50/q90 f32 + infer_us u32 | kWh |
+| 0x04 | H→F | CMD_INFER_TEST | seq u32 + 302×f32 原始特征（物理量） | M1 一致性自测：固件归一化→NPU 推理；载荷首 u32 = 主机 seq，原样回显（帧内配对，级联错位免疫） |
+| 0x05 | F→H | RSP_INFER_TEST | seq u32 + q10/q50/q90 f32 + infer_us u32 | kWh；seq = 对应 CMD 的 seq（载荷级配对） |
 | 0x06 | H→F | CMD_PING | — | 链路检查 → ACK |
 | 0x07 | H→F | CMD_DUMP_EVENTS | — | 导出故障事件环（type+tick 序列，文本行输出） |
+| 0x08 | H→F | CMD_WC_TEST | seq u32 + 302×f32 原始特征（物理量） | T-507 workclf 一致率：固件 P_dec→workclf int8 分类 |
+| 0x09 | F→H | RSP_WC_TEST | seq u32 + cls u8 + rsv u8[3] + 7×f32 logits + wc_us u32 | 40B；cls ∈ [1,7]，logits 原始 int8 输出，us = workclf 耗时 |
 | 0x7F | F→H | ACK | echo TYPE u8 | |
 | 0x7E | F→H | NACK | echo TYPE u8 + err u8 | CRC 错/未知命令/状态非法 |
+
+RSP_INFER_TEST 载荷 20B（RSP_INFER_LEN 16→20，B2）：seq@[0..3]、q10@[4..7]、
+q50@[8..11]、q90@[12..15]、infer_us@[16..19]；RSP_WC_TEST 载荷 40B：
+seq@[0..3]、cls@[4]、rsv@[5..7]（固定 0）、logit0..6@[8..35]、wc_us@[36..39]。
+
+> 变更 2026-09-01（用户裁决）：载荷级 seq 回显（级联错位免疫；帧格式/CRC 作用域不变；RSP_TICK 已有 tick_idx 配对，控制路径不变）+ CMD_WC_TEST（workclf 一致率测量归入 T-507）。备选"帧头加 SEQ"被否：改动半径大（CRC 作用域/状态机/帧格式三处联动），载荷级方案达成同等免疫。
 
 超时：注入会话中主机等待 RSP 超时 500ms 记 TIMEOUT 事件；固件侧 CMD_TICK 间隔
 >2s（注入中）置 STALE 标志并保持 Pheld。帧内 7 信号语义与单位固定
@@ -254,7 +275,11 @@ INIT ──首 tick 平fill──> ACTIVE ──任一失败──> FALLBACK(ê=
 
 - 硬件操作授权边界（requirements Out of Scope 例外条）：Level A/B + 唯一 Level C
   （FR-514 权重烧录，专用外部加载器，禁 Mass Erase，保 FSBL）——实施任务中逐条核对；
-- `.ioc` 变更仅限已授权范围（05_Serial 复制改名 + Appli 上下文 XSPI2 增补），
+- `.ioc` 变更仅限已授权范围（05_Serial 复制改名 + Appli 上下文 XSPI2 增补 +
+  **2026-08-31 用户批准扩展：NPU RIF 授权组文本增补**——照扉 991 的 7 条
+  （NPU_CID_RIMU-1=1 / NPU_Secure_RIMU(-1)=true / NPU_Privilege_RIMU(-1)=true /
+  RISUP.NPU.Privilege=true + IPParameters 声明扩展），否则重新生成的
+  SystemIsolation_Config 不含 NPU RIMU/RISC 配置、Appli 侧 NPU 不可达）；
   Gate 以 `FW_GATE_ALLOW_IOC=1` 重跑；
 - 无网络面/无密钥/无用户数据；UART 协议仅实验室主机连接。
 
@@ -271,10 +296,23 @@ INIT ──首 tick 平fill──> ACTIVE ──任一失败──> FALLBACK(ê=
 - **L1 板上 M1（用户在场，SRAM Debug + 权重烧录）**：
   - FR-504：CMD_INFER_TEST × **200 个测试向量**（val split 固定 seed=20260831 抽样，
     原始物理量输入），板载（归一化+NPU int8）vs Python int8 reference。
-    **硬门禁（design 固定）：max |Δq50| ≤ 0.25 kWh（≈1.2% E_scale），
-    board-vs-python RMSE 比 ≤ 1.1**；workclf 同法（类别一致率 ≥99%，logits max |Δ|
-    报告）；conv1d SW fallback 属预期，记入 FR-502 fallback 清单；
-  - FR-505：DWT CYCCNT 实测 MLP-Q / workclf 推理时延（预算 ≤10ms / 合计 ≤20ms）；
+    **硬门禁（design 固定；2026-09-01 修订见变更记录）：|Δq50| 以输出 LSB 计
+    （1 LSB = 冻结 mlpq 输出张量 scale 0.015376422 × y_std 16.495129 = 0.2536 kWh）：
+    mean ≤1.5 LSB 且 p99 ≤6 LSB 且 max ≤8 LSB，且无符号偏置（|mean| ≤0.5 LSB）
+    且无发散（无 NaN/野值）；board-vs-python RMSE 比 ≤ 1.1**；
+    workclf 同法（类别一致率 ≥99%，logits max |Δ| 报告）；conv1d SW fallback 属预期，
+    记入 FR-502 fallback 清单；
+    > 变更 2026-09-01（用户批准）：原值 max |Δq50| ≤ 0.25 kWh 为无推导拍定值——C 审计
+    > 实证其小于 1 LSB（0.2536），字面等效要求遂位一致，与 design R3（已承认 NPU 与
+    > 解释器存在累加顺序差异）矛盾。修订为 LSB 分布形式；×200 实测（干净链路，seq 配对）：
+    > mean 1.06 LSB、p99 5 LSB、max 6 LSB，RMSE 比 0.0102，符号对称无偏置，全项通过且有余量。
+    > LSB 绑定该冻结 mlpq 输出张量 scale；FR-511 换模型时按新输出 scale 重推导。
+  - FR-505：DWT CYCCNT 实测 MLP-Q / workclf 推理时延；
+    > 变更 2026-09-01（用户批准）：原预算 ≤10ms / 合计 ≤20ms 为无推导拍定值且按归因实测不可达
+    > （workclf 42ms = 99.8% NPU 执行墙钟，NPU 域时钟 400MHz 下即使 RM 上限 1GHz 也仅能到 ~17ms）。
+    > 修订为：mlpq ≤1ms、workclf ≤50ms、合计 ≤60ms（1Hz 控制拍占用 ≤6%，实测 4.2%）；
+    > 归因证据链与 CPU/NPU 时间占比见进展日志 09-01 下午续②；NPU 频率提升（对齐 991 800MHz
+    > 或 RM 上限 1GHz）列入后续硬件方向待解决问题，Phase 3 不做。
   - FR-502：stedgeai analyze 报告（HW coverage、activation RAM、weight memory、
     fallback 算子清单）+ generate 日志归档。
 - **L2 板上 M2（同会话或紧随）**：
@@ -314,7 +352,7 @@ T-509 收尾：fw_gate、EMS01 README 结构补全 + NOR 容量更正（32MB）�
 | FR-501 | 05_Serial 复制改造 + .ioc 增补 XSPI2（Architecture §工程目录） | T-501：prepare 重复运行 + fw_gate 结构项 |
 | FR-502 | stedgeai analyze/generate 归档（API §STEdgeAI） | T-502：analyze 报告 + generate 日志 |
 | FR-503 | gen_fw_params 单一来源生成 ems_params（Data Model） | L0 差分 + 生成物 sha256 溯源头 |
-| FR-504 | INFER_TEST 协议 + Python int8 参考（Testing L1） | T-507：200 向量，max\|Δq50\|≤0.25 kWh |
+| FR-504 | INFER_TEST 协议 + Python int8 参考（Testing L1） | T-507：200 向量，FR-504 门禁按 2026-09-01 修订版（LSB 分布形式，见 design 正文） |
 | FR-505 | DWT CYCCNT 测量（Architecture §6） | T-507：RSP 遥测 infer_us |
 | FR-506 | ems_ctrl 逐条复刻 EML 决策（Data Model §滑窗） | L0 差分硬门禁 |
 | FR-507 | 门控状态机复刻（Data Model §门控） | L0 单元用例 + L2 注入 |
@@ -337,8 +375,10 @@ T-509 收尾：fw_gate、EMS01 README 结构补全 + NOR 容量更正（32MB）�
 
 - **R1 STEdgeAI v2.2.0 本机未装**（下载需 ST 账号）→ T-502 首步核验；analyze 可临时用
   Developer Cloud 替代，generate 必须本地 CLI（NFR-503）。
-- **R2 workclf Conv1D 回退 CM55 软件执行**（tflite CONV_1D 不在 NPU 映射表）→ 预期内，
-  7.8K 参数 SW 开销可忽略；如实记入 fallback 清单（T-311 要求项），不改模型导出形态。
+- **R2 workclf Conv1D 回退 CM55 软件执行**（tflite CONV_1D 不在 NPU 映射表）→ ~~预期内~~
+  **2026-08-31 实测更正**：STEdgeAI v2.2.0 对真 int8 QDQ 模型的 Conv1D 实际全部上 NPU
+  （16/22 epoch HW；SW 仅 2 个 I/O 适配器 + 3×Pad + 1×Softmax 标准映射）；风险不成立，
+  fallback 清单按实测归档（T-311 要求项），不改模型导出形态。
 - **R3 NPU int8 vs Python tflite 解释器数值差**（累加顺序差异）→ 层②门禁 99% ≤1 网格步；
   若系统性超差，Escalate（可能需 `--native-float` 等编译选项调整 = design 修订）。
 - **R4 float32 协议帧 vs double 内部表示**：注入值经 f32 传输引入 ≤1e-7 相对误差，

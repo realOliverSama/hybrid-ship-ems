@@ -1,0 +1,16 @@
+{
+ "rows": 200,
+ "errors": {
+  "timeout": 100,
+  "bad_rsp": 0
+ },
+ "compare": {
+  "n_cmp": 100,
+  "max_dq10": 45.40085448632813,
+  "max_dq50": 44.893582892822266,
+  "max_dq90": 46.669033762573235,
+  "mean_ref_q50": 33.38972182,
+  "hard_gate_max_dq50_le_0.25": false
+ },
+ "out_csv": "infer_compare.csv"
+}

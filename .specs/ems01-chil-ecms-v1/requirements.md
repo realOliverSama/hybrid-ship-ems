@@ -57,7 +57,7 @@ SOC_ref 调制 → ECMS → P_gen_ref；CHIL 信号集 7→1。Phase 2.5 全部�
    （结构模板 = Vendor `Projects/05_Serial` 类裸机 CMake 工程），
    `atk_stm32n6_cmake_prepare.py` 可重复准备，`fw_gate.py` 结构契约满足；
 2. ST Edge AI 工具链打通（**ST Edge AI Core v2.2.0 本地 CLI**，全程命令行可复现）：
-   `mlp_h64_32_lr3e-4_q_int8.tflite`（26.2KB）与 `workclf_v1_int8.tflite`（~50KB）→
+   `mlp_h64_32_lr3e-4_q_int8.tflite`（26.2KB）与 `workclf_v1_int8.tflite`（21.9KB）→
    `stedgeai generate --target stm32n6` → NPU 部署包（network.c / network_ecblobs.h /
    user_neuralart.json / 权重 bin）→ 接入 `Appli/CMakeLists.txt`（Vendor
    `Middlewares/AI/`：NetworkRuntime1000_CM55_GCC.a + NPU HAL，手写 CMake 接线）；
@@ -68,7 +68,7 @@ SOC_ref 调制 → ECMS → P_gen_ref；CHIL 信号集 7→1。Phase 2.5 全部�
 ### In Scope（M2：控制律移植 + 本地激励验证）
 
 5. ECMS 控制律 C 移植（SOC_ref 调制 + λ_eff + 网格穷举，1s 控制周期，裸机主循环）；
-6. G2 门控移植：工况识别器 `workclf_v1_int8.tflite`（~50KB）NPU 推理 + 逆水段
+6. G2 门控移植：工况识别器 `workclf_v1_int8.tflite`（21.9KB）NPU 推理 + 逆水段
    （upstream_class_id=6）识别 → 预测关断（K=0，ê=0 ≡ law=5 回退），迟滞 3 窗（30s）；
 7. 本地激励开环注入验证：主机经 UART 回放 Simulink law=7 G2 运行记录
    （7 个状态量逐拍注入），采集固件 P_gen_ref 输出，与 Simulink 参考逐点比对；

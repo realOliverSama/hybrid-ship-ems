@@ -25,7 +25,7 @@ Design: `./design.md`
 > - 硬件授权边界：Level A/B（SRAM Debug）+ 唯一 Level C（FR-514 权重烧录，
 >   专用外部加载器 `External_Loader/MX25UM25645G_ATK-CNN647B`，禁 Mass Erase，
 >   不动 FSBL@0x70000000）；板上任务需用户在场；
-> - `.ioc` 授权范围：05_Serial 复制改名 + Appli 上下文 XSPI2 增补；
+> - `.ioc` 授权范围：05_Serial 复制改名 + Appli 上下文 XSPI2 增补 + NPU RIF 授权组文本增补（2026-08-31 用户批准扩展，见 design）；
 >   授权期 Gate 用 `FW_GATE_ALLOW_IOC=1`；
 > - Vendor 只读（EMS_Projects 例外）；不复制 prepare 脚本与 BSP 进工程
 >   （Middlewares/AI 以原路径引用）；生成代码只改 USER CODE 区域；
@@ -36,7 +36,7 @@ Design: `./design.md`
 > 由 T-506 提前为 T-504（内容不变），使移植错误在 AI 集成前的纯 PC 阶段暴露；
 > 硬件无关任务（T-503~T-506）全部前置，板上操作合并为 T-507/T-508 一个会话。
 
-- [ ] 1. 工程骨架：复制 05_Serial → EMS01 + .ioc 增补 + 首次 Gate
+- [x] 1. 工程骨架：复制 05_Serial → EMS01 + .ioc 增补 + 首次 Gate
   - ID: T-501
   - Requirement(s): FR-501, FR-512, NFR-503, NFR-504
   - Goal: `$P` 成为 fw_gate 合规的 CubeMX/CMake 工程：复制 `Projects/05_Serial/`
@@ -59,7 +59,7 @@ Design: `./design.md`
   - Escalate If: `.ioc` 需要超出 XSPI2 增补的修改；prepare 对 XSPI2 增补的 linker
     处理异常；构建错误根因指向 vendor 工程本身（非复制错误）。
 
-- [ ] 2. STEdgeAI 工具链 + 两模型部署包生成 + 编译记录归档
+- [x] 2. STEdgeAI 工具链 + 两模型部署包生成 + 编译记录归档
   - ID: T-502
   - Requirement(s): FR-502, FR-514, NFR-501, NFR-502, NFR-503
   - Goal: 核验/安装 **ST Edge AI Core v2.2.0** 本地 CLI（锁定版本，不得更换）；
@@ -72,9 +72,9 @@ Design: `./design.md`
     `Model/<m>/generate-n6-model.sh` 可重复执行。
   - Context: tflite 源（只读，复制副本进 `$P/Model/<m>/`）：
     `WS/results/ecms_phase25/models/mlp_h64_32_lr3e-4_q/mlp_h64_32_lr3e-4_q_int8.tflite`（26.2KB）、
-    `WS/results/ecms_phase25/classifier/workclf_v1_int8.tflite`（39.1KB）；
+    `WS/results/ecms_phase25/classifier/workclf_v1_int8.tflite`（21.9KB，2026-08-31 t312 真 int8 重导出）；
     int8 量化已在 T-307 完成（val 校准），本任务不重新量化；
-    workclf 的 Conv1D 预期 SW fallback（如实记录，不视为失败）。
+    workclf Conv1D 实测全部上 NPU（2026-08-31 更正，design R2；SW 仅 I/O 适配器+Pad+Softmax，如实记录）。
   - Scope: `$P/Model/`、`$P/Binary/`；编译记录归档 `$P/Model/<m>/`（analyze 输出 +
     generate 日志）；只读引用 tflite 源与 991 Model/ 模板。
   - Do Not Change: tflite 源文件；stedgeai 版本（v2.2.0）；mpool 除 constants 池
@@ -87,7 +87,7 @@ Design: `./design.md`
   - Escalate If: v2.2.0 无法安装/激活；MLP-Q 出现非预期 fallback；mpool 基址修改
     不被工具接受；generate 产物与 991 结构显著不符。
 
-- [ ] 3. 参数生成器 + 控制律 C 移植（REF 后端）+ L0 单元用例
+- [x] 3. 参数生成器 + 控制律 C 移植（REF 后端）+ L0 单元用例
   - ID: T-503
   - Requirement(s): FR-503, FR-506, FR-507, NFR-505, NFR-506
   - Goal: `Host/tools/gen_fw_params.py`（从 5 个只读源生成 `ems_params.c/.h`，
@@ -113,7 +113,7 @@ Design: `./design.md`
   - Escalate If: 发现 design 风险清单之外的 EML 语义难以 C 复刻；单元用例失败根因
     指向 EML 语义理解分歧（不得自行"修正"EML 语义）。
 
-- [ ] 4. M2 参考轨迹生成 + L0 差分硬门禁
+- [x] 4. M2 参考轨迹生成 + L0 差分硬门禁
   - ID: T-504
   - Requirement(s): FR-506, FR-507, FR-509（L0 层）, NFR-506
   - Goal: `WS/scripts/66_export_fw_reference.m`（脚本驱动，禁 GUI）：law=7 G2
@@ -139,7 +139,7 @@ Design: `./design.md`
   - Escalate If: 差分超门禁（先修 ems_ctrl 重跑；连续失败或根因指向语义理解 →
     Escalate）；Simulink 复现 G2 运行与 runs_gate_v2 缓存结果不一致。
 
-- [ ] 5. CMake AI 集成 + NPU 后端 + INFER_TEST 链路 + 构建
+- [x] 5. CMake AI 集成 + NPU 后端 + INFER_TEST 链路 + 构建
   - ID: T-505
   - Requirement(s): FR-502, FR-503, FR-504（链路）, FR-514（只读段）, NFR-503
   - Goal: `Appli/CMakeLists.txt` 手写 AI 接线块（marker 注释包围，与 ATK AUTO 块并存：
@@ -164,7 +164,7 @@ Design: `./design.md`
   - Escalate If: NetworkRuntime 链接/ABI 问题；991 初始化存在 ThreadX 硬依赖；
     RIF 配置需求超出 991 范围；XSPI2 DEBUG 初始化与 05_Serial 底座冲突。
 
-- [ ] 6. UART 协议 + 主机注入工具 + Python int8 参考工具
+- [x] 6. UART 协议 + 主机注入工具 + Python int8 参考工具
   - ID: T-506
   - Requirement(s): FR-510, FR-504（参考侧）, FR-509（工具侧）, NFR-503
   - Goal: `ems_proto.c/.h`（design §UART 帧表全实现：编解码/CRC16/文本行分流/
