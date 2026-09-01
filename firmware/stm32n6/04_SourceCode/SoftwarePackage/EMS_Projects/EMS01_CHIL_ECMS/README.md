@@ -16,7 +16,7 @@
 ## 范围（对应 roadmap §8.3 实施路径）
 
 1. AI 推理框架：ST Edge AI / X-CUBE-AI 集成，int8 tflite 部署（MLP-Q 26KB / TCN-f64 220KB / N-BEATS ~1.5MB）
-2. 模型热切换机制：换权重文件即换预测模型（外部 NOR 256MB 存放模型库）
+2. 模型热切换机制：换权重文件即换预测模型（外部 NOR 32MB＝256Mbit，MX25UM25645G，存放模型库）
 3. ECMS 控制律移植（CPU）：等效因子 + 网格穷举，1s 控制周期
 4. G2 门控逻辑：工况识别器 int8（~50KB）+ 逆水段关断回退
 5. CHIL 通信：与 Simulink plant 的接口（形式待 HIL 资料确认）+ 步进同步
