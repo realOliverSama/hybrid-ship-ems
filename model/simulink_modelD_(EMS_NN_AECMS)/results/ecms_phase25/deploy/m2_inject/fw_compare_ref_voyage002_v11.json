@@ -1,0 +1,18 @@
+{
+ "rows": 4212,
+ "errors": {
+  "timeout": 0,
+  "crcerr": 0,
+  "idx_mismatch": 0
+ },
+ "compare": {
+  "int8": {},
+  "sim": {
+   "n_cmp": 4212,
+   "exact_rate": 1.0,
+   "within_1grid_rate": 1.0,
+   "max_dP_kW": 0.0
+  }
+ },
+ "out_csv": "fw_compare.csv"
+}

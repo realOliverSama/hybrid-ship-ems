@@ -127,3 +127,46 @@ raw 口径行为（= EML 冻结参考，实验逐拍证明同一函数——**�
 - AC-2b：FR-508 回退行为测试记录 ✅（四场景 + 事件环证据）；
 - AC-2c：工况识别器板上推理验证 ✅（M1 WC_TEST 类别一致率 99%+ + 本报告 §6 量化审计）；
 - 阈值合规：未调整任何 design 固定阈值；层③口径维持报告性；无常数改动。
+
+---
+
+# 11. v1.1 口径修订增补（2026-09-08，用户 D-1~D-7 裁决后实施）
+
+## 11.1 修订内容（路线 C：workclf 喂入改归一化特征）
+
+| 修改点 | 文件 |
+|---|---|
+| workclf 喂入 raw → xnorm 切片（唯一构造点） | `ems_ctrl.c:324-338`（`pdec30[j]=xnorm[10*j]`，v/accel= `xnorm[300]/[301]`） |
+| 口径声明更新 | `ems_infer.h`（"识别器不吃归一化"作废）、`gen_reference_int8.py`、`test_ctrl_diff.py` |
+| EML 同步（4 变体，D-2） | `gen_eml_gate.py` G2 段 `Pdec=xnorm(1:10:300)`、`s8=[xnorm(301);xnorm(302)]` → 63 注入 chart |
+| 参考再生成 | 64 全矩阵重算（66 缓存 REPRO 双 PASS：d_fuel=0/d_SOC=0）→ 66 导出新 `ref_G2_*.csv` |
+| L0 指纹门（D-4） | `test_l0_trace_diff.py::check_baseline_manifest()` + `fw_reference/baseline_manifest.json`（v1.1）；v1 基线冻结于 `v1_baseline_freeze.json` + `gating/*_v1_frozen.*` |
+| int8 重标定 | **不需要**（现标定集=归一化样本，与修订后部署口径一致；E4 实证） |
+
+**66 重放断言修订记录**：原 1e-6 位级断言在归一化口径下不可达——根因实证：chart 仿真编译目标 vs MATLAB 解释器存在 FP 微差（tick5：e_hat 微差翻转 λ 网格 argmin，P 差 1 网格步；归一化口径分类器 logits 变平 → argmax 近平局密度上升 → 迟滞放大为成簇分歧）。断言改为同网格率 ≥90% 灾难防护 + 全指标入 meta（位级保真由 L0 与层① 承担：L0 复跑 gcc C vs chart **100% 逐位一致**，证明编译目标==gcc C，解释器是唯一微差方）。
+
+## 11.2 板上复验（修订版镜像，SRAM 加载 Plan=Readback MATCH）
+
+镜像：NPU `9e2fab81…`（build/Debug）/ REF `f31714ea…`（build-ref2）；可加载内容与独立重编逐字节一致（ELF sha 差异纯为 DWARF 编译路径，构建确定性无恙）。
+
+| 层 | S20 | voyage_002 | 判定 |
+|---|---|---|---|
+| ① REF vs 新 Simulink 参考 | **exact 100%**，max ΔP=0 | **exact 100%**，max ΔP=0 | **PASS**（移植保真保持） |
+| ② board-NPU vs host-int8（≥99% 门禁） | 98.877%（62/5521 拍 >1 网格） | **99.003%**（42/4212） | **S20 边际 FAIL / voyage_002 PASS**（见 11.4） |
+| ③ board-NPU vs 新 Simulink 参考（报告性） | 98.46% | 98.39% | 自 v1 的 45.5%/95.25% 大幅收敛 ✓ |
+
+NN 层质量（层②）：cls_match 99.96%/100%、max\|Δe_hat\| 0.346/0.297（v1 为 1.645——NN 一致性反而更优）。
+
+**分类器功能验证（设计真值）**：板载 cls vs S20 设计段 = **75.80%**（= E4 75.89%，NPU↔解释器仅差 1 拍）；upstream 占比 **9.7%**（设计 10.9%）；类分布 harbor 1893/rush 1690/eco 1358/upstream 538/depart 42。对照 EML raw 口径同真值 acc = 10.87%。**NN 预测生效时段 ~90%（设计意图），预测门控从"永不生效"恢复为按 upstream 段真实门控。**
+
+**FR-508 回归**：修订版 NPU 镜像四场景全符合 design 状态机（F1 FALLBACK+ê=0 / F2 STALE+Pheld / F3 NACK+CRC 事件 / F4 清环+平填）；基线拍 e_hat=1.645 活跃（新口径预期）。传输 6 序列零错误。
+
+## 11.4 遗留决策（晨间交用户）
+
+**layer② S20 = 98.877% < 99%（差 0.12%，62 拍）**：门禁 design 固定不放宽。分析：新口径下 e_hat 生效 ~90%（v1 为 11%），NPU↔解释器 LSB 级差异经 λ 链传播至网格边界（v1 被 ê=0 掩盖）；cls_match 99.96%、max|Δe_hat| 0.346 表明 NN 端口误差本身极小，P 级分歧属 λ 链对 LSB 的固有敏感性 + 迟滞放大。裁决选项：(a) 接受并记录为口径修订的已知代价（层③ 98.4% 同时大幅改善）；(b) design 修订层② 度量（如 NN 输出级门禁 + P 级报告）；(c) 进一步收敛 NPU↔解释器差（研究项）。**不放宽、不隐藏，交用户裁决。**
+
+## 11.5 构建与工具链纪要
+
+- 构建确定性：prepare/cube-cmake 两独立目录构建的可加载内容逐字节一致（ELF sha 差异=DWARF 编译路径，非代码差异）。
+- **fw_gate 缓存构建陷阱（新增教训）**：fw_gate 的 build 步骤在源码变更后可能命中 ninja 缓存快速通过（0.777s）——源码修订后必须核对 build 产物 mtime/指纹（本次以独立目录重编 + objcopy 可加载内容比对澄清，全程无陈旧镜像上板）。
+- 冗余构建目录 `build-ref2`/`build-npu2` 保留作 determinism 证据（gitignore 范围内）。
