@@ -15,7 +15,8 @@
 | `nn-predictive-ecms-phase2/` | 目录 | Phase 2 NN 预测型 A-ECMS（SOC_ref 前瞻通道） |
 | `nn-predictive-ecms-phase25/` | 目录 | Phase 2.5 NPU 导向模型族优化（TCN 主推）+ 数据集 v2 内河工况扩展 + 工况识别门控（models-research 分支，tasks-approved / Amendment v1.1） |
 | `phase4-model-e/` | 目录 | Phase 4 Model E：面向 HIL 的模型重构与实时化（**全 draft**：tasks.md 含 T-401~T-407 草稿与开放问题，待用户与本地模型讨论定稿，未批准不得实施；规划背景见 `docs/research_roadmap.md` §8） |
-| `ems01-chil-ecms-v1/` | 目录 | EMS01_CHIL_ECMS 固件 v1（Phase 3 CHIL 控制器侧，models-research 分支）：M1 = CMake 骨架 + STEdgeAI + MLP-Q int8 板上验证（兼关闭 phase25 T-311）✅；M2 = ECMS+G2 移植 + 本地激励验证 ✅（T-508 层① 100% exact / 层② ≥99% PASS / FR-508 四场景 PASS，报告 `m2_port_report.md`）；遗留：workclf int8 口径决策（AI_MODELING.md §22）；热切换→v2、CHIL 通信→v3 |
+| `ems01-chil-ecms-v1/` | 目录 | EMS01_CHIL_ECMS 固件 v1（Phase 3 CHIL 控制器侧，models-research 分支）：M1 = CMake 骨架 + STEdgeAI + MLP-Q int8 板上验证（兼关闭 phase25 T-311）✅；M2 = ECMS+G2 移植 + 本地激励验证 ✅（T-508 层① 100% exact / 层② ≥99% PASS / FR-508 四场景 PASS，报告 `m2_port_report.md`）；workclf 口径修订 v1.1 已实施并板上复验（层① 100% 保持、层③ 98.4%+、板载分类器对设计真值 75.8%；层② S20 98.877% 边际 FAIL 用户裁决 (a) 接受并记录）；热切换→v2、CHIL 通信→v3 |
+| `ems01-chil-v3-closedloop/` | 目录 | EMS01 CHIL v3 — soft-HIL 真闭环实验（models-research 分支）：开环回放升级为真闭环（主机被控对象每拍推进 + 板载 P_gen 回馈功率平衡）；4 臂对照（板载 NPU / 板载 REF / ModelD 原生 law=7 / law=5）× S20+voyage_002；被控对象子集 codegen→C 推进器（P3 主案，受阻回退 P1）；lock-step 固件零改动。状态：brainstorm ✅ / requirements ✅（2026-09-08 用户批准）/ design ✅（2026-09-08 用户批准，含 §5 阈值与 OQ-1~5 定案，spec_validate 12/12）/ tasks 待起草。后继：v3 完成后立即编译期换型（FR-511 流程换入 phase25 同签名候选，design §11 登记） |
 | `multistep-predictive-ems/` | 目录 | 面向参数不确定性的多步负荷预测增强型 EMS |
 | `timed-feedforward-ems/` | 目录 | Model C 定时前馈 EMS（Peak + Time-to-Peak 预测调度） |
 | `model-b-dc-bus/` | 目录 | Model B 直流母线电气层 + 安全/节能指标卡 + S10 工况 |
