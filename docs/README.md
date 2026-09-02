@@ -11,7 +11,8 @@
 
 | 条目 | 类型 | 说明 |
 |---|---|---|
-| `research_roadmap.md` | 文件 | 研究流程文档——边缘 AI 自适应 ECMS 甲醇混合动力船舶能量管理策略（研究路径、实验步骤与逻辑链条，面向导师/评审） |
+| `research_roadmap.md` | 文件 | 研究流程文档——边缘 AI 自适应 ECMS 甲醇混合动力船舶能量管理策略（研究路径、实验步骤与逻辑链条，面向导师/评审；2026-09 收官：Phase 2.5 + Phase 3 v1/v3 闭环完成） |
+| `reports/` | 目录 | 导师研究总结报告工作区：`EMS01_研究总结报告_soft-HIL真闭环_20260902.docx`（Word 报告，8 图 + 11 表插入正文）、`generate_figures.py`（从闭环产物数据生成 8 张 300dpi 图表，幂等可重跑）、`build_docx.py`（读 metrics JSON + 图表组装 Word 报告，幂等可重跑）、`figures/`（8 张 PNG：四臂 SOC 轨迹×2 / 四臂油耗柱状 / 板载 vs 参考 P_gen 对比 / 航速跟踪 / FR-508 回退特写 / G-P1 残差直方图 / 各阶段油耗演进） |
 | `optimization_backlog.md` | 文件 | 优化 Backlog——NN Predictive A-ECMS（Phase 2 PARTIAL 后续优化方向） |
 | `data_request_list.md` | 文件 | 设备方/设计方数据索取清单（活文档，随项目演进持续更新） |
 | `bsfc_anchors_sources.md` | 文件 | BSFC 双锚点来源登记（adaptive-ecms-methanol / FR-018） |
