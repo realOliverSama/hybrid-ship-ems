@@ -1,0 +1,269 @@
+{
+  "task": "T-601",
+  "spec": "ems01-chil-v3-closedloop (FR-601/NFR-604/AC-601)",
+  "generated": "2026-09-02 11:40:26",
+  "matlab_version": "R2026a",
+  "matlab_version_string": "26.1.0.3312084 (R2026a) Update 4",
+  "build_method": "load main model -> SaveAs -> in-place transform (main agent decision, T-601 FD1)",
+  "main_model": "HybridShip_ModelD_DCBus.slx",
+  "main_sha256_before": "50359e65d584fd6c889db5802795665531c6cf031cf8de83344e894fe150730b",
+  "main_sha256_after": "50359e65d584fd6c889db5802795665531c6cf031cf8de83344e894fe150730b",
+  "main_sha256_unchanged": true,
+  "main_hash_note": "sha256 via system shasum -a 256 (java fis.read pass-by-value bug fixed 2026-09-02, see T-602 diagnosis)",
+  "plantstep_model": "model/HybridShip_ModelD_PlantStep.slx",
+  "idempotency": "old plantstep existed=1, deleted before rebuild",
+  "subsystem_inventory": {
+    "expected": [
+      "01_Scenario_Manager",
+      "02_Ship_Speed_Controller",
+      "03_Propulsion_Plant",
+      "04_Load_Measurement",
+      "05_EMS_Controller",
+      "06_Genset_Average_Plant",
+      "08_Undervolt_Derate",
+      "09_Bus_Residual_Monitor",
+      "10_Fuel_Consumption",
+      "11_Voyage_Stop_Logic",
+      "12_Data_Logging",
+      "13_DC_Bus",
+      "14_Battery_Converter",
+      "15_Bus_Voltage_Monitor"
+    ],
+    "found": [
+      "01_Scenario_Manager",
+      "02_Ship_Speed_Controller",
+      "03_Propulsion_Plant",
+      "04_Load_Measurement",
+      "05_EMS_Controller",
+      "06_Genset_Average_Plant",
+      "08_Undervolt_Derate",
+      "09_Bus_Residual_Monitor",
+      "10_Fuel_Consumption",
+      "11_Voyage_Stop_Logic",
+      "12_Data_Logging",
+      "13_DC_Bus",
+      "14_Battery_Converter",
+      "15_Bus_Voltage_Monitor"
+    ],
+    "removed": [
+      "05_EMS_Controller",
+      "12_Data_Logging"
+    ],
+    "remaining": [
+      "01_Scenario_Manager",
+      "02_Ship_Speed_Controller",
+      "03_Propulsion_Plant",
+      "04_Load_Measurement",
+      "06_Genset_Average_Plant",
+      "08_Undervolt_Derate",
+      "09_Bus_Residual_Monitor",
+      "10_Fuel_Consumption",
+      "11_Voyage_Stop_Logic",
+      "13_DC_Bus",
+      "14_Battery_Converter",
+      "15_Bus_Voltage_Monitor"
+    ],
+    "disambiguation": "buildBatteryConverter creates 14_Battery_Converter (build_model_c L865-871); no 07_* subsystem exists in HybridShip_ModelD_DCBus.slx; design.md conceptual names 07_Battery_Converter/12_Data_Logging_Doc map to actual 14_Battery_Converter/12_Data_Logging"
+  },
+  "ems_interface_ports": [
+    {
+      "name": "P_load_total_kW",
+      "port": 1,
+      "dir": "in"
+    },
+    {
+      "name": "SOC",
+      "port": 2,
+      "dir": "in"
+    },
+    {
+      "name": "acceleration_mps2",
+      "port": 3,
+      "dir": "in"
+    },
+    {
+      "name": "t",
+      "port": 4,
+      "dir": "in"
+    },
+    {
+      "name": "v_cmd_mps",
+      "port": 5,
+      "dir": "in"
+    },
+    {
+      "name": "v_ship_mps",
+      "port": 6,
+      "dir": "in"
+    },
+    {
+      "name": "x_ship_m",
+      "port": 7,
+      "dir": "in"
+    },
+    {
+      "name": "P_gen_ref_kW",
+      "port": 1,
+      "dir": "out"
+    }
+  ],
+  "ems_out_port_number": 1,
+  "root_inports": {
+    "name": "P_gen_ref_kW",
+    "dst": "06_Genset_Average_Plant/1"
+  },
+  "root_outports": [
+    {
+      "index": 1,
+      "name": "t_s",
+      "src": "t/1",
+      "wiring": "sole_consumer_direct"
+    },
+    {
+      "index": 2,
+      "name": "P_load_total_kW",
+      "src": "04_Load_Measurement/1",
+      "wiring": "branch_existing_line"
+    },
+    {
+      "index": 3,
+      "name": "SOC",
+      "src": "14_Battery_Converter/2",
+      "wiring": "sole_consumer_direct"
+    },
+    {
+      "index": 4,
+      "name": "v_cmd_mps",
+      "src": "01_Scenario_Manager/1",
+      "wiring": "branch_existing_line"
+    },
+    {
+      "index": 5,
+      "name": "v_ship_mps",
+      "src": "03_Propulsion_Plant/2",
+      "wiring": "branch_existing_line"
+    },
+    {
+      "index": 6,
+      "name": "acceleration_mps2",
+      "src": "03_Propulsion_Plant/4",
+      "wiring": "sole_consumer_direct"
+    },
+    {
+      "index": 7,
+      "name": "x_ship_m",
+      "src": "03_Propulsion_Plant/3",
+      "wiring": "branch_existing_line"
+    },
+    {
+      "index": 8,
+      "name": "fuel_total_kg",
+      "src": "10_Fuel_Consumption/1",
+      "wiring": "branch_subsystem_output_line"
+    },
+    {
+      "index": 9,
+      "name": "P_bat_kW",
+      "src": "14_Battery_Converter/1",
+      "wiring": "branch_subsystem_output_line"
+    },
+    {
+      "index": 10,
+      "name": "P_prop_kW",
+      "src": "03_Propulsion_Plant/1",
+      "wiring": "branch_subsystem_output_line"
+    },
+    {
+      "index": 11,
+      "name": "voyage_stop",
+      "src": "11_Voyage_Stop_Logic/1",
+      "wiring": "new_internal_outport_in_11_Voyage_Stop_Logic"
+    }
+  ],
+  "root_outport_11_note": "11_Voyage_Stop_Logic 内新增 Outport voyage_stop, 源=驱动 Stop Simulation 的 reach 比较输出; 主模型不存在现成 voyage_stop 信号(design §3.3 要求 Outport 11)",
+  "terminators_T_log_inherited": [
+    {
+      "name": "T_log_1",
+      "src": "01_Scenario_Manager/5",
+      "srcName": "scenario_id"
+    },
+    {
+      "name": "T_log_2",
+      "src": "03_Propulsion_Plant/5",
+      "srcName": "R_hull_N"
+    },
+    {
+      "name": "T_log_3",
+      "src": "03_Propulsion_Plant/6",
+      "srcName": "F_prop_eff_N"
+    },
+    {
+      "name": "T_log_4",
+      "src": "03_Propulsion_Plant/7",
+      "srcName": "n_prop_rpm"
+    },
+    {
+      "name": "T_log_5",
+      "src": "14_Battery_Converter/3",
+      "srcName": "P_bat_dis_avail_kW"
+    },
+    {
+      "name": "T_log_6",
+      "src": "14_Battery_Converter/4",
+      "srcName": "P_bat_chg_avail_kW"
+    },
+    {
+      "name": "T_log_7",
+      "src": "09_Bus_Residual_Monitor/1",
+      "srcName": "P_bus_residual_kW"
+    },
+    {
+      "name": "T_log_8",
+      "src": "10_Fuel_Consumption/1",
+      "srcName": "fuel_total_kg"
+    },
+    {
+      "name": "T_log_9",
+      "src": "08_Undervolt_Derate/2",
+      "srcName": "P_unserved_kW"
+    },
+    {
+      "name": "T_log_10",
+      "src": "15_Bus_Voltage_Monitor/1",
+      "srcName": "alarm_steady"
+    },
+    {
+      "name": "T_log_11",
+      "src": "15_Bus_Voltage_Monitor/2",
+      "srcName": "alarm_transient"
+    }
+  ],
+  "terminators_added_note": "no new Terminator added (main agent correction): delete_line removes only the 05 branch, sibling consumers keep their lines; orphaned sources Clock t/1, 14_Battery_Converter/2 (SOC), 03_Propulsion_Plant/4 (accel) feed root Outport 1/3/6 directly",
+  "solver": {
+    "SolverType": "Fixed-step",
+    "Solver": "ode3",
+    "FixedStep": "0.01",
+    "StopTime": "7200"
+  },
+  "solver_assert_passed": true,
+  "signal_logging": {
+    "before": "on",
+    "after": "off",
+    "note": "SignalLogging off; recording delegated to closed-loop harness (design §3.1); logging objects inside 05 removed with the subsystem"
+  },
+  "base_injection": [
+    "config/Model_Parameters.m",
+    "config/Model_Scenarios.m"
+  ],
+  "compile_check": {
+    "passed": true,
+    "stop_time": "0.01",
+    "method": "sim with base config injection",
+    "message": "sim(StopTime=0.01, ReturnWorkspaceOutputs=on) 通过"
+  },
+  "stage_reached": "done",
+  "error_id": "",
+  "error_message": "",
+  "wiring_violations": [],
+  "overall": true
+}

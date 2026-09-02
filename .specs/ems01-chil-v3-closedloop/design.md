@@ -167,6 +167,24 @@ Outport: t_s, P_load_total_kW, SOC, v_cmd_mps, v_ship_mps, acceleration_mps2,
   记录受阻证据链；
 - **禁止**：静默换道；为通过 G-P1 放宽物理方程。
 
+### 4.4a ERT 输出写出时序（T-604 执行期发现，2026-09-02 design 修订）
+
+GRT/ERT 生成代码的根 Outport 写出发生于**子步末级阶段时刻**（ode3 第 3 级，
+t = k+1−0.0025）：数值验证（S20 前段，SOC/v_ship/x_ship/P_load/P_bat 对 sim dense
+轨迹的插值分数恒为 0.75）。因此：
+- **wrapper `step()` 后的 Y（11 项 Outport）= t=(k+1)−0.0025 时刻输出**（Clock 亦读
+  该时刻）；闭环 harness 的 CMD_TICK(k) 状态按此语义（2.5 ms 早于拍边界，
+  占控制拍 0.25%，控制影响可忽略）——NFR-602 方法学材料；
+- **拍边界位级真值经 `plantstep_get_states()` 直读 9 个连续状态**（X 结构：
+  x_ship/v_ship/omega_prop/DriveLag/SOC/V_dc/inertia/Ki_int/fuel_int；fuel CSTATE
+  为 g 口径，×1e-3 = fuel_total_kg）——shim `plantstep_get_states`（T-604 执行期增补）；
+- **G-P2 比较基准修订**（§5 G-P2）：状态变量（x_ship/v_ship/SOC/fuel + 内部状态
+  omega_prop/DriveLag/V_dc/inertia/Ki_int）在拍边界经 X 直读逐拍对照（阈值 1e-6
+  维持，预期位级一致）；派生量（t_s/P_load/v_cmd/accel/P_bat/P_prop/voyage_stop）
+  按阶段时刻语义对照 sim 同刻插值，**残差作为仪器时序特征报告、不作门禁项**
+  （机制级依据：ERT 写出时刻结构性位于阶段时刻，非 codegen-vs-解释执行差异）；
+  本修订为仪器实现语义澄清，阈值数值不放宽。
+
 ### 4.4 数值差异预期（§22/66 教训的落实）
 
 - 被控对象动力学平滑（积分/限幅/查表），无 λ-argmin 型双稳结构 → 编译 vs 解释 FP 微差

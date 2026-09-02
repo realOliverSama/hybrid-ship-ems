@@ -84,3 +84,32 @@ eval(fileread('scripts/07_run_ai_comparison.m'))     % Baseline vs AI 闭环对�
 - EMS_MODE=0 Baseline / =1 AI Enhanced（Variant 由工作区变量切换）。
 - AI 预测源：0 persistence，1 workspace 回放，2 STM32N6 外部（预留），3 环内 MLP 推理。
 - 原模型与参数脚本只读；本目录所有文件均可由脚本重建。
+
+---
+
+## v3 被控对象子集变体（PlantStep）与闭环脚本族（v3 soft-HIL，2026-09-02）
+
+- **HybridShip_ModelD_PlantStep.slx**（T-601，`scripts/20_build_plantstep_model.m`）：
+  被控对象子集变体——装载主模型 → SaveAs 原位变换，删除 05_EMS_Controller 与
+  12_Data_Logging，根级 Inport `P_gen_ref_kW` 替代 05 输出，11 项根级 Outport 暴露
+  闭环接口；剩余 **12 个子系统**（01_Scenario_Manager / 02_Ship_Speed_Controller /
+  03_Propulsion_Plant / 04_Load_Measurement / 06_Genset_Average_Plant /
+  08_Undervolt_Derate / 09_Bus_Residual_Monitor / 10_Fuel_Consumption /
+  11_Voyage_Stop_Logic / 13_DC_Bus / 14_Battery_Converter / 15_Bus_Voltage_Monitor）；
+  主模型 `HybridShip_ModelD_DCBus.slx` 零改动（sha256 前后复核，
+  `results/ecms_phase25/plantstep/plantstep_build_audit.json`）。
+- **codegen**（T-604，`scripts/23_codegen_plantstep.m`）：按场景烘焙 VOYAGE_*/SCN →
+  Simulink Coder 生成 C（ert.tlc 拒连续时间块，内置回退 **grt.tlc**，ode3 @0.01s
+  ×100 子步/拍）→ EMS01 `Host/plantstep/<scenario>/`（build_manifest.json 指纹）。
+- **X 直读接口**（design §4.4a）：ERT/GRT 根 Outport 写出在子步末级阶段时刻
+  t=(k+1)−0.0025；拍边界位级真值经 shim `plantstep_get_states()` 直读 9 个连续状态
+  （x_ship/v_ship/omega_prop/DriveLag/SOC/V_dc/inertia/Ki_int/fuel_int；fuel CSTATE
+  为 g 口径 ×1e-3 = kg）。
+- **v3 闭环脚本族**：`scripts/21_run_v3_native_arms.m`（T-610/611：原生臂 (b′) law=7 /
+  (c) law=5 × 两场景，双遍 REPRO）；`scripts/22_run_gp1_gate.m`（T-602/603：G-P1 子集
+  保真门禁，双场景位级 PASS）；`scripts/23_codegen_plantstep.m`（T-604）；
+  `scripts/24_export_gp2_simref.m`（T-605 配套：解释执行运行采样 logsout，导出 G-P2
+  sim 参考 16 列 CSV，模型零改动）。闭环产物与统一报告：
+  `results/ecms_phase25/closedloop/`（native_arms/ + `v3_closedloop_report.md`）。
+- **预测模型**（§20.1 一行概括）：(b′) 臂 = MLP-Q（EML 内嵌 double）+ workclf_v1
+  （G2 门控）闭环；(c) 臂 = 无预测（SOC-Adaptive ECMS 基线）。
