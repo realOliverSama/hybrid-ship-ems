@@ -77,10 +77,33 @@ EMS01_CHIL_ECMS/
     │                          #   + WC_TEST 批量（B2 --wc-test）+ --selftest pty 离线链路；
     │                          #   infer/wc 载荷带 seq 自动计数、RSP 按 seq 配对陈旧帧跳过、
     │                          #   --retry 重发；产物 fw/infer/wc_compare.csv/json）
-    ├── ems_fault_inject.py    # T-508：FR-508 故障注入 CLI（NaN 输入/停发超时/
+    ├── ems_fault_inject.py    # T-508：FR-508 故障注入 CLI（NaN 输入/停发超时/（含 T-609 闭环注入模式 --closed-loop/--selftest-closedloop）
     │                          #   垃圾帧/CMD_RESET 恢复四场景；协议复用 ems_inject
     │                          #   + test_proto_loopback 冻结源；逐场景 CSV/JSON +
     │                          #   CMD_DUMP 事件环文本；--selftest pty mock 自测）
+    ├── plantstep_advancer.py  # T-604：被控对象推进器统一封装（P3 主案 ctypes 后端
+    │                          #   加载 libplantstep_<scenario>.dylib + 纯 Python stub
+    │                          #   后端 selftest 用，design §6.5；make_advancer 工厂，
+    │                          #   init/step(100 子步 0.01s)/state/fuel/voyage_stop/close；
+    │                          #   返回 11 键 Outport 信号 dict，非有限数值抛异常）
+    ├── ems_closedloop.py      # T-607：soft-HIL 闭环 lock-step harness（CMD_TICK/RSP_TICK
+    │                          #   协议栈复用 ems_inject：SerialSession/帧解析/CRC/事件环
+    │                          #   不改协议；--port 板模式（PING 预同步）/缺省 replay 无板；
+    │                          #   每拍 CMD_TICK→RSP_TICK→advancer.step(100 子步)→记录；
+    │                          #   逐拍 CSV + meta（镜像/plantstep 指纹/拍耗时分布/终止原因）
+    ├── tools/closedloop_selftest.py  # T-608：闭环 harness selftest 套件（pty mock 板 10 用例 A-I，--json 机器可读）
+    │                          #   复用 ems_inject 协议栈 + plantstep_advancer 推进器；
+    │                          #   board（--port，PING 预同步+CMD_RESET）/replay 无板
+    │                          #   双模式；整跑重做（.aborted 落已收集行）；meta 含拍耗时
+    │                          #   分布/事件清单；--selftest replay+stub 30 拍自检）
+    ├── tools/run_gp2_gate.py         # T-605：G-P2 codegen 等价门禁 CLI（wrapper ctypes 推进 vs
+    │                          #   解释执行子集模型逐拍对照；门禁项 = 拍边界 X 直读
+    │                          #   9 状态 ≤1e-6（design §4.4a），派生量阶段时刻插值为报告项；
+    │                          #   产物 v3_gp2_<scenario>_{gate.json,compare.csv,simref.csv}）
+    ├── tools/closedloop_metrics.py   # T-615：四臂×两场景统一指标（纯 stdlib、只读输入、幂等）：
+    │                          #   fuel_raw/fuel_corr/SOC_end/v_rmse/ê 占比/公平性带判定
+    │                          #   + 仪器级①② + 层③ + FR-508 代价 + 22 项交叉核对 →
+    │                          #   Host/results/closedloop/closedloop_metrics.json + summary.md）
     ├── tools/gen_fw_params.py # 参数生成器（5 只读源 → Appli/App/ems_params.*，单一来源）
     ├── tools/gen_reference_int8.py  # T-506：Python int8 参考（val200 抽样 seed=20260831
     │                          #   + 轨迹全程 int8；复现 T-307/T-312 冻结指标硬门；
@@ -88,9 +111,22 @@ EMS01_CHIL_ECMS/
     ├── tools/gen_host_int8_pgen.py  # T-508：host-int8 全链路 P_gen 参考生成（模式 B
     │                          #   NN 输出作 stub 后端 + gcc 编译同一 ems_ctrl.c →
     │                          #   逐 tick reference_int8_pgen_*.csv，层②对拍参考）
+    ├── tools/plantstep_shim.c # T-604：ERT 生成接口 C shim（init/set_pgen/step/
+    │                          #   get_outputs×11/get_fuel/get_voyage_stop；符号引用
+    │                          #   集中顶部宏区，以生成代码实际符号为准微调）
+    ├── tools/build_plantstep.sh     # T-604：gcc -O2 -fPIC -shared 把 <scenario>/
+    │                          #   HybridShip_ModelD_PlantStep_ert_rtw/*.c + shim 编译
+    │                          #   为 libplantstep_<scenario>.dylib（manifest 由 23 号
+    │                          #   MATLAB 脚本写，本脚本只编译并打印 dylib sha256）
     ├── reference/             # T-506 生成：val200 向量（raw/norm）+ int8 参考 CSV
     │                          #   + logits 参考（B2，WC_TEST 对拍）
     │                          #   + P_gen 参考（T-508 reference_int8_pgen_*.csv）
+    ├── plantstep/              # T-604：codegen 被控对象推进器产物（按场景烘焙，重跑覆盖）：
+    │                          #   <scenario>/HybridShip_ModelD_PlantStep_ert_rtw/（ERT C 码）
+    │                          #   + <scenario>/build_manifest.json（指纹：模型/参数
+    │                          #   sha256、MATLAB 版本、场景变量指纹、逐文件 sha256、
+    │                          #   ert/grt 标志）+ <scenario>/libplantstep_<scenario>.dylib
+    │                          #   （tools/build_plantstep.sh 编译，不入 manifest）
     └── tests/                 # L0 单测（T-503）：test_ctrl_diff.py（22 用例全过）+
                                #   test_driver.c（白盒驱动）+ eml_c_mapping.md（映射表）；
                                #   T-506：test_proto_loopback.py + test_proto_driver.c

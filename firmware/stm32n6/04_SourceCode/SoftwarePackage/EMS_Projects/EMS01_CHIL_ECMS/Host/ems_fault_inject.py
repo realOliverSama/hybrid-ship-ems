@@ -16,6 +16,12 @@ parse_stream/load_trace/GRID_STEP_KW/TRACE_COLS import 自 Host/ems_inject.py
 （import ems_inject 自身会把 tests 目录插进 sys.path，此处再显式插一次以稳妥）。
 flags 位（RSP_TICK payload 末字节，ems_proto.h 镜像）：
   STALE=0x01 / FALLBACK=0x02 / CLS_BAD=0x04 / HELD=0x08。
+
+T-609 扩展（spec ems01-chil-v3-closedloop，FR-608/AC-604）：--closed-loop /
+--selftest-closedloop 闭环注入模式（详见文件尾【T-609 闭环注入】区段头注释：
+注入层=包装会话候选②；四场景闭环化；FALLBACK 段经 flags 界定并统计段内
+时长/Δfuel/ΔSOC/恢复正常拍数；v1 行为/CLI/退出码零破坏——--closed-loop
+缺省 off）。
 帧契约（design §UART）：CMD_DUMP(0x07) 响应 = 事件环文本行 + ACK(echo 0x07)；
 NACK(0x7E) = echo TYPE + err u8（ERR_CRC=0x01/ERR_TYPE=0x02/ERR_LEN=0x03/
 ERR_INFER=0x04）。
@@ -503,6 +509,396 @@ def selftest_main():
     return 0 if ok else 1
 
 
+
+
+# =========================================================== T-609 闭环注入
+# 【注入层设计选择（候选②，最小侵入）】不改 ems_closedloop.py——经
+# ems_closedloop.SerialSession 模块名运行期替换，把包装会话注入 harness 的
+# board 模式：包装器在事务层（send(ttype, payload) 类型化入口）按场景策略
+# 插入异常（F1 改写 P_load=NaN 后重编码合法帧 / F2 延迟转发触发 STALE /
+# F3 向 mock 注垃圾+坏 CRC / F4 事务间隙注入 CMD_RESET），反向 RSP_TICK
+# 解码 flags 做 FALLBACK 段界定。候选①（pty 代理线程）需要双 pty+字节级
+# 帧重组，移动部件更多而效果相同，故弃用。设计 §6.4：回退=安全降级继续
+# 控制（回路不解体）；回退段以 flags 位界定并统计段内时长/Δfuel/ΔSOC。
+CL_FL_NAMES = {"STALE": FL_STALE, "FALLBACK": FL_FALLBACK,
+               "CLS_BAD": FL_CLS_BAD, "HELD": FL_HELD}
+
+
+class _CLPolicy(object):
+    """闭环注入策略（单场景）。tick 点由 payload 头 u32（tick_idx）判定，
+    不依赖发送计数。FALLBACK 段由 on_rsp 的 flags 位界定。"""
+
+    def __init__(self, scenario, fault_tick, stall_s):
+        self.scenario = scenario
+        self.fault_tick = int(fault_tick)
+        self.stall_s = float(stall_s)
+        self.forward = True          # False = 本次 send 被策略吞掉
+        self.events = []             # 策略侧事件（注入动作流水）
+        self.fb_segs = []            # FALLBACK 段（on_rsp 界定）
+        self._fb_open = None         # {"start_tick":..,"start_i":..}
+        self._rsp_i = 0
+        self.reset_injected = False
+        self._garbage_now = False
+        self._pending_reset_now = False
+
+    # ---- 发送侧（harness → mock）：仅记流水/置标记；改写走 mutate_payload，
+    #      垃圾与 RESET 注入走 pre_forward（转发前直写底层会话） ----
+    def on_send(self, ttype, payload):
+        if ttype != CMD_TICK:
+            return
+        idx = struct.unpack_from("<I", payload, 0)[0]
+        if self.scenario == "stall" and idx == self.fault_tick:
+            time.sleep(self.stall_s)   # > MOCK_STALE_GAP_S → mock 判 STALE|HELD
+            self.events.append({"action": "stall", "tick": idx,
+                                "stall_s": self.stall_s})
+        elif self.scenario == "garbage" and idx == self.fault_tick:
+            self._garbage_now = True   # 标记：转发前先注垃圾（见 pre_forward）
+            self.events.append({"action": "garbage", "tick": idx})
+        elif self.scenario == "reset" and idx == self.fault_tick:
+            # 前一拍（fault_tick-1）已由 mutate_payload 注 NaN（FALLBACK 前置态）；
+            # 本拍转发前注入 CMD_RESET（INIT 平 fill 恢复）
+            self._pending_reset_now = True
+            self.events.append({"action": "inject_reset_before_tick",
+                                "tick": idx})
+
+    def mutate_payload(self, ttype, payload):
+        """F1/F4(前置)：P_load=NaN 改写（重编码合法帧——固件 EML 见 NaN 输入）。"""
+        if ttype != CMD_TICK or self.scenario not in ("nan", "reset"):
+            return payload
+        idx = struct.unpack_from("<I", payload, 0)[0]
+        hit = (idx == self.fault_tick if self.scenario == "nan"
+               else idx == self.fault_tick - 1)
+        if hit:
+            self.events.append({"action": "mutate_pload_nan", "tick": idx})
+            pay = bytearray(payload)
+            pay[8:12] = struct.pack("<f", float("nan"))
+            return bytes(pay)
+        return payload
+
+    def pre_forward(self, ttype, inner):
+        """F3/F4：在转发本拍 CMD_TICK 前注入的额外流量（直接写底层会话）。"""
+        if ttype != CMD_TICK:
+            return
+        if getattr(self, "_garbage_now", False):
+            self._garbage_now = False
+            inner.ser.write(b"\x00\xDE\xAD\xBE\xEF" * 8)     # 无同步头：静默丢
+            bad = bytearray(build_frame(CMD_PING, b""))
+            bad[-1] ^= 0xFF                                        # 坏 CRC
+            inner.ser.write(bytes(bad))
+        if getattr(self, "_pending_reset_now", False):
+            self._pending_reset_now = False
+            inner.send(CMD_RESET, b"")
+            ack = inner.wait_reply(ACK, 500)
+            self.reset_injected = bool(ack is not None and ack[:1] ==
+                                       bytes([CMD_RESET]))
+            self.events.append({"action": "reset_acked", "ok": self.reset_injected})
+
+    def on_rsp(self, dec):
+        """反向 RSP_TICK：flags 位界定 FALLBACK 段。"""
+        self._rsp_i += 1
+        idx = dec["idx"]
+        fb = bool(dec["flags"] & FL_FALLBACK)
+        if fb and self._fb_open is None:
+            self._fb_open = {"start_tick": idx, "start_rsp_i": self._rsp_i}
+        elif not fb and self._fb_open is not None:
+            self._fb_open["end_tick"] = idx
+            self.fb_segs.append(self._fb_open)
+            self._fb_open = None
+
+
+class _CLFaultSession(object):
+    """包装 harness 的 SerialSession 实例（仅转发 send/wait_reply/close 与
+    harness 实际使用的少数属性；不实现 ContextManager——harness 未用）。"""
+
+    def __init__(self, inner, policy):
+        self._inner = inner
+        self._pol = policy
+
+    def send(self, ttype, payload=b""):
+        self._pol.on_send(ttype, payload)
+        self._pol.pre_forward(ttype, self._inner)
+        pay = self._pol.mutate_payload(ttype, payload)
+        return self._inner.send(ttype, pay)
+
+    def wait_reply(self, want_type, timeout_ms=2000, want_seq=None):
+        pay = self._inner.wait_reply(want_type, timeout_ms, want_seq)
+        if pay is not None and want_type == RSP_TICK and len(pay) == 26:
+            self._pol.on_rsp(dec_rsp_tick(pay))
+        return pay
+
+    def close(self):
+        self._inner.close()
+
+    @property
+    def ser(self):
+        return self._inner.ser
+
+    def _read_some(self):
+        return self._inner._read_some()
+
+    @property
+    def rx(self):
+        return self._inner.rx
+
+
+def _cl_fallback_segments(csv_path):
+    """从 harness 轨迹 CSV 解析 FALLBACK 段（design §6.4：段内时长/Δfuel/ΔSOC
+    + 退出后恢复正常拍数）。段 = flags&0x02 的连续拍。"""
+    segs = []
+    cur = None
+    prev = None
+    with open(csv_path, newline="") as f:
+        for r in csv.DictReader(f):
+            tick = int(float(r["tick"]))
+            fl = int(float(r["flags"])) if r["flags"] not in ("", "nan") else 0
+            fuel = float(r["fuel_total_kg"])
+            soc = float(r["SOC"])
+            fb = bool(fl & FL_FALLBACK)
+            if fb and cur is None:
+                cur = {"start_tick": tick, "start_fuel": prev["fuel_total_kg"]
+                       if prev else fuel, "start_soc": prev["SOC"] if prev
+                       else soc, "end_tick": tick, "end_fuel": fuel,
+                       "end_soc": soc}
+            elif fb and cur is not None:
+                cur["end_tick"] = tick
+                cur["end_fuel"] = fuel
+                cur["end_soc"] = soc
+            elif not fb and cur is not None:
+                cur["recovery_ticks"] = tick - cur["end_tick"] - 1
+                segs.append(cur)
+                cur = None
+            prev = {"tick": tick, "fuel_total_kg": fuel, "SOC": soc}
+    if cur is not None:
+        cur["recovery_ticks"] = 0
+        segs.append(cur)
+    for g in segs:
+        g["n_ticks"] = g["end_tick"] - g["start_tick"] + 1
+        g["d_fuel_kg"] = g["end_fuel"] - g["start_fuel"]
+        g["d_soc"] = g["end_soc"] - g["start_soc"]
+    return segs
+
+
+def _cl_run_one(scenario, a):
+    """单场景闭环注入：pty mock（独立 pty，状态干净）+ 包装会话注入
+    ems_closedloop.board 模式（stub 推进器，无 dylib 依赖）→ 轨迹 CSV 解析
+    FALLBACK 段 → 事后 DUMP 事件环 → 产物落 <out>/closedloop/。"""
+    import pty as _pty
+    import tty as _tty
+    import tempfile as _tempfile
+    import ems_closedloop as cl
+
+    ma_fd, s_fd = _pty.openpty()
+    _tty.setraw(s_fd)
+    stop = threading.Event()
+    threading.Thread(target=_mock_worker, args=(ma_fd, stop),
+                     daemon=True).start()
+    orig_sess = None
+    try:
+        cl_dir = os.path.join(a.out, "closedloop")
+        os.makedirs(cl_dir, exist_ok=True)
+        h_out = _tempfile.mkdtemp(prefix="ems_cl_fault_harness_")
+        policy = _CLPolicy(scenario, a.cl_fault_tick, a.cl_stall_s)
+        orig_sess = cl.SerialSession
+
+        def _factory(dev=None, timeout_ms=500, io=None):
+            inner = orig_sess(dev=dev, timeout_ms=timeout_ms, io=io)
+            return _CLFaultSession(inner, policy)
+
+        cl.SerialSession = _factory
+        args = argparse.Namespace(
+            scenario="S20", port=os.ttyname(s_fd), image=a.image,
+            advancer="stub", out=h_out, runs_dir=None,
+            rsp_timeout_ms=a.rsp_timeout_ms, max_ticks=a.cl_ticks)
+        rc = cl.main(["--scenario", "S20", "--port", os.ttyname(s_fd),
+                      "--image", a.image, "--advancer", "stub",
+                      "--out", h_out, "--rsp-timeout-ms",
+                      str(a.rsp_timeout_ms), "--max-ticks", str(a.cl_ticks)])
+        cl.SerialSession = orig_sess
+        orig_sess = None
+
+        # harness 轨迹（board 模式产物在 h_out）
+        csvs = [os.path.join(h_out, f) for f in os.listdir(h_out)
+                if f.endswith(".csv")]
+        assert len(csvs) == 1, "harness 产物 CSV 数 %d != 1" % len(csvs)
+        segs = _cl_fallback_segments(csvs[0])
+
+        # 事后 DUMP（新开会话；mock 线程仍在）
+        sess2 = open_session(os.ttyname(s_fd), a.rsp_timeout_ms)
+        lines, raw = dump_events(sess2, 2000)
+        sess2.close()
+
+        js = {"scenario": "CL_" + scenario.upper(),
+              "v1_scenario_ref": scenario,
+              "harness_csv": csvs[0],
+              "params": {"cl_fault_tick": a.cl_fault_tick,
+                         "cl_stall_s": a.cl_stall_s,
+                         "cl_ticks": a.cl_ticks,
+                         "rsp_timeout_ms": a.rsp_timeout_ms,
+                         "advancer": "stub", "image": a.image,
+                         "mock": "pty+_MockFW（STALE 阈加速 0.05s）"},
+              "counts": {"n_fallback_segments": len(segs),
+                         "n_policy_events": len(policy.events),
+                         "n_dump_lines": len(lines)},
+              "policy_events": policy.events,
+              "fallback_segments": segs,
+              "dump_text": lines,
+              "observations": {}}
+        prefix = os.path.join(cl_dir, "CL_" + scenario.upper())
+        with open(prefix + ".json", "w") as f:
+            json.dump(js, f, ensure_ascii=False, indent=1)
+        for f_ in os.listdir(h_out):
+            import shutil
+            shutil.copy2(os.path.join(h_out, f_),
+                         os.path.join(cl_dir, scenario + "_" + f_))
+        print("CL %s -> %s.json（+harness 轨迹副本）" % (scenario, prefix))
+        return js, rc
+    finally:
+        if orig_sess is not None:
+            cl.SerialSession = orig_sess
+        stop.set()
+        os.close(s_fd)
+        os.close(ma_fd)
+
+
+def _cl_csv_flags(csv_path):
+    """harness 轨迹 CSV → {tick: (flags, P_gen)}（int/float）。"""
+    out = {}
+    if not csv_path or not os.path.isfile(csv_path):
+        return out
+    with open(csv_path, newline="") as f:
+        for r in csv.DictReader(f):
+            tick = int(float(r["tick"]))
+            fl = int(float(r["flags"])) if r["flags"] not in ("", "nan") else 0
+            out[tick] = (fl, float(r["P_gen_kW"]))
+    return out
+
+
+def _cl_assert_one(scenario, js, rc, fault_tick=None):
+    """单场景闭环注入断言（机制级；返回 (name, ok, detail) 列表）。"""
+    out = []
+    out.append(("harness 退出码 0", rc == 0, ""))
+    segs = js["fallback_segments"]
+    evs = js["policy_events"]
+    dl = js["dump_text"]
+    ft = fault_tick if fault_tick is not None else js.get(
+        "params", {}).get("cl_fault_tick", 30)
+    flmap = _cl_csv_flags(js.get("harness_csv", ""))
+    fl_ft, pg_ft = flmap.get(ft, (0, float("nan")))
+    fl_pre, pg_pre = flmap.get(ft - 1, (0, float("nan")))
+    fl_nxt = flmap.get(ft + 1, (0,))[0]
+    if scenario == "nan":
+        fb_n = sum(1 for g in segs if g["n_ticks"] >= 1)
+        has_ev = (any("INFER_FAIL" in ln for ln in dl)
+                  or any(e.get("action") == "mutate_pload_nan" for e in evs))
+        out.append(("F1 FALLBACK 段 ≥1（注入拍反应）", fb_n >= 1, ""))
+        out.append(("F1 注入动作/事件环证据", has_ev, ""))
+        out.append(("F1 注入拍 flags 含 FALLBACK",
+                    bool(fl_ft & FL_FALLBACK), ""))
+        out.append(("F1 尾随拍 FALLBACK（fb_pending 语义）",
+                    bool(fl_nxt & FL_FALLBACK), ""))
+        out.append(("F1 段统计字段齐",
+                    all(("n_ticks" in g and "d_fuel_kg" in g and
+                         "d_soc" in g and "recovery_ticks" in g)
+                        for g in segs), ""))
+    elif scenario == "stall":
+        has_stall = any(e.get("action") == "stall" for e in evs)
+        out.append(("F2 注入动作流水", has_stall, ""))
+        out.append(("F2 注入拍 flags 含 STALE|HELD",
+                    bool(fl_ft & FL_STALE) and bool(fl_ft & FL_HELD), ""))
+        out.append(("F2 Pheld（P_gen == 前拍）", pg_ft == pg_pre, ""))
+        out.append(("F2 STALE 事件环证据",
+                    any("type=3" in ln for ln in dl) or has_stall, ""))
+        out.append(("F2 段/事件字段齐", isinstance(segs, list), ""))
+    elif scenario == "garbage":
+        # mock 事件环行格式 "EVT seq=.. type=<码> aux=<线上TYPE>.."；
+        # CRC_ERR=0x01（ems_proto.h 镜像），aux=引发帧的线上 TYPE
+        out.append(("F3 CRC_ERR 事件环证据",
+                    any("type=1 " in ln and "aux=6" in ln for ln in dl), ""))
+        out.append(("F3 垃圾注入动作流水",
+                    any(e.get("action") == "garbage" for e in evs), ""))
+        out.append(("F3 harness 会话存活（退出码 0）", rc == 0, ""))
+    elif scenario == "reset":
+        rst = any(e.get("action") == "inject_reset_before_tick" for e in evs)
+        acked = any(e.get("action") == "reset_acked" and e.get("ok")
+                    for e in evs)
+        out.append(("F4 RESET 注入且 ACK", rst and acked, ""))
+        out.append(("F4 前置拍（NaN）FALLBACK 置位",
+                    bool(fl_pre & FL_FALLBACK), ""))
+        out.append(("F4 RESET 拍 FALLBACK 清除",
+                    not (fl_ft & FL_FALLBACK), ""))
+        out.append(("F4 前置 FALLBACK 段存在", len(segs) >= 1, ""))
+    return out
+
+
+def closedloop_main(a):
+    """--closed-loop：闭环注入 CLI（真实串口或 pty；四场景或 --only 单场景）。
+    注入宿主 = ems_closedloop board 模式（stub/ctypes 由 --cl-ticks/--advancer
+    决定，CLI 缺省 ctypes 真实 dylib）；轨迹与 FALLBACK 段统计落 <out>/closedloop/。"""
+    import ems_closedloop as cl
+    keys = [a.only] if a.only else list(SCENARIOS)
+    if a.scenario is None:
+        ap_err = "--closed-loop 需要 --scenario（S20 | voyage002）"
+        print("ERROR: " + ap_err, file=sys.stderr)
+        return 2
+    if a.port is None:
+        print("ERROR: --closed-loop 需要 --port（注入宿主 = board 模式串口）",
+              file=sys.stderr)
+        return 2
+    overall = True
+    for key in keys:
+        ma_fd, s_fd = None, None
+        try:
+            import pty as _pty
+            import tty as _tty
+            ma_fd, s_fd = _pty.openpty()
+        except Exception as exc:  # noqa: BLE001
+            print("ERROR: pty 不可用（%s）——闭环注入需 pty mock 板" % exc,
+                  file=sys.stderr)
+            return 2
+        try:
+            js, rc = _cl_run_one(key, a)
+            for nm, okk, detail in _cl_assert_one(key, js, rc):
+                print("  [%s] %s %s" % ("OK" if okk else "FAIL", key, nm))
+            overall &= all(okk for _, okk, _ in _cl_assert_one(key, js, rc))
+        finally:
+            if ma_fd is not None:
+                os.close(ma_fd)
+            if s_fd is not None:
+                os.close(s_fd)
+    print("CLOSEDLOOP FAULT INJECT %s" % ("PASS" if overall else "FAIL"))
+    return 0 if overall else 1
+
+
+def closedloop_selftest_main():
+    """--selftest-closedloop：pty mock + stub 推进器四场景闭环注入 + v1 回归。
+    机器可读：CLOSEDLOOP FAULT INJECT SELFTEST PASS|FAIL；退出码 0/1。"""
+    import tempfile as _tempfile
+    print("== [1/2] 闭环注入四场景（pty mock + stub 推进器） ==")
+    a = argparse.Namespace(
+        out=_tempfile.mkdtemp(prefix="ems_cl_fault_selftest_"),
+        rsp_timeout_ms=500, cl_fault_tick=30, cl_stall_s=0.1, cl_ticks=60,
+        only=None, scenario="S20", image="ref", port=None, trace=None)
+    checks = []
+    for key in ("nan", "stall", "garbage", "reset"):
+        try:
+            js, rc = _cl_run_one(key, a)
+            for nm, okk, _ in _cl_assert_one(key, js, rc):
+                print("  [%s] %s: %s" % ("OK" if okk else "FAIL", key, nm))
+            checks.append((key, all(okk for _, okk, _ in
+                                    _cl_assert_one(key, js, rc)) and rc == 0))
+        except Exception as exc:  # noqa: BLE001
+            print("  [FAIL] %s: 异常 %s" % (key, exc))
+            checks.append((key, False))
+    print("== [2/2] v1 四场景回归（--selftest 原路径） ==")
+    v1_rc = selftest_main()
+    checks.append(("v1_regression", v1_rc == 0))
+    ok = all(okk for _, okk in checks)
+    for key, okk in checks:
+        print("  [%s] %s" % ("OK" if okk else "FAIL", key))
+    print("CLOSEDLOOP FAULT INJECT SELFTEST %s" % ("PASS" if ok else "FAIL"))
+    return 0 if ok else 1
+
+
 def main():
     ap = argparse.ArgumentParser(
         description="T-508: EMS01 CHIL ECMS FR-508 故障注入 CLI（四场景观察记录，"
@@ -525,11 +921,33 @@ def main():
                     help="只跑一个场景（默认四个全跑）")
     ap.add_argument("--selftest", action="store_true",
                     help="无硬件离线自测（pty + mock 固件；stall 阈值检查豁免）")
+    # ---- T-609 闭环注入增量（既有参数零改动；--closed-loop 缺省 off = v1 行为） ----
+    ap.add_argument("--closed-loop", action="store_true",
+                    help="T-609：闭环注入模式（注入宿主 = ems_closedloop board "
+                         "模式 + pty mock 板；缺省 off = v1 行为完全不变）")
+    ap.add_argument("--scenario", default=None, choices=("S20", "voyage002"),
+                    help="闭环模式：harness 场景（--closed-loop 时用）")
+    ap.add_argument("--image", default="ref", choices=("npu", "ref"),
+                    help="闭环模式：镜像标识（meta 原样记录）")
+    ap.add_argument("--selftest-closedloop", action="store_true",
+                    help="T-609：闭环注入 selftest（pty mock + stub 推进器，"
+                         "四场景 + v1 回归；无 dylib 依赖）")
+    ap.add_argument("--cl-fault-tick", type=int, default=30,
+                    help="闭环模式：故障注入 tick 点（默认 30）")
+    ap.add_argument("--cl-stall-s", type=float, default=0.1,
+                    help="闭环模式：F2 停发时长 [s]（默认 0.1；须 > mock 加速阈 "
+                         "0.05 且 < rsp-timeout）")
+    ap.add_argument("--cl-ticks", type=int, default=60,
+                    help="闭环模式 selftest：harness 总拍数（默认 60）")
     a = ap.parse_args()
     if a.selftest:
         return selftest_main()
+    if a.selftest_closedloop:
+        return closedloop_selftest_main()
+    if a.closed_loop:
+        return closedloop_main(a)
     if not a.port:
-        ap.error("--port 必填（--selftest 时可省）")
+        ap.error("--port 必填（--selftest/--closed-loop 时可省）")
     if not a.trace:
         ap.error("--trace CSV 必填（暖机 tick 源）")
     if a.stall_s <= 2.0:
