@@ -182,7 +182,7 @@ def fig_pgen_board_vs_ref():
     ax2.axhline(0, color="k", lw=0.6)
     for y in (20, -20):
         ax2.axhline(y, color="gray", ls=":", lw=0.8)
-    ax2.text(0.995, 20 + 3, "±1 网格步（20 kW）", ha="right", fontsize=8, color="gray")
+    ax2.text(w1 - 5, 23, "±1 网格步（20 kW）", ha="right", fontsize=8, color="gray")   # 数据坐标窗内（T-605 报告评审修正: 原 0.995 误为数据坐标→tight bbox 横溢 41in）
     ax2.set_xlabel("时间 t [s]（局部窗口 3000–3600 s）")
     ax2.set_ylabel("ΔP [kW]（板载-参考）")
     ax2.grid(alpha=0.3)
