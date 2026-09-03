@@ -1,0 +1,85 @@
+{
+  "task": "T-310",
+  "generated": "2026-09-02 01:32:54",
+  "capture_formula": "(fuel_C2 - fuel_C4)/(fuel_C2 - fuel_C3) on S20",
+  "capture_thresholds": [
+    0.5,
+    0.3
+  ],
+  "fr318_thresholds": "saving median >= -0.5%, min >= -1.5%, zero new derate/undervolt",
+  "modes": [
+    {
+      "mode": 0,
+      "name": "G0",
+      "capture_S20": 0.4533,
+      "fuel_S20_kg": 328.0757,
+      "sim_errors": 0,
+      "s07_derate": 0,
+      "fr318_pass": false
+    },
+    {
+      "mode": 1,
+      "name": "G1",
+      "capture_S20": 0.4052,
+      "fuel_S20_kg": 328.3501,
+      "sim_errors": 0,
+      "s07_derate": 0,
+      "fr318_pass": true
+    },
+    {
+      "mode": 2,
+      "name": "G2",
+      "capture_S20": 0.4447,
+      "fuel_S20_kg": 328.125,
+      "sim_errors": 0,
+      "s07_derate": 0,
+      "fr318_pass": true
+    },
+    {
+      "mode": 3,
+      "name": "G3",
+      "capture_S20": 0.3966,
+      "fuel_S20_kg": 328.3996,
+      "sim_errors": 0,
+      "s07_derate": 0,
+      "fr318_pass": true
+    }
+  ],
+  "fr318": {
+    "G0": {
+      "saving_pct_median": 3.1967,
+      "saving_pct_min": -1.5114,
+      "zero_new_derate": true,
+      "zero_new_undervolt": true,
+      "soc_ok": true,
+      "pass": false
+    },
+    "G1": {
+      "saving_pct_median": 3.4863,
+      "saving_pct_min": 0.194,
+      "zero_new_derate": true,
+      "zero_new_undervolt": true,
+      "soc_ok": true,
+      "pass": true
+    },
+    "G2": {
+      "saving_pct_median": 3.1941,
+      "saving_pct_min": -0.8518,
+      "zero_new_derate": true,
+      "zero_new_undervolt": true,
+      "soc_ok": true,
+      "pass": true
+    },
+    "G3": {
+      "saving_pct_median": 3.4981,
+      "saving_pct_min": 1.2653,
+      "zero_new_derate": true,
+      "zero_new_undervolt": true,
+      "soc_ok": true,
+      "pass": true
+    }
+  },
+  "g2_increment_rule": false,
+  "g3_increment_rule": false,
+  "winner_recommendation": "G1 (quantile gating)"
+}

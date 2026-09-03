@@ -1,0 +1,16 @@
+{
+ "rows": 200,
+ "errors": {
+  "timeout": 0,
+  "bad_rsp": 0,
+  "resend": 0,
+  "stale_skip": 0
+ },
+ "compare": {
+  "n_cmp": 200,
+  "cls_match_rate": 1.0,
+  "cls_match": 200,
+  "max_logit_abs_delta": 5.000000000005e-07
+ },
+ "out_csv": "wc_compare.csv"
+}

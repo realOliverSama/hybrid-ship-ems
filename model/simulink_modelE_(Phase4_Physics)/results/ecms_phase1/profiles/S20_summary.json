@@ -1,0 +1,49 @@
+{
+  "scenario": "S20_composite_voyage",
+  "duration_s": 5520,
+  "distance_km": 22.54063669,
+  "distance_estimate_km": 21,
+  "P_demand_peak_kW": 800,
+  "P_demand_mean_kW": 448.4073845,
+  "frac_low_load_lt500kW": 0.5605868502,
+  "SOC_end": 0.5783529508,
+  "Vdc_min_V": 689.9168887,
+  "derate_event": false,
+  "n_derate_samples": 0,
+  "n_undervoltage_samples": 0,
+  "closure_residual_frac": -3.109798381e-06,
+  "closure_pass": true,
+  "fuel_base_tier1_kg": 320.1463728,
+  "fuel_base_tier2_kg": 337.9304058,
+  "fuel_base_tier3_kg": 355.7144389,
+  "dp": {
+    "pmin0": {
+      "mode": "continuous",
+      "tier": 2,
+      "P_min_kW": 0,
+      "fuel_dp_kg": 315.8286137,
+      "fuel_base_raw_kg": 337.9304058,
+      "fuel_base_corr_kg": 349.0092622,
+      "saving_pct_corr": 9.507096829,
+      "baseline_feasible": true,
+      "baseline_issues": [],
+      "SOC_end": 0.5962574881,
+      "wall_time_s": 2.934007,
+      "closure_pass": true
+    },
+    "pmin400": {
+      "mode": "continuous",
+      "tier": 2,
+      "P_min_kW": 400,
+      "fuel_dp_kg": 370.8098486,
+      "fuel_base_raw_kg": 337.9304058,
+      "fuel_base_corr_kg": 349.0092622,
+      "saving_pct_corr": -6.24642057,
+      "baseline_feasible": false,
+      "baseline_issues": ["连续口径 P_gen<P_min_stable(400) 3079 点"],
+      "SOC_end": 0.5974219743,
+      "wall_time_s": 1.691150542,
+      "closure_pass": true
+    }
+  }
+}

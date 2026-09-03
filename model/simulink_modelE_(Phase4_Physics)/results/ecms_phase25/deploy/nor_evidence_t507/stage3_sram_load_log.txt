@@ -1,0 +1,42 @@
+T-507 阶段③ SRAM Debug 加载证据（主 Agent 直接执行，2026-08-31 22:01~22:03 CST）
+授权令牌: DEBUG_MUTATION_AUTHORIZED_FAD198B0_R2（用户二次签发；首次令牌 R1 对应事务
+因 delegate 悬挂超时未生效——证据：加载前板子向量表 Reset=0x340075DD ≠ 锁定值 0x3400E975，
+系上一 Session 遗留镜像；R1 未产生任何 SRAM 写入生效）。
+
+== 锁定资产 ==
+ELF: firmware/.../EMS01_CHIL_ECMS/Appli/build/Debug/EMS01_CHIL_ECMS_Appli.elf
+ELF sha256: fad198b0d26b7608ef896fcacccc1bc88b42c94dc7b98091d19a176208201612
+PT_LOAD: [0x34000000, 0x3402F4F8) filesz=181828 memsz=193784 ⊂ allowlist [0x34000000, 0x34200000)
+MCP host binary sha256: 7254018a42d26efc2a22ec4364bd03dfc6d5d724dae478b424e14221bbf9ae85
+  （== mcp-contract.md 2026-08-27 已验收记录）
+工具面: 26 工具，load_elf_to_sram / read_special_registers 均在，无特殊寄存器写工具
+
+== 物理状态 ==
+Development boot（BOOT1→3.3V），用户在加载前再次按下物理 RESET（BootROM idle 干净态）。
+probe: ST-LINK V2 SN 30xxxx, 1800 kHz, connect_under_reset=false, halt_after_connect=false
+session: session_01b7a8b1-2684-49ca-a258-9fdde12fa9bc
+
+== load_elf_to_sram 结果（deterministic_reset, start=true）==
+Segments loaded: 0x34000000..0x3402F4F8 filesz=181828 memsz=193784 chunks=95 verified=193784B
+Plan SHA-256:     f338556d31a9b762e27d9358a10fb4bcf594651851de3c2a7c7aaef323b6d215
+Readback SHA-256: f338556d31a9b762e27d9358a10fb4bcf594651851de3c2a7c7aaef323b6d215 (MATCH)
+Vector table: 0x34000400 (symbol g_pfnVectors)
+Initial MSP: 0x34200000
+Reset_Handler: 0x3400E975 == ELF entry 0x3400E975（Thumb）
+Reset: system reset-and-halt (AIRCR.SYSRESETREQ) 先于写镜像
+Cache: CCR=0x00000201 前后一致（I/D-cache off）
+Masks: PRIMASK 1→0, BASEPRI 0, FAULTMASK 0（normalized, readback 验证）
+CONTROL: 0x00→0x00 preserved bit-for-bit
+Started: true（全部检查通过后才 run）
+
+== 运行证据 ==
+串口 /dev/cu.usbserial-1140 @115200 捕获（加载后约 40s 开窗 5s，缓冲残留）:
+  "EMS01 CHIL ECMS firmware v1 (NPU backend, weights @0x70200000/"
+  —— banner 打印点在 main.c:216，位于 MX_XSPI2_Init + NORFlash_Init +
+  NORFlash_EnableMemoryMappedMode + npu_ram_init/npu_config/npu_cache_config +
+  ems_app_init 全部成功之后（任一失败进 Error_Handler 无 banner）。
+物理证据: 用户确认 LED0 闪烁 = while(1) 心跳（main.c WHILE 段 LED0_TOGGLE）。
+
+== 终态 ==
+固件保持运行（未 halt/reset），MCP disconnect 干净（probe-rs 资源已清理）。
+全程零 Flash / Option Bytes / OTP / RDP 操作（本阶段仅 SRAM）。

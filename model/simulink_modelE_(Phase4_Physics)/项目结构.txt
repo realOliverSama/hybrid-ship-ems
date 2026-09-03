@@ -1,0 +1,52 @@
+                                                                                                
+ ```                                                                                            
+   model/simulink/                                                                              
+   ├── config/                    ★ 所有数字的唯一来源（single source of truth）                
+   │   ├── ModelA_Parameters.m        69 项参数（DRAWING/LEGACY/ASSUMED 三分类+审计元数据）     
+   │   └── ModelA_Scenarios.m         S01~S09 工况定义（速度剖面/水流/阻力带/航程）             
+   │                                                                                            
+   ├── scripts/                   ★ 全部开发与测试流程（真正的"源代码"）                        
+   │   ├── 01_audit_legacy_model.m    审计原模型（只读）→ reports/legacy_model_audit.md         
+   │   ├── 02_build_modelA.m          从零重建 .slx（删模可完全重生）                           
+   │   ├── 03_run_smoke_tests.m       T01~T05 烟雾测试 + 结果图                                 
+   │   ├── 04_run_scenarios.m         批量 9 工况×2 EMS 模式 → datasets/raw                     
+   │   ├── 05_export_dataset.m        按完整航次划分 train/val/test（1 s 重采样+未来60s标签）   
+   │   ├── 06_validate_results.m      验收校验 → ModelA_build_report.md                         
+   │   ├── 07_run_ai_comparison.m     Baseline vs AI 闭环对比 → AI_vs_Baseline_report.md        
+   │   └── +modela_k3/                工具函数包（build_model.m 核心构建逻辑、仿真/检查/        
+   │                                  出图/IO 助手、canonical_data/ 权威副本自愈机制）          
+   │                                                                                            
+   ├── model/                     模型快照（可由 02 完全重建，当"构建产物"对待）                
+   │   └── HybridShip_ModelA_MVP_K3.slx                                                         
+   │                                                                                            
+   ├── python/                    AI 侧全部资产                                                 
+   │   ├── train_load_predictor.py    MLP 训练（窗口自动搜索+int8量化导出）                     
+   │   ├── export/                    .keras / fp32+int8 .tflite / mlp_weights.mat /            
+   │   │                              training_report.json / window_sweep.json                  
+   │   └── .venv_tf/                  Python 环境（已被 gitignore）                             
+   │                                                                                            
+   ├── datasets/                  数据集（可再生成，保留用于论文追溯）                          
+   │   ├── raw/run_XXXX.{mat,csv,metadata.json}   18 个完整航次原始数据+元数据                  
+   │   ├── train.csv / validation.csv / test.csv  划分结果（含未来 60 s 负荷峰值标签）          
+   │   └── README.md                  划分规则说明                                              
+   │                                                                                            
+   ├── results/                   图表产物                                                      
+   │   ├── T01~T05/*.png              烟雾测试（速度跟踪/功率分配/SOC/燃油/功率平衡）           
+   │   └── ai_compare/S04,06,07,09/   AI 对比图（功率对比/SOC船速/预测质量）                    
+   │                                                                                            
+   ├── reports/                   一切结论性文档                                                
+   │   ├── legacy_model_audit.md      原模型审计                                                
+   │   ├── parameter_audit.csv        69 项参数来源/置信度/待确认清单                           
+   │   ├── smoke_summary.md           烟雾测试汇总                                              
+   │   ├── ModelA_build_report.md     最终构建验收报告                                          
+   │   ├── AI_vs_Baseline_report.md   AI vs 规则 EMS 对比报告                                   
+   │   └── ai/*.png                   训练曲线/预测散点/窗口搜索图                              
+   │                                                                                            
+   ├── scenarios/                 预留（工况目前由 config 集中生成）                            
+   ├── legacy_reference/          原模型只读副本（HybridShip0730.slx 等，chmod 444）            
+   ├── slprj/                     Simulink 编译缓存（gitignore，可随意删）                      
+   └── README_ModelA.md           项目入口说明                                                  
+ ```                                                                                            
+                                                                                                
+ 记忆口诀：改数字去 config/，改逻辑去 scripts/，训练 AI 去 python/，看结论去 reports/，看趋势图 
+ 去 results/——model/ 里的 .slx 永远可以由 scripts/02 重建，丢了也不慌。  

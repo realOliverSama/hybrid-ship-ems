@@ -1,0 +1,374 @@
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-08-31 13:51:38
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[modela] 已从权威副本恢复 1 个文件: README_Model.md
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 107.0 s
+{信号 resistance_multiplier 时间轴与主轴不一致（552001 vs 1 点）——固定步长下不应发生
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-08-31 13:55:59
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 32.9 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66] replay vs logged P_gen_ref: max|dP|=0 kW
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv（5521 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+{当只允许单一值时，点 '.' 索引 表达式生成包含 0 个值的以逗号分隔的列表。
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-08-31 14:02:37
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] EXPORT_SKIP_S20=true：跳过 S20（沿用已归档 ref/meta）
+[66] rows: G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+{EXPORT_SKIP_S20=true 但缺少
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/meta_G2_S20_composite_voyage.json
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-08-31 14:05:26
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] EXPORT_SKIP_S20=true：跳过 S20（沿用已归档 ref/meta）
+[66] rows: G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_test_voyage_002_v2 (stopTime=4211.00) -----
+[66] sim done in 31.5 s
+[66] samples=421101  t_end=4211
+[66] control ticks=4212（期望 floor(StopTime)+1=4212）
+[66] replay vs logged P_gen_ref: max|dP|=0 kW
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_test_voyage_002_v2.csv（4212 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+[66] summary -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/export_summary.json
+[66] EXPORT COMPLETE
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 00:42:13
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 50.8 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66] replay vs logged P_gen_ref: max|dP|=780 kW
+{错误使用 assert
+tick 重放与仿真记录偏差过大（tick 对齐失败）: 780
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 01:33:57
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 65.6 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66] replay vs logged P_gen_ref: max|dP|=780 kW
+{错误使用 assert
+tick 重放与仿真记录偏差过大（tick 对齐失败）: 780
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 01:39:16
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 26.7 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66-DBG] replay vs logged P_gen_ref: max|dP|=780 kW
+[66-DBG] n_diverge=220 first=5 | simP_vs_v1ref max=840 | repP_vs_v1ref max=840
+[66-DBG] replay cls_raw distribution: 1:2 3:4 6:38 1891:1355 1693:544 
+[66-DBG] dumped /tmp/t66_debug.mat
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv（5521 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+
+[66] ----- run G2_test_voyage_002_v2 (stopTime=4211.00) -----
+[66] sim done in 22.3 s
+[66] samples=421101  t_end=4211
+[66] control ticks=4212（期望 floor(StopTime)+1=4212）
+{不允许在不同类型之间赋值。
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 01:49:50
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 30.9 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66-DBG] replay vs logged P_gen_ref: max|dP|=780 kW
+[66-DBG] n_diverge=220 first=5 | simP_vs_v1ref max=840 | repP_vs_v1ref max=840
+[66-DBG] replay cls_raw distribution: 1:2 3:4 6:38 1891:1355 1693:544 
+[66-DBG] === first 10 diverge ticks detail ===
+{错误使用 eval
+函数或变量 'v1kw' 无法识别。
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 01:52:48
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 23.4 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66-DBG] replay vs logged P_gen_ref: max|dP|=780 kW
+[66-DBG] nT=5521
+[66-DBG] n_diverge=220 first=5 | simP_vs_v1ref max=840 | repP_vs_v1ref max=840
+[66-DBG] replay cls_raw distribution: 1:2 3:4 6:38 1891:1355 1693:544 
+[66-DBG] === first 10 diverge ticks detail ===
+tick 5: simP=960.0000 repP=980.0000 v1P=820.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=0.8084
+tick 310: simP=800.0000 repP=820.0000 v1P=780.0000 v1Kw=1 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-0.4939
+tick 472: simP=20.0000 repP=780.0000 v1P=800.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1249
+tick 473: simP=20.0000 repP=800.0000 v1P=780.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1229
+tick 474: simP=20.0000 repP=800.0000 v1P=20.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1234
+tick 475: simP=780.0000 repP=800.0000 v1P=20.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1204
+tick 478: simP=780.0000 repP=800.0000 v1P=20.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1337
+tick 479: simP=780.0000 repP=800.0000 v1P=20.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1397
+tick 494: simP=780.0000 repP=800.0000 v1P=20.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1204
+tick 569: simP=20.0000 repP=780.0000 v1P=800.0000 v1Kw=0 | dbg: cls=2 cls_eff=2 K_w=1 K=1 e_hat_raw=-1.1256
+[66-DBG] dumped /tmp/t66_debug.mat
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv（5521 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+
+[66] ----- run G2_test_voyage_002_v2 (stopTime=4211.00) -----
+[66] sim done in 15.5 s
+[66] samples=421101  t_end=4211
+[66] control ticks=4212（期望 floor(StopTime)+1=4212）
+{不允许在不同类型之间赋值。
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 02:02:24
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] rows: G2_S20_composite_voyage_matrix, G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_S20_composite_voyage_matrix (stopTime=5520.00) -----
+[66] sim done in 24.6 s
+[66] samples=552001  t_end=5520
+[66] control ticks=5521（期望 floor(StopTime)+1=5521）
+[66] replay vs logged P_gen_ref: max|dP|=780 kW  同网格率=0.9848
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv（5521 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+
+[66] ----- run G2_test_voyage_002_v2 (stopTime=4211.00) -----
+[66] sim done in 14.9 s
+[66] samples=421101  t_end=4211
+[66] control ticks=4212（期望 floor(StopTime)+1=4212）
+{不允许在不同类型之间赋值。
+} 
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 02:05:39
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] EXPORT_SKIP_S20=true：跳过 S20（沿用已归档 ref/meta）
+[66] rows: G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_test_voyage_002_v2 (stopTime=4211.00) -----
+[66] sim done in 21.7 s
+[66] samples=421101  t_end=4211
+[66] control ticks=4212（期望 floor(StopTime)+1=4212）
+[66] replay vs logged P_gen_ref: max|dP|=780 kW  同网格率=0.9941
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_test_voyage_002_v2.csv（4212 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+[66] summary -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/export_summary.json
+[66] EXPORT COMPLETE
+
+[66] ===== T-504 fw reference export (law=7 G2) =====
+[66] ROOT = /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS) | start: 2026-09-02 02:07:00
+[66] MATLAB 26.1.0.3312084 (R2026a) Update 4
+[警告: MATLAB 路径中不允许使用命名空间目录:
+/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/scripts/+ecms25] 
+[> 位置：path (第 89 行)
+位置: addpath (第 70 行)] 
+[63] GATE_MODE=2 chart 已应用并保存；mat -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+[63] W3 32x3 | S1=28.948 S2=40.771 kWh（内嵌于 chart）
+[Model_Parameters] ECMS BSFC 覆盖生效：ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0
+[Model_Parameters] v2.0 双支路等效：电机 700 kW / 发电机 1000 kW / 电池 1071 kWh，Hull_K_R=1780 N/(m/s)^2
+[Model_Parameters] 参数已加载：108 项（含 40 项 ASSUMED_）
+[Model_Scenarios] 已定义 20 个工况（服务航速 5.66 m/s = 11.0 kn），当前默认 SCN = S01_still_water
+[ecms2] BSFC 表注入（source=config/ecms_bsfc_override.mat）: 501 断点, 首末 BSFC=[768.6, 453.0] g/kWh
+[ecms25.ensure_nn_params_v2] law7-v2 权重已载入: W1 302x64 | W2 64x32 | W3 32x3 | YStd=16.4951
+[66] EXPORT_SKIP_S20=true：跳过 S20（沿用已归档 ref/meta）
+[66] rows: G2_test_voyage_002_v2
+[66] 诊断副本 -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ecms_nn_dbg.m（P 计算路径与基线逐字相同）
+[66] chart GATE_MODE=2 已确认 | ChartUpdate=DISCRETE SampleTime=0.01
+
+[66] ----- run G2_test_voyage_002_v2 (stopTime=4211.00) -----
+[66] sim done in 24.2 s
+[66] samples=421101  t_end=4211
+[66] control ticks=4212（期望 floor(StopTime)+1=4212）
+[66] replay vs logged P_gen_ref: max|dP|=780 kW  同网格率=0.9941
+[66] CSV -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_test_voyage_002_v2.csv（4212 行）
+[66] 缓存比对: d_fuel_corr=0 kg, d_SOC_end=0
+[66] summary -> /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/export_summary.json
+[66] EXPORT COMPLETE

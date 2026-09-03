@@ -1,0 +1,239 @@
+{
+  "nn_oracle_capture": 0.3703768624,
+  "fuel_c2_S20_kg": 330.662,
+  "fuel_c3_S20_kg": 324.957,
+  "fuel_c4_S20_kg": 328.549,
+  "generalization": {
+    "n_test_voyages": 10,
+    "saving_diff_pct_median": -0.2317250956,
+    "saving_diff_pct_min": -1.059998199,
+    "saving_diff_pct_mean": -0.09558907169,
+    "saving_diff_pct_max": 1.206842965,
+    "per_voyage": [{
+        "voyage": "voyage_004",
+        "fuel_c2_kg": 187.817,
+        "fuel_c4_kg": 186.638,
+        "saving_diff_pct": 0.6277387031
+      },{
+        "voyage": "voyage_007",
+        "fuel_c2_kg": 302.442,
+        "fuel_c4_kg": 298.792,
+        "saving_diff_pct": 1.206842965
+      },{
+        "voyage": "voyage_011",
+        "fuel_c2_kg": 209.947,
+        "fuel_c4_kg": 210.517,
+        "saving_diff_pct": -0.2714970921
+      },{
+        "voyage": "voyage_013",
+        "fuel_c2_kg": 160.335,
+        "fuel_c4_kg": 161.011,
+        "saving_diff_pct": -0.4216172389
+      },{
+        "voyage": "voyage_017",
+        "fuel_c2_kg": 253.612,
+        "fuel_c4_kg": 253.582,
+        "saving_diff_pct": 0.01182909326
+      },{
+        "voyage": "voyage_019",
+        "fuel_c2_kg": 317.265,
+        "fuel_c4_kg": 317.874,
+        "saving_diff_pct": -0.1919530991
+      },{
+        "voyage": "voyage_021",
+        "fuel_c2_kg": 199.906,
+        "fuel_c4_kg": 202.025,
+        "saving_diff_pct": -1.059998199
+      },{
+        "voyage": "voyage_028",
+        "fuel_c2_kg": 216.121,
+        "fuel_c4_kg": 217.162,
+        "saving_diff_pct": -0.4816746175
+      },{
+        "voyage": "voyage_035",
+        "fuel_c2_kg": 267.11,
+        "fuel_c4_kg": 269.239,
+        "saving_diff_pct": -0.7970499045
+      },{
+        "voyage": "voyage_047",
+        "fuel_c2_kg": 193.125,
+        "fuel_c4_kg": 192.311,
+        "saving_diff_pct": 0.4214886731
+      }],
+    "notes": "saving_diff_pct_i = (fuel_C2_i − fuel_C4_i)/fuel_C2_i × 100；10 个 test 航次"
+  },
+  "per_scenario": {
+    "S20_composite_voyage": {
+      "C0": {
+        "fuel_raw_kg": 337.93,
+        "fuel_corr_kg": 349.002,
+        "SOC_end": 0.578353,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C2": {
+        "fuel_raw_kg": 330.742,
+        "fuel_corr_kg": 330.662,
+        "SOC_end": 0.600157,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C3": {
+        "fuel_raw_kg": 326.937,
+        "fuel_corr_kg": 324.957,
+        "SOC_end": 0.603871,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C4": {
+        "fuel_raw_kg": 328.87,
+        "fuel_corr_kg": 328.549,
+        "SOC_end": 0.600628,
+        "Vdc_min_V": 683.353,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase2_sim"
+      },
+      "capture": 0.3703768624
+    },
+    "S01_still_water": {
+      "C0": {
+        "fuel_raw_kg": 80.2659,
+        "fuel_corr_kg": 84.3198,
+        "SOC_end": 0.592074,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C2": {
+        "fuel_raw_kg": 83.7255,
+        "fuel_corr_kg": 83.6048,
+        "SOC_end": 0.600236,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C3": {
+        "fuel_raw_kg": 88.5611,
+        "fuel_corr_kg": 83.191,
+        "SOC_end": 0.6105,
+        "Vdc_min_V": 684.375,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C4": {
+        "fuel_raw_kg": 91.154,
+        "fuel_corr_kg": 83.7556,
+        "SOC_end": 0.614465,
+        "Vdc_min_V": 683.353,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase2_sim"
+      },
+      "capture": -0.3644272595
+    },
+    "S02_downstream": {
+      "C0": {
+        "fuel_raw_kg": 61.3963,
+        "fuel_corr_kg": 64.3204,
+        "SOC_end": 0.594283,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C2": {
+        "fuel_raw_kg": 60.6966,
+        "fuel_corr_kg": 60.9674,
+        "SOC_end": 0.599471,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C3": {
+        "fuel_raw_kg": 86.4585,
+        "fuel_corr_kg": 54.9743,
+        "SOC_end": 0.661557,
+        "Vdc_min_V": 684.375,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C4": {
+        "fuel_raw_kg": 85.0503,
+        "fuel_corr_kg": 54.7036,
+        "SOC_end": 0.659333,
+        "Vdc_min_V": 683.353,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase2_sim"
+      },
+      "capture": 1.045168611
+    },
+    "S07_bridge_maneuver": {
+      "C0": {
+        "fuel_raw_kg": 79.0078,
+        "fuel_corr_kg": 82.8431,
+        "SOC_end": 0.592501,
+        "Vdc_min_V": 689.917,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C2": {
+        "fuel_raw_kg": 81.0124,
+        "fuel_corr_kg": 80.7452,
+        "SOC_end": 0.600522,
+        "Vdc_min_V": 683.318,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C3": {
+        "fuel_raw_kg": 87.9947,
+        "fuel_corr_kg": 80.6989,
+        "SOC_end": 0.614264,
+        "Vdc_min_V": 684.375,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase1_reuse"
+      },
+      "C4": {
+        "fuel_raw_kg": 86.947,
+        "fuel_corr_kg": 81.9646,
+        "SOC_end": 0.609741,
+        "Vdc_min_V": 683.353,
+        "n_undervoltage": 0,
+        "n_derate": 0,
+        "source": "phase2_sim"
+      },
+      "capture": -26.33693305
+    }
+  },
+  "recommendation": "PARTIAL",
+  "judge_params": {
+    "main_scenario": "S20_composite_voyage",
+    "formula": "nn_oracle_capture = (fuel_C2 − fuel_C4)/(fuel_C2 − fuel_C3)（S20）",
+    "capture_proceed_threshold": 0.5,
+    "capture_partial_threshold": 0.3,
+    "k_eq_kg_kWh": 0.4774,
+    "SOC_target": 0.6,
+    "n_rows_total": 36,
+    "n_matrix_rows": 16,
+    "n_generalization_rows": 20,
+    "generalization_metric": "C4 vs C2 saving diff: (fuel_C2−fuel_C4)/fuel_C2×100 per test voyage"
+  },
+  "config_hash": "a1c7384254049101c5945cc947b9f537",
+  "generated": "2026-08-26 01:11:32",
+  "notes": "FR-210 机器可读判定：nn_oracle_capture（S20）为主判定指标，泛化摘要为附列。C3（law=6 oracle）为离线上界（E5：非实时可实现）；C4（law=7 NN-A-ECMS）为实时可实现预测。recommendation 仅依据 nn_oracle_capture；判读归用户（design §6 注）。capture=0.3704 ∈ [0.30, 0.50)"
+}

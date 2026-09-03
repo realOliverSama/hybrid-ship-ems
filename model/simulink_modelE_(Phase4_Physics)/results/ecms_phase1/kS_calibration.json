@@ -1,0 +1,100 @@
+{
+  "task": "T-106 v2 K_S calibration (S20 × law=6 SOC_ref 通道, tier2 mid override, design v1.1)",
+  "law_form": "SOC_ref(t)=0.60+K_S*e_hat; lambda=lam0+K_soc*(SOC_ref(t)-SOC); lambda=max(lambda, floor)（K_S>0 时）",
+  "oracle": {
+    "source": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD/results/ecms_phase1/profiles/S20_composite_voyage.mat",
+    "H_s": 300,
+    "E_bar_H_kWh": 36.893333753896165,
+    "E_scale_kWh": 20.506967855122674,
+    "n_samples": 5521,
+    "crossval_max_rel_err": 1.7425776941955587E-14
+  },
+  "lambda_0": 0.425,
+  "K_soc": 30,
+  "lambda_floor": 0.43,
+  "soc_target": 0.6,
+  "band": [
+    0.595,
+    0.605
+  ],
+  "k_eq_kg_kWh": 0.4774,
+  "bat_cap_kWh": 1071.36,
+  "bsfc_override_tag": "ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0",
+  "law5_reference": {
+    "SOC_end": 0.60015740945335672,
+    "fuel_raw_kg": 330.74238354748542,
+    "fuel_corr_kg": 330.66187376504934,
+    "Vdc_min_V": 683.3179505358338,
+    "wall_time_s": 57.766912041666664
+  },
+  "grid": [
+    {
+      "K_S": 0,
+      "SOC_end": 0.60015740945335672,
+      "fuel_raw_kg": 330.74238354748542,
+      "fuel_corr_kg": 330.66187376504934,
+      "Vdc_min_V": 683.3179505358338,
+      "soc_in_band": 1,
+      "not_worse_than_law5": 1,
+      "qualified": 1,
+      "wall_time_s": 31.005125833333334
+    },
+    {
+      "K_S": 0.01,
+      "SOC_end": 0.60387140689421492,
+      "fuel_raw_kg": 326.93737044494492,
+      "fuel_corr_kg": 324.95727255293008,
+      "Vdc_min_V": 683.3179505358338,
+      "soc_in_band": 1,
+      "not_worse_than_law5": 1,
+      "qualified": 1,
+      "wall_time_s": 33.020625416666668
+    },
+    {
+      "K_S": 0.02,
+      "SOC_end": 0.617049360404838,
+      "fuel_raw_kg": 331.1394911040494,
+      "fuel_corr_kg": 322.41930138483696,
+      "Vdc_min_V": 683.3179505358338,
+      "soc_in_band": 0,
+      "not_worse_than_law5": 1,
+      "qualified": 0,
+      "wall_time_s": 34.310454041666667
+    },
+    {
+      "K_S": 0.05,
+      "SOC_end": 0.65715269563234791,
+      "fuel_raw_kg": 357.14801342556422,
+      "fuel_corr_kg": 327.91628056026246,
+      "Vdc_min_V": 683.3179505358338,
+      "soc_in_band": 0,
+      "not_worse_than_law5": 1,
+      "qualified": 0,
+      "wall_time_s": 32.140597875
+    },
+    {
+      "K_S": 0.1,
+      "SOC_end": 0.70077301167218109,
+      "fuel_raw_kg": 388.78060826593719,
+      "fuel_corr_kg": 337.23851170092667,
+      "Vdc_min_V": 683.3179505358338,
+      "soc_in_band": 0,
+      "not_worse_than_law5": 0,
+      "qualified": 0,
+      "wall_time_s": 30.358196958333334
+    }
+  ],
+  "chosen_K_S": 0.01,
+  "chosen_SOC_end": 0.60387140689421492,
+  "chosen_fuel_corr_kg": 324.95727255293008,
+  "qualified": 1,
+  "final_run": {
+    "K_S": 0.01,
+    "SOC_end": 0.60387140689421492,
+    "fuel_raw_kg": 326.93737044494492,
+    "fuel_corr_kg": 324.95727255293008,
+    "Vdc_min_V": 683.3179505358338,
+    "wall_time_s": 28.689102083333335
+  },
+  "non_realtime_note": "law=6 使用真实未来需求剖面（oracle）离线预计算 ê_future——非实时可实现，仅用于上界/增量验证（E5，FR-107）"
+}

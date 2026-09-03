@@ -1,0 +1,24 @@
+T-507 Stage 2 NOR weight programming - hash evidence
+Date: 2026-08-31 21:13:30 CST
+Authorization token: PROGRAM_AUTHORIZED_E7576952_786A905D (single use, this transaction)
+
+== Inputs (pre-flight re-verified) ==
+sha256 loader .stldr        : 0bce846a1f25e4e967d572efb5a3f97f8a839817b53bf60d837aadfee740dcb5  (expected 0bce846a1f25e4e967d572efb5a3f97f8a839817b53bf60d837aadfee740dcb5)
+sha256 network-data-mlpq.hex  : e7576952b8f4bacacb2c7b1b31219ae6e0d1c5b8d09521dcc3ce72cdec5c5295  (expected e7576952b8f4bacacb2c7b1b31219ae6e0d1c5b8d09521dcc3ce72cdec5c5295)
+sha256 network-data-workclf.hex: 786a905d2e84472d907f3432912ecf5a4a107889921bd4783d00fff3dd3649e2 (expected 786a905d2e84472d907f3432912ecf5a4a107889921bd4783d00fff3dd3649e2)
+
+== Readback after programming ==
+sha256 nor_0x70200000_post.bin (0x5421 bytes): 0cca9d7231b0e1b9a79eb5ce6b16caaff6ccbd9c86815553f20fa764305b92fd
+  expected: 0cca9d7231b0e1b9a79eb5ce6b16caaff6ccbd9c86815553f20fa764305b92fd
+  RESULT  : PASS
+sha256 nor_0x70400000_post.bin (0x1FC1 bytes): 7fcbc865c5eb8d8f62cb1e04b428b2f48078f6fde177eb23220724847325bfaf
+  expected: 7fcbc865c5eb8d8f62cb1e04b428b2f48078f6fde177eb23220724847325bfaf
+  RESULT  : PASS
+
+== FSBL zero-change check ==
+sha256 fsbl_before.bin (0x7020 bytes @0x70000000): 961abaf1bca38430a1a2b7ad101f449d6db25fb84249e6495e80a5834967f83f
+sha256 fsbl_after.bin  (0x7020 bytes @0x70000000): 961abaf1bca38430a1a2b7ad101f449d6db25fb84249e6495e80a5834967f83f
+  RESULT (before == after): PASS
+
+== Overall ==
+VERDICT: PASS - all three hash checks passed

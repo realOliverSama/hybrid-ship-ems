@@ -1,0 +1,159 @@
+{
+  "task": "T-104/T-105 lambda & K_soc calibration (S01, tier2 mid override)",
+  "bsfc_override_tag": "ecms-bsfc-family-mid-d25=0.50-agg-v0.1.0",
+  "lambda_0": 0.425,
+  "lambda_interval": [
+    0.2,
+    0.8
+  ],
+  "n_iterations": 3,
+  "converged": 1,
+  "soc_target": 0.6,
+  "band": [
+    0.595,
+    0.605
+  ],
+  "soc_end_final": 0.604456699195032,
+  "fuel_raw_kg": 85.036306793727164,
+  "fuel_corr_kg": 82.75685104997315,
+  "k_eq_kg_kWh": 0.4774,
+  "bat_cap_kWh": 1071.36,
+  "Vdc_min_V": 683.3179505358338,
+  "trace": [
+    {
+      "iter": 1,
+      "lambda": 0.5,
+      "SOC_end": 0.60880379907447135,
+      "fuel_kg": 87.138759558439219
+    },
+    {
+      "iter": 2,
+      "lambda": 0.35,
+      "SOC_end": 0.41198160271264206,
+      "fuel_kg": 0
+    },
+    {
+      "iter": 3,
+      "lambda": 0.425,
+      "SOC_end": 0.604456699195032,
+      "fuel_kg": 85.036306793727164
+    }
+  ],
+  "ksoc_calibration": {
+    "done": true,
+    "chosen_K_soc": 30,
+    "grid": [
+      {
+        "K_soc": 0,
+        "SOC_end": 0.604456699195032,
+        "fuel_kg": 85.036306793727164,
+        "qualified": 1
+      },
+      {
+        "K_soc": 0.25,
+        "SOC_end": 0.604456699195032,
+        "fuel_kg": 85.036306793727164,
+        "qualified": 1
+      },
+      {
+        "K_soc": 0.5,
+        "SOC_end": 0.604456699195032,
+        "fuel_kg": 85.036306793727164,
+        "qualified": 1
+      },
+      {
+        "K_soc": 1,
+        "SOC_end": 0.604456699195032,
+        "fuel_kg": 85.036306793727164,
+        "qualified": 1
+      },
+      {
+        "K_soc": 1.5,
+        "SOC_end": 0.604456699195032,
+        "fuel_kg": 85.036306793727164,
+        "qualified": 1
+      },
+      {
+        "K_soc": 2,
+        "SOC_end": 0.604456699195032,
+        "fuel_kg": 85.036306793727164,
+        "qualified": 1
+      },
+      {
+        "K_soc": 3,
+        "SOC_end": 0.60449392742245966,
+        "fuel_kg": 85.057444648948362,
+        "qualified": 1
+      },
+      {
+        "K_soc": 4,
+        "SOC_end": 0.60414689131576427,
+        "fuel_kg": 84.90209196086856,
+        "qualified": 1
+      },
+      {
+        "K_soc": 6,
+        "SOC_end": 0.60378535348844464,
+        "fuel_kg": 84.741819741253892,
+        "qualified": 1
+      },
+      {
+        "K_soc": 8,
+        "SOC_end": 0.60275789131552049,
+        "fuel_kg": 84.396718474866148,
+        "qualified": 1
+      },
+      {
+        "K_soc": 10,
+        "SOC_end": 0.60193443586737694,
+        "fuel_kg": 84.151503063603073,
+        "qualified": 1
+      },
+      {
+        "K_soc": 12,
+        "SOC_end": 0.601948278116392,
+        "fuel_kg": 84.163931662300357,
+        "qualified": 1
+      },
+      {
+        "K_soc": 14,
+        "SOC_end": 0.60111590343464527,
+        "fuel_kg": 83.908521729555758,
+        "qualified": 1
+      },
+      {
+        "K_soc": 16,
+        "SOC_end": 0.60111549801154562,
+        "fuel_kg": 83.9129509651197,
+        "qualified": 1
+      },
+      {
+        "K_soc": 20,
+        "SOC_end": 0.6011293947696,
+        "fuel_kg": 83.924456420970074,
+        "qualified": 1
+      },
+      {
+        "K_soc": 25,
+        "SOC_end": 0.60068177998164329,
+        "fuel_kg": 83.838284731618629,
+        "qualified": 1
+      },
+      {
+        "K_soc": 30,
+        "SOC_end": 0.60023599176628872,
+        "fuel_kg": 83.725518017127925,
+        "qualified": 1
+      },
+      {
+        "K_soc": 40,
+        "SOC_end": 0.60015689232748426,
+        "fuel_kg": 83.82743095689699,
+        "qualified": 1
+      }
+    ],
+    "final_SOC_end": 0.60023599176628872,
+    "final_fuel_kg": 83.725518017127925,
+    "qualified": true
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "meta": {
+    "seed": 20260829,
+    "requested_N": 400,
+    "start": 1,
+    "law": 0,
+    "parsim": true,
+    "injection": "SimulationInput.setVariable (fast path)",
+    "n_ok": 0,
+    "n_rejected": 0,
+    "n_skip": 400,
+    "deep_check_rule": "every 20th voyage: Vdc_min>=675V and closure<0.1%",
+    "generated": "2026-08-29 03:30:56"
+  },
+  "voyages": []
+}
