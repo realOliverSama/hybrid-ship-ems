@@ -1,0 +1,3516 @@
+{
+  "schema": "modelE_structure_fingerprint_v1",
+  "model": "HybridShip_ModelE",
+  "generated_at": "2026-09-04T03:58:29***",
+  "n_blocks": 687,
+  "n_lines": 695,
+  "blocks": [
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager",
+      "type": "SubSystem",
+      "name": "01_Scenario_Manager"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_cdef",
+      "type": "Constant",
+      "name": "CC_cdef"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ckv",
+      "type": "Constant",
+      "name": "CC_ckv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ckx",
+      "type": "Constant",
+      "name": "CC_ckx"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ctt",
+      "type": "Constant",
+      "name": "CC_ctt"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ctv",
+      "type": "Constant",
+      "name": "CC_ctv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_cvmode",
+      "type": "Constant",
+      "name": "CC_cvmode"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_kv",
+      "type": "Constant",
+      "name": "CV_kv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_kx",
+      "type": "Constant",
+      "name": "CV_kx"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_tt",
+      "type": "Constant",
+      "name": "CV_tt"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_tv",
+      "type": "Constant",
+      "name": "CV_tv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_vdef",
+      "type": "Constant",
+      "name": "CV_vdef"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_vmode",
+      "type": "Constant",
+      "name": "CV_vmode"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_amp",
+      "type": "Constant",
+      "name": "C_amp"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_bands",
+      "type": "Constant",
+      "name": "C_bands"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_pos",
+      "type": "Constant",
+      "name": "C_pos"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_profile",
+      "type": "Constant",
+      "name": "C_profile"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_rampT",
+      "type": "Constant",
+      "name": "C_rampT"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_vtarget",
+      "type": "Constant",
+      "name": "C_vtarget"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/C_water_depth",
+      "type": "Constant",
+      "name": "C_water_depth"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/Hotel",
+      "type": "Constant",
+      "name": "Hotel"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/ScenID",
+      "type": "Constant",
+      "name": "ScenID"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile",
+      "type": "SubSystem",
+      "name": "current_profile",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/x",
+      "type": "Inport",
+      "name": "x"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/mode",
+      "type": "Inport",
+      "name": "mode"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/kx",
+      "type": "Inport",
+      "name": "kx"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/kv",
+      "type": "Inport",
+      "name": "kv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/v_def",
+      "type": "Inport",
+      "name": "v_def"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/tt",
+      "type": "Inport",
+      "name": "tt"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/tv",
+      "type": "Inport",
+      "name": "tv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/vc",
+      "type": "Outport",
+      "name": "vc"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile",
+      "type": "SubSystem",
+      "name": "resist_profile",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/x",
+      "type": "Inport",
+      "name": "x"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/profile",
+      "type": "Inport",
+      "name": "profile"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/pos",
+      "type": "Inport",
+      "name": "pos"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/amp",
+      "type": "Inport",
+      "name": "amp"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/rampT",
+      "type": "Inport",
+      "name": "rampT"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/bands",
+      "type": "Inport",
+      "name": "bands"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/v_target",
+      "type": "Inport",
+      "name": "v_target"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/m",
+      "type": "Outport",
+      "name": "m"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/t_clock",
+      "type": "Clock",
+      "name": "t_clock"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd ramp",
+      "type": "RateLimiter",
+      "name": "v_cmd ramp"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile",
+      "type": "SubSystem",
+      "name": "v_cmd_profile",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/x",
+      "type": "Inport",
+      "name": "x"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/mode",
+      "type": "Inport",
+      "name": "mode"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/kx",
+      "type": "Inport",
+      "name": "kx"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/kv",
+      "type": "Inport",
+      "name": "kv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/v_def",
+      "type": "Inport",
+      "name": "v_def"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/tt",
+      "type": "Inport",
+      "name": "tt"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/tv",
+      "type": "Inport",
+      "name": "tv"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/v",
+      "type": "Outport",
+      "name": "v"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_mps",
+      "type": "Outport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/v_current_mps",
+      "type": "Outport",
+      "name": "v_current_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/resistance_multiplier",
+      "type": "Outport",
+      "name": "resistance_multiplier"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/P_hotel_kW",
+      "type": "Outport",
+      "name": "P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/scenario_id",
+      "type": "Outport",
+      "name": "scenario_id"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Scenario_Manager/water_depth_m",
+      "type": "Outport",
+      "name": "water_depth_m"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller",
+      "type": "SubSystem",
+      "name": "02_Ship_Speed_Controller"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Ki",
+      "type": "Gain",
+      "name": "Ki"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Ki_int",
+      "type": "Integrator",
+      "name": "Ki_int"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Kp",
+      "type": "Gain",
+      "name": "Kp"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Limit",
+      "type": "Saturate",
+      "name": "Limit"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/PI out",
+      "type": "Sum",
+      "name": "PI out"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/err",
+      "type": "Sum",
+      "name": "err"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/P_prop_demand_kW",
+      "type": "Outport",
+      "name": "P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant",
+      "type": "SubSystem",
+      "name": "03_Propulsion_Plant"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/P_prop_demand_kW",
+      "type": "Inport",
+      "name": "P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/P_prop_limit_kW",
+      "type": "Inport",
+      "name": "P_prop_limit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/v_current_mps",
+      "type": "Inport",
+      "name": "v_current_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/resistance_multiplier",
+      "type": "Inport",
+      "name": "resistance_multiplier"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/water_depth_m",
+      "type": "Inport",
+      "name": "water_depth_m"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/1J",
+      "type": "Gain",
+      "name": "1J"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Avail",
+      "type": "MinMax",
+      "name": "Avail"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/DriveLag",
+      "type": "TransferFcn",
+      "name": "DriveLag"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/ElecEff",
+      "type": "Gain",
+      "name": "ElecEff"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/F_env",
+      "type": "Constant",
+      "name": "F_env"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/GearRatio_omega",
+      "type": "Gain",
+      "name": "GearRatio_omega"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Gearbox",
+      "type": "Gain",
+      "name": "Gearbox"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/HT_delay",
+      "type": "UnitDelay",
+      "name": "HT_delay"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/P_prop_clamp",
+      "type": "Saturate",
+      "name": "P_prop_clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics",
+      "type": "SubSystem",
+      "name": "Propeller_Hydrodynamics",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/n_prop_rpm",
+      "type": "Inport",
+      "name": "n_prop_rpm"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/V_ship_mps",
+      "type": "Inport",
+      "name": "V_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/V_current_mps",
+      "type": "Inport",
+      "name": "V_current_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/w_signal",
+      "type": "Inport",
+      "name": "w_signal"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/F_prop_eff",
+      "type": "Outport",
+      "name": "F_prop_eff"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/Q_prop",
+      "type": "Outport",
+      "name": "Q_prop"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/P_hydro_kW",
+      "type": "Outport",
+      "name": "P_hydro_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Propeller_Hydrodynamics/V_A",
+      "type": "Outport",
+      "name": "V_A"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/ShaftB",
+      "type": "Gain",
+      "name": "ShaftB"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E",
+      "type": "SubSystem",
+      "name": "Ship_Hull_Dynamics_E",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/V_ship",
+      "type": "Inport",
+      "name": "V_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/F_prop_eff",
+      "type": "Inport",
+      "name": "F_prop_eff"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/V_current",
+      "type": "Inport",
+      "name": "V_current"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/F_env",
+      "type": "Inport",
+      "name": "F_env"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/resistance_multiplier",
+      "type": "Inport",
+      "name": "resistance_multiplier"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/water_depth_m",
+      "type": "Inport",
+      "name": "water_depth_m"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/dVdt",
+      "type": "Outport",
+      "name": "dVdt"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/R_total_N",
+      "type": "Outport",
+      "name": "R_total_N"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/R_shallow_N",
+      "type": "Outport",
+      "name": "R_shallow_N"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/HT_ratio",
+      "type": "Outport",
+      "name": "HT_ratio"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Ship_Hull_Dynamics_E/domain_warning",
+      "type": "Outport",
+      "name": "domain_warning"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/T_motor_clamp",
+      "type": "Saturate",
+      "name": "T_motor_clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/T_req",
+      "type": "Product",
+      "name": "T_req"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Wake_vs_HT",
+      "type": "SubSystem",
+      "name": "Wake_vs_HT",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Wake_vs_HT/HT_ratio",
+      "type": "Inport",
+      "name": "HT_ratio"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Wake_vs_HT/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Wake_vs_HT/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Wake_vs_HT/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/Wake_vs_HT/w",
+      "type": "Outport",
+      "name": "w"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/abs_omega",
+      "type": "Abs",
+      "name": "abs_omega"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/kW2W",
+      "type": "Gain",
+      "name": "kW2W"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/omega_floor",
+      "type": "Constant",
+      "name": "omega_floor"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/omega_min",
+      "type": "MinMax",
+      "name": "omega_min"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/omega_prop",
+      "type": "Integrator",
+      "name": "omega_prop"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/radps2rpm",
+      "type": "Gain",
+      "name": "radps2rpm"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/shaft sum",
+      "type": "Sum",
+      "name": "shaft sum"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/v_ship",
+      "type": "Integrator",
+      "name": "v_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/x_ship",
+      "type": "Integrator",
+      "name": "x_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/P_prop_actual_kW",
+      "type": "Outport",
+      "name": "P_prop_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/v_ship_mps",
+      "type": "Outport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/x_ship_m",
+      "type": "Outport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/acceleration_mps2",
+      "type": "Outport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/R_hull_N",
+      "type": "Outport",
+      "name": "R_hull_N"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/F_prop_eff_N",
+      "type": "Outport",
+      "name": "F_prop_eff_N"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/n_prop_rpm",
+      "type": "Outport",
+      "name": "n_prop_rpm"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/R_shallow_N",
+      "type": "Outport",
+      "name": "R_shallow_N"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/HT_ratio",
+      "type": "Outport",
+      "name": "HT_ratio"
+    },
+    {
+      "path": "HybridShip_ModelE/03_Propulsion_Plant/domain_warning",
+      "type": "Outport",
+      "name": "domain_warning"
+    },
+    {
+      "path": "HybridShip_ModelE/04_Load_Measurement",
+      "type": "SubSystem",
+      "name": "04_Load_Measurement"
+    },
+    {
+      "path": "HybridShip_ModelE/04_Load_Measurement/P_prop_actual_kW",
+      "type": "Inport",
+      "name": "P_prop_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/04_Load_Measurement/P_hotel_kW",
+      "type": "Inport",
+      "name": "P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/04_Load_Measurement/clamp0",
+      "type": "Saturate",
+      "name": "clamp0"
+    },
+    {
+      "path": "HybridShip_ModelE/04_Load_Measurement/total",
+      "type": "Sum",
+      "name": "total"
+    },
+    {
+      "path": "HybridShip_ModelE/04_Load_Measurement/P_load_total_kW",
+      "type": "Outport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller",
+      "type": "SubSystem",
+      "name": "05_EMS_Controller"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced",
+      "type": "SubSystem",
+      "name": "EMS_AI_Enhanced"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/K_ff",
+      "type": "Gain",
+      "name": "K_ff"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/T_tpeak",
+      "type": "Terminator",
+      "name": "T_tpeak"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict",
+      "type": "SubSystem",
+      "name": "ai_predict",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/v_cmd",
+      "type": "Inport",
+      "name": "v_cmd"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/v_ship",
+      "type": "Inport",
+      "name": "v_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/accel",
+      "type": "Inport",
+      "name": "accel"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/x_ship",
+      "type": "Inport",
+      "name": "x_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/P_pred_ext",
+      "type": "Inport",
+      "name": "P_pred_ext"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/t_peak_ext",
+      "type": "Inport",
+      "name": "t_peak_ext"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/Ppred",
+      "type": "Outport",
+      "name": "Ppred"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/t_peak",
+      "type": "Outport",
+      "name": "t_peak"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ai_predict/valid",
+      "type": "Outport",
+      "name": "valid"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/delta",
+      "type": "Sum",
+      "name": "delta"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/delta_clamp",
+      "type": "Saturate",
+      "name": "delta_clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target",
+      "type": "SubSystem",
+      "name": "ems_target",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ems_target/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/fa2double",
+      "type": "DataTypeConversion",
+      "name": "fa2double"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/ff_clamp",
+      "type": "Saturate",
+      "name": "ff_clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/gate",
+      "type": "Product",
+      "name": "gate"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/is_fullauto",
+      "type": "SubSystem",
+      "name": "is_fullauto"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/is_fullauto/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/is_fullauto/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/is_fullauto/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/is_fullauto/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/load_ff",
+      "type": "Sum",
+      "name": "load_ff"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/oracle_demux",
+      "type": "Demux",
+      "name": "oracle_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/oracle_src",
+      "type": "FromWorkspace",
+      "name": "oracle_src"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/pick",
+      "type": "MinMax",
+      "name": "pick"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/work_mode",
+      "type": "Constant",
+      "name": "work_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_AI_Enhanced/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline",
+      "type": "SubSystem",
+      "name": "EMS_Baseline"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/T_acceleration_mps2",
+      "type": "Terminator",
+      "name": "T_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/T_t",
+      "type": "Terminator",
+      "name": "T_t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/T_v_cmd_mps",
+      "type": "Terminator",
+      "name": "T_v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/T_v_ship_mps",
+      "type": "Terminator",
+      "name": "T_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/T_x_ship_m",
+      "type": "Terminator",
+      "name": "T_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target",
+      "type": "SubSystem",
+      "name": "ems_target",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/ems_target/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Baseline/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS",
+      "type": "SubSystem",
+      "name": "EMS_Fixed_ECMS"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/T_acceleration_mps2",
+      "type": "Terminator",
+      "name": "T_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/T_v_cmd_mps",
+      "type": "Terminator",
+      "name": "T_v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/T_v_ship_mps",
+      "type": "Terminator",
+      "name": "T_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/T_x_ship_m",
+      "type": "Terminator",
+      "name": "T_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/bsfc_bp",
+      "type": "Constant",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/bsfc_tbl",
+      "type": "Constant",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step",
+      "type": "SubSystem",
+      "name": "ecms_step",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/lambda",
+      "type": "Inport",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/bsfc_bp",
+      "type": "Inport",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/bsfc_tbl",
+      "type": "Inport",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/ecms_step/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/lambda",
+      "type": "Constant",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Fixed_ECMS/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS",
+      "type": "SubSystem",
+      "name": "EMS_NN_AECMS"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/K_S",
+      "type": "Constant",
+      "name": "K_S"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/K_soc",
+      "type": "Constant",
+      "name": "K_soc"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/Lambda_Floor",
+      "type": "Constant",
+      "name": "Lambda_Floor"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/SOC_ref",
+      "type": "Constant",
+      "name": "SOC_ref"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/T_acceleration_mps2",
+      "type": "Terminator",
+      "name": "T_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/T_v_cmd_mps",
+      "type": "Terminator",
+      "name": "T_v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/T_x_ship_m",
+      "type": "Terminator",
+      "name": "T_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/bsfc_bp",
+      "type": "Constant",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/bsfc_tbl",
+      "type": "Constant",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step",
+      "type": "SubSystem",
+      "name": "ecms_step",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/v_ship",
+      "type": "Inport",
+      "name": "v_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/lambda",
+      "type": "Inport",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/K_soc",
+      "type": "Inport",
+      "name": "K_soc"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/SOC_ref",
+      "type": "Inport",
+      "name": "SOC_ref"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/K_S",
+      "type": "Inport",
+      "name": "K_S"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/Lambda_Floor",
+      "type": "Inport",
+      "name": "Lambda_Floor"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/bsfc_bp",
+      "type": "Inport",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/bsfc_tbl",
+      "type": "Inport",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/W1",
+      "type": "Inport",
+      "name": "W1"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/b1",
+      "type": "Inport",
+      "name": "b1"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/W2",
+      "type": "Inport",
+      "name": "W2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/b2",
+      "type": "Inport",
+      "name": "b2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/W3",
+      "type": "Inport",
+      "name": "W3"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/b3",
+      "type": "Inport",
+      "name": "b3"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/XMean",
+      "type": "Inport",
+      "name": "XMean"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/XStd",
+      "type": "Inport",
+      "name": "XStd"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/YMean",
+      "type": "Inport",
+      "name": "YMean"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/YStd",
+      "type": "Inport",
+      "name": "YStd"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/Ebar",
+      "type": "Inport",
+      "name": "Ebar"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/Escale",
+      "type": "Inport",
+      "name": "Escale"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/nn_ok",
+      "type": "Inport",
+      "name": "nn_ok"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/ecms_step/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/lambda",
+      "type": "Constant",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_Ebar_H_kWh",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_Ebar_H_kWh"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_Escale_kWh",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_Escale_kWh"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_W1",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_W1"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_W2",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_W2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_W3",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_W3"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_WeightsOK",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_WeightsOK"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_XMean",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_XMean"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_XStd",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_XStd"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_YMean",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_YMean"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_YStd",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_YStd"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_b1",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_b1"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_b2",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_b2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/nnconst_ECMS_NN_b3",
+      "type": "Constant",
+      "name": "nnconst_ECMS_NN_b3"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_NN_AECMS/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS",
+      "type": "SubSystem",
+      "name": "EMS_Oracle_ECMS"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/K_S",
+      "type": "Constant",
+      "name": "K_S"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/K_soc",
+      "type": "Constant",
+      "name": "K_soc"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/Lambda_Floor",
+      "type": "Constant",
+      "name": "Lambda_Floor"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/SOC_ref",
+      "type": "Constant",
+      "name": "SOC_ref"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/T_acceleration_mps2",
+      "type": "Terminator",
+      "name": "T_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/T_ehat",
+      "type": "Terminator",
+      "name": "T_ehat"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/T_v_cmd_mps",
+      "type": "Terminator",
+      "name": "T_v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/T_v_ship_mps",
+      "type": "Terminator",
+      "name": "T_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/T_x_ship_m",
+      "type": "Terminator",
+      "name": "T_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/bsfc_bp",
+      "type": "Constant",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/bsfc_tbl",
+      "type": "Constant",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step",
+      "type": "SubSystem",
+      "name": "ecms_step",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/lambda",
+      "type": "Inport",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/K_soc",
+      "type": "Inport",
+      "name": "K_soc"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/SOC_ref",
+      "type": "Inport",
+      "name": "SOC_ref"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/K_S",
+      "type": "Inport",
+      "name": "K_S"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/Lambda_Floor",
+      "type": "Inport",
+      "name": "Lambda_Floor"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/e_hat",
+      "type": "Inport",
+      "name": "e_hat"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/bsfc_bp",
+      "type": "Inport",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/bsfc_tbl",
+      "type": "Inport",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/ecms_step/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/lambda",
+      "type": "Constant",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/oracle_demux",
+      "type": "Demux",
+      "name": "oracle_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/oracle_src",
+      "type": "FromWorkspace",
+      "name": "oracle_src"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_Oracle_ECMS/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS",
+      "type": "SubSystem",
+      "name": "EMS_SOC_Adaptive_ECMS"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/K_soc",
+      "type": "Constant",
+      "name": "K_soc"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/SOC_ref",
+      "type": "Constant",
+      "name": "SOC_ref"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/T_acceleration_mps2",
+      "type": "Terminator",
+      "name": "T_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/T_v_cmd_mps",
+      "type": "Terminator",
+      "name": "T_v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/T_v_ship_mps",
+      "type": "Terminator",
+      "name": "T_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/T_x_ship_m",
+      "type": "Terminator",
+      "name": "T_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/bsfc_bp",
+      "type": "Constant",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/bsfc_tbl",
+      "type": "Constant",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step",
+      "type": "SubSystem",
+      "name": "ecms_step",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/lambda",
+      "type": "Inport",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/K_soc",
+      "type": "Inport",
+      "name": "K_soc"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/SOC_ref",
+      "type": "Inport",
+      "name": "SOC_ref"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/bsfc_bp",
+      "type": "Inport",
+      "name": "bsfc_bp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/bsfc_tbl",
+      "type": "Inport",
+      "name": "bsfc_tbl"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/ecms_step/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/lambda",
+      "type": "Constant",
+      "name": "lambda"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_SOC_Adaptive_ECMS/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF",
+      "type": "SubSystem",
+      "name": "EMS_ScheduledFF"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/v_cmd_mps",
+      "type": "Inport",
+      "name": "v_cmd_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/v_ship_mps",
+      "type": "Inport",
+      "name": "v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/acceleration_mps2",
+      "type": "Inport",
+      "name": "acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/T_tfire",
+      "type": "Terminator",
+      "name": "T_tfire"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict",
+      "type": "SubSystem",
+      "name": "ai_predict",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/v_cmd",
+      "type": "Inport",
+      "name": "v_cmd"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/v_ship",
+      "type": "Inport",
+      "name": "v_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/accel",
+      "type": "Inport",
+      "name": "accel"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/x_ship",
+      "type": "Inport",
+      "name": "x_ship"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/P_pred_ext",
+      "type": "Inport",
+      "name": "P_pred_ext"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/t_peak_ext",
+      "type": "Inport",
+      "name": "t_peak_ext"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/Ppred",
+      "type": "Outport",
+      "name": "Ppred"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/t_peak",
+      "type": "Outport",
+      "name": "t_peak"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ai_predict/valid",
+      "type": "Outport",
+      "name": "valid"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/clamp",
+      "type": "Saturate",
+      "name": "clamp"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target",
+      "type": "SubSystem",
+      "name": "ems_target",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/ems_target/P",
+      "type": "Outport",
+      "name": "P"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/fa2double",
+      "type": "DataTypeConversion",
+      "name": "fa2double"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/gate",
+      "type": "Product",
+      "name": "gate"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/is_fullauto",
+      "type": "SubSystem",
+      "name": "is_fullauto"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/is_fullauto/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/is_fullauto/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/is_fullauto/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/is_fullauto/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/load_ff",
+      "type": "Sum",
+      "name": "load_ff"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/oracle_demux",
+      "type": "Demux",
+      "name": "oracle_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/oracle_src",
+      "type": "FromWorkspace",
+      "name": "oracle_src"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/pick",
+      "type": "MinMax",
+      "name": "pick"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff",
+      "type": "SubSystem",
+      "name": "sched_ff",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/t",
+      "type": "Inport",
+      "name": "t"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/P_load",
+      "type": "Inport",
+      "name": "P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/P_pred",
+      "type": "Inport",
+      "name": "P_pred"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/t_peak_rel",
+      "type": "Inport",
+      "name": "t_peak_rel"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/valid",
+      "type": "Inport",
+      "name": "valid"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/P_ff",
+      "type": "Outport",
+      "name": "P_ff"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/sched_ff/t_fire_out",
+      "type": "Outport",
+      "name": "t_fire_out"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/work_mode",
+      "type": "Constant",
+      "name": "work_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/EMS_ScheduledFF/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/05_EMS_Controller/P_gen_ref_kW",
+      "type": "Outport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System",
+      "type": "SubSystem",
+      "name": "06_Genset_System"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/DG1_cmd_start",
+      "type": "Inport",
+      "name": "DG1_cmd_start"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/DG1_P_ref_kW",
+      "type": "Inport",
+      "name": "DG1_P_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/DG2_cmd_start",
+      "type": "Inport",
+      "name": "DG2_cmd_start"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/DG2_P_ref_kW",
+      "type": "Inport",
+      "name": "DG2_P_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/DG_cmd_stop",
+      "type": "Inport",
+      "name": "DG_cmd_stop"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1",
+      "type": "SubSystem",
+      "name": "GensetUnitE_DG1",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/cmd_start",
+      "type": "Inport",
+      "name": "cmd_start"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/cmd_stop",
+      "type": "Inport",
+      "name": "cmd_stop"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/P_ref_kW",
+      "type": "Inport",
+      "name": "P_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/P_actual_kW",
+      "type": "Outport",
+      "name": "P_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/state",
+      "type": "Outport",
+      "name": "state"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/below_min_flag",
+      "type": "Outport",
+      "name": "below_min_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG1/start_count",
+      "type": "Outport",
+      "name": "start_count"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2",
+      "type": "SubSystem",
+      "name": "GensetUnitE_DG2",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/cmd_start",
+      "type": "Inport",
+      "name": "cmd_start"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/cmd_stop",
+      "type": "Inport",
+      "name": "cmd_stop"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/P_ref_kW",
+      "type": "Inport",
+      "name": "P_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/P_actual_kW",
+      "type": "Outport",
+      "name": "P_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/state",
+      "type": "Outport",
+      "name": "state"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/below_min_flag",
+      "type": "Outport",
+      "name": "below_min_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/GensetUnitE_DG2/start_count",
+      "type": "Outport",
+      "name": "start_count"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/cmd_stop_default",
+      "type": "Constant",
+      "name": "cmd_stop_default"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/gen sum",
+      "type": "Sum",
+      "name": "gen sum"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/stop_demux",
+      "type": "Demux",
+      "name": "stop_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/P_DG1_kW",
+      "type": "Outport",
+      "name": "P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/state_DG1",
+      "type": "Outport",
+      "name": "state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/below_min_DG1",
+      "type": "Outport",
+      "name": "below_min_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/start_count_DG1",
+      "type": "Outport",
+      "name": "start_count_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/P_DG2_kW",
+      "type": "Outport",
+      "name": "P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/state_DG2",
+      "type": "Outport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/below_min_DG2",
+      "type": "Outport",
+      "name": "below_min_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/start_count_DG2",
+      "type": "Outport",
+      "name": "start_count_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/P_gen_actual_kW",
+      "type": "Outport",
+      "name": "P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate",
+      "type": "SubSystem",
+      "name": "08_Undervolt_Derate"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/V_dc_V",
+      "type": "Inport",
+      "name": "V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/P_prop_demand_kW",
+      "type": "Inport",
+      "name": "P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/MotNom",
+      "type": "Constant",
+      "name": "MotNom"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/Mot_P_nom",
+      "type": "Gain",
+      "name": "Mot_P_nom"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/clamp0",
+      "type": "Saturate",
+      "name": "clamp0"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/derate_fn",
+      "type": "SubSystem",
+      "name": "derate_fn",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/derate_fn/V",
+      "type": "Inport",
+      "name": "V"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/derate_fn/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/derate_fn/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/derate_fn/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/derate_fn/f",
+      "type": "Outport",
+      "name": "f"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/mot_cap",
+      "type": "MinMax",
+      "name": "mot_cap"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/unserved sum",
+      "type": "Sum",
+      "name": "unserved sum"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/P_prop_limit_kW",
+      "type": "Outport",
+      "name": "P_prop_limit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/08_Undervolt_Derate/P_unserved_kW",
+      "type": "Outport",
+      "name": "P_unserved_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor",
+      "type": "SubSystem",
+      "name": "09_Bus_Residual_Monitor"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor/P_gen_actual_kW",
+      "type": "Inport",
+      "name": "P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor/P_bat_bus_kW",
+      "type": "Inport",
+      "name": "P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor/bal",
+      "type": "Sum",
+      "name": "bal"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor/eta_rect",
+      "type": "Gain",
+      "name": "eta_rect"
+    },
+    {
+      "path": "HybridShip_ModelE/09_Bus_Residual_Monitor/P_bus_residual_kW",
+      "type": "Outport",
+      "name": "P_bus_residual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption",
+      "type": "SubSystem",
+      "name": "10_Fuel_Consumption"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/P_DG1_kW",
+      "type": "Inport",
+      "name": "P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/state_DG1",
+      "type": "Inport",
+      "name": "state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/P_DG2_kW",
+      "type": "Inport",
+      "name": "P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/state_DG2",
+      "type": "Inport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model",
+      "type": "SubSystem",
+      "name": "fuel_model",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/P1_kW",
+      "type": "Inport",
+      "name": "P1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/state1",
+      "type": "Inport",
+      "name": "state1"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/P2_kW",
+      "type": "Inport",
+      "name": "P2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/state2",
+      "type": "Inport",
+      "name": "state2"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/fuel_rate_1_kg_s",
+      "type": "Outport",
+      "name": "fuel_rate_1_kg_s"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/fuel_rate_2_kg_s",
+      "type": "Outport",
+      "name": "fuel_rate_2_kg_s"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_model/fuel_rate_total_kg_s",
+      "type": "Outport",
+      "name": "fuel_rate_total_kg_s"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/int_1",
+      "type": "Integrator",
+      "name": "int_1"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/int_2",
+      "type": "Integrator",
+      "name": "int_2"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/int_3",
+      "type": "Integrator",
+      "name": "int_3"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_1_kg",
+      "type": "Outport",
+      "name": "fuel_1_kg"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_2_kg",
+      "type": "Outport",
+      "name": "fuel_2_kg"
+    },
+    {
+      "path": "HybridShip_ModelE/10_Fuel_Consumption/fuel_total_kg",
+      "type": "Outport",
+      "name": "fuel_total_kg"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic",
+      "type": "SubSystem",
+      "name": "11_Voyage_Stop_Logic"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/x_ship_m",
+      "type": "Inport",
+      "name": "x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/reach",
+      "type": "SubSystem",
+      "name": "reach"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/reach/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/reach/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/reach/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/reach/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/11_Voyage_Stop_Logic/stop",
+      "type": "Stop",
+      "name": "stop"
+    },
+    {
+      "path": "HybridShip_ModelE/12_Data_Logging",
+      "type": "SubSystem",
+      "name": "12_Data_Logging"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus",
+      "type": "SubSystem",
+      "name": "13_DC_Bus"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/P_gen_actual_kW",
+      "type": "Inport",
+      "name": "P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/P_bat_bus_kW",
+      "type": "Inport",
+      "name": "P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/V_int",
+      "type": "Integrator",
+      "name": "V_int"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/bus sum",
+      "type": "Sum",
+      "name": "bus sum"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt",
+      "type": "SubSystem",
+      "name": "dVdt",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt/P_res_kW",
+      "type": "Inport",
+      "name": "P_res_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt/V",
+      "type": "Inport",
+      "name": "V"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/dVdt/dv",
+      "type": "Outport",
+      "name": "dv"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/eta_rect",
+      "type": "Gain",
+      "name": "eta_rect"
+    },
+    {
+      "path": "HybridShip_ModelE/13_DC_Bus/V_dc_V",
+      "type": "Outport",
+      "name": "V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter",
+      "type": "SubSystem",
+      "name": "14_Battery_Converter"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/V_dc_V",
+      "type": "Inport",
+      "name": "V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_ASSUMED_SOC_ChgDerate_Start",
+      "type": "Constant",
+      "name": "EC_ASSUMED_SOC_ChgDerate_Start"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_ASSUMED_SOC_DisDerate_Start",
+      "type": "Constant",
+      "name": "EC_ASSUMED_SOC_DisDerate_Start"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_ASSUMED_SOC_max",
+      "type": "Constant",
+      "name": "EC_ASSUMED_SOC_max"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_ASSUMED_SOC_min",
+      "type": "Constant",
+      "name": "EC_ASSUMED_SOC_min"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_ASSUMED_eta_dcdc",
+      "type": "Constant",
+      "name": "EC_ASSUMED_eta_dcdc"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_C1_LUT_F",
+      "type": "Constant",
+      "name": "EC_Bat_C1_LUT_F"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_I_limit_surrogate_A",
+      "type": "Constant",
+      "name": "EC_Bat_I_limit_surrogate_A"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_OCV_LUT_V",
+      "type": "Constant",
+      "name": "EC_Bat_OCV_LUT_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_P_conv_bus_max_kW",
+      "type": "Constant",
+      "name": "EC_Bat_P_conv_bus_max_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_Q_nom_Ah",
+      "type": "Constant",
+      "name": "EC_Bat_Q_nom_Ah"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_R0_LUT_ohm",
+      "type": "Constant",
+      "name": "EC_Bat_R0_LUT_ohm"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_R0_chg_mult",
+      "type": "Constant",
+      "name": "EC_Bat_R0_chg_mult"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_R1_LUT_ohm",
+      "type": "Constant",
+      "name": "EC_Bat_R1_LUT_ohm"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_SOC_LUT_nodes",
+      "type": "Constant",
+      "name": "EC_Bat_SOC_LUT_nodes"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_V_max_V",
+      "type": "Constant",
+      "name": "EC_Bat_V_max_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_V_min_V",
+      "type": "Constant",
+      "name": "EC_Bat_V_min_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/EC_Bat_eta_coul",
+      "type": "Constant",
+      "name": "EC_Bat_eta_coul"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/K_droop",
+      "type": "Gain",
+      "name": "K_droop"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/SOC_int",
+      "type": "Integrator",
+      "name": "SOC_int"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/V_nom",
+      "type": "Constant",
+      "name": "V_nom"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm",
+      "type": "SubSystem",
+      "name": "battery_ecm",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/P_droop_kW",
+      "type": "Inport",
+      "name": "P_droop_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/dt",
+      "type": "Inport",
+      "name": "dt"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_SOC_LUT_nodes",
+      "type": "Inport",
+      "name": "Bat_SOC_LUT_nodes"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_OCV_LUT_V",
+      "type": "Inport",
+      "name": "Bat_OCV_LUT_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_R0_LUT_ohm",
+      "type": "Inport",
+      "name": "Bat_R0_LUT_ohm"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_R1_LUT_ohm",
+      "type": "Inport",
+      "name": "Bat_R1_LUT_ohm"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_C1_LUT_F",
+      "type": "Inport",
+      "name": "Bat_C1_LUT_F"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_R0_chg_mult",
+      "type": "Inport",
+      "name": "Bat_R0_chg_mult"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_eta_coul",
+      "type": "Inport",
+      "name": "Bat_eta_coul"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_Q_nom_Ah",
+      "type": "Inport",
+      "name": "Bat_Q_nom_Ah"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_V_min_V",
+      "type": "Inport",
+      "name": "Bat_V_min_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_V_max_V",
+      "type": "Inport",
+      "name": "Bat_V_max_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_I_limit_surrogate_A",
+      "type": "Inport",
+      "name": "Bat_I_limit_surrogate_A"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/Bat_P_conv_bus_max_kW",
+      "type": "Inport",
+      "name": "Bat_P_conv_bus_max_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/eta_dcdc",
+      "type": "Inport",
+      "name": "eta_dcdc"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/SOC_min",
+      "type": "Inport",
+      "name": "SOC_min"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/SOC_max",
+      "type": "Inport",
+      "name": "SOC_max"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/SOC_DisDerate_Start",
+      "type": "Inport",
+      "name": "SOC_DisDerate_Start"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/SOC_ChgDerate_Start",
+      "type": "Inport",
+      "name": "SOC_ChgDerate_Start"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/P_bat_bus_kW",
+      "type": "Outport",
+      "name": "P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/SOC_out",
+      "type": "Outport",
+      "name": "SOC_out"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/V_bat_V",
+      "type": "Outport",
+      "name": "V_bat_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/I_bat_A",
+      "type": "Outport",
+      "name": "I_bat_A"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/dSOC_dt",
+      "type": "Outport",
+      "name": "dSOC_dt"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/P_dis_avail_kW",
+      "type": "Outport",
+      "name": "P_dis_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/P_chg_avail_kW",
+      "type": "Outport",
+      "name": "P_chg_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/battery_power_limited",
+      "type": "Outport",
+      "name": "battery_power_limited"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/battery_discriminant_limit",
+      "type": "Outport",
+      "name": "battery_discriminant_limit"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_ecm/ecm_lut_boundary_flag",
+      "type": "Outport",
+      "name": "ecm_lut_boundary_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/droop sum",
+      "type": "Sum",
+      "name": "droop sum"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/dt_step",
+      "type": "Constant",
+      "name": "dt_step"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/P_bat_bus_kW",
+      "type": "Outport",
+      "name": "P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/SOC",
+      "type": "Outport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/P_bat_dis_avail_kW",
+      "type": "Outport",
+      "name": "P_bat_dis_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/P_bat_chg_avail_kW",
+      "type": "Outport",
+      "name": "P_bat_chg_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/V_bat_V",
+      "type": "Outport",
+      "name": "V_bat_V"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/I_bat_A",
+      "type": "Outport",
+      "name": "I_bat_A"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_power_limited",
+      "type": "Outport",
+      "name": "battery_power_limited"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/battery_discriminant_limit",
+      "type": "Outport",
+      "name": "battery_discriminant_limit"
+    },
+    {
+      "path": "HybridShip_ModelE/14_Battery_Converter/ecm_lut_boundary_flag",
+      "type": "Outport",
+      "name": "ecm_lut_boundary_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor",
+      "type": "SubSystem",
+      "name": "15_Bus_Voltage_Monitor"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/V_dc_V",
+      "type": "Inport",
+      "name": "V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check",
+      "type": "SubSystem",
+      "name": "ccs_check",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check/V",
+      "type": "Inport",
+      "name": "V"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check/al_s",
+      "type": "Outport",
+      "name": "al_s"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/ccs_check/al_t",
+      "type": "Outport",
+      "name": "al_t"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/alarm_steady",
+      "type": "Outport",
+      "name": "alarm_steady"
+    },
+    {
+      "path": "HybridShip_ModelE/15_Bus_Voltage_Monitor/alarm_transient",
+      "type": "Outport",
+      "name": "alarm_transient"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter",
+      "type": "SubSystem",
+      "name": "Legacy_Commitment_Adapter"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/P_gen_ref_kW",
+      "type": "Inport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/C_force_P1_kW",
+      "type": "Constant",
+      "name": "C_force_P1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/C_force_P2_kW",
+      "type": "Constant",
+      "name": "C_force_P2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/C_force_mode",
+      "type": "Constant",
+      "name": "C_force_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter",
+      "type": "SubSystem",
+      "name": "adapter",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/P_gen_ref_kW",
+      "type": "Inport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/force_mode",
+      "type": "Inport",
+      "name": "force_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/force_P1_kW",
+      "type": "Inport",
+      "name": "force_P1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/force_P2_kW",
+      "type": "Inport",
+      "name": "force_P2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/DG1_enable",
+      "type": "Outport",
+      "name": "DG1_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/P_DG1_ref_kW",
+      "type": "Outport",
+      "name": "P_DG1_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/DG2_enable",
+      "type": "Outport",
+      "name": "DG2_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/P_DG2_ref_kW",
+      "type": "Outport",
+      "name": "P_DG2_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/DG1_enable",
+      "type": "Outport",
+      "name": "DG1_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/P_DG1_ref_kW",
+      "type": "Outport",
+      "name": "P_DG1_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/DG2_enable",
+      "type": "Outport",
+      "name": "DG2_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/P_DG2_ref_kW",
+      "type": "Outport",
+      "name": "P_DG2_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_1",
+      "type": "Terminator",
+      "name": "T_log_1"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_10",
+      "type": "Terminator",
+      "name": "T_log_10"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_11",
+      "type": "Terminator",
+      "name": "T_log_11"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_12",
+      "type": "Terminator",
+      "name": "T_log_12"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_13",
+      "type": "Terminator",
+      "name": "T_log_13"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_14",
+      "type": "Terminator",
+      "name": "T_log_14"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_15",
+      "type": "Terminator",
+      "name": "T_log_15"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_16",
+      "type": "Terminator",
+      "name": "T_log_16"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_17",
+      "type": "Terminator",
+      "name": "T_log_17"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_18",
+      "type": "Terminator",
+      "name": "T_log_18"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_19",
+      "type": "Terminator",
+      "name": "T_log_19"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_2",
+      "type": "Terminator",
+      "name": "T_log_2"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_20",
+      "type": "Terminator",
+      "name": "T_log_20"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_21",
+      "type": "Terminator",
+      "name": "T_log_21"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_22",
+      "type": "Terminator",
+      "name": "T_log_22"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_23",
+      "type": "Terminator",
+      "name": "T_log_23"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_24",
+      "type": "Terminator",
+      "name": "T_log_24"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_3",
+      "type": "Terminator",
+      "name": "T_log_3"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_4",
+      "type": "Terminator",
+      "name": "T_log_4"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_5",
+      "type": "Terminator",
+      "name": "T_log_5"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_6",
+      "type": "Terminator",
+      "name": "T_log_6"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_7",
+      "type": "Terminator",
+      "name": "T_log_7"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_8",
+      "type": "Terminator",
+      "name": "T_log_8"
+    },
+    {
+      "path": "HybridShip_ModelE/T_log_9",
+      "type": "Terminator",
+      "name": "T_log_9"
+    },
+    {
+      "path": "HybridShip_ModelE/t",
+      "type": "Clock",
+      "name": "t"
+    }
+  ]
+}
