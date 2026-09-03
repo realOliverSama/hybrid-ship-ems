@@ -2,7 +2,6 @@
 ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));  % scripts/tests/ → Model E 根
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'scripts'));
-model.ensure_canonical(ROOT);
 model.build_model_e(ROOT);
 % 验证 water_depth_m 输出端口存在且接线
 load_system(fullfile(ROOT, 'model', 'HybridShip_ModelE.slx'));
