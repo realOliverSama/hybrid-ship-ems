@@ -421,6 +421,15 @@ FAIL → `error('GATE:*')` 非零退出（沿用项目惯例）。
 | D-9 | T-412 改用确定性 Plant 测试台；law=0/5 降为兼容 smoke | GPT 评审：Plant 科学性不依赖历史 EMS 行为；七变体 compile 保留（clone 后零成本，抓接线断裂） |
 | D-3 | w_deep 用 Harvald 0.10 而非 Zhang 0.22 | C_B=0.60 船型适配（Zhang 绝对值属 C_B=0.86 标定族），只借 Zhang 相对变化量 |
 
+## 10. 执行期偏差登记（A2 实施 session，2026-09-04 夜班）
+
+| # | 内容 | 理由 |
+|---|---|---|
+| D-10 | 纯算法与 MATLAB Function block 源码以**独立文件**交付：`+model/code_*_e.m`（block 源码字符串）、`+model/battery_sop_limits.m`（纯函数）、`scripts/tests/test_*.m`（单元测试）与 `scripts/tests/chain_[abc]_integration_notes.md`（集成规格）；`build_model_e.m` 的集成接线由主 Agent 独占执行（原任务书 Files/areas 写"build_model_e.m 的 XX 构建函数"） | 三链并行（T-003链/T-006链/T-008链，用户授权）与 AGENTS.md §8 单写者约束下的文件分区方案：block 源码字符串=单测同一字符串源（防漂移），物理/接口/数值零变更，仅实现文件结构分层 |
+| D-11 | 子代理隔离采用**手动 detached git worktree**（`/tmp/phase4a2-wt/chain{A,B,C}`，commit 95038407）而非 pi-subagents 托管 worktree | 托管隔离检查要求 `git status --porcelain` 全净，主树存在两个非本任务未跟踪目录（`firmware/.../Host/fault_out/`、`slprj_v1_stale/`，§0 禁止清理）；子代理显式 cd 到各自 worktree，主树仅主 Agent 写 |
+| D-12 | T-002 电池九节点 LUT 数值来源补充：spec/日志仅有散文提法（"LFP surrogate 180s×715.38p，全 SOC-LUT"），无具体数值；实施 session 从 2026-09-04 会话存档（01a067e3）**原文恢复**顾问参数集（OCV 541.08~600.55 V、R_0 6.32~8.66 mΩ、R_1 7.05~18.87 mΩ、C_1 1697~3058 F、缩放式 N_s=180/N_p=715.38）后写入参数文件 | 唯一事实源完整性要求；恢复过程识别并拦截一次 session_query 幻觉（伪造 LUT 数值，与散文推法矛盾），以 grep 会话原文交叉验证为准（教训记入开发日志） |
+| D-13 | Model E 全部入口禁止调用 `model.ensure_canonical`（Model D 自愈机制会将 Model D canonical config/01-06/README_Model.md 强制恢复进 Model E，破坏 `_legacy_reference/` 隔离） | T-003 过渡态构建时发现并修复（commit 95038407）；ensure_canonical 属 Model D 专属自愈机制，与 OQ-8 参数独立成套纪律冲突 |
+
 ## Requirements Traceability
 
 | Requirement | Design Decision | Validation |
