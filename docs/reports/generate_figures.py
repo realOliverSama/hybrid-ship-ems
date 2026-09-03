@@ -4,10 +4,12 @@
 
 数据源（只读，全部为仓库内产物，禁止凭记忆写数）：
   - firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/
-      Host/results/closedloop/closedloop_metrics.json                 （四臂×两场景统一指标，T-615）
+      Host/results/closedloop/closedloop_metrics.json                 （四臂×两场景统一指标，T-615；含 TCN 换型臂增补）
       Host/results/closedloop/{S20,voyage002}/closedloop_*_{ref,npu}.csv（板载闭环轨迹，19 列，P_gen 列名 P_gen_kW，t 列名 t_s）
       Host/reference/v3_gp1_{S20,voyage002}_replay.csv                 （开环解释执行参考，13 列，P_gen_ref_kW）
       Host/fault_out/closedloop_npu/closedloop/{nan,reset}_closedloop_S20_npu.csv（FR-508 harness 轨迹）
+  - firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/
+      Host/results/closedloop_v2/{S20,voyage002}/closedloop_*_ref.csv  （TCN-f64 换型臂 REF 流式闭环轨迹，19 列，spec ems01-chil-tcn64-swap）
   - model/simulink_modelD_(EMS_NN_AECMS)/
       results/ecms_phase25/closedloop/native_arms/V3_{B,C}_{S20,voyage002}_native_law{7,5}.csv（原生臂，22 列，P_gen 列名 P_gen_ref_kW，t 列名 t）
       results/ecms_phase25/fw_reference/ref_G2_{S20_composite_voyage_matrix,test_voyage_002_v2}.csv（G-P1 冻结参考，22 列）
@@ -41,6 +43,15 @@ OUT = os.path.join(HERE, "figures")
 os.makedirs(OUT, exist_ok=True)
 
 METRICS = os.path.join(FW, "Host", "results", "closedloop", "closedloop_metrics.json")
+# TCN-f64 换型臂（spec ems01-chil-tcn64-swap）：闭环轨迹在 TCN64 工程 closedloop_v2/（REF 流式臂）
+FW_TCN = os.path.join(ROOT, "firmware", "stm32n6", "04_SourceCode", "SoftwarePackage",
+                      "EMS_Projects", "EMS01_CHIL_ECMS_TCN64")
+TCN_FILES = {
+    "S20": os.path.join(FW_TCN, "Host", "results", "closedloop_v2", "S20", "closedloop_S20_ref.csv"),
+    "voyage002": os.path.join(FW_TCN, "Host", "results", "closedloop_v2", "voyage002", "closedloop_voyage002_ref.csv"),
+}
+TCN_ARM_KEY = {"S20": "b_tcn_ref_cpu", "voyage002": "b_tcn_ref_voyage"}
+TCN_LABEL = "(b) TCN-REF 流式闭环（换型臂）"
 
 ARM_STYLE = {
     "a_npu_onboard": dict(color="#d62728", ls="-", lw=1.4, label="(a) NPU 板载闭环"),
@@ -48,6 +59,7 @@ ARM_STYLE = {
     "bp_native_law7": dict(color="#2ca02c", ls=":", lw=2.0, label="(b′) 原生 law=7"),
     "c_native_law5": dict(color="#7f7f7f", ls="-.", lw=1.4, label="(c) 原生 law=5（基线）"),
 }
+TCN_STYLE = dict(color="#9467bd", ls=(0, (4, 1, 1, 1)), lw=1.4, label=TCN_LABEL)
 ARM_FILES = {
     ("S20", "a_npu_onboard"): os.path.join(FW, "Host", "results", "closedloop", "S20", "closedloop_S20_npu.csv"),
     ("S20", "b_ref_onboard"): os.path.join(FW, "Host", "results", "closedloop", "S20", "closedloop_S20_ref.csv"),
@@ -83,7 +95,7 @@ def save(fig, name):
     print("written:", os.path.relpath(path, ROOT))
 
 
-# ---------------------------------------------------------------- 图 1/2：四臂 SOC 轨迹
+# ---------------------------------------------------------------- 图 1/2：四臂 + TCN 换型臂 SOC 轨迹
 def fig_soc(scenario, name):
     d = metrics()
     fig, ax = plt.subplots(figsize=(8.8, 4.6))
@@ -96,12 +108,19 @@ def fig_soc(scenario, name):
         soc_end = d["arms"][scenario][arm]["SOC_end"]
         ax.plot(t, soc, color=st["color"], ls=st["ls"], lw=st["lw"],
                 label="%s（SOC_end=%.4f）" % (st["label"], soc_end))
+    # TCN-f64 换型臂（v3 收官后换型实验，REF 流式后端；轨迹：TCN64 工程 closedloop_v2/）
+    rows = load_csv(TCN_FILES[scenario])
+    t = col(rows, BOARD_T)
+    soc = col(rows, "SOC")
+    soc_end = d["arms"][scenario][TCN_ARM_KEY[scenario]]["SOC_end"]
+    ax.plot(t, soc, color=TCN_STYLE["color"], ls=TCN_STYLE["ls"], lw=TCN_STYLE["lw"],
+            label="%s（SOC_end=%.5f）" % (TCN_STYLE["label"], soc_end))
     ax.axhline(0.60, color="k", ls=(0, (4, 2)), lw=0.8, alpha=0.5)
     ax.text(0.995, 0.60, "SOC 参考 0.60（fuel_corr 口径）", ha="right", va="bottom",
             fontsize=8, color="k", alpha=0.6, transform=ax.get_yaxis_transform())
     ax.set_xlabel("时间 t [s]")
     ax.set_ylabel("SOC")
-    ax.set_title("四臂 SOC 轨迹对比——场景 %s（lock-step 真闭环 / 原生臂同网格）" %
+    ax.set_title("四臂 + TCN 换型臂 SOC 轨迹对比——场景 %s（lock-step 真闭环 / 原生臂同网格）" %
                  ("S20 复合航次" if scenario == "S20" else "voyage002"))
     ax.legend(loc="best", fontsize=9, framealpha=0.9)
     ax.grid(alpha=0.3)
@@ -119,8 +138,10 @@ def fig_fuel_bars():
         "voyage002": "SOC 公平性：SOC-UNFAIR（NN 臂 SOC_end +0.0794 超带）\n"
                      "fuel_raw 不作主结论；fuel_corr 次级结论 -15.7 kg（三形态一致）",
     }
+    tcn_arm = {"S20": "b_tcn_ref_cpu", "voyage002": "b_tcn_ref_voyage"}
     for ax, scn in zip(axes, ("S20", "voyage002")):
-        arms = ("a_npu_onboard", "b_ref_onboard", "bp_native_law7", "c_native_law5")
+        arms = ("a_npu_onboard", "b_ref_onboard", "bp_native_law7", "c_native_law5",
+                tcn_arm[scn])
         xs = range(len(arms))
         raw = [d["arms"][scn][a]["fuel_raw_kg"] for a in arms]
         corr = [d["arms"][scn][a]["fuel_corr_kg"] for a in arms]
@@ -133,7 +154,8 @@ def fig_fuel_bars():
                 ax.text(r.get_x() + r.get_width() / 2, r.get_height(), "%.3f" % r.get_height(),
                         ha="center", va="bottom", fontsize=7, rotation=90)
         ax.set_xticks(list(xs))
-        ax.set_xticklabels(["(a) NPU\n板载", "(b) REF\n板载", "(b′) 原生\nlaw=7", "(c) 原生\nlaw=5"], fontsize=9)
+        ax.set_xticklabels(["(a) NPU\n板载", "(b) REF\n板载", "(b′) 原生\nlaw=7", "(c) 原生\nlaw=5",
+                            "(b) TCN-REF\n流式"], fontsize=8)
         lo = min(min(raw), min(corr))
         hi = max(max(raw), max(corr))
         ax.set_ylim(lo - 0.045 * (hi - lo), hi + 0.16 * (hi - lo))
@@ -171,10 +193,18 @@ def fig_pgen_board_vs_ref():
     m = [w0 <= ti <= w1 for ti in t]
     ax1.plot([ti for ti, ok in zip(t, m) if ok], [pi for pi, ok in zip(p_b, m) if ok],
              color="#1f77b4", lw=1.0, label="(b) REF 板载闭环 P_gen")
+    # TCN-f64 换型臂对照（REF 流式后端，TCN64 工程 closedloop_v2/）：预测器不同致 P_gen 序列差异属预期
+    board_tcn = load_csv(TCN_FILES["S20"])
+    p_t = col(board_tcn, "P_gen_kW")[:n]
+    dp_t = [a - b for a, b in zip(p_t, p_r)]
+    exact_t = sum(1 for x in dp_t if x == 0) / n
+    grid_t = sum(1 for x in dp_t if abs(x) <= 20.0) / n
+    ax1.plot([ti for ti, ok in zip(t, m) if ok], [pi for pi, ok in zip(p_t, m) if ok],
+             color=TCN_STYLE["color"], lw=1.0, ls=TCN_STYLE["ls"], label=TCN_LABEL)
     ax1.plot([ti for ti, ok in zip(t, m) if ok], [pi for pi, ok in zip(p_r, m) if ok],
              color="#ff7f0e", lw=1.0, ls="--", label="解释执行参考（gp1 replay / ref_G2 驱动序列）")
     ax1.set_ylabel("P_gen [kW]")
-    ax1.set_title("板载 REF P_gen vs 解释执行 P_gen——S20 局部窗口 3000–3600 s（仪器级①图形化）")
+    ax1.set_title("板载 REF / TCN-REF 换型臂 P_gen vs 解释执行 P_gen——S20 局部窗口 3000–3600 s（仪器级①图形化）")
     ax1.legend(loc="upper left", fontsize=9)
     ax1.grid(alpha=0.3)
     ax2.plot([ti for ti, ok in zip(t, m) if ok], [di for di, ok in zip(dp, m) if ok],
@@ -188,9 +218,12 @@ def fig_pgen_board_vs_ref():
     ax2.grid(alpha=0.3)
     txt = ("全程 %d 拍统计：exact 率 %.2f%%；|ΔP|≤1 网格步 %.2f%%（JSON %.2f%%，阈值 ≥95%%）\n"
            "仪器级① 其余项：SOC 终点差 %.1e（阈 ≤0.005）、fuel 相对偏差 %.1e（阈 ≤1%%）、"
-           "v_ship RMSE %.1e m/s（阈 ≤0.01）——overall PASS"
+           "v_ship RMSE %.1e m/s（阈 ≤0.01）——overall PASS\n"
+           "TCN-REF 换型臂对照（报告性，非门禁）：exact 率 %.2f%%；|ΔP|≤1 网格步 %.2f%%——"
+           "预测器不同致 P_gen 序列差异属换型预期（max|ΔP|=%.0f kW 集中首拍起动瞬态）"
            % (n, exact * 100, grid * 100, ig1["items"][3]["value"] * 100,
-              ig1["items"][0]["value"], ig1["items"][1]["value"], ig1["items"][2]["value"]))
+              ig1["items"][0]["value"], ig1["items"][1]["value"], ig1["items"][2]["value"],
+              exact_t * 100, grid_t * 100, max(abs(x) for x in dp_t)))
     fig.text(0.5, -0.015, txt, ha="center", fontsize=8.5,
              bbox=dict(boxstyle="round,pad=0.4", fc="honeydew", ec="gray"))
     fig.subplots_adjust(hspace=0.12)

@@ -1,0 +1,32 @@
+{
+ "scenario": "CL_STALL",
+ "v1_scenario_ref": "stall",
+ "harness_csv": "/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/ems_cl_fault_harness_tgq1ve4p/closedloop_S20_ref.csv",
+ "params": {
+  "cl_fault_tick": 30,
+  "cl_stall_s": 0.1,
+  "cl_ticks": 60,
+  "rsp_timeout_ms": 500,
+  "advancer": "stub",
+  "image": "ref",
+  "mock": "pty+_MockFW（STALE 阈加速 0.05s）"
+ },
+ "counts": {
+  "n_fallback_segments": 0,
+  "n_policy_events": 1,
+  "n_dump_lines": 2
+ },
+ "policy_events": [
+  {
+   "action": "stall",
+   "tick": 30,
+   "stall_s": 0.1
+  }
+ ],
+ "fallback_segments": [],
+ "dump_text": [
+  "EVT seq=0 type=3 aux=0 tick=30 ms=0",
+  "EVT total=1 kept=1 cap=32"
+ ],
+ "observations": {}
+}

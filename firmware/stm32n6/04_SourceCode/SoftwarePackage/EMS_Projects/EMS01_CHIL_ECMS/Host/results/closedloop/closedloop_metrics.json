@@ -1,7 +1,7 @@
 {
  "task": "T-615",
  "spec": "ems01-chil-v3-closedloop (FR-610/FR-611/AC-605)",
- "generated_utc": "2026-09-02T06:23:37Z",
+ "generated_utc": "2026-09-03T03:45:51Z",
  "script": "Host/tools/closedloop_metrics.py",
  "exit_code_semantics": "0=完成；仪器级①② pass/fail 如实记录于 instrument_grade_*，不作退出码门禁",
  "constants": {
@@ -24,19 +24,19 @@
   "voyage002"
  ],
  "inputs_sha256": {
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_npu.csv": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/S20/closedloop_S20_npu.csv": {
    "sha256": "6bec3999cb1a386eae56b15fb5b2b3acc1a2a30662131ada3d3f0c9e8f06d32e",
    "bytes": 1274790
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_npu_meta.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/S20/closedloop_S20_npu_meta.json": {
    "sha256": "42d1dd0d79ffe0bc11857ffbfc83a5d289357decf2b3568341eaba52fe54bf1a",
    "bytes": 1542
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref.csv": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/S20/closedloop_S20_ref.csv": {
    "sha256": "cae8fd9f27c7bcd20adb3054fb73bc8d3d85c02caacd12bb91cdcc388fa5654b",
    "bytes": 1276856
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref_meta.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/S20/closedloop_S20_ref_meta.json": {
    "sha256": "5f4b29060f994d5e903eb5a88a3ec219b78463fc4947745e8ad6ed9ccf6f2442",
    "bytes": 1540
   },
@@ -48,23 +48,23 @@
    "sha256": "9aebbeee20ca815115e86d0692892a21f4eb83340bd9fa1266635270fe702901",
    "bytes": 1029425
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/reference/v3_gp1_S20_replay.csv": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/reference/v3_gp1_S20_replay.csv": {
    "sha256": "47e5a39c541dba07d2ab983a6a7331dcf8421465768bd2bbd8f1f4c813300aa6",
    "bytes": 1052078
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_npu.csv": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/voyage002/closedloop_voyage002_npu.csv": {
    "sha256": "f088beb3d1bd3efec4f31205bbb1da1e077e28f6669f2e8073a50d67f261a7aa",
    "bytes": 989433
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_npu_meta.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/voyage002/closedloop_voyage002_npu_meta.json": {
    "sha256": "8ce84afaaeae112be047ddc88679576d2547136810b98a10bc05affd838e4e30",
    "bytes": 1570
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_ref.csv": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/voyage002/closedloop_voyage002_ref.csv": {
    "sha256": "4cff9c43405ae153aff637b356bfd9c0688fd2818a720af97c49e8a1017598ba",
    "bytes": 988774
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_ref_meta.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/voyage002/closedloop_voyage002_ref_meta.json": {
    "sha256": "56ac7598a2e97f5acd9f430b6d3e7142214fbe9271b2a4324add38838476e533",
    "bytes": 1568
   },
@@ -76,23 +76,23 @@
    "sha256": "f13189dd08865432ec9ee156e2a48351f15a66a3c0c527aa1716a4e96f794e23",
    "bytes": 786716
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/reference/v3_gp1_voyage002_replay.csv": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/reference/v3_gp1_voyage002_replay.csv": {
    "sha256": "74ff26e5f4eccd83176e6a14780d518f597e8dea07275994b5d537e97a287910",
    "bytes": 798651
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_GARBAGE.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/fault_out/closedloop_npu/closedloop/CL_GARBAGE.json": {
    "sha256": "3c93a60853a066c1427c999087bb15555d0e2a8204a4142e477e37f146636bf7",
    "bytes": 672
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_NAN.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/fault_out/closedloop_npu/closedloop/CL_NAN.json": {
    "sha256": "f17bbcdc044c6d9b2a700e46a4502e7238add8a80d08284377f141bdea9ef69a",
    "bytes": 979
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_RESET.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/fault_out/closedloop_npu/closedloop/CL_RESET.json": {
    "sha256": "2b2332fca1e303cc8bbb9bea471ac66f88bb7157b73d0f30ef52ebabeecc601a",
    "bytes": 1078
   },
-  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_STALL.json": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/fault_out/closedloop_npu/closedloop/CL_STALL.json": {
    "sha256": "80ea3d1ec57f95115ad090e2484b884175108eac6d1ca03bc716b15588246449",
    "bytes": 686
   },
@@ -111,7 +111,7 @@
     "arm": "a_npu_onboard",
     "kind": "onboard",
     "arm_label": "(a) NPU 板载闭环",
-    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_npu.csv",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/S20/closedloop_S20_npu.csv",
     "n_ticks": 5521,
     "tick_first": 0,
     "tick_last": 5520,
@@ -157,7 +157,7 @@
     "arm": "b_ref_onboard",
     "kind": "onboard",
     "arm_label": "(b) REF 板载闭环",
-    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref.csv",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/S20/closedloop_S20_ref.csv",
     "n_ticks": 5521,
     "tick_first": 0,
     "tick_last": 5520,
@@ -280,6 +280,18 @@
      "v_track_rmse_full_res_mps": 0.3514097310351002,
      "v_track_rmse_1s_grid_mps": 0.3516743584615355
     }
+   },
+   "b_tcn_ref_cpu": {
+    "arm": "b_tcn_ref_cpu",
+    "kind": "onboard_ref_closure",
+    "arm_label": "(b) TCN-REF 板载闭环（流式增量后端）",
+    "source_csv": "Host/results/closedloop_v2/S20/closedloop_S20_ref.csv",
+    "n_ticks": 5521,
+    "fuel_raw_kg": 328.5437,
+    "SOC_end": 0.60002,
+    "fuel_corr_kg": 328.5313,
+    "SOC_min": 0.5872,
+    "v_rmse": 0.3517
    }
   },
   "voyage002": {
@@ -287,7 +299,7 @@
     "arm": "a_npu_onboard",
     "kind": "onboard",
     "arm_label": "(a) NPU 板载闭环",
-    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_npu.csv",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/voyage002/closedloop_voyage002_npu.csv",
     "n_ticks": 4212,
     "tick_first": 0,
     "tick_last": 4211,
@@ -333,7 +345,7 @@
     "arm": "b_ref_onboard",
     "kind": "onboard",
     "arm_label": "(b) REF 板载闭环",
-    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_ref.csv",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/voyage002/closedloop_voyage002_ref.csv",
     "n_ticks": 4212,
     "tick_first": 0,
     "tick_last": 4211,
@@ -456,6 +468,18 @@
      "v_track_rmse_full_res_mps": 0.29074376488791703,
      "v_track_rmse_1s_grid_mps": 0.2912834482123759
     }
+   },
+   "b_tcn_ref_voyage": {
+    "arm": "b_tcn_ref_voyage",
+    "kind": "onboard_ref_closure",
+    "arm_label": "(b) TCN-REF 板载闭环（流式增量后端）",
+    "source_csv": "Host/results/closedloop_v2/closedloop_voyage002_ref.csv",
+    "n_ticks": 4212,
+    "SOC_end": 0.67826,
+    "fuel_raw_kg": 264.1562,
+    "fuel_corr_kg": 224.1297,
+    "SOC_min": 0.5861,
+    "v_rmse": 0.2913
    }
   }
  },
@@ -850,7 +874,7 @@
   }
  },
  "critical_section_fr508": {
-  "source_dir": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop",
+  "source_dir": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64/Host/fault_out/closedloop_npu/closedloop",
   "image": "npu",
   "mapping_note": "F1=CL_NAN（NaN 输入拍）/ F2=CL_STALL（停发）/ F3=CL_GARBAGE（垃圾帧）/ F4=CL_RESET（复位恢复）；FALLBACK 段统计取 CL_*.json，STALE|HELD 逐拍位统计取同目录 harness 轨迹副本 CSV",
   "mock_note": "注入运行用 stub advancer + pty+_MockFW（STALE 阈加速 0.05s，见各 CL_*.json params）：验证协议/flags/回退语义，段内 Δfuel/ΔSOC 为 mock 口径，不代表 plant 保真油耗",
@@ -1379,6 +1403,7 @@
   "仪器级①参考 = gp1 replay（其 P_gen_ref_kW 为 ref_G2 驱动序列，G-P1 T-602 gate fuel_rel=0）；两场景全部算齐，pass/fail 如实记录，不作退出码门禁。",
   "层③为报告性输出（FR-612/§8.3），不作门禁；层② (a) 裁决登记归 T-616 报告。",
   "tick 对齐：全部比较按 tick 号交集对齐（板载 0..N-1 与原生/gp1 同网格）。",
-  "退出码 0 = 完成；仪器级①②判定仅记录于 JSON，不改变退出码。"
+  "退出码 0 = 完成；仪器级①②判定仅记录于 JSON，不改变退出码。",
+  "TCN-f64 换型（spec ems01-chil-tcn64-swap）闭环条目：REF 流式精确增量后端（依赖闭包 889 节点，MAC ÷7.1）双场景闭环；(a) NPU 臂层②执行发散（三路线 NO-GO，诊断 JSON layer2_diagnosis_20260903.json），闭环 (a) 挂起待用户裁决"
  ]
 }

@@ -1,0 +1,28 @@
+{
+ "task": "T-612",
+ "generated": "2026-09-02 13:46:12",
+ "fw_gate_npu": {
+  "result": "PASS 7/7",
+  "exit": 0
+ },
+ "images": {
+  "NPU_debug": {
+   "elf": "Appli/build/Debug/EMS01_CHIL_ECMS_Appli.elf",
+   "sha256": "e7eb99c69c745dd309d241e441a89c64a0b05c258f9a092963d7f6e1ded8bcf2",
+   "elf_mtime": "2026-09-02 13:44",
+   "fw_mode": "NPU",
+   "newest_source": "Appli/App/ems_params.c",
+   "newest_source_mtime": "2026-09-02 00:39",
+   "freshness": "fresh"
+  },
+  "REF_debug": {
+   "elf": "Appli/build-ref2/EMS01_CHIL_ECMS_Appli.elf",
+   "sha256": "f31714eac47529f7338ffb12dd7d9c4bd40162cf569e67b3fa656575cfb78675",
+   "elf_mtime": "2026-09-02 02:21",
+   "fw_mode": "REF",
+   "newest_source": "Appli/App/ems_params.c",
+   "newest_source_mtime": "2026-09-02 00:39",
+   "freshness": "fresh"
+  }
+ }
+}

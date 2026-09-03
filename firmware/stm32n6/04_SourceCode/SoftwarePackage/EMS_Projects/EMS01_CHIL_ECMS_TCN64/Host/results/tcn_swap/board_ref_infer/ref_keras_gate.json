@@ -1,0 +1,18 @@
+{
+ "task": "T-810 board REF x200 vs keras float reference",
+ "n": 200,
+ "lsb_tcn_kwh": 0.2662140420605206,
+ "mean_abs_lsb": 1.3198029090810601e-05,
+ "p99_abs_lsb": 9.772263144824094e-05,
+ "max_abs_lsb": 0.00011601570497498805,
+ "signed_mean_abs_lsb": 6.353613770690054e-06,
+ "gate": {
+  "mean<=1.5": true,
+  "p99<=6": true,
+  "max<=8": true,
+  "|signed_mean|<=0.5": true
+ },
+ "pass": true,
+ "note": "REF 后端正确参考 = keras float32（int8 参考的 2.2 LSB 均值差为 TCN 量化噪声，记录于 lane B 交叉核对）",
+ "raw": "Host/results/tcn_swap/board_ref_infer/infer_compare.csv (board) + ref_keras_val200.csv (host keras)"
+}
