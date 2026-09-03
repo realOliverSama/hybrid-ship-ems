@@ -1,0 +1,26 @@
+{
+  "overall": true,
+  "checks": {
+    "G1": {
+      "pass": true,
+      "failures": []
+    },
+    "G2": {
+      "pass": true,
+      "failures": []
+    },
+    "G3": {
+      "pass": true,
+      "failures": []
+    },
+    "G4": {
+      "pass": true,
+      "failures": []
+    },
+    "G5": {
+      "pass": true,
+      "failures": []
+    }
+  },
+  "timestamp": "2026-09-03T23:14:04"
+}
