@@ -1,0 +1,120 @@
+{
+  "schema": "modelE_config_manifest_v1",
+  "generated_at": "2026-09-04T02:16:37***",
+  "config_sha256": {
+    "ModelE_Physics_Parameters_m": "bd44ac0af1004cfd86d84462788d1c7f3eae3c1b25a8d6cbbc0f8458cc46d2a2",
+    "ModelE_TestScenarios_m": "3c2ffb41b1dd4b31de22da4e79a227bd0fec25171c260265b3548f1d46e5ff93",
+    "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
+  },
+  "effective_values": {
+    "Ship_Mass": 500000,
+    "Hull_K_R": 890,
+    "Hull_Lpp_m": 53.45,
+    "Hull_B_m": 7.13,
+    "Hull_T_m": 2.188,
+    "Hull_Sw_m2": 554.2,
+    "Hull_CB": 0.6,
+    "Wake_w_deep": 0.1,
+    "Hull_k_form": 0.2,
+    "Shallow_c1": 1.168,
+    "Shallow_c2": -0.5238,
+    "Shallow_c3": -1.472,
+    "Shallow_HT_deep_limit": 3,
+    "Shallow_HT_min_valid": 1.2,
+    "WaterDepth_default_m": 20,
+    "Elec_Eff": 0.92,
+    "Gear_Eff": 0.96,
+    "K_Fw": 128.10696707083363,
+    "K_Fv": 1099.0215851179562,
+    "K_Qw": 37.410336344592793,
+    "K_Qv": 160.47045718636372,
+    "DG_P_rated_kW": 500,
+    "DG_P_min_kW": 125,
+    "DG_P_opt_kW": 375,
+    "DG_ramp_kW_per_s": 20,
+    "DG_tau_s": 5,
+    "DG_t_starting_s": 25,
+    "DG_t_sync_s": 5,
+    "DG_t_cooldown_s": 30,
+    "DG_C_start_kg": 0.6,
+    "DG_BSFC_P_kW": [
+      125,
+      250,
+      375,
+      400,
+      500
+    ],
+    "DG_BSFC_gkWh": [
+      600,
+      547,
+      447,
+      427,
+      453
+    ],
+    "Bat_Q_nom_Ah": 1860,
+    "Bat_eta_coul": 0.98,
+    "Bat_V_min_V": 360,
+    "Bat_V_max_V": 657,
+    "Bat_OCV_LUT_V": [
+      541.08,
+      578.68,
+      585.99,
+      591.12,
+      592.87,
+      593.42,
+      594.97,
+      600.12,
+      600.55
+    ],
+    "Bat_R0_LUT_ohm": [
+      0.00866,
+      0.00815,
+      0.0077,
+      0.00745,
+      0.00715,
+      0.00702,
+      0.00682,
+      0.00662,
+      0.00632
+    ],
+    "Bat_R1_LUT_ohm": [
+      0.01887,
+      0.01225,
+      0.00986,
+      0.00923,
+      0.00798,
+      0.00785,
+      0.00722,
+      0.00883,
+      0.00705
+    ],
+    "Bat_C1_LUT_F": [
+      1697,
+      2070,
+      2254,
+      2458,
+      2579,
+      2733,
+      2862,
+      2969,
+      3058
+    ],
+    "Bat_I_limit_surrogate_A": 1823,
+    "Bat_P_conv_bus_max_kW": 1050,
+    "Bat_R0_chg_mult": 1.15,
+    "ASSUMED_Gen_MinStablePower": 125,
+    "ASSUMED_eta_dcdc": 0.97
+  },
+  "sensitivity_profile": {
+    "profile_name": "nominal",
+    "description": "Model E nominal（全部参数取 ModelE_Physics_Parameters.m 原值，零改动）",
+    "n_overrides": 0,
+    "overrides": []
+  },
+  "historical_reference_hashes": {
+    "config_Model_Parameters_m": "830eec47fda301242e8ef4aa6a3165726d79aca8cb67b52c0b023b8863e719d8",
+    "config_Model_Scenarios_m": "cafd670fbacf162b8dd8ffe4cc82c680f8913f9b362059bce3b079a685be02ac",
+    "scripts__model_build_model_c_m": "90b7c9c9a0d77dc14d331fba4d976f09937fb5d31f04f59fb312aeba70f979e3",
+    "model_HybridShip_ModelD_DCBus_slx": "50359e65d584fd6c889db5802795665531c6cf031cf8de83344e894fe150730b"
+  }
+}
