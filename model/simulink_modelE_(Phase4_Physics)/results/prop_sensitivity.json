@@ -1,0 +1,176 @@
+{
+  "schema": "modelE_prop_sensitivity_v1",
+  "generated_at": "2026-09-04T04:15:32***",
+  "design_point": {
+    "V_design_mps": 5.65843621399177,
+    "V_design_kn": 11,
+    "P_prop_elec_nom_kW": 298.37529032242963
+  },
+  "cases": [
+    {
+      "case_id": "K_Fw_x0.8",
+      "parameter": "K_Fw",
+      "factor": 0.8,
+      "v_steady_mps": 5.6625294133806223,
+      "v_steady_kn": 11.00795717961193,
+      "P_prop_elec_kW": 444.83568157514765,
+      "R_hull_N": 28537.17652631793,
+      "fuel_total_kg": 22.480902566381047,
+      "SOC_end": 0.59334293582036512
+    },
+    {
+      "case_id": "K_Fw_x1.0",
+      "parameter": "K_Fw",
+      "factor": 1,
+      "v_steady_mps": 5.6620976427083347,
+      "v_steady_kn": 11.007117817425003,
+      "P_prop_elec_kW": 298.37529032242963,
+      "R_hull_N": 28532.823760017109,
+      "fuel_total_kg": 18.073357348353941,
+      "SOC_end": 0.59680952898030371
+    },
+    {
+      "case_id": "K_Fw_x1.2",
+      "parameter": "K_Fw",
+      "factor": 1.2,
+      "v_steady_mps": 5.6618631871561238,
+      "v_steady_kn": 11.006662035831505,
+      "P_prop_elec_kW": 211.83431012051173,
+      "R_hull_N": 28530.460347432905,
+      "fuel_total_kg": 16.521439356766379,
+      "SOC_end": 0.59765924075059373
+    },
+    {
+      "case_id": "K_Fv_x0.8",
+      "parameter": "K_Fv",
+      "factor": 0.8,
+      "v_steady_mps": 5.6618925190526,
+      "v_steady_kn": 11.006719057038254,
+      "P_prop_elec_kW": 245.26859223359625,
+      "R_hull_N": 28530.756134462717,
+      "fuel_total_kg": 17.405631220681929,
+      "SOC_end": 0.59707300365316762
+    },
+    {
+      "case_id": "K_Fv_x1.0",
+      "parameter": "K_Fv",
+      "factor": 1,
+      "v_steady_mps": 5.6620976427083347,
+      "v_steady_kn": 11.007117817425003,
+      "P_prop_elec_kW": 298.37529032242963,
+      "R_hull_N": 28532.823760017109,
+      "fuel_total_kg": 18.073357348353941,
+      "SOC_end": 0.59680952898030371
+    },
+    {
+      "case_id": "K_Fv_x1.2",
+      "parameter": "K_Fv",
+      "factor": 1.2,
+      "v_steady_mps": 5.6622898827603105,
+      "v_steady_kn": 11.007491532086043,
+      "P_prop_elec_kW": 354.73552111222466,
+      "R_hull_N": 28534.761545646921,
+      "fuel_total_kg": 19.86250380807515,
+      "SOC_end": 0.5964818816090155
+    },
+    {
+      "case_id": "K_Qw_x0.8",
+      "parameter": "K_Qw",
+      "factor": 0.8,
+      "v_steady_mps": 5.6618618684908135,
+      "v_steady_kn": 11.006659472346142,
+      "P_prop_elec_kW": 218.78767991086175,
+      "R_hull_N": 28530.447070794409,
+      "fuel_total_kg": 16.693015001386222,
+      "SOC_end": 0.59750681759429747
+    },
+    {
+      "case_id": "K_Qw_x1.0",
+      "parameter": "K_Qw",
+      "factor": 1,
+      "v_steady_mps": 5.6620976427083347,
+      "v_steady_kn": 11.007117817425003,
+      "P_prop_elec_kW": 298.37529032242963,
+      "R_hull_N": 28532.823760017109,
+      "fuel_total_kg": 18.073357348353941,
+      "SOC_end": 0.59680952898030371
+    },
+    {
+      "case_id": "K_Qw_x1.2",
+      "parameter": "K_Qw",
+      "factor": 1.2,
+      "v_steady_mps": 5.6623437558453089,
+      "v_steady_kn": 11.007596261363281,
+      "P_prop_elec_kW": 377.97052285178205,
+      "R_hull_N": 28535.304803778265,
+      "fuel_total_kg": 21.105268737467448,
+      "SOC_end": 0.59612182839121186
+    },
+    {
+      "case_id": "K_Qv_x0.8",
+      "parameter": "K_Qv",
+      "factor": 0.8,
+      "v_steady_mps": 5.66217660166566,
+      "v_steady_kn": 11.007271313638043,
+      "P_prop_elec_kW": 318.29271789376503,
+      "R_hull_N": 28533.619669092004,
+      "fuel_total_kg": 18.665518442488036,
+      "SOC_end": 0.59670488603246308
+    },
+    {
+      "case_id": "K_Qv_x1.0",
+      "parameter": "K_Qv",
+      "factor": 1,
+      "v_steady_mps": 5.6620976427083347,
+      "v_steady_kn": 11.007117817425003,
+      "P_prop_elec_kW": 298.37529032242963,
+      "R_hull_N": 28532.823760017109,
+      "fuel_total_kg": 18.073357348353941,
+      "SOC_end": 0.59680952898030371
+    },
+    {
+      "case_id": "K_Qv_x1.2",
+      "parameter": "K_Qv",
+      "factor": 1.2,
+      "v_steady_mps": 5.6620130294779187,
+      "v_steady_kn": 11.006953329305073,
+      "P_prop_elec_kW": 278.45960246704396,
+      "R_hull_N": 28531.970861529797,
+      "fuel_total_kg": 17.824289441966243,
+      "SOC_end": 0.59690808760361047
+    },
+    {
+      "case_id": "Wake_w_deep_x0.8",
+      "parameter": "Wake_w_deep",
+      "factor": 0.8,
+      "v_steady_mps": 5.6621250556788123,
+      "v_steady_kn": 11.007171108239611,
+      "P_prop_elec_kW": 306.23683356428586,
+      "R_hull_N": 28533.100082678513,
+      "fuel_total_kg": 18.306229684180259,
+      "SOC_end": 0.59676725204336567
+    },
+    {
+      "case_id": "Wake_w_deep_x1.0",
+      "parameter": "Wake_w_deep",
+      "factor": 1,
+      "v_steady_mps": 5.6620976427083347,
+      "v_steady_kn": 11.007117817425003,
+      "P_prop_elec_kW": 298.37529032242963,
+      "R_hull_N": 28532.823760017109,
+      "fuel_total_kg": 18.073357348353941,
+      "SOC_end": 0.59680952898030371
+    },
+    {
+      "case_id": "Wake_w_deep_x1.2",
+      "parameter": "Wake_w_deep",
+      "factor": 1.2,
+      "v_steady_mps": 5.6620706676426691,
+      "v_steady_kn": 11.007065377897348,
+      "P_prop_elec_kW": 290.74759113406287,
+      "R_hull_N": 28532.551850965909,
+      "fuel_total_kg": 17.920659523223332,
+      "SOC_end": 0.59684932765254528
+    }
+  ]
+}
