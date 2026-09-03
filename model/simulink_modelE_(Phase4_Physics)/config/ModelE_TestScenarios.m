@@ -273,6 +273,13 @@ VOYAGE_CURRENT_MODE      = VOYAGE_SPEED_MODE;
 VOYAGE_CURRENT_TIME_S    = SCENARIOS(20).current_time_s;
 VOYAGE_CURRENT_VALUE_MPS = SCENARIOS(20).current_value_mps;
 VOYAGE_WATER_DEPTH_M     = WaterDepth_default_m;   % 新增：Scenario_Manager water_depth_m 输出（T-003）
+% T-412 E06 通道：机组启停指令时变表（默认全零=机组不自停；aborted-start/停机时序
+% 经 SimulationInput.setVariable 注入；列为 [t, cmd_stop_DG1, cmd_stop_DG2]）
+GEN_CMD_STOP_TS = [0 0 0; 1e6 0 0];
+% T-412 E06/E07 通道：占位适配器 force 注入（默认 0=auto 规则；0=force 关闭）
+ADAPTER_FORCE_MODE   = 0;
+ADAPTER_FORCE_P1_KW  = 0;
+ADAPTER_FORCE_P2_KW  = 0;
 
 % ---- 默认工况：S01 ---------------------------------------------
 SCN = SCENARIOS(1);
