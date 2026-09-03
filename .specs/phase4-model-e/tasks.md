@@ -1,5 +1,9 @@
 # Phase 4 — Model E：面向 HIL 的模型重构与实时化 Tasks
 
+> **⚠️ SUPERSEDED（2026-09-03，用户 Q1 裁决）**：本 draft 已被 `docs/phase4_research_roadmap.md`
+> 新 Phase 4 路线（A~F 工作包）取代；HIL 实时化推后为后续 Phase（待 HIL 资料到位再立项），
+> 本文件 T-401~T-407 编号作废（新路线复用 T-4xx 号段）。本目录保留存档，禁止实施。
+
 Spec: `phase4-model-e`  
 Status: tasks-draft  
 Created: 2026-08-31  

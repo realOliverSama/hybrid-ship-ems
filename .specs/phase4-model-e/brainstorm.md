@@ -1,5 +1,8 @@
 # Phase 4 — Model E：面向 HIL 的模型重构与实时化 Brainstorm
 
+> **⚠️ SUPERSEDED（2026-09-03，用户 Q1 裁决）**：本 draft 已被 `docs/phase4_research_roadmap.md`
+> 新 Phase 4 路线（A~F 工作包）取代；本目录保留存档，禁止实施。
+
 Spec: `phase4-model-e`  
 Status: brainstorm-complete  
 Created: 2026-08-31
