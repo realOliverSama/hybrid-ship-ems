@@ -17,7 +17,7 @@ Design: `./design.md`
 
 ## Implementation Plan
 
-- [ ] 1. 分支、工作区复制分叉与零改动基线
+- [x] 1. 分支、工作区复制分叉与零改动基线
   - ID: T-001
   - Requirement(s): FR-410, NFR-407
   - Roadmap: 路线文档 §1.4 分支策略
@@ -33,7 +33,7 @@ Design: `./design.md`
     `git status --short model/simulink_modelD*` 为空
   - Notes: 本任务不做任何物理修改；隔离而非删除 legacy config（保留证据对照能力）
 
-- [ ] 2. Model E 独立参数事实源与 config manifest
+- [x] 2. Model E 独立参数事实源与 config manifest
   - ID: T-002
   - Requirement(s): FR-411, FR-412, NFR-410
   - Roadmap: T-402 收尾（回填）+ 全部施工任务的参数基础
@@ -57,7 +57,7 @@ Design: `./design.md`
     用干净 workspace 验证）；provenance 无空缺；manifest 落盘；A1 CSV 回填完成
   - Notes: 数值以本 spec + design §2 + 开发日志 2026-09-04 条目为唯一事实源
 
-- [ ] 3. Scenario_Manager 水深输出
+- [x] 3. Scenario_Manager 水深输出
   - ID: T-003
   - Requirement(s): FR-414, FR-415
   - Roadmap: T-404（接口部分）
