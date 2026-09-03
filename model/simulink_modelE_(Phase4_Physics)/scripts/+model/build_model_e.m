@@ -60,7 +60,8 @@ try
     buildPropulsionPlant(MDL, pos03);
     buildLoadMeasurement(MDL, pos04);
     buildEMSControllerC(MDL, pos05);
-    buildGensetPlant(MDL, pos06);
+    buildGensetSystemE(MDL, pos06);
+    buildCommitmentAdapter(MDL, [480 540 640 630]);   % PLACEHOLDER（FR-421）
     buildBatteryConverter(MDL, pos07);
     buildUndervoltDerate(MDL, pos08);
     buildBusResidualMonitor(MDL, pos09);
@@ -243,7 +244,8 @@ function buildPropulsionPlant(mdl, pos)
     for k = 1:numel(ins)
         add_block('simulink/Sources/In1', [sys '/' ins{k}], 'Position', [15 30+45*(k-1) 45 60+45*(k-1)]);
     end
-    outs = {'P_prop_actual_kW','v_ship_mps','x_ship_m','acceleration_mps2','R_hull_N','F_prop_eff_N','n_prop_rpm'};
+    outs = {'P_prop_actual_kW','v_ship_mps','x_ship_m','acceleration_mps2','R_hull_N','F_prop_eff_N','n_prop_rpm', ...
+        'R_shallow_N','HT_ratio','domain_warning'};
     for k = 1:numel(outs)
         add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [720 20+45*(k-1) 750 50+45*(k-1)]);
     end
@@ -280,28 +282,47 @@ function buildPropulsionPlant(mdl, pos)
     add_block('simulink/Math Operations/Gain', [sys '/radps2rpm'], 'Position', [460 230 500 260], 'Gain', '30/pi');
     add_line(sys, 'omega_prop/1', 'radps2rpm/1');
     add_line(sys, 'radps2rpm/1', 'n_prop_rpm/1');
-    % 螺旋桨水动力（复用原模型 MATLAB Function）
+    % 螺旋桨水动力（Model E T-005：wake_fraction Parameter → w_signal 输入信号；
+    % 四 K 为 w_deep=0.10 重标定值 D-8，D/K_T/K_Q/P/D INTENTIONALLY UNRESOLVED）
     fn = [sys '/Propeller_Hydrodynamics'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [540 120 660 230]);
-    setMFCode(fn, CODE_PROPELLER, {'wake_fraction','K_Fw','K_Fv','K_Qw','K_Qv'});
+    setMFCode(fn, model.code_propeller_e(), {'K_Fw','K_Fv','K_Qw','K_Qv'});
+    % w(H/T) 模块（OQ-4/D-3：w = w_deep + Δw_Zhang(H/T)，linear 插值 clamp [1.2,2.7]；
+    % 输入=船体 HT_ratio 输出信号（H/T 单一事实源），经 Memory 块一步松弛消解
+    % hull(直接馈通)→Wake→Propeller→hull 的潜在代数环（NFR-409；水深工况内恒定，
+    % 0.01 s 延迟物理影响为零））
+    fnW = [sys '/Wake_vs_HT'];
+    add_block('simulink/User-Defined Functions/MATLAB Function', fnW, 'Position', [540 40 660 180]);
+    setMFCode(fnW, model.code_wake_ht_e(), {'Wake_w_deep','Wake_HT_nodes','Wake_w_Zhang', 'Wake_HT_ref','Wake_w_ref'});
+    add_block('simulink/Discrete/Unit Delay', [sys '/HT_delay'], 'Position', [700 190 730 210], ...
+        'InitialCondition', 'VOYAGE_WATER_DEPTH_M/Hull_T_m', 'SampleTime', '-1');
+    add_line(sys, 'HT_delay/1', 'Wake_vs_HT/1');
+    add_line(sys, 'Wake_vs_HT/1', 'Propeller_Hydrodynamics/4');
     add_line(sys, 'radps2rpm/1', 'Propeller_Hydrodynamics/1');
     add_line(sys, 'v_ship/1', 'Propeller_Hydrodynamics/2');
     add_line(sys, 'v_current_mps/1', 'Propeller_Hydrodynamics/3');
     add_line(sys, 'Propeller_Hydrodynamics/2', 'shaft sum/3');   % Q_prop
     add_line(sys, 'Propeller_Hydrodynamics/1', 'F_prop_eff_N/1');
-    % 船体（复用+阻力倍率）
-    fn2 = [sys '/Ship_Hull_Dynamics'];
+    % 船体（Model E T-004：Ship_Hull_Dynamics_E，R_deep 锚定+浅水相对增量，design §4.1）
+    fn2 = [sys '/Ship_Hull_Dynamics_E'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fn2, 'Position', [540 260 660 370]);
-    setMFCode(fn2, CODE_HULL, {'Hull_K_R','Ship_Mass'});
+    setMFCode(fn2, model.code_hull_e(), {'Hull_K_R','Ship_Mass','Hull_Lpp_m','Hull_T_m', ...
+        'nu_water','Hull_k_form','Shallow_c1','Shallow_c2','Shallow_c3', ...
+        'Shallow_HT_deep_limit','Shallow_HT_min_valid'});
     add_block('simulink/Sources/Constant', [sys '/F_env'], 'Position', [480 330 530 360], 'Value', 'F_env_const');
-    add_line(sys, 'v_ship/1', 'Ship_Hull_Dynamics/1');
-    add_line(sys, 'Propeller_Hydrodynamics/1', 'Ship_Hull_Dynamics/2');
-    add_line(sys, 'v_current_mps/1', 'Ship_Hull_Dynamics/3');
-    add_line(sys, 'F_env/1', 'Ship_Hull_Dynamics/4');
-    add_line(sys, 'resistance_multiplier/1', 'Ship_Hull_Dynamics/5');
-    add_line(sys, 'Ship_Hull_Dynamics/1', 'acceleration_mps2/1');
-    add_line(sys, 'Ship_Hull_Dynamics/2', 'R_hull_N/1');
-    add_line(sys, 'Ship_Hull_Dynamics/1', 'v_ship/1');
+    add_line(sys, 'v_ship/1', 'Ship_Hull_Dynamics_E/1');
+    add_line(sys, 'Propeller_Hydrodynamics/1', 'Ship_Hull_Dynamics_E/2');
+    add_line(sys, 'v_current_mps/1', 'Ship_Hull_Dynamics_E/3');
+    add_line(sys, 'F_env/1', 'Ship_Hull_Dynamics_E/4');
+    add_line(sys, 'resistance_multiplier/1', 'Ship_Hull_Dynamics_E/5');
+    add_line(sys, 'water_depth_m/1', 'Ship_Hull_Dynamics_E/6');   % T-003 水深环境输入
+    add_line(sys, 'Ship_Hull_Dynamics_E/1', 'acceleration_mps2/1');
+    add_line(sys, 'Ship_Hull_Dynamics_E/1', 'v_ship/1');
+    add_line(sys, 'Ship_Hull_Dynamics_E/2', 'R_hull_N/1');        % R_total = R_deep + R_shallow
+    add_line(sys, 'Ship_Hull_Dynamics_E/3', 'R_shallow_N/1');     % 浅水附加阻力（FR-413 证据）
+    add_line(sys, 'Ship_Hull_Dynamics_E/4', 'HT_ratio/1');        % H/T 单一事实源输出（同源分支）
+    add_line(sys, 'Ship_Hull_Dynamics_E/4', 'HT_delay/1');        % 同源分支 → 松弛（NFR-409 代数环消解）
+    add_line(sys, 'Ship_Hull_Dynamics_E/5', 'domain_warning/1');  % 域外报警（NFR-411）
     % 转矩链: T_req = P_mech*1000/max(|ω_motor|, ω_min) -> ±Mot_T_max -> T_drive
     add_block('simulink/Math Operations/Gain', [sys '/kW2W'], 'Position', [340 30 380 60], 'Gain', '1000');
     add_line(sys, 'ElecEff/1', 'kW2W/1');
@@ -847,75 +868,137 @@ function buildNNECMSVariant(ch)
     end
 end
 
-function buildGensetPlant(mdl, pos)
-% 06_Genset_Average_Plant: 限幅->爬坡->一阶惯性->限幅（发电机常开）
-    sys = [mdl '/06_Genset_Average_Plant'];
+function buildCommitmentAdapter(mdl, pos)
+% Legacy_Commitment_Adapter: 占位机组组合适配器（PLACEHOLDER，FR-421，Plant 之外可拔插）
+%   EMS 聚合 P_gen_ref_kW → DG1/DG2 enable+ref；B 包 PMS v2 (T-415/T-416) 直接替换本模块
+%   ⚠ 不得用于任何正式 EMS 经济性/节油结论（FR-421 防线）
+    sys = [mdl '/Legacy_Commitment_Adapter'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
     add_block('simulink/Sources/In1', [sys '/P_gen_ref_kW'], 'Position', [20 80 50 110]);
-    add_block('simulink/Sinks/Out1', [sys '/P_gen_actual_kW'], 'Position', [330 80 360 110]);
-    add_block('simulink/Discontinuities/Saturation', [sys '/limit_in'], 'Position', [70 80 100 110], ...
-        'UpperLimit', 'Gen_P_max', 'LowerLimit', 'ASSUMED_Gen_MinStablePower');
-    add_line(sys, 'P_gen_ref_kW/1', 'limit_in/1');
-    add_block('simulink/Discontinuities/Rate Limiter', [sys '/ramp'], 'Position', [130 80 210 110], ...
-        'RisingSlewLimit', 'Gen_Ramp_Up', 'FallingSlewLimit', '-Gen_Ramp_Down', ...
-        'InitialCondition', 'Pgen_init');
-    add_line(sys, 'limit_in/1', 'ramp/1');
-    add_block('simulink/Continuous/Transfer Fcn', [sys '/inertia'], 'Position', [240 80 300 110], ...
-        'Numerator', '[1]', 'Denominator', '[ASSUMED_Gen_TimeConstant 1]');
-    add_line(sys, 'ramp/1', 'inertia/1');
-    add_block('simulink/Discontinuities/Saturation', [sys '/limit_out'], 'Position', [310 80 330 110], ...
-        'UpperLimit', 'Gen_P_max', 'LowerLimit', 'ASSUMED_Gen_MinStablePower');
-    add_line(sys, 'inertia/1', 'limit_out/1');
-    add_line(sys, 'limit_out/1', 'P_gen_actual_kW/1');
+    outs = {'DG1_enable','P_DG1_ref_kW','DG2_enable','P_DG2_ref_kW'};
+    for k = 1:numel(outs)
+        add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [430 30+55*(k-1) 460 60+55*(k-1)]);
+    end
+    fn = [sys '/adapter'];
+    add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [120 60 300 160]);
+    setMFCode(fn, model.code_commitment_adapter_e(), {});
+    addL(sys, 'P_gen_ref_kW', 1, 'adapter', 1);
+    % force 端口（默认 0=auto；scenario 脚本化强制组合测试时改 Constant 值）
+    forces = {'force_mode','force_P1_kW','force_P2_kW'};
+    for k = 1:numel(forces)
+        add_block('simulink/Sources/Constant', [sys '/C_' forces{k}], 'Position', [20 190+45*(k-1) 80 210+45*(k-1)], 'Value', '0');
+        addL(sys, ['C_' forces{k}], 1, 'adapter', k+1);
+    end
+    addL(sys, 'adapter', 1, 'DG1_enable', 1);
+    addL(sys, 'adapter', 2, 'P_DG1_ref_kW', 1);
+    addL(sys, 'adapter', 3, 'DG2_enable', 1);
+    addL(sys, 'adapter', 4, 'P_DG2_ref_kW', 1);
+    set_param(sys, 'MaskDisplay', ['disp(sprintf(''Legacy_Commitment_Adapter\nPLACEHOLDER (FR-421)\n不得用于经济性结论''))']);
+end
+
+function buildGensetSystemE(mdl, pos)
+% 06_Genset_System (Model E T-006, FR-418/419): DG1/DG2 独立 500 kW Plant + 启停状态机
+%   每机组: OFF→STARTING(2500 tick)→SYNC(500)→ON→COOLDOWN(3000)→OFF，整数 tick 判据（OQ-6）
+%   ON 态 clamp[P_min,500]+below_min_flag；爬坡 20 kW/s；一阶 τ=5 s；无 min up/down（D-4）
+    sys = [mdl '/06_Genset_System'];
+    add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
+    delete_block([sys '/In1']); delete_block([sys '/Out1']);
+    ins = {'DG1_cmd_start','DG1_P_ref_kW','DG2_cmd_start','DG2_P_ref_kW','DG_cmd_stop'};
+    for k = 1:numel(ins)
+        add_block('simulink/Sources/In1', [sys '/' ins{k}], 'Position', [15 30+55*(k-1) 45 60+55*(k-1)]);
+    end
+    outs = {'P_DG1_kW','state_DG1','below_min_DG1','start_count_DG1', ...
+        'P_DG2_kW','state_DG2','below_min_DG2','start_count_DG2','P_gen_actual_kW'};
+    for k = 1:numel(outs)
+        add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [640 20+50*(k-1) 670 50+50*(k-1)]);
+    end
+    % DG_cmd_stop（2 维向量 [DG1;DG2]）拆分；默认 Constant 0（E06 aborted-start 直接注入用）
+    add_block('simulink/Signal Routing/Demux', [sys '/stop_demux'], 'Position', [90 240 100 280], 'Outputs', '2');
+    add_block('simulink/Sources/Constant', [sys '/cmd_stop_default'], 'Position', [15 248 55 272], 'Value', '[0;0]');
+    add_line(sys, 'DG_cmd_stop/1', 'stop_demux/1');
+    % 两个 GensetUnitE 实例（同一源码，persistent 按块隔离）
+    unitPos = {[150 30 310 140], [150 170 310 280]};
+    for u = 1:2
+        tag = num2str(u);
+        fn = [sys '/GensetUnitE_DG' tag];
+        add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', unitPos{u});
+        setMFCode(fn, model.code_genset_unit_e(), {'DG_P_rated_kW','DG_P_min_kW','DG_ramp_kW_per_s','DG_tau_s', ...
+            'N_ticks_starting','N_ticks_sync','N_ticks_cooldown','Pgen_init'});
+        setDiscreteMF(fn, '0.01');             % 状态机 persistent 需离散采样（= 固定步，OQ-6 tick 口径）
+        addL(sys, ['DG' tag '_cmd_start'], 1, ['GensetUnitE_DG' tag], 1);
+        addL(sys, 'stop_demux', u, ['GensetUnitE_DG' tag], 2);
+        addL(sys, ['DG' tag '_P_ref_kW'], 1, ['GensetUnitE_DG' tag], 3);
+        addL(sys, ['GensetUnitE_DG' tag], 1, ['P_DG' tag '_kW'], 1);
+        addL(sys, ['GensetUnitE_DG' tag], 2, ['state_DG' tag], 1);
+        addL(sys, ['GensetUnitE_DG' tag], 3, ['below_min_DG' tag], 1);
+        addL(sys, ['GensetUnitE_DG' tag], 4, ['start_count_DG' tag], 1);
+    end
+    add_block('simulink/Math Operations/Sum', [sys '/gen sum'], 'Position', [480 80 510 120], 'Inputs', '++');
+    addL(sys, 'GensetUnitE_DG1', 1, 'gen sum', 1);
+    addL(sys, 'GensetUnitE_DG2', 1, 'gen sum', 2);
+    addL(sys, 'gen sum', 1, 'P_gen_actual_kW', 1);
 end
 
 function buildBatteryConverter(mdl, pos)
-% 14_Battery_Converter: 电池经双向 DC/DC 以电压下垂模式接入母线（grid-forming）
-%   P_bat_bus = clamp(K_droop*(V_dc_nom - V_dc), -chg_avail, dis_avail)
-%   SOC 由电池端功率积分（放电除以 eta_dcdc，充电乘以 eta_dcdc）
+% 14_Battery_Converter (Model E T-008/T-009, FR-422/423/424): LFP 1RC ECM + SOP 四约束
+%   droop grid-forming 保留 → BatteryECM（SOP clamp→端子换算→方向感知 R_0→OQ-9 解析求 I）
+%   → SOC 电荷积分（dSOC_dt，禁能量积分回潮 Q5）；20 入参全端口（签名即契约，paramNames 空）
     sys = [mdl '/14_Battery_Converter'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
     add_block('simulink/Sources/In1', [sys '/V_dc_V'], 'Position', [20 80 50 110]);
-    outs = {'P_bat_bus_kW','SOC','P_bat_dis_avail_kW','P_bat_chg_avail_kW'};
+    outs = {'P_bat_bus_kW','SOC','P_bat_dis_avail_kW','P_bat_chg_avail_kW', ...
+        'V_bat_V','I_bat_A','battery_power_limited','battery_discriminant_limit','ecm_lut_boundary_flag'};
     for k = 1:numel(outs)
-        add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [430 30+60*(k-1) 460 60+60*(k-1)]);
+        add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [820 30+50*(k-1) 850 60+50*(k-1)]);
     end
-    % 下垂: P_droop = K_droop*(V_nom - V)
+    % 下垂: P_droop = K_droop*(V_nom - V)（grid-forming 保留，design §4.5）
     add_block('simulink/Math Operations/Sum', [sys '/droop sum'], 'Position', [80 70 110 110], 'Inputs', '+-');
     add_block('simulink/Sources/Constant', [sys '/V_nom'], 'Position', [30 30 70 55], 'Value', 'V_dc_nom');
-    add_line(sys, 'V_nom/1', 'droop sum/1');
-    add_line(sys, 'V_dc_V/1', 'droop sum/2');
+    addL(sys, 'V_nom', 1, 'droop sum', 1);
+    addL(sys, 'V_dc_V', 1, 'droop sum', 2);
     add_block('simulink/Math Operations/Gain', [sys '/K_droop'], 'Position', [140 75 190 105], 'Gain', 'ASSUMED_K_droop');
-    add_line(sys, 'droop sum/1', 'K_droop/1');
-    % SOC 积分与可用功率（沿用 Model A 的降额逻辑）
-    add_block('simulink/Continuous/Integrator', [sys '/SOC_int'], 'Position', [180 280 220 310], ...
+    addL(sys, 'droop sum', 1, 'K_droop', 1);
+    % BatteryECM（persistent V_1；20 入参全部为端口——Constant 引用 base 变量，签名即契约）
+    fn = [sys '/battery_ecm'];
+    add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [300 60 520 200]);
+    setMFCode(fn, model.code_battery_ecm_e(), {});
+    setDiscreteMF(fn, '0.01');                 % persistent V_1 需离散采样（= 固定步）
+    addL(sys, 'K_droop', 1, 'battery_ecm', 1);                       % P_droop_kW
+    add_block('simulink/Sources/Constant', [sys '/dt_step'], 'Position', [230 120 260 145], 'Value', '0.01');
+    addL(sys, 'dt_step', 1, 'battery_ecm', 3);                       % dt
+    % 常量入参（LUT/标量，引用 config/ModelE_Physics_Parameters.m 变量）
+    ecmConsts = {'Bat_SOC_LUT_nodes','Bat_OCV_LUT_V','Bat_R0_LUT_ohm','Bat_R1_LUT_ohm','Bat_C1_LUT_F', ...
+        'Bat_R0_chg_mult','Bat_eta_coul','Bat_Q_nom_Ah','Bat_V_min_V','Bat_V_max_V', ...
+        'Bat_I_limit_surrogate_A','Bat_P_conv_bus_max_kW','ASSUMED_eta_dcdc', ...
+        'ASSUMED_SOC_min','ASSUMED_SOC_max','ASSUMED_SOC_DisDerate_Start','ASSUMED_SOC_ChgDerate_Start'};
+    % → ECM 端口 4..20（端口 2=SOC 反馈稍后接，16=eta_dcdc 映射 ASSUMED_eta_dcdc）
+    portOf = containers.Map();
+    pi_ = 4;
+    for k = 1:numel(ecmConsts)
+        nm = ecmConsts{k};
+        add_block('simulink/Sources/Constant', [sys '/EC_' nm], 'Position', [150 220+38*(k-1) 230 258+38*(k-1)], 'Value', nm);
+        addL(sys, ['EC_' nm], 1, 'battery_ecm', pi_);
+        pi_ = pi_ + 1;
+    end
+    % SOC Integrator（保留：IC=Bat_SOC_init、限幅 [0.10,0.95]；输入=dSOC_dt 电荷积分口径）
+    add_block('simulink/Continuous/Integrator', [sys '/SOC_int'], 'Position', [620 120 660 160], ...
         'InitialCondition', 'Bat_SOC_init', 'LimitOutput', 'on', ...
         'UpperSaturationLimit', 'ASSUMED_SOC_max', 'LowerSaturationLimit', 'ASSUMED_SOC_min');
-    fn = [sys '/bat_limits'];
-    add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [250 200 370 270]);
-    setMFCode(fn, CODE_BAT_LIMITS, {'ASSUMED_SOC_min','ASSUMED_SOC_max','ASSUMED_SOC_DisDerate_Start','ASSUMED_SOC_ChgDerate_Start','ASSUMED_Bat_DischargeLimit','ASSUMED_Bat_ChargeLimit'});
-    add_line(sys, 'SOC_int/1', 'bat_limits/1');
-    add_line(sys, 'bat_limits/1', 'P_bat_dis_avail_kW/1');
-    add_line(sys, 'bat_limits/2', 'P_bat_chg_avail_kW/1');
-    % 限幅: P_bat = min(max(P_droop, -chg), dis)
-    add_block('simulink/Math Operations/Gain', [sys '/neg_chg'], 'Position', [180 210 220 240], 'Gain', '-1');
-    add_line(sys, 'bat_limits/2', 'neg_chg/1');
-    add_block('simulink/Math Operations/MinMax', [sys '/lo_clamp'], 'Position', [240 80 280 110], 'Function', 'max', 'Inputs', '2');
-    add_line(sys, 'K_droop/1', 'lo_clamp/1');
-    add_line(sys, 'neg_chg/1', 'lo_clamp/2');
-    add_block('simulink/Math Operations/MinMax', [sys '/hi_clamp'], 'Position', [300 80 340 110], 'Function', 'min', 'Inputs', '2');
-    add_line(sys, 'lo_clamp/1', 'hi_clamp/1');
-    add_line(sys, 'bat_limits/1', 'hi_clamp/2');
-    add_line(sys, 'hi_clamp/1', 'P_bat_bus_kW/1');
-    % SOC 变化率（含 DC/DC 效率折算到电池端）
-    fn2 = [sys '/soc_rate'];
-    add_block('simulink/User-Defined Functions/MATLAB Function', fn2, 'Position', [240 320 360 380]);
-    setMFCode(fn2, CODE_SOC_RATE_B, {'Bat_Cap_kWh','ASSUMED_Bat_Eff_Discharge','ASSUMED_Bat_Eff_Charge','ASSUMED_eta_dcdc'});
-    add_line(sys, 'hi_clamp/1', 'soc_rate/1');
-    add_line(sys, 'soc_rate/1', 'SOC_int/1');
-    add_line(sys, 'SOC_int/1', 'SOC/1');
+    addL(sys, 'SOC_int', 1, 'battery_ecm', 2);                       % SOC 反馈
+    addL(sys, 'battery_ecm', 5, 'SOC_int', 1);                       % dSOC_dt → 电荷积分
+    % 输出接线（ECM 出参序: 1=P_bus 2=SOC_out 3=V_t 4=I 5=dSOC 6=P_dis 7=P_chg 8=flag_pl 9=flag_dl 10=flag_lut；
+    % P_bat_bus/SOC/dis/chg 保留名；V_bat/I_bat/3 flag 新增）
+    wiring = {'battery_ecm/1','P_bat_bus_kW/1'; 'battery_ecm/2','SOC/1'; 'battery_ecm/6','P_bat_dis_avail_kW/1'; ...
+        'battery_ecm/7','P_bat_chg_avail_kW/1'; 'battery_ecm/3','V_bat_V/1'; 'battery_ecm/4','I_bat_A/1'; ...
+        'battery_ecm/8','battery_power_limited/1'; 'battery_ecm/9','battery_discriminant_limit/1'; ...
+        'battery_ecm/10','ecm_lut_boundary_flag/1'};
+    for k = 1:size(wiring, 1)
+        parts = strsplit(wiring{k,1}, '/');
+        dparts = strsplit(wiring{k,2}, '/');
+        addL(sys, parts{1}, str2double(parts{2}), dparts{1}, str2double(dparts{2}));
+    end
 end
 
 function buildUndervoltDerate(mdl, pos)
@@ -972,25 +1055,34 @@ function buildBusResidualMonitor(mdl, pos)
 end
 
 function buildFuelConsumption(mdl, pos)
-% 10_Fuel_Consumption: ∫ P_gen * BSFC(P_gen)/3600/1000
+% 10_Fuel_Consumption (Model E T-007, FR-420): per-genset 燃油 = Σ_i [∫P_i·BSFC_i/3.6e6 + 启动均摊]
+%   双路独立 BSFC PCHIP（域守卫 ON 且 P≥125 才查表，禁止 P<P_min 外推）+
+%   STARTING/SYNC 均摊 C_start（只算一次）+ OFF/COOLDOWN fuel=0
     sys = [mdl '/10_Fuel_Consumption'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
-    add_block('simulink/Sources/In1', [sys '/P_gen_actual_kW'], 'Position', [20 80 50 110]);
-    add_block('simulink/Sinks/Out1', [sys '/fuel_total_kg'], 'Position', [330 80 360 110]);
-    add_block('simulink/Lookup Tables/1-D Lookup Table', [sys '/BSFC'], 'Position', [80 60 140 110], ...
-        'BreakpointsForDimension1', 'ASSUMED_BSFC_Breakpoints', 'Table', 'ASSUMED_BSFC_Table');
-    add_line(sys, 'P_gen_actual_kW/1', 'BSFC/1');
-    add_block('simulink/Math Operations/Product', [sys '/flow'], 'Position', [170 80 210 110], 'Inputs', '**');
-    add_line(sys, 'P_gen_actual_kW/1', 'flow/1');
-    add_line(sys, 'BSFC/1', 'flow/2');
-    add_block('simulink/Math Operations/Gain', [sys '/hr2sec'], 'Position', [230 80 260 110], 'Gain', '1/3600');
-    add_line(sys, 'flow/1', 'hr2sec/1');
-    add_block('simulink/Continuous/Integrator', [sys '/fuel_int'], 'Position', [280 80 310 110], 'InitialCondition', '0');
-    add_line(sys, 'hr2sec/1', 'fuel_int/1');
-    add_block('simulink/Math Operations/Gain', [sys '/g2kg'], 'Position', [320 80 330 110], 'Gain', '1/1000');
-    add_line(sys, 'fuel_int/1', 'g2kg/1');
-    add_line(sys, 'g2kg/1', 'fuel_total_kg/1');
+    ins = {'P_DG1_kW','state_DG1','P_DG2_kW','state_DG2'};
+    for k = 1:numel(ins)
+        add_block('simulink/Sources/In1', [sys '/' ins{k}], 'Position', [15 30+55*(k-1) 45 60+55*(k-1)]);
+    end
+    outs = {'fuel_1_kg','fuel_2_kg','fuel_total_kg'};
+    for k = 1:numel(outs)
+        add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [560 40+70*(k-1) 590 70+70*(k-1)]);
+    end
+    fn = [sys '/fuel_model'];
+    add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [110 60 300 170]);
+    setMFCode(fn, model.code_fuel_e(), {'DG_BSFC_P_kW','DG_BSFC_gkWh','DG_C_start_kg','DG_t_starting_s','DG_t_sync_s'}, {'5','5','','',''});
+    for k = 1:4
+        addL(sys, ins{k}, 1, 'fuel_model', k);
+    end
+    % 三个积分器：瞬时率 [kg/s] → 累计 [kg]
+    rates = {'fuel_rate_1_kg_s','fuel_1_kg'; 'fuel_rate_2_kg_s','fuel_2_kg'; 'fuel_rate_total_kg_s','fuel_total_kg'};
+    for k = 1:3
+        add_block('simulink/Continuous/Integrator', [sys '/int_' num2str(k)], 'Position', [350 40+70*(k-1) 390 80+70*(k-1)], ...
+            'InitialCondition', '0');
+        addL(sys, 'fuel_model', k, ['int_' num2str(k)], 1);
+        addL(sys, ['int_' num2str(k)], 1, outs{k}, 1);
+    end
 end
 
 function buildVoyageStop(mdl, pos)
@@ -1084,10 +1176,18 @@ function wireTopLevel(mdl)
     L('04_Load_Measurement/1', sprintf('05_EMS_Controller/%d', emsPort('P_load_total_kW')));
     L('04_Load_Measurement/1', '13_DC_Bus/3');                        % P_load -> 母线
     L('04_Load_Measurement/1', '09_Bus_Residual_Monitor/3');
-    L(sprintf('05_EMS_Controller/%d', emsPort('P_gen_ref_kW')), '06_Genset_Average_Plant/1');
-    L('06_Genset_Average_Plant/1', '13_DC_Bus/1');                    % P_gen -> 母线
-    L('06_Genset_Average_Plant/1', '09_Bus_Residual_Monitor/1');
-    L('06_Genset_Average_Plant/1', '10_Fuel_Consumption/1');
+    % Model E：EMS 聚合参考 → PLACEHOLDER 组合适配器（FR-421）→ 双机 Plant（T-006）
+    L(sprintf('05_EMS_Controller/%d', emsPort('P_gen_ref_kW')), 'Legacy_Commitment_Adapter/1');
+    L('Legacy_Commitment_Adapter/1', '06_Genset_System/1');           % DG1_enable (cmd_start)
+    L('Legacy_Commitment_Adapter/2', '06_Genset_System/2');           % P_DG1_ref
+    L('Legacy_Commitment_Adapter/3', '06_Genset_System/3');           % DG2_enable (cmd_start)
+    L('Legacy_Commitment_Adapter/4', '06_Genset_System/4');           % P_DG2_ref
+    L('06_Genset_System/9', '13_DC_Bus/1');                           % P_gen_actual -> 母线
+    L('06_Genset_System/9', '09_Bus_Residual_Monitor/1');
+    L('06_Genset_System/1', '10_Fuel_Consumption/1');                 % P_DG1 -> per-genset 燃油
+    L('06_Genset_System/2', '10_Fuel_Consumption/2');                 % state_DG1
+    L('06_Genset_System/5', '10_Fuel_Consumption/3');                 % P_DG2
+    L('06_Genset_System/6', '10_Fuel_Consumption/4');                 % state_DG2
     L('13_DC_Bus/1', '14_Battery_Converter/1');                       % V_dc -> 下垂
     L('13_DC_Bus/1', '15_Bus_Voltage_Monitor/1');                     % V_dc -> 监视
     L('13_DC_Bus/1', '08_Undervolt_Derate/1');                        % V_dc -> 降额
@@ -1097,10 +1197,16 @@ function wireTopLevel(mdl)
     L('08_Undervolt_Derate/1', '03_Propulsion_Plant/2');              % P_prop_limit
     L('t/1', sprintf('05_EMS_Controller/%d', emsPort('t')));
     % 仅记录信号的输出接 Terminator（保证信号线存在、可命名）
-    terms = {'01_Scenario_Manager/5'; '03_Propulsion_Plant/5'; '03_Propulsion_Plant/6'; ...
-        '03_Propulsion_Plant/7'; '14_Battery_Converter/3'; '14_Battery_Converter/4'; ...
-        '09_Bus_Residual_Monitor/1'; '10_Fuel_Consumption/1'; '08_Undervolt_Derate/2'; ...
-        '15_Bus_Voltage_Monitor/1'; '15_Bus_Voltage_Monitor/2'};
+    terms = {'01_Scenario_Manager/5'; ...                             % scenario_id
+        '03_Propulsion_Plant/5'; '03_Propulsion_Plant/6'; '03_Propulsion_Plant/7'; ...
+        '03_Propulsion_Plant/8'; '03_Propulsion_Plant/9'; '03_Propulsion_Plant/10'; ...
+        '14_Battery_Converter/3'; '14_Battery_Converter/4'; '14_Battery_Converter/5'; ...
+        '14_Battery_Converter/6'; '14_Battery_Converter/7'; '14_Battery_Converter/8'; ...
+        '14_Battery_Converter/9'; ...
+        '09_Bus_Residual_Monitor/1'; '10_Fuel_Consumption/1'; '10_Fuel_Consumption/2'; ...
+        '10_Fuel_Consumption/3'; '08_Undervolt_Derate/2'; ...
+        '15_Bus_Voltage_Monitor/1'; '15_Bus_Voltage_Monitor/2'; ...
+        '06_Genset_System/4'; '06_Genset_System/7'; '06_Genset_System/8'};
     for k = 1:numel(terms)
         tb = sprintf('T_log_%d', k);
         add_block('simulink/Sinks/Terminator', [mdl '/' tb], 'Position', [960 60+40*(k-1) 980 80+40*(k-1)]);
@@ -1142,22 +1248,39 @@ function configureLogging(mdl)
     L([mdl '/03_Propulsion_Plant/R_hull_N'], 1, 'R_hull_N');
     L([mdl '/03_Propulsion_Plant/F_prop_eff_N'], 1, 'F_prop_eff_N');
     L([mdl '/03_Propulsion_Plant/n_prop_rpm'], 1, 'n_prop_rpm');
+    L([mdl '/03_Propulsion_Plant/R_shallow_N'], 1, 'R_shallow_N');
+    L([mdl '/03_Propulsion_Plant/HT_ratio'], 1, 'HT_ratio');
+    L([mdl '/03_Propulsion_Plant/domain_warning'], 1, 'domain_warning');
     L([mdl '/04_Load_Measurement/P_load_total_kW'], 1, 'P_load_total_kW');
     % P_gen_ref_kW：在七个变体内部的 clamp 输出端口记录（活动变体生效；law=4 EMS_Fixed_ECMS T-103、law=5 EMS_SOC_Adaptive_ECMS T-105、law=6 EMS_Oracle_ECMS T-106、law=7 EMS_NN_AECMS T-204）
     for v = {'EMS_Baseline', 'EMS_AI_Enhanced', 'EMS_ScheduledFF', 'EMS_Fixed_ECMS', 'EMS_SOC_Adaptive_ECMS', 'EMS_Oracle_ECMS', 'EMS_NN_AECMS'}
         logPort([mdl '/05_EMS_Controller/' v{1} '/clamp'], 1, 'P_gen_ref_kW');
     end
-    L([mdl '/06_Genset_Average_Plant/P_gen_actual_kW'], 1, 'P_gen_actual_kW');
-    L([mdl '/06_Genset_Average_Plant/ramp'], 1, 'P_gen_rampout_kW');
+    L([mdl '/06_Genset_System/P_gen_actual_kW'], 1, 'P_gen_actual_kW');
+    L([mdl '/06_Genset_System/P_DG1_kW'], 1, 'P_DG1_kW');
+    L([mdl '/06_Genset_System/P_DG2_kW'], 1, 'P_DG2_kW');
+    L([mdl '/06_Genset_System/state_DG1'], 1, 'state_DG1');
+    L([mdl '/06_Genset_System/state_DG2'], 1, 'state_DG2');
+    L([mdl '/06_Genset_System/below_min_DG1'], 1, 'below_min_DG1');
+    L([mdl '/06_Genset_System/below_min_DG2'], 1, 'below_min_DG2');
+    L([mdl '/06_Genset_System/start_count_DG1'], 1, 'start_count_DG1');
+    L([mdl '/06_Genset_System/start_count_DG2'], 1, 'start_count_DG2');
     L([mdl '/14_Battery_Converter/P_bat_bus_kW'], 1, 'P_bat_actual_kW');
     L([mdl '/14_Battery_Converter/SOC'], 1, 'SOC');
     L([mdl '/14_Battery_Converter/P_bat_dis_avail_kW'], 1, 'P_bat_dis_avail_kW');
+    L([mdl '/14_Battery_Converter/V_bat_V'], 1, 'V_bat_V');
+    L([mdl '/14_Battery_Converter/I_bat_A'], 1, 'I_bat_A');
+    L([mdl '/14_Battery_Converter/battery_power_limited'], 1, 'battery_power_limited');
+    L([mdl '/14_Battery_Converter/battery_discriminant_limit'], 1, 'battery_discriminant_limit');
+    L([mdl '/14_Battery_Converter/ecm_lut_boundary_flag'], 1, 'ecm_lut_boundary_flag');
     L([mdl '/08_Undervolt_Derate/P_prop_limit_kW'], 1, 'P_prop_limit_kW');
     L([mdl '/08_Undervolt_Derate/P_unserved_kW'], 1, 'P_unserved_kW');
     L([mdl '/09_Bus_Residual_Monitor/P_bus_residual_kW'], 1, 'P_bus_residual_kW');
     L([mdl '/13_DC_Bus/V_dc_V'], 1, 'V_dc_V');
     L([mdl '/15_Bus_Voltage_Monitor/alarm_steady'], 1, 'alarm_steady');
     L([mdl '/15_Bus_Voltage_Monitor/alarm_transient'], 1, 'alarm_transient');
+    L([mdl '/10_Fuel_Consumption/fuel_1_kg'], 1, 'fuel_1_kg');
+    L([mdl '/10_Fuel_Consumption/fuel_2_kg'], 1, 'fuel_2_kg');
     L([mdl '/10_Fuel_Consumption/fuel_total_kg'], 1, 'fuel_total_kg');
     % AI 变体内部信号
     ai = [mdl '/05_EMS_Controller/EMS_AI_Enhanced/ai_predict'];
@@ -1230,6 +1353,23 @@ function cleanupVariantPorts(sys, keepIn, keepOut)
             try, delete_block(p); catch, end
         end
     end
+end
+
+function addL(sys, srcBlk, srcPort, dstBlk, dstPort)
+% [T-010] 句柄式 add_line（子系统内 MATLAB Function 块的字符串端口解析不可靠，R2026a）
+    ps = get_param([sys '/' srcBlk], 'PortHandles');
+    pd = get_param([sys '/' dstBlk], 'PortHandles');
+    add_line(sys, ps.Outport(srcPort), pd.Inport(dstPort));
+end
+
+function setDiscreteMF(blkPath, st)
+% [T-010] MATLAB Function 块离散化（persistent 状态块必需）：EMChart.ChartUpdate=DISCRETE
+%   R2026a 中块级 set_param 无 SampleTime 参数；采样时间在 Stateflow.EMChart 上
+    rt = sfroot;
+    ch = rt.find('-isa', 'Stateflow.EMChart', 'Path', blkPath);
+    if numel(ch) ~= 1, error('MATLAB Function 块未找到: %s', blkPath); end
+    ch.ChartUpdate = 'DISCRETE';
+    ch.SampleTime = st;
 end
 
 function setMFCode(blkPath, code, paramNames, paramSizes, twoPass)
@@ -1546,30 +1686,9 @@ function c = CODE_SCHED_FF()
         'end\n']);
 end
 
-function c = CODE_PROPELLER()
-    c = sprintf([ ...
-        'function [F_prop_eff, Q_prop, P_hydro_kW, V_A] = PropellerHydroSimple(...\n' ...
-        '    n_prop_rpm, V_ship_mps, V_current_mps, wake_fraction, K_Fw, K_Fv, K_Qw, K_Qv)\n' ...
-        '%% 简化螺旋桨水动力模型（复用原模型，未修改）\n' ...
-        'omega = n_prop_rpm * pi / 30;\n' ...
-        'V_rel = V_ship_mps - V_current_mps;\n' ...
-        'V_A = (1 - wake_fraction) * V_rel;\n' ...
-        'F_prop_eff = K_Fw * omega * abs(omega) - K_Fv * V_A * abs(V_A);\n' ...
-        'Q_prop = K_Qw * omega * abs(omega) - K_Qv * V_A * abs(V_A);\n' ...
-        'P_hydro_kW = Q_prop * omega / 1000;\n' ...
-        'end\n']);
-end
+% [T-010 集成] CODE_PROPELLER 已退役：由 +model/code_*_e.m 包函数取代（链 A/C 交付）
 
-function c = CODE_HULL()
-    c = sprintf([ ...
-        'function [dVdt, R_hull] = HullLongitudinalDynamics(...\n' ...
-        '    V_ship, F_prop_eff, V_current, F_env, Hull_K_R, Ship_Mass, resistance_multiplier)\n' ...
-        '%% 船体纵向动力学（原模型基础上增加阻力倍率输入）\n' ...
-        'V_rel = V_ship - V_current;\n' ...
-        'R_hull = resistance_multiplier * Hull_K_R * V_rel * abs(V_rel);\n' ...
-        'dVdt = (F_prop_eff - R_hull + F_env) / Ship_Mass;\n' ...
-        'end\n']);
-end
+% [T-010 集成] CODE_HULL 已退役：由 +model/code_*_e.m 包函数取代（链 A/C 交付）
 
 function c = CODE_EMS_TARGET_B()
     c = sprintf([ ...
@@ -1941,20 +2060,7 @@ function c = CODE_ECMS_NN()
         'end\n'], fwd);
 end
 
-function c = CODE_SOC_RATE_B()
-    c = sprintf([ ...
-        'function r = soc_rate(P_bus)\n' ...
-        '%% SOC 变化率：P_bus 为母线侧功率；先折算到电池端（含 DC/DC 效率）\n' ...
-        'E = Bat_Cap_kWh * 3600;\n' ...
-        'if P_bus > 0\n' ...
-        '    P_term = P_bus / ASSUMED_eta_dcdc;\n' ...
-        '    r = -(P_term / ASSUMED_Bat_Eff_Discharge) / E;\n' ...
-        'else\n' ...
-        '    P_term = P_bus * ASSUMED_eta_dcdc;\n' ...
-        '    r = -P_term * ASSUMED_Bat_Eff_Charge / E;\n' ...
-        'end\n' ...
-        'end\n']);
-end
+% [T-010 集成] CODE_SOC_RATE_B 已退役：由 +model/code_*_e.m 包函数取代（链 A/C 交付）
 
 function c = CODE_DVDT()
     c = sprintf([ ...
@@ -1983,28 +2089,7 @@ function c = CODE_CCS_CHECK()
         'end\n']);
 end
 
-function c = CODE_BAT_LIMITS()
-    c = sprintf([ ...
-        'function [dis, chg] = bat_limits(SOC)\n' ...
-        '%% 电池充放电可用功率（SOC 降额）\n' ...
-        'if SOC <= ASSUMED_SOC_min\n' ...
-        '    dis = 0;\n' ...
-        'elseif SOC >= ASSUMED_SOC_DisDerate_Start\n' ...
-        '    dis = ASSUMED_Bat_DischargeLimit;\n' ...
-        'else\n' ...
-        '    dis = ASSUMED_Bat_DischargeLimit * (SOC - ASSUMED_SOC_min) / ...\n' ...
-        '        (ASSUMED_SOC_DisDerate_Start - ASSUMED_SOC_min);\n' ...
-        'end\n' ...
-        'if SOC >= ASSUMED_SOC_max\n' ...
-        '    chg = 0;\n' ...
-        'elseif SOC <= ASSUMED_SOC_ChgDerate_Start\n' ...
-        '    chg = ASSUMED_Bat_ChargeLimit;\n' ...
-        'else\n' ...
-        '    chg = ASSUMED_Bat_ChargeLimit * (ASSUMED_SOC_max - SOC) / ...\n' ...
-        '        (ASSUMED_SOC_max - ASSUMED_SOC_ChgDerate_Start);\n' ...
-        'end\n' ...
-        'end\n']);
-end
+% [T-010 集成] CODE_BAT_LIMITS 已退役：由 +model/code_*_e.m 包函数取代（链 A/C 交付）
 
 function c = CODE_SOC_RATE()
     c = sprintf([ ...
