@@ -18,6 +18,9 @@ function out = run_scenario_sim(mdl, SCN, mode, stopTimeLimit)
     assignin('base', 'VOYAGE_CURRENT_MODE', double(isTimeMode));
     assignin('base', 'VOYAGE_CURRENT_TIME_S', ecms2.scn_field(SCN, 'current_time_s', [0 1]));
     assignin('base', 'VOYAGE_CURRENT_VALUE_MPS', ecms2.scn_field(SCN, 'current_value_mps', [0 0]));
+    % Model E T-003（FR-414）：水深环境输入逐航次注入（默认 20 m 深水渐近，
+    % 与 ModelE_TestScenarios.m 的 VOYAGE_WATER_DEPTH_M 默认一致）
+    assignin('base', 'VOYAGE_WATER_DEPTH_M', ecms2.scn_field(SCN, 'water_depth_m', 20.0));
     % 固定步长 0.01 s：StopTime 需为步长整数倍
     stopTimeLimit = floor(stopTimeLimit * 100) / 100;
     set_param(mdl, 'StopTime', sprintf('%.2f', stopTimeLimit));
