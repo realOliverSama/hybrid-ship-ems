@@ -67,7 +67,7 @@ Design: `./design.md`
   - Notes: resistance_multiplier 端口保留（默认 1.0，语义=通用阻力不确定度旋钮，
     浅滩语义退役——注释写明）；**不改名为 Environment_Input**（D-7：C 包才重构工况语义）
 
-- [ ] 4. 船体阻力重构与浅水增量（含 H/T 单一事实源与单元测试）
+- [x] 4. 船体阻力重构与浅水增量（含 H/T 单一事实源与单元测试）
   - ID: T-004
   - Requirement(s): FR-412, FR-413, FR-415, NFR-411
   - Roadmap: T-403 + T-404（Plant 部分）
@@ -80,7 +80,7 @@ Design: `./design.md`
     集成 smoke：静水 V↑⇒R↑、固定 V 下 h↓⇒R↑
   - Notes: ν=1.19e−6 m²/s；K_R=890 冻结（唯一事实源，禁止执行中重新论证）
 
-- [ ] 5. 螺旋桨四 K 重标定 + w(H/T) 信号化 + 效率链审计
+- [x] 5. 螺旋桨四 K 重标定 + w(H/T) 信号化 + 效率链审计
   - ID: T-005
   - Requirement(s): FR-416, FR-417（部分）, FR-412 连带
   - Roadmap: T-405 + T-406（模型部分）
@@ -94,7 +94,7 @@ Design: `./design.md`
     模型编译；效率链审计落盘
   - Notes: **禁止沿用 Model D 的 K 推导值**（D-8：w 变更后旧 K 不满足设计点平衡）
 
-- [ ] 6. 双发电机组 DG1/DG2 与启停状态机
+- [x] 6. 双发电机组 DG1/DG2 与启停状态机
   - ID: T-006
   - Requirement(s): FR-418, FR-419, FR-421
   - Roadmap: T-407 + T-408
@@ -113,7 +113,7 @@ Design: `./design.md`
   - Notes: MATLAB Function persistent 实现（不用 Stateflow）；无 min up/down（D-4）；
     PLACEHOLDER 永久标注
 
-- [ ] 7. per-genset 燃油模型
+- [x] 7. per-genset 燃油模型
   - ID: T-007
   - Requirement(s): FR-420
   - Roadmap: T-409
@@ -126,7 +126,7 @@ Design: `./design.md`
     集成：1×500 kW 与 2×250 kW 同负荷燃油差 >1%（经济性可区分）
   - Notes: 禁止 P<P_min 外推（FR-420 红线）
 
-- [ ] 8. 电池 1RC ECM
+- [x] 8. 电池 1RC ECM
   - ID: T-008
   - Requirement(s): FR-422, FR-423, NFR-409, NFR-411
   - Roadmap: T-410
@@ -141,7 +141,7 @@ Design: `./design.md`
   - Notes: I>0=放电；ASSUMED_Bat_Eff_* 定义保留（ECMS k_eq 引用，INHERITED_LEGACY）
     但 Plant 侧停用
 
-- [ ] 9. Battery SOP 四约束
+- [x] 9. Battery SOP 四约束
   - ID: T-009
   - Requirement(s): FR-424
   - Roadmap: T-411
@@ -153,7 +153,7 @@ Design: `./design.md`
     输出被正确限幅
   - Notes: 依赖 T-008 完成
 
-- [ ] 10. builder 集成、Plant 接口定义与七变体编译
+- [x] 10. builder 集成、Plant 接口定义与七变体编译
   - ID: T-010
   - Requirement(s): FR-426, NFR-405
   - Roadmap: T-403~T-411 集成
@@ -166,7 +166,7 @@ Design: `./design.md`
     无代数环诊断
   - Notes: 依赖 T-003~T-009 全部完成；兼容 smoke 不作物理判据（D-9）
 
-- [ ] 11. 螺旋桨 ±20% OAT 敏感性扫掠
+- [x] 11. 螺旋桨 ±20% OAT 敏感性扫掠
   - ID: T-011
   - Requirement(s): FR-417
   - Roadmap: T-406（验证部分）
@@ -178,7 +178,7 @@ Design: `./design.md`
   - Validation: 15 cases 全部跑通零失败；报告含"结论稳健域"明确陈述
   - Notes: A1 架构审计 a2_consequence 承诺项；其余敏感性档位只登记不扫（Q1）
 
-- [ ] 12. T-412 整体物理 Gate（专用 Plant 测试台）
+- [x] 12. T-412 整体物理 Gate（专用 Plant 测试台）
   - ID: T-012
   - Requirement(s): FR-425, FR-426
   - Roadmap: T-412
