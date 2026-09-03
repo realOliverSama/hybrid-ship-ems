@@ -19,6 +19,7 @@ addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 % 配置脚本必须在基础工作区执行：模块参数表达式在 base 中求值
 evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m')));
 evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_TestScenarios.m')));
+model.write_config_manifest(ROOT, ModelE_Sensitivity_Profile());   % design §2：每次 build 写 manifest
 
 MDL = 'HybridShip_ModelE';
 mdlPath = fullfile(ROOT, 'model', [MDL '.slx']);
@@ -119,12 +120,12 @@ model.write_param_csv(fullfile(ROOT, 'reports', 'parameter_audit.csv'));
 end
 
 function buildScenarioManager(mdl, pos)
-% 01_Scenario_Manager: 输出 v_cmd/v_current/resistance_multiplier/P_hotel/scenario_id
+% 01_Scenario_Manager: 输出 v_cmd/v_current/resistance_multiplier/P_hotel/scenario_id/water_depth_m
     sys = [mdl '/01_Scenario_Manager'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
     add_block('simulink/Sources/In1', [sys '/x_ship_m'], 'Position', [20 80 50 110]);
-    outs = {'v_cmd_mps','v_current_mps','resistance_multiplier','P_hotel_kW','scenario_id'};
+    outs = {'v_cmd_mps','v_current_mps','resistance_multiplier','P_hotel_kW','scenario_id','water_depth_m'};
     for k = 1:numel(outs)
         add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [430 30+50*(k-1) 460 60+50*(k-1)]);
     end
@@ -195,6 +196,13 @@ function buildScenarioManager(mdl, pos)
     add_block('simulink/Sources/Constant', [sys '/ScenID'], 'Position', [30 200 100 230], ...
         'Value', 'SCN.id');
     add_line(sys, 'ScenID/1', 'scenario_id/1');
+    % 水深环境输入（Model E T-003，FR-414）：VOYAGE_WATER_DEPTH_M 编译期求值
+    % （Simulink.SimulationInput.setVariable 可逐航次注入；默认 20 m 深水渐近，
+    %  见 ModelE_TestScenarios.m）。浅滩语义由 water_depth 表达（res_mult 浅滩语义退役）；
+    %  不改名为 Environment_Input（D-7：C 包才重构工况语义）。
+    add_block('simulink/Sources/Constant', [sys '/C_water_depth'], 'Position', [30 250 100 280], ...
+        'Value', 'VOYAGE_WATER_DEPTH_M');
+    add_line(sys, 'C_water_depth/1', 'water_depth_m/1');
 end
 
 function buildSpeedController(mdl, pos)
@@ -231,7 +239,7 @@ function buildPropulsionPlant(mdl, pos)
     sys = [mdl '/03_Propulsion_Plant'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
-    ins = {'P_prop_demand_kW','P_prop_limit_kW','v_current_mps','resistance_multiplier'};
+    ins = {'P_prop_demand_kW','P_prop_limit_kW','v_current_mps','resistance_multiplier','water_depth_m'};
     for k = 1:numel(ins)
         add_block('simulink/Sources/In1', [sys '/' ins{k}], 'Position', [15 30+45*(k-1) 45 60+45*(k-1)]);
     end
@@ -1061,6 +1069,7 @@ function wireTopLevel(mdl)
     L('01_Scenario_Manager/1', '02_Ship_Speed_Controller/1');          % v_cmd
     L('01_Scenario_Manager/2', '03_Propulsion_Plant/3');               % v_current
     L('01_Scenario_Manager/3', '03_Propulsion_Plant/4');               % resistance_multiplier
+    L('01_Scenario_Manager/6', '03_Propulsion_Plant/5');               % water_depth_m (T-003)
     L('01_Scenario_Manager/4', '04_Load_Measurement/2');               % P_hotel
     L('02_Ship_Speed_Controller/1', '03_Propulsion_Plant/1');          % P_prop_demand
     L('02_Ship_Speed_Controller/1', '08_Undervolt_Derate/2');          % demand -> 欠压降额
