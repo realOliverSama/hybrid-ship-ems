@@ -1,7 +1,7 @@
 # Phase 4-A1 — Model E 建模与参数审计 Tasks
 
 Spec: `phase4-a1-model-e-audit`  
-Status: implementation-in-progress
+Status: implementation-complete
 Created: 2026-09-03  
 Brainstorm: `./brainstorm.md`  
 Requirements: `./requirements.md`  
@@ -69,7 +69,7 @@ Design: `./design.md`
   - Validation: sha256 前后逐位一致；`git status --short model/` 为空；README 条目与实际文件一致（§20）
   - Notes: 附 A1 会话的绝对路径扫描（NFR-402，`grep -rE` 排除 URL/env）
 
-- [ ] 9. 用户评审门
+- [x] 9. 用户评审门
   - ID: T-009
   - Requirement(s): AC-401~AC-407
   - Files/areas: 两份审计报告 + gate_result_a1.json + 本文件全部勾选
