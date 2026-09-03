@@ -10,6 +10,7 @@ Phase 4（系统优化重构，`Phase4` 分支）各工作包的审计报告、�
 | 条目 | 类型 | 说明 |
 |---|---|---|
 | `a1_model_audit/` | 目录 | 工作包 A 第一段（spec `phase4-a1-model-e-audit`）：Model D → Model E 建模审计 + 参数真实性审计产物（架构审计 JSON/报告、参数总表 CSV、Gate 结果与脚本） |
+| `a2_model_e/` | 目录 | 工作包 A 第二段（spec `phase4-a2-model-e-construction`）：Model E v1 参数证据链（值/provenance/文献 [1]~[17]/推导式 + 效率链审计 + 螺旋桨重标定推导）+ 螺旋桨 ±20% OAT 敏感性报告 |
 
 ## 维护规则
 

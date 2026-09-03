@@ -1,115 +1,99 @@
-# HybridShip Model D — 定时前馈 EMS 研究副本
+# README_Model.md — Model E（Phase 4 Physics）工作区说明书
 
-> **Model D（本项目）**：由 Model B（直流母线电气层）封存基线复制而来、完全独立命名的研究工程。
-> 用于研究基于 `(ΔP_peak, t_peak)` 双输出负荷预测的**定时前馈 EMS**（C0 Baseline / C1 即时前馈 / C2 定时前馈 三控制律对照）。
-> 本副本所有文件/函数/模型名均使用 Model D 独立命名，不依赖 `model/simulink/`（Model A/B 封存工程）的路径引用（`.venv_tf` 符号链接除外）。
-> 构建入口：`scripts/10_build_modelD.m`（重建 `model/HybridShip_ModelD_DCBus.slx`）。
+> spec：`.specs/phase4-a2-model-e-construction`（四门禁 2026-09-04 用户批准）；分支 `feat/phase4-a2-model-e`
+> 参数证据链：`docs/phase4/a2_model_e/modelE_parameter_evidence.md`；Model D 版本历史见
+> `model/simulink_modelD_(EMS_NN_AECMS)/README_Model.md`（本文件只描述 Model E 差异与现状）。
 
----
+## 1. 用了什么 Simulink 模型
 
-以下为源自 Model B 的原 README 内容（Model D 沿用其基线说明）：
+- **`model/HybridShip_ModelE.slx`**——Model E 主模型（builder `scripts/+model/build_model_e.m`
+  全脚本驱动生成，禁 GUI 修改）。Model 体系 = **Model D 复制分叉 + Plant 物理升级**
+  （Phase 4 工作包 A 第二段 T-403~T-411 施工，T-412 Gate 验收）。
+- 配套变体：无（PlantStep/HIL 实时化推迟后续 Phase；`HybridShip_ModelE.slx` 为唯一正式模型）。
+- 500 t representative hull 口径（K_R=890、几何 53.45/7.13/2.188/C_B=0.60；`target_vessel_confirmed=false`）；
+  **与 Model D 绝对量不可比是设计意图**。
 
-# HybridShip Model (MVP) — 最小闭环验证模型
+## 2. Simulink 模型结构（顶层 16 块，由总到分）
 
-硕士论文最小闭环验证用简化模型：静止起步 → 目标船速巡航 → 固定航程终止，
-用于生成负荷预测数据集、比较传统规则型 EMS 与预测增强 EMS，并为 STM32N6 推理接入预留接口。
+顶层功率流：`01_Scenario_Manager` → `02_Ship_Speed_Controller` → `03_Propulsion_Plant` →
+`04_Load_Measurement` → `13_DC_Bus`（750 V 聚合单母线）⇄ `14_Battery_Converter`；
+`05_EMS_Controller`（七变体）→ `Legacy_Commitment_Adapter`（PLACEHOLDER）→ `06_Genset_System`
+→ 母线/燃油；`08_Undervolt_Derate`、`09_Bus_Residual_Monitor`、`10_Fuel_Consumption`、
+`11_Voyage_Stop_Logic`、`12_Data_Logging`、`15_Bus_Voltage_Monitor`。
 
-**v2.1 更新（2026-08）**：
-1. **双推进支路等效**：实船为左右舷双推进（图纸单支路额定 ×2），对称工况下聚合建模——
-   电机 700 kW / 发电机 1000 kW / 电池 1200 kWh / 聚合爬坡 40 kW/s；
-2. **按船型重新标定**（长江危化品应急处置船/公务船）：服务航速 11 kn（5.66 m/s），
-   Fn∇≈0.57、R/W≈0.0058 文献区间交叉校核，Hull_K_R≈1780 N/(m/s)²，
-   静水功率受限极速 ≈11.5 kn；除发动机/电池/推进电机为图纸确定值外，
-   其余参数均为 ASSUMED 估计值（需船模试验/CFD 确认）；
-3. **新增机动工况**：S07 桥区限速-急加速 / S08 浅滩群阻力带 / S09 应急出动急加速
-   （距离触发 v_cmd 剖面 + 多段阻力带，01_Scenario_Manager 已扩展）；
-4. **AI 闭环验证**：MLP 负荷预测器环内推理（AI_Pred_Source=3），
-   历史窗口 22 s 经粗网格+二分细化自动选优（python/train_load_predictor.py），
-   int8 TFLite 13.7 KB 可部署 STM32N6；对比报告见 reports/AI_vs_Baseline_report.md。
+关键子系统内部（Model E 相对 Model D 的变更全部标注 ★）：
 
-## 目录结构
+- **`01_Scenario_Manager`** ★ 新增 `water_depth_m` 输出（Out6，Constant=VOYAGE_WATER_DEPTH_M
+  编译期求值、可 SimulationInput 逐航次注入）；resistance_multiplier 保留为通用不确定度旋钮
+  （浅滩语义退役，D-7 不改名 Environment_Input）。
+- **`02_Ship_Speed_Controller`**（KEEP，不动）：PI 船速环（Kp/Ki 抗饱和）→ P_prop_demand_kW。
+- **`03_Propulsion_Plant`** ★ 核心施工区：
+  - `Ship_Hull_Dynamics_E`（替代 CODE_HULL）：R_deep = res_mult·K_R·V_rel|V_rel| 锚定 +
+    **浅水相对增量 Δr**（Δk=0.644(H/T)^−1.72 Millward[4] + C_F* 修正 c1/c2/c3 Zhang[1][3]；
+    H/T>3 深水渐近 Δr=0；H/T<1.2 clamp+MODEL_DOMAIN_WARNING）；输出 dVdt/R_total/R_shallow/
+    **HT_ratio（H/T 单一事实源输出）**/domain_warning。
+  - `Wake_vs_HT` ★ 新模块：w = w_deep(0.10, Molland 回归 D-3) + Δw_Zhang(H/T)（相对增量、
+    linear 插值 clamp [1.2,2.7]）；输入=hull HT_ratio 经 **Unit Delay**（NFR-409 代数环松弛，
+    水深工况内恒定物理零影响）。
+  - `Propeller_Hydrodynamics`：简化二次模型保持（F=K_Fw·ω|ω|−K_Fv·V_A|V_A|），**wake_fraction
+    由 Parameter 改输入信号 w_signal**；四 K 按 w_deep=0.10 重标定（D-8：K_Fw=128.107/
+    K_Fv=1099.02/K_Qw=37.410/K_Qv=160.47，设计点推力复原 F≈57005 N）；D/K_T/K_Q/P/D
+    **INTENTIONALLY UNRESOLVED**。
+  - 转矩链/轴系/齿轮结构继承（Gear_Ratio=6.08、Gear_Eff=0.96 D-1）。
+- **`04_Load_Measurement`**（KEEP）：P_load = max(P_prop,0) + P_hotel。
+- **`05_EMS_Controller`**（KEEP，七变体 Variant Subsystem 不动）：law=0 Baseline / 1 AI_Enhanced /
+  2 ScheduledFF / 4 FixedECMS / 5 SOC-Adaptive / 6 Oracle / 7 NN-AECMS；输出仍为聚合
+  P_gen_ref_kW（FR-426 接口契约）。
+- **`Legacy_Commitment_Adapter`** ★ 新模块（**PLACEHOLDER，FR-421 防线：不得用于任何正式
+  EMS 经济性/节油结论**；B 包 PMS v2 直接替换）：聚合 P_gen_ref_kW → rule（≤500→仅 DG1；
+  >500→DG1=500+DG2 余量）+ force 通道（scenario 强制组合测试用）。
+- **`06_Genset_System`** ★（替代 06_Genset_Average_Plant）：DG1/DG2 各 500 kW 独立 Plant，
+  每机组 `GensetUnitE`（MATLAB Function persistent，**离散 0.01 s 采样**）：
+  状态机 OFF→STARTING(2500 tick/25 s)→SYNCHRONIZING(500/5 s)→ON→COOLDOWN(3000/30 s)→OFF
+  （整数 tick 判据 OQ-6；aborted-start 不可中断+pending_stop；**OFF 态 stop 优先**（2026-09-04
+  主 Agent 裁决）；无 min up/down（D-4））；ON 态 ref clamp[P_min=125, 500]+below_min_flag；
+  爬坡 20 kW/s + 一阶 τ=5 s；P_gen_actual=P1+P2。
+- **`08_Undervolt_Derate`**（KEEP）：CCS 2026 欠压降额保护链（E09 验证生效）。
+- **`09_Bus_Residual_Monitor`**（KEEP）：P_residual=P_gen·η_rect+P_bat−P_load（G5 能量闭合基础）。
+- **`10_Fuel_Consumption`** ★ 重构：`FuelModelE` per-genset——双路独立 BSFC PCHIP
+  （节点 {125:600, 250:547, 375:447, 400:427, 500:453} g/kWh，[11] 形状×[16] 427 锚定），
+  域守卫（ON 且 P≥125 才查表，禁止外推）；STARTING/SYNC 均摊 C_start=0.6 kg（只算一次）；
+  OFF/COOLDOWN=0；三个 Integrator → fuel_1/fuel_2/fuel_total_kg。
+- **`11_Voyage_Stop_Logic`** `12_Data_Logging` `13_DC_Bus` `15_Bus_Voltage_Monitor`（KEEP，继承）。
+- **`14_Battery_Converter`** ★ 重构：droop grid-forming 保留 → `BatteryECM`（MATLAB Function
+  persistent V_1，离散 0.01 s，20 入参全端口）：LFP 1RC——V_t=OCV(SOC)−I·R_0(SOC)−V_1、
+  V̇_1=−V_1/(R_1C_1)+I/C_1；**解析求 I**（OQ-9：I=2P_t/(E+√(E²−4R_0P_t) 小根，无迭代无代数环）；
+  D<0 → P_actual=P_max,R + 双 flag（power-limit semantics）；充电方向 R_0×1.15；
+  **SOC 电荷积分**（放电 −I·dt/Q、充电 −η_coul·I·dt/Q，η_coul=0.98 [14]，禁能量积分 Q5）；
+  LUT 域 [0.1,0.9] 域外 clamp+`ecm_lut_boundary_flag`；**SOP 四约束** P_avail=min(P_current,
+  P_voltage, P_SOC, P_converter=1050 kW bus-side)（`+model/battery_sop_limits.m` 逐字内联）；
+  新输出 V_bat_V/I_bat_A/三 flag。
 
-```
-Model_MVP/
-├── model/            HybridShip_Model_MVP.slx（可独立打开）
-├── scripts/          01~07 可重复执行脚本（+model/ 工具函数包）
-├── config/           Model_Parameters.m（统一参数表, 69 项）
-│                     Model_Scenarios.m（S01~S06 工况定义）
-├── python/           train_load_predictor.py（STM32N6 导向训练程序）
-│                     export/（.keras / fp32+int8 .tflite / mlp_weights.mat / training_report.json）
-├── scenarios/        工况数据（预留，SCN 由 config 生成，S01~S09）
-├── results/          烟雾测试图 results/T0*/*.png；AI 对比 results/ai_compare/S0*/*.png
-├── datasets/         航次数据 raw/run_XXXX.{mat,csv,metadata.json}；train/val/test
-├── reports/          legacy_model_audit.md, parameter_audit.csv, Model_build_report.md,
-│                     smoke_summary.md, AI_vs_Baseline_report.md, ai/*.png
-└── legacy_reference/ 原模型只读副本 HybridShip0730.slx 及参数脚本
-```
+## 3. EMS 控制逻辑（继承，本 spec 不修改）
 
-## 使用流程
+- 七变体语义与 Model D 完全一致（law 语义/EMS_WORK_MODE 手动半自动全自动/k_eq 折算）；
+  ECMS 内部 BSFC 仍用聚合旧表（INHERITED_LEGACY 待 B 包 PMS v2 重评），与 Plant 侧 per-genset
+  PCHIP **并存双口径**——EMS 内部口径不动（FR-426/D-9），law=7 权重经
+  `config/ecms_nn_weights.mat`（extrinsic 运行期 load，缺失时 ê=0≡law=5 回退）。
+- ★ SOP 信号升级：`P_bat_dis/chg_avail` 端口**同名同义**（值从 SOC 降额升级为四约束 min），
+  对 EMS 透明——rule-based 与全部变体共用同一 SOP 模块（FR-424）。
+- ★ PLACEHOLDER 组合逻辑只在 Plant 侧拆分，EMS 不感知 P_min/双机（预期，law=0/5 兼容 smoke
+  不作物理判据）。
 
-```matlab
-cd Model_MVP
-% 注意：当前 MATLAB 版本的 run() 不接受数字开头的脚本名，请用 eval(fileread(...)) 方式：
-eval(fileread('scripts/01_audit_legacy_model.m'))   % 审计原模型（只读）
-eval(fileread('scripts/02_build_model.m'))         % 从零重建模型
-eval(fileread('scripts/03_run_smoke_tests.m'))      % 5 项烟雾测试 + 结果图
-eval(fileread('scripts/04_run_scenarios.m'))        % 批量 6 工况 × 2 EMS 模式 → datasets/raw
-eval(fileread('scripts/05_export_dataset.m'))       % 按完整航次划分 train/val/test（1 s 重采样）
-eval(fileread('scripts/06_validate_results.m'))     % 汇总校验 + 最终报告
-```
+## 4. 预测模型清单
 
-AI 预测器训练与闭环对比：
+Model E 的 **Plant 侧无预测模型**（纯物理，确定性测试台直注指令）。EMS 七变体的预测组件
+**完整继承 Model D**（未修改）：law=7 的 MLP-Q（302→128→64→1 权重外注入）、law=1/2 的
+AI_Pred/TFF 通道、law=6 的 ECMS_EHat_Data oracle 通道——均 INHERITED_LEGACY，数值与形状
+与 Model D 逐位一致；真实预测器接入研究属 B/F 包。
+选择理由（选模依据）与 A1/A2 审计链不变：MLP-Q 为 Phase 2.5 闭环 Winner（TCN 换型臂行为
+一致性已证）；Model E 的角色是**物理可信被控对象**，为 B 包 PMS v2 与 F 包预测式 EMS 提供
+"environment → physics → load"因果链基座。
 
-```bash
-.venv_tf/bin/python python/train_load_predictor.py   # 训练 + int8 量化 + 导出权重
-```
-```matlab
-eval(fileread('scripts/07_run_ai_comparison.m'))     % Baseline vs AI 闭环对比 + 报告
-```
+## 5. 验证状态
 
-## 模型顶层结构（12 个子系统）
-
-01_Scenario_Manager → 02_Ship_Speed_Controller → 03_Propulsion_Plant
-→ 04_Load_Measurement → 05_EMS_Controller(Variant: Baseline/AI) → 06_Genset_Average_Plant
-07_Battery_Energy_Plant 08_Power_Availability_Limiter 09_Power_Balance_Monitor
-10_Fuel_Consumption 11_Voyage_Stop_Logic 12_Data_Logging
-
-## 关键约定
-
-- 双支路等效：所有动力聚合额定 = 图纸单支路值 × DRAWING_N_PropStrings(=2)；
-  非对称/单侧故障研究需另建双支路模型（本模型不覆盖）。
-- 功率一律 kW，速度 m/s，距离 m；SOC ∈ [0,1]。
-- P_bat_actual > 0 放电，< 0 充电。
-- 求解器：Fixed-step ode3 @ 0.01 s；数据集导出重采样 1 s。
-- EMS_MODE=0 Baseline / =1 AI Enhanced（Variant 由工作区变量切换）。
-- AI 预测源：0 persistence，1 workspace 回放，2 STM32N6 外部（预留），3 环内 MLP 推理。
-- 原模型与参数脚本只读；本目录所有文件均可由脚本重建。
-
----
-
-## v3 被控对象子集变体（PlantStep）与闭环脚本族（v3 soft-HIL，2026-09-02）
-
-- **HybridShip_ModelD_PlantStep.slx**（T-601，`scripts/20_build_plantstep_model.m`）：
-  被控对象子集变体——装载主模型 → SaveAs 原位变换，删除 05_EMS_Controller 与
-  12_Data_Logging，根级 Inport `P_gen_ref_kW` 替代 05 输出，11 项根级 Outport 暴露
-  闭环接口；剩余 **12 个子系统**（01_Scenario_Manager / 02_Ship_Speed_Controller /
-  03_Propulsion_Plant / 04_Load_Measurement / 06_Genset_Average_Plant /
-  08_Undervolt_Derate / 09_Bus_Residual_Monitor / 10_Fuel_Consumption /
-  11_Voyage_Stop_Logic / 13_DC_Bus / 14_Battery_Converter / 15_Bus_Voltage_Monitor）；
-  主模型 `HybridShip_ModelD_DCBus.slx` 零改动（sha256 前后复核，
-  `results/ecms_phase25/plantstep/plantstep_build_audit.json`）。
-- **codegen**（T-604，`scripts/23_codegen_plantstep.m`）：按场景烘焙 VOYAGE_*/SCN →
-  Simulink Coder 生成 C（ert.tlc 拒连续时间块，内置回退 **grt.tlc**，ode3 @0.01s
-  ×100 子步/拍）→ EMS01 `Host/plantstep/<scenario>/`（build_manifest.json 指纹）。
-- **X 直读接口**（design §4.4a）：ERT/GRT 根 Outport 写出在子步末级阶段时刻
-  t=(k+1)−0.0025；拍边界位级真值经 shim `plantstep_get_states()` 直读 9 个连续状态
-  （x_ship/v_ship/omega_prop/DriveLag/SOC/V_dc/inertia/Ki_int/fuel_int；fuel CSTATE
-  为 g 口径 ×1e-3 = kg）。
-- **v3 闭环脚本族**：`scripts/21_run_v3_native_arms.m`（T-610/611：原生臂 (b′) law=7 /
-  (c) law=5 × 两场景，双遍 REPRO）；`scripts/22_run_gp1_gate.m`（T-602/603：G-P1 子集
-  保真门禁，双场景位级 PASS）；`scripts/23_codegen_plantstep.m`（T-604）；
-  `scripts/24_export_gp2_simref.m`（T-605 配套：解释执行运行采样 logsout，导出 G-P2
-  sim 参考 16 列 CSV，模型零改动）。闭环产物与统一报告：
-  `results/ecms_phase25/closedloop/`（native_arms/ + `v3_closedloop_report.md`）。
-- **预测模型**（§20.1 一行概括）：(b′) 臂 = MLP-Q（EML 内嵌 double）+ workclf_v1
-  （G2 门控）闭环；(c) 臂 = 无预测（SOC-Adaptive ECMS 基线）。
+- **T-412 整体物理 Gate：overall=true**（2026-09-04 夜班，`results/gate_result.json`）；
+  G1~G6 + E10 + negative_validation 全部通过；巡航功率带 298.4 kW∈[274,335]、极速带 14.5 kn
+  级平衡、浅水六档单调零反例、机组时序 25/5/30 s 精确、C_start=0.600 kg、燃油差 23.7%。
+- 单元测试 6 套（hull/wake/propeller/statemachine/fuel/ecm+sop）ALL PASS。
+- 基线冻结：**待 T-013 用户评审**（design §5.1 防 bugged model + bugged gate 互相背书）。
