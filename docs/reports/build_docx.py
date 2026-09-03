@@ -5,7 +5,8 @@
 
 数据纪律：
   - 四臂×两场景 / 两两对比 / 仪器级①② / 层③ / FR-508 全部实时读取
-    firmware/.../Host/results/closedloop/closedloop_metrics.json（T-615，唯一事实源）；
+    firmware/.../Host/results/closedloop/closedloop_metrics.json（T-615，唯一事实源；
+    2026-09-03 增补 TCN 换型臂 b_tcn_ref_*，数据来自 TCN64 工程闭环会话）；
   - 历史阶段数字（Phase 0/1/2、G0~G3、v1 部署）取自仓库内报告/门禁 JSON，
     在本脚本中以字面量登记并注明来源，与 docs/research_roadmap.md 一致；
   - 图表来自 docs/reports/figures/（实验数据图由 generate_figures.py 生成；架构示意图由
@@ -175,7 +176,7 @@ def build():
         "项目：hybrid-ship-ems（甲醇混合动力船舶能量管理系统）",
         "平台：Simulink Model D + STM32N647（Cortex-M55 + Neural-ART NPU）",
         "报告日期：%s" % REPORT_DATE,
-        "数据基准：EMS01_CHIL_ECMS/Host/results/closedloop/closedloop_metrics.json（T-615）等仓库产物",
+        "数据基准：EMS01_CHIL_ECMS/Host/results/closedloop/closedloop_metrics.json（T-615，含 TCN 换型臂增补）等仓库产物",
         "状态：内部研究资料，数据均可按附录 A 复现",
     ):
         para(doc, line, size=11, align=WD_ALIGN_PARAGRAPH.CENTER, space_after=4)
@@ -215,7 +216,11 @@ def build():
          "全部落在 ±0.02 公平带内，NN 预测增强（MLP-Q 分位数预测 + 工况门控）较 SOC 自适应 ECMS 基线带内节油 "
          "-2.25 ~ -2.65 kg fuel_raw（≈0.68%~0.80%）；NPU 板载闭环相对参考后端的零混杂移植代价 +0.375 kg（≈+0.11%）；"
          "voyage002 场景电荷维持修正口径 fuel_corr 收益 -15.7 kg。仪器链 G-P1/G-P2 位级一致（max|Δ| ≤ 3.4e-8），"
-         "仪器级①②门禁 4 组全 PASS，FR-508 故障注入回退语义在闭环中验证成立。至此，从物理观察、上限验证、"
+         "仪器级①②门禁 4 组全 PASS，FR-508 故障注入回退语义在闭环中验证成立。v3 收官后按 FR-511 编译期换型"
+         "流程换入更大候选模型 TCN-f64（165,851 参数，int8 219.7 KB）：经 REF 流式增量后端（依赖闭包精确重算，"
+         "板上 5521 拍 P_gen exact 100%）完成双场景闭环——TCN 节油增益 -2.20 kg（-0.66%）落在 MLP-Q 增益带内，"
+         "voyage002 与 MLP-Q 仅差 -0.069 kg，“更大模型入闭环”的平台能力得到完整验证；其 NPU 臂层②则暴露 "
+         "Neural-ART 对 dilated 栈 int8 执行语义分歧（三路线 NO-GO，如实登记）。至此，从物理观察、上限验证、"
          "控制律设计、预测体系、边缘部署到真闭环验证的完整证据链闭合。",
          indent=True)
     para(doc, "关键词：甲醇混合动力；能量管理策略（EMS）；ECMS；分位数负荷预测；STM32N6；NPU；硬件在环（HIL）；soft-HIL 真闭环",
@@ -552,27 +557,39 @@ def build():
     add_figure(doc, "gp1_residual_hist.png",
                "G-P1 逐拍残差分布（S20）：子集模型解释执行回放 vs ref_G2 冻结参考，SOC/v_ship/x_ship/P_load 全部 5521 拍 |Δ|=0（位级一致）。")
     heading(doc, "5.3  四臂 × 两场景闭环结果", 2)
+    TCN_ARM = {"S20": "b_tcn_ref_cpu", "voyage002": "b_tcn_ref_voyage"}
     arms_rows = []
     for scn, scn_label in (("S20", "S20"), ("voyage002", "voyage002")):
-        for arm in ARM_ORDER:
+        for arm in ARM_ORDER + (TCN_ARM[scn],):
             a = d["arms"][scn][arm]
+            v_rmse = a.get("v_track_rmse_mps")
+            if v_rmse is None:
+                v_rmse = a.get("v_rmse")
+            v_cell = ("—" if v_rmse is None else
+                      ("%.4f" % v_rmse if arm.startswith("b_tcn") else "%.6f" % v_rmse))
+            e_ratio = a.get("e_hat_active_ratio")
             arms_rows.append([
                 scn_label, a.get("arm_label", arm),
                 "%.6f" % a["fuel_raw_kg"], "%.6f" % a["fuel_corr_kg"], "%.5f" % a["SOC_end"],
-                "%.6f" % a["v_track_rmse_mps"], "%.4f" % a["e_hat_active_ratio"],
+                v_cell, "—" if e_ratio is None else "%.4f" % e_ratio,
             ])
     add_table(
         doc,
         ["场景", "臂", "fuel_raw [kg]", "fuel_corr [kg]", "SOC_end", "v_track RMSE [m/s]", "ê 生效占比"],
         arms_rows,
-        caption="四臂 × 两场景核心指标（fuel_corr = fuel_raw + (0.60−SOC_end)×1071.36 kWh×0.4774 kg/kWh；"
-                "数据：closedloop_metrics.json。全矩阵 SOC_min ∈ [0.5865, 0.5968]，SOC<0.25 事件全零）")
+        caption="四臂 + TCN 换型臂 × 两场景核心指标（fuel_corr = fuel_raw + (0.60−SOC_end)×1071.36 kWh×0.4774 kg/kWh；"
+                "数据：closedloop_metrics.json。全矩阵 SOC_min ∈ [0.586, 0.5968]，SOC<0.25 事件全零）",
+        note="TCN-REF 流式臂（(b) TCN-REF 板载闭环）为 v3 收官后的编译期换型实验（独立板会话，§5.7）："
+             "v_track RMSE 按其遥测精度（4 位小数）显示；该臂无 ê 门控遥测（—），其余口径与四臂一致。")
     add_figure(doc, "soc_s20_four_arms.png",
-               "S20 四臂 SOC 轨迹（真闭环 (a)(b) + 原生臂 (b′)(c)，按 tick 对齐）。板载三形态轨迹不可分辨地重合；(c) 基线维持能量中性。")
+               "S20 四臂 + TCN 换型臂 SOC 轨迹（真闭环 (a)(b) + 原生臂 (b′)(c) + TCN-REF 流式臂，按 tick 对齐）。"
+               "板载三形态轨迹不可分辨地重合；(c) 基线维持能量中性；TCN-REF 换型臂与 MLP-Q 臂几乎重合（SOC_end 差 8e-5）。")
     add_figure(doc, "soc_voyage002_four_arms.png",
-               "voyage002 四臂 SOC 轨迹。NN 臂持续充电至 ~0.678（SOC 终点 +0.0794），为 SOC-UNFAIR 判定来源；fuel 结论须以 fuel_corr 口径解读。")
+               "voyage002 四臂 + TCN 换型臂 SOC 轨迹。NN 臂持续充电至 ~0.678（SOC 终点 +0.0794），为 SOC-UNFAIR 判定来源；"
+               "fuel 结论须以 fuel_corr 口径解读；TCN-REF 换型臂与 MLP-Q 同样充电至 ~0.678。")
     add_figure(doc, "fuel_bars_two_scenarios.png",
-               "四臂 × 两场景油耗对比（fuel_raw 主口径 + fuel_corr 电荷维持修正口径；纵轴截断以显差异）。")
+               "四臂 + TCN 换型臂 × 两场景油耗对比（fuel_raw 主口径 + fuel_corr 电荷维持修正口径；纵轴截断以显差异；"
+               "TCN-REF 流式臂口径见 §5.7）。")
     pw_rows = []
     for scn in ("S20", "voyage002"):
         for pc in d["pairwise_comparisons"][scn]:
@@ -609,7 +626,9 @@ def build():
         ig_rows,
         caption="仪器级①②门禁（4 组全 PASS；差异源为 f32 序列化经 λ 网格边界的偶发翻转，无结构性偏差）")
     add_figure(doc, "pgen_board_vs_ref_s20.png",
-               "板载 REF P_gen vs 解释执行参考（S20，窗口 3000–3600 s）：全程 exact 率 99.18%、|ΔP|≤1 网格步 99.60%（仪器级① PASS）。")
+               "板载 REF / TCN-REF 换型臂 P_gen vs 解释执行参考（S20，窗口 3000–3600 s）：全程 exact 率 99.18%、"
+               "|ΔP|≤1 网格步 99.60%（仪器级① PASS）；TCN-REF 为换型臂行为对照，其与参考的 P_gen 位级差异属换型预期，"
+               "不作门禁，见 §5.7。")
     add_figure(doc, "vship_tracking_s20.png",
                "航速跟踪全程（(b) REF 板载，S20）：v_ship 对 v_cmd 的全任务 RMSE = 0.351676 m/s（1 s 轴口径），四臂差异 ≤3e-6 m/s。")
     heading(doc, "5.5  临界工况与回退语义（FR-508 闭环注入）", 2)
@@ -644,6 +663,42 @@ def build():
          % (l3["S20"]["exact_rate"] * 100, l3["S20"]["plus1_grid_rate"] * 100,
             l3["voyage002"]["exact_rate"] * 100, l3["voyage002"]["plus1_grid_rate"] * 100), indent=True)
 
+    heading(doc, "5.7  TCN-f64 编译期换型闭环验证（v3 收官后换型实验，2026-09-03）", 2)
+    para(doc,
+         "FR-511 编译期换型流程（换 NOR 权重 hex 即换模型）首次真实兑现：换入 phase25 同签名候选 TCN-f64"
+         "（165,851 参数，int8 219.7 KB，双输入 [1,300,1]+[1,2]），验证“更大模型入闭环”的平台能力。"
+         "按用户工程隔离规则，模型适配性修改在新工程 EMS01_CHIL_ECMS_TCN64 实施，P1 保持 v3 纯净态。"
+         "因 batch TCN C 前向 1.35 s/拍（52M MAC double）超出注入 2 s STALE 契约，REF 后端改为"
+         "依赖闭包精确增量前向：每拍仅重算末输出依赖的固定节点集（889 节点，MAC ÷7.1）；"
+         "无跨拍状态设计使 bit-exact 构造性成立——L0 实测 streaming ≡ batch 逐位一致（9965/9965，max=0.00e+00），"
+         "vs-keras ≤4.5e-5 kWh（门 0.266214 kWh 裕量约 6000 倍）。", indent=True)
+    add_table(
+        doc,
+        ["项", "结果（REF 流式臂）"],
+        [
+            ["层① S20 全轨迹（INJECT 注入态）", "5521 拍 P_gen exact 100.0000%、max_dP=0、零错误（门禁 100% PASS）"],
+            ["闭环 (b) S20", "328.544 kg，SOC_end 0.60002 带内；NN 增益 vs (c) law=5 = −2.20 kg（−0.66%）"],
+            ["闭环 (b) voyage002", "264.156 kg，SOC_end 0.67826；与 MLP-Q (b) Δfuel 仅 −0.069 kg（基本无差）"],
+            ["SOC_min", "0.587 / 0.586（> 0.25 降额阈值，全零事件）"],
+        ],
+        caption="TCN-f64 换型 REF 流式臂板级结果（数据：EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/）")
+    para(doc,
+         "结论：TCN 经 REF 后端的闭环节油增益（−0.66%）落在 MLP-Q 的增益带内，voyage002 与 MLP-Q 基本无差——"
+         "更大模型能带来相当（非更优）的闭环增益，且换型部署链（keras→deploy JSON→NOR 权重→固件编译期选择）"
+         "完整可行。", indent=True)
+    para(doc,
+         "NPU 臂层② 未达标（如实登记）：板 NPU 对同一输入输出与解释器差 88 LSB_TCN（45.39 vs 21.96 kWh），"
+         "而输入装配逐位正确（板上 dump 实证）——根因为 Neural-ART v1.1.1 对 64 通道 dilated 栈（14 层分解形态 + "
+         "SW fallback 数据搬运 epoch 交接）的 int8 执行语义分歧。三种图形态均未达 ≥99% 门：2.2 分解图 34.0%、"
+         "2.2 原生 dilated 重导出 47.7%、4.0.1 原生 stai API 44.6%（三路线 NO-GO；简单图 workclf 同 NPU 正常 "
+         "99.96%，复杂图才暴露）。NPU 600MHz 提频实验亦 NO-GO：IC2 与 XSPI2 kernel clock 同域耦合，"
+         "NOR@300MHz 超 MX25UM25645G 规格读失配致 LL_ATON_RT_Main 挂死，已回退原频率域留记录。"
+         "层② (a) 臂门禁 FAIL，闭环 (a) 未跑；层② 出路已裁决：用户定最终路线为 4.0.1 全 CPU 编译形态"
+         "（tcn_q_v2_cpu，无 --st-neural-art，68 节点 Lite 内核 CM55 执行，权重 611KB 编入 ELF，TCN 不再"
+         "依赖 NOR 权重 hex；构建 + fw_gate 7/7 为交付），NPU 形态产物保留为回退资产，板上验证（层② 重验 + "
+         "闭环 (a)）待接手执行，诊断证据链见 "
+         "EMS01_CHIL_ECMS_TCN64/Host/results/tcn_swap/layer2_diagnosis_20260903.json。", indent=True)
+
     # ---------- 6 结论与贡献 ----------
     heading(doc, "6  结论与贡献", 1)
     conclusions = (
@@ -662,9 +717,15 @@ def build():
          "真闭环中零混杂移植代价 +0.375 kg（≈+0.11%），NPU 使单拍控制延迟降低约 54%——边缘 AI 的实时性与"
          "经济性代价同时可忽略。"),
         ("真闭环验证：完整证据链闭合",
-         "四臂 × 两场景 soft-HIL 真闭环：S20 带内节油 -2.25 ~ -2.65 kg（≈0.68%~0.80%，SOC 公平带内），"
-         "voyage002 fuel_corr 口径 -15.7 kg；仪器级①② 4 组全 PASS；FR-508 回退语义闭环成立。"
+         "四臂 × 两场景 soft-HIL 真闭环：S20 带内节油 −2.25 ~ −2.65 kg（≈0.68%~0.80%，SOC 公平带内），"
+         "voyage002 fuel_corr 口径 −15.7 kg；仪器级①② 4 组全 PASS；FR-508 回退语义闭环成立。"
          "从物理观察、上限验证、控制律设计、预测体系、边缘部署到真闭环的完整研究链闭合。"),
+        ("编译期换型：更大模型入闭环的平台能力验证",
+         "FR-511 换型流程首次真实兑现：TCN-f64（165,851 参数，int8 219.7 KB）经 REF 流式增量后端"
+         "（依赖闭包重算 889 节点，MAC ÷7.1，bit-exact 9965/9965）完成层① 全轨迹 100% exact 与双场景闭环——"
+         "节油增益 −2.20 kg（−0.66%）落在 MLP-Q 增益带内，voyage002 与 MLP-Q 基本无差；"
+         "同时层② NPU 臂暴露 Neural-ART 对 dilated 栈 int8 执行语义分歧（三路线 NO-GO），"
+         "已按用户裁决切全 CPU 编译形态落地——换型既验证了平台容量，也划定了工具链边界并给出了工程出路。"),
     )
     for i, (t, body) in enumerate(conclusions, 1):
         para(doc, "（%d）%s：%s" % (i, t, body), indent=True)
@@ -682,13 +743,17 @@ def build():
         "预测精度天花板 R²≈0.73：约 27% 的未来能量方差不可由历史 300 s 解释（浪、流随机分量），"
         "属纯历史外推的理论上限。",
         "FR-508 闭环注入的段内油耗为 mock 口径（stub advancer + pty mock 板），验证对象是回退语义而非保真油耗。",
+        "TCN-f64 换型的 NPU 臂层② 未达标（board-NPU vs host-int8 exact 34.0%~47.7%，门 ≥99%）："
+        "Neural-ART v1.1.1 对 64 通道 dilated 栈 int8 执行语义与解释器分歧（同输入差 88 LSB_TCN，三图形态均复现）；"
+        "已按用户裁决切 4.0.1 全 CPU 编译形态绕开（NPU 形态保留为回退资产），板上验证与闭环 (a) 待执行（§5.7）。",
         "BSFC 低负荷曲线形状、最低稳定负荷等仍为假设参数（三档敏感性已量化）；不及预期的指标不在假设参数上硬调，"
         "列入优化 backlog 待真实参数到位后重启。",
     ):
         para(doc, "• " + s, indent=True)
     heading(doc, "7.2  展望（另立项）", 2)
     for s in (
-        "编译期换型：FR-511 换模型流程已实证（换 NOR 权重即换模型）；TCN 族等更大模型经资格筛选后重新入闭环。",
+        "TCN 全 CPU 形态板上验证：tcnq 槽位已切 4.0.1 全 CPU 编译形态（无 --st-neural-art，构建 + "
+        "fw_gate 7/7 交付，NPU 形态留作回退资产），板上层② 重验与闭环 (a) 待执行（§5.7）。",
         "1 Hz 实时与真 HIL：lock-step → 实时化，经纬恒润 HIL 平台对接。",
         "层② 收敛：NPU↔解释器差异经 λ 链收敛至 ≥99%（研究项）。",
         "模型热切换 v2：NOR 双 mpool 布局已留位，运行期换模型机制。",
@@ -746,8 +811,10 @@ def build():
         doc,
         ["文件", "内容", "口径要点"],
         [
-            ["EMS01_.../Host/results/closedloop/closedloop_metrics.json", "四臂×两场景统一指标（T-615）",
+            ["EMS01_.../Host/results/closedloop/closedloop_metrics.json", "四臂×两场景统一指标（T-615，含 TCN 换型臂增补）",
              "fuel_corr = fuel_raw + (0.60−SOC_end)×1071.36×0.4774；SOC 公平带 ±0.02"],
+            ["EMS01_CHIL_ECMS_TCN64/Host/results/closedloop/closedloop_metrics.json", "TCN 换型臂统一指标（T-814）",
+             "与 P1 metrics 同构（四臂 + b_tcn_ref_* 换型臂）；换型证据链见同工程 Host/results/tcn_swap/"],
             ["Host/results/closedloop/{S20,voyage002}/closedloop_*_{ref,npu}.csv", "板载闭环轨迹（19 列）",
              "P_gen 列名 P_gen_kW，t 列名 t_s；flags 位镜像 ems_proto.h"],
             ["model/.../results/ecms_phase25/closedloop/native_arms/V3_{B,C}_*.csv", "原生臂轨迹（22 列）",

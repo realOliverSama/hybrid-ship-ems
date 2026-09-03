@@ -149,7 +149,7 @@ design §Testing 固定（先验设定，FAIL 不放宽）；板会话任务（T
   - Files/areas: P3 `Appli/App/ems_infer_tcn.c`（环状缓冲增量前向 + 窗口连续性自检 fast/cold 双路径）+ `Host/tests/test_ctrl_diff.py`（streaming 用例）+ `Host/results/tcn_swap/l0_tcn_stream_diff.json`
   - Notes: 槽位契约不变；每拍仅算新时间步（MAC ÷300 → ms 级）；streaming == batch 逐位一致（S20/voyage002 全轨迹 + val200 + random32，max|Δ|=0）+ vs keras LSB 门；ems_ctrl/ems_app/ems_proto 红线零改动；cold path（INFER_TEST 向量）= batch 等价总 MAC
   - Validation: l0_tcn_stream_diff.json（bit-exact 断言 + LSB 分布）+ mlpq 回归不变 + 编译零警告 + REF 占用 ≤2047K−64KB
-- [ ] 17. NPU 域频率 400→600MHz（P3）
+- [x] 17. NPU 域频率 400→600MHz（P3）
   - ID: T-817
   - Requirement(s): NFR-701 延伸, FR-505 预算余量优化
   - Files/areas: P3 `Appli/Core/Src/main.c` `npu_config()`（运行时 LL_RCC_IC2_SetDivider(2)）+ `EMS01_CHIL_ECMS.ioc`（IC2Div 2/600MHz，声明对齐）
@@ -179,7 +179,7 @@ design §Testing 固定（先验设定，FAIL 不放宽）；板会话任务（T
     Erase / 通用 MCP 擦写 / Option Bytes / Boot 配置改动；workclf 池 0x70400000
     与 FSBL 区零接触
   - Validation: CRC32 与生成时记录值一致；证据文件归档
-- [ ] 12. 板会话③：SRAM 加载 NPU 镜像 → 层② + 层③开环（T5/T6 层）
+- [x] 12. 板会话③：SRAM 加载 NPU 镜像 → 层② + 层③开环（T5/T6 层）
   - ID: T-812
   - Requirement(s): FR-710, AC-4
   - Files/areas: SRAM 加载 NPU 镜像（令牌）；`CMD_INFER_TEST` ×200（val 固定
@@ -206,7 +206,7 @@ design §Testing 固定（先验设定，FAIL 不放宽）；板会话任务（T
 
 ### M-G 收尾登记（AC-7）
 
-- [ ] 14. metrics 增量 + 换型报告 + roadmap/README/日志登记
+- [x] 14. metrics 增量 + 换型报告 + roadmap/README/日志登记
   - ID: T-814
   - Requirement(s): FR-715, NFR-703, AC-7
   - Files/areas: `closedloop_metrics.json` 增量条目（同 schema，TCN 数据与 v3 权威
@@ -228,7 +228,7 @@ design §Testing 固定（先验设定，FAIL 不放宽）；板会话任务（T
     `build_docx.py` 重生成报告（图表编号自动化沿用）；三步全部脚本化幂等
   - Validation: 主 Agent §14 验收（git diff 范围核对：仅预测器槽位相关变更；
     冻结资产/主模型/PlantStep/ems_ctrl.c 零改动确认；新文件 README 全登记）
-- [ ] 15. 提交与汇报
+- [x] 15. 提交与汇报
   - ID: T-815
   - Requirement(s): NFR-703, AC-7
   - Files/areas: `feat/*` 分支逐文件 `git add`（禁 `git add .`）+ commit + push +

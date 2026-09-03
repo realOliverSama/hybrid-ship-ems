@@ -1,7 +1,7 @@
 # EMS01 v3 闭环四臂两场景统一指标汇总（T-615）
 
 - spec: ems01-chil-v3-closedloop (FR-610/FR-611/AC-605)
-- generated_utc: 2026-09-02T06:23:37Z
+- generated_utc: 2026-09-03T03:45:51Z
 - script: `Host/tools/closedloop_metrics.py`（纯 stdlib，相对路径，只读输入）
 - 机器可读全文：`closedloop_metrics.json`（本文件为其人类可读摘要）
 

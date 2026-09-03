@@ -733,11 +733,80 @@ v_track RMSE（1 s 轴口径）——S20 板载 (a)/(b) = 0.351676 m/s、原生 
 - **FR-508 闭环注入**（mock 口径）：F1/F4 触发 FALLBACK 共 2 段/3 拍，段内 Δfuel
   +0.040 kg、段内 ΔSOC +7.78e-5、P 无跳变、被控对象状态连续，4/4 会话存活——回退=安全降级继续控制。
 
+### 8.2.1 TCN-f64 编译期换型（spec ems01-chil-tcn64-swap，2026-09-02 夜 ~ 09-03）
+
+> v3 收官后立即执行的 FR-511 换型流程首次真实兑现：换入 phase25 同签名候选 TCN-f64
+> （165,851 参数，int8 219.7KB，双输入 [1,300,1]+[1,2]），验证"更大模型入闭环"的平台
+> 能力（§8.4.7 边缘 AI 议程）。用户工程隔离规则：模型适配性修改在新工程实施。
+
+**三工程结构**（用户裁决）：P1=`EMS01_CHIL_ECMS` 恢复 v3 MLP-Q 基线纯净态（git=HEAD、
+fw_gate 7/7、双镜像 nm 零 TCN 符号）；`EMS01_CHIL_ECMS_TCN64` = 换型工作区（batch 证据
++ 流式 closure 实现 + NPU 实验记录合一）；`model/python/` 新增三个导出脚本。
+
+**REF 流式增量后端（C 方案，用户裁决）**：针对 batch TCN C 前向 1.35s/拍（52M MAC double
+标量 + cache 不友好）超出注入 2s STALE 契约的问题，实现依赖闭包精确增量前向——每拍仅
+重算末输出依赖的固定节点集（889 节点，MAC ÷7.1），**无跨拍状态设计使 bit-exact 构造性
+成立**：L0 实测 streaming ≡ batch 逐位一致（9965/9965，max=0.00e+00）+ vs-keras
+≤4.5e-5 kWh；板上层① 40-tick P_gen exact 100%。
+
+**板级结果（REF 流式臂）**：
+
+| 项 | 结果 |
+|---|---|
+| 层① S20 全轨迹 | 5521 拍 P_gen **exact 100.0000%**、max_dP=0.0、零错误（门禁 100% PASS） |
+| 闭环 (b) S20 | 328.544 kg，SOC_end 0.60002 带内，**NN 增益 vs law=5 = −2.20 kg（−0.66%）** |
+| 闭环 (b) voyage002 | 264.156 kg，SOC_end 0.67826——**与 MLP-Q Δfuel 仅 −0.069 kg（基本无差）** |
+| SOC_min | 0.587/0.586（>0.25 降额阈值 ✓） |
+
+→ **TCN 经 REF 后端的闭环节油增益（−0.66%）落在 MLP-Q 的增益带内**，voyage002 与 MLP-Q
+基本无差——"更大模型入闭环"的核心科学问题已回答：更大模型能带来相当（非更优）的闭环
+增益，且部署链完整可行。
+
+**层② NPU 执行发散确诊（(a) 臂 NO-GO，三路线判决矩阵）**：
+
+| 路线 | 板测层② P_gen exact（门 ≥99%） | 备注 |
+|---|---|---|
+| 2.2 分解图（SpaceToBatch） | 34.0% | 首发症状 |
+| 2.2 原生 dilated Conv2D（重导出实验） | 47.7% | 排除图形态因素 |
+| 4.0.1 原生 dilated Conv2D（stai API 迁移） | 44.6% | workclf cls 0% 回归（4.0 重生成后） |
+
+诊断证据链（板上 dump 实证）：输入装配逐位正确（tcnq_win/tcnq_aux 与期望逐位一致）→
+板 NPU 对同一输入输出与解释器差 **88 LSB_TCN**（45.39 vs 21.96 kWh）——非装配/非量化
+噪声，为 **Neural-ART 编译产物对该 dilated 栈（14 层分解形态 + SW fallback 数据搬运
+epoch 交接）的 int8 执行语义分歧**。workclf 简单图同 NPU 正常（99.96%）——复杂图才
+暴露。三路线 NO-GO 如实登记，结论需 ST 级排查确认（诊断 JSON：layer2_diagnosis_20260903.json）。
+
+**NPU 600MHz 实验（用户指令"拉到最大试试"）：NO-GO**。IC2DIV 3→2（400→600MHz）→
+XSPI2 kernel clock 与 IC2/AXI 同域耦合（推翻 IC4 独立假设）→ NOR@300MHz 超出
+MX25UM25645G 200MHz 规格 → memory-mapped 权重读失配 → LL_ATON_RT_Main 挂死（调试器
+停机定位）。已回退原频率域留实验记录；v1 design "NPU 频率提升列入后续硬件方向"结论维持。
+
+**附带发现**：① DWT 32 位回绕陷阱（us_ctrl 显示 1.66s 实为 8.83s−7.16s，长耗时推理
+遥测须补偿）；② 依赖闭包重算的方法论（输入逐位 dump → 同输入双实现对照 → 隔离变量）。
+
+**统一 metrics 增量与文档管线（09-03 中午收尾，T-814 三步）**：`closedloop_metrics.py` 重跑，P1 与
+TCN64 两工程 json 同步增补 `b_tcn_ref_cpu`/`b_tcn_ref_voyage` 换型臂（v_rmse 0.3517、SOC_min
+0.587/0.586；TCN 真实闭环轨迹在 TCN64 工程 `Host/results/closedloop_v2/`，`closedloop/` 下为
+MLP-Q v3 四臂重算用复制件）；研究报告图 4 张入换型臂（fuel_bars 第五柱、soc×2 加 TCN 轨迹线、
+pgen 加 TCN-REF 对照曲线），docx 报告新增 §5.7 + 结论第 6 条 + 局限/展望同步（图文管线全部
+脚本化幂等）。
+
+**层② 出路裁决与全 CPU 形态切换（用户指令最终路线，09-03）**：层② 发散确诊后用户在三条出路
+（全 SW / ST 支持渠道 / 模型重导出策略）中裁决 **全 SW 路线**：tcnq 槽位切 4.0.1 **全 CPU 编译形态**
+（`Model/tcn_q_v2_cpu/`，无 --st-neural-art，同源 tflite；68 节点 Lite 内核 CM55 执行，权重 611KB
+编入 ELF，TCN 不再依赖 NOR 权重 hex；激活区 194KB 用户静态数组绑定；同步 run）——构建 +
+fw_gate 7/7 为交付，NPU 形态产物保留于 `Model/tcn_q_v2/` 作回退资产；板上验证（层② 重验 +
+闭环 (a)）待接手执行。
+
+**已知限制与后继**：(a) 臂层② NPU 门禁 FAIL（全 CPU 形态已裁决替代，板上验证待执行）、
+闭环 (a) 未跑（诚实记录）；INFER_TEST 长帧通路问题待查；
+REF 臂证据链完整，冻结于 tag `tcn64-swap-20260903`（feat/tcn64-swap 分支）。
+
 ### 8.3 后继展望（均另立项，不在本 roadmap 范围内展开）
 
 | 方向 | 内容 | 状态 |
 |---|---|---|
-| 编译期换型 | FR-511 流程已实证（换 NOR 权重 hex 即换模型，M1 §8）；TCN 族等更大模型经资格筛选后重新入闭环（FR-317 三级选模） | 另立项 |
+| 编译期换型 | FR-511 流程已实证（换 NOR 权重 hex 即换模型，M1 §8）；TCN 族等更大模型经资格筛选后重新入闭环（FR-317 三级选模）—— **已执行：TCN-f64 换型完成**（§8.2.1：REF 流式臂板级全绿、闭环 (b) 双场景；层② NPU 执行发散三路线 NO-GO 待 ST 排查/全 SW 裁决） | 完成（spec ems01-chil-tcn64-swap） |
 | 1 Hz 实时与真 HIL | v3 为 lock-step（无墙钟约束）；实时化 + 经纬恒润 HIL 对接依赖 §8.4.6 资料清单 | 另立项 |
 | 层② 收敛 | board-NPU vs host-int8 98.877%（S20）→ ≥99%：NPU↔解释器 LSB 级差异经 λ 链收敛（M2 §11.4 选项 (c)，研究项） | 另立项 |
 | 模型热切换 v2 | NOR 双 mpool 池布局已留位（0x7020/0x7040），运行期换模型机制 | 另立项 |
