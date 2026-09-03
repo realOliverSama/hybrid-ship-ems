@@ -1,0 +1,100 @@
+ST Edge AI Core v2.2.0-20266 2adc00962
+PASS:   0%|          | 0/98 [00:00<?, ?it/s]PASS:  11%|█         | 11/98 [00:05<00:43,  1.98it/s]PASS:  12%|█▏        | 12/98 [00:05<00:39,  2.18it/s]PASS:  77%|███████▋  | 75/98 [00:05<00:00, 23.85it/s]                                                      >>>> EXECUTING NEURAL ART COMPILER
+PASS:  77%|███████▋  | 75/98 [00:05<00:00, 23.85it/s]                                                        /Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/macarm/atonn -i "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/mlp_q_OE_3_3_0.onnx" --json-quant-file "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/mlp_q_OE_3_3_0_Q.json" -g "network.c" --load-mdesc "/Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/configs/stm32n6.mdesc" --load-mpool "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/my_mpools/stm32n6.mpool" --save-mpool-file "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws/neural_art__network/stm32n6.mpool" --out-dir-prefix "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws/neural_art__network/" --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file "c_info.json"
+PASS:  77%|███████▋  | 75/98 [00:05<00:00, 23.85it/s]                                                      <<<< DONE EXECUTING NEURAL ART COMPILER
+PASS:  77%|███████▋  | 75/98 [00:06<00:00, 23.85it/s]                                                      >>>> EXECUTING EPOCH_CONTROLLER POST_PROCESSING
+PASS:  77%|███████▋  | 75/98 [00:06<00:00, 23.85it/s]                                                      <<<< DONE EXECUTING EPOCH_CONTROLLER POST_PROCESSING
+PASS:  77%|███████▋  | 75/98 [00:09<00:00, 23.85it/s]                                                      
+ Exec/report summary (analyze)
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ model file         :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/mlp_q.tflite   
+ type               :   tflite                                                                                                                                           
+ c_name             :   network                                                                                                                                          
+ options            :   allocate-inputs, allocate-outputs                                                                                                                
+ optimization       :   balanced                                                                                                                                         
+ target/series      :   stm32n6npu                                                                                                                                       
+ workspace dir      :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws       
+ output dir         :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output   
+ model_fmt          :   ss/sa per channel                                                                                                                                
+ model_name         :   mlp_q                                                                                                                                            
+ model_hash         :   0xf09f6d425ddb9ca5899ad5ce82fa0cb9                                                                                                               
+ params #           :   21,571 items (21.36 KiB)                                                                                                                         
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ input 1/1          :   'Input_0_out_0', f32(1x302), 1.18 KBytes, activations                                                                                            
+ output 1/1         :   'Dequantize_9_out_0', f32(1x3), 12 Bytes, activations                                                                                            
+ macc               :   0                                                                                                                                                
+ weights (ro)       :   21,537 B (21.03 KiB) (1 segment) / -64,747(-75.0%) vs float model                                                                                
+ activations (rw)   :   1,518 B (1.48 KiB) (1 segment) *                                                                                                                 
+ ram (total)        :   1,518 B (1.48 KiB) = 1,518 + 0 + 0                                                                                                               
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ (*) 'input'/'output' buffers are allocated in the activations buffer
+PASS:  77%|███████▋  | 75/98 [00:09<00:00, 23.85it/s]                                                     
+Computing AI RT data/code size (target=stm32n6npu)..
+PASS:  77%|███████▋  | 75/98 [00:09<00:00, 23.85it/s]                                                     
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Compilation details
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Compiler version: 1.1.1-14
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/mlp_q_OE_3_3_0.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/mlp_q_OE_3_3_0_Q.json -g network.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/my_mpools/stm32n6.mpool --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws/neural_art__network/stm32n6.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_ws/neural_art__network/ --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     ====================================================================================
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Memory usage information  (input/output buffers are included in activations)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	npuRAM3    [0x34200000 - 0x34270000]:      1.482 kB /    448.000 kB  (  0.33 % used) -- weights:          0  B (  0.00 % used)  activations:      1.482 kB (  0.33 % used)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	npuRAM4    [0x34270000 - 0x342E0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	npuRAM5    [0x342E0000 - 0x34350000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	npuRAM6    [0x34350000 - 0x343C0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	octoFlash  [0x70200000 - 0x70300000]:     21.032 kB /      1.000 MB  (  2.05 % used) -- weights:     21.032 kB (  2.05 % used)  activations:          0  B (  0.00 % used)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	hyperRAM   [0x90000000 - 0x91000000]:          0  B /     16.000 MB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Total:                                            22.515 kB                                  -- weights:     21.032 kB                  activations:      1.482 kB
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     ====================================================================================
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Used memory ranges
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	npuRAM3    [0x34200000 - 0x34270000]: 0x34200000-0x342005F0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     	octoFlash  [0x70200000 - 0x70300000]: 0x70200000-0x70205430
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     ====================================================================================
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Epochs details
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     Total number of epochs: 6 of which 2 implemented in software
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch ID   HW/SW/EC Operation (SW only)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch 1      -SW-   (   QuantizeLinear   )
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch 2       EC
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch 3       EC
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch 4       EC
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch 5       EC
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     epoch 6      -SW-   (  DequantizeLinear  )
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     ====================================================================================
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      Requested memory size by section - "stm32n6npu" target
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ------------------------------- ------- -------- ------ -------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      module                             text   rodata   data     bss
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ------------------------------- ------- -------- ------ -------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      network.o                           314    6,980      0       0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      NetworkRuntime1020_CM55_GCC.a     3,068        0      0       0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ll_aton_reloc_network.o               0        0      0       0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      lib (toolchain)*                    988      624      0       0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ll atonn runtime                  3,600    6,127      0      13
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ------------------------------- ------- -------- ------ -------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      RT total**                        7,970   13,731      0      13
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ------------------------------- ------- -------- ------ -------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      weights                               0   21,537      0       0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      activations                           0        0      0   1,518
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      io                                    0        0      0       0
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ------------------------------- ------- -------- ------ -------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      TOTAL                             7,970   35,268      0   1,531
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ------------------------------- ------- -------- ------ -------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      *  toolchain objects (libm/libgcc*)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                      ** RT AI runtime objects (kernels+infrastructure)
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       Summary - "stm32n6npu" target
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       --------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                                    FLASH (ro)      %*   RAM (rw)      %
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       --------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       RT total         21,701   50.2%         13   0.8%
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       --------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       TOTAL            43,238              1,531
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       --------------------------------------------------
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                       *  rt/total
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]                                                     
+Creating txt report file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/mlp_q/st_ai_output/network_analyze_report.txt
+PASS:  77%|███████▋  | 75/98 [00:15<00:00, 23.85it/s]Do you allow statistics to improve the command line? (y)es / (n)o
+PASS:  77%|███████▋  | 75/98 [00:19<00:00, 23.85it/s]PASS: 100%|██████████| 98/98 [00:42<00:00,  1.82it/s]                                                     elapsed time (analyze): 46.832s

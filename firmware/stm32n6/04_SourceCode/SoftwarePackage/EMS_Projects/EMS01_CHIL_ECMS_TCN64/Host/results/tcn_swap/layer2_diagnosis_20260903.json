@@ -1,0 +1,86 @@
+{
+ "task": "T-812 layer-2 diagnosis (2026-09-03 04:00)",
+ "symptom": "board NPU TCN forward diverges from host-int8 interpreter: S20 P_gen exact 34.0% (gate>=99%), max_dP=980kW, dê mean 0.916",
+ "checks": {
+  "input_assembly": {
+   "tcnq_win": "176 sampled positions, 0 mismatches vs expected per-feature normalized flat window (P(0)=100 kWh)",
+   "tcnq_aux": "[-3.703197, -0.035377] == expected xnorm[300:302] exactly",
+   "verdict": "input assembly CORRECT (bit-verified)"
+  },
+  "output_divergence": {
+   "board_NPU_q3_norm": [
+    -1.468644,
+    0.806947,
+    2.501537
+   ],
+   "host_int8_q50_norm": -0.61328,
+   "board_q50_kwh": 45.39,
+   "host_q50_kwh": 21.96,
+   "delta_lsb_tcn": 87.8,
+   "verdict": "NPU (Neural-ART) execution of TCN graph diverges from tflite interpreter beyond quantization noise"
+  },
+  "isolation": {
+   "workclf_NPU": "cls_match 99.96% — workclf NPU path OK (simpler graph)",
+   "REF_closure_C": "bit-exact 9965/9965 (L0) + board 40-tick P_gen exact 100% — closure C path OK",
+   "tcn_npu_graph": "14 dilated convs decomposed (SpaceToBatch/Conv2D/BatchToSpace) + 47 SW fallback epochs — NPU epoch↔SW op 数据交接疑似破坏中间张量"
+  },
+  "infer_test_path": {
+   "symptom": "CMD_INFER_TEST → NACK(ERR_LEN) 重复（板收到但 LEN 校验失败=长帧接收损坏），TICK 36B 帧正常",
+   "note": "与 NPU 执行错误同根概率高（诊断期间主 Agent 误 halt 核心污染了部分实验，已修正并重测关键项）"
+  },
+  "npu_600mhz_experiment": {
+   "verdict": "NO-GO: IC2 400→600MHz → XSPI2 kernel clock 同域抬升 → NOR memory-mapped 读失配（超出 MX25UM25645G 200MHz 规格）→ LL_ATON_RT_Main 挂死。已回退原频率域并留记录（main.c npu_config 注释 + .ioc 复原）"
+  }
+ },
+ "blocked": [
+  "layer-2 gate (a) arm",
+  "FR-504 x200 (INFER_TEST path)",
+  "closed-loop (a) NPU"
+ ],
+ "unaffected": [
+  "layer-1 REF INJECT (closure bit-exact)",
+  "closed-loop (b) REF",
+  "T-817 reverted to validated clock"
+ ],
+ "next_steps": [
+  "ST 工具链级排查: stedgeai 对 TCN 图的 NPU 执行 vs 解释器差异（dilated conv 分解 + SW fallback 交接）",
+  "或模型重导出策略: 避免 dilation 分解形态 / 全 SW 覆盖率方案（CM55 int8 CMSIS-NN ≈ 解释器同族内核）",
+  "REF 侧证据不受影响, 今晚继续"
+ ],
+ "reexport_experiment": {
+  "time": "2026-09-03 04:3x-05:0x",
+  "method": "原生 dilated Conv2D 重导出（自定义层 raw tf.nn.conv2d 绕开 TF 图层 atrous 路径与 MLIR tfl-identify-dilated-conv 硬编码管线；权重移植函数严格等价 max|Δq50|=0.0；同 T-307 标定口径重量化 int8 QDQ 211.2KB）",
+  "gates": {
+   "G1 算子形态": "PASS：0×SpaceToBatch/BatchToSpace，15×原生 dilated CONV_2D（dilation 组合逐一匹配）",
+   "G2 函数等价": "PASS：keras_v1 vs v2 float max|Δq50|=0.0 kWh（35 窗）",
+   "G3 解释器": "PASS（按主 Agent 修订判据'对 incumbent 支配性'）：q50 头 new-vs-old ≤10 LSB；q10/q90 对 float 保真优于 incumbent（2.16 vs 6.01 / 16.2 vs 19.9 mean）"
+  },
+  "stedgeai_v2": {
+   "analyze": "94 epochs（45 SW：SpaceToDepth/DepthToSpace/Pad——编译器自身将原生 dilated conv 分解为同族数学形态）、activations 277.6KB @npuRAM3 61.96%、weights 161.1KB @0x70200000",
+   "host 验证": "E102: --mode host 不支持 Neural-ART NPU 目标（NPU 编译产物无法 PC 端数值验证）"
+  },
+  "board_result": {
+   "layer2_S20": {
+    "injected": 5521,
+    "errors": 0,
+    "exact_rate": 0.477,
+    "within_1grid": 0.604,
+    "max_dP_kW": 980,
+    "max_dê": 1.88,
+    "cls_match": 0.99964,
+    "gate_99": "FAIL"
+   },
+   "vs_old_graph": {
+    "old_exact": 0.34,
+    "new_exact": 0.477,
+    "verdict": "改善但远未达标——两种图形态在 Neural-ART 上均与解释器结构性发散"
+   }
+  },
+  "conclusion": "Neural-ART v1.1.1 对该 64 通道 dilated TCN 栈的 int8 执行语义与解释器存在结构性分歧（与图形态无关——原生 dilation 与 SpaceToBatch 分解两形态均复现）。根因需 ST 工具链级排查（Neural-ART int8 累加/重整化语义 或 EC↔SW epoch 交接）。层② 门禁与 (a) NPU 臂保持 NO-GO 登记。",
+  "options_for_user": [
+   "全 SW 执行方案（无 --st-neural-art 的 CM55 编译，CMSIS-NN 内核族 ≈ 解释器语义；预期层② 可过；代价=放弃 NPU 加速 + 新运行时 API 集成轮）",
+   "ST 支持渠道（最小复现 + 本诊断提交）",
+   "q50 单头依赖缓解（控制仅用 q50——q50 头 v2 已 ≤10 LSB@512win，但层② P_gen 发散表明 NPU 端 q50 执行本身仍错，此路不通至 ST 排查完成）"
+  ]
+ }
+}

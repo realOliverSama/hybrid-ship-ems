@@ -1,0 +1,91 @@
+{
+  "task": "tcn64-swap-m3",
+  "spec": "ems01-chil-tcn64-swap",
+  "rule": "AI_MODELING §22.3：训练口径 == 部署喂入口径 == int8 标定集口径（三方逐项核对，不一致禁止部署）",
+  "predictor": "tcn_f64 (TCN-f64, 165851 params, int8 tflite 219.7KB)",
+  "training_caliber": {
+    "feature_layout_302": true,
+    "transform_per_feature": true,
+    "fit_on_train_only": true,
+    "tcn_train_input": "X[:, :300] (N,300,1) + X[:,300:] (N,2)，同一 302 特征与归一化",
+    "source": "datasets/fleet_norm_v2.json + python/architectures.py split_inputs"
+  },
+  "deployment_feed_caliber": {
+    "ctrl_normalizes_first": true,
+    "slot_contract_normalized_302": true,
+    "tcn_split": "ems_infer_tcn.c 内 x302[0:300]=窗（升序）+ x302[300:302]=aux（=训练 split_inputs 布局）",
+    "source": "Appli/App/ems_ctrl.c（R8：归一化只在 ctrl 一份）+ design §Architecture 2"
+  },
+  "int8_calib_caliber": {
+    "quant_calib_field": "val 前 1000 样本（仅校准）",
+    "calib_domain_normalized": true,
+    "same_as_deployment_feed": true,
+    "tcn_int8_val_rmse_kwh": 10.0353,
+    "source": "results/ecms_phase25/t307_int8_report.json"
+  },
+  "checks": {
+    "norm_bitwise_deploy_json": true,
+    "training_caliber": true,
+    "deployment_feed_caliber": true,
+    "int8_calib_caliber": true,
+    "identity_sha256_tflite": true,
+    "deployment_chain_spot_check": true
+  },
+  "deployment_chain_spot_check": {
+    "seed": 20260902,
+    "n": 3,
+    "layout_gate_abs_dq50_kwh": 3.662654465639513e-15,
+    "layout_gate_bound_kwh": 1e-06,
+    "f32_noise_abs_dq50_kwh": 1.3436952099055655e-06,
+    "f32_noise_sanity_kwh": 0.001,
+    "windows": [
+      {
+        "idx": 9932,
+        "max_abs_dq_kwh_f64_vs_replay": [
+          3.662654465639513e-15,
+          1.8313272328197563e-15,
+          0.0
+        ],
+        "max_abs_dq_kwh_f32_vs_replay": [
+          1.3643722577872255e-06,
+          1.2563639985147872e-06,
+          3.3577955638448703e-07
+        ],
+        "q50_keras_f32_kwh": 21.94505623512852,
+        "q50_replay_kwh": 21.94505497876452
+      },
+      {
+        "idx": 3012,
+        "max_abs_dq_kwh_f64_vs_replay": [
+          1.8313272328197563e-15,
+          9.156636164098782e-16,
+          7.783140739483964e-15
+        ],
+        "max_abs_dq_kwh_f32_vs_replay": [
+          2.656739266999523e-06,
+          1.3436952099055655e-06,
+          1.5963140208402932e-06
+        ],
+        "q50_keras_f32_kwh": 25.84039177380025,
+        "q50_replay_kwh": 25.840393117495456
+      },
+      {
+        "idx": 21972,
+        "max_abs_dq_kwh_f64_vs_replay": [
+          3.662654465639513e-15,
+          3.662654465639513e-15,
+          8.240972547688904e-15
+        ],
+        "max_abs_dq_kwh_f32_vs_replay": [
+          1.9284728500804726e-06,
+          4.418746482413981e-08,
+          1.1477956983142894e-06
+        ],
+        "q50_keras_f32_kwh": 14.076743917150342,
+        "q50_replay_kwh": 14.076743872962876
+      }
+    ]
+  },
+  "overall": true,
+  "conclusion": "三口径一致，允许部署"
+}

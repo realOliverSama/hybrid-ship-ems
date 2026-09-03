@@ -11,13 +11,23 @@ Phase 3 起，全部 EMS 固件工程统一放在本文件夹下，**一个 EMS 
 
 ```text
 EMS_Projects/
-├── <EMS 工程 1>/        # 独立 CubeMX/CMake 工程
-├── <EMS 工程 2>/
-└── ...
+├── EMS01_CHIL_ECMS/          # MLP-Q G2 v3 基线（已恢复纯净态，git = HEAD @1308ab76）
+├── EMS01_CHIL_ECMS_TCN64/    # TCN-f64 换型工程（batch 证据 + 流式 closure + NPU 实验记录）
+└── Home/                     # vendor 模板空目录，非 EMS 工程
 ```
 
 工程组织类比 `../Projects/`（典型结构：`.ioc` / `CMakeLists.txt` / `CMakePresets.json` /
 `Appli/` / `STM32CubeIDE/` / `Binary/` 等）。
+
+## 工程清单（2026-09-03 晨，最终两工程结构）
+
+| 工程 | 角色 | 说明 |
+|---|---|---|
+| `EMS01_CHIL_ECMS` | MLP-Q G2 v3 基线（已恢复纯净态：git = HEAD，fw_gate 7/7，重建双镜像 nm 无 TCN 符号） | v1/v3 先例工程；本会话 TCN 换型改动已全部迁出至 TCN64 |
+| `EMS01_CHIL_ECMS_TCN64` | **TCN-f64 换型工作区**（batch 换型验证态证据 + 流式 closure 实现 + NPU 频率实验记录合一） | 用户工程隔离规则承接体；流式与 batch 为同一模型演进阶段，证据合并在 `Host/results/tcn_swap/`；spec `ems01-chil-tcn64-swap` |
+
+> 注：早期曾计划"batch 与流式分列两工程"，实际实施中流式 closure 直接在 TCN64 内
+> 演进（batch 证据即流式的基线），故最终为两工程结构。
 
 ## 工程约定
 

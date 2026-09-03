@@ -1,0 +1,44 @@
+{
+ "scenario": "CL_NAN",
+ "v1_scenario_ref": "nan",
+ "harness_csv": "/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/ems_cl_fault_harness_q7kqdq7s/closedloop_S20_ref.csv",
+ "params": {
+  "cl_fault_tick": 30,
+  "cl_stall_s": 0.1,
+  "cl_ticks": 60,
+  "rsp_timeout_ms": 500,
+  "advancer": "stub",
+  "image": "ref",
+  "mock": "pty+_MockFW（STALE 阈加速 0.05s）"
+ },
+ "counts": {
+  "n_fallback_segments": 1,
+  "n_policy_events": 1,
+  "n_dump_lines": 2
+ },
+ "policy_events": [
+  {
+   "action": "mutate_pload_nan",
+   "tick": 30
+  }
+ ],
+ "fallback_segments": [
+  {
+   "start_tick": 30,
+   "start_fuel": 0.399999999999995,
+   "start_soc": 0.6007518768310547,
+   "end_tick": 31,
+   "end_fuel": 0.42666666666665876,
+   "end_soc": 0.6008037328720093,
+   "recovery_ticks": 0,
+   "n_ticks": 2,
+   "d_fuel_kg": 0.02666666666666373,
+   "d_soc": 5.1856040954589844e-05
+  }
+ ],
+ "dump_text": [
+  "EVT seq=0 type=4 aux=0 tick=30 ms=0",
+  "EVT total=1 kept=1 cap=32"
+ ],
+ "observations": {}
+}

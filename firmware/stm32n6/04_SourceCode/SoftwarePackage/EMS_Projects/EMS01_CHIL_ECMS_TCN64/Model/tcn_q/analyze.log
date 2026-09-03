@@ -1,0 +1,230 @@
+ST Edge AI Core v2.2.0-20266 2adc00962
+PASS:   0%|          | 0/98 [00:00<?, ?it/s]PASS:  11%|█         | 11/98 [00:08<01:04,  1.35it/s]PASS:  12%|█▏        | 12/98 [00:08<01:00,  1.43it/s]PASS:  20%|██        | 20/98 [00:08<00:24,  3.24it/s]PASS:  29%|██▊       | 28/98 [00:08<00:12,  5.65it/s]PASS:  39%|███▉      | 38/98 [00:08<00:06,  9.71it/s]PASS:  47%|████▋     | 46/98 [00:08<00:03, 13.75it/s]PASS:  54%|█████▍    | 53/98 [00:09<00:02, 18.01it/s]PASS:  65%|██████▌   | 64/98 [00:09<00:01, 26.92it/s]PASS:  77%|███████▋  | 75/98 [00:09<00:00, 36.53it/s]PASS:  86%|████████▌ | 84/98 [00:09<00:00, 42.42it/s]                                                      >>>> EXECUTING NEURAL ART COMPILER
+PASS:  86%|████████▌ | 84/98 [00:09<00:00, 42.42it/s]                                                        /Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/macarm/atonn -i "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_output/tcn_q_OE_3_3_0.onnx" --json-quant-file "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_output/tcn_q_OE_3_3_0_Q.json" -g "network.c" --load-mdesc "/Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/configs/stm32n6.mdesc" --load-mpool "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/my_mpools/stm32n6.mpool" --save-mpool-file "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_ws/neural_art__network/stm32n6.mpool" --out-dir-prefix "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_ws/neural_art__network/" --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file "c_info.json"
+PASS:  86%|████████▌ | 84/98 [00:09<00:00, 42.42it/s]                                                      <<<< DONE EXECUTING NEURAL ART COMPILER
+PASS:  86%|████████▌ | 84/98 [00:10<00:00, 42.42it/s]PASS:  95%|█████████▍| 93/98 [00:12<00:00,  9.55it/s]                                                      >>>> EXECUTING EPOCH_CONTROLLER POST_PROCESSING
+PASS:  95%|█████████▍| 93/98 [00:12<00:00,  9.55it/s]                                                      <<<< DONE EXECUTING EPOCH_CONTROLLER POST_PROCESSING
+PASS:  95%|█████████▍| 93/98 [00:16<00:00,  9.55it/s]                                                      
+ Exec/report summary (analyze)
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ model file         :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/tcn_q.tflite   
+ type               :   tflite                                                                                                                                           
+ c_name             :   network                                                                                                                                          
+ optimization       :   balanced                                                                                                                                         
+ target/series      :   stm32n6npu                                                                                                                                       
+ workspace dir      :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_ws       
+ output dir         :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_output   
+ model_fmt          :   sa/sa per tensor                                                                                                                                 
+ model_name         :   tcn_q                                                                                                                                            
+ model_hash         :   0x1ff03e6bbc58d713b47e44d9a3d6e809                                                                                                               
+ params #           :   166,619 items (165.75 KiB)                                                                                                                       
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ input 1/2          :   'Input_18_out_0', f32(1x300x1), 1.17 KBytes, user                                                                                                
+ input 2/2          :   'Input_13_out_0', f32(1x2), 8 Bytes, user                                                                                                        
+ inputs (total)     :   1.18 KBytes                                                                                                                                      
+ output 1/1         :   'Dequantize_199_out_0', f32(1x3), 12 Bytes, user                                                                                                 
+ macc               :   0                                                                                                                                                
+ weights (ro)       :   165,137 B (161.27 KiB) (1 segment) / -501,339(-75.2%) vs float model                                                                             
+ activations (rw)   :   134,472 B (131.32 KiB) (4 segments)                                                                                                              
+ ram (total)        :   135,692 B (132.51 KiB) = 134,472 + 1,208 + 12                                                                                                    
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:17<00:00,  9.55it/s]                                                     
+Computing AI RT data/code size (target=stm32n6npu)..
+PASS:  95%|█████████▍| 93/98 [00:17<00:00,  9.55it/s]                                                     
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Compilation details
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Compiler version: 1.1.1-14
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_output/tcn_q_OE_3_3_0.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_output/tcn_q_OE_3_3_0_Q.json -g network.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI/2.2/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/my_mpools/stm32n6.mpool --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_ws/neural_art__network/stm32n6.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_ws/neural_art__network/ --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     ====================================================================================
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Memory usage information
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	npuRAM3    [0x34200000 - 0x34270000]:    131.320 kB /    448.000 kB  ( 29.31 % used) -- weights:          0  B (  0.00 % used)  activations:    131.320 kB ( 29.31 % used)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	npuRAM4    [0x34270000 - 0x342E0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	npuRAM5    [0x342E0000 - 0x34350000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	npuRAM6    [0x34350000 - 0x343C0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	octoFlash  [0x70200000 - 0x70300000]:    161.267 kB /      1.000 MB  ( 15.75 % used) -- weights:    161.267 kB ( 15.75 % used)  activations:          0  B (  0.00 % used)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	hyperRAM   [0x90000000 - 0x91000000]:          0  B /     16.000 MB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Total:                                           292.587 kB                                  -- weights:    161.267 kB                  activations:    131.320 kB
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     ====================================================================================
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Memory to be allocated by the user: inputs (1.219 kB), outputs (32  B)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	Input [0]:      1.188 kB
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	Input [1]:         32  B
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	Output[0]:         32  B
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     ====================================================================================
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Used memory ranges
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	npuRAM3    [0x34200000 - 0x34270000]: 0x34200000-0x34220D50
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     	octoFlash  [0x70200000 - 0x70300000]: 0x70200000-0x70228520
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     ====================================================================================
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Epochs details
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                        ---------------------------------------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     Total number of epochs: 132 of which 47 implemented in software
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch ID   HW/SW/EC Operation (SW only)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 1       ??
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 2      -SW-   (   QuantizeLinear   )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 3       EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 4      -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 5       EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 6       EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 7      -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 8       EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 9       EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 10      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 11      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 12      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 13      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 14     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 15      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 16     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 17      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 18      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 19      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 20     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 21      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 22     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 23      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 24      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 25      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 26      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 27     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 28      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 29     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 30      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 31      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 32      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 33     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 34      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 35     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 36      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 37      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 38      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 39      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 40     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 41      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 42     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 43      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 44      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 45     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 46     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 47      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 48      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 49      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 50     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 51      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 52     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 53      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 54      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 55     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 56     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 57      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 58      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 59      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 60      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 61     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 62      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 63     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 64      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 65      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 66     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 67     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 68      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 69      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 70      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 71     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 72      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 73     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 74      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 75      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 76     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 77     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 78      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 79      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 80      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 81      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 82     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 83      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 84     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 85      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 86      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 87     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 88     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 89      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 90      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 91      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 92     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 93      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 94     -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 95      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 96      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 97     -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 98     -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 99      EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 100     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 101     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 102     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 103    -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 104     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 105    -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 106     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 107     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 108    -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 109    -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 110     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 111     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 112     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 113    -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 114     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 115    -SW-   (    SpaceToDepth    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 116     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 117     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 118    -SW-   (    DepthToSpace    )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 119    -SW-   (        Pad         )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 120     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 121     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 122     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 123     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 124    -SW-   (  DequantizeLinear  )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 125    -SW-   (       Gather       )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 126    -SW-   (   QuantizeLinear   )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 127     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 128     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 129     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 130     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 131     EC
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     epoch 132    -SW-   (  DequantizeLinear  )
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     ====================================================================================
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      Requested memory size by section - "stm32n6npu" target
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ------------------------------- -------- --------- ------ ---------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      module                              text    rodata   data       bss
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ------------------------------- -------- --------- ------ ---------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      network.o                          4,502   102,817      0        12
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      NetworkRuntime1020_CM55_GCC.a      4,288         0      0         0
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ll_aton_reloc_network.o                0         0      0         0
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      lib (toolchain)*                     988       624      0         0
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ll atonn runtime                  11,998    17,908    152     1,637
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ------------------------------- -------- --------- ------ ---------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      RT total**                        21,776   121,349    152     1,649
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ------------------------------- -------- --------- ------ ---------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      weights                                0   165,137      0         0
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      activations                            0         0      0   134,472
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      io                                     0         0      0     1,220
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ------------------------------- -------- --------- ------ ---------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      TOTAL                             21,776   286,486    152   137,341
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ------------------------------- -------- --------- ------ ---------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      *  toolchain objects (libm/libgcc*)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                      ** RT AI runtime objects (kernels+infrastructure)
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       Summary - "stm32n6npu" target
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       --------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                                    FLASH (ro)      %*   RAM (rw)      %
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       --------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       RT total        143,277   46.5%      1,801   1.3%
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       --------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       TOTAL           308,414            137,493
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       --------------------------------------------------
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                       *  rt/total
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]                                                     
+Creating txt report file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Model/tcn_q/st_ai_output/network_analyze_report.txt
+PASS:  95%|█████████▍| 93/98 [00:22<00:00,  9.55it/s]PASS:  95%|█████████▍| 93/98 [00:29<00:00,  9.55it/s]PASS: 100%|██████████| 98/98 [00:34<00:00,  1.05it/s]                                                     elapsed time (analyze): 43.635s

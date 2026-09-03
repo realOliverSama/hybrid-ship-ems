@@ -1,0 +1,306 @@
+{
+ "task": "T-605",
+ "spec": "ems01-chil-v3-closedloop (FR-605/AC-602)",
+ "generated": "2026-09-02 12:50:54",
+ "matlab_version": "R2026a",
+ "sim_ref_matlab_version": "R2026a",
+ "scenario": "S20",
+ "backend": "ctypes",
+ "plantstep_dylib_sha256": "9476428b840b3534800209b061272d727f050ca3e27e8f9b1b285f404f1dacc3",
+ "build_manifest": {
+  "path": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/S20/build_manifest.json",
+  "run_id": "G2_S20_composite_voyage_matrix",
+  "model_sha256": "f438ff9637e01302119fac113e42b301c69e96128470ee3fd31622dad7e7686e",
+  "parameters_sha256": "830eec47fda301242e8ef4aa6a3165726d79aca8cb67b52c0b023b8863e719d8",
+  "matlab_version_string": "26.1.0.3312084 (R2026a) Update 4"
+ },
+ "ref_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv",
+ "sim_ref_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/reference/v3_gp1_S20_replay.csv",
+ "sim_ref_provenance": "解释执行参考 = scripts/22_run_gp1_gate.m 以同一回放输入（ref_csv 的 P_gen_ref_kW 列 0.01s ZOH 网格）驱动同一 HybridShip_ModelD_PlantStep 模型（MATLAB 解释执行）生成的逐拍轨迹（provenance: ref_G2 冻结基线 → 22 号脚本 → gp1 replay CSV）",
+ "simref_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/reference/v3_gp2_S20_simref.csv",
+ "simref_columns": [
+  "tick",
+  "t",
+  "x_ship_m",
+  "v_ship_mps",
+  "SOC",
+  "fuel_total_kg",
+  "omega_prop_radps",
+  "drive_lag_s",
+  "V_dc_V",
+  "p_gen_inertia_kW",
+  "ki_integrator",
+  "P_load_kW",
+  "v_cmd_mps",
+  "accel_mps2",
+  "P_bat_kW",
+  "P_prop_kW"
+ ],
+ "simref_provenance": "内部状态参考 = 主 Agent 以 MATLAB logsout 0.01s dense 数据在 tick 时刻采样导出（与 gp1 replay 同一解释执行运行；列定义见本脚本头注释）",
+ "thresholds": {
+  "gate_max_abs": 1e-06,
+  "numerical_health": true
+ },
+ "stage_time_semantics": "门禁项=拍边界 X 直读（wrapper states()）；报告项=wrapper Y（ERT 阶段时刻 t=(k+1)−0.0025 写出，design §4.4a）vs sim 同刻线性插值",
+ "fuel_caliber": "codegen X CSTATE g ×1e-3 = kg；sim 侧 gp1 replay/simref 均为 kg",
+ "p_gen_ticks_consumed": 5520,
+ "tick0": {
+  "constructed": {
+   "t": 0.0,
+   "P_load_kW": 100.0,
+   "SOC": 0.6,
+   "v_cmd_mps": 1.543,
+   "v_ship_mps": 0.0,
+   "accel_mps2": 0.0,
+   "x_ship_m": 0.0,
+   "fuel_total_kg": 0.0,
+   "P_bat_kW": 0.0,
+   "P_prop_kW": 0.0,
+   "voyage_stop": 0.0
+  },
+  "ref_row0": {
+   "tick": 0.0,
+   "t": 0.0,
+   "P_load_kW": 100.0,
+   "SOC": 0.6,
+   "v_cmd_mps": 1.543,
+   "v_ship_mps": 0.0,
+   "accel_mps2": 0.0,
+   "x_ship_m": 0.0,
+   "fuel_total_kg": 0.0,
+   "P_bat_kW": 0.0,
+   "P_prop_kW": 0.0,
+   "voyage_stop": 0.0
+  },
+  "field_abs_d": {
+   "x_ship_m": 0.0,
+   "v_ship_mps": 0.0,
+   "SOC": 0.0,
+   "fuel_total_kg": 0.0,
+   "tick": 0.0,
+   "t": 0.0,
+   "P_load_kW": 0.0,
+   "v_cmd_mps": 0.0,
+   "accel_mps2": 0.0,
+   "P_bat_kW": 0.0,
+   "P_prop_kW": 0.0,
+   "voyage_stop": 0.0
+  },
+  "wrapper_states_ic": {
+   "x_ship_m": 0.0,
+   "v_ship_mps": 0.0,
+   "omega_prop_radps": 0.0,
+   "drive_lag_s": 0.0,
+   "SOC": 0.6,
+   "V_dc_V": 750.0,
+   "p_gen_inertia_kW": 0.0,
+   "ki_integrator": 0.0,
+   "fuel_total_kg": 0.0
+  },
+  "state_max_abs": 0.0
+ },
+ "items": [
+  {
+   "metric": "x_ship_max_abs",
+   "value": 2.2737367544323206e-13,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "v_ship_max_abs",
+   "value": 1.7763568394002505e-15,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "SOC_max_abs",
+   "value": 0.0,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "fuel_max_abs",
+   "value": 5.684341886080802e-14,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "omega_prop_max_abs",
+   "value": 4.707345624410664e-14,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "drive_lag_max_abs",
+   "value": 9.379164112033322e-13,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "V_dc_max_abs",
+   "value": 3.2429170460090972e-09,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "p_gen_inertia_max_abs",
+   "value": 3.427715000725584e-08,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "ki_integrator_max_abs",
+   "value": 2.3092638912203256e-14,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "tick0_state_max_abs",
+   "value": 0.0,
+   "threshold": 1e-06,
+   "pass": true
+  },
+  {
+   "metric": "numerical_health",
+   "value": true,
+   "threshold": true,
+   "pass": true
+  }
+ ],
+ "metrics": {
+  "x_ship_max_abs": 2.2737367544323206e-13,
+  "v_ship_max_abs": 1.7763568394002505e-15,
+  "SOC_max_abs": 0.0,
+  "fuel_max_abs": 5.684341886080802e-14,
+  "omega_prop_max_abs": 4.707345624410664e-14,
+  "drive_lag_max_abs": 9.379164112033322e-13,
+  "V_dc_max_abs": 3.2429170460090972e-09,
+  "p_gen_inertia_max_abs": 3.427715000725584e-08,
+  "ki_integrator_max_abs": 2.3092638912203256e-14,
+  "tick0_state_max_abs": 0.0,
+  "numerical_health": true,
+  "rows_cmp": 5520,
+  "rows_expected": 5520
+ },
+ "state_comparison": {
+  "x_ship_m": {
+   "max_abs": 2.2737367544323206e-13,
+   "tick_of_max": 660,
+   "nan_count": 0,
+   "sim_source": "gp1_replay"
+  },
+  "v_ship_mps": {
+   "max_abs": 1.7763568394002505e-15,
+   "tick_of_max": 1444,
+   "nan_count": 0,
+   "sim_source": "gp1_replay"
+  },
+  "SOC": {
+   "max_abs": 0.0,
+   "tick_of_max": null,
+   "nan_count": 0,
+   "sim_source": "gp1_replay"
+  },
+  "fuel_total_kg": {
+   "max_abs": 5.684341886080802e-14,
+   "tick_of_max": 4002,
+   "nan_count": 0,
+   "sim_source": "gp1_replay"
+  },
+  "omega_prop_radps": {
+   "max_abs": 4.707345624410664e-14,
+   "tick_of_max": 5503,
+   "nan_count": 0,
+   "sim_source": "simref_csv"
+  },
+  "drive_lag_s": {
+   "max_abs": 9.379164112033322e-13,
+   "tick_of_max": 1125,
+   "nan_count": 0,
+   "sim_source": "simref_csv"
+  },
+  "V_dc_V": {
+   "max_abs": 3.2429170460090972e-09,
+   "tick_of_max": 3748,
+   "nan_count": 0,
+   "sim_source": "simref_csv"
+  },
+  "p_gen_inertia_kW": {
+   "max_abs": 3.427715000725584e-08,
+   "tick_of_max": 3748,
+   "nan_count": 0,
+   "sim_source": "simref_csv"
+  },
+  "ki_integrator": {
+   "max_abs": 2.3092638912203256e-14,
+   "tick_of_max": 892,
+   "nan_count": 0,
+   "sim_source": "simref_csv"
+  }
+ },
+ "derived_report": {
+  "t_s": {
+   "max_abs_d": 9.094947017729282e-13,
+   "mean_abs_d": 4.139767634972118e-13,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "P_load_kW": {
+   "max_abs_d": 1.034624963801889,
+   "mean_abs_d": 0.00043388216317377713,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "v_cmd_mps": {
+   "max_abs_d": 0.0014962499999988665,
+   "mean_abs_d": 1.4211956534831097e-06,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "accel_mps2": {
+   "max_abs_d": 0.032809157651607114,
+   "mean_abs_d": 1.1230368538983355e-05,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "P_bat_kW": {
+   "max_abs_d": 0.10666694776577401,
+   "mean_abs_d": 0.001063744050319566,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "P_prop_kW": {
+   "max_abs_d": 1.034624963801889,
+   "mean_abs_d": 0.00043388216317378955,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "voyage_stop": {
+   "max_abs_d": 0.0,
+   "mean_abs_d": 0.0,
+   "n": 5520,
+   "nan_count": 0
+  },
+  "t_s_dev_vs_tick_end": {
+   "max_abs": 0.002500000000509317,
+   "mean_abs": 0.0024999999999874315,
+   "n": 5520,
+   "note": "Y.t_s − (k+1)，ERT 阶段时刻写出的系统偏差（预期 ≈ −0.0025）"
+  },
+  "voyage_stop_stage_vs_next_tick_mismatch_count": 0,
+  "note": "报告项不作门禁（design §4.4a）：wrapper Y 为 ERT 阶段时刻 t=(k+1)−0.0025 读数，sim 侧为 gp1 replay tick 序列线性插值，残差为仪器时序特征"
+ },
+ "simref_consistency": {
+  "x_ship_m": 0.0,
+  "v_ship_mps": 0.0,
+  "SOC": 1.5587531265737198e-13,
+  "fuel_total_kg": 7.619860298291314e-11,
+  "P_load_kW": 0.0,
+  "v_cmd_mps": 0.0,
+  "accel_mps2": 0.0,
+  "P_bat_kW": 3.242917046009097e-08,
+  "P_prop_kW": 0.0
+ },
+ "runtime_error": null,
+ "overall": true
+}

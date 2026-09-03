@@ -1,0 +1,42 @@
+{
+ "task": "T-607",
+ "spec": "ems01-chil-v3-closedloop (FR-606/FR-607/NFR-602/AC-603)",
+ "generated": "2026-09-02 14:02:35",
+ "scenario": "S20",
+ "image": "npu",
+ "mode": "board",
+ "backend": "stub",
+ "plantstep": {
+  "backend": "stub",
+  "dylib": null,
+  "dylib_sha256": null,
+  "build_manifest": null
+ },
+ "ref_csv": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv",
+ "out_csv": "/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/ems_cl_fault_harness_eueem77y/closedloop_S20_npu.csv",
+ "start_ic": {
+  "t": 0.0,
+  "P_load_kW": 100.0,
+  "SOC": 0.6,
+  "v_cmd_mps": 1.543,
+  "v_ship_mps": 0.0,
+  "accel_mps2": 0.0,
+  "x_ship_m": 0.0,
+  "fuel_total_kg": 0.0
+ },
+ "tick_time": {
+  "mean": 0.00259279926661596,
+  "p50": 0.0026842080042115413,
+  "p95": 0.0034450420062057674,
+  "max": 0.006418290999135934,
+  "unit": "s",
+  "n": 60
+ },
+ "termination_reason": "tick_count_reached",
+ "events": [],
+ "status": "completed",
+ "rows": 60,
+ "n_ticks_planned": 60,
+ "rsp_timeout_ms": 500,
+ "error": ""
+}

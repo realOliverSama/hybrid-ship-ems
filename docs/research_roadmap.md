@@ -1,7 +1,7 @@
 # 研究流程文档 —— 边缘 AI 自适应 ECMS 甲醇混合动力船舶能量管理策略
 
 **用途**: 向导师/评审介绍研究路径、实验步骤与逻辑链条
-**日期**: 2026-08-26 初稿 / 2026-08-29 增补 Phase 2.5 / 2026-09 收官增补（Phase 2.5 完成 + Phase 3 v1/v3 闭环完成）
+**日期**: 2026-08-26 初稿 / 2026-08-29 增补 Phase 2.5 / 2026-09 收官增补（Phase 2.5 完成 + Phase 3 v1/v3 闭环完成）/ 2026-09-02 报告终稿内容同步（新增 §1.4 Model D 分模块要点；§8.2 增补 SRAM 加载完整性、闭环层③与仪器链数据点）
 **范围**: Phase 0 → Phase 1 → Phase 2（已完成）→ **Phase 2.5（已完成）** → Phase 3（已完成：v1 开环 HIL + v3 真闭环 soft-HIL；后继议程另立项）
 **数据可复现性**: 本文所有数值均可经 `results/ecms_phase{0,1,2}/` 与对应 `scripts/` 复验
 
@@ -73,6 +73,155 @@
 **建模纪律**（贯穿至今）：全部模型脚本驱动、可从零重建；图纸确定值与
 ASSUMED 估计值严格分离；每个假设（BSFC 低负荷形状、DC/DC 动态参数等）
 都标注来源等级，不把假设当事实用。
+
+### 1.4 Model D 分模块架构与物理语义（2026-09-02 自研究总结报告终稿 §2.1 同步）
+
+> 本小节同步自导师研究总结报告终稿（`docs/reports/EMS01_研究总结报告_soft-HIL真闭环_20260902.docx`
+> §2.1，commit 1308ab76），以要点与表格压缩形式收录 Model D 顶层架构、各子系统物理语义与参数
+> 体系；完整叙述以报告原文为准。模型示意图与模块截图（报告图 1~图 6）均见 `docs/reports/figures/`：
+> 图 1 架构示意 = `modeld_arch_schematic.png`；图 2 顶层实现全景 = `modeld_top.png`；
+> 图 3 推进与船体 = `model/modeld_03_propulsion.png`；图 4 电池变换器 = `model/modeld_14_battery.png`；
+> 图 5 直流母线 = `model/modeld_13_dcbus.png`；图 6 law=7 变体内部 = `model/modeld_05_ems_law7.png`。
+
+#### 1.4.1 顶层架构与模块划分
+
+Model D（`HybridShip_ModelD_DCBus.slx`，由 `scripts/10_build_modelD.m` 从零脚本构建）顶层由
+**14 个子系统**构成（编号 07 不再使用：Model A 的电池均值模块在引入直流母线电气层后由
+14_Battery_Converter 取代），按功能分四条链：
+
+- **工况与航速链**（01 → 02 → 03 → 04）：把“船怎么开”转化为母线侧总负荷 P_load_total；
+- **能量管理链**（05）：根据负荷、电池状态与船况决策机组功率指令 P_gen_ref——本研究被优化的对象；
+- **功率流链**（06 → 13 ⇄ 14）：甲醇机组经整流、电池经双向 DC/DC 共同挂接 750 V 直流母排，
+  母排再经推进逆变驱动推进电机；
+- **监视与记录**（08 / 09 / 11 / 12 / 15）：欠压降额、功率残差一致性监视、航程终止、数据记录
+  与 CCS 电压带报警。
+
+**建模约定**：双推进支路对称聚合等效（图纸单支路额定 ×2）；功率一律 kW，速度 m/s，距离 m，
+SOC ∈ [0,1]，P_bat > 0 为放电；求解器定步长 ode3 @ 0.01 s，EMS 控制拍 1 s，信号经 logsout
+日志导出。
+
+**Model D 顶层子系统清单（14 个；构建脚本 +model/build_model_c.m 为唯一事实源）**（报告表 1 同步）：
+
+| 编号 | 子系统 | 职责 | 关键输入 → 输出 |
+|---|---|---|---|
+| 01 | Scenario_Manager | 目标航速/水流/阻力倍率剖面、日用负荷、场景号 | x_ship → v_cmd / v_current / res_mult / P_hotel / scen_id |
+| 02 | Ship_Speed_Controller | PI 航速环（限幅抗饱和） | v_cmd, v_ship → P_prop_demand |
+| 03 | Propulsion_Plant | 推进电机-齿轮箱-轴系-螺旋桨-船体动力学 | demand/limit/v_current/res_mult → P_prop_actual, v, x, a, R, F, n |
+| 04 | Load_Measurement | 母线侧负荷聚合 | P_prop_actual, P_hotel → P_load_total |
+| 05 | EMS_Controller | Variant 变体（law=0~7），功率分配决策 | P_load/SOC/v/x/a/t → P_gen_ref |
+| 06 | Genset_Average_Plant | 机组均值模型：限幅-爬坡-惯性 | P_gen_ref → P_gen_actual |
+| 08 | Undervolt_Derate | 母线欠压 → 推进功率降额 | V_dc, demand → P_prop_limit / P_unserved |
+| 09 | Bus_Residual_Monitor | 母线功率残差一致性监视 | P_gen / P_bat / P_load → P_residual |
+| 10 | Fuel_Consumption | BSFC 查表 + 燃油流量积分 | P_gen_actual → fuel_total |
+| 11 | Voyage_Stop_Logic | 到达航程终止仿真 | x_ship → stop |
+| 12 | Data_Logging | 信号日志配置说明（logsout） | — |
+| 13 | DC_Bus | 母线电容电压动态 | P_gen / P_bat / P_load → V_dc |
+| 14 | Battery_Converter | 双向 DC/DC 下垂并网 + SOC 积分与降额 | V_dc → P_bat_bus / SOC / dis·chg 可用功率 |
+| 15 | Bus_Voltage_Monitor | CCS 稳态/瞬态电压带报警（不干预） | V_dc → alarm ×2 |
+
+#### 1.4.2 工况与航速控制链（01 / 02 / 04 / 11）
+
+- **01_Scenario_Manager** 以 MATLAB Function 生成三类剖面：目标航速 v_cmd（距离节点 mode=0 与
+  时间节点 mode=1 两种模式，后者使 S20 复合航次可经 VOYAGE_* 工作区变量在仿真编译期注入，
+  批量航次无需重建模型；过渡由下游 Rate Limiter 按加/减速率平滑）、水流速度 v_current
+  （S20 第 9 段逆水 -1 m/s，其余为 0）、阻力倍率（4 类剖面 + 最多 4 段阻力带，距离触发、
+  平滑过渡）；
+- **02_Ship_Speed_Controller** 为 PI 航速环（比例 + 限幅积分抗饱和，输出限幅至电机额定 700 kW）；
+- **04_Load_Measurement** 输出 P_load_total = max(P_prop_actual, 0) + P_hotel，是 EMS 与母线
+  共同的负荷接口；
+- **11_Voyage_Stop_Logic** 在 x_ship ≥ 航程时终止仿真。
+
+#### 1.4.3 推进与船体（03）
+
+- **信号链**：可用功率限幅 min(demand, limit) → 驱动滞后一阶环节（τ = 0.5 s）→ 功率限幅 →
+  电-机综合效率 0.92 → 转矩换算（角速度除零保护）→ 电机转矩限幅 ±T_max → 齿轮箱
+  （减速比 6.08，效率 0.96）→ 轴系动力学 J·dω/dt = T_drive - Q_prop - B·ω
+  （聚合惯量 J = 1600 kg·m²）→ 螺旋桨水动力 → 船体纵向动力学 → 积分得 v_ship 与 x_ship；
+- **螺旋桨简化水动力**：进速 V_A = (1-w)·(v_ship - v_current)（伴流分数 w = 0.15），
+  推力 F = K_Fw·ω|ω| - K_Fv·V_A|V_A|，转矩 Q = K_Qu·ω|ω| - K_Qv·V_A|V_A|，四个 K 系数由
+  系泊点与设计点双锚定；
+- **船体阻力**：R = m(x)·K_R·V_rel|V_rel|（K_R ≈ 1780 N/(m/s)²，按服务航速 11 kn、Fn∇≈0.57
+  文献区间交叉校核；m(x) 为 01 给出的阻力倍率），纵向方程 dv/dt = (F - R + F_env)/M，
+  等效质量 M = 1.0×10⁶ kg（约 1000 t 排水量）。
+
+#### 1.4.4 发电与燃油（06 / 10）
+
+- **06_Genset_Average_Plant** 机组常开均值模型：指令限幅 [0, 1000] kW → 爬坡率 ±40 kW/s
+  （双机聚合）→ 一阶惯性 τ = 5 s → 输出限幅；最低稳定功率取 0（可怠速空载，属 ASSUMED 假设，
+  三档敏感性已量化登记）；
+- **10_Fuel_Consumption** 以 1-D 查表给出 BSFC(P_gen)，燃油流量 ṁ = P·BSFC/3.6×10⁶ 积分得
+  累计油耗。BSFC 曲线以两个真实锚点标定（最优 427 g/kWh；25% 负荷恶化 +30%~+70%），默认
+  7 断点表为 [0 100 200 400 600 800 1000] kW → [1200 700 550 480 450 430 453] g/kWh；
+  Phase 0 起经 `config/ecms_bsfc_override.mat` 注入统一口径（保证 Baseline 与 DP 严格同口径）。
+
+#### 1.4.5 直流母线电气层（13 / 14 / 08 / 09 / 15）
+
+- **13_DC_Bus** 将母排建模为聚合电容：C·V·dV/dt = P_gen·η_rect + P_bat_bus - P_load_total
+  （C = 40 F，η_rect = 0.97，dV/dt = P_res·1000/(C·max(V, 50))，电压限幅保护）；
+- **14_Battery_Converter** 以电压下垂方式并网（grid-forming）：
+  P_bat = clamp(K_droop·(V_nom - V_dc), -chg_avail, dis_avail)，K_droop = 10 kW/V
+  （经灵敏度扫描固化）；SOC 由电池端功率积分并限幅 [0.10, 0.95]，充放电效率 0.95、
+  DC/DC 效率 0.97 折算；可用功率按 SOC 降额（放电自 SOC = 0.25 起线性降至 0.10 截止，
+  充电自 0.90 起降至 0.95 截止）——该降额即电量维持约束（SOC 降额阈值 0.25，见 §8.2 安全边界）的模型化；
+- **08_Undervolt_Derate** 在母线欠压时按 f = clamp((V - 600)/(675 - 600), 0, 1) 线性降额推进
+  可用功率（CCS 稳态下限 675 V 至瞬态下限 600 V），并输出未满足功率 P_unserved 供监视；
+  **09_Bus_Residual_Monitor** 输出母线功率残差（应等于 C·V·dV/dt）供后处理校验电气层一致性；
+  **15_Bus_Voltage_Monitor** 按 CCS 2026 稳态带 [675, 795] V / 瞬态带 [600, 802.5] V 越限报警
+  （只报警、不干预）。
+
+#### 1.4.6 EMS 控制器变体结构（05）
+
+**05_EMS_Controller** 为 Variant Subsystem，由工作区变量 EMS_CTRL_LAW 选择七个变体之一；
+全部变体共享统一接口（7 入 1 出：P_load_total、SOC、v_cmd、v_ship、acceleration、x_ship、t
+→ P_gen_ref），使控制律消融可在同一被控对象上严格对照（控制律语义与数学形式见 §5.2/§6.2）。
+law=7（EMS_NN_AECMS）变体内部（报告图 6）：ecms_step MATLAB Function（网格穷举 + SOC 硬约束
++ λ 钳位）+ NN 权重/归一化常数显式接线（绕开参数固化缺陷）→ 输出限幅（截图见
+`docs/reports/figures/model/modeld_05_ems_law7.png`）。
+
+**05_EMS_Controller 变体清单（Variant 由 EMS_CTRL_LAW 编译期选择，无 law=3）**（报告表 2 同步）：
+
+| law | 变体 | 语义 | 研究角色 |
+|---|---|---|---|
+| 0 | EMS_Baseline | 负荷跟随 + SOC 修正（规则型） | 基线对照 |
+| 1 | EMS_AI_Enhanced | 即时前馈（早期 AI 形态） | 历史对照 |
+| 2 | EMS_ScheduledFF | 定时前馈（T-004） | NO-GO 研究线（§1.2） |
+| 4 | EMS_Fixed_ECMS | 固定 λ 单步网格穷举 ECMS（T-103） | C1（出带，参考） |
+| 5 | EMS_SOC_Adaptive_ECMS | λ(t) = λ₀ + K_soc·(SOC_ref - SOC)（T-105） | C2 基线主控 |
+| 6 | EMS_Oracle_ECMS | law=5 + 全知未来前瞻 ê（T-106） | C3 上界（非实时可实现） |
+| 7 | EMS_NN_AECMS | law=6 同构，ê 来自 NN 预测（T-204；G2 门控） | C4 / 最终 Winner |
+
+#### 1.4.7 参数体系与假设登记
+
+参数全部集中于 `config/Model_Parameters.m`，图纸确定值与 ASSUMED 估计值严格分离（构建时同步
+输出 `reports/parameter_audit.csv` 供审计）。BSFC 低负荷段形状、最低稳定负荷等假设参数的
+三档敏感性已在 Phase 0 量化（§4），不及预期的指标不在假设参数上硬调。
+
+**Model D 关键参数（图纸确定值与 ASSUMED 估计值分离登记；完整 69 项见 parameter_audit.csv）**
+（报告表 3 同步）：
+
+| 类别 | 参数（含取值） | 来源等级 |
+|---|---|---|
+| 电池 | 容量 2×535.68 = 1071.36 kWh；充放效率 0.95 | 图纸 / ASSUMED |
+| 机组 | 额定 2×500 = 1000 kW；爬坡 ±40 kW/s；惯性 τ=5 s | 图纸 / ASSUMED |
+| 推进电机 | 额定 2×350 = 700 kW；1500 rpm；综合电效率 0.92 | 图纸 / ASSUMED |
+| 支路 | 双推进支路对称聚合（×2） | 图纸（用户确认） |
+| 母线 | 额定 750 V；聚合电容 40 F；η_rect=η_dcdc=0.97 | 设备参数 / ASSUMED |
+| 船体 | 等效质量 1.0×10⁶ kg；K_R≈1780 N/(m/s)²；w=0.15 | ASSUMED（文献校核） |
+| 传动 | 齿轮箱 6.08 / 效率 0.96；轴系 J=1600 kg·m² | ASSUMED |
+| 电池并网 | 下垂系数 10 kW/V；SOC 窗 [0.10,0.95]，降额起始 0.25/0.90 | ASSUMED（扫描固化） |
+| BSFC | 7 断点查表，最优 427 g/kWh 锚点；低负荷 +30%~+70% | 真实锚点标定 |
+| 求解 | ode3 定步长 0.01 s；EMS 控制拍 1 s | 模型设定 |
+
+> 注：报告 docx 表 3 的“取值/来源”两列存在列错位（来源等级落位于取值列、末列为空），
+> 本表按实际内容重排为三列，数值与文字逐字保留。
+
+#### 1.4.8 模型可信度与在闭环验证中的复用
+
+Phase 3 v3 真闭环实验（§8.2）的被控对象并非另建模型，而是由 Model D 经原位子集变换得到
+（`HybridShip_ModelD_PlantStep.slx`：删除 05/12，根级注入 P_gen_ref，主模型 sha256 零改动
+断言）；其对冻结参考解释执行位级一致（G-P1，max|Δ|=0）、codegen C 与解释执行等价
+（G-P2，最差 3.4e-8）——即本小节介绍的模型就是 §8.2 闭环实验中“板上看到的那条船”
+（仪器链证据见 §8.2）。
 
 ---
 
@@ -534,13 +683,25 @@ codegen C，ode3 @0.01 s × 100 子步/拍，主模型 sha256 零改动）与 ST
 影响**。仪器链先位级后闭环：
 
 - **G-P1**（T-602/603）：被控对象子集解释执行 vs ref_G2 冻结参考回放——SOC/v_ship/
-  x_ship/P_load 逐拍 max|Δ| = **0**（5521/4212 拍位级一致），fuel 终值逐位相等；
+  x_ship/P_load 逐拍 max|Δ| = **0**（5521/4212 拍位级一致），fuel 终值逐位相等
+  （S20 = 328.094641944 kg）；
 - **G-P2**（T-605）：codegen C vs 解释执行——拍边界 X 直读 9 状态逐拍对照，最差
   **3.4e-8 ≪ 1e-6 阈值**（P_gen inertia 项）；ERT 阶段时刻写出语义（t=(k+1)−0.0025）
   作为仪器时序特征登记（design §4.4a）；
 - **仪器级①②**（T-613，FR-610）：闭环 (b) vs 开环参考、闭环 (b) vs 原生 (b′)——两 grade ×
   两场景 4 组 overall **全 PASS**（SOC 终点差 ≤3.2e-5、fuel 相对偏差 ≤6e-5、v_ship RMSE
-  ≤2.9e-5 m/s、P_gen 网格一致率 ≥98.6%）。
+  ≤2.9e-5 m/s、P_gen 网格一致率 ≥98.6%；差异源为 f32 序列化经 λ 网格边界的偶发翻转，
+  无结构性偏差）。
+- **SRAM 加载完整性**（v3 板会话，2026-09-02）：双镜像经确定性复位 SRAM 加载（probe-rs，
+  分块写入 + BSS 清零 + 逐块回读），加载计划与回读的 SHA-256 完全一致（Plan = Readback：
+  REF 2fd6cd8f6747acb3、NPU 6d38e108a99b2cd9；ELF 前缀 REF f31714eac47529f7、NPU
+  e7eb99c69c745dd3），VTOR/MSP/xPSR/PC 由向量表编程，PRIMASK/BASEPRI/FAULTMASK 归零后
+  回读核验——板上运行的镜像与仓库构建产物逐字节一致，令牌机制单次核销（SRAM 白名单
+  [0x34000000, 0x34200000)，向量表 0x34000400）；
+- **闭环层③报告性输出**（不作门禁）：闭环 (a) NPU vs ref_G2 解释执行同拍 P_gen——S20 exact 率
+  90.04% / ±1 网格率 94.78%，voyage002 98.03% / 98.67%；max|ΔP| = 980 kW 集中于 tick 1
+  起动瞬态（闭环 (a) 自 v_ship=0 起动，开环参考无此瞬态），其余为零散 λ 网格边界翻转；
+  与 v1 板上层③（45.5%/95.25%）及开环层③（98.46%/98.39%）口径链可追溯。
 
 **四臂 × 两场景核心结果**（fuel_corr = fuel_raw + (0.60−SOC_end)×1071.36×0.4774）：
 
@@ -550,6 +711,11 @@ codegen C，ode3 @0.01 s × 100 子步/拍，主模型 sha256 零改动）与 ST
 | (b) REF 板载闭环 | 328.114131 / 328.144147 | 0.59994 | 264.225321 / 224.078252 | 0.67849 |
 | (b′) 原生 law=7 | 328.094642 / 328.125012 | 0.59994 | 264.216856 / 224.086249 | 0.67846 |
 | (c) 原生 law=5 | 330.742384 / 330.661874 | 0.60016 | 239.318043 / 239.821607 | 0.59902 |
+
+**报告补充数据列**（报告终稿表 10 同步）：ê 生效占比——S20 (a)/(b)/(b′) = 0.9026/0.9020/0.9020、
+(c) law=5 = 0.0000；voyage002 (a)/(b)/(b′) = 1.0000/0.9993/0.9993、(c) = 0.0000。
+v_track RMSE（1 s 轴口径）——S20 板载 (a)/(b) = 0.351676 m/s、原生 (b′)/(c) = 0.351674 m/s
+（四臂差异 ≤3e-6 m/s）；voyage002 板载 (a)/(b) = 0.291286 m/s、原生 (b′)/(c) = 0.291283 m/s。
 
 **闭环结论**（SOC 公平性按 ±0.02 带判定，design §8.2）：
 - **S20（FAIR）**：NN 预测增强（law=7 + G2 门控）较 SOC 自适应 ECMS 基线带内节油
@@ -565,7 +731,7 @@ codegen C，ode3 @0.01 s × 100 子步/拍，主模型 sha256 零改动）与 ST
 - **安全边界**：四臂×两场景 SOC_min ∈ [0.5865, 0.5968]，降额阈值 0.25 从未触及，
   SOC<0.25 事件全零；
 - **FR-508 闭环注入**（mock 口径）：F1/F4 触发 FALLBACK 共 2 段/3 拍，段内 Δfuel
-  +0.040 kg、P 无跳变、被控对象状态连续，4/4 会话存活——回退=安全降级继续控制。
+  +0.040 kg、段内 ΔSOC +7.78e-5、P 无跳变、被控对象状态连续，4/4 会话存活——回退=安全降级继续控制。
 
 ### 8.3 后继展望（均另立项，不在本 roadmap 范围内展开）
 

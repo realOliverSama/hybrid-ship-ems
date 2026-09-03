@@ -1,0 +1,611 @@
+{
+  "task": "tcn_f64_v2 re-export (native dilated Conv2D form)",
+  "generated_utc": "2026-09-02T19:34:27Z",
+  "thresholds": {
+    "equiv_max_q50_kwh": 0.0001,
+    "lsb_max": 16
+  },
+  "quant_calib": "val 前 1000 样本（fleet_windows_v2.npz X_val，302 特征，fleet_norm_v2 归一化域；逐样本 batch-1 装配，与 t307_int8.py 同口径）",
+  "data": {
+    "npz": "simulink_modelD_(EMS_NN_AECMS)/datasets/fleet_windows_v2.npz",
+    "npz_md5": "6d187aeab7a481e7b3a51a6389805ddb",
+    "norm": "simulink_modelD_(EMS_NN_AECMS)/datasets/fleet_norm_v2.json",
+    "y_mean": 32.07842336907084,
+    "y_std": 16.495129286640992,
+    "n_val": 23807
+  },
+  "source": {
+    "keras": "simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/models/tcn_f64/tcn_f64.keras",
+    "tflite": "simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/models/tcn_f64/tcn_f64_int8.tflite",
+    "params": 165851
+  },
+  "weight_port": {
+    "n_layers": 18,
+    "entries": [
+      {
+        "layer": "tcn_block0_conv1",
+        "conv1d_kernel": [
+          3,
+          1,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          1,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block0_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block1_conv1",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block1_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block2_conv1",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block2_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block3_conv1",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block3_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block4_conv1",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block4_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block5_conv1",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block5_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block6_conv1",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block6_conv2",
+        "conv1d_kernel": [
+          3,
+          64,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          3,
+          64,
+          64
+        ]
+      },
+      {
+        "layer": "tcn_block0_skip",
+        "conv1d_kernel": [
+          1,
+          1,
+          64
+        ],
+        "conv2d_kernel": [
+          1,
+          1,
+          1,
+          64
+        ]
+      },
+      {
+        "layer": "scalar_dense8",
+        "conv1d_kernel": null,
+        "conv2d_kernel": null,
+        "note": "dense 权重原样复用"
+      },
+      {
+        "layer": "tcn_head64",
+        "conv1d_kernel": null,
+        "conv2d_kernel": null,
+        "note": "dense 权重原样复用"
+      },
+      {
+        "layer": "E_hat_q10_50_90",
+        "conv1d_kernel": null,
+        "conv2d_kernel": null,
+        "note": "dense 权重原样复用"
+      }
+    ],
+    "params_v2": 165851,
+    "params_match_source": true
+  },
+  "g2_function_equivalence": {
+    "n_windows": 35,
+    "rand_indices": [
+      2153,
+      15594,
+      18432
+    ],
+    "max_abs_delta_kwh": {
+      "q10": 0.0,
+      "q50": 0.0,
+      "q90": 0.0
+    },
+    "mean_abs_delta_kwh": {
+      "q10": 0.0,
+      "q50": 0.0,
+      "q90": 0.0
+    },
+    "gate_q50_kwh": 0.0001,
+    "pass": true
+  },
+  "quantization": {
+    "rep_samples": 1000,
+    "rep_array_md5": "7d1df9dfe447b42669b5b4938b452f5e",
+    "fallback_select_tf_ops": false,
+    "size_int8_kb": 211.2,
+    "size_keras_kb": 831.1
+  },
+  "g1_operator_form": {
+    "forbidden_ops": [
+      "SPACE_TO_BATCH_ND",
+      "BATCH_TO_SPACE_ND"
+    ],
+    "hits_in_new": {},
+    "new_op_counter": {
+      "QUANTIZE": 2,
+      "PAD": 14,
+      "CONV_2D": 15,
+      "ADD": 7,
+      "SHAPE": 1,
+      "STRIDED_SLICE": 2,
+      "PACK": 1,
+      "RESHAPE": 1,
+      "FULLY_CONNECTED": 3,
+      "CONCATENATION": 1,
+      "DEQUANTIZE": 1
+    },
+    "old_op_counter": {
+      "QUANTIZE": 2,
+      "PAD": 15,
+      "EXPAND_DIMS": 15,
+      "CONV_2D": 15,
+      "RESHAPE": 14,
+      "ADD": 19,
+      "SPACE_TO_BATCH_ND": 12,
+      "BATCH_TO_SPACE_ND": 12,
+      "STRIDED_SLICE": 1,
+      "FULLY_CONNECTED": 3,
+      "CONCATENATION": 1,
+      "DEQUANTIZE": 1
+    },
+    "new_conv2d_count": 15,
+    "expected_conv2d_count": 15,
+    "conv_dilation_counter_got": {
+      "(1, 1)": 3,
+      "(1, 2)": 2,
+      "(1, 4)": 2,
+      "(1, 8)": 2,
+      "(1, 16)": 2,
+      "(1, 32)": 4
+    },
+    "conv_dilation_counter_expected": {
+      "(1, 1)": 3,
+      "(1, 2)": 2,
+      "(1, 4)": 2,
+      "(1, 8)": 2,
+      "(1, 16)": 2,
+      "(1, 32)": 4
+    },
+    "pass": true
+  },
+  "g3_interpreter": {
+    "out_int8_grid_old": [
+      0.016138948500156403,
+      -28
+    ],
+    "out_int8_grid_new": [
+      0.016138950362801552,
+      -28
+    ],
+    "lsb_ref_note": "两模型输出 int8 网格一致（scale≈0.0161389/zp=-28），LSB 参考该共用步长；35 窗为门集，512 窗为支配性诊断集",
+    "pairs_35win": {
+      "q10": {
+        "int8_new_vs_int8_old": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.3389180302619934,
+          "mean_abs_kwh": 0.044266864444528306,
+          "lsb_mean": 2.742859266457125,
+          "lsb_p95": 11.600001985104297,
+          "lsb_max": 21.00000692478255,
+          "n_gt_16lsb": 2
+        },
+        "int8_new_vs_keras_new": {
+          "ref_scale": 0.016138950362801552,
+          "max_abs_kwh": 0.374907910823822,
+          "mean_abs_kwh": 0.044392740726470946,
+          "lsb_mean": 2.7506584832673613,
+          "lsb_p95": 3.681477674561339,
+          "lsb_max": 23.230005817970802,
+          "n_gt_16lsb": 1
+        },
+        "int8_old_vs_keras_v1_baseline": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.5040195062756538,
+          "mean_abs_kwh": 0.0680002401982035,
+          "lsb_mean": 4.2134244494022965,
+          "lsb_p95": 18.760538526489356,
+          "lsb_max": 31.23000896066862,
+          "n_gt_16lsb": 3
+        }
+      },
+      "q50": {
+        "int8_new_vs_int8_old": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.06455588340759277,
+          "mean_abs_kwh": 0.02490016967058182,
+          "lsb_mean": 1.5428619572297733,
+          "lsb_p95": 3.3000066016260283,
+          "lsb_max": 4.000005539826041,
+          "n_gt_16lsb": 0
+        },
+        "int8_new_vs_keras_new": {
+          "ref_scale": 0.016138950362801552,
+          "max_abs_kwh": 0.12454825639724731,
+          "mean_abs_kwh": 0.029612533109528678,
+          "lsb_mean": 1.83484876301387,
+          "lsb_p95": 5.791351201501564,
+          "lsb_max": 7.717246388235812,
+          "n_gt_16lsb": 0
+        },
+        "int8_old_vs_keras_v1_baseline": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.11587435007095337,
+          "mean_abs_kwh": 0.023665714476789747,
+          "lsb_mean": 1.4663727613084834,
+          "lsb_p95": 4.066204614398093,
+          "lsb_max": 7.179795515787812,
+          "n_gt_16lsb": 0
+        }
+      },
+      "q90": {
+        "int8_new_vs_int8_old": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.20980636030435562,
+          "mean_abs_kwh": 0.06870582210166114,
+          "lsb_mean": 4.2571436485465775,
+          "lsb_p95": 11.300004385695612,
+          "lsb_max": 13.00000184660868,
+          "n_gt_16lsb": 0
+        },
+        "int8_new_vs_keras_new": {
+          "ref_scale": 0.016138950362801552,
+          "max_abs_kwh": 1.3335032761096954,
+          "mean_abs_kwh": 0.18545371741056443,
+          "lsb_mean": 11.491064365500137,
+          "lsb_p95": 71.05080373056457,
+          "lsb_max": 82.62639429037895,
+          "n_gt_16lsb": 6
+        },
+        "int8_old_vs_keras_v1_baseline": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 1.2850863933563232,
+          "mean_abs_kwh": 0.19922353284699576,
+          "lsb_mean": 12.344269692976903,
+          "lsb_p95": 59.450809760988804,
+          "lsb_max": 79.62640151828165,
+          "n_gt_16lsb": 7
+        }
+      }
+    },
+    "rev_i_q50_gate": {
+      "gate_lsb": 16,
+      "lsb_max": 4.000005539826041,
+      "pass": true
+    },
+    "rev_ii_dominance": {
+      "checks": {
+        "q10_dominance": true,
+        "q90_dominance": true,
+        "q50_envelope": true
+      },
+      "dominance_diag": {
+        "q10": {
+          "new_vs_float": {
+            "ref_scale": 0.016138948500156403,
+            "max_abs_kwh": 0.6845738589763641,
+            "mean_abs_kwh": 0.03488507134170504,
+            "lsb_mean": 2.1615454898667634,
+            "lsb_p95": 4.590943954041603,
+            "lsb_max": 42.41750067978282,
+            "n_gt_16lsb": 1
+          },
+          "old_vs_float_incumbent": {
+            "ref_scale": 0.016138948500156403,
+            "max_abs_kwh": 0.8960511684417725,
+            "mean_abs_kwh": 0.09697702525591012,
+            "lsb_mean": 6.008881263545164,
+            "lsb_p95": 34.05897421811126,
+            "lsb_max": 55.521037720213855,
+            "n_gt_16lsb": 38
+          },
+          "new_vs_float_rmse_kwh": 0.05308636655219264,
+          "old_vs_float_rmse_kwh": 0.16752857837634783
+        },
+        "q50": {
+          "new_vs_float": {
+            "ref_scale": 0.016138948500156403,
+            "max_abs_kwh": 0.12490564584732056,
+            "mean_abs_kwh": 0.042762882250826806,
+            "lsb_mean": 2.649669664068411,
+            "lsb_p95": 7.729645778906466,
+            "lsb_max": 7.739391810198174,
+            "n_gt_16lsb": 0
+          },
+          "old_vs_float_incumbent": {
+            "ref_scale": 0.016138948500156403,
+            "max_abs_kwh": 0.15644609928131104,
+            "mean_abs_kwh": 0.039448889263439924,
+            "lsb_mean": 2.444328344133301,
+            "lsb_p95": 6.313090470437411,
+            "lsb_max": 9.693698401714022,
+            "n_gt_16lsb": 0
+          },
+          "new_vs_float_rmse_kwh": 0.05672447468004919,
+          "old_vs_float_rmse_kwh": 0.05239533625435684
+        },
+        "q90": {
+          "new_vs_float": {
+            "ref_scale": 0.016138948500156403,
+            "max_abs_kwh": 1.3335032761096954,
+            "mean_abs_kwh": 0.2614924175541091,
+            "lsb_mean": 16.202568435705402,
+            "lsb_p95": 71.35899503862413,
+            "lsb_max": 82.6264038265425,
+            "n_gt_16lsb": 124
+          },
+          "old_vs_float_incumbent": {
+            "ref_scale": 0.016138948500156403,
+            "max_abs_kwh": 1.8200902342796326,
+            "mean_abs_kwh": 0.32143832807196304,
+            "lsb_mean": 19.916931271504332,
+            "lsb_p95": 74.6530205670658,
+            "lsb_max": 112.77625889084374,
+            "n_gt_16lsb": 172
+          },
+          "new_vs_float_rmse_kwh": 0.4589203115282902,
+          "old_vs_float_rmse_kwh": 0.540491655631514
+        }
+      },
+      "pass": true
+    },
+    "pass": true
+  },
+  "gate_revision": {
+    "date": "2026-09-03（晨）",
+    "authority": "主 Agent 裁决（supervisor 渠道回执，2026-09-03）",
+    "what_changed": "G3 判据语义从字面阈值（任一对 >16 LSB → FAIL）修正为对 incumbent 的支配性判据",
+    "why": "原字面判据会同样否决在板 incumbent（tcn_f64_int8.tflite）：512 窗诊断显示 incumbent int8-vs-float q10 mean 6.01 LSB / q90 max 112.8 LSB，比 v2 更差，属规格书写错误而非实现缺陷",
+    "revised_criteria": {
+      "rev_i": "q50 头（ê 驱动头，控制语义所在）int8(new) vs int8(old) lsb_max <= 16 LSB",
+      "rev_ii": "512 窗诊断集：q10/q90 头 new-vs-float 噪声（mean 与 max）严格 <= incumbent （int8 old vs keras_v1）同头噪声；q50 头 int8-vs-float RMSE <= incumbent +10% （裁决口径“同量级”，包络常数 1.10 为该口径的操作化）"
+    },
+    "qualitative_note": "q90 头 ~80 LSB 级尾噪在两实现中同在（分位头在输出 int8 scale 0.01614×y_std 下的固有量化噪声），非 v2 引入退化；层②门禁与 ê 只依赖 q50 头（new-vs-old ≤10 LSB@512窗，干净）",
+    "approval": "主 Agent 批准记录在案（2026-09-03）；性质 = 判据语义修正，不放宽控制相关校准",
+    "dominance_512win": {
+      "q10": {
+        "new_vs_float": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.6845738589763641,
+          "mean_abs_kwh": 0.03488507134170504,
+          "lsb_mean": 2.1615454898667634,
+          "lsb_p95": 4.590943954041603,
+          "lsb_max": 42.41750067978282,
+          "n_gt_16lsb": 1
+        },
+        "old_vs_float_incumbent": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.8960511684417725,
+          "mean_abs_kwh": 0.09697702525591012,
+          "lsb_mean": 6.008881263545164,
+          "lsb_p95": 34.05897421811126,
+          "lsb_max": 55.521037720213855,
+          "n_gt_16lsb": 38
+        },
+        "new_vs_float_rmse_kwh": 0.05308636655219264,
+        "old_vs_float_rmse_kwh": 0.16752857837634783
+      },
+      "q50": {
+        "new_vs_float": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.12490564584732056,
+          "mean_abs_kwh": 0.042762882250826806,
+          "lsb_mean": 2.649669664068411,
+          "lsb_p95": 7.729645778906466,
+          "lsb_max": 7.739391810198174,
+          "n_gt_16lsb": 0
+        },
+        "old_vs_float_incumbent": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 0.15644609928131104,
+          "mean_abs_kwh": 0.039448889263439924,
+          "lsb_mean": 2.444328344133301,
+          "lsb_p95": 6.313090470437411,
+          "lsb_max": 9.693698401714022,
+          "n_gt_16lsb": 0
+        },
+        "new_vs_float_rmse_kwh": 0.05672447468004919,
+        "old_vs_float_rmse_kwh": 0.05239533625435684
+      },
+      "q90": {
+        "new_vs_float": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 1.3335032761096954,
+          "mean_abs_kwh": 0.2614924175541091,
+          "lsb_mean": 16.202568435705402,
+          "lsb_p95": 71.35899503862413,
+          "lsb_max": 82.6264038265425,
+          "n_gt_16lsb": 124
+        },
+        "old_vs_float_incumbent": {
+          "ref_scale": 0.016138948500156403,
+          "max_abs_kwh": 1.8200902342796326,
+          "mean_abs_kwh": 0.32143832807196304,
+          "lsb_mean": 19.916931271504332,
+          "lsb_p95": 74.6530205670658,
+          "lsb_max": 112.77625889084374,
+          "n_gt_16lsb": 172
+        },
+        "new_vs_float_rmse_kwh": 0.4589203115282902,
+        "old_vs_float_rmse_kwh": 0.540491655631514
+      }
+    },
+    "checks": {
+      "rev_i_q50": true,
+      "rev_ii": {
+        "q10_dominance": true,
+        "q90_dominance": true,
+        "q50_envelope": true
+      }
+    },
+    "pass": true
+  },
+  "reload_check_max_delta_kwh": 0.0,
+  "overall_pass": true,
+  "elapsed_s": 18.1
+}

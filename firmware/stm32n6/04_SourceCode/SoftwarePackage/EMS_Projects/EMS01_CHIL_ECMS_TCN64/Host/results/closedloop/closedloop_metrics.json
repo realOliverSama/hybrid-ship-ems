@@ -1,0 +1,1384 @@
+{
+ "task": "T-615",
+ "spec": "ems01-chil-v3-closedloop (FR-610/FR-611/AC-605)",
+ "generated_utc": "2026-09-02T06:23:37Z",
+ "script": "Host/tools/closedloop_metrics.py",
+ "exit_code_semantics": "0=完成；仪器级①② pass/fail 如实记录于 instrument_grade_*，不作退出码门禁",
+ "constants": {
+  "BAT_CAP_KWH": 1071.36,
+  "BAT_CAP_KWH_source": "Bat_Cap_kWh，model 仓库 scripts/21_run_v3_native_arms.m:94（64:239 同式同常数）",
+  "K_EQ_KG_PER_KWH": 0.4774,
+  "K_EQ_KG_PER_KWH_source": "model 仓库 scripts/21_run_v3_native_arms.m:95（64 同口径）",
+  "SOC_REF_CHARGE": 0.6,
+  "SOC_REF_CHARGE_source": "design §8.1 fuel_corr 式（64/66 同式）",
+  "GRID_STEP_KW": 20.0,
+  "GRID_STEP_KW_source": "Host/ems_inject.py GRID_STEP_KW（design 固定 20 kW）",
+  "SOC_DISDERATE_START": 0.25,
+  "SOC_DISDERATE_START_source": "ASSUMED_SOC_DisDerate_Start，config/Model_Parameters.m:123",
+  "SOC_FAIR_BAND": 0.02,
+  "SOC_FAIR_BAND_source": "design §8.2（±2% SOC 容差带）",
+  "fuel_corr_formula": "fuel_corr = fuel_raw + (0.60 - SOC_end) * BAT_CAP_KWH * K_EQ_KG_PER_KWH"
+ },
+ "scenarios": [
+  "S20",
+  "voyage002"
+ ],
+ "inputs_sha256": {
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_npu.csv": {
+   "sha256": "6bec3999cb1a386eae56b15fb5b2b3acc1a2a30662131ada3d3f0c9e8f06d32e",
+   "bytes": 1274790
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_npu_meta.json": {
+   "sha256": "42d1dd0d79ffe0bc11857ffbfc83a5d289357decf2b3568341eaba52fe54bf1a",
+   "bytes": 1542
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref.csv": {
+   "sha256": "cae8fd9f27c7bcd20adb3054fb73bc8d3d85c02caacd12bb91cdcc388fa5654b",
+   "bytes": 1276856
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref_meta.json": {
+   "sha256": "5f4b29060f994d5e903eb5a88a3ec219b78463fc4947745e8ad6ed9ccf6f2442",
+   "bytes": 1540
+  },
+  "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_B_S20_native_law7.csv": {
+   "sha256": "d232e3bae1da4ccecdde903aa97be6804cf423ab04d9cca28f437eeff369b6e0",
+   "bytes": 1539966
+  },
+  "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_C_S20_native_law5.csv": {
+   "sha256": "9aebbeee20ca815115e86d0692892a21f4eb83340bd9fa1266635270fe702901",
+   "bytes": 1029425
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/reference/v3_gp1_S20_replay.csv": {
+   "sha256": "47e5a39c541dba07d2ab983a6a7331dcf8421465768bd2bbd8f1f4c813300aa6",
+   "bytes": 1052078
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_npu.csv": {
+   "sha256": "f088beb3d1bd3efec4f31205bbb1da1e077e28f6669f2e8073a50d67f261a7aa",
+   "bytes": 989433
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_npu_meta.json": {
+   "sha256": "8ce84afaaeae112be047ddc88679576d2547136810b98a10bc05affd838e4e30",
+   "bytes": 1570
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_ref.csv": {
+   "sha256": "4cff9c43405ae153aff637b356bfd9c0688fd2818a720af97c49e8a1017598ba",
+   "bytes": 988774
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_ref_meta.json": {
+   "sha256": "56ac7598a2e97f5acd9f430b6d3e7142214fbe9271b2a4324add38838476e533",
+   "bytes": 1568
+  },
+  "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_B_voyage002_native_law7.csv": {
+   "sha256": "77857cdcd22699b927229932480155170ee706fb2f6668e48bd461d3421354df",
+   "bytes": 1191663
+  },
+  "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_C_voyage002_native_law5.csv": {
+   "sha256": "f13189dd08865432ec9ee156e2a48351f15a66a3c0c527aa1716a4e96f794e23",
+   "bytes": 786716
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/reference/v3_gp1_voyage002_replay.csv": {
+   "sha256": "74ff26e5f4eccd83176e6a14780d518f597e8dea07275994b5d537e97a287910",
+   "bytes": 798651
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_GARBAGE.json": {
+   "sha256": "3c93a60853a066c1427c999087bb15555d0e2a8204a4142e477e37f146636bf7",
+   "bytes": 672
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_NAN.json": {
+   "sha256": "f17bbcdc044c6d9b2a700e46a4502e7238add8a80d08284377f141bdea9ef69a",
+   "bytes": 979
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_RESET.json": {
+   "sha256": "2b2332fca1e303cc8bbb9bea471ac66f88bb7157b73d0f30ef52ebabeecc601a",
+   "bytes": 1078
+  },
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop/CL_STALL.json": {
+   "sha256": "80ea3d1ec57f95115ad090e2484b884175108eac6d1ca03bc716b15588246449",
+   "bytes": 686
+  },
+  "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/native_arms_summary.json": {
+   "sha256": "9c9a9845c67e0d03fa7739ad13e967135ab9ed058b7832b57d926fea676a06f5",
+   "bytes": 7940
+  },
+  "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/export_summary.json": {
+   "sha256": "02c519eb3bc4ef868bf28ebdd7c00d8068c77f1f7a960919a0756263df75427a",
+   "bytes": 1654
+  }
+ },
+ "arms": {
+  "S20": {
+   "a_npu_onboard": {
+    "arm": "a_npu_onboard",
+    "kind": "onboard",
+    "arm_label": "(a) NPU 板载闭环",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_npu.csv",
+    "n_ticks": 5521,
+    "tick_first": 0,
+    "tick_last": 5520,
+    "dt_s": 0.999999557716259,
+    "fuel_raw_kg": 328.48866923372134,
+    "SOC_end": 0.6001468300819397,
+    "fuel_corr_kg": 328.41357045343875,
+    "SOC_min": 0.5868642330169678,
+    "v_track_rmse_mps": 0.3516760187110469,
+    "v_track_rmse_n_used": 5521,
+    "e_hat_active_ratio": 0.9025538851657309,
+    "e_hat_active_ratio_definition": "mean(K>0 ∧ flags&0x02(FALLBACK)==0)",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_fallback_ticks": 0,
+    "n_stale_ticks": 0,
+    "n_cls_bad_ticks": 0,
+    "n_held_ticks": 3,
+    "n_undervoltage": 3,
+    "n_undervoltage_source": "onboard CSV flags&0x08(HELD) 保持拍数（板载 CSV 无 Vdc/alarm 列；HELD 语义为输出保持拍，非 Vdc 越限，解释权在主 Agent）",
+    "meta_health": {
+     "status": "completed",
+     "error": "",
+     "n_events": 0,
+     "rows": 5521,
+     "rows_matches_csv": true
+    },
+    "image": "npu",
+    "law": 7
+   },
+   "b_ref_onboard": {
+    "arm": "b_ref_onboard",
+    "kind": "onboard",
+    "arm_label": "(b) REF 板载闭环",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref.csv",
+    "n_ticks": 5521,
+    "tick_first": 0,
+    "tick_last": 5520,
+    "dt_s": 0.999999557716259,
+    "fuel_raw_kg": 328.1141306801104,
+    "SOC_end": 0.5999413132667542,
+    "fuel_corr_kg": 328.1441470229967,
+    "SOC_min": 0.5872513651847839,
+    "v_track_rmse_mps": 0.3516760187110469,
+    "v_track_rmse_n_used": 5521,
+    "e_hat_active_ratio": 0.9020105053432349,
+    "e_hat_active_ratio_definition": "mean(K>0 ∧ flags&0x02(FALLBACK)==0)",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_fallback_ticks": 0,
+    "n_stale_ticks": 0,
+    "n_cls_bad_ticks": 0,
+    "n_held_ticks": 3,
+    "n_undervoltage": 3,
+    "n_undervoltage_source": "onboard CSV flags&0x08(HELD) 保持拍数（板载 CSV 无 Vdc/alarm 列；HELD 语义为输出保持拍，非 Vdc 越限，解释权在主 Agent）",
+    "meta_health": {
+     "status": "completed",
+     "error": "",
+     "n_events": 0,
+     "rows": 5521,
+     "rows_matches_csv": true
+    },
+    "image": "ref",
+    "law": 7
+   },
+   "bp_native_law7": {
+    "arm": "bp_native_law7",
+    "kind": "native7",
+    "arm_label": "(b′) 原生 law=7",
+    "source_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_B_S20_native_law7.csv",
+    "n_ticks": 5521,
+    "tick_first": 0,
+    "tick_last": 5520,
+    "dt_s": 1.0,
+    "fuel_raw_kg": 328.094641944243,
+    "SOC_end": 0.5999406216963152,
+    "fuel_corr_kg": 328.1250120027696,
+    "SOC_min": 0.5873722109201855,
+    "v_track_rmse_mps": 0.3516743584615359,
+    "v_track_rmse_n_used": 5521,
+    "e_hat_active_ratio": 0.9020105053432349,
+    "e_hat_active_ratio_definition": "mean(K>0)（原生 CSV 无 flags 列）",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_undervoltage": null,
+    "n_undervoltage_source": "native CSV 无 alarm 列 → null（交叉核对值见 native_summary_crosscheck）",
+    "law": 7,
+    "native_summary_crosscheck": {
+     "source": "native_arms_summary.json（21 号产物，MATLAB logsout）",
+     "n_undervoltage": 33,
+     "n_derate": 0,
+     "v_track_rmse_full_res_mps": 0.3514097310351002,
+     "v_track_rmse_1s_grid_mps": 0.3516743584615355
+    }
+   },
+   "c_native_law5": {
+    "arm": "c_native_law5",
+    "kind": "native5",
+    "arm_label": "(c) 原生 law=5",
+    "source_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_C_S20_native_law5.csv",
+    "n_ticks": 5521,
+    "tick_first": 0,
+    "tick_last": 5520,
+    "dt_s": 1.0,
+    "fuel_raw_kg": 330.7423835474854,
+    "SOC_end": 0.6001574094533567,
+    "fuel_corr_kg": 330.66187376504934,
+    "SOC_min": 0.5965486281020537,
+    "v_track_rmse_mps": 0.3516743584615359,
+    "v_track_rmse_n_used": 5521,
+    "e_hat_active_ratio": 0.0,
+    "e_hat_active_ratio_definition": "law=5 恒 0（无 EML 预测，design §9；CSV K=1 为中性值不据其计算）",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_undervoltage": null,
+    "n_undervoltage_source": "native CSV 无 alarm 列 → null（交叉核对值见 native_summary_crosscheck）",
+    "law": 5,
+    "native_summary_crosscheck": {
+     "source": "native_arms_summary.json（21 号产物，MATLAB logsout）",
+     "n_undervoltage": 43,
+     "n_derate": 0,
+     "v_track_rmse_full_res_mps": 0.3514097310351002,
+     "v_track_rmse_1s_grid_mps": 0.3516743584615355
+    }
+   }
+  },
+  "voyage002": {
+   "a_npu_onboard": {
+    "arm": "a_npu_onboard",
+    "kind": "onboard",
+    "arm_label": "(a) NPU 板载闭环",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_npu.csv",
+    "n_ticks": 4212,
+    "tick_first": 0,
+    "tick_last": 4211,
+    "dt_s": 0.9999994202312396,
+    "fuel_raw_kg": 264.2398264223782,
+    "SOC_end": 0.6784507632255554,
+    "fuel_corr_kg": 224.11482919669155,
+    "SOC_min": 0.5864573121070862,
+    "v_track_rmse_mps": 0.29128624659233265,
+    "v_track_rmse_n_used": 4212,
+    "e_hat_active_ratio": 1.0,
+    "e_hat_active_ratio_definition": "mean(K>0 ∧ flags&0x02(FALLBACK)==0)",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_fallback_ticks": 0,
+    "n_stale_ticks": 0,
+    "n_cls_bad_ticks": 0,
+    "n_held_ticks": 3,
+    "n_undervoltage": 3,
+    "n_undervoltage_source": "onboard CSV flags&0x08(HELD) 保持拍数（板载 CSV 无 Vdc/alarm 列；HELD 语义为输出保持拍，非 Vdc 越限，解释权在主 Agent）",
+    "meta_health": {
+     "status": "completed",
+     "error": "",
+     "n_events": 0,
+     "rows": 4212,
+     "rows_matches_csv": true
+    },
+    "image": "npu",
+    "law": 7
+   },
+   "b_ref_onboard": {
+    "arm": "b_ref_onboard",
+    "kind": "onboard",
+    "arm_label": "(b) REF 板载闭环",
+    "source_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/voyage002/closedloop_voyage002_ref.csv",
+    "n_ticks": 4212,
+    "tick_first": 0,
+    "tick_last": 4211,
+    "dt_s": 0.9999994202312396,
+    "fuel_raw_kg": 264.2253214008551,
+    "SOC_end": 0.6784939169883728,
+    "fuel_corr_kg": 224.07825243816893,
+    "SOC_min": 0.5866302847862244,
+    "v_track_rmse_mps": 0.29128624659233265,
+    "v_track_rmse_n_used": 4212,
+    "e_hat_active_ratio": 0.9992877492877493,
+    "e_hat_active_ratio_definition": "mean(K>0 ∧ flags&0x02(FALLBACK)==0)",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_fallback_ticks": 0,
+    "n_stale_ticks": 0,
+    "n_cls_bad_ticks": 0,
+    "n_held_ticks": 3,
+    "n_undervoltage": 3,
+    "n_undervoltage_source": "onboard CSV flags&0x08(HELD) 保持拍数（板载 CSV 无 Vdc/alarm 列；HELD 语义为输出保持拍，非 Vdc 越限，解释权在主 Agent）",
+    "meta_health": {
+     "status": "completed",
+     "error": "",
+     "n_events": 0,
+     "rows": 4212,
+     "rows_matches_csv": true
+    },
+    "image": "ref",
+    "law": 7
+   },
+   "bp_native_law7": {
+    "arm": "bp_native_law7",
+    "kind": "native7",
+    "arm_label": "(b′) 原生 law=7",
+    "source_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_B_voyage002_native_law7.csv",
+    "n_ticks": 4212,
+    "tick_first": 0,
+    "tick_last": 4211,
+    "dt_s": 1.0,
+    "fuel_raw_kg": 264.216856499727,
+    "SOC_end": 0.6784617313642164,
+    "fuel_corr_kg": 224.08624943016824,
+    "SOC_min": 0.586547158510836,
+    "v_track_rmse_mps": 0.2912834482123756,
+    "v_track_rmse_n_used": 4212,
+    "e_hat_active_ratio": 0.9992877492877493,
+    "e_hat_active_ratio_definition": "mean(K>0)（原生 CSV 无 flags 列）",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_undervoltage": null,
+    "n_undervoltage_source": "native CSV 无 alarm 列 → null（交叉核对值见 native_summary_crosscheck）",
+    "law": 7,
+    "native_summary_crosscheck": {
+     "source": "native_arms_summary.json（21 号产物，MATLAB logsout）",
+     "n_undervoltage": 51,
+     "n_derate": 0,
+     "v_track_rmse_full_res_mps": 0.29074376488791703,
+     "v_track_rmse_1s_grid_mps": 0.2912834482123759
+    }
+   },
+   "c_native_law5": {
+    "arm": "c_native_law5",
+    "kind": "native5",
+    "arm_label": "(c) 原生 law=5",
+    "source_csv": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_C_voyage002_native_law5.csv",
+    "n_ticks": 4212,
+    "tick_first": 0,
+    "tick_last": 4211,
+    "dt_s": 1.0,
+    "fuel_raw_kg": 239.31804263412104,
+    "SOC_end": 0.5990154509104523,
+    "fuel_corr_kg": 239.8216072632257,
+    "SOC_min": 0.5968322918872505,
+    "v_track_rmse_mps": 0.2912834482123756,
+    "v_track_rmse_n_used": 4212,
+    "e_hat_active_ratio": 0.0,
+    "e_hat_active_ratio_definition": "law=5 恒 0（无 EML 预测，design §9；CSV K=1 为中性值不据其计算）",
+    "e_hat_n_invalid": 0,
+    "soc_disderate_start": 0.25,
+    "n_soc_disderate_events": 0,
+    "soc_disderate_duration_s": 0.0,
+    "soc_disderate_events": [],
+    "numeric_health_nan_counts": {
+     "SOC": 0,
+     "v_ship": 0,
+     "v_cmd": 0,
+     "P_gen": 0,
+     "fuel": 0
+    },
+    "p_gen_grid_residual_max_kW": 0.0,
+    "n_undervoltage": null,
+    "n_undervoltage_source": "native CSV 无 alarm 列 → null（交叉核对值见 native_summary_crosscheck）",
+    "law": 5,
+    "native_summary_crosscheck": {
+     "source": "native_arms_summary.json（21 号产物，MATLAB logsout）",
+     "n_undervoltage": 42,
+     "n_derate": 0,
+     "v_track_rmse_full_res_mps": 0.29074376488791703,
+     "v_track_rmse_1s_grid_mps": 0.2912834482123759
+    }
+   }
+  }
+ },
+ "pairwise_comparisons": {
+  "S20": [
+   {
+    "pair": "a_npu_onboard vs c_native_law5",
+    "purpose": "NN 增益：(a) NPU 板载 vs (c) law=5 基线",
+    "fuel_raw_diff_kg": -2.2537143137640783,
+    "fuel_corr_diff_kg": -2.2483033116105844,
+    "SOC_end_diff": -1.0579371417018812e-05,
+    "SOC_end_x": 0.6001468300819397,
+    "SOC_end_y": 0.6001574094533567,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 1.0579371417018812e-05,
+     "verdict": "FAIR",
+     "primary_conclusion": "带内：fuel_raw 差 -2.253714 kg 即主结论（SOC 公平）",
+     "secondary_conclusion_fuel_corr_diff_kg": -2.2483033116105844,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   },
+   {
+    "pair": "b_ref_onboard vs c_native_law5",
+    "purpose": "NN 增益：(b) REF 板载 vs (c) law=5 基线",
+    "fuel_raw_diff_kg": -2.6282528673750107,
+    "fuel_corr_diff_kg": -2.5177267420526164,
+    "SOC_end_diff": -0.0002160961866025657,
+    "SOC_end_x": 0.5999413132667542,
+    "SOC_end_y": 0.6001574094533567,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 0.0002160961866025657,
+     "verdict": "FAIR",
+     "primary_conclusion": "带内：fuel_raw 差 -2.628253 kg 即主结论（SOC 公平）",
+     "secondary_conclusion_fuel_corr_diff_kg": -2.5177267420526164,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   },
+   {
+    "pair": "bp_native_law7 vs c_native_law5",
+    "purpose": "NN 增益复验：(b′) 原生 law=7 vs (c) law=5 基线",
+    "fuel_raw_diff_kg": -2.647741603242423,
+    "fuel_corr_diff_kg": -2.5368617622797274,
+    "SOC_end_diff": -0.00021678775704148112,
+    "SOC_end_x": 0.5999406216963152,
+    "SOC_end_y": 0.6001574094533567,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 0.00021678775704148112,
+     "verdict": "FAIR",
+     "primary_conclusion": "带内：fuel_raw 差 -2.647742 kg 即主结论（SOC 公平）",
+     "secondary_conclusion_fuel_corr_diff_kg": -2.5368617622797274,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   },
+   {
+    "pair": "a_npu_onboard vs b_ref_onboard",
+    "purpose": "零混杂 NN 移植代价：(a) NPU vs (b) REF",
+    "fuel_raw_diff_kg": 0.37453855361093247,
+    "fuel_corr_diff_kg": 0.269423430442032,
+    "SOC_end_diff": 0.00020551681518554688,
+    "SOC_end_x": 0.6001468300819397,
+    "SOC_end_y": 0.5999413132667542,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 0.00020551681518554688,
+     "verdict": "FAIR",
+     "primary_conclusion": "带内：fuel_raw 差 +0.374539 kg 即主结论（SOC 公平）",
+     "secondary_conclusion_fuel_corr_diff_kg": 0.269423430442032,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   }
+  ],
+  "voyage002": [
+   {
+    "pair": "a_npu_onboard vs c_native_law5",
+    "purpose": "NN 增益：(a) NPU 板载 vs (c) law=5 基线",
+    "fuel_raw_diff_kg": 24.92178378825716,
+    "fuel_corr_diff_kg": -15.706778066534156,
+    "SOC_end_diff": 0.07943531231510315,
+    "SOC_end_x": 0.6784507632255554,
+    "SOC_end_y": 0.5990154509104523,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 0.07943531231510315,
+     "verdict": "SOC-UNFAIR",
+     "primary_conclusion": "SOC-UNFAIR：|ΔSOC_end|=0.079435 超出 ±0.02 容差带，fuel_raw 差不作主结论",
+     "secondary_conclusion_fuel_corr_diff_kg": -15.706778066534156,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   },
+   {
+    "pair": "b_ref_onboard vs c_native_law5",
+    "purpose": "NN 增益：(b) REF 板载 vs (c) law=5 基线",
+    "fuel_raw_diff_kg": 24.907278766734038,
+    "fuel_corr_diff_kg": -15.74335482505677,
+    "SOC_end_diff": 0.07947846607792053,
+    "SOC_end_x": 0.6784939169883728,
+    "SOC_end_y": 0.5990154509104523,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 0.07947846607792053,
+     "verdict": "SOC-UNFAIR",
+     "primary_conclusion": "SOC-UNFAIR：|ΔSOC_end|=0.079478 超出 ±0.02 容差带，fuel_raw 差不作主结论",
+     "secondary_conclusion_fuel_corr_diff_kg": -15.74335482505677,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   },
+   {
+    "pair": "bp_native_law7 vs c_native_law5",
+    "purpose": "NN 增益复验：(b′) 原生 law=7 vs (c) law=5 基线",
+    "fuel_raw_diff_kg": 24.898813865605945,
+    "fuel_corr_diff_kg": -15.735357833057463,
+    "SOC_end_diff": 0.07944628045376412,
+    "SOC_end_x": 0.6784617313642164,
+    "SOC_end_y": 0.5990154509104523,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 0.07944628045376412,
+     "verdict": "SOC-UNFAIR",
+     "primary_conclusion": "SOC-UNFAIR：|ΔSOC_end|=0.079446 超出 ±0.02 容差带，fuel_raw 差不作主结论",
+     "secondary_conclusion_fuel_corr_diff_kg": -15.735357833057463,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   },
+   {
+    "pair": "a_npu_onboard vs b_ref_onboard",
+    "purpose": "零混杂 NN 移植代价：(a) NPU vs (b) REF",
+    "fuel_raw_diff_kg": 0.014505021523120831,
+    "fuel_corr_diff_kg": 0.03657675852261377,
+    "SOC_end_diff": -4.315376281738281e-05,
+    "SOC_end_x": 0.6784507632255554,
+    "SOC_end_y": 0.6784939169883728,
+    "fairness": {
+     "band_abs_soc": 0.02,
+     "abs_soc_end_diff": 4.315376281738281e-05,
+     "verdict": "FAIR",
+     "primary_conclusion": "带内：fuel_raw 差 +0.014505 kg 即主结论（SOC 公平）",
+     "secondary_conclusion_fuel_corr_diff_kg": 0.03657675852261377,
+     "secondary_note": "电荷维持修正口径（与参考链同式同常数，design §8.2）；超带时为次级结论，带内时与 fuel_raw 差同号供参照"
+    }
+   }
+  ]
+ },
+ "instrument_grade_1_closedloop_b_vs_gp1": {
+  "S20": {
+   "arm_b": "b_ref_onboard",
+   "reference": "Host/reference/v3_gp1_S20_replay.csv（开环解释执行参考；P_gen_ref_kW ≡ ref_G2 驱动序列）",
+   "n_ticks_compared": 5521,
+   "n_ticks_b": 5521,
+   "n_ticks_ref": 5521,
+   "fuel_raw_ref_kg": 328.094641944243,
+   "SOC_end_ref": 0.5999406216963152,
+   "max_abs_dP_kW": 980.0,
+   "thresholds": {
+    "soc_end_abs_delta_max": 0.005,
+    "fuel_rel_delta_max": 0.01,
+    "v_ship_rmse_max_mps": 0.01,
+    "p_gen_grid_match_rate_min": 0.95
+   },
+   "items": [
+    {
+     "metric": "soc_end_abs_delta",
+     "value": 6.915704389154342e-07,
+     "threshold": 0.005,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "fuel_raw_rel_delta",
+     "value": 5.939973829479434e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "v_ship_rmse_mps",
+     "value": 2.6673407902684967e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "p_gen_grid_match_rate",
+     "value": 0.9960152146350298,
+     "threshold": 0.95,
+     "cmp": ">=",
+     "pass": true
+    },
+    {
+     "metric": "numeric_health",
+     "value": true,
+     "threshold": true,
+     "cmp": "==",
+     "pass": true
+    }
+   ],
+   "overall": true
+  },
+  "voyage002": {
+   "arm_b": "b_ref_onboard",
+   "reference": "Host/reference/v3_gp1_voyage002_replay.csv（开环解释执行参考；P_gen_ref_kW ≡ ref_G2 驱动序列）",
+   "n_ticks_compared": 4212,
+   "n_ticks_b": 4212,
+   "n_ticks_ref": 4212,
+   "fuel_raw_ref_kg": 264.216856499727,
+   "SOC_end_ref": 0.6784617313642164,
+   "max_abs_dP_kW": 980.0,
+   "thresholds": {
+    "soc_end_abs_delta_max": 0.005,
+    "fuel_rel_delta_max": 0.01,
+    "v_ship_rmse_max_mps": 0.01,
+    "p_gen_grid_match_rate_min": 0.95
+   },
+   "items": [
+    {
+     "metric": "soc_end_abs_delta",
+     "value": 3.218562415641113e-05,
+     "threshold": 0.005,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "fuel_raw_rel_delta",
+     "value": 3.203770281818415e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "v_ship_rmse_mps",
+     "value": 2.8327667955449515e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "p_gen_grid_match_rate",
+     "value": 0.9857549857549858,
+     "threshold": 0.95,
+     "cmp": ">=",
+     "pass": true
+    },
+    {
+     "metric": "numeric_health",
+     "value": true,
+     "threshold": true,
+     "cmp": "==",
+     "pass": true
+    }
+   ],
+   "overall": true
+  }
+ },
+ "instrument_grade_2_closedloop_b_vs_native_bprime": {
+  "S20": {
+   "arm_b": "b_ref_onboard",
+   "reference": "原生 (b′) model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_B_S20_native_law7.csv（native_arms，law=7）",
+   "n_ticks_compared": 5521,
+   "n_ticks_b": 5521,
+   "n_ticks_ref": 5521,
+   "fuel_raw_ref_kg": 328.094641944243,
+   "SOC_end_ref": 0.5999406216963152,
+   "max_abs_dP_kW": 980.0,
+   "thresholds": {
+    "soc_end_abs_delta_max": 0.005,
+    "fuel_rel_delta_max": 0.01,
+    "v_ship_rmse_max_mps": 0.01,
+    "p_gen_grid_match_rate_min": 0.95
+   },
+   "items": [
+    {
+     "metric": "soc_end_abs_delta",
+     "value": 6.915704389154342e-07,
+     "threshold": 0.005,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "fuel_raw_rel_delta",
+     "value": 5.939973829479434e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "v_ship_rmse_mps",
+     "value": 2.6673407902684967e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "p_gen_grid_match_rate",
+     "value": 0.9960152146350298,
+     "threshold": 0.95,
+     "cmp": ">=",
+     "pass": true
+    },
+    {
+     "metric": "numeric_health",
+     "value": true,
+     "threshold": true,
+     "cmp": "==",
+     "pass": true
+    }
+   ],
+   "overall": true
+  },
+  "voyage002": {
+   "arm_b": "b_ref_onboard",
+   "reference": "原生 (b′) model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/closedloop/native_arms/V3_B_voyage002_native_law7.csv（native_arms，law=7）",
+   "n_ticks_compared": 4212,
+   "n_ticks_b": 4212,
+   "n_ticks_ref": 4212,
+   "fuel_raw_ref_kg": 264.216856499727,
+   "SOC_end_ref": 0.6784617313642164,
+   "max_abs_dP_kW": 980.0,
+   "thresholds": {
+    "soc_end_abs_delta_max": 0.005,
+    "fuel_rel_delta_max": 0.01,
+    "v_ship_rmse_max_mps": 0.01,
+    "p_gen_grid_match_rate_min": 0.95
+   },
+   "items": [
+    {
+     "metric": "soc_end_abs_delta",
+     "value": 3.218562415641113e-05,
+     "threshold": 0.005,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "fuel_raw_rel_delta",
+     "value": 3.203770281818415e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "v_ship_rmse_mps",
+     "value": 2.8327667955449515e-05,
+     "threshold": 0.01,
+     "cmp": "<=",
+     "pass": true
+    },
+    {
+     "metric": "p_gen_grid_match_rate",
+     "value": 0.9857549857549858,
+     "threshold": 0.95,
+     "cmp": ">=",
+     "pass": true
+    },
+    {
+     "metric": "numeric_health",
+     "value": true,
+     "threshold": true,
+     "cmp": "==",
+     "pass": true
+    }
+   ],
+   "overall": true
+  }
+ },
+ "layer3_report_only_a_vs_refG2_p_gen": {
+  "S20": {
+   "report_only": true,
+   "note": "层③报告性输出（FR-612/design §8.3），不作门禁。闭环 (a) 自 v_ship=0 初值起动（首拍 INIT fill/HELD），开环 ref 序列无此瞬态；超 1 网格拍集中于起动瞬态，其余为零散 λ 网格边界翻转（design §4.4 机制）",
+   "arm": "a_npu_onboard",
+   "ref_source": "Host/reference/v3_gp1_<scn>_replay.csv:P_gen_ref_kW（≡ref_G2 P_gen 驱动序列，G-P1 T-602 gate fuel_rel=0）",
+   "n_ticks_compared": 5521,
+   "exact_rate": 0.9003803658757471,
+   "plus1_grid_rate": 0.9478355370403913,
+   "max_abs_dP_kW": 980.0,
+   "max_abs_dP_tick": 1,
+   "n_ticks_beyond_1grid": 288,
+   "n_ticks_beyond_1grid_startup_le20": 14
+  },
+  "voyage002": {
+   "report_only": true,
+   "note": "层③报告性输出（FR-612/design §8.3），不作门禁。闭环 (a) 自 v_ship=0 初值起动（首拍 INIT fill/HELD），开环 ref 序列无此瞬态；超 1 网格拍集中于起动瞬态，其余为零散 λ 网格边界翻转（design §4.4 机制）",
+   "arm": "a_npu_onboard",
+   "ref_source": "Host/reference/v3_gp1_<scn>_replay.csv:P_gen_ref_kW（≡ref_G2 P_gen 驱动序列，G-P1 T-602 gate fuel_rel=0）",
+   "n_ticks_compared": 4212,
+   "exact_rate": 0.9802943969610636,
+   "plus1_grid_rate": 0.9867046533713201,
+   "max_abs_dP_kW": 980.0,
+   "max_abs_dP_tick": 1,
+   "n_ticks_beyond_1grid": 56,
+   "n_ticks_beyond_1grid_startup_le20": 17
+  }
+ },
+ "critical_section_fr508": {
+  "source_dir": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/closedloop_npu/closedloop",
+  "image": "npu",
+  "mapping_note": "F1=CL_NAN（NaN 输入拍）/ F2=CL_STALL（停发）/ F3=CL_GARBAGE（垃圾帧）/ F4=CL_RESET（复位恢复）；FALLBACK 段统计取 CL_*.json，STALE|HELD 逐拍位统计取同目录 harness 轨迹副本 CSV",
+  "mock_note": "注入运行用 stub advancer + pty+_MockFW（STALE 阈加速 0.05s，见各 CL_*.json params）：验证协议/flags/回退语义，段内 Δfuel/ΔSOC 为 mock 口径，不代表 plant 保真油耗",
+  "scenarios": {
+   "F1_nan_ticks": {
+    "json": "CL_NAN.json",
+    "v1_scenario_ref": "nan",
+    "focus": "F1 fault_nan_ticks：NaN 输入拍 → FALLBACK（段统计）",
+    "params": {
+     "cl_fault_tick": 30,
+     "cl_stall_s": 0.1,
+     "cl_ticks": 60,
+     "rsp_timeout_ms": 500,
+     "advancer": "stub",
+     "image": "npu",
+     "mock": "pty+_MockFW（STALE 阈加速 0.05s）"
+    },
+    "counts": {
+     "n_fallback_segments": 1,
+     "n_policy_events": 1,
+     "n_dump_lines": 2
+    },
+    "fallback_segments": [
+     {
+      "start_tick": 30,
+      "start_fuel": 0.399999999999995,
+      "start_soc": 0.6007518768310547,
+      "end_tick": 31,
+      "end_fuel": 0.42666666666665876,
+      "end_soc": 0.6008037328720093,
+      "recovery_ticks": 0,
+      "n_ticks": 2,
+      "d_fuel_kg": 0.02666666666666373,
+      "d_soc": 5.1856040954589844e-05
+     }
+    ],
+    "fallback_total": {
+     "n_segments": 1,
+     "n_ticks": 2,
+     "d_fuel_kg": 0.02666666666666373,
+     "d_soc": 5.1856040954589844e-05
+    },
+    "policy_events": [
+     {
+      "action": "mutate_pload_nan",
+      "tick": 30
+     }
+    ],
+    "dump_text": [
+     "EVT seq=0 type=4 aux=0 tick=30 ms=0",
+     "EVT total=1 kept=1 cap=32"
+    ],
+    "dump_evt_stats": {
+     "evt_total": 1,
+     "evt_kept": 1
+    },
+    "harness_csv_flags": {
+     "file": "nan_closedloop_S20_npu.csv",
+     "n_ticks": 60,
+     "n_stale_ticks": 0,
+     "n_held_ticks": 0,
+     "n_fallback_ticks": 2,
+     "n_cls_bad_ticks": 0,
+     "flags_at_fault_tick": 2,
+     "p_gen_hold_at_fault_tick": true
+    },
+    "session_alive": true
+   },
+   "F2_stall_ticks": {
+    "json": "CL_STALL.json",
+    "v1_scenario_ref": "stall",
+    "focus": "F2 fault_stall_ticks：停发 → STALE|HELD + P 保持",
+    "params": {
+     "cl_fault_tick": 30,
+     "cl_stall_s": 0.1,
+     "cl_ticks": 60,
+     "rsp_timeout_ms": 500,
+     "advancer": "stub",
+     "image": "npu",
+     "mock": "pty+_MockFW（STALE 阈加速 0.05s）"
+    },
+    "counts": {
+     "n_fallback_segments": 0,
+     "n_policy_events": 1,
+     "n_dump_lines": 2
+    },
+    "fallback_segments": [],
+    "fallback_total": {
+     "n_segments": 0,
+     "n_ticks": 0,
+     "d_fuel_kg": 0,
+     "d_soc": 0
+    },
+    "policy_events": [
+     {
+      "action": "stall",
+      "tick": 30,
+      "stall_s": 0.1
+     }
+    ],
+    "dump_text": [
+     "EVT seq=0 type=3 aux=0 tick=12 ms=0",
+     "EVT total=2 kept=2 cap=32"
+    ],
+    "dump_evt_stats": {
+     "evt_total": 2,
+     "evt_kept": 2
+    },
+    "harness_csv_flags": {
+     "file": "stall_closedloop_S20_npu.csv",
+     "n_ticks": 60,
+     "n_stale_ticks": 2,
+     "n_held_ticks": 2,
+     "n_fallback_ticks": 0,
+     "n_cls_bad_ticks": 0,
+     "flags_at_fault_tick": 9,
+     "p_gen_hold_at_fault_tick": true
+    },
+    "session_alive": true
+   },
+   "F3_garbage_frames": {
+    "json": "CL_GARBAGE.json",
+    "v1_scenario_ref": "garbage",
+    "focus": "F3 fault_garbage_frames：垃圾/坏 CRC 帧 → 会话存活",
+    "params": {
+     "cl_fault_tick": 30,
+     "cl_stall_s": 0.1,
+     "cl_ticks": 60,
+     "rsp_timeout_ms": 500,
+     "advancer": "stub",
+     "image": "npu",
+     "mock": "pty+_MockFW（STALE 阈加速 0.05s）"
+    },
+    "counts": {
+     "n_fallback_segments": 0,
+     "n_policy_events": 1,
+     "n_dump_lines": 2
+    },
+    "fallback_segments": [],
+    "fallback_total": {
+     "n_segments": 0,
+     "n_ticks": 0,
+     "d_fuel_kg": 0,
+     "d_soc": 0
+    },
+    "policy_events": [
+     {
+      "action": "garbage",
+      "tick": 30
+     }
+    ],
+    "dump_text": [
+     "EVT seq=0 type=1 aux=6 tick=0 ms=0",
+     "EVT total=3 kept=3 cap=32"
+    ],
+    "dump_evt_stats": {
+     "evt_total": 3,
+     "evt_kept": 3
+    },
+    "harness_csv_flags": {
+     "file": "garbage_closedloop_S20_npu.csv",
+     "n_ticks": 60,
+     "n_stale_ticks": 2,
+     "n_held_ticks": 2,
+     "n_fallback_ticks": 0,
+     "n_cls_bad_ticks": 0,
+     "flags_at_fault_tick": 0,
+     "p_gen_hold_at_fault_tick": true
+    },
+    "session_alive": true
+   },
+   "F4_reset_recovery": {
+    "json": "CL_RESET.json",
+    "v1_scenario_ref": "reset",
+    "focus": "F4 fault_reset_recovery：复位 → INIT 平 fill + FALLBACK（段统计）",
+    "params": {
+     "cl_fault_tick": 30,
+     "cl_stall_s": 0.1,
+     "cl_ticks": 60,
+     "rsp_timeout_ms": 500,
+     "advancer": "stub",
+     "image": "npu",
+     "mock": "pty+_MockFW（STALE 阈加速 0.05s）"
+    },
+    "counts": {
+     "n_fallback_segments": 1,
+     "n_policy_events": 3,
+     "n_dump_lines": 2
+    },
+    "fallback_segments": [
+     {
+      "start_tick": 29,
+      "start_fuel": 0.38666666666666316,
+      "start_soc": 0.6007259488105774,
+      "end_tick": 29,
+      "end_fuel": 0.399999999999995,
+      "end_soc": 0.6007518768310547,
+      "recovery_ticks": 0,
+      "n_ticks": 1,
+      "d_fuel_kg": 0.013333333333331865,
+      "d_soc": 2.5928020477294922e-05
+     }
+    ],
+    "fallback_total": {
+     "n_segments": 1,
+     "n_ticks": 1,
+     "d_fuel_kg": 0.013333333333331865,
+     "d_soc": 2.5928020477294922e-05
+    },
+    "policy_events": [
+     {
+      "action": "mutate_pload_nan",
+      "tick": 29
+     },
+     {
+      "action": "inject_reset_before_tick",
+      "tick": 30
+     },
+     {
+      "action": "reset_acked",
+      "ok": true
+     }
+    ],
+    "dump_text": [
+     "EVT ring=empty",
+     "EVT total=0 kept=0 cap=32"
+    ],
+    "dump_evt_stats": {
+     "evt_total": 0,
+     "evt_kept": 0
+    },
+    "harness_csv_flags": {
+     "file": "reset_closedloop_S20_npu.csv",
+     "n_ticks": 60,
+     "n_stale_ticks": 0,
+     "n_held_ticks": 0,
+     "n_fallback_ticks": 1,
+     "n_cls_bad_ticks": 0,
+     "flags_at_fault_tick": 0,
+     "p_gen_hold_at_fault_tick": true
+    },
+    "session_alive": true
+   }
+  },
+  "fallback_total": {
+   "n_segments": 2,
+   "n_ticks": 3,
+   "d_fuel_kg": 0.039999999999995595,
+   "d_soc": 7.778406143188477e-05
+  }
+ },
+ "cross_checks": [
+  {
+   "check": "gp1_fuel_raw_S20_consistency",
+   "values": [
+    328.094641944243,
+    328.094641944243,
+    328.094641944243,
+    328.094641944243
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-06,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "锚点来源：22 号产物 / v3_gp1_S20_gate.json / fw_reference export_summary"
+  },
+  {
+   "check": "gp1_fuel_raw_voyage002_consistency",
+   "values": [
+    264.216856499727,
+    264.216856499727,
+    264.216856499727
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-06,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "锚点来源：22 号产物 / v3_gp1_voyage002_gate.json / fw_reference export_summary"
+  },
+  {
+   "check": "native_vs_summary.V3_B_S20_native_law7.fuel_raw_kg",
+   "values": [
+    328.094641944243,
+    328.094641944243
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_S20_native_law7.fuel_corr_kg",
+   "values": [
+    328.1250120027696,
+    328.1250120027696
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_S20_native_law7.SOC_end",
+   "values": [
+    0.5999406216963152,
+    0.5999406216963152
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_S20_native_law7.e_hat_active_ratio",
+   "values": [
+    0.9020105053432349,
+    0.9020105053432349
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_S20_native_law7.v_track_rmse_1s_axis",
+   "values": [
+    0.3516743584615359,
+    0.3516743584615355
+   ],
+   "max_abs_delta": 3.885780586188048e-16,
+   "tolerance_abs": null,
+   "tolerance_rel": null,
+   "pass": null,
+   "note": "报告性差异（本脚本 1 s CSV 轴 vs summary resample_1s 辅助口径），不设门禁"
+  },
+  {
+   "check": "native_vs_summary.V3_C_S20_native_law5.fuel_raw_kg",
+   "values": [
+    330.7423835474854,
+    330.7423835474854
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_S20_native_law5.fuel_corr_kg",
+   "values": [
+    330.66187376504934,
+    330.66187376504934
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_S20_native_law5.SOC_end",
+   "values": [
+    0.6001574094533567,
+    0.6001574094533567
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_S20_native_law5.e_hat_active_ratio",
+   "values": [
+    0.0,
+    0
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_S20_native_law5.v_track_rmse_1s_axis",
+   "values": [
+    0.3516743584615359,
+    0.3516743584615355
+   ],
+   "max_abs_delta": 3.885780586188048e-16,
+   "tolerance_abs": null,
+   "tolerance_rel": null,
+   "pass": null,
+   "note": "报告性差异（本脚本 1 s CSV 轴 vs summary resample_1s 辅助口径），不设门禁"
+  },
+  {
+   "check": "native_vs_summary.V3_B_voyage002_native_law7.fuel_raw_kg",
+   "values": [
+    264.216856499727,
+    264.216856499727
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_voyage002_native_law7.fuel_corr_kg",
+   "values": [
+    224.08624943016824,
+    224.08624943016824
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_voyage002_native_law7.SOC_end",
+   "values": [
+    0.6784617313642164,
+    0.6784617313642164
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_voyage002_native_law7.e_hat_active_ratio",
+   "values": [
+    0.9992877492877493,
+    0.9992877492877493
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_B_voyage002_native_law7.v_track_rmse_1s_axis",
+   "values": [
+    0.2912834482123756,
+    0.2912834482123759
+   ],
+   "max_abs_delta": 2.7755575615628914e-16,
+   "tolerance_abs": null,
+   "tolerance_rel": null,
+   "pass": null,
+   "note": "报告性差异（本脚本 1 s CSV 轴 vs summary resample_1s 辅助口径），不设门禁"
+  },
+  {
+   "check": "native_vs_summary.V3_C_voyage002_native_law5.fuel_raw_kg",
+   "values": [
+    239.31804263412104,
+    239.31804263412104
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_voyage002_native_law5.fuel_corr_kg",
+   "values": [
+    239.8216072632257,
+    239.8216072632257
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_voyage002_native_law5.SOC_end",
+   "values": [
+    0.5990154509104523,
+    0.5990154509104523
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_voyage002_native_law5.e_hat_active_ratio",
+   "values": [
+    0.0,
+    0
+   ],
+   "max_abs_delta": 0.0,
+   "tolerance_abs": 1e-09,
+   "tolerance_rel": null,
+   "pass": true,
+   "note": "native_arms_summary.json（21 号产物）交叉核对"
+  },
+  {
+   "check": "native_vs_summary.V3_C_voyage002_native_law5.v_track_rmse_1s_axis",
+   "values": [
+    0.2912834482123756,
+    0.2912834482123759
+   ],
+   "max_abs_delta": 2.7755575615628914e-16,
+   "tolerance_abs": null,
+   "tolerance_rel": null,
+   "pass": null,
+   "note": "报告性差异（本脚本 1 s CSV 轴 vs summary resample_1s 辅助口径），不设门禁"
+  }
+ ],
+ "notes": [
+  "四臂口径：板载 CSV 19 列（P_gen 列名 P_gen_kW，flags 位镜像 ems_proto.h：STALE=0x01/FALLBACK=0x02/CLS_BAD=0x04/HELD=0x08）；原生臂 CSV 22 列（P_gen 列名 P_gen_ref_kW，无 flags 列）；gp1 参考 CSV 13 列。均按各自表头映射。",
+  "ê 生效占比：板载臂 = mean(K>0 ∧ flags&0x02==0)；原生 law=7 = mean(K>0)（与 native_arms_summary.json 逐位一致）；law=5 恒 0（CSV K=1 为中性值，不据其计算）。",
+  "v_track_rmse 为全任务 1 s 轴口径（各臂自体 v_ship vs v_cmd，design §8.1 定义式）；原生臂另附 native_arms_summary.json 的 0.01 s 全分辨率主口径与 1 s 网格辅助口径交叉核对。",
+  "fuel_corr 电荷维持修正：64/66 同式同常数（design §8.1 禁新造公式）；每臂同时报告 fuel_raw 与 fuel_corr + SOC_end。",
+  "仪器级①参考 = gp1 replay（其 P_gen_ref_kW 为 ref_G2 驱动序列，G-P1 T-602 gate fuel_rel=0）；两场景全部算齐，pass/fail 如实记录，不作退出码门禁。",
+  "层③为报告性输出（FR-612/§8.3），不作门禁；层② (a) 裁决登记归 T-616 报告。",
+  "tick 对齐：全部比较按 tick 号交集对齐（板载 0..N-1 与原生/gp1 同网格）。",
+  "退出码 0 = 完成；仪器级①②判定仅记录于 JSON，不改变退出码。"
+ ]
+}

@@ -1,0 +1,25 @@
+{
+ "rows": 200,
+ "errors": {
+  "timeout": 0,
+  "bad_rsp": 0,
+  "resend": 0,
+  "stale_skip": 0
+ },
+ "compare": {
+  "n_cmp": 200,
+  "max_dq10": 13.641914767578125,
+  "max_dq50": 5.234719284545898,
+  "max_dq90": 29.591890252197267,
+  "mean_ref_q50": 33.340277889999996,
+  "gate_lsb": {
+   "mean_abs": 2.18,
+   "p99": 10.815,
+   "max": 19.664,
+   "signed_mean": -0.674
+  },
+  "hard_gate_fr504": false,
+  "rmse_ratio": 0.0222
+ },
+ "out_csv": "infer_compare.csv"
+}

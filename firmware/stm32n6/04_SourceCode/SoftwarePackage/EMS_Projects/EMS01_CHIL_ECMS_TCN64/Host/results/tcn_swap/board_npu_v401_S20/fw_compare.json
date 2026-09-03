@@ -1,0 +1,25 @@
+{
+ "rows": 5521,
+ "errors": {
+  "timeout": 0,
+  "crcerr": 0,
+  "idx_mismatch": 0
+ },
+ "compare": {
+  "int8": {
+   "n_cmp": 5521,
+   "max_de_hat": 1.645186,
+   "max_dK": 1.0,
+   "cls_match_rate": 0.0,
+   "pgen": {
+    "n_cmp": 5521,
+    "exact_rate": 0.44647708748415144,
+    "within_1grid_rate": 0.48831733381633763,
+    "max_dP_kW": 980.0
+   },
+   "layer2_pgen_pass": false
+  },
+  "sim": {}
+ },
+ "out_csv": "fw_compare.csv"
+}
