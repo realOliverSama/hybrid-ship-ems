@@ -885,10 +885,11 @@ function buildCommitmentAdapter(mdl, pos)
     setMFCode(fn, model.code_commitment_adapter_e(), {});
     addL(sys, 'P_gen_ref_kW', 1, 'adapter', 1);
     % force 端口（默认 0=auto；scenario 脚本化强制组合测试时改 Constant 值）
-    forces = {'force_mode','force_P1_kW','force_P2_kW'};
+    forces = {'ADAPTER_FORCE_MODE','ADAPTER_FORCE_P1_KW','ADAPTER_FORCE_P2_KW'};
     for k = 1:numel(forces)
-        add_block('simulink/Sources/Constant', [sys '/C_' forces{k}], 'Position', [20 190+45*(k-1) 80 210+45*(k-1)], 'Value', '0');
-        addL(sys, ['C_' forces{k}], 1, 'adapter', k+1);
+        % force 通道（base 变量默认 0=auto；T-412 E06/E07 与组件测试经 setVariable 注入强制组合）
+        add_block('simulink/Sources/Constant', [sys '/C_force_' num2str(k)], 'Position', [20 190+45*(k-1) 90 210+45*(k-1)], 'Value', forces{k});
+        addL(sys, ['C_force_' num2str(k)], 1, 'adapter', k+1);
     end
     addL(sys, 'adapter', 1, 'DG1_enable', 1);
     addL(sys, 'adapter', 2, 'P_DG1_ref_kW', 1);
@@ -915,8 +916,12 @@ function buildGensetSystemE(mdl, pos)
     end
     % DG_cmd_stop（2 维向量 [DG1;DG2]）拆分；默认 Constant 0（E06 aborted-start 直接注入用）
     add_block('simulink/Signal Routing/Demux', [sys '/stop_demux'], 'Position', [90 240 100 280], 'Outputs', '2');
-    add_block('simulink/Sources/Constant', [sys '/cmd_stop_default'], 'Position', [15 248 55 272], 'Value', '[0;0]');
-    add_line(sys, 'DG_cmd_stop/1', 'stop_demux/1');
+    % cmd_stop 经 From Workspace 通道（base 变量 GEN_CMD_STOP_TS，默认全零表=恒 0；
+    % T-412 E06 aborted-start/停机时序经此注入时变启停指令）
+    add_block('simulink/Sources/From Workspace', [sys '/cmd_stop_src'], 'Position', [15 248 75 272], ...
+        'VariableName', 'GEN_CMD_STOP_TS', 'SampleTime', '0.01', 'Interpolate', 'off', ...
+        'OutputAfterFinalValue', 'HoldingFinalValue');   % ZOH：禁线性插值（插值曾致 cmd_stop 过渡区半置位 0.6>0.5）
+    add_line(sys, 'cmd_stop_src/1', 'stop_demux/1');
     % 两个 GensetUnitE 实例（同一源码，persistent 按块隔离）
     unitPos = {[150 30 310 140], [150 170 310 280]};
     for u = 1:2
