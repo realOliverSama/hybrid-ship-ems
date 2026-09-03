@@ -1,0 +1,192 @@
+{
+  "task": "T-308",
+  "params": 7871,
+  "seg_names": [
+    "depart",
+    "harbor",
+    "eco",
+    "rush",
+    "bridge",
+    "upstream",
+    "berth"
+  ],
+  "val": {
+    "accuracy": 0.8439,
+    "macro_f1": 0.6172,
+    "per_class_recall": {
+      "depart": 0.5918,
+      "harbor": 0.9962,
+      "eco": 0.9788,
+      "rush": 0.9563,
+      "bridge": 0.0,
+      "upstream": 0.9436,
+      "berth": 0.0
+    },
+    "per_class_f1": {
+      "depart": 0.7342,
+      "harbor": 0.6794,
+      "eco": 0.9806,
+      "rush": 0.9757,
+      "bridge": 0.0,
+      "upstream": 0.9502,
+      "berth": 0.0
+    },
+    "confusion_matrix": [
+      [
+        29,
+        20,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3668,
+        7,
+        5,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        182,
+        10032,
+        11,
+        0,
+        24,
+        0
+      ],
+      [
+        1,
+        69,
+        116,
+        4856,
+        0,
+        36,
+        0
+      ],
+      [
+        0,
+        3074,
+        2,
+        2,
+        0,
+        6,
+        0
+      ],
+      [
+        0,
+        38,
+        52,
+        0,
+        0,
+        1506,
+        0
+      ],
+      [
+        0,
+        65,
+        2,
+        2,
+        0,
+        0,
+        0
+      ]
+    ]
+  },
+  "test": {
+    "accuracy": 0.7987,
+    "macro_f1": 0.6175,
+    "per_class_recall": {
+      "depart": 0.6706,
+      "harbor": 0.9975,
+      "eco": 0.9756,
+      "rush": 0.9505,
+      "bridge": 0.0,
+      "upstream": 0.9521,
+      "berth": 0.0
+    },
+    "per_class_f1": {
+      "depart": 0.7972,
+      "harbor": 0.6144,
+      "eco": 0.9783,
+      "rush": 0.9721,
+      "bridge": 0.0,
+      "upstream": 0.9606,
+      "berth": 0.0
+    },
+    "confusion_matrix": [
+      [
+        57,
+        28,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      [
+        0,
+        3540,
+        5,
+        2,
+        0,
+        2,
+        0
+      ],
+      [
+        0,
+        200,
+        9282,
+        9,
+        0,
+        23,
+        0
+      ],
+      [
+        1,
+        67,
+        124,
+        4147,
+        0,
+        24,
+        0
+      ],
+      [
+        0,
+        4061,
+        6,
+        2,
+        0,
+        1,
+        0
+      ],
+      [
+        0,
+        27,
+        43,
+        9,
+        0,
+        1571,
+        0
+      ],
+      [
+        0,
+        51,
+        1,
+        0,
+        0,
+        0,
+        0
+      ]
+    ],
+    "switch_window_recall": 0.2886,
+    "switch_windows": 343,
+    "transition_boundaries": 386,
+    "transition_latency_s_median": 360.0,
+    "transition_latency_s_p90": 860.0
+  }
+}

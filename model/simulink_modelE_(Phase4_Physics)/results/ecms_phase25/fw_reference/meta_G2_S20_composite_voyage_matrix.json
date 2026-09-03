@@ -1,0 +1,22 @@
+{
+  "run_id": "G2_S20_composite_voyage_matrix",
+  "scenario": "S20_composite_voyage",
+  "stop_time_s": 5520,
+  "stop_time_set": 5520,
+  "n_samples": 552001,
+  "n_ticks": 5521,
+  "wall_time_s": 24.558657166666666,
+  "fuel_raw_kg": 328.094641944243,
+  "fuel_corr_kg": 328.12501200276961,
+  "SOC_end": 0.59994062169631523,
+  "replay_max_abs_dP_kW": 780,
+  "cache": {
+    "file": "gating/runs/run_G2_S20_composite_voyage_matrix.mat",
+    "fuel_raw_kg": 328.094641944243,
+    "fuel_corr_kg": 328.12501200276961,
+    "SOC_end": 0.59994062169631523,
+    "d_fuel_corr_kg": 0,
+    "d_SOC_end": 0,
+    "repro_pass": true
+  }
+}

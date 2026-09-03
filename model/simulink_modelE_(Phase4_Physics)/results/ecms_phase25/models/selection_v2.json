@@ -1,0 +1,52 @@
+{
+  "spec": "nn-predictive-ecms-phase25",
+  "task": "T-305",
+  "script": "python/train_predictor.py",
+  "created_utc": "2026-08-30T00:00:00Z",
+  "replay_note": "round3 后由清理脚本按真配置族重生成（原文件被逐配置运行覆盖为单配置 selection）",
+  "git_commit_sha": "72dd120979669a0df9f3f52a41c42777710a592f",
+  "dataset": {
+    "path": "datasets/fleet_windows_v2.npz",
+    "md5": "6d187aeab7a481e7b3a51a6389805ddb"
+  },
+  "selection_rule": "成功实验中 val RMSE 最小者入选；test 集不参与任何决策",
+  "decision_status": "finalized",
+  "selected": {
+    "run_id": "tcn_f64",
+    "val_rmse_kwh": 9.8433,
+    "val_mae_kwh": 4.8303,
+    "n_params": 165851
+  },
+  "all_experiments": [
+    {
+      "run_id": "tcn_f16",
+      "val_rmse_kwh": 9.9318,
+      "val_mae_kwh": 4.8164,
+      "n_params": 12107
+    },
+    {
+      "run_id": "tcn_f32",
+      "val_rmse_kwh": 9.9077,
+      "val_mae_kwh": 4.8773,
+      "n_params": 43387
+    },
+    {
+      "run_id": "tcn_f64",
+      "val_rmse_kwh": 9.8433,
+      "val_mae_kwh": 4.8303,
+      "n_params": 165851
+    },
+    {
+      "run_id": "tcn_f128",
+      "val_rmse_kwh": 9.8791,
+      "val_mae_kwh": 4.8806,
+      "n_params": 650395
+    },
+    {
+      "run_id": "tcn_f256",
+      "val_rmse_kwh": 10.0914,
+      "val_mae_kwh": 4.9493,
+      "n_params": 2577947
+    }
+  ]
+}

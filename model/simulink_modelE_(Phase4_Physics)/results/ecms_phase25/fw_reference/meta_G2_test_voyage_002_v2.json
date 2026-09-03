@@ -1,0 +1,22 @@
+{
+  "run_id": "G2_test_voyage_002_v2",
+  "scenario": "voyage_002",
+  "stop_time_s": 4211,
+  "stop_time_set": 4211,
+  "n_samples": 421101,
+  "n_ticks": 4212,
+  "wall_time_s": 24.155102916666667,
+  "fuel_raw_kg": 264.216856499727,
+  "fuel_corr_kg": 224.08624943016824,
+  "SOC_end": 0.67846173136421639,
+  "replay_max_abs_dP_kW": 780,
+  "cache": {
+    "file": "gating/runs/run_G2_test_voyage_002_v2.mat",
+    "fuel_raw_kg": 264.216856499727,
+    "fuel_corr_kg": 224.08624943016824,
+    "SOC_end": 0.67846173136421639,
+    "d_fuel_corr_kg": 0,
+    "d_SOC_end": 0,
+    "repro_pass": true
+  }
+}

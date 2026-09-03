@@ -1,0 +1,61 @@
+{
+ "scenario": "F4_fault_reset_recovery",
+ "params": {
+  "port": "/dev/cu.usbserial-1130",
+  "trace": "ref_G2_test_voyage_002_v2.csv",
+  "rsp_timeout_ms": 500,
+  "stall_s": 3.0,
+  "warmup": 12,
+  "post": 12
+ },
+ "counts": {
+  "n_rows": 25,
+  "n_nack": 0,
+  "n_dump_lines": 1
+ },
+ "dump_text": [
+  "EVT total=0 kept=0 cap=32"
+ ],
+ "dump_raw_hex": "45565420746f74616c3d30206b6570743d30206361703d33320d0aaa557f0100078c55",
+ "observations": {
+  "pre_reset_nan": {
+   "phase": "pre_reset_nan",
+   "tick": 12,
+   "flags": 2,
+   "P_gen_kW": 0.0,
+   "e_hat": 0.0,
+   "K": 1.0,
+   "cls_eff": 2,
+   "err": ""
+  },
+  "reset_ack_payload_hex": "01",
+  "post_reset_flags": [
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0,
+   0
+  ],
+  "post_reset_e_hat": [
+   -0.39558160305023193,
+   -0.06163784861564636,
+   -0.1482158601284027,
+   -0.1976890116930008,
+   -0.4450547695159912,
+   -0.6676838994026184,
+   -0.8655765056610107,
+   -1.1500470638275146,
+   -1.3108347654342651,
+   -1.4097810983657837,
+   -1.5087274312973022,
+   -1.5087274312973022
+  ]
+ }
+}

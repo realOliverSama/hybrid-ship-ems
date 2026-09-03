@@ -1,0 +1,13 @@
+{
+  "t1_Pg_star_kW": "800",
+  "t2_Pg_star_kW": "1000",
+  "t3a_Pg_star_kW": "0",
+  "t3b_Pg_star_kW": "740",
+  "t4_mbe_dis_kgps": "0.2110086212",
+  "t5_max_diff_kW": "0",
+  "t6_Pg_star_law5_kW": "0",
+  "t7_max_diff_kW_law5": "0",
+  "t8_Pg_star_law6_kW": "820",
+  "t9_max_diff_kW_law6": "0",
+  "pass": "1"
+}

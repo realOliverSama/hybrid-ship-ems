@@ -1,0 +1,334 @@
+%% ========================================================================
+%  Model_Parameters.m — HybridShip_Model_MVP 统一参数表
+%  说明：本脚本只定义参数，无任何副作用；模型编译前必须先运行本脚本。
+%  参数分类：
+%    [DRAWING] 来自系统图/硬件选型（图纸额定值）
+%    [LEGACY]  来自原模型 HybridShip0730 及其参数脚本 ship_parameters0616.m
+%    [ASSUMED] 暂时缺少可靠来源的假设值（ASSUMED_ 前缀）
+%  来源与置信度明细见 reports/parameter_audit.csv（由 02_build_model.m 生成）。
+%
+%  v2.0 变更（双推进等效 + 水动力重新标定）：实船左右舷双推进，图纸“单支路额定”
+%    为每支路值（原模型 DC_Grid_Node_Model 双支路接口为佐证）；对称工况聚合等效。
+%    修复原标定不自洽（8 kn 需 ~380 kW > 单侧 350 kW）及派生遗漏 Elec_Eff 问题。
+%  v2.1 变更（船型定位：长江危化品应急处置船/公务船）：
+%    服务航速 8 kn -> 11 kn。8 kn 对公务船偏慢；按功率预算与文献 R/W 区间交叉校核
+%    后取 11 kn（Fn∇≈0.57，R/W≈0.0058 处于瘦线型内河公务船合理带）。
+%    除发动机(500 kW/支路)、电池(535.68 kWh/支路, 576V×930Ah)、推进电机(350 kW/支路)为图纸确定值外，
+%    其余水动力/质量参数均为估计值（ASSUMED/低置信度，需船模试验或 CFD 确认）。
+%  v2.2 变更（Model D / adaptive-ecms-methanol T-002，真实设备参数修正）：
+%    来源 20260526设备参数.docx（单侧值×2=聚合，见 docs/reference/20260526设备参数.md）：
+%    - 电池容量 600→535.68 kWh/支路（576 V × 930 Ah）；聚合 1200→1071.36 kWh
+%    - 电池充/放电上限 1000→1050 kW（瓶颈为双向 DC/DC 750V×700A=525 kW/侧×2；置信度升 high）
+%    - BSFC 额定针点 460→453 g/kWh @1000 kW 聚合（docx 453(+5%) @500 kW 单机）
+%    - 新增 ECMS Phase 0 BSFC 覆盖机制（ecms_bsfc_override.mat，见 §6 尾部）
+% ========================================================================
+
+%% ------------------------------------------------------------------------
+%  1. 模型范围 [Model 配置]
+% -------------------------------------------------------------------------
+Model_SystemScope = "twin_string_equivalent"; % 双支路等效聚合模型（v2.0）
+EMS_MODE      = 0;    % 兼容列（= double(EMS_CTRL_LAW>0)），日志 ems_mode 用
+EMS_CTRL_LAW  = 0;    % EMS 变体选择：0=EMS_Baseline(无预测) 1=EMS_AI_Enhanced(即时前馈) 2=EMS_ScheduledFF(定时前馈, T-004) 4=EMS_Fixed_ECMS(T-103) 5=EMS_SOC_Adaptive_ECMS(T-105) 6=EMS_Oracle_ECMS(T-106, 上界验证) 7=EMS_NN_AECMS(T-204, NN 预测型)
+AI_Pred_Source = 0;   % 预测源：0=Disabled/Persistence，1=FromWorkspace，2=External(STM32N6 预留)，3=EmbeddedML(环内推理)
+AI_TPeak_Source = 0;  % t_peak 来源：0=按 AI_Pred_Source 语义，1=强制取 AI_Oracle_Data 第3列(真值, E3 用)
+
+%% ------------------------------------------------------------------------
+%  2. 电气额定值 [DRAWING]  —— 来源：系统图/单线图、直流配电板系统图、硬件选型表
+%  图纸额定均为“单支路”值；实船左右舷各一套（双支路），对称工况下聚合等效。
+% -------------------------------------------------------------------------
+DRAWING_N_PropStrings = 2;      % 推进支路数 [-]（左右舷双推进，用户确认；图纸单支路额定×2）
+V_dc_nom    = 750;    % 直流母线额定电压 [V]（DC/DC 接入母线侧；与电池电压分离）
+V_bat_nom   = 576;    % 动力电池簇标称电压 [V]（两支路并联，电压不变）
+DRAWING_Bat_Cap_kWh_perString = 535.68; % 单支路电池簇标称容量 [kWh]（20260526设备参数.docx：576 V × 930 Ah）
+DRAWING_Gen_P_max_perString   = 500;    % 单支路发电机额定电功率 [kW]（图纸额定）
+DRAWING_Mot_P_nom_perString   = 350;    % 单支路推进电机额定电功率 [kW]（图纸额定）
+Bat_Cap_kWh = DRAWING_Bat_Cap_kWh_perString * DRAWING_N_PropStrings; % 1071.36 kWh（聚合）
+Gen_P_max   = DRAWING_Gen_P_max_perString   * DRAWING_N_PropStrings; % 1000 kW（聚合）
+Mot_P_nom   = DRAWING_Mot_P_nom_perString   * DRAWING_N_PropStrings; % 700  kW（聚合）
+P_hotel_nom = 100;    % 全船日用/辅机负荷 [kW]（全船级负荷，不随支路翻倍；沿用原模型 EMS_P_Hotel=100）
+
+%% ------------------------------------------------------------------------
+%  3. 初始状态 [LEGACY/DRAWING]
+% -------------------------------------------------------------------------
+Ship_V_init = 0;      % 初始对地船速 [m/s]
+Ship_X_init = 0;      % 初始航程 [m]
+Bat_SOC_init = 0.60;  % 初始 SOC [-]
+Pgen_init   = 0;      % 发电机初始功率 [kW]
+
+%% ------------------------------------------------------------------------
+%  4. 动力学参数 [LEGACY]  —— 来源：ship_parameters0616.m（聚合量×2）
+% -------------------------------------------------------------------------
+Ship_Mass   = 1.0e6;  % 船舶等效质量 [kg]（约 1000 t 排水量，船体固有属性，不翻倍）
+Gear_Ratio  = 6.08;   % 齿轮箱减速比 [-]（单侧）
+Gear_Eff    = 0.96;   % 齿轮箱机械效率 [-]（单级船用齿轮箱典型 0.96~0.98，取保守值）
+Elec_Eff    = 0.92;   % 变频器+电机综合电气效率 [-]（典型 0.90~0.94）
+Gen_Ramp_Up   = 40;   % 发电机聚合升功率爬坡率 [kW/s]（20 kW/s × 2 台并联）
+Gen_Ramp_Down = 40;   % 发电机聚合降功率爬坡率 [kW/s]
+
+%% ------------------------------------------------------------------------
+%  5. 推进与水动力参数 [重新标定 v2.0]
+%  标定链路（全部可复查）：
+%    P_shaft_max = Mot_P_nom · Elec_Eff · Gear_Eff      （电功率→轴功率全链路）
+%    P_eff_design = eta_prop · P_shaft_max / (1+SeaMargin)（设计点有效功率）
+%    Hull_K_R = P_eff_design / V_design^3               （船体阻力系数）
+%  物理含义：8 kn 设计航速时，扣除海况裕量后推进功率恰好用上全部轴功率。
+% -------------------------------------------------------------------------
+Mot_RPM_nom  = 1500;  % 推进电机额定转速 [rpm]（单侧）
+Mot_T_max    = (Mot_P_nom*1000) / (2*pi*Mot_RPM_nom/60); % 聚合电机最大转矩 [Nm]（×2 自动）
+Prop_J       = 1600;  % 双轴系+双螺旋桨聚合等效转动惯量（含附水） [kg*m^2]（800×2）
+Shaft_B      = 0;     % 轴系线性阻尼 [Nm/(rad/s)]
+wake_fraction    = 0.15;  % 伴流分数 [-]（双桨船典型 0.10~0.20，取中值）
+ASSUMED_Prop_Efficiency = 0.60; % 准推进效率 [-]（双桨机动船典型 0.55~0.65，取代原 0.55 低估值）
+ASSUMED_Sea_Margin      = 0.15; % 海况裕量 [-]（船舶设计常用 10~20%，静水顶速因此略高于设计航速）
+V_design_kn      = 11;    % 设计/服务航速 [kn]（公务船定位，交叉校核见下）
+V_design_mps     = V_design_kn / 1.944;   % [m/s] ≈ 5.66
+% 交叉校核（v2.1）：Fn∇ = V/√(g·∇^(1/3))，∇≈1000 m³ -> Fn∇≈0.57（半排水型）；
+% 该区间瘦线型内河公务船 R/W ≈ 0.004~0.006；本标定 R = P_eff/V ≈ 57 kN
+% -> R/W ≈ 0.0058，落在区间内；功率受限静水极速 ≈ 11.5 kn。
+P_shaft_nom_W    = Mot_P_nom * Elec_Eff * Gear_Eff * 1000; % 聚合轴功率上限 [W] ≈ 618.2 kW
+P_shaft_design_W = P_shaft_nom_W / (1 + ASSUMED_Sea_Margin); % 设计点轴功率 [W] ≈ 537.6 kW（裕量保留给风浪）
+P_effective_design_W = ASSUMED_Prop_Efficiency * P_shaft_design_W; % ≈ 322.5 kW
+Hull_K_R    = P_effective_design_W / V_design_mps^3;  % 船体阻力系数 [N/(m/s)^2] ≈ 1780
+% 2026-08-25 用户裁决：实船排水量估计 ~500 t（待设计方确认，见 docs/data_request_list.md）。
+% 若证实 → Hull_K_R ≈ 890（质量缩放）。已确认不影响闭环结论（节油率为无量纲比值），
+% 统一留待真实数据重跑批次（E3）；当前模型维持 1000 t/1780 口径。
+% 螺旋桨二次模型系数（聚合等效桨；派生公式与原模型一致，设计点已更新）
+% 注意：Q_prop_nom 必须取设计点轴功率（含海况裕量），否则 8 kn 巡航即占满电机额定、
+% 裕量被隐含效率吞掉（v2.0 首轮自校发现的问题）
+n_prop_nom_rpm = Mot_RPM_nom / Gear_Ratio;            % [rpm]
+omega_prop_nom = n_prop_nom_rpm * pi / 30;            % [rad/s]
+Q_prop_nom     = P_shaft_design_W / omega_prop_nom;   % [Nm]（设计点轴扭矩）
+V_A_design     = (1 - wake_fraction) * V_design_mps;  % [m/s]
+F_eff_design   = P_effective_design_W / V_design_mps; % [N]
+F_bollard_factor = 1.5; F_bollard = F_bollard_factor * F_eff_design;
+K_Fw = F_bollard / omega_prop_nom^2;
+K_Fv = (F_bollard - F_eff_design) / V_A_design^2;
+Q_bollard_factor = 1.2; Q_bollard = Q_bollard_factor * Q_prop_nom;
+K_Qw = Q_bollard / omega_prop_nom^2;
+K_Qv = (Q_bollard - Q_prop_nom) / V_A_design^2;
+F_env_const = 0;      % 额外环境纵向力 [N]（正=助推）
+omega_min_radps = 0.01; % 转矩换算的最小角速度保护 [rad/s]（避免除零）
+
+%% ------------------------------------------------------------------------
+%  6. 假设参数 [ASSUMED]  —— 缺少可靠来源，需后续确认
+% -------------------------------------------------------------------------
+ASSUMED_Gen_TimeConstant    = 5;    % 发电机平均模型一阶时间常数 [s]（原模型约1~3s，取保守值）
+ASSUMED_Gen_MinStablePower  = 0;    % 发电机最低稳定功率 [kW]（0=可怠速空载；真实机组通常为额定30~50%）
+ASSUMED_Bat_DischargeLimit  = 1050; % 电池聚合最大放电功率 [kW]（DC/DC 瓶颈 750V×700A=525 kW/侧×2，docx）
+ASSUMED_Bat_ChargeLimit     = 1050; % 电池聚合最大充电功率 [kW]（双向 DC/DC 同额定，docx）
+ASSUMED_Bat_Eff_Discharge   = 0.95; % 放电效率 [-]
+ASSUMED_Bat_Eff_Charge      = 0.95; % 充电效率 [-]
+ASSUMED_SOC_min             = 0.10; % SOC 下限 [-]
+ASSUMED_SOC_max             = 0.95; % SOC 上限 [-]
+ASSUMED_SOC_DisDerate_Start = 0.25; % 低SOC放电降额起始点 [-]（SOC<=0.10 时降额到0）
+ASSUMED_SOC_ChgDerate_Start = 0.90; % 高SOC充电降额起始点 [-]（SOC>=0.95 时降额到0）
+ASSUMED_SpeedPI_Kp          = 600;  % 船速PI比例增益 [kW/(m/s)]（随功率规模×2）
+ASSUMED_SpeedPI_Ki          = 20;   % 船速PI积分增益 [kW/(m/s)/s]（随功率规模×2）
+ASSUMED_Speed_Ramp_Up       = 0.05; % 目标航速斜坡率 [m/s^2]（常规巡航加减速；机动工况由 SCN 覆盖）
+ASSUMED_Drive_TimeConstant  = 0.5;  % 推进驱动功率滞后时间常数 [s]
+ASSUMED_EMS_SOC_Ref         = 0.60; % EMS 电池SOC参考值 [-]
+ASSUMED_EMS_SOC_Gain        = 200;  % EMS 充电功率修正增益 [kW/SOC]（随功率规模×2）
+ASSUMED_EMS_FF_Gain         = 1.0;  % 预测前馈增益 K_ff [-]
+ASSUMED_EMS_FF_Max_kW       = 400;  % 预测前馈最大附加功率 [kW]（随功率规模×2）
+ASSUMED_Pred_Bound_kW       = 2000; % 预测值有效性上界 [kW]（随功率规模×2）
+ASSUMED_TFF_TauMargin       = 10;   % 定时前馈到位裕量 [s]（覆盖机组一阶惯性 τ=5s，T-004）
+ASSUMED_TFF_SOC_Thresh      = 0.40; % 定时前馈低SOC保守提前阈值 [-]（T-004）
+ASSUMED_TFF_SOC_AdvancePct  = 0.25; % 定时前馈低SOC爬坡时间放宽比例 [-]（T-004）
+ASSUMED_BSFC_Breakpoints    = [0 100 200 400 600 800 1000];      % BSFC 断点 [kW]（聚合功率，原断点×2）
+ASSUMED_BSFC_Table          = [1200 700 550 480 450 430 453];    % BSFC [g/kWh]（额定点 453 为 docx 真实针点，其余为待替代假定值）
+% --- ECMS Phase 0：BSFC 覆盖机制（design §2，保证 Baseline 与 DP 同口径，FR-006/010）---
+% 若 config/ecms_bsfc_override.mat 存在（由 +ecms/bsfc_family.m 生成，T-004），
+% 则用其中 BSFC_Breakpoints_kW / BSFC_Table_gkWh 覆盖默认假定表；不存在则静默用默认表。
+ecms_bsfc_override_file = fullfile(fileparts(mfilename('fullpath')), 'ecms_bsfc_override.mat');
+if exist(ecms_bsfc_override_file, 'file')
+    ecms_ov = load(ecms_bsfc_override_file);
+    ASSUMED_BSFC_Breakpoints = ecms_ov.BSFC_Breakpoints_kW;
+    ASSUMED_BSFC_Table       = ecms_ov.BSFC_Table_gkWh;
+    fprintf('[Model_Parameters] ECMS BSFC 覆盖生效：%s\n', ecms_ov.override_tag);
+end
+ASSUMED_TargetSpeed         = 5.66;  % 默认目标航速 [m/s]（11 kn 服务航速；功率受限极速 ≈11.5 kn）
+ASSUMED_VoyageDistance      = 5000; % 默认航程 [m]
+ASSUMED_RiverCurrentSpeed   = 1.0;  % 河流流速幅值 [m/s]（S02 顺水 +、S03 逆水 -）
+ASSUMED_Resistance_Change_RampTime = 15; % 阻力渐变区过渡时间 [s]
+ASSUMED_Resistance_Change_Amplitude = 0.4; % 阻力变化幅值默认值（S04 增 0.4）
+ASSUMED_AI_DataValid        = false; % 预测数据有效性开关（AI_Pred_Source>=1 时生效）
+AI_Oracle_Data = [0 0 0; 100000 0 0]; % oracle 外部预测信号 [t(s) P_pred(kW) t_peak_rel(s)]（From Workspace 块读取，ai_predict 端口 7/8）
+AI_Pred_Data   = [0 0];     % 兼容保留（T-002 后 ai_predict 不再引用；FromWorkspace 通道改用 AI_Oracle_Data）
+STM32_Pred_Data = [0 0];    % 外部/STM32N6 预测数据 [t(s) P_pred(kW)] 或 N×3（预留）
+AI_Pred_Timeout_s = 2;      % 外部通信超时阈值 [s]，预留
+
+%% 电气层（Model D，直流母线）—— 全部为待设计方核定的预置值
+EMS_WORK_MODE = 2;          % EMS 工作模式：0=手动(只监测) 1=半自动(规则分配) 2=全自动(含预测增强)
+ASSUMED_C_bus = 40;         % 母线等效电容 [F]（沿用 0730 每段 20 F × 2 段并联聚合）
+ASSUMED_K_droop = 10;       % 电池 DC/DC 下垂系数 [kW/V]（初值；经灵敏度扫描固化）
+ASSUMED_eta_rect = 0.97;    % 发电机整流效率 [-]
+ASSUMED_eta_dcdc = 0.97;    % 电池 DC/DC 变换效率 [-]
+ASSUMED_EMS_Manual_Pgen_kW = 400; % 手动模式发电机功率设定 [kW]
+ASSUMED_V_floor = 50;       % 功率-电流换算电压下限保护 [V]
+% FEC 等效燃油换算系数（ECMS 思想）：1 kWh 电池储能 ≈ k_eq kg 燃油
+ASSUMED_BSFC_Avg_gkWh = mean(ASSUMED_BSFC_Table(3:end)); % BSFC 表工作区均值 ≈474 [g/kWh]
+ASSUMED_k_eq_FEC = ASSUMED_BSFC_Avg_gkWh / (1000 * ASSUMED_Bat_Eff_Charge); % ≈0.499 [kg/kWh]
+
+%% ECMS Phase 1（T-103~T-106，EMS_CTRL_LAW=4/5/6；design §3.1/§3.2，FR-104~107；law=6 修订 v2 见 design Amendment Log v1.1）
+ECMS_Lambda = 0.425; % Fixed ECMS λ 常数 [kg/kWh]（T-104 标定：S01×tier2 使 SOC_end∈0.60±0.005）
+ECMS_K_soc = 30;   % SOC-Adaptive ECMS K_soc [kg/kWh/SOC]（law=5，design §3.2；T-105 标定注入）
+ECMS_K_S = 0.01;     % Oracle Predictive A-ECMS K_S [-]（law=6 v2：SOC_ref(t)=0.60+K_S·ê_future(t)，design v1.1；T-106 标定注入；oracle 上界验证，非实时可实现 E5）
+ECMS_Lambda_Floor = 0.43; % law=6 v2 λ_eff 下限钳位 [kg/kWh]（悬崖 0.41 + 0.02 裕量，防发电塌缩支路，design v1.1）
+ECMS_SOC_Ref           = 0.60;  % SOC-Adaptive ECMS SOC 参考值 [-]（law=5，design §3.2）
+ECMS_SOC_Discharge_Max = 0.105;  % SOC ≤ 此值禁放电（硬约束，优先于 λ，design §3.1）
+ECMS_SOC_Charge_Min    = 0.945;  % SOC ≥ 此值禁充电（硬约束）
+ECMS_Idle_Fuel_kgph    = 6.795;  % 机组怠速燃油 [kg/h]（P_g=0，连续口径，与 T-004 fam 一致）
+ECMS_Grid_dP_kW        = 20;     % ECMS 控制网格步长 [kW]（可行集 [0:20:1000]，P_min=0 口径）
+ECMS_dt_ctrl_s         = 1;      % ECMS 控制周期 [s]（design §3.1 Δt_ctrl）
+ECMS_EHat_Data = [0 0 0; 100000 0 0]; % law=6 oracle 前瞻信号 [t(s) E_future(kWh) e_hat(-)]（From Workspace 块读取；T-106 运行时由 ecms2.oracle_future_energy 对真实未来需求剖面预计算赋值；占位全零 -> e_hat=0 等价 law=5）
+ECMS_FLEET_SEED = 20260825; % T-201 参数化航次生成器种子（固定可复现；design §2 / FR-201；50_voyage_generator.m 读取）
+
+%% Phase 2 NN-A-ECMS（T-204，EMS_CTRL_LAW=7；design §5，FR-208；Amendment v1.2）——占位默认值
+% 真实权重/归一化经 52_integrate_law7.m 从 results/ecms_phase2/models/selected_model_weights.json
+% + datasets/fleet_norm.json 生成 config/ecms_nn_weights.mat（mat 不入库）。
+% **Amendment v1.2（extrinsic 兑底）后图内不再需要 ECMS_NN_* 图级参数**：law=7 的 NN 前向
+% 由 coder.extrinsic 调 ecms2.nn_predict_ehat 在运行期自 load config/ecms_nn_weights.mat
+% （T-204 后不再读本占位）。本处保留占位仅为参数审计/文档完整性（全零权重 + WeightsOK=0
+% 语义已废止：回退路径改为 mat 缺失 -> ê=0 ≡ law=5 行为，FR-208）。
+% 权重布局（Keras Dense 行优先）：W1[302,128] b1[128] | W2[128,64] b2[64] | W3[64,1] b3[1]
+ECMS_NN_WeightsOK = 0;    % 0/1 数值（仅审计/兼容保留；extrinsic 路径不再读取）
+ECMS_NN_W1 = zeros(302, 128); ECMS_NN_b1 = zeros(1, 128);
+ECMS_NN_W2 = zeros(128, 64);  ECMS_NN_b2 = zeros(1, 64);
+ECMS_NN_W3 = zeros(64, 1);    ECMS_NN_b3 = 0;
+ECMS_NN_XMean = zeros(302, 1); ECMS_NN_XStd = ones(302, 1); % per-feature z-score（fleet_norm.json，fit-on-train）
+ECMS_NN_YMean = 0; ECMS_NN_YStd = 1;                       % 目标反归一化（y_mean=34.5663/y_std=17.2269 由 mat 注入）
+ECMS_NN_Ebar_H_kWh = 36.893333753896165;  % S20 Ē_H [kWh]（与 law=6 相同标幺常数，source: results/ecms_phase1/kS_calibration.json oracle）
+ECMS_NN_Escale_kWh = 20.506967855122674;  % S20 E_scale [kWh]（同上；ê_NN=(Ê_NN−Ē_H)/E_scale，design §5 端点口径声明）
+
+%% CCS 2026《船舶应用直流综合电力系统指南》电能质量判据（来源：CCS 指南，置信度 high）
+CCS_Vdc_Steady_Band    = V_dc_nom * [0.90 1.06];   % 稳态 [675 795] V
+CCS_Vdc_Transient_Band = V_dc_nom * [0.80 1.07];   % 瞬态 [600 802.5] V
+CCS_t_recovery_max     = 1.5;                      % 恢复时间上限 [s]
+
+%% 嵌入式 ML 预测器占位参数（AI_Pred_Source=3 环内推理；由 07_run_ai_comparison.m 加载真实权重）
+MLP_WeightsLoaded = 0;     % 0/1 数值（勿用 logical，EMChart 参数类型推断问题）   % 权重是否已加载（false 时 source=3 自动回退 Baseline）
+MLP_W1 = zeros(300, 64); MLP_b1 = zeros(1, 64);
+MLP_W2 = zeros(64, 32);  MLP_b2 = zeros(1, 32);
+MLP_W3 = zeros(32, 1);   MLP_b3 = 0;
+MLP_FeatMean = zeros(1, 5); MLP_FeatStd = ones(1, 5);
+MLP_YMean = 0; MLP_YStd = 1;
+
+%% ------------------------------------------------------------------------
+%  7. 参数元数据（用于生成 reports/parameter_audit.csv）
+%  列：名称 | 值 | 单位 | 来源 | 置信度 | 使用位置 | 是否需要确认
+% -------------------------------------------------------------------------
+ParamMeta = {
+%  name                             unit       source                          confidence  used_by                    need_confirm
+  'Model_SystemScope'              '-'        'Model 配置 (v2.0 双支路等效)' 'high'      '全部'                     false
+  'EMS_MODE'                        '-'        'Model 配置(兼容列)'          'high'      '05_EMS_Controller'          false
+  'EMS_CTRL_LAW'                     '-'        'Model D 配置 (T-003)'        'high'      '05_EMS_Controller'          false
+  'ECMS_Lambda'                      'kg/kWh'   'Phase 1 design §3.1（T-104 标定）' 'low'     '05_EMS_Controller(ECMS4/5)'  false
+  'ECMS_K_soc'                       'kg/kWh/SOC' 'Phase 1 design §3.2（T-105 标定）' 'low'    '05_EMS_Controller(ECMS5)'   false
+  'ECMS_K_S'                         '-'        'Phase 1 design v1.1（T-106 标定；oracle 上界验证，非实时可实现 E5）' 'low' '05_EMS_Controller(ECMS6)' false
+  'ECMS_Lambda_Floor'                'kg/kWh'   'Phase 1 design v1.1（λ 悬崖 0.41+0.02 裕量）' 'low'  '05_EMS_Controller(ECMS6)' false
+  'ECMS_SOC_Ref'                     '-'        'Phase 1 design §3.2'        'low'       '05_EMS_Controller(ECMS5)'   false
+  'ECMS_SOC_Discharge_Max'           '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_SOC_Charge_Min'              '-'        'Phase 1 design §3.1 硬约束'  'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_Idle_Fuel_kgph'              'kg/h'     'Phase 1 design §3.1 / T-004' 'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_Grid_dP_kW'                  'kW'       'Phase 1 design §3.1'        'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_dt_ctrl_s'                   's'        'Phase 1 design §3.1'        'low'       '05_EMS_Controller(ECMS4)'   false
+  'ECMS_FLEET_SEED'                  '-'        'Phase 2 design §2（T-201）'  'high'      '50_voyage_generator'        false
+  'AI_Pred_Source'                  '-'        'Model 配置'                  'high'      '05_EMS_Controller'          false
+  'AI_TPeak_Source'                 '-'        'Model D 配置 (T-002)'        'high'      '05_EMS_AI'                  false
+  'DRAWING_N_PropStrings'           '-'        'DRAWING: 双支路(用户确认)'     'high'      '派生全部聚合额定'           false
+  'V_dc_nom'                        'V'        'DRAWING: 系统图'               'high'      '08_Power_Availability'      false
+  'V_bat_nom'                       'V'        'DRAWING: 系统图'               'high'      '07_Battery_Energy'          false
+  'DRAWING_Bat_Cap_kWh_perString'   'kWh'      'DRAWING: 20260526设备参数.docx/支路' 'high'   '派生 Bat_Cap_kWh'           false
+  'DRAWING_Gen_P_max_perString'     'kW'       'DRAWING: 图纸额定/支路'        'high'      '派生 Gen_P_max'             false
+  'DRAWING_Mot_P_nom_perString'     'kW'       'DRAWING: 图纸额定/支路'        'high'      '派生 Mot_P_nom'             false
+  'Bat_Cap_kWh'                     'kWh'      'DRAWING: 535.68×2 聚合'        'high'      '07_Battery_Energy'          false
+  'Gen_P_max'                       'kW'       'DRAWING/LEGACY: 500×2 聚合'    'high'      '05/06/08'                   false
+  'Mot_P_nom'                       'kW'       'DRAWING/LEGACY: 350×2 聚合'    'high'      '02/03/08'                   false
+  'P_hotel_nom'                     'kW'       'LEGACY: EMS_P_Hotel'           'medium'    '01/04'                      true
+  'Ship_V_init'                     'm/s'      'LEGACY: 原脚本'                'medium'    '03_Propulsion'              false
+  'Ship_X_init'                     'm'        'Model 规格'                  'high'      '03_Propulsion'              false
+  'Bat_SOC_init'                    '-'        'LEGACY: 原脚本'                'medium'    '07_Battery_Energy'          false
+  'Pgen_init'                       'kW'       'Model 规格'                  'high'      '06_Genset'                  false
+  'Ship_Mass'                       'kg'       'LEGACY: 原脚本'                'medium'    '03_Propulsion'              true
+  'Gear_Ratio'                      '-'        'LEGACY: 原脚本'                'medium'    '03_Propulsion'              true
+  'Gear_Eff'                        '-'        'LEGACY: 原脚本(行业0.96~0.98)' 'medium'    '03_Propulsion'              true
+  'Elec_Eff'                        '-'        'LEGACY: 原脚本(行业0.90~0.94)' 'medium'    '03_Propulsion'              true
+  'Gen_Ramp_Up'                     'kW/s'     'LEGACY: 20×2 聚合'             'medium'    '06_Genset'                  true
+  'Gen_Ramp_Down'                   'kW/s'     'LEGACY: 20×2 聚合'             'medium'    '06_Genset'                  true
+  'Mot_RPM_nom'                     'rpm'      'LEGACY: 原脚本'                'medium'    '03_Propulsion'              true
+  'Mot_T_max'                       'Nm'       'LEGACY: 派生(×2)'              'medium'    '03_Propulsion'              true
+  'Prop_J'                          'kg*m^2'   'LEGACY: 800×2 聚合'            'low'       '03_Propulsion'              true
+  'Shaft_B'                         'Nm/(rad/s)', 'LEGACY: 原脚本'              'low'       '03_Propulsion'              true
+  'wake_fraction'                   '-'        'LEGACY: 原脚本(双桨0.10~0.20)' 'low'       '03_Propulsion'              true
+  'ASSUMED_Prop_Efficiency'         '-'        'ASSUMED(行业0.55~0.65)'        'low'       '派生 Hull_K_R'              true
+  'ASSUMED_Sea_Margin'              '-'        'ASSUMED(设计惯例10~20%)'       'low'       '派生 Hull_K_R'              true
+  'V_design_kn'                     'kn'       '公务船定位(11kn,R/W校核)'  'medium'    '03_Propulsion'              true
+  'Hull_K_R'                        'N/(m/s)^2', '重新标定: η·P_shaft/(1+m)/V^3' 'medium'  '03_Propulsion'              true
+  'K_Fw'                            'N/(rad/s)^2', 'LEGACY: 派生(新设计点)'    'medium'    '03_Propulsion'              true
+  'K_Fv'                            'N/(m/s)^2', 'LEGACY: 派生(新设计点)'      'medium'    '03_Propulsion'              true
+  'K_Qw'                            'Nm/(rad/s)^2', 'LEGACY: 派生(新设计点)'   'medium'    '03_Propulsion'              true
+  'K_Qv'                            'Nm/(m/s)^2', 'LEGACY: 派生(新设计点)'     'medium'    '03_Propulsion'              true
+  'F_env_const'                     'N'        'LEGACY: 原脚本'                'medium'    '03_Propulsion'              false
+  'omega_min_radps'                 'rad/s'    'Model 实现细节'              'high'      '03_Propulsion'              false
+  'ASSUMED_Gen_TimeConstant'        's'        'ASSUMED'                       'low'       '06_Genset'                  true
+  'ASSUMED_Gen_MinStablePower'      'kW'       'ASSUMED'                       'low'       '06_Genset'                  true
+  'ASSUMED_Bat_DischargeLimit'      'kW'       'DRAWING: DC/DC 750V×700A×2'    'high'      '07/08'                      false
+  'ASSUMED_Bat_ChargeLimit'         'kW'       'DRAWING: DC/DC 750V×700A×2'    'high'      '07/08'                      false
+  'ASSUMED_Bat_Eff_Discharge'       '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
+  'ASSUMED_Bat_Eff_Charge'          '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
+  'ASSUMED_SOC_min'                 '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
+  'ASSUMED_SOC_max'                 '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
+  'ASSUMED_SOC_DisDerate_Start'     '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
+  'ASSUMED_SOC_ChgDerate_Start'     '-'        'ASSUMED'                       'low'       '07_Battery_Energy'          true
+  'ASSUMED_SpeedPI_Kp'              'kW/(m/s)' 'ASSUMED(×2)'                   'low'       '02_Ship_Speed'              true
+  'ASSUMED_SpeedPI_Ki'              'kW/(m/s)/s', 'ASSUMED(×2)'                'low'       '02_Ship_Speed'              true
+  'ASSUMED_Speed_Ramp_Up'           'm/s^2'    'ASSUMED'                       'low'       '01_Scenario'                true
+  'ASSUMED_Drive_TimeConstant'      's'        'ASSUMED'                       'low'       '03_Propulsion'              true
+  'ASSUMED_EMS_SOC_Ref'             '-'        'ASSUMED'                       'low'       '05_EMS'                     true
+  'ASSUMED_EMS_SOC_Gain'            'kW/SOC'   'ASSUMED(×2)'                   'low'       '05_EMS'                     true
+  'ASSUMED_EMS_FF_Gain'             '-'        'ASSUMED'                       'low'       '05_EMS_AI'                  true
+  'ASSUMED_EMS_FF_Max_kW'           'kW'       'ASSUMED(×2)'                   'low'       '05_EMS_AI'                  true
+  'ASSUMED_Pred_Bound_kW'           'kW'       'ASSUMED(×2)'                   'low'       '05_EMS_AI'                  true
+  'ASSUMED_TFF_TauMargin'           's'        'ASSUMED(T-004, 覆盖惯性τ=5s)'  'low'       '05_EMS_ScheduledFF(C)'      true
+  'ASSUMED_TFF_SOC_Thresh'          '-'        'ASSUMED(T-004)'                'low'       '05_EMS_ScheduledFF(C)'      true
+  'ASSUMED_TFF_SOC_AdvancePct'      '-'        'ASSUMED(T-004)'                'low'       '05_EMS_ScheduledFF(C)'      true
+  'ASSUMED_BSFC_Breakpoints'        'kW'       'ASSUMED(原表断点×2)'           'low'       '10_Fuel'                    true
+  'ASSUMED_BSFC_Table'              'g/kWh'    'ASSUMED(额定针点453=docx真实值)' 'low'    '10_Fuel'                    true
+  'ASSUMED_TargetSpeed'             'm/s'      'ASSUMED(11 kn 服务航速)'     'low'       '01_Scenario'                true
+  'ASSUMED_VoyageDistance'          'm'        'ASSUMED'                       'low'       '11_Voyage_Stop'             true
+  'ASSUMED_RiverCurrentSpeed'       'm/s'      'ASSUMED'                       'low'       '01_Scenario'                true
+  'ASSUMED_Resistance_Change_RampTime' 's'     'ASSUMED'                       'low'       '01_Scenario'                true
+  'ASSUMED_Resistance_Change_Amplitude' '-'    'ASSUMED'                       'low'       '01_Scenario'                true
+  'ASSUMED_AI_DataValid'            '-'        'ASSUMED'                       'low'       '05_EMS_AI'                  true
+  'AI_Pred_Data'                    '[t,P,tp]'  '预留接口(T-002 扩展 N×3)'      'na'        '05_EMS_AI'                  true
+  'AI_Oracle_Data'                  '[t,P,tp]'  'FromWorkspace oracle 通道(T-002)' 'na'  '05_EMS_AI'                  true
+  'ECMS_EHat_Data'                  '[t,Ef,eh]' 'FromWorkspace oracle 通道(law=6, T-106)' 'na' '05_EMS_Controller(ECMS6)' true
+  'ECMS_NN_WeightsOK'              '-'        'Phase 2 design §5（T-204；52_integrate_law7 生成 mat 注入）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_W1'                      '-'        'Phase 2 T-203 入选模型（selected_model_weights.json）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_XMean'                   'kW/mps'   'Phase 2 fleet_norm.json（fit-on-train per-feature）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_XStd'                    'kW/mps'   'Phase 2 fleet_norm.json（fit-on-train per-feature）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_YMean'                   'kWh'      'Phase 2 fleet_norm.json（target 反归一化）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_YStd'                    'kWh'      'Phase 2 fleet_norm.json（target 反归一化）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_Ebar_H_kWh'              'kWh'      'S20 Ē_H（与 law=6 相同标幺常数，kS_calibration.json）' 'high' '05_EMS_Controller(ECMS7)' false
+  'ECMS_NN_Escale_kWh'              'kWh'      'S20 E_scale（与 law=6 相同标幺常数，kS_calibration.json）' 'high' '05_EMS_Controller(ECMS7)' false
+  'AI_Pred_Data'                    '[t,P,tp]'  '兼容保留(T-002 后不再引用)'      'na'        '05_EMS_AI'                  true
+  'STM32_Pred_Data'                 '[t,P]'    '预留接口'                      'na'        '05_EMS_AI'                  true
+  'AI_Pred_Timeout_s'               's'        '预留接口'                      'na'        '05_EMS_AI'                  true
+  'MLP_WeightsLoaded'               '-'        'python/export/mlp_weights.mat' 'na'        '05_EMS_AI(source=3)'        false
+  'EMS_WORK_MODE'                   '-'        'Model D 配置'                  'high'      '05_EMS_Controller(C)'       false
+  'ASSUMED_C_bus'                   'F'        'ASSUMED(0730 每段20F×2)'       'low'       '13_DC_Bus(C)'               true
+  'ASSUMED_K_droop'                 'kW/V'     'ASSUMED(灵敏度扫描固化)'       'low'       '14_Battery_Converter(C)'    true
+  'ASSUMED_eta_rect'                '-'        'ASSUMED'                       'low'       '06_Genset(C)'               true
+  'ASSUMED_eta_dcdc'                '-'        'ASSUMED'                       'low'       '14_Battery_Converter(C)'    true
+  'ASSUMED_EMS_Manual_Pgen_kW'      'kW'       'ASSUMED'                       'low'       '05_EMS(C,手动模式)'         true
+  'ASSUMED_V_floor'                 'V'        'ASSUMED(除法保护)'             'high'      '13/14(C)'                   false
+  'ASSUMED_BSFC_Avg_gkWh'           'g/kWh'    'ASSUMED(表工作区均值)'         'low'       'FEC 指标'                   true
+  'ASSUMED_k_eq_FEC'                'kg/kWh'   'ASSUMED(ECMS 折算)'            'low'       'FEC 指标'                   true
+  'CCS_Vdc_Steady_Band'             'V'        'CCS 2026 指南'                'high'      '15_Bus_Voltage_Monitor(C)'  false
+  'CCS_Vdc_Transient_Band'          'V'        'CCS 2026 指南'                'high'      '15_Bus_Voltage_Monitor(C)'  false
+  'CCS_t_recovery_max'              's'        'CCS 2026 指南'                'high'      '15_Bus_Voltage_Monitor(C)'  false
+};
+fprintf('[Model_Parameters] v2.0 双支路等效：电机 %.0f kW / 发电机 %.0f kW / 电池 %.0f kWh，Hull_K_R=%.0f N/(m/s)^2\n', ...
+    Mot_P_nom, Gen_P_max, Bat_Cap_kWh, Hull_K_R);
+fprintf('[Model_Parameters] 参数已加载：%d 项（含 %d 项 ASSUMED_）\n', ...
+    size(ParamMeta,1), sum(startsWith(ParamMeta(:,1), 'ASSUMED_')));

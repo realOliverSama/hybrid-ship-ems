@@ -1,0 +1,55 @@
+{
+  "task": "T-504",
+  "generated": "02-Sep-2026 02:07:34",
+  "gate_mode": 2,
+  "matlab": "26.1.0.3312084 (R2026a) Update 4",
+  "runs": [
+    {
+      "run_id": "G2_S20_composite_voyage_matrix",
+      "scenario": "S20_composite_voyage",
+      "stop_time_s": 5520,
+      "stop_time_set": 5520,
+      "n_samples": 552001,
+      "n_ticks": 5521,
+      "wall_time_s": 24.558657166666666,
+      "fuel_raw_kg": 328.094641944243,
+      "fuel_corr_kg": 328.12501200276961,
+      "SOC_end": 0.59994062169631523,
+      "replay_max_abs_dP_kW": 780,
+      "cache": {
+        "file": "gating/runs/run_G2_S20_composite_voyage_matrix.mat",
+        "fuel_raw_kg": 328.094641944243,
+        "fuel_corr_kg": 328.12501200276961,
+        "SOC_end": 0.59994062169631523,
+        "d_fuel_corr_kg": 0,
+        "d_SOC_end": 0,
+        "repro_pass": true
+      },
+      "source": "archived_meta（EXPORT_SKIP_S20=true，本次未重跑）"
+    },
+    {
+      "run_id": "G2_test_voyage_002_v2",
+      "scenario": "voyage_002",
+      "stop_time_s": 4211,
+      "stop_time_set": 4211,
+      "n_samples": 421101,
+      "n_ticks": 4212,
+      "wall_time_s": 24.155102916666667,
+      "fuel_raw_kg": 264.216856499727,
+      "fuel_corr_kg": 224.08624943016824,
+      "SOC_end": 0.67846173136421639,
+      "replay_max_abs_dP_kW": 780,
+      "cache": {
+        "file": "gating/runs/run_G2_test_voyage_002_v2.mat",
+        "fuel_raw_kg": 264.216856499727,
+        "fuel_corr_kg": 224.08624943016824,
+        "SOC_end": 0.67846173136421639,
+        "d_fuel_corr_kg": 0,
+        "d_SOC_end": 0,
+        "repro_pass": true
+      }
+    }
+  ],
+  "repro_fail_count": 0,
+  "all_repro_pass": true
+}
