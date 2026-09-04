@@ -276,6 +276,25 @@ VOYAGE_WATER_DEPTH_M     = WaterDepth_default_m;   % 新增：Scenario_Manager w
 % T-412 E06 通道：机组启停指令时变表（默认全零=机组不自停；aborted-start/停机时序
 % 经 SimulationInput.setVariable 注入；列为 [t, cmd_stop_DG1, cmd_stop_DG2]）
 GEN_CMD_STOP_TS = [0 0 0; 1e6 0 0];
+% Phase 4-B T-006（FR-428/431）：MANUAL 归一化推进指令通道（默认低档 0.30 恒值；
+% 列为 [t, manual_power_cmd_pct]；From Workspace + Interpolate off；
+% 电平/段长依据 design §6.5：u_low=0.30→P_commit≈319.6 kW<350；u_high=0.70→≈608.2 kW>425）
+VOYAGE_MANUAL_CMD_TS = [0 0.30; 1e6 0.30];
+% M1 step：0.30→0.70 @ t=30 s，总长 300 s（验证方向/rate limiter/电池瞬态）
+MANUAL_CMD_M1_TS = [0 0.30; 30 0.30; 30.01 0.70; 1e6 0.70];
+% M2 ramp：0.20（0–60 s 恒）→ 0.80 斜升 60 s（60–120 s，247→680 kW），总长 300 s
+MANUAL_CMD_M2_TS = [0 0.20; 60 0.20; 120 0.80; 1e6 0.80];
+% M3 staged（design §6.5）：0.30（0–120）→ 0.70（120–360）→ 0.30（360–900）；
+% 时序推演：start cmd≈178 s、DG2 ON≈208 s、stop cmd≈615 s、COOLDOWN 完≈645 s；
+% 实施期以 bench 实测校准段长（只动段长，不动电平与阈值）
+MANUAL_CMD_M3_TS = [0 0.30; 120 0.30; 120.01 0.70; 360 0.70; 360.01 0.30; 1e6 0.30];
+% M 工况描述（MANUAL 工况仅 P2 臂，FR-453；距离上限保证到达设计段长前不触发停航）
+MANUAL_SCENARIOS = struct( ...
+    'name', {'M1_step', 'M2_ramp', 'M3_staged'}, ...
+    'cmd_ts', {MANUAL_CMD_M1_TS, MANUAL_CMD_M2_TS, MANUAL_CMD_M3_TS}, ...
+    'duration_s', {300, 300, 900}, ...
+    'voyage_distance_m', {4000, 4000, 7500}, ...
+    'note', {'step 30→70%', 'ramp 20→80（60 s 斜升）', 'staged 1DG→2DG→1DG 全链'});
 % T-412 E06/E07 通道：占位适配器 force 注入（默认 0=auto 规则；0=force 关闭）
 ADAPTER_FORCE_MODE   = 0;
 ADAPTER_FORCE_P1_KW  = 0;

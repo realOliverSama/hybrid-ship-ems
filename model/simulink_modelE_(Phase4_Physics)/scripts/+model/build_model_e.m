@@ -59,7 +59,7 @@ try
     pos10 = [260 380 420 470]; pos11 = [480 380 640 470]; pos12 = [700 380 860 470];
 
     buildScenarioManager(MDL, pos01);
-    buildSpeedController(MDL, pos02);
+    buildPropulsionController(MDL, pos02);
     buildPropulsionPlant(MDL, pos03);
     buildLoadMeasurement(MDL, pos04);
     buildEMSControllerC(MDL, pos05);
@@ -124,12 +124,17 @@ model.write_param_csv(fullfile(ROOT, 'reports', 'parameter_audit.csv'));
 end
 
 function buildScenarioManager(mdl, pos)
-% 01_Scenario_Manager: 输出 v_cmd/v_current/resistance_multiplier/P_hotel/scenario_id/water_depth_m
-    sys = [mdl '/01_Scenario_Manager'];
+% 01_Operator_Interface（Phase 4-B T-006 改组，FR-428）：既有航次/环境输出不变 + 新增
+%   驾驶意图输出 {ctrl_mode(Out7), v_ref_mps(Out1 改名), manual_power_cmd_pct(Out8)}
+%   ctrl_mode = VOYAGE_CTRL_MODE 编译期求值（0=AUTO 1=MANUAL，工况内固定）；
+%   manual_power_cmd_pct 经 From Workspace VOYAGE_MANUAL_CMD_TS 注入（Interpolate off，
+%   支持 M1/M2/M3 序列）；既有输出端口序号 1~6 保持（接线稳定性）。
+    sys = [mdl '/01_Operator_Interface'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
     add_block('simulink/Sources/In1', [sys '/x_ship_m'], 'Position', [20 80 50 110]);
-    outs = {'v_cmd_mps','v_current_mps','resistance_multiplier','P_hotel_kW','scenario_id','water_depth_m'};
+    outs = {'v_ref_mps','v_current_mps','resistance_multiplier','P_hotel_kW','scenario_id','water_depth_m', ...
+        'ctrl_mode','manual_power_cmd_pct'};
     for k = 1:numel(outs)
         add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [430 30+50*(k-1) 460 60+50*(k-1)]);
     end
@@ -159,7 +164,7 @@ function buildScenarioManager(mdl, pos)
         'RisingSlewLimit', 'SCN.accel_ramp_mps2', 'FallingSlewLimit', '-SCN.decel_ramp_mps2', ...
         'InitialCondition', '0');
     add_line(sys, 'v_cmd_profile/1', 'v_cmd ramp/1');
-    add_line(sys, 'v_cmd ramp/1', 'v_cmd_mps/1');
+    add_line(sys, 'v_cmd ramp/1', 'v_ref_mps/1');
     % 水流（T-101）：距离节点（既有）+ 时间序列表（S20 段 9 逆水 -1 m/s，其余 0）
     fnc = [sys '/current_profile'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fnc, 'Position', [200 240 320 300]);
@@ -207,18 +212,31 @@ function buildScenarioManager(mdl, pos)
     add_block('simulink/Sources/Constant', [sys '/C_water_depth'], 'Position', [30 250 100 280], ...
         'Value', 'VOYAGE_WATER_DEPTH_M');
     add_line(sys, 'C_water_depth/1', 'water_depth_m/1');
+    % 驾驶意图（T-006, FR-428）：ctrl_mode 编译期常量 + MANUAL 归一化指令表
+    add_block('simulink/Sources/Constant', [sys '/C_ctrl_mode'], 'Position', [30 300 100 330], ...
+        'Value', 'VOYAGE_CTRL_MODE');
+    add_line(sys, 'C_ctrl_mode/1', 'ctrl_mode/1');
+    add_block('simulink/Sources/From Workspace', [sys '/manual_cmd_src'], 'Position', [20 340 95 365], ...
+        'VariableName', 'VOYAGE_MANUAL_CMD_TS', 'SampleTime', '0.01', 'Interpolate', 'off', ...
+        'OutputAfterFinalValue', 'HoldingFinalValue');   % ZOH：禁线性插值（cmd 类通道同 GEN_CMD_STOP_TS 教训）
+    add_line(sys, 'manual_cmd_src/1', 'manual_power_cmd_pct/1');
 end
 
-function buildSpeedController(mdl, pos)
-% 02_Ship_Speed_Controller: PI 船速环 -> P_prop_demand_kW（限幅+抗饱和）
-    sys = [mdl '/02_Ship_Speed_Controller'];
+function buildPropulsionController(mdl, pos)
+% 02_Propulsion_Controller（Phase 4-B T-006 改组，FR-429）：AUTO 速度 PI 原样保留（AC-416
+%   行为不变仅指本条）；新增 MANUAL 路径（归一化线性映射 × Mot_P_nom → command-side
+%   Rate Limiter 140 kW/s）→ Switch（ctrl_mode 编译期选路）→ 同一 Saturation →
+%   唯一输出 P_prop_demand_kW；禁止新建 RPM 环/torque 域接口。
+    sys = [mdl '/02_Propulsion_Controller'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
-    add_block('simulink/Sources/In1', [sys '/v_cmd_mps'], 'Position', [20 60 50 90]);
+    add_block('simulink/Sources/In1', [sys '/v_ref_mps'], 'Position', [20 60 50 90]);
     add_block('simulink/Sources/In1', [sys '/v_ship_mps'], 'Position', [20 110 50 140]);
+    add_block('simulink/Sources/In1', [sys '/ctrl_mode'], 'Position', [20 300 50 330]);
+    add_block('simulink/Sources/In1', [sys '/manual_power_cmd_pct'], 'Position', [20 350 50 380]);
     add_block('simulink/Sinks/Out1', [sys '/P_prop_demand_kW'], 'Position', [330 80 360 110]);
     add_block('simulink/Math Operations/Sum', [sys '/err'], 'Position', [90 80 120 120], 'Inputs', '+-');
-    add_line(sys, 'v_cmd_mps/1', 'err/1');
+    add_line(sys, 'v_ref_mps/1', 'err/1');
     add_line(sys, 'v_ship_mps/1', 'err/2');
     add_block('simulink/Math Operations/Gain', [sys '/Kp'], 'Position', [150 60 190 90], 'Gain', 'ASSUMED_SpeedPI_Kp');
     add_block('simulink/Continuous/Integrator', [sys '/Ki_int'], 'Position', [150 120 190 160], ...
@@ -232,9 +250,23 @@ function buildSpeedController(mdl, pos)
     add_block('simulink/Math Operations/Sum', [sys '/PI out'], 'Position', [250 70 280 110], 'Inputs', '++');
     add_line(sys, 'Kp/1', 'PI out/1');
     add_line(sys, 'Ki/1', 'PI out/2');
+    % MANUAL 路径（线性映射 × Mot_P_nom → command-side rate limiter，与 DG 20 kW/s 独立）
+    add_block('simulink/Math Operations/Gain', [sys '/manual_gain'], 'Position', [150 340 200 370], 'Gain', 'Mot_P_nom');
+    add_block('simulink/Discontinuities/Rate Limiter', [sys '/manual_cmd_ramp'], 'Position', [220 340 260 370], ...
+        'RisingSlewLimit', 'Manual_Cmd_RateLimit_kW_per_s', 'FallingSlewLimit', '-Manual_Cmd_RateLimit_kW_per_s', ...
+        'InitialCondition', '0');
+    addL(sys, 'manual_power_cmd_pct', 1, 'manual_gain', 1);
+    addL(sys, 'manual_gain', 1, 'manual_cmd_ramp', 1);
+    % 模式选路（编译期）：Switch criteria u2>=0.5 满足走输入 1（MANUAL）、否则输入 3（AUTO PI）；
+    % 两路径汇聚后过同一 Saturation → 唯一输出（design §5.2）
+    add_block('simulink/Signal Routing/Switch', [sys '/mode_switch'], 'Position', [290 90 320 170], ...
+        'Criteria', 'u2 >= Threshold', 'Threshold', '0.5');
+    addL(sys, 'manual_cmd_ramp', 1, 'mode_switch', 1); % MANUAL（ctrl_mode>=0.5）
+    addL(sys, 'ctrl_mode', 1, 'mode_switch', 2);
+    addL(sys, 'PI out', 1, 'mode_switch', 3);          % AUTO（ctrl_mode<0.5）
     add_block('simulink/Discontinuities/Saturation', [sys '/Limit'], 'Position', [300 80 320 110], ...
         'UpperLimit', 'Mot_P_nom', 'LowerLimit', '0');
-    add_line(sys, 'PI out/1', 'Limit/1');
+    add_line(sys, 'mode_switch/1', 'Limit/1');
     add_line(sys, 'Limit/1', 'P_prop_demand_kW/1');
 end
 
@@ -1166,18 +1198,20 @@ function wireTopLevel(mdl)
 % Model D 顶层接线（EMS 变体动态端口 + 电气层闭环）
     emsPort = emsPortMap(mdl);
     L = @(src, dst) add_line(mdl, src, dst, 'autorouting', 'on');
-    L('01_Scenario_Manager/1', '02_Ship_Speed_Controller/1');          % v_cmd
-    L('01_Scenario_Manager/2', '03_Propulsion_Plant/3');               % v_current
-    L('01_Scenario_Manager/3', '03_Propulsion_Plant/4');               % resistance_multiplier
-    L('01_Scenario_Manager/6', '03_Propulsion_Plant/5');               % water_depth_m (T-003)
-    L('01_Scenario_Manager/4', '04_Load_Measurement/2');               % P_hotel
-    L('02_Ship_Speed_Controller/1', '03_Propulsion_Plant/1');          % P_prop_demand
-    L('02_Ship_Speed_Controller/1', '08_Undervolt_Derate/2');          % demand -> 欠压降额
+    L('01_Operator_Interface/1', '02_Propulsion_Controller/1');          % v_ref_mps
+    L('01_Operator_Interface/2', '03_Propulsion_Plant/3');               % v_current
+    L('01_Operator_Interface/3', '03_Propulsion_Plant/4');               % resistance_multiplier
+    L('01_Operator_Interface/6', '03_Propulsion_Plant/5');               % water_depth_m (T-003)
+    L('01_Operator_Interface/4', '04_Load_Measurement/2');               % P_hotel
+    L('01_Operator_Interface/7', '02_Propulsion_Controller/3');          % ctrl_mode（编译期，T-006）
+    L('01_Operator_Interface/8', '02_Propulsion_Controller/4');          % manual_power_cmd_pct
+    L('02_Propulsion_Controller/1', '03_Propulsion_Plant/1');          % P_prop_demand
+    L('02_Propulsion_Controller/1', '08_Undervolt_Derate/2');          % demand -> 欠压降额
     L('03_Propulsion_Plant/1', '04_Load_Measurement/1');               % P_prop_actual
-    L('03_Propulsion_Plant/2', '02_Ship_Speed_Controller/2');          % v_ship
+    L('03_Propulsion_Plant/2', '02_Propulsion_Controller/2');          % v_ship
     L('03_Propulsion_Plant/2', sprintf('05_EMS_Controller/%d', emsPort('v_ship_mps')));
-    L('01_Scenario_Manager/1', sprintf('05_EMS_Controller/%d', emsPort('v_cmd_mps')));
-    L('03_Propulsion_Plant/3', '01_Scenario_Manager/1');              % x_ship
+    L('01_Operator_Interface/1', sprintf('05_EMS_Controller/%d', emsPort('v_cmd_mps')));
+    L('03_Propulsion_Plant/3', '01_Operator_Interface/1');              % x_ship
     L('03_Propulsion_Plant/3', '11_Voyage_Stop_Logic/1');             % x_ship -> stop
     L('03_Propulsion_Plant/3', sprintf('05_EMS_Controller/%d', emsPort('x_ship_m')));
     L('03_Propulsion_Plant/4', sprintf('05_EMS_Controller/%d', emsPort('acceleration_mps2')));
@@ -1205,7 +1239,7 @@ function wireTopLevel(mdl)
     L('08_Undervolt_Derate/1', '03_Propulsion_Plant/2');              % P_prop_limit
     L('t/1', sprintf('05_EMS_Controller/%d', emsPort('t')));
     % 仅记录信号的输出接 Terminator（保证信号线存在、可命名）
-    terms = {'01_Scenario_Manager/5'; ...                             % scenario_id
+    terms = {'01_Operator_Interface/5'; ...                             % scenario_id
         '03_Propulsion_Plant/5'; '03_Propulsion_Plant/6'; '03_Propulsion_Plant/7'; ...
         '03_Propulsion_Plant/8'; '03_Propulsion_Plant/9'; '03_Propulsion_Plant/10'; ...
         '14_Battery_Converter/3'; '14_Battery_Converter/4'; '14_Battery_Converter/5'; ...
@@ -1243,12 +1277,14 @@ end
 function configureLogging(mdl)
 % 在信号源端口上启用 DataLogging（logsout）
     L = @(blk, portIdx, nm) logPort(blk, portIdx, nm);
-    L([mdl '/01_Scenario_Manager/v_cmd_mps'], 1, 'v_cmd_mps');
-    L([mdl '/01_Scenario_Manager/v_current_mps'], 1, 'v_current_mps');
-    L([mdl '/01_Scenario_Manager/resistance_multiplier'], 1, 'resistance_multiplier');
-    L([mdl '/01_Scenario_Manager/P_hotel_kW'], 1, 'P_hotel_kW');
-    L([mdl '/01_Scenario_Manager/scenario_id'], 1, 'scenario_id');
-    L([mdl '/02_Ship_Speed_Controller/P_prop_demand_kW'], 1, 'P_prop_demand_kW');
+    L([mdl '/01_Operator_Interface/v_ref_mps'], 1, 'v_ref_mps');   % T-006 改名（FR-428）
+    L([mdl '/01_Operator_Interface/v_current_mps'], 1, 'v_current_mps');
+    L([mdl '/01_Operator_Interface/resistance_multiplier'], 1, 'resistance_multiplier');
+    L([mdl '/01_Operator_Interface/P_hotel_kW'], 1, 'P_hotel_kW');
+    L([mdl '/01_Operator_Interface/scenario_id'], 1, 'scenario_id');
+    L([mdl '/01_Operator_Interface/ctrl_mode'], 1, 'ctrl_mode');   % T-006 驾驶意图
+    L([mdl '/01_Operator_Interface/manual_power_cmd_pct'], 1, 'manual_power_cmd_pct');
+    L([mdl '/02_Propulsion_Controller/P_prop_demand_kW'], 1, 'P_prop_demand_kW');
     L([mdl '/03_Propulsion_Plant/P_prop_actual_kW'], 1, 'P_prop_actual_kW');
     L([mdl '/03_Propulsion_Plant/v_ship_mps'], 1, 'v_ship_mps');
     L([mdl '/03_Propulsion_Plant/x_ship_m'], 1, 'x_ship_m');

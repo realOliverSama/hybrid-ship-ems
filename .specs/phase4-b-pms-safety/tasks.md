@@ -96,7 +96,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: harness 单测全过；chart 可被 builder 重复生成逐位一致
   - Notes: 不用 `after()` 时序算子；chart 内部结构以 design §5.4 为准
 
-- [ ] 6. 01/02 改组 + MANUAL 工况定义
+- [x] 6. 01/02 改组 + MANUAL 工况定义
   - ID: T-006
   - Requirement(s): FR-428, FR-429, FR-430, FR-431
   - Roadmap: T-413/T-414

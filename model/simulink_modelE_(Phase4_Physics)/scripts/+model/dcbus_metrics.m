@@ -40,8 +40,8 @@ function m = dcbus_metrics(ds)
     m.P_bat_max_kW = max(ds.P_bat_actual_kW);
 
     % ---- 外部安全 ----
-    m.v_rmse = sqrt(mean((ds.v_ship_mps - ds.v_cmd_mps).^2));
-    m.v_drop_max = max(ds.v_cmd_mps - ds.v_ship_mps);
+    m.v_rmse = sqrt(mean((ds.v_ship_mps - ds.v_ref_mps).^2));   % T-006：v_cmd_mps 改名 v_ref_mps（FR-428）
+    m.v_drop_max = max(ds.v_ref_mps - ds.v_ship_mps);
     if isfield(ds, 'P_unserved_kW')
         m.E_unserved_kWh = sum(ds.P_unserved_kW .* dt) / 3600;
         m.P_unserved_max_kW = max(ds.P_unserved_kW);

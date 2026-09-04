@@ -50,6 +50,7 @@ PMS_start_fail_window_s = 40;   % [s] S1b 启动失败窗（>25+5 s 物理时序
 %% ---- Manual 推进指令（FR-429, design DD-3/§5.2）----
 Manual_Cmd_RateLimit_pct_s = 20;  % [%/s] command-side rate limiter（满行程 5 s）ENGINEERING_SURROGATE；
                                   %       折算 kW/s = 0.2×Mot_P_nom/s，与 DG 20 kW/s 物理 ramp 完全独立（FR-429）
+Manual_Cmd_RateLimit_kW_per_s = Manual_Cmd_RateLimit_pct_s / 100 * Mot_P_nom;  % 140 kW/s（DERIVED，引用 Mot_P_nom 不复制）
 
 %% ---- 编译期选择器（FR-450 source selector / FR-428 ctrl_mode）----
 PMS_SOURCE_MODE = 1;            % 0=BASELINE_POLICY 1=EMS_AGGREGATE（nominal source；
