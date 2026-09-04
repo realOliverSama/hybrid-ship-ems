@@ -1,0 +1,26 @@
+{
+  "schema": "t432_unblock_checklist_v1",
+  "spec": "phase4-d-dataset-v3",
+  "requirement": "FR-498：八项全绿才允许 T-432=READY；tasks.md 批准不构成解锁；C 包 PR 合并不自动启动 formal fleet",
+  "status": "ALL_RED_BY_DESIGN",
+  "note": "D0 交付模板（全 false）。activation session 逐项填写 evidence 并置 true；全 true + C/D Interface Gate 正式版 overall=true 后方可施工 73 号。",
+  "items": [
+    {"id": 1, "name": "C_Mission_v3_complete", "pass": false,
+     "evidence": "_FILL_: C 包 Mission v3 完成证据（spec/PR/验收记录）"},
+    {"id": 2, "name": "cd_interface_gate_overall_true_FORMAL", "pass": false,
+     "evidence": "_FILL_: cd_interface_gate_result.json（formality 必须为 FORMAL，NON-FORMAL 骨架结果不构成解锁）"},
+    {"id": 3, "name": "producer_schema_version_hash_accepted", "pass": false,
+     "evidence": "_FILL_: producer schema version/hash 双方确认记录"},
+    {"id": 4, "name": "d0_pilot_pipeline_qualification_pass", "pass": false,
+     "evidence": "_FILL_: pilot_gate_result.json overall=true（D0 已交付；activation 时复核）"},
+    {"id": 5, "name": "formal_fleet_generation_plan_preregistered", "pass": false,
+     "evidence": "_FILL_: t432_activation_record.md 全部 _FILL_ 已填写并经用户批准"},
+    {"id": 6, "name": "ood_definition_preregistered", "pass": false,
+     "evidence": "_FILL_: OOD definition version + 轴 A 数值 ranges + counts/seeds 已冻结"},
+    {"id": 7, "name": "modelE_physics_baseline_integrity_pass", "pass": false,
+     "evidence": "_FILL_: 72 号 baseline_integrity.json hash 与 D0 快照一致"},
+    {"id": 8, "name": "control_baseline_integrity_pass", "pass": false,
+     "evidence": "_FILL_: gate_baseline_modele_control.json v1.0 hash 一致"}
+  ],
+  "all_green_rule": "all(items.pass) == true"
+}
