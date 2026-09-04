@@ -1,7 +1,7 @@
 # Phase 4-A2 — Model E 施工段（T-403~T-412）Tasks
 
 Spec: `phase4-a2-model-e-construction`  
-Status: tasks-approved（2026-09-04 用户批准，GPT 第三轮评审修订并入：参数独立成套/螺旋桨重标定/Plant 测试台 Gate/H/T 单一事实源；不实施，执行移交后续 session）  
+Status: implementation-complete（2026-09-04 夜班 T-001~T-012 全部施工验证 + T-013 归档；AC-415 用户裁决 T-412 APPROVED / T-013 CONDITIONAL APPROVAL，4 项修正完成后执行冻结 v1.0）  
 Created: 2026-09-04  
 Brainstorm: `./brainstorm.md`  
 Requirements: `./requirements.md`  
@@ -191,7 +191,7 @@ Design: `./design.md`
   - Notes: **Gate FAIL 禁止提交**（NFR-408）；PASS 后不自动冻结基线——
     交 T-013 用户评审（design §5.1）
 
-- [ ] 13. 归档、README 登记与用户评审门
+- [x] 13. 归档、README 登记与用户评审门
   - ID: T-013
   - Requirement(s): FR-427, AC-408~AC-415
   - Files/areas: `docs/phase4/a2_model_e/modelE_parameter_evidence.md`（参数证据链：
