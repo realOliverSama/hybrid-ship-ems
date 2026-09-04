@@ -1,0 +1,437 @@
+{
+  "schema": "dataset_v3_producer_schema_v1",
+  "version": "1.0.0",
+  "spec": "phase4-d-dataset-v3",
+  "description": "C-producer interface schema（FR-495/DGN-03）——Phase 4-C Mission v3 必须输出的字段清单与类型声明，D→C 接口契约的机器事实源。cd_interface_gate.py 消费本 schema 对 C 产物做机器校验（FR-496）。C 包开工输入 = 本文件 + docs/phase4/d_dataset_v3/c_producer_interface_contract.md（解释层）。",
+  "capability_families": {
+    "truth_stream": {
+      "description": "voyage-level realization-time truth stream（native 0.01 s，单时间索引）",
+      "fields": [
+        {
+          "name": "time_s",
+          "type": "float64[N]",
+          "shape_semantics": "native 固定步长 0.01 s 均匀网格，航次内单调递增",
+          "required": true,
+          "causality_rule": "realization-time 索引；禁止以任何 future 重排"
+        },
+        {
+          "name": "P_load_total_kW",
+          "type": "float64[N]",
+          "shape_semantics": "bus-side 总负荷功率（TARGET 源信号，逐 registry）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "v_ship_mps",
+          "type": "float64[N]",
+          "shape_semantics": "实际船速",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "acceleration_mps2",
+          "type": "float64[N]",
+          "shape_semantics": "船速加速度",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "n_prop_rpm",
+          "type": "float64[N]",
+          "shape_semantics": "螺旋桨转速",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "P_hotel_kW",
+          "type": "float64[N]",
+          "shape_semantics": "hotel 实际负荷",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "v_current_mps",
+          "type": "float64[N]",
+          "shape_semantics": "流速（带符号）",
+          "required": true,
+          "causality_rule": "realized truth；同时为 INPUT_F 的 ORACLE 真值对应物"
+        },
+        {
+          "name": "water_depth_m",
+          "type": "float64[N]",
+          "shape_semantics": "水深",
+          "required": true,
+          "causality_rule": "realized truth；同时为 wl 的 ORACLE 真值对应物"
+        },
+        {
+          "name": "P_prop_demand_kW",
+          "type": "float64[N]",
+          "shape_semantics": "推进指令功率",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "ctrl_mode",
+          "type": "uint8[N]",
+          "shape_semantics": "0=AUTO/1=MANUAL",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "v_ref_mps",
+          "type": "float64[N]",
+          "shape_semantics": "航速参考（原始双通道）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "manual_power_cmd_pct",
+          "type": "float64[N]",
+          "shape_semantics": "手动功率指令（原始双通道）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "P_gen_actual_kW",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "scenario_id",
+          "type": "string|int",
+          "shape_semantics": "场景标识（每航次常量）",
+          "required": true,
+          "causality_rule": "METADATA"
+        },
+        {
+          "name": "resistance_multiplier",
+          "type": "float64[N]",
+          "shape_semantics": "scenario latent（predictor-forbidden metadata）",
+          "required": true,
+          "causality_rule": "METADATA"
+        }
+      ]
+    },
+    "s_plan": {
+      "description": "计划沿迹位置/航速剖面（K 类，D 直出要求，禁用 realized future 冒充）",
+      "fields": [
+        {
+          "name": "s_plan_m",
+          "type": "float64[k|t0]",
+          "shape_semantics": "issue-time snapshot 列（见 input_k_snapshots）",
+          "required": true,
+          "causality_rule": "x(t0+k|t0)：由计划前向积分产生；禁止 s_actual,future 参与"
+        },
+        {
+          "name": "v_plan_mps",
+          "type": "float64[k|t0]",
+          "shape_semantics": "planned along-track SOG（R5：禁无条件复用 realized v_ref）",
+          "required": true,
+          "causality_rule": "x(t0+k|t0)：计划语义"
+        }
+      ]
+    },
+    "planned_future_trajectory": {
+      "description": "planned/reference 未来轨迹（K 类计划量的载体）",
+      "fields": [
+        {
+          "name": "planned_trajectory",
+          "type": "table[k|t0]",
+          "shape_semantics": "与 K/F 网格同源（30×10 s，F_k=(t0+(k-1)*10, t0+k*10]）",
+          "required": true,
+          "causality_rule": "issue-time snapshot；K 网格=target 网格"
+        }
+      ]
+    },
+    "static_constraints": {
+      "description": "静态航线/海图/限速区约束（K 类）",
+      "fields": [
+        {
+          "name": "h_chart_m",
+          "type": "float64[k|t0]",
+          "shape_semantics": "海图水深（K 类本就精确）",
+          "required": true,
+          "causality_rule": "计划/海图确定量"
+        },
+        {
+          "name": "speed_limit_zones",
+          "type": "list[zone]",
+          "shape_semantics": "zone={s_start_m, s_end_m, v_limit_mps}；无桥区/限速区时为空集并如实记录",
+          "required": true,
+          "causality_rule": "静态约束"
+        },
+        {
+          "name": "bridge_zones",
+          "type": "list[zone]",
+          "shape_semantics": "桥区几何约束；空集合法（须如实记录）",
+          "required": true,
+          "causality_rule": "静态约束"
+        }
+      ]
+    },
+    "input_k_snapshots": {
+      "description": "INPUT_K issue-time snapshots（(issue_time, lead) 双索引，DGN-04 kf_snapshots long-table）",
+      "fields": [
+        {
+          "name": "issue_time_s",
+          "type": "float64[M]",
+          "shape_semantics": "快照发布时刻（=anchor t0 候选网格）",
+          "required": true,
+          "causality_rule": "x(t0+k|t0) 二维索引的 issue 轴"
+        },
+        {
+          "name": "lead_s",
+          "type": "float64[M×30]",
+          "shape_semantics": "lead ∈ {10,20,…,300}",
+          "required": true,
+          "causality_rule": "lead 轴；禁从最终 future series 反推 vintage"
+        },
+        {
+          "name": "v_plan_mps",
+          "type": "float64[M×30]",
+          "shape_semantics": "K 列",
+          "required": true,
+          "causality_rule": "F_{t0}=g(I_{<=t0})"
+        },
+        {
+          "name": "s_plan_m",
+          "type": "float64[M×30]",
+          "shape_semantics": "K 列",
+          "required": true,
+          "causality_rule": "F_{t0}=g(I_{<=t0})"
+        },
+        {
+          "name": "h_chart_m",
+          "type": "float64[M×30]",
+          "shape_semantics": "K 列",
+          "required": true,
+          "causality_rule": "F_{t0}=g(I_{<=t0})"
+        },
+        {
+          "name": "P_hotel_plan_kW",
+          "type": "float64[M×30]",
+          "shape_semantics": "K 列（仅 planned component）",
+          "required": true,
+          "causality_rule": "F_{t0}=g(I_{<=t0})"
+        }
+      ]
+    },
+    "input_f_snapshots": {
+      "description": "INPUT_F issue-time forecast snapshots（与 ORACLE truth 双存、角色物理隔离）",
+      "fields": [
+        {
+          "name": "u_fcst_mps",
+          "type": "float64[M×30]",
+          "shape_semantics": "流速预报",
+          "required": true,
+          "causality_rule": "F_{t0}=g(I_{<=t0})；禁未来真值后处理"
+        },
+        {
+          "name": "wl_fcst_m",
+          "type": "float64[M×30]",
+          "shape_semantics": "水位预报",
+          "required": true,
+          "causality_rule": "F_{t0}=g(I_{<=t0})；禁未来真值后处理"
+        }
+      ]
+    },
+    "forecast_provenance": {
+      "description": "forecast vintage/issue-time 元数据（design R6 六字段，逐 INPUT_F 航次记录）",
+      "fields": [
+        {
+          "name": "forecast_generator_id",
+          "type": "string",
+          "shape_semantics": "生成器标识",
+          "required": true,
+          "causality_rule": "机器可验证因果性载体"
+        },
+        {
+          "name": "forecast_generator_version",
+          "type": "string",
+          "shape_semantics": "生成器版本",
+          "required": true,
+          "causality_rule": "同上"
+        },
+        {
+          "name": "forecast_generator_hash",
+          "type": "string",
+          "shape_semantics": "生成器内容 hash（SHA256）",
+          "required": true,
+          "causality_rule": "同上"
+        },
+        {
+          "name": "issue_time_s",
+          "type": "float64",
+          "shape_semantics": "预报发布时刻",
+          "required": true,
+          "causality_rule": "vintage 轴"
+        },
+        {
+          "name": "source_cutoff_time_s",
+          "type": "float64",
+          "shape_semantics": "生成器可消费信息的截止时刻",
+          "required": true,
+          "causality_rule": "不变量 source_cutoff_time_s ≤ issue_time_s"
+        },
+        {
+          "name": "forecast_provenance_class",
+          "type": "enum",
+          "shape_semantics": "CAUSAL_GENERATOR | FIXTURE_CAUSAL_STUB | ORACLE_DERIVED（末者永拒收）",
+          "required": true,
+          "causality_rule": "formal 仅 CAUSAL_GENERATOR；pilot 另允许 FIXTURE_CAUSAL_STUB"
+        }
+      ]
+    },
+    "oracle_counterpart": {
+      "description": "ORACLE truth counterpart（与 INPUT_F 物理分离双存）",
+      "fields": [
+        {
+          "name": "u_actual_future_mps",
+          "type": "float64[k]",
+          "shape_semantics": "realization-time 流中 v_current_mps 的未来窗口提取",
+          "required": true,
+          "causality_rule": "realized truth；predictor 禁入（oracle_only）"
+        },
+        {
+          "name": "wl_actual_future_m",
+          "type": "float64[k]",
+          "shape_semantics": "realization-time 流中 water_depth_m 的未来窗口提取",
+          "required": true,
+          "causality_rule": "realized truth；predictor 禁入"
+        }
+      ]
+    },
+    "voyage_metadata": {
+      "description": "voyage/family/template/group 元数据（D-D7 预留字段）",
+      "fields": [
+        {
+          "name": "voyage_id",
+          "type": "string",
+          "shape_semantics": "航次唯一标识",
+          "required": true,
+          "causality_rule": "METADATA"
+        },
+        {
+          "name": "voyage_family_id",
+          "type": "string",
+          "shape_semantics": "paired/counterfactual 族（pilot 期填 voyage 自身）",
+          "required": true,
+          "causality_rule": "METADATA"
+        },
+        {
+          "name": "route_template_id",
+          "type": "string",
+          "shape_semantics": "路线模板（split hash 组元）",
+          "required": true,
+          "causality_rule": "METADATA"
+        },
+        {
+          "name": "mission_template_id",
+          "type": "string",
+          "shape_semantics": "任务模板",
+          "required": true,
+          "causality_rule": "METADATA"
+        },
+        {
+          "name": "split_group_id",
+          "type": "string",
+          "shape_semantics": "split 隔离组（pilot 期=voyage 自身）",
+          "required": true,
+          "causality_rule": "METADATA"
+        },
+        {
+          "name": "scenario_stratum",
+          "type": "string",
+          "shape_semantics": "预声明 scenario strata（分层代表性用）",
+          "required": true,
+          "causality_rule": "METADATA"
+        }
+      ]
+    },
+    "generation_provenance": {
+      "description": "generation seed/provenance",
+      "fields": [
+        {
+          "name": "generation_seed",
+          "type": "int64",
+          "shape_semantics": "航次生成种子",
+          "required": true,
+          "causality_rule": "provenance"
+        },
+        {
+          "name": "model_baseline_ref",
+          "type": "string",
+          "shape_semantics": "生成基线引用（物理 v1.1 + 控制 v1.0；A2 historical v1.0 不得混同）",
+          "required": true,
+          "causality_rule": "provenance"
+        },
+        {
+          "name": "producer_script_sha",
+          "type": "string",
+          "shape_semantics": "导出脚本 SHA256",
+          "required": true,
+          "causality_rule": "provenance"
+        },
+        {
+          "name": "fixture_kind",
+          "type": "string",
+          "shape_semantics": "PILOT_ONLY 或 NONE；含 PILOT_ONLY 的 voyage 禁入 formal（FR-500）",
+          "required": true,
+          "causality_rule": "阶段隔离"
+        }
+      ]
+    },
+    "ood_config_surface": {
+      "description": "OOD generation configuration surface（T-432 activation 消费面）",
+      "fields": [
+        {
+          "name": "ood_axis",
+          "type": "enum",
+          "shape_semantics": "A_stronger_current | B_lower_water_level | C_compositional | NONE",
+          "required": true,
+          "causality_rule": "OOD 定义框架（DGN-11）；轴 A 数值/counts/seeds 仅在 activation record 冻结"
+        },
+        {
+          "name": "ood_def_version",
+          "type": "string",
+          "shape_semantics": "OOD 定义版本",
+          "required": true,
+          "causality_rule": "manifest 记录"
+        },
+        {
+          "name": "physics_domain_ref",
+          "type": "string",
+          "shape_semantics": "已验证物理域引用；越域须标 PHYSICS_EXTRAPOLATION/STRESS_SET（FR-486）",
+          "required": true,
+          "causality_rule": "物理域检查"
+        }
+      ]
+    }
+  },
+  "formal_voyage_qualification": {
+    "description": "formal 航次合格判据（FR-495：600 s 仅为几何最小跨度，非充分条件）；可度量的判据数值在 design/T-432 activation record 预注册（本 schema 不预填 activation 值）",
+    "fields": [
+      {
+        "name": "min_duration_s",
+        "type": "float64",
+        "shape_semantics": "最小航次时长（activation 预注册值）",
+        "required": true,
+        "causality_rule": "C/D Gate 项⑦核对"
+      },
+      {
+        "name": "min_canonical_windows",
+        "type": "int",
+        "shape_semantics": "每航次最小 canonical 窗口数（activation 预注册值）",
+        "required": true,
+        "causality_rule": "C/D Gate 项⑦核对"
+      }
+    ]
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "7993e141e8a88875297694604552b266b4fecc757b042792aa502a8abed28b40"
+  }
+}
