@@ -1,10 +1,10 @@
 {
   "schema": "modelE_config_manifest_v1",
-  "generated_at": "2026-09-04T12:34:21***",
+  "generated_at": "2026-09-04T17:35:18***",
   "config_sha256": {
     "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
-    "ModelE_Control_Parameters_m": "270c88fba363308b14e0010dc6de8fcb4a6e54640d0429b326967179c32b0511",
-    "ModelE_TestScenarios_m": "04dfd2e2918dc47b44aadd37cdfb0f6522a60bbe7ae224c4211a5e8e20bf1da8",
+    "ModelE_Control_Parameters_m": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63",
+    "ModelE_TestScenarios_m": "50d9a2e59addae2d89093a4d39c380251415abddf99a9285adeb773e9aead924",
     "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
   },
   "effective_values": {

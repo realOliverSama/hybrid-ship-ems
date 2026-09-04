@@ -1,0 +1,108 @@
+{
+  "schema": "baseline_diff_v1_0_to_v1_1",
+  "generated_at": "2026-09-04T17:55:20***",
+  "fields": [
+    {
+      "field": "version",
+      "v1_0": "1.0",
+      "v1_1_candidate": "1.1-candidate",
+      "class": "changed（DD-9 candidate 命名）"
+    },
+    {
+      "field": "spec",
+      "v1_0": "phase4-a2-model-e-construction / T-412",
+      "v1_1_candidate": "phase4-b-pms-safety / T-012（candidate，promotion 需用户书面批准）",
+      "class": "changed（spec 归属转移）"
+    },
+    {
+      "field": "frozen_from",
+      "v1_0": "results/gate_result.json (overall=true, 2026-09-04 夜班；用户裁决 T-412 APPROVED / T-013 CONDITIONAL APPROVAL——4 项修正含 R_0 充放电共用后重跑确认)",
+      "v1_1_candidate": "results/gate_result.json (T-412 against candidate, overall=true, 2026-09-04)",
+      "class": "changed（重跑记录）"
+    },
+    {
+      "field": "schema",
+      "v1_0": "modelE_gate_baseline_v1",
+      "v1_1_candidate": "modelE_gate_baseline_v1",
+      "class": "unchanged"
+    },
+    {
+      "field": "model_D_reference_hashes",
+      "v1_0": "（4 项）",
+      "v1_1_candidate": "（逐位一致，DD-9 M2）",
+      "class": "unchanged"
+    },
+    {
+      "field": "config_sha256.ModelE_Physics_Parameters_m",
+      "v1_0": "（sha 前 8 位见基线文件）",
+      "v1_1_candidate": "9a518c0a",
+      "class": "unchanged"
+    },
+    {
+      "field": "config_sha256.ModelE_TestScenarios_m",
+      "v1_0": "（sha 前 8 位见基线文件）",
+      "v1_1_candidate": "50d9a2e5",
+      "class": "changed（DD-9 允许：manifest 变化）"
+    },
+    {
+      "field": "config_sha256.ModelE_Sensitivity_Profile_m",
+      "v1_0": "（sha 前 8 位见基线文件）",
+      "v1_1_candidate": "cbec1bbc",
+      "class": "unchanged"
+    },
+    {
+      "field": "config_sha256.ModelE_Control_Parameters_m",
+      "v1_0": "（无）",
+      "v1_1_candidate": "（新增，DD-9 允许）",
+      "class": "added"
+    },
+    {
+      "field": "checks.G1",
+      "v1_0": "（逐位一致）",
+      "v1_1_candidate": "（逐位一致）",
+      "class": "unchanged"
+    },
+    {
+      "field": "checks.G2",
+      "v1_0": "（值级差异 items）",
+      "v1_1_candidate": "shallow_mono_HT_down_R_up_zero_violation,cruise_power_band_274_335_kW,",
+      "class": "values_drift（判据结构一致，全部 PASS；AUTO 跑执行序浮点漂移 / G6 wall time）"
+    },
+    {
+      "field": "checks.G3",
+      "v1_0": "（逐位一致）",
+      "v1_1_candidate": "（逐位一致）",
+      "class": "unchanged"
+    },
+    {
+      "field": "checks.G4",
+      "v1_0": "（逐位一致）",
+      "v1_1_candidate": "（逐位一致）",
+      "class": "unchanged"
+    },
+    {
+      "field": "checks.G5",
+      "v1_0": "（值级差异 items）",
+      "v1_1_candidate": "closure_E01_cruise,steady_mean_residual_lt_1kW_E01_cruise,",
+      "class": "values_drift（判据结构一致，全部 PASS；AUTO 跑执行序浮点漂移 / G6 wall time）"
+    },
+    {
+      "field": "checks.G6",
+      "v1_0": "（值级差异 items）",
+      "v1_1_candidate": "runtime_informational,",
+      "class": "values_drift（判据结构一致，全部 PASS；AUTO 跑执行序浮点漂移 / G6 wall time）"
+    },
+    {
+      "field": "checks.E10_compat_smoke",
+      "v1_0": "（逐位一致）",
+      "v1_1_candidate": "（逐位一致）",
+      "class": "unchanged"
+    },
+    {
+      "field": "dd9_machine_check",
+      "v1_0": "（无）",
+      "v1_1_candidate": "（新增：M1/M2/M3/M4 全过）",
+      "class": "added"
+    }
+  ]
+}

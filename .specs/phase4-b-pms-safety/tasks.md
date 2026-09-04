@@ -163,7 +163,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: 全部构造缺陷被正确检出
   - Notes: 与 42 号物理负向脚本并存，不改 42
 
-- [ ] 12. candidate v1.1 + T-412 against candidate + 43 全矩阵
+- [x] 12. candidate v1.1 + T-412 against candidate + 43 全矩阵
   - ID: T-012
   - Requirement(s): FR-455（判据 8）, FR-456, NFR-412, NFR-413
   - Roadmap: T-412 重跑 + T-418 主验证
