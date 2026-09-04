@@ -82,9 +82,8 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
     reg = contracts.load_registry(validate=True)
     hist_cols = contracts.signal_names(reg, "INPUT_H1") + contracts.signal_names(reg, "INPUT_H2")
     kf_cols = contracts.signal_names(reg, "INPUT_K") + contracts.signal_names(reg, "INPUT_F")
-    agg_map_hist = {c: contracts.aggregation_map(reg)[c]
-                    for c in hist_cols if c not in ("water_depth_m",)}
-    tgt_src = "P_load_total_kW"      # registry TARGET 条目（机器消费，非 hard-code 扩展）
+    agg_map_hist = {c: contracts.aggregation_map(reg)[c] for c in hist_cols}
+    tgt_src = contracts.signal_names(reg, "TARGET")[0]   # registry TARGET role 驱动（R3-m7）
     tgt_agg = contracts.aggregation_map(reg)[tgt_src]
 
     files = sorted(f for f in os.listdir(voyage_dir) if f.endswith(".mat"))
@@ -129,21 +128,18 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
         t = np.asarray(st["time_s"], dtype=float).ravel()
         cols = {c: np.asarray(st[c], dtype=float).ravel() for c in hist_cols if c in st}
         cols[tgt_src] = np.asarray(st[tgt_src], dtype=float).ravel()
-        missing = [c for c in hist_cols if c not in cols and c != "water_depth_m"]
+        missing = [c for c in hist_cols if c not in cols]
         if missing:
             add_check(f"stream_cols[{vid}]", False, f"缺列 {missing}")
             continue
-        # scenario 常量列（water_depth_m：常量，聚合语义退化恒等）
-        if "water_depth_m" in hist_cols:
-            cols["water_depth_m"] = np.asarray(st["water_depth_m"], dtype=float).ravel()
-        # 1 Hz 聚合（右端点时间基：bin (e_i, e_{i+1}] 的聚合值置于 e_{i+1}）
-        edges = np.arange(0.0, float(np.ceil(t[-1])) + 1.0, 1.0)
+        # 1 Hz 聚合（右端点时间基：bin (e_i, e_{i+1}] 的聚合值置于 e_{i+1}）；
+        # edges 取 floor(t_end)——每个 bin 完整落在数据覆盖内（禁静默外推）
+        edges = np.arange(0.0, float(np.floor(t[-1])) + 1.0, 1.0)
         agg = aggregate_stream(t, cols, edges, {**agg_map_hist, tgt_src: tgt_agg})
         t_1hz = edges[1:]
         hist = zero_fill_ctrl_channels({k: agg[k] for k in hist_cols if k in agg})
         # target（只消费 native stream）
         p = cols[tgt_src]
-        n_w = ((float(t[-1]) - 600.0) // STRIDE_S) + 1 if t[-1] >= 600.0 else 0.0
         kf_in = {"issue_time_s": np.asarray(kf["issue_time_s"], dtype=float).ravel(),
                  "lead_s": np.asarray(kf["lead_s"], dtype=float)}
         for c in kf_cols:
@@ -183,19 +179,24 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
                 "overall": False, "checks": checks,
                 "reason": "零有效窗口"}
 
-    # ---- split（deterministic group-aware）----
-    groups = sorted({m["split_group_id"] for m in win_meta})
-    grp_stratum = {m["split_group_id"]: m["scenario_stratum"] for m in win_meta}
+    # ---- split（deterministic group-aware；覆盖全部航次含零窗航次）----
+    voyage_grp = {vid: str(v["meta"]["split_group_id"]) for vid, v in voyages.items()}
+    voyage_stratum = {vid: str(v["meta"]["scenario_stratum"]) for vid, v in voyages.items()}
+    groups = sorted(voyage_grp.values())
+    grp_stratum = {}
+    for vid in sorted(voyages):
+        g = voyage_grp[vid]
+        s = voyage_stratum[vid]
+        if grp_stratum.setdefault(g, s) != s:
+            add_check("strata_unique", False, f"group {g} 映射多 stratum")
     strata: dict = {}
     for g in groups:
         strata.setdefault(grp_stratum[g], []).append(g)
-    for s, gs in strata.items():
-        if sorted(gs) != sorted(set(gs)):
-            add_check("strata_unique", False, f"stratum {s} 组映射不唯一")
     assignment = assign_splits(groups, strata, SPLIT_SEED_PILOT)
     part_errs = verify_partition(assignment)
     add_check("split_partition_invariants", not part_errs, "; ".join(part_errs[:3]))
     grp_split = {g: rec["split"] for g, rec in assignment["assignment"].items()}
+    voyage_split = {vid: grp_split[voyage_grp[vid]] for vid in voyages}
     for m in win_meta:
         m["split"] = grp_split[m["split_group_id"]]
     os.makedirs(out_dir, exist_ok=True)
@@ -206,10 +207,10 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
     # ---- 三级泄漏审计 ----
     artifact_hashes = {vid: sha256_file(os.path.join(voyage_dir, vid + ".mat"))
                        for vid in voyages}
-    l1 = run_l1({f"{g}#{'voyage'}": grp_split[g] for g in groups}, artifact_hashes, win_hashes)
+    l1 = run_l1({f"{g}#voyage": grp_split[g] for g in groups}, artifact_hashes, win_hashes)
     add_check("L1_hard_fail_zero", l1["overall_l1"], json.dumps(l1["violations"][:3], ensure_ascii=False))
     l2 = run_l2(l2_series, provenance)
-    l3 = run_l3(l2_series, grp_split, None, provenance=provenance,
+    l3 = run_l3(l2_series, voyage_split, None, provenance=provenance,
                 require_train_stats=False)
     add_check("L2_provenance_gated", True,
               f"candidates={l2['counts']['l2_candidate']} "
@@ -221,8 +222,8 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
     import numpy as _np
     Y = _np.stack(win_Y).astype(np.float64)
     E300 = _np.asarray(win_E300, dtype=np.float64)
-    X_H = {c: _np.stack(w[c] for w in win_X_H) for c in hist_cols}
-    X_KF = {c: _np.stack(w[c] for w in win_X_KF) for c in kf_cols}
+    X_H = {c: _np.stack([w[c] for w in win_X_H]) for c in hist_cols}
+    X_KF = {c: _np.stack([w[c] for w in win_X_KF]) for c in kf_cols}
     views = build_views(X_H, X_KF, Y, E300, reg)
     assert_no_quantile_labels(views)
     splits = _np.array([m["split"] for m in win_meta])
@@ -231,16 +232,27 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
         add_check("train_nonempty", False)
     else:
         add_check("train_nonempty", True, f"train windows={int(tr.sum())}")
-    norm = {}
+    # train-only 归一化（FR-483）；pilot 常量物理通道（ctrl_mode/water_depth/v_ref 等
+    # 在 pilot 场景族内为常量）train std=0 → 记录并以 1.0 恒等变换（机制级；
+    # pilot 统计非科学基线，FR-489）；目标 y/E300 必须非零方差
+    norm = {"fit_on": "train_only", "constant_channels_transform_std_1": []}
     for c in views["h1_view"]:
         sd = X_H[c][tr].std(axis=0)
-        if (sd <= 0).any():
-            add_check("norm_std_positive", False, f"{c} 存在零方差通道（train）")
-    norm = {"fit_on": "train_only",
-            "x_h1_mean": {c: X_H[c][tr].mean(axis=0).tolist() for c in views["h1_view"]},
-            "x_h1_std": {c: X_H[c][tr].std(axis=0).tolist() for c in views["h1_view"]},
-            "y_mean": Y[tr].mean(axis=0).tolist(), "y_std": Y[tr].std(axis=0).tolist(),
-            "e300_mean": float(E300[tr].mean()), "e300_std": float(E300[tr].std())}
+        const_ch = int((sd <= 0).sum())
+        if const_ch:
+            norm["constant_channels_transform_std_1"].append({"col": c, "n_bins": const_ch})
+        if sd.size and not (sd > 0).any():   # 整通道零方差才 FAIL（R3-m1：原 is False 为死分支）
+            add_check("norm_std_positive", False, f"{c} 全通道零方差（train）")
+    norm.update({
+        "x_h1_mean": {c: X_H[c][tr].mean(axis=0).tolist() for c in views["h1_view"]},
+        "x_h1_std": {c: np.where(X_H[c][tr].std(axis=0) > 0, X_H[c][tr].std(axis=0), 1.0).tolist()
+                     for c in views["h1_view"]},
+        "y_mean": Y[tr].mean(axis=0).tolist(), "y_std": Y[tr].std(axis=0).tolist(),
+        "e300_mean": float(E300[tr].mean()), "e300_std": float(E300[tr].std())})
+    if Y[tr].std() <= 0 or float(E300[tr].std()) <= 0:
+        add_check("target_std_positive", False, "train 目标零方差")
+    else:
+        add_check("target_std_positive", True)
     add_check("normalization_fit_train_only", True, "val/test/OOD 仅 transform（FR-483）")
 
     # ---- npz 落盘（本地不入库）----
@@ -279,8 +291,7 @@ def build_pilot_dataset(voyage_dir: str, out_dir: str, npz_path: str) -> dict:
         "sbd_suspect_count_disposition": f"{l3['n_suspects']}:unresolved",
         "test_sealed": True, "ood_sealed": True,
         "dataset_anchor_stride_s": 10, "predictor_runtime_period_s": "UNDEFINED_IN_D",
-        "window_geometry": {"history_bins": HISTORY_BINS, "future_bins": FUTURE_BINS,
-                            "future_bin_s": 10.0, "stride_s": 10.0, "history_bin_s": 1.0},
+        "window_geometry": {"L_H": 300, "H_F": 300, "K": 30, "delta_F": 10, "stride": 10},
         "registry_sha256": json.loads(open(REGISTRY_PATH, encoding="utf-8").read())["self_hash"]["value"],
         "producer_schema_sha256": json.loads(open(PRODUCER_SCHEMA_PATH, encoding="utf-8").read())["self_hash"]["value"],
         "aggregation_table_version": "dgn05-r1", "target_definition": "y_k=E_k/10 kW（native trapezoidal 能量差分）；E300=ΣE_k/3600 kWh",
