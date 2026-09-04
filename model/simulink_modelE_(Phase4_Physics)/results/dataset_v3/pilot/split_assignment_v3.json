@@ -1,0 +1,157 @@
+{
+  "artifact_sha256": "57307636132ae95ed07c7e55669fce94b2030f3d487f660cfcfd671252031953",
+  "assignment": {
+    "M1_step": {
+      "split": "train",
+      "stratum": "manual"
+    },
+    "M2_ramp": {
+      "split": "val",
+      "stratum": "manual"
+    },
+    "M3_staged": {
+      "split": "train",
+      "stratum": "manual"
+    },
+    "S01_still_water": {
+      "split": "train",
+      "stratum": "stillwater"
+    },
+    "S02_downstream": {
+      "split": "val",
+      "stratum": "current"
+    },
+    "S03_upstream": {
+      "split": "train",
+      "stratum": "current"
+    },
+    "S04_resistance_inc": {
+      "split": "test",
+      "stratum": "resistance"
+    },
+    "S05_resistance_dec": {
+      "split": "train",
+      "stratum": "resistance"
+    },
+    "S06_resistance_step": {
+      "split": "val",
+      "stratum": "resistance"
+    },
+    "S07_bridge_maneuver": {
+      "split": "train",
+      "stratum": "bridge"
+    },
+    "S08_resistance_bands": {
+      "split": "train",
+      "stratum": "resistance"
+    },
+    "S10_current_reversal": {
+      "split": "train",
+      "stratum": "current"
+    },
+    "S20_composite": {
+      "split": "train",
+      "stratum": "composite"
+    },
+    "S31_shallow": {
+      "split": "train",
+      "stratum": "shallow"
+    },
+    "S32_shallow": {
+      "split": "train",
+      "stratum": "shallow"
+    },
+    "S33_shallow": {
+      "split": "val",
+      "stratum": "shallow"
+    },
+    "S34_shallow": {
+      "split": "train",
+      "stratum": "shallow"
+    },
+    "S35_shallow": {
+      "split": "train",
+      "stratum": "shallow"
+    },
+    "S36_shallow": {
+      "split": "test",
+      "stratum": "shallow"
+    }
+  },
+  "counts": {
+    "test": 2,
+    "train": 13,
+    "val": 4
+  },
+  "schema": "split_assignment_v3",
+  "split_seed": "pilot-split-seed-v1",
+  "strata": {
+    "bridge": {
+      "test": [],
+      "train": [
+        "S07_bridge_maneuver"
+      ],
+      "val": []
+    },
+    "composite": {
+      "test": [],
+      "train": [
+        "S20_composite"
+      ],
+      "val": []
+    },
+    "current": {
+      "test": [],
+      "train": [
+        "S03_upstream",
+        "S10_current_reversal"
+      ],
+      "val": [
+        "S02_downstream"
+      ]
+    },
+    "manual": {
+      "test": [],
+      "train": [
+        "M1_step",
+        "M3_staged"
+      ],
+      "val": [
+        "M2_ramp"
+      ]
+    },
+    "resistance": {
+      "test": [
+        "S04_resistance_inc"
+      ],
+      "train": [
+        "S05_resistance_dec",
+        "S08_resistance_bands"
+      ],
+      "val": [
+        "S06_resistance_step"
+      ]
+    },
+    "shallow": {
+      "test": [
+        "S36_shallow"
+      ],
+      "train": [
+        "S31_shallow",
+        "S32_shallow",
+        "S34_shallow",
+        "S35_shallow"
+      ],
+      "val": [
+        "S33_shallow"
+      ]
+    },
+    "stillwater": {
+      "test": [],
+      "train": [
+        "S01_still_water"
+      ],
+      "val": []
+    }
+  }
+}
