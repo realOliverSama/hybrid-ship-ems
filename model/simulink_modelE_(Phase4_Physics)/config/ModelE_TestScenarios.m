@@ -280,6 +280,9 @@ GEN_CMD_STOP_TS = [0 0 0; 1e6 0 0];
 % 列为 [t, manual_power_cmd_pct]；From Workspace + Interpolate off；
 % 电平/段长依据 design §6.5：u_low=0.30→P_commit≈319.6 kW<350；u_high=0.70→≈608.2 kW>425）
 VOYAGE_MANUAL_CMD_TS = [0 0.30; 1e6 0.30];
+% Phase 4-B T-007/T-010（FR-448）：S5 EMS 健康通道（列 [t, health]；默认恒 1=健康；
+% From Workspace + Interpolate off；拉低注入触发 S5 fallback）
+EMS_HEALTH_TS = [0 1; 1e6 1];
 % M1 step：0.30→0.70 @ t=30 s，总长 300 s（验证方向/rate limiter/电池瞬态）
 MANUAL_CMD_M1_TS = [0 0.30; 30 0.30; 30.01 0.70; 1e6 0.70];
 % M2 ramp：0.20（0–60 s 恒）→ 0.80 斜升 60 s（60–120 s，247→680 kW），总长 300 s

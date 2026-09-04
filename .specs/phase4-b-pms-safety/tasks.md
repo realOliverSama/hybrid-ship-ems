@@ -108,7 +108,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: 双模式构建成功；AUTO 既有 smoke 行为不变；M1/M2 短程运行无错误
   - Notes: 块改名导致结构指纹变化为预期（DD-9 流程处理）
 
-- [ ] 7. builder 顶层集成（07_PMS_v2 + 16_Safety_Interlock + 接线替换）
+- [x] 7. builder 顶层集成（07_PMS_v2 + 16_Safety_Interlock + 接线替换）
   - ID: T-007
   - Requirement(s): FR-449, FR-450, FR-451A, NFR-414, NFR-417
   - Roadmap: T-415/T-416/T-417 集成面
