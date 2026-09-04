@@ -1,0 +1,117 @@
+{
+  "schema": "dataset_v3_pilot_gate_result_v1",
+  "stage": "PILOT",
+  "generated_utc": "2026-09-04T19:57:50+00:00",
+  "overall": true,
+  "n_windows": 1050,
+  "window_counts": {
+    "train": 896,
+    "val": 92,
+    "test": 62
+  },
+  "n_voyages": 19,
+  "audits": {
+    "L1": {
+      "level": "L1",
+      "overall_l1": true,
+      "n_violations": 0,
+      "violations": [],
+      "n_identities": 19,
+      "n_voyage_artifacts": 19,
+      "n_windows": 1050
+    },
+    "L2": {
+      "level": "L2",
+      "epsilon_kw": 1e-06,
+      "epsilon_semantics": "ε=1e-6 kW 仅为 numerical near-identical candidate 阈值，不是物理相似阈值（DGN-10/R3 冻结表述）",
+      "report_only": true,
+      "note": "L2 禁自动剔除：CONFIRMED_DUPLICATE 在 formal Stage B 使对应 preregistered slot 失效并按预声明 retry/disposition policy 处置；本函数零数据副作用",
+      "n_pairs_compared": 171,
+      "counts": {
+        "l2_candidate": 0,
+        "CONFIRMED_DUPLICATE": 0,
+        "LEGITIMATE_NEAR_REPLICATE": 0,
+        "UNRESOLVED": 0
+      },
+      "candidates": []
+    },
+    "L3": {
+      "level": "L3",
+      "policy": "T_SBD = Q0.01(train-vs-train NN SBD distance distribution)",
+      "stats_source": "population_fallback_declared",
+      "mean": 461.6794300654759,
+      "std": 142.91800716998952,
+      "t_sbd": 4.542523078454597e-05,
+      "n_voyages": 19,
+      "n_train": 13,
+      "n_cross_split_pairs": 86,
+      "suspects": [],
+      "n_suspects": 0,
+      "flag_only": true,
+      "note": "similarity ≠ leakage（NFR-424）：L3 只产 suspected_near_neighbor flag（disposition=unresolved），不自动删数据、不单独判泄漏、不构成 Gate FAIL"
+    }
+  },
+  "outputs": {
+    "npz": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/datasets_v3/pilot/windows_v3_pilot.npz",
+    "manifest": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/dataset_v3/pilot/dataset_v3_manifest.json",
+    "split_artifact": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/dataset_v3/pilot/split_assignment_v3.json",
+    "norm": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/dataset_v3/pilot/pilot_norm_v3.json"
+  },
+  "checks": [
+    {
+      "name": "voyage_fixture_and_provenance",
+      "pass": true,
+      "detail": "19 航次通过 PILOT_ONLY/provenance 门"
+    },
+    {
+      "name": "energy_crosscheck_1e-9",
+      "pass": true,
+      "detail": "max_rel=1.401e-12"
+    },
+    {
+      "name": "kf_vintage_zero_invalid",
+      "pass": true,
+      "detail": "invalid=0（阈值 0，DGN-07）"
+    },
+    {
+      "name": "split_partition_invariants",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "L1_hard_fail_zero",
+      "pass": true,
+      "detail": "[]"
+    },
+    {
+      "name": "L2_provenance_gated",
+      "pass": true,
+      "detail": "candidates=0 confirmed=0（禁自动剔除，report-only）"
+    },
+    {
+      "name": "L3_sbd_suspect_flag",
+      "pass": true,
+      "detail": "suspects=0（similarity≠leakage，永不 FAIL）"
+    },
+    {
+      "name": "train_nonempty",
+      "pass": true,
+      "detail": "train windows=896"
+    },
+    {
+      "name": "target_std_positive",
+      "pass": true,
+      "detail": ""
+    },
+    {
+      "name": "normalization_fit_train_only",
+      "pass": true,
+      "detail": "val/test/OOD 仅 transform（FR-483）"
+    },
+    {
+      "name": "manifest_validate",
+      "pass": true,
+      "detail": ""
+    }
+  ]
+}

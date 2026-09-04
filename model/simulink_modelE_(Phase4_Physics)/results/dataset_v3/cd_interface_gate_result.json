@@ -1,0 +1,82 @@
+{
+  "schema": "cd_interface_gate_result_v1",
+  "formality": "NON-FORMAL（D0 骨架自检：对象为 PILOT_ONLY fixtures，不构成 T-432 解锁）",
+  "generated_utc": "2026-09-04T19:58:08+00:00",
+  "n_voyages": 19,
+  "overall": true,
+  "checks": {
+    "c09_contract_validators": {
+      "pass": true,
+      "registry_errors": [],
+      "producer_schema_errors": []
+    },
+    "c01_schema_compliance": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c02_s_plan_causal_present": {
+      "pass": true,
+      "per_voyage": {},
+      "note": "②③④⑤⑥⑧ 逐航次合并于 01（结构存在性+provenance）"
+    },
+    "c07_voyage_qualification": {
+      "pass": true,
+      "verdict": "PENDING_ACTIVATION_RECORD",
+      "note": "预注册值未提供（600s 仅为几何最小跨度，FR-495）；NON-FORMAL 不判定"
+    },
+    "c10_modelE_baseline_integrity": {
+      "check": "10_modelE_baseline_integrity",
+      "pass": true,
+      "verdict": "SNAPSHOT（骨架模式：记录当前 hash，正式版对照 activation 冻结值）",
+      "files": [
+        {
+          "path": "model/HybridShip_ModelE.slx",
+          "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+        },
+        {
+          "path": "config/ModelE_Physics_Parameters.m",
+          "sha256": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264"
+        },
+        {
+          "path": "config/ModelE_Control_Parameters.m",
+          "sha256": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63"
+        },
+        {
+          "path": "config/gate_baseline_modele.json",
+          "sha256": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e"
+        },
+        {
+          "path": "config/gate_baseline_modele_control.json",
+          "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273"
+        }
+      ]
+    }
+  },
+  "baseline_integrity_matlab": {
+    "check": "10_modelE_baseline_integrity",
+    "pass": true,
+    "verdict": "SNAPSHOT（骨架模式：记录当前 hash，正式版对照 activation 冻结值）",
+    "files": [
+      {
+        "path": "model/HybridShip_ModelE.slx",
+        "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+      },
+      {
+        "path": "config/ModelE_Physics_Parameters.m",
+        "sha256": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264"
+      },
+      {
+        "path": "config/ModelE_Control_Parameters.m",
+        "sha256": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63"
+      },
+      {
+        "path": "config/gate_baseline_modele.json",
+        "sha256": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e"
+      },
+      {
+        "path": "config/gate_baseline_modele_control.json",
+        "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273"
+      }
+    ]
+  }
+}

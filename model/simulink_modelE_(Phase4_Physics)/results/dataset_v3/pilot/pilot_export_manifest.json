@@ -1,0 +1,221 @@
+{
+  "schema": "dataset_v3_pilot_export_manifest_v1",
+  "spec": "phase4-d-dataset-v3 / T-007",
+  "stage": "PILOT",
+  "generated_at": "2026-09-05T03:55:08***",
+  "producer_script_sha256": "625fc8f0f6b181126afd8adee3282ee26af0250e78cd4cfcd7b862b44922646b",
+  "registry_sha256": "9ab11deac62390f23ec0b31b047465617d4389359becf99928ecc4c9ca1688e1",
+  "n_voyages": 19,
+  "n_failed": 0,
+  "voyages": [
+    {
+      "voyage_id": "S01_still_water",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S01_still_water.mat",
+      "scenario_stratum": "stillwater",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 900.84,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S02_downstream",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S02_downstream.mat",
+      "scenario_stratum": "current",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 898.28,
+      "n_anchors": 30,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S03_upstream",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S03_upstream.mat",
+      "scenario_stratum": "current",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 905.38,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S04_resistance_inc",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S04_resistance_inc.mat",
+      "scenario_stratum": "resistance",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 901.86,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S05_resistance_dec",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S05_resistance_dec.mat",
+      "scenario_stratum": "resistance",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 900.14,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S06_resistance_step",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S06_resistance_step.mat",
+      "scenario_stratum": "resistance",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 902.98,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S07_bridge_maneuver",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S07_bridge_maneuver.mat",
+      "scenario_stratum": "bridge",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 982.63,
+      "n_anchors": 39,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S08_resistance_bands",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S08_resistance_bands.mat",
+      "scenario_stratum": "resistance",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 900.85,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S10_current_reversal",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S10_current_reversal.mat",
+      "scenario_stratum": "current",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 902.56000000000006,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S20_composite",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S20_composite.mat",
+      "scenario_stratum": "composite",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 6000,
+      "n_anchors": 541,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S31_shallow",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S31_shallow.mat",
+      "scenario_stratum": "shallow",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 901.37,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S32_shallow",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S32_shallow.mat",
+      "scenario_stratum": "shallow",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 901.47,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S33_shallow",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S33_shallow.mat",
+      "scenario_stratum": "shallow",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 901.57,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S34_shallow",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S34_shallow.mat",
+      "scenario_stratum": "shallow",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 902.56000000000006,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S35_shallow",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S35_shallow.mat",
+      "scenario_stratum": "shallow",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 902.57,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "S36_shallow",
+      "status": "OK",
+      "file": "datasets_v3/pilot/S36_shallow.mat",
+      "scenario_stratum": "shallow",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 902.83,
+      "n_anchors": 31,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "M1_step",
+      "status": "OK",
+      "file": "datasets_v3/pilot/M1_step.mat",
+      "scenario_stratum": "manual",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 360,
+      "n_anchors": 0,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "M2_ramp",
+      "status": "OK",
+      "file": "datasets_v3/pilot/M2_ramp.mat",
+      "scenario_stratum": "manual",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 360,
+      "n_anchors": 0,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    },
+    {
+      "voyage_id": "M3_staged",
+      "status": "OK",
+      "file": "datasets_v3/pilot/M3_staged.mat",
+      "scenario_stratum": "manual",
+      "fixture_kind": "PILOT_ONLY",
+      "voyage_duration_s": 960,
+      "n_anchors": 37,
+      "n_stream_cols": 79,
+      "forecast_provenance_class": "FIXTURE_CAUSAL_STUB"
+    }
+  ]
+}

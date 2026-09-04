@@ -1,0 +1,51 @@
+{
+  "schema": "dataset_v3_manifest_v1",
+  "payload": {
+    "split_policy_version": "dgn09-v1",
+    "split_seed": "pilot-split-seed-v1",
+    "split_group_key": "voyage_id（pilot）",
+    "split_assignment_artifact_sha256": "57307636132ae95ed07c7e55669fce94b2030f3d487f660cfcfd671252031953",
+    "train_val_test_voyage_counts": {
+      "train": 13,
+      "val": 4,
+      "test": 2
+    },
+    "normalization_source": "train_only",
+    "preprocessing_artifact_sha256": "a4f1459b46e4c9bd1f103debf897b66b6c0cfa337c74392d985b2900bbb49608",
+    "ood_definition_version": "DGN-11-v1",
+    "ood_generation_seed": "UNDEFINED_IN_PILOT",
+    "provenance_duplicate_count": 0,
+    "exact_duplicate_count": 0,
+    "sbd_threshold_policy": "T_SBD=Q0.01(train-vs-train NN SBD)（policy 冻结，pilot 数值非基线）",
+    "sbd_suspect_count_disposition": "0:unresolved",
+    "test_sealed": true,
+    "ood_sealed": true,
+    "dataset_anchor_stride_s": 10,
+    "predictor_runtime_period_s": "UNDEFINED_IN_D",
+    "window_geometry": {
+      "L_H": 300,
+      "H_F": 300,
+      "K": 30,
+      "delta_F": 10,
+      "stride": 10
+    },
+    "registry_sha256": "9ab11deac62390f23ec0b31b047465617d4389359becf99928ecc4c9ca1688e1",
+    "producer_schema_sha256": "7993e141e8a88875297694604552b266b4fecc757b042792aa502a8abed28b40",
+    "aggregation_table_version": "dgn05-r1",
+    "target_definition": "y_k=E_k/10 kW（native trapezoidal 能量差分）；E300=ΣE_k/3600 kWh",
+    "stage": "PILOT",
+    "fixture_policy": "PILOT_ONLY 禁入 formal（FR-500）"
+  },
+  "run_metadata": {
+    "build_utc": "2026-09-04T19:57:50+00:00",
+    "python": "3.12.7",
+    "numpy": "2.5.2",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "pipeline": "dataset_v3.run_pipeline",
+    "generation_script_path": "dataset_v3/run_pipeline.py",
+    "generation_script_sha256": "23e07ebd41fc3a2d3491ac8e4cfbb7252e865b574ca6f8114082e08c1a6fa155",
+    "matlab_version": "R2026a（70 号 producer 侧记录）",
+    "python_version": "3.12.7"
+  },
+  "scientific_payload_sha256": "e9a23d3ea6d7cc7063619cf18993c8c54bbf432dd01e09df694b0e6d8680400e"
+}
