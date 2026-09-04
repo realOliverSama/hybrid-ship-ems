@@ -111,20 +111,23 @@ function R = run_gate(ROOT, QUICK)
     end
 
     %% Phase 4：Safety 注入 S1~S5（场景定义由 T-010 提供）
-    if exist('gate_ctrl.injection_scenarios', 'file') == 2
+    if ~isempty(which('gate_ctrl.injection_scenarios'))   % R2026a：exist 对包函数恒 0
         injSpec = gate_ctrl.injection_scenarios();
         for k = 1:numel(injSpec)
             lbl = sprintf('INJ/%s', injSpec(k).name);
             fprintf('[43] run %s\n', lbl);
-            injSpec(k).prep_fn();                    % assignin 确定性注入
+            injSpec(k).prep_fn();                    % assignin 确定性注入（每场景先恢复全 nominal）
             scn = SCENARIOS(1);
-            scn.voyage_distance_m = 1e6;
-            [ds, mm, rows] = runOne(0, 0, scn, false, [], injSpec(k).stop_time_s);
+            scn.voyage_distance_m = injSpec(k).voyage_distance_m;
+            scn.initial_SOC = injSpec(k).soc_init;   % 注入 SOC（runOne 经 Bat_SOC_init 统一生效）
+            scn.hotel_kW = injSpec(k).hotel_kW;      % 注入 hotel（S3 低负荷盈余用）
+            [ds, mm, rows] = runOne(injSpec(k).law, injSpec(k).src, scn, ...
+                injSpec(k).use_manual, injSpec(k).manual_ts, injSpec(k).stop_time_s);
             c6 = gate_ctrl.check_c6_safety_assertions(ds, mm, injSpec(k).expected, lbl);
             addCheck('C6_safety_assertions', lbl, c6.pass);
             c4 = gate_ctrl.check_c4_vdc(ds, lbl, true);
             addCheck('C4_vdc_injection', lbl, c4.pass);
-            c7 = gate_ctrl.check_c7_audit_completeness(rows, ds, lbl, T_start);
+                c7 = gate_ctrl.check_c7_audit_completeness(rows, ds, lbl, T_start, injSpec(k).force_mode);
             addCheck('C7_audit_completeness', lbl, c7.pass);
             R.injruns.(matlab.lang.makeValidName(injSpec(k).name)) = ...
                 struct('metrics', mm, 'n_audit_rows', numel(rows));

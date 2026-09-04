@@ -26,8 +26,8 @@ function r = check_c6_safety_assertions(ds, m, expected, label)
         'baseline_fallback', hasFB, 'none', false);
 
     for k = 1:numel(expected)
-        e = expected(k);
-        hit = chan.(e);
+        e = expected{k};
+        fired = chan.(e);
         if strcmp(e, 'none')
             fired = any(fireStart) || any(fireStop) || fl1 || fl2;
             ok = ok && ~fired;
@@ -39,12 +39,14 @@ function r = check_c6_safety_assertions(ds, m, expected, label)
         end
     end
     % 监视 flag 一致性（FR-446：flags 置位须正确）
-    if isfield(expected, 'expect_flags')
-        if any(strcmp(expected, 'flag_soc_low')) && ~(ds.flag_soc_low(end) > 0.5)
+    if any(strcmp(expected, 'flag_soc_low'))
+        if ~(ds.flag_soc_low(end) > 0.5)
             ok = false;
             r.checks{end+1} = struct('item', 'expect_flag_soc_low', 'pass', false); %#ok<SAGROW>
         end
-        if any(strcmp(expected, 'flag_vdc_low')) && ~(ds.flag_vdc_low(end) > 0.5)
+    end
+    if any(strcmp(expected, 'flag_vdc_low'))
+        if ~(ds.flag_vdc_low(end) > 0.5)
             ok = false;
             r.checks{end+1} = struct('item', 'expect_flag_vdc_low', 'pass', false); %#ok<SAGROW>
         end

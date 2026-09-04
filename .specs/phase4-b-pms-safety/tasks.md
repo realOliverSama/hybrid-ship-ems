@@ -143,7 +143,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: 脚本骨架在已知好工况上自洽运行（判据函数单测级验证）
   - Notes: T-412 重跑以 Phase 0 显式 baseline_path 机制接入（T-012 汇合）
 
-- [ ] 10. Safety 注入场景 S1~S5 + bench 扩展
+- [x] 10. Safety 注入场景 S1~S5 + bench 扩展
   - ID: T-010
   - Requirement(s): FR-448, FR-453
   - Roadmap: T-417 验证面
