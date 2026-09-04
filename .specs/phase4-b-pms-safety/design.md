@@ -1,7 +1,12 @@
 # Phase 4-B — 真实控制逻辑 / PMS v2 / Safety-Interlock（T-413~T-418）Design
 
 Spec: `phase4-b-pms-safety`  
-Status: design-draft  
+Status: design-approved（2026-09-04 用户批准：APPROVED WITH 6 MANDATORY AMENDMENTS——
+① S2 改 realized supply deficit 实际口径（P_gen_unserved 仅留诊断）；② Dispatch 输出与
+分母统一 is_dispatching predicate；③ S5 改 explicit health contract + isfinite；
+④ DD-9 改 candidate→validation→promotion 两阶段（v1.1 升级正式批准）；⑤ M3 时序修正
+（178 s=start cmd，DG2 ON≈208 s）；⑥ Euler 稳定性措辞 + online-time 用实际 DG state——
+用户预先授权修订后直接置 approved；FR-445 S2/S5 联动修订已同步 requirements.md）  
 Created: 2026-09-04  
 Requirements: `./requirements.md`（requirements-approved，FR-428~457 / NFR-412~419 / AC-416~424）  
 Brainstorm: `./brainstorm.md`（D-B1~D-B9 + 终审 5 项修正，全部 Fixed Decisions）
@@ -63,6 +68,11 @@ P_bat_chg_avail_g = P_bat_chg_avail_kW / ASSUMED_eta_rect
 同除正数 η_rect 保序，FR 中所有阈值判据在 genset 域内逐字成立（425/350/125/500/100/50）。
 EMS 聚合 `P_gen_ref_kW`（genset-side）与 Plant 接口 `P_DGi_ref_kW`（genset-side）零换算
 直通。源码中以块名 `X_b2g_*`（bus-to-genset）显式标记 conversion 环节，注释引用本条目。
+
+**措辞纪律（评审修订）**：`P_bat_*_avail_g` 是 "battery bus-side capability expressed
+in the generator-equivalent coordinate system"——电池并不经过 rectifier，禁止表述为
+“电池 genset-side 物理功率”；同理 `P_chg_recovery=100 kW` 为 **generator-equivalent
+recovery bias**，对应 bus 侧新增发电约 97 kW（×0.97），禁止写“电池以 100 kW 实际充电”。
 
 S4 的实现域随之确定：`P_load,req = (P_prop_dem + P_hotel)/η_rect`（genset 域）、
 `P_firm,avail = N_ON,healthy·500 + P_bat_dis_avail_g`、`D_firm = P_load,req + 50 −
@@ -155,8 +165,9 @@ P_gen_req_baseline = P_load_filt + P_recovery_actual
 
 输入 P_load_gen（已换算）、SOC、N_dispatch（dispatch 反馈，前一拍——经 UnitDelay
 切断拍内环）；输出 P_gen_req_baseline + u_recovery 状态（供 logging）。全部量在
-canonical 域。LPF 离散化用前向欧拉（Ts=0.01 ≪ τ=60，数值无条件稳定；documentation
-注明非双线性，避免与 Plant 其他滤波器混用口径）。
+canonical 域。LPF 离散化用前向欧拉（Ts/τ=1.67e-4，远在 0<Ts/τ<2 稳定界内——
+**数值稳定且稳定裕量极大**；documentation 注明非双线性，避免与 Plant 其他滤波器
+混用口径；禁称“无条件稳定”）。
 
 ### 5.4 DG_Commitment_Supervisor（FR-436~440，Stateflow）
 
@@ -192,18 +203,24 @@ TWO_DG_NORMAL ──[P_commit<350 持续 12000 tick ∧ online_timer≥30000]─
 
 ### 5.5 DG_Dispatch_Allocator（FR-441~443）
 
-MATLAB Function 块（离散 0.01 s），源码 `+model/code_dispatch_e.m`：
+MATLAB Function 块（离散 0.01 s），源码 `+model/code_dispatch_e.m`。
+**is_dispatching 单一谓词（评审修订，FR-441 细化）**——分母与输出共用同一谓词，
+**禁止**分母检查 state 而输出只检查 eligible：
 
 ```text
 输入：P_gen_req_eff、DG1/2_state、DG1/2_dispatch_eligible（commitment/fault 裁决后）
-N_dispatch = #(state_i==ON ∧ eligible_i)；STARTING/SYNC/COOLDOWN/OFF 不计
+is_dispatching_i = (state_i==ON) ∧ dispatch_eligible_i
+N_dispatch = Σ is_dispatching_i              % STARTING/SYNC/COOLDOWN/OFF 必为 0
 若 N_dispatch==0（不应发生于 voyage active）：P_ref=0 双机 + 断言 flag（防御）
-P_raw = P_gen_req_eff / N_dispatch
-P_i_ref = eligible_i ? clamp(P_raw, 125, 500) : 0
-诊断：P_gen_unserved = max(0, P_req − ΣP_i_ref)
+P_raw   = P_gen_req_eff / N_dispatch
+P_i_ref = is_dispatching_i ? clamp(P_raw, 125, 500) : 0
+诊断：P_gen_unserved = max(0, P_req − ΣP_i_ref)   % 指令错配诊断（禁用于 Safety 判据）
       P_gen_surplus  = max(0, ΣP_i_ref − P_req)
-      dispatch_min_clamp_active = any(eligible_i ∧ P_raw<125)
+      dispatch_min_clamp_active = any(is_dispatching_i ∧ P_raw<125)
 ```
+
+STARTING/SYNC 机组即使 healthy∧available 也必须 `P_ref==0`（A2「不得虚构输出功率」
+契约；单测必含 `STARTING+healthy+available ⇒ P_ref==0` case）。
 
 `DISPATCH_MODE` 仅在块注释与接口文档登记（0=AGGREGATE_AUTO 实现 / 1=EXTERNAL_PER_UNIT
 保留），**不写代码分支**（D-B1/FR-443）。
@@ -226,18 +243,30 @@ fault_latch_i：锁存至仿真结束（v1 无 run 内复位通道，登记 futu
       另一机 OFF∧healthy∧航次激活 → force_start 该机
 ```
 
-**S2**：`P_gen_unserved > P_bat_dis_avail_g` 连续 200 tick（2 s）→ force_start 请求
-（目标 = healthy∧available∧offline 机组；无目标则 flag-only）。
+**S2 Realized supply deficit（评审重定义）**：判据基于**实际供电能力**而非指令错配：
+
+```text
+P_supply_gap = max(0, P_load_gen − Σ P_DGi_actual)    % P_DGi_kW 本为 genset-side 实际出力
+P_supply_gap > P_bat_dis_avail_g 连续 200 tick（2 s）→ force_start 请求
+```
+
+覆盖：DG ramp 过慢 / fault / STARTING/SYNC 未完成 / 电池 SOP 不足。
+`P_gen_unserved`（generation-command mismatch）**仅为 Dispatch 诊断量，不得用作
+S2 判据**（反例：EMS 过度请求 800 kW 而实际负荷 300 kW 时 unserved=300 但无真实缺口）。
+目标 = healthy∧available∧offline 机组；无目标则 flag-only。
 **S3**：`N_dispatch·125 − P_load_gen > P_bat_chg_avail_g` ∧ `N_healthy_ON ≥ 2` →
 force_stop_dg2；单健康机时 flag-only + `minimum_generation_surplus_unresolved=1`
 （known out-of-scope，FR-445）。
 **S4**：`D_firm = (P_prop_dem+P_hotel)/η_rect + 50 − (N_ON_healthy·500 +
 P_bat_dis_avail_g) > 0` 连续 200 tick → force_start 请求（语义同 S2 目标选择；
 capacity adequacy 判据，不检查 ramp 可实现性）。
-**S5**：`ems_health_ok = EMS_HEALTH_TS(t) ∧ ¬isnan(P_gen_ref_kW)`；`ems_health_ok==0`
-→ `baseline_fallback_active=1`（锁存，v1 不自动恢复）+ `baseline_fallback_reason`
-事件码 + selector 切 BASELINE_POLICY。**v1 不做 temporal freeze 检测**（legacy 变体可
-合法输出常数；冻结检测待 F 包真实预测器接入时定义契约——登记）。
+**S5**：v1 health authority = **显式 `EMS_HEALTH_TS`**（预留未来 heartbeat/sequence
+契约）∧ `isfinite(P_gen_ref_kW)`（覆盖 NaN/±Inf）；**不做 temporal freeze inference**
+（legacy 变体可合法长时输出常数，"没变"≠"控制器死了"；freeze/heartbeat 契约待 F 包
+定义——登记）。**仅当 nominal source == EMS_AGGREGATE 时** S5 产生 fallback alarm/事件；
+BASELINE_POLICY 模式下 selector 本不消费 EMS 输出，EMS 健康恶化为**非事件**。
+`ems_health_ok==0` → `baseline_fallback_active=1`（锁存，v1 不自动恢复）+
+`baseline_fallback_reason` 事件码 + selector 切 BASELINE_POLICY。
 
 **纯监视 flag**（FR-446）：soc≤0.20、Vdc<600、电池三 flag 透传；全部入 logging。
 **全 override/flag 事件入日志**（VI-1 唯一版本，D-B7）。
@@ -263,8 +292,9 @@ baseline_fallback_active/reason、监视 flags；14 的 P_bat_chg_avail_kW（补
 `scripts/43_run_modelE_control_gate.m`（`eval(fileread(...))` 入口，Model E 根执行）：
 
 ```text
-Phase 0: 先执行 40_run_modelE_gate（T-412 重跑，overall=true 才继续；否则 GATE:* 退出）
-Phase 1: 构建（build_model_e）+ 结构指纹/配置 manifest 更新校验（§7 DD-9）
+Phase 0: 生成候选基线 v1.1（DD-9 Step B 机器检查）+ 40_run_modelE_gate
+         --baseline_path=candidate（T-412 against candidate，overall=true 才继续）
+Phase 1: 构建（build_model_e）+ 结构指纹/配置 manifest 对 candidate 校验（§7 DD-9）
 Phase 2: AUTO 工况矩阵 × 三臂（S20/S01/顺水/逆水/S31/S34/S36 × R0/R5/P2）
 Phase 3: MANUAL M1/M2/M3 × P2
 Phase 4: Safety 注入场景 S1~S5 各一（确定性 bench，gate_assign_bench_inputs 扩展）
@@ -306,8 +336,11 @@ Gate 后处理（纯 MATLAB，审计日志输入）：
 ### 6.4 指标计算（FR-454）
 
 由 logsout 后处理：fuel_total（10 号既有输出终值）、start 计数（审计表 reason 分列
-normal/safety/forced）、online_time（commitment_state 积分）、双机低负荷 dwell
-（TWO_DG ∧ P_commit<350 的累计时间）、SOC/Vdc 极值与越限时长、battery throughput
+normal/safety/forced）、**online_time = ∫ 1(state_DGi==ON) dt（Plant 实际状态，
+非 commitment_state——启动挂起/fault/override 期间两者不等；commitment_state 仅用于
+transition audit 与决策时序分析）**、双机低负荷 dwell =
+`(state_DG1==ON) ∧ (state_DG2==ON) ∧ (P_commit<350)` 累计时间、SOC/Vdc 极值与越限时长、
+battery throughput
 （P_bat_bus 充/放分列积分）、unserved/surplus 能量、override 计数。结果写入
 `results/gate_control_result.json` 的 per-arm/per-scenario 节。
 
@@ -324,23 +357,35 @@ u_high = 0.70 → P_commit = 608.2 kW > 425 ✓（必然启 DG2）
 - **M1**（step）：0.30→0.70 @ t=30 s，总长 300 s（验证方向/rate limiter/电池瞬态）；
 - **M2**（ramp）：0.20→0.80 斜升 60 s（247→680 kW），总长 300 s；
 - **M3**（staged）：0.30（0–120 s）→ 0.70（120–360 s）→ 0.30（360–900 s）；
-  时序推演：high 段 LPF 穿越 425 ≈ 28 s + hold 30 s → DG2 ON ≈ 178 s（段内）；
-  low 段 LPF 跌破 350 ≈ 135 s + stop hold 120 s 且 min_up 300 s 并行 ⇒ 停机遇
-  ≈low 段 240~300 s 处发生，段长 540 s 足够观察完整 1DG→2DG→1DG 链 + COOLDOWN。
+  时序推演（评审修正）：high 段起点 t=120 s；LPF 穿越 425 ≈ 27~28 s → t≈148 s；
+  +start hold 30 s → **start command ≈178 s**；+Plant 物理 25+5 s →
+  **DG2 实际 ON ≈208 s**（178 s 是指令时刻而非并网时刻）；low 段起点 360 s，
+  LPF 跌破 350 ≈ +135 s（t≈495）+ stop hold 120 s → stop cmd ≈615 s
+  （min_up 300 s 自 ~208 s 起算于 508 s 已先行满足，并行计时不设额外障碍）；
+  COOLDOWN 完 ≈645 s；900 s 总长足够观察完整 1DG→2DG→1DG 链。
   实施时以 bench 实测校准段长（校准只动段长，不动电平与阈值）。
 
-## 7. Gate 基线维护（DD-9，🟡 用户批准项）
+## 7. Gate 基线维护（DD-9：candidate→validation→promotion，用户已批准 v1.1 升级）
 
 B 包结构性变更（01/02 改名、07 替换、16 新增、logging 扩展）使 A2 冻结的
 `gate_baseline_modele.json` v1.0 结构指纹（687 blocks/695 lines）与 config manifest
-sha256 必然变化。处置：
+sha256 必然变化。处置为**严格两阶段纪律**（禁止首 PASS 自动重写）：
 
-1. B 实施完成后**重建**基线为 **v1.1**：仅结构指纹节与 config manifest 节更新；
-   **G2~G6 物理判据阈值零改动**；Model D 参照哈希节零改动；
-2. T-412「重跑 PASS」的零回归证据 = 物理判据（G2~G6 + E01~E10 bench）在新结构上
-   全部通过且 bench 注入语义不变（DD-8 保证）；
-3. 基线重建属 🟡 操作，在 T-418 用户评审门随 43 Gate 结果一并报批；
-   控制基线 `gate_baseline_modele_control.json` 同场冻结 v1.0（FR-456 纪律）。
+- **Step A — v1.0 永久保留不回写**：`config/gate_baseline_modele.json`（v1.0）作为
+  A2 historical frozen baseline 原样保留；默认执行 40 号 Gate 仍使用 v1.0，
+  **不悄悄改变旧 Gate 默认行为**；
+- **Step B — 生成 candidate**：`config/gate_baseline_modele_candidate_v1_1.json`
+  （命名显式带 `_candidate`）；允许变化字段仅 structure fingerprint 与
+  control/config manifest 新增部分；生成时机器检查：`SHA(ModelE_Physics_Parameters)`
+  与 v1.0 逐位一致、G2~G6 阈值逐字段一致、Model D 参照哈希一致——任一不一致即
+  candidate 生成失败；
+- **Step C — T-412 against candidate**：40 号 Gate 支持显式 `baseline_path` 参数；
+  以 candidate 跑出 `overall=true`（bench 注入语义经 DD-8 保名兼容不变）；
+- **Step D — 用户评审**：随 T-418 评审门一并提交 candidate、v1.0→v1.1
+  field-level diff、T-412(candidate) 与 43 Gate 双 overall=true 证据；
+- **Step E — promotion（用户书面批准后）**：candidate 转正为
+  `gate_baseline_modele.json` v1.1；同场冻结 `gate_baseline_modele_control.json`
+  v1.0（FR-456）。
 
 ## 8. 参数文件（DD-2）
 
@@ -398,7 +443,9 @@ From Workspace 注入表 Interpolate=off；43/44 数字开头脚本 eval(filerea
 | D-B10 | 07_PMS_v2 保留 `ADAPTER_FORCE_*` 变量名（adapter 已退役） | T-412 bench（gate_assign_bench_inputs）零改动兼容；命名遗留作注释说明 |
 | D-B11 | S5 v1 无 temporal freeze 检测、fallback 锁存不自动恢复 | legacy 变体可合法输出常数；契约待 F 包真实预测器定义（brainstorm D-B7 框架内细化） |
 | D-B12 | 12_Data_Logging mask 文本修正（build_model.m→build_model_e.m） | delegate 核查发现的文档瑕疵，随 B 包顺手修正（行为零变化） |
-| D-B13 | `gate_baseline_modele.json` 结构指纹/manifest 节重建为 v1.1 | B 包结构变更必然；物理判据节零改动；🟡 用户评审门报批（§7） |
+| D-B13 | `gate_baseline_modele.json` 走 candidate→promotion 升级 v1.1（§7） | B 包结构变更必然；v1.0 永久保留；物理判据节零改动；promotion 需用户书面批准（评审修订后纪律） |
+| D-B14 | **S2 语义重定义为 realized supply deficit**（`max(0,P_load−ΣP_DG_actual)>SOP_dis` 持续 2 s），`P_gen_unserved` 降级为纯诊断量；requirements FR-445 S2 联动修订 | design 评审暴露：指令错配≠实际缺口（EMS 过度请求反例）；用户书面裁决 2026-09-04 |
+| D-B15 | Dispatch 输出与分母统一 `is_dispatching` 单一谓词；S5 health authority 收窄为显式通道+isfinite（无 freeze 推断）且仅 EMS_AGGREGATE 模式报警；requirements FR-445 S5 联动修订 | 评审暴露：分母/输出谓词不一致可致 STARTING 机组获非零 ref（违反 A2 契约）；常值输出≠控制器死亡；同场裁决 |
 
 ## Requirements Traceability
 

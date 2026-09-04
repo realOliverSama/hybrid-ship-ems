@@ -5,7 +5,9 @@ Status: requirements-approved（2026-09-04 用户批准：APPROVED WITH 5 MANDAT
 ① FR-451A canonical power domain 全 PMS 禁混域运算；② R0/R5/P2 三臂全部经过 Safety，
 臂间唯一差异为 demand source；③ M3 门槛化（design 换算冻结电平）；④ S3 仅在有第二台
 健康机时 FORCE_STOP 否则 flag-only；⑤ S2/S4 transition reason code 分离——+4 项编辑修正，
-用户预先授权修订后直接置 approved，无需再次评审 requirements）  
+用户预先授权修订后直接置 approved，无需再次评审 requirements）；design 评审联动修订
+FR-445 S2（改 realized supply deficit 实际供电口径）与 S5（改 explicit health contract +
+isfinite + 仅 EMS_AGGREGATE 模式报警）——2026-09-04 用户书面裁决，保持追溯诚实  
 Created: 2026-09-04  
 Brainstorm: `./brainstorm.md`（九轮裁决 D-B1~D-B9 + 终审 5 项修正，用户书面批准）
 
@@ -172,8 +174,12 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
     字面 state≠command 判据——STARTING/SYNC 期间 cmd=ON 而 state≠ON 属合法）→
     故障机 `dispatch_eligible=false` + FORCE_STOP；另一机 OFF 且航次激活 →
     FORCE_START 健康机；
-  - **S2 Realized supply deficit**：`P_gen_unserved > P_bat_dis_avail` 持续 2 s →
-    FORCE_START 可用健康离线机组（缺口已由 Dispatch 兑现且电池 SOP 补不上）；
+  - **S2 Realized supply deficit**：`P_supply_gap = max(0, P_load − Σ P_DGi_actual)
+    > P_bat_dis_avail`（canonical 域，P_DGi_actual 为机组实际出力）持续 2 s →
+    FORCE_START 可用健康离线机组——判据基于**实际供电能力**（负荷 vs 机组实际出力
+    +电池 SOP），天然覆盖 ramp 过慢/fault/启动未完成/SOP 不足；
+    `P_gen_unserved`（generation-command mismatch）仅为 Dispatch 诊断量，
+    **不得**用作 Safety 判据（design 评审裁决：EMS 过度请求≠真实缺口）；
   - **S3 Min generation surplus**：`N_dispatch·125 − P_load > P_bat_chg_avail`
     **且 `N_healthy,ON ≥ 2`**（停掉 lag 后仍保留至少一台健康机组在线）→
     FORCE_STOP DG2（旁路 dwell）；若只剩一台健康在线机组，**不得** FORCE_STOP
@@ -189,9 +195,14 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
     或无可启机组 flag-only）；S4 是 **capacity adequacy** 判据，**不是** instantaneous
     ramp adequacy（ramp/τ 瞬态缺口归 battery/S2/Vdc 链）；`P_DG,rated,bus` 的
     rectifier 前后口径在 design 门源码核查后写死；
-  - **S5 EMS health fallback**：`ems_health_ok=0`（freeze/NaN/超时）→ source selector
-    切回 `Baseline_Demand_Policy`（唯一确定性热备份；先进 EMS 永不直写 Plant）+
-    `baseline_fallback_active` 置位 + alarm 锁存。
+  - **S5 EMS health fallback**：v1 health authority = 显式 `EMS_HEALTH_TS`（预留
+    未来 heartbeat/sequence 契约）∧ `isfinite(P_gen_ref_kW)`（覆盖 NaN/±Inf）；
+    **不做** temporal freeze inference（legacy 变体可合法长时输出常数；freeze/
+    heartbeat 契约待 F 包接口定义）；`ems_health_ok=0` → source selector 切回
+    `Baseline_Demand_Policy`（唯一确定性热备份；先进 EMS 永不直写 Plant）+
+    `baseline_fallback_active` 置位 + alarm 锁存；**仅当 nominal source 为
+    EMS_AGGREGATE 时**产生 fallback alarm/事件（BASELINE_POLICY 模式下 EMS
+    健康恶化为非事件）。
 - **FR-446**: 纯监视（flag 入日志，不独立动作）SHALL 含：SOC ≤ 0.20、Vdc < 600 V、
   电池 V/I/LUT 边界（沿用 ECM 既有 flag）；**`08_Undervolt_Derate` 保持唯一执行性
   propulsion limiter**，Safety 不得新增第二条推进功率限制路径。
