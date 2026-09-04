@@ -17,6 +17,7 @@ results = struct(); results.defects = {};   % 逐字段初始化（struct() 对�
 
 %% ---- 缺陷 A：Hull_K_R 减半（阻力掉半 → 巡航功率带判据应 FAIL）----
 fprintf('[NEG] defect A: Hull_K_R -> 445 (halved)\n');
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量（先恢复 nominal，再施加本 case 缺陷）
 baseK = Hull_K_R;
 assignin('base', 'Hull_K_R', 445);
 SCN = SCENARIOS(1); SCN.voyage_distance_m = 2000; SCN.initial_SOC = 0.60;
@@ -32,6 +33,7 @@ results.defect_A_hull_K_R = struct('pass_detected', fail_A, 'P_prop_kW', P_defec
 
 %% ---- 缺陷 B：电池 OCV LUT 压平（V_t 方向性判据应 FAIL）----
 fprintf('[NEG] defect B: Bat_OCV_LUT_V -> flat 400 V\n');
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量
 baseOCV = Bat_OCV_LUT_V;
 assignin('base', 'Bat_OCV_LUT_V', 400 * ones(1, 9));
 SCN = SCENARIOS(1); SCN.voyage_distance_m = 2000; SCN.initial_SOC = 0.35;
@@ -59,6 +61,7 @@ assignin('base', 'Bat_OCV_LUT_V', baseOCV);       % 恢复
 results.defect_B_ocv_lut = struct('pass_detected', fail_B, 'manifest_consistent', fail_B);
 
 %% ---- 恢复验证：无缺陷状态判据 PASS ----
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量
 SCN = SCENARIOS(1); SCN.voyage_distance_m = 2000; SCN.initial_SOC = 0.60;
 assignin('base', 'Bat_SOC_init', 0.60);
 out = model.run_scenario_sim(MDL, SCN, 0, 2500);

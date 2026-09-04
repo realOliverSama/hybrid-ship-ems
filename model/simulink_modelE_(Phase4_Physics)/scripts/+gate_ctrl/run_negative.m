@@ -20,6 +20,7 @@ function neg = run_negative(ROOT)
 
     %% ---- 锚点正常跑（P2/S01，取合法审计行供缺陷加工） ----
     fprintf('[44] 锚点正常跑 P2/S01 ...\n');
+    gate_e.reset_bench_nominal();   % T-006 case 隔离不变量
     [dsA, ~, rowsA] = runP2S01(300);
     assert(~isempty(rowsA), '44: 锚点跑无审计行，无法构造缺陷');
 
@@ -57,6 +58,7 @@ function neg = run_negative(ROOT)
     fprintf('[44] D4: 屏蔽 S2+S4（hold_ticks=1e9）+ 重跑 S4 场景 ...\n');
     inj = gate_ctrl.injection_scenarios();
     s4 = inj(4);
+    gate_e.reset_bench_nominal();   % T-006 case 隔离不变量（先恢复 nominal，再施加本 case 注入）
     s4.prep_fn();
     assignin('base', 'PMS_S2_hold_ticks', 1e9);   % 缺陷注入（Parameter 通道，不落盘）
     assignin('base', 'PMS_S4_hold_ticks', 1e9);

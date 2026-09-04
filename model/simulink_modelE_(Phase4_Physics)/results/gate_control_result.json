@@ -1,6 +1,6 @@
 {
   "schema": "gate_control_result_v1",
-  "generated_at": "2026-09-04T19:51:43***",
+  "generated_at": "2026-09-05T02:00:31***",
   "checks": [
     {
       "name": "C2_transition_legality",
@@ -1612,10 +1612,10 @@
   "phase1": {
     "note": "GATE43_BASELINE_PATH 未设（骨架/评审前模式）"
   },
-  "wall_time_s": 399.20159475,
+  "wall_time_s": 342.41628804166669,
   "negative_control": {
     "schema": "gate_control_negative_v1",
-    "generated_at": "2026-09-04T19:59:06***",
+    "generated_at": "2026-09-05T02:06:50***",
     "defects": [
       {
         "id": "D1",

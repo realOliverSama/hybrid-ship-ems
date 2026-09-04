@@ -116,13 +116,14 @@ function R = run_gate(ROOT, QUICK)
         for k = 1:numel(injSpec)
             lbl = sprintf('INJ/%s', injSpec(k).name);
             fprintf('[43] run %s\n', lbl);
+            gate_e.reset_bench_nominal();            % T-006 case 隔离（先于本 case 注入；prep_fn 注入必须在其后，runOne 内不得再 reset）
             injSpec(k).prep_fn();                    % assignin 确定性注入（每场景先恢复全 nominal）
             scn = SCENARIOS(1);
             scn.voyage_distance_m = injSpec(k).voyage_distance_m;
             scn.initial_SOC = injSpec(k).soc_init;   % 注入 SOC（runOne 经 Bat_SOC_init 统一生效）
             scn.hotel_kW = injSpec(k).hotel_kW;      % 注入 hotel（S3 低负荷盈余用）
             [ds, mm, rows] = runOne(injSpec(k).law, injSpec(k).src, scn, ...
-                injSpec(k).use_manual, injSpec(k).manual_ts, injSpec(k).stop_time_s);
+                injSpec(k).use_manual, injSpec(k).manual_ts, injSpec(k).stop_time_s, true);
             c6 = gate_ctrl.check_c6_safety_assertions(ds, mm, injSpec(k).expected, lbl);
             addCheck('C6_safety_assertions', lbl, c6.pass);
             c4 = gate_ctrl.check_c4_vdc(ds, lbl, true);
@@ -168,7 +169,13 @@ function R = run_gate(ROOT, QUICK)
             end
         end
 
-        function [ds, mm, rows] = runOne(law, src, scn, useManual, manualTs, stopT)
+        function [ds, mm, rows] = runOne(law, src, scn, useManual, manualTs, stopT, skipReset)
+            % skipReset=true：注入场景路径——case 隔离 reset 已在 Phase 4 循环内、
+            % prep_fn 之前完成；此处再 reset 会抹掉 prep_fn 施加的注入通道
+            % （S1 GEN_CMD_STOP_TS/S3 force/S5 EMS_HEALTH_TS 被 wipe 事故，2026-09-05）。
+            if nargin < 7 || isempty(skipReset) || ~skipReset
+                gate_e.reset_bench_nominal();   % T-006（DGN-15）：每 case 显式恢复 bench nominal，再施加本 case 配置
+            end
             assignin('base', 'EMS_CTRL_LAW', law);
             assignin('base', 'EMS_MODE', double(law > 0));
             assignin('base', 'PMS_SOURCE_MODE', src);
