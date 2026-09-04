@@ -122,7 +122,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
     （非零拍/非两拍）**
   - Notes: 集成前 T-002~T-006 必须全部完成；X_b2g_* 块名清单入 43 结构断言
 
-- [ ] 8. 七变体兼容 + law=0/5 smoke
+- [x] 8. 七变体兼容 + law=0/5 smoke
   - ID: T-008
   - Requirement(s): FR-450, FR-426(A2 契约延续)
   - Roadmap: T-418 前置
