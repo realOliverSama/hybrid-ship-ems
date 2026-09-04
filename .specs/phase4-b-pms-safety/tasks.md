@@ -46,7 +46,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Notes: canonical 域换算常数直接引用 `ASSUMED_eta_rect`（物理事实源），
     不在控制参数文件复制数值
 
-- [ ] 2. Baseline_Demand_Policy 块源码 + 单测（并行链 A，delegate）
+- [x] 2. Baseline_Demand_Policy 块源码 + 单测（并行链 A，delegate）
   - ID: T-002
   - Requirement(s): FR-432, FR-433, FR-434, FR-435
   - Roadmap: T-415（Demand 层）
@@ -57,7 +57,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: `matlab -batch "run('scripts/tests/test_pms_demand_e.m')"` 全过
   - Notes: 交付独立文件两枚，不碰 build_model_e.m；发现 spec 语义矛盾立即停止升级
 
-- [ ] 3. DG_Dispatch_Allocator 块源码 + 单测（并行链 B，delegate）
+- [x] 3. DG_Dispatch_Allocator 块源码 + 单测（并行链 B，delegate）
   - ID: T-003
   - Requirement(s): FR-441, FR-442, FR-443
   - Roadmap: T-416（Dispatch 层）
@@ -67,7 +67,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: 单测全过
   - Notes: 同上独立交付；诊断量命名与 design §5.5 逐字一致
 
-- [ ] 4. 16_Safety_Interlock 块源码 + 单测（并行链 C，delegate）
+- [x] 4. 16_Safety_Interlock 块源码 + 单测（并行链 C，delegate）
   - ID: T-004
   - Requirement(s): FR-444, FR-445, FR-446, FR-447
   - Roadmap: T-417
