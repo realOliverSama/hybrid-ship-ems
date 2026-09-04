@@ -1,0 +1,1004 @@
+{
+  "schema": "dataset_v3_signal_registry_v1",
+  "version": "1.0.0",
+  "spec": "phase4-d-dataset-v3",
+  "description": "Dataset v3 signal/role registry — 执行层唯一事实源（FR-465/DGN-02）。Builder/exporter/validator 一律消费本文件，禁止在脚本内维护独立 hard-coded feature-role list。Markdown 契约文档仅作解释层并引用本文件。",
+  "source_conventions": {
+    "logsout:<SignalName>": "Model E logsout 打点（scripts/+model/build_model_e.m configureLogging）",
+    "scenario:<VARIABLE>": "场景级常量（base workspace 注入，逐航次已知；未打点信号的合法来源，Model E 零改动约束下不新增打点）",
+    "fixture:<KIND>": "pilot causal fixture（DGN-13，全部行标 fixture_kind=PILOT_ONLY，禁入 formal）"
+  },
+  "enums": {
+    "role": [
+      "INPUT_H1",
+      "INPUT_H2",
+      "INPUT_K",
+      "INPUT_F",
+      "TARGET",
+      "ORACLE",
+      "METADATA",
+      "FORBIDDEN"
+    ],
+    "temporal_domain": [
+      "history",
+      "future",
+      "both",
+      "none"
+    ],
+    "aggregation": [
+      "time_mean",
+      "interval_endpoint",
+      "last_mode",
+      "interval_any"
+    ],
+    "issue_time_semantics": [
+      "none",
+      "issue_snapshot"
+    ],
+    "predictor_access": [
+      "default",
+      "extended",
+      "oracle_only",
+      "forbidden",
+      "metadata_only"
+    ]
+  },
+  "role_predictor_access_binding": {
+    "INPUT_H1": "default",
+    "INPUT_H2": "extended",
+    "INPUT_K": "default",
+    "INPUT_F": "default",
+    "TARGET": "forbidden",
+    "ORACLE": "oracle_only",
+    "METADATA": "metadata_only",
+    "FORBIDDEN": "forbidden"
+  },
+  "aggregation_semantics": {
+    "time_mean": "bin (a,b] 内 trapezoidal 时间加权均值（DGN-05 + design R1：统一 time-weighted 积分语义，非 mean(samples)）；功率列满足 Σ_k P̄_k·Δt ≈ ∫P dt（1e-9 相对）",
+    "interval_endpoint": "bin 右端点值（状态积累量/约束快照）",
+    "last_mode": "bin 内最后采样值（离散模式/状态）",
+    "interval_any": "bin 内任一为真（事件/flag，仅 METADATA/ORACLE 列）"
+  },
+  "bin_semantics": "history bin H_j=(t0-j, t0-j+1], j=300..1；future bin F_k=(t0+(k-1)*10, t0+k*10], k=1..30；右闭",
+  "ctrl_mode_zero_fill": "DGN-06：ctrl_mode=AUTO(0) 时 manual_power_cmd_pct 聚合列填 0.0；ctrl_mode=MANUAL(1) 时 v_ref_mps 聚合列填 0.0；ORACLE 层（*_unmasked）保留原始双通道真值",
+  "target_derivation": "TARGET 条目（P_load_total_kW, future）的 y_k=E_k/10 由 native-rate trapezoidal 累计能量差分构建（DGN-08），与 time_mean 聚合路径同定义等价（交叉验证 <1e-9 相对）；禁从 1Hz 降采样流二次计算；E300=ΣE_k/3600 [kWh] 为 mandatory derived scalar",
+  "signals": [
+    {
+      "name": "P_load_total_kW",
+      "unit": "kW",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:P_load_total_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default",
+      "note": "bus-side 总负荷功率（04_Load_Measurement）；同时是 TARGET 源信号（见 role=TARGET 条目）"
+    },
+    {
+      "name": "v_ship_mps",
+      "unit": "m/s",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:v_ship_mps",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default"
+    },
+    {
+      "name": "acceleration_mps2",
+      "unit": "m/s^2",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:acceleration_mps2",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default"
+    },
+    {
+      "name": "n_prop_rpm",
+      "unit": "rpm",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:n_prop_rpm",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default"
+    },
+    {
+      "name": "P_hotel_kW",
+      "unit": "kW",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:P_hotel_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default"
+    },
+    {
+      "name": "v_current_mps",
+      "unit": "m/s",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:v_current_mps",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default",
+      "note": "历史侧流速（D-D2）；未来真值对应物另存 ORACLE 条目 u_actual_future_mps"
+    },
+    {
+      "name": "water_depth_m",
+      "unit": "m",
+      "role": "INPUT_H1",
+      "source_signal": "scenario:VOYAGE_WATER_DEPTH_M",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default",
+      "note": "Model E 中为逐航次常量（01_Operator_interface 常量输入，未打点——Model E 零改动约束下从场景元数据导出常量列）"
+    },
+    {
+      "name": "P_prop_demand_kW",
+      "unit": "kW",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:P_prop_demand_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "default"
+    },
+    {
+      "name": "ctrl_mode",
+      "unit": "mode",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:ctrl_mode",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "default",
+      "note": "0=AUTO/1=MANUAL（编译期）；决定 v_ref/manual 双通道哪个语义激活（DGN-06 zero-fill）"
+    },
+    {
+      "name": "v_ref_mps",
+      "unit": "m/s",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:v_ref_mps",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "default",
+      "note": "MANUAL 激活时聚合列 zero-fill；原始值存 ORACLE v_ref_mps_unmasked"
+    },
+    {
+      "name": "manual_power_cmd_pct",
+      "unit": "pct",
+      "role": "INPUT_H1",
+      "source_signal": "logsout:manual_power_cmd_pct",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "default",
+      "note": "AUTO 激活时聚合列 zero-fill；原始值存 ORACLE manual_power_cmd_pct_unmasked"
+    },
+    {
+      "name": "P_gen_actual_kW",
+      "unit": "kW",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:P_gen_actual_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended"
+    },
+    {
+      "name": "P_bat_actual_kW",
+      "unit": "kW",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:P_bat_actual_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended"
+    },
+    {
+      "name": "SOC",
+      "unit": "ratio",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:SOC",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended"
+    },
+    {
+      "name": "V_dc_V",
+      "unit": "V",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:V_dc_V",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended"
+    },
+    {
+      "name": "state_DG1",
+      "unit": "state",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:state_DG1",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended",
+      "note": "状态机编码 0=OFF/1=STARTING/2=SYNCHRONIZING/3=ON/4=COOLDOWN（GensetUnitE 现有编码）"
+    },
+    {
+      "name": "state_DG2",
+      "unit": "state",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:state_DG2",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended",
+      "note": "同 state_DG1 编码"
+    },
+    {
+      "name": "V_bat_V",
+      "unit": "V",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:V_bat_V",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended"
+    },
+    {
+      "name": "I_bat_A",
+      "unit": "A",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:I_bat_A",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended"
+    },
+    {
+      "name": "P_bat_dis_avail_kW",
+      "unit": "kW",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:P_bat_dis_avail_kW",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended",
+      "note": "SOP 四约束 min（bus-side）"
+    },
+    {
+      "name": "P_bat_chg_avail_kW",
+      "unit": "kW",
+      "role": "INPUT_H2",
+      "source_signal": "logsout:P_bat_chg_avail_kW",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "extended",
+      "note": "SOP 四约束 min（bus-side）"
+    },
+    {
+      "name": "v_plan_mps",
+      "unit": "m/s",
+      "role": "INPUT_K",
+      "source_signal": "fixture:planned_alongtrack_sog",
+      "temporal_domain": "future",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "issue_snapshot",
+      "predictor_access": "default",
+      "note": "pilot fixture（DGN-13/R5）：planned along-track SOG 前向积分计划剖面，禁复用 realized v_ref；plan=场景速度表（先验计划，因果合法）"
+    },
+    {
+      "name": "s_plan_m",
+      "unit": "m",
+      "role": "INPUT_K",
+      "source_signal": "fixture:planned_alongtrack_position",
+      "temporal_domain": "future",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "issue_snapshot",
+      "predictor_access": "default",
+      "note": "pilot fixture：x_actual(t0) + 计划 SOG 前向梯形积分（t0 位置属 ℐ_{<=t0}，因果）"
+    },
+    {
+      "name": "h_chart_m",
+      "unit": "m",
+      "role": "INPUT_K",
+      "source_signal": "fixture:scenario_water_depth_setting",
+      "temporal_domain": "future",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "issue_snapshot",
+      "predictor_access": "default",
+      "note": "pilot fixture（DGN-13）：场景水深设定=海图已知量，K 类本就精确"
+    },
+    {
+      "name": "P_hotel_plan_kW",
+      "unit": "kW",
+      "role": "INPUT_K",
+      "source_signal": "fixture:scenario_hotel_plan",
+      "temporal_domain": "future",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "issue_snapshot",
+      "predictor_access": "default",
+      "note": "pilot fixture：场景 hotel 计划常量（仅 planned component，D-D3）"
+    },
+    {
+      "name": "u_fcst_mps",
+      "unit": "m/s",
+      "role": "INPUT_F",
+      "source_signal": "fixture:persistence_current_forecast",
+      "temporal_domain": "future",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "issue_snapshot",
+      "predictor_access": "default",
+      "note": "pilot fixture（DGN-13）：U_fcst(t0+k|t0)=U_actual(t0) persistence，仅消费 t0 及以前信息，满足 F_{t0}=g(I_{<=t0})"
+    },
+    {
+      "name": "wl_fcst_m",
+      "unit": "m",
+      "role": "INPUT_F",
+      "source_signal": "fixture:persistence_waterlevel_forecast",
+      "temporal_domain": "future",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "issue_snapshot",
+      "predictor_access": "default",
+      "note": "pilot fixture：WL persistence，同 u_fcst_mps 因果语义"
+    },
+    {
+      "name": "u_actual_future_mps",
+      "unit": "m/s",
+      "role": "ORACLE",
+      "source_signal": "logsout:v_current_mps",
+      "temporal_domain": "future",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "oracle_only",
+      "note": "INPUT_F 的 realization 真值对应物（FR-467 双存、角色物理隔离）"
+    },
+    {
+      "name": "wl_actual_future_m",
+      "unit": "m",
+      "role": "ORACLE",
+      "source_signal": "scenario:VOYAGE_WATER_DEPTH_M",
+      "temporal_domain": "future",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "oracle_only",
+      "note": "wl_fcst_m 的 realization 真值对应物（Model E 水深为常量）"
+    },
+    {
+      "name": "v_ref_mps_unmasked",
+      "unit": "m/s",
+      "role": "ORACLE",
+      "source_signal": "logsout:v_ref_mps",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "oracle_only",
+      "note": "DGN-06：原始双通道真值（未 zero-fill）供审计"
+    },
+    {
+      "name": "manual_power_cmd_pct_unmasked",
+      "unit": "pct",
+      "role": "ORACLE",
+      "source_signal": "logsout:manual_power_cmd_pct",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "oracle_only",
+      "note": "DGN-06：原始双通道真值（未 zero-fill）供审计"
+    },
+    {
+      "name": "scenario_id",
+      "unit": "id",
+      "role": "METADATA",
+      "source_signal": "logsout:scenario_id",
+      "temporal_domain": "none",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "metadata_only",
+      "note": "H3→METADATA 映射（DGN-02 R1）"
+    },
+    {
+      "name": "resistance_multiplier",
+      "unit": "ratio",
+      "role": "METADATA",
+      "source_signal": "logsout:resistance_multiplier",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "metadata_only",
+      "note": "scenario latent（H3）→METADATA metadata_only（DGN-02 R1）；供 provenance/OOD/error-attribution"
+    },
+    {
+      "name": "domain_warning",
+      "unit": "flag",
+      "role": "METADATA",
+      "source_signal": "logsout:domain_warning",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "metadata_only",
+      "note": "浅水域警告（DGN-05 interval_any）"
+    },
+    {
+      "name": "HT_ratio",
+      "unit": "ratio",
+      "role": "METADATA",
+      "source_signal": "logsout:HT_ratio",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "metadata_only",
+      "note": "H/T 单一事实源输出；OOD 轴 B 物理域检查证据列（FR-486）"
+    },
+    {
+      "name": "P_load_total_kW",
+      "unit": "kW",
+      "role": "TARGET",
+      "source_signal": "logsout:P_load_total_kW",
+      "temporal_domain": "future",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "主 TARGET：y_k=10s 区间时间加权均值功率（DGN-08 native 能量差分构建）；predictor_access=forbidden 指其不得作为输入特征（target-as-feature 泄漏封锁）"
+    },
+    {
+      "name": "P_gen_ref_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_gen_ref_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "EMS 聚合指令输出（H3：EMS 内部/输出命令，预测器禁入；存档供审计）"
+    },
+    {
+      "name": "P_commit_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_commit_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "PMS v2 内部（H3 audit 族）"
+    },
+    {
+      "name": "P_gen_req_eff_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_gen_req_eff_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "N_dispatch",
+      "unit": "count",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:N_dispatch",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_load_gen_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_load_gen_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_bat_dis_avail_g_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_bat_dis_avail_g_kW",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "genset-side 换算值（X_b2g，DD-1）"
+    },
+    {
+      "name": "P_bat_chg_avail_g_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_bat_chg_avail_g_kW",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "u_recovery",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:u_recovery",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_recovery_actual_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_recovery_actual_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "start_hold_timer",
+      "unit": "tick",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:start_hold_timer",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "stop_hold_timer",
+      "unit": "tick",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:stop_hold_timer",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "online_timer",
+      "unit": "tick",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:online_timer",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "commitment_state",
+      "unit": "state",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:commitment_state",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "PMS audit 族（H3）"
+    },
+    {
+      "name": "reason_code",
+      "unit": "code",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:reason_code",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "PMS audit 族（H3）"
+    },
+    {
+      "name": "audit_valid",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_valid",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_old_state",
+      "unit": "state",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_old_state",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_new_state",
+      "unit": "state",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_new_state",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_P_commit_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_P_commit_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_t_start_hold",
+      "unit": "tick",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_t_start_hold",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_t_stop_hold",
+      "unit": "tick",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_t_stop_hold",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_t_online",
+      "unit": "tick",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_t_online",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "audit_safety_override",
+      "unit": "code",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:audit_safety_override",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "DG1_enable",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:DG1_enable",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "DG2_enable",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:DG2_enable",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_DG1_ref_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_DG1_ref_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_DG2_ref_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_DG2_ref_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "cmd_onoff_DG1",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:cmd_onoff_DG1",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "cmd_onoff_DG2",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:cmd_onoff_DG2",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_gen_unserved_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_gen_unserved_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_gen_surplus_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_gen_surplus_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "dispatch_min_clamp_active",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:dispatch_min_clamp_active",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "dispatch_n_zero_flag",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:dispatch_n_zero_flag",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "selector_baseline_active",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:selector_baseline_active",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "baseline_fallback_active",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:baseline_fallback_active",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "baseline_fallback_reason",
+      "unit": "code",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:baseline_fallback_reason",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "fault_latch",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:fault_latch",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "safety_force_start_req",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:safety_force_start_req",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "safety_force_start_reason",
+      "unit": "code",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:safety_force_start_reason",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "safety_force_stop_req",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:safety_force_stop_req",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "safety_force_stop_reason",
+      "unit": "code",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:safety_force_stop_reason",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "ems_health_ok",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:ems_health_ok",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "safety_baseline_fallback_active",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:safety_baseline_fallback_active",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "safety_baseline_fallback_reason",
+      "unit": "code",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:safety_baseline_fallback_reason",
+      "temporal_domain": "history",
+      "aggregation": "last_mode",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "min_gen_surplus_unresolved",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:min_gen_surplus_unresolved",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "D_firm_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:D_firm_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "S2_supply_gap_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:S2_supply_gap_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "flag_soc_low",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:flag_soc_low",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "flag_vdc_low",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:flag_vdc_low",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "flag_bat_passthrough",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:flag_bat_passthrough",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "below_min_DG2",
+      "unit": "flag",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:below_min_DG2",
+      "temporal_domain": "history",
+      "aggregation": "interval_any",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "start_count_DG1",
+      "unit": "count",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:start_count_DG1",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "start_count_DG2",
+      "unit": "count",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:start_count_DG2",
+      "temporal_domain": "history",
+      "aggregation": "interval_endpoint",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden"
+    },
+    {
+      "name": "P_DG1_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_DG1_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "机组级实际功率（非 FR-461 H1/H2 契约信号；存档供 commitment 事件审计，预测器禁入）"
+    },
+    {
+      "name": "P_DG2_kW",
+      "unit": "kW",
+      "role": "FORBIDDEN",
+      "source_signal": "logsout:P_DG2_kW",
+      "temporal_domain": "history",
+      "aggregation": "time_mean",
+      "issue_time_semantics": "none",
+      "predictor_access": "forbidden",
+      "note": "同 P_DG1_kW"
+    }
+  ],
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "9ab11deac62390f23ec0b31b047465617d4389359becf99928ecc4c9ca1688e1"
+  }
+}
