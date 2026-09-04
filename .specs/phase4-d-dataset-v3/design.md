@@ -274,7 +274,25 @@ bin (a,b] 含 native 样本 {t : a < t ≤ b}。逐列规则（写进 registry `
 
 ## 偏差登记
 
-（空——施工期发生的偏差按 B 包惯例逐项登记于此，含 DGN 编号、原因、影响、批准状态。）
+（D0 施工期偏差逐项登记如下；均为非语义实现变化/笔误修正/审查闭合，D-D1~D-D9 科学契约不变。）
+
+| # | DGN | 偏差 | 原因 | 影响 | 状态 |
+|---|---|---|---|---|---|
+| D-1 | DGN-08 | design 原文 "y_k=E_k·3600/10" 为笔误，实现按 y_k=E_k/10 [kW] | FR-476 与 HANDOFF §5 权威口径（kW·s 能量差÷10s）；targets.py/registry/dataset_v3_schema.md 三处同口径登记 | 无（FR-476 字面即正确公式） | 已实施 |
+| D-2 | DGN-04 | voyage artifact 用 .mat **v7**（scipy.io.loadmat 直读），非 "v7.3/HDF5" 字面 | MATLAB-HDF5 字符串/struct 编码互操作风险；v2 读链成熟；单航次恒 <2GB | 无（双索引 schema 级区分等科学契约不变；FR-499 非语义实现变化） | 已实施 |
+| D-3 | DGN-14 | mask 的 DG settling 窗常数取 30 s；v_ref 阶跃容差 0.10 m/s/采样 | design 冻结规则未钉该常数；30s=v_ref 窗同值（启动 25+5s+收敛裕量同理）；容差>最大指令斜坡 0.20 m/s² 之半 | 阈值语义不变，mask 规则仍预声明 | 已实施 |
+| D-4 | DGN-14 | 恢复判据（t_rec ≤1.5s）与稳态判据同样限定 eligible 域 | 启动暂态跌落属豁免窗（基线实证：修复前 t_rec=12.92s 全 case FAIL ← 启动全局最低点；修复后 rec_masked=0） | 阈值不变，仅判据域（FR-490 语义） | 已实施 |
+| D-5 | DGN-15 | reset_bench_nominal 为纯 assignin 通道恢复，**禁止**在 base 重跑 config 脚本 | 事故实证：TestScenarios 内部 `for k=1:10` 覆写脚本型 Gate 调用方同名循环变量（40 E05 六档全退化 S10，R 逐位相同） | 无（DGN-15 本身规定 assignin 机制） | 已实施 |
+| D-6 | DGN-16 | 43 号注入场景的 case 隔离 reset 位于 prep_fn **之前**（runOne 增 skipReset） | 事故实证：runOne 内 reset 抹掉 prep_fn 已施加注入（S1 GEN_CMD_STOP_TS/S3 force/S5 EMS_HEALTH_TS → C6 FAIL） | 无（注入场景隔离不变量保持） | 已实施 |
+| D-7 | DGN-02 | registry 删除 below_min_DG1 条目（91→90） | configureLogging 有登记但运行时 logsout 无该命名元素（build 期线命名失败；探针实证 MISSING_FROM_DS=below_min_DG1、below_min_DG2 在）；Model E 零改动不修模型 | 无（FORBIDDEN 存档条目，非 H1/H2 契约集） | 已实施 |
+| D-8 | DGN-05 | interval_any 用于 FORBIDDEN flag 存档列 | DGN-05 括注"仅 METADATA/ORACLE"针对契约列；存档 flag 列沿用同一聚合语义 | 无（view 白名单下零管线影响） | 已实施 |
+| D-9 | DGN-02 | AI 变体内部信号（P_pred_max_kW/t_peak_pred_s/AI_valid/P_ff_kW/t_fire_latched）与 DG_cmd_stop 不入 registry | 前者仅活动变体可记录（law=0 pilot 不存在）；后者为 bench 注入向量信号（非标量聚合语义） | 无（registry 未登记即不导出，零泄漏面） | 已实施 |
+| D-10 | DGN-09/12 | split hash 分隔符 "‖" 落案 ASCII `\|`（SEPARATOR 常量集中）；manifest run_metadata 补 DGN-12 冻结槽位强制（脚本路径+SHA/版本/构建时间）；L3 接口补 provenance 接线 + formal require_train_stats fail-fast | 交叉审查（R0/R1/R2）闭合项 | 无（审查修复，回归测试覆盖） | 已实施 |
+| D-11 | 环境 | pytest 安装进 `.venv_tf`（9.1.1） | tasks 指定 `python -m pytest` 验证命令，venv 原缺 | 开发工具，非科学依赖 | 已实施 |
+| D-12 | 证据 | hygiene 复验证据分两段（10b/40/42 一段；43/44 于 D-6 修复后一段） | 43 注入顺序修复只动 run_gate.m（不影响 10b/40/42 代码路径） | 两段均为最终代码态证据 | 已实施 |
+| D-13 | DGN-13 | pilot 航次表移除 S09_emergency_sprint（19 航次）；S31~S36 航程 3000→5000 m（<600 s 零窗）；<600 s 航次（M1/M2）零快照合法导出 | S09 与 S01 实现轨迹逐位相同（v_ref 同为常数表、accel_ramp 不约束常数剖面）→ L1③ exact-duplicate 检出（机制正确性实证）；浅水层需真实窗口；FR-472 边界 | L1 冻结规则零改动；应急坡道语义属 C 包 Mission v3 | 已实施 |
+| D-14 | DGN-15 | reset_bench_nominal 的 PMS_SOURCE_MODE 恢复为 0（BASELINE_POLICY），与 Control 参数文件默认 1（nominal source）不同 | law=0 下 Source_Selector 双源共享同一 Baseline 链（功能同源）——40 号 golden Gate 接线前后逐位一致实证（G2 六档 R 与 B 包基线逐位相等）；0 与 pilot meta/43 号 P2 臂"src=0 确定性需求源"约定一致 | 无（经验证据等价）；C 包 formal harness 不得继承此歧义，须显式设定 src | 已实施 |
+| D-15 | DGN-16 | C/D Gate 骨架的十项检查折叠为 5 个机器键（c01/c02/c07/c09/c10），③④⑤⑥⑧ 以违规消息前缀归因；⑤ oracle 分离为列名 marker 扫描；⑩ 独立运行 python 时缺省 pass（经 72 号路径 fail-closed） | NON-FORMAL 骨架自检粒度；正式版（C 就绪后）须逐项独立键并收紧 ⑤⑩ | 正式 C/D Gate 前必改（见 D0_COMPLETE_HANDOFF） | 已登记（骨架级） |
 
 ## 修订记录
 

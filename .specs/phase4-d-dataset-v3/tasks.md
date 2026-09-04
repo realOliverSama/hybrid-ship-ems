@@ -1,7 +1,7 @@
 # Phase 4-D 数据集 v3（T-430~T-435）Tasks
 
 Spec: `phase4-d-dataset-v3`  
-Status: tasks-approved  
+Status: implementation-in-progress（**D0 contract/pipeline complete** 2026-09-05：T-001~T-017 全勾；T-432/T-435-formal 仍 BLOCKED——不得升 implementation-complete）  
 Created: 2026-09-04  
 Approved: 2026-09-04（CONDITIONAL PASS + R1~R7 修正闭合）  
 Brainstorm: `./brainstorm.md`（D-D1~D-D9 批准）  
@@ -38,7 +38,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## T-430 — 观测变量契约（FR-461）
 
-- [ ] 1. signal/role registry + registry 校验器
+- [x] 1. signal/role registry + registry 校验器
   - ID: T-001
   - Requirement(s): FR-461, FR-464, FR-465, FR-470；Design: DGN-01/02/05/06
   - depends_on: 无（首批）
@@ -49,7 +49,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: `python -m dataset_v3.validate_contracts --registry` 全过；负向：注入非法 role/缺字段必须 FAIL
   - Completion evidence: validator 输出 + registry hash
 
-- [ ] 2. observation_contract.md（解释层）
+- [x] 2. observation_contract.md（解释层）
   - ID: T-002
   - Requirement(s): FR-461, FR-465；Design: DGN-01/02
   - depends_on: T-001
@@ -62,7 +62,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## T-431 — Known-Future 契约（FR-462~468, FR-495）
 
-- [ ] 3. producer schema + forecast provenance 契约
+- [x] 3. producer schema + forecast provenance 契约
   - ID: T-003
   - Requirement(s): FR-462, FR-463, FR-466, FR-467, FR-495；Design: DGN-03/04/13
   - depends_on: T-001
@@ -73,7 +73,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: validator 自检；负向：`source_cutoff > issue_time`、forbidden provenance class 必须 FAIL
   - Completion evidence: validator 输出 + schema hash
 
-- [ ] 4. 三份契约文档（future_information / c_producer_interface / dataset_v3_schema）
+- [x] 4. 三份契约文档（future_information / c_producer_interface / dataset_v3_schema）
   - ID: T-004
   - Requirement(s): FR-462~468, FR-495；Design: DGN-02/03/04/12/13
   - depends_on: T-001, T-003
@@ -86,7 +86,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## 前置卫生任务（validation infrastructure hygiene / prerequisite maintenance，D-D8 ②③）
 
-- [ ] 5. 10b CCS 稳态 eligibility mask
+- [x] 5. 10b CCS 稳态 eligibility mask
   - ID: T-005
   - Requirement(s): FR-490；Design: DGN-14
   - depends_on: 无（可与 T-001 并行）
@@ -98,7 +98,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Gate/STOP: 复跑 FAIL → 停止升级
   - Completion evidence: 10b 输出（含 eligible_sample_count>0）
 
-- [ ] 6. case 隔离不变量 + E10 注入残留修复
+- [x] 6. case 隔离不变量 + E10 注入残留修复
   - ID: T-006
   - Requirement(s): FR-491；Design: DGN-15
   - depends_on: 无（可与 T-001 并行）
@@ -112,7 +112,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## T-433/T-434 — 窗口化与 target 管线（FR-469~480）
 
-- [ ] 7. MATLAB pilot producer（70 号）
+- [x] 7. MATLAB pilot producer（70 号）
   - ID: T-007
   - Requirement(s): FR-466, FR-467, FR-475, FR-500；Design: DGN-01/04/13
   - depends_on: T-001, T-003, T-005, T-006
@@ -123,7 +123,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: 导出 schema 校验 PASS；fixture 标记存在；provenance 不变量成立
   - Completion evidence: 校验记录 + 产物清单
 
-- [ ] 8. dataset_v3 包骨架 + channel-aware 聚合
+- [x] 8. dataset_v3 包骨架 + channel-aware 聚合
   - ID: T-008
   - Requirement(s): FR-469, FR-470；Design: DGN-01/05
   - depends_on: T-001
@@ -134,7 +134,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: `python -m pytest dataset_v3/tests/test_aggregate.py` 全过（bin 边界 off-by-one 用例）
   - Completion evidence: pytest 输出
 
-- [ ] 9. 窗口化 + target/E300 构建
+- [x] 9. 窗口化 + target/E300 构建
   - ID: T-009
   - Requirement(s): FR-469, FR-471, FR-472, FR-473, FR-476, FR-477；Design: DGN-07/08
   - depends_on: T-007, T-008
@@ -145,7 +145,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: pytest 全过；能量不变量 ΣE_k≡E_raw 差（同 trapezoidal 定义，1e-9 相对）；聚合-target 交叉验证同定义等价
   - Completion evidence: pytest 输出 + 不变量记录
 
-- [ ] 10. role 白名单 model views + target/quantile 契约落账
+- [x] 10. role 白名单 model views + target/quantile 契约落账
   - ID: T-010
   - Requirement(s): FR-464, FR-477, FR-478, FR-479, FR-480；Design: DGN-02/04/12
   - depends_on: T-009
@@ -158,7 +158,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## T-435 — Split / Leakage / OOD 审计（D0 = pilot qualification；formal 见 T-021）
 
-- [ ] 11. deterministic group-aware split
+- [x] 11. deterministic group-aware split
   - ID: T-011
   - Requirement(s): FR-481, FR-482；Design: DGN-09
   - depends_on: T-009
@@ -169,7 +169,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: pytest 全过（顺序无关/同输入同 assignment/tie-breaking/多 stratum 映射 fail-fast）
   - Completion evidence: pytest 输出 + artifact hash
 
-- [ ] 12. 三级泄漏审计 + OOD 装载/域检查
+- [x] 12. 三级泄漏审计 + OOD 装载/域检查
   - ID: T-012
   - Requirement(s): FR-484, FR-485, FR-486；Design: DGN-10/11
   - depends_on: T-011
@@ -180,7 +180,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: pytest 全过；负向套件见 T-013
   - Completion evidence: pytest 输出
 
-- [ ] 13. 负向测试套件（审计/契约/角色/阶段隔离）
+- [x] 13. 负向测试套件（审计/契约/角色/阶段隔离）
   - ID: T-013
   - Requirement(s): FR-464, FR-484, FR-500, AC-427；Design: DGN-10/13 + R6/R8
   - depends_on: T-010, T-012
@@ -190,7 +190,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: pytest 全过（每缺陷独立断言）
   - Completion evidence: pytest 输出（检出率 100%）
 
-- [ ] 14. manifest + deterministic payload hash
+- [x] 14. manifest + deterministic payload hash
   - ID: T-014
   - Requirement(s): FR-474, FR-488；Design: DGN-12 + R8
   - depends_on: T-010, T-011, T-012
@@ -200,7 +200,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: pytest 全过；确定性：同输入两跑 payload hash 一致（timestamp 不同不影响）
   - Completion evidence: 两跑 hash 一致记录
 
-- [ ] 15. pilot E2E + 71 号 pilot Gate（T-435-D0 pilot qualification）
+- [x] 15. pilot E2E + 71 号 pilot Gate（T-435-D0 pilot qualification）
   - ID: T-015
   - Requirement(s): FR-489, AC-426；Design: DGN-01/16 + Testing Strategy
   - depends_on: T-007, T-010, T-011, T-012, T-013, T-014
@@ -214,7 +214,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## T-432 解锁准备（C/D Gate 骨架 + activation 设施，D0 内完成）
 
-- [ ] 16. C/D Interface Gate 骨架 + T-432 activation 设施
+- [x] 16. C/D Interface Gate 骨架 + T-432 activation 设施
   - ID: T-016
   - Requirement(s): FR-496, FR-497, FR-498, FR-499；Design: DGN-16/17
   - depends_on: T-003, T-015
@@ -227,7 +227,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 ## D0 收官
 
-- [ ] 17. D0 归档与状态标注
+- [x] 17. D0 归档与状态标注
   - ID: T-017
   - Requirement(s): FR-492, FR-493, AC-429；NFR-422/423
   - depends_on: T-002, T-004, T-015, T-016
