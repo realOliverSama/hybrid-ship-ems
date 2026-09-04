@@ -84,8 +84,15 @@ for k = 1:numel(TESTS)
     summaryLines{end+1} = sprintf('| %s | %.1f | %.1f | %.2f | %.1f | %.1f | %s |', ...
         T.name, mm.V_min, mm.dU_max, rec_elig_s, steady_viol_elig_s, ...
         mm.t_transient_viol_s, string(pass)); %#ok<AGROW>
-    maskLines{end+1} = sprintf('| %s | %d/%d | %d | [%.0f, %.0f] V | %.1f | %.1f | %.2f | %s |', ...
-        T.name, mk.n_eligible, mk.n_total, mk.n_exemption_windows, ...
+    % DGN-14 证据粒度（R3-m8）：豁免窗起止时刻落盘
+    winParts = cell(1, size(mk.exemption_windows, 1));
+    for r = 1:size(mk.exemption_windows, 1)
+        winParts{r} = sprintf('[%.2f, %.2f]', mk.exemption_windows(r, 1), mk.exemption_windows(r, 2));
+    end
+    winStr = strjoin(winParts, ' ');
+    if isempty(winStr), winStr = '-'; end
+    maskLines{end+1} = sprintf('| %s | %d/%d | %d | %s | [%.0f, %.0f] V | %.1f | %.1f | %.2f | %s |', ...
+        T.name, mk.n_eligible, mk.n_total, mk.n_exemption_windows, winStr, ...
         mm.V_min, mm.V_max, transient_max_dev_V, steady_max_dev_V, rec_elig_s, string(pass)); %#ok<AGROW>
 end
 
@@ -96,8 +103,8 @@ fprintf(fid, '| 测试 | V_min [V] | ΔU_max [V] | t_rec_masked [s] | 稳态越�
 fprintf(fid, '|---|---|---|---|---|---|---|\n');
 for i = 1:numel(summaryLines), fprintf(fid, '%s\n', summaryLines{i}); end
 fprintf(fid, '\n## T-005 稳态 eligibility mask 证据（DGN-14，阈值不变）\n\n');
-fprintf(fid, '| 测试 | eligible/total | 豁免窗数 | V 域 [V] | 暂态最大偏差 [V] | 稳态最大偏差 [V] | t_rec_masked [s] | 结论 |\n');
-fprintf(fid, '|---|---|---|---|---|---|---|---|\n');
+fprintf(fid, '| 测试 | eligible/total | 豁免窗数 | 豁免窗起止 [s] | V 域 [V] | 暂态最大偏差 [V] | 稳态最大偏差 [V] | t_rec_masked [s] | 结论 |\n');
+fprintf(fid, '|---|---|---|---|---|---|---|---|---|\n');
 for i = 1:numel(maskLines), fprintf(fid, '%s\n', maskLines{i}); end
 fprintf(fid, '\nCCS 2026 判据：稳态带 [675, 795] V，瞬态带 [600, 802.5] V，t_recovery ≤ %.1f s（阈值不变）。\n', T_REC_MAX);
 fprintf(fid, 'mask 规则（预声明，DGN-14）：t>60 s ∧ v_ref 30 s 无阶跃（容差 0.10 m/s/采样）∧ 无注入激活 ∧ relevant DG 稳态（机组∈{OFF,ON} ∧ settling 30 s 无迁移 ∧ N_dispatch 与 ON 数一致）；fail-closed：eligible_sample_count==0 ⇒ FAIL。\n');

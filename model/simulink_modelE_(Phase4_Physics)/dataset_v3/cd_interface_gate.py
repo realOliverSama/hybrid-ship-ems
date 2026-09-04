@@ -73,18 +73,22 @@ def check_voyage(vid: str, v: dict, schema: dict, reg: dict, activation: dict | 
     except (TypeError, ValueError) as e:
         errs.append(f"④provenance 不可解析: {e}")
 
-    # ③ K/F snapshot 形式（(issue, lead) 双索引，lead ∈ {10..300}）
+    # ③ K/F snapshot 形式（(issue, lead) 双索引，lead ∈ {10..300}）；
+    # <600 s 航次合法产生零窗口/零快照（FR-472）——空表须与短航次一致否则违规
     if "issue_time_s" not in kf or "lead_s" not in kf:
         errs.append("③kf 缺 issue_time_s/lead_s")
     else:
         issue = np.asarray(kf["issue_time_s"], dtype=float).ravel()
         lead = np.asarray(kf["lead_s"], dtype=float)
-        if lead.ndim != 2 or lead.shape[-1] != 30:
-            errs.append(f"③lead_s 形状非法: {lead.shape}（须 (M,30) issue-major）")
-        elif not np.allclose(np.unique(lead), np.arange(10, 301, 10)):
-            errs.append("③lead 网格须为 {10,…,300}")
+        dur = float(np.asarray(st["time_s"], dtype=float).ravel()[-1]) if "time_s" in st else float("inf")
         if issue.size == 0:
-            errs.append("③issue_time_s 为空")
+            if dur >= 600.0:
+                errs.append(f"③issue_time_s 为空且航次时长 {dur:.0f}s ≥ 600（缺 K/F 快照）")
+        else:
+            if lead.ndim != 2 or lead.shape[-1] != 30:
+                errs.append(f"③lead_s 形状非法: {lead.shape}（须 (M,30) issue-major）")
+            elif not np.allclose(np.unique(lead), np.arange(10, 301, 10)):
+                errs.append("③lead 网格须为 {10,…,300}")
 
     # ⑤ K/F 与 ORACLE 物理分离（kf 表禁含 *_actual_future / oracle 列；
     #    oracle 列不得混入 kf）
@@ -124,7 +128,7 @@ def run_gate(voyage_dir: str, activation_path: str | None = None) -> dict:
     schema = load_producer_schema(validate=True)
     schema_errs = validate_producer_schema(schema)
     reg_errs = validate_registry(reg)
-    checks["09_contract_validators"] = {
+    checks["c09_contract_validators"] = {
         "pass": not schema_errs and not reg_errs,
         "registry_errors": reg_errs[:3], "producer_schema_errors": schema_errs[:3]}
 
@@ -148,9 +152,9 @@ def run_gate(voyage_dir: str, activation_path: str | None = None) -> dict:
         if "time_s" in st:
             durations[vid] = float(np.asarray(st["time_s"]).ravel()[-1])
 
-    checks["01_schema_compliance"] = {"pass": all(not e for e in per_voyage_fail.values()),
+    checks["c01_schema_compliance"] = {"pass": all(not e for e in per_voyage_fail.values()),
                                       "per_voyage": {k: v[:3] for k, v in per_voyage_fail.items() if v}}
-    checks["02_s_plan_causal_present"] = dict(checks["01_schema_compliance"],
+    checks["c02_s_plan_causal_present"] = dict(checks["c01_schema_compliance"],
                                               note="②③④⑤⑥⑧ 逐航次合并于 01（结构存在性+provenance）")
 
     # ⑦ 航次合格判据：无 activation 预注册值时为 PENDING（NON-FORMAL 骨架不判定）
@@ -158,11 +162,11 @@ def run_gate(voyage_dir: str, activation_path: str | None = None) -> dict:
         fq = activation["formal_voyage_qualification"]
         bad = {vid: d for vid, d in durations.items()
                if d < float(fq["min_duration_s"])}
-        checks["07_voyage_qualification"] = {"pass": not bad,
+        checks["c07_voyage_qualification"] = {"pass": not bad,
                                              "min_duration_s": fq["min_duration_s"],
                                              "below_min": bad}
     else:
-        checks["07_voyage_qualification"] = {
+        checks["c07_voyage_qualification"] = {
             "pass": True, "verdict": "PENDING_ACTIVATION_RECORD",
             "note": "预注册值未提供（600s 仅为几何最小跨度，FR-495）；NON-FORMAL 不判定"}
 
@@ -171,9 +175,9 @@ def run_gate(voyage_dir: str, activation_path: str | None = None) -> dict:
                             "results", "dataset_v3", "cd_interface", "baseline_integrity.json")
     if os.path.isfile(base_res):
         with open(base_res, encoding="utf-8") as f:
-            checks["10_modelE_baseline_integrity"] = json.load(f)
+            checks["c10_modelE_baseline_integrity"] = json.load(f)
     else:
-        checks["10_modelE_baseline_integrity"] = {
+        checks["c10_modelE_baseline_integrity"] = {
             "pass": True, "verdict": "DELEGATED_TO_72_M",
             "note": "hash 快照由 scripts/72_run_cd_interface_gate.m 侧记录"}
 
