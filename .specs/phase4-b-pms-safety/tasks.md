@@ -82,7 +82,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
     （override(t) ⇒ t+0.01 s 恰好一拍到达、非两拍、无代数环）是集成层断言，
     移交 T-007
 
-- [ ] 5. DG_Commitment_Supervisor Stateflow chart + harness 单测
+- [x] 5. DG_Commitment_Supervisor Stateflow chart + harness 单测
   - ID: T-005
   - Requirement(s): FR-436, FR-437, FR-438, FR-439, FR-440
   - Roadmap: T-415/T-416（Commitment 层）
