@@ -45,7 +45,7 @@ function [cand, chk] = make_candidate_v1_1(ROOT)
     %   （其正确性由本次重跑自身 PASS 背书；A2 历史物理观测量等值口径见 T-012）。
     m3 = true; m3diff = {};
     gBitwise = {'G3', 'G4'};
-    gStruct = {'G1', 'G2', 'G5', 'G6'};
+    gStruct = {'G1', 'G2', 'G5'};
     for k = 1:numel(gBitwise)
         a = v10.checks.(gBitwise{k});
         b = fresh.checks.(gBitwise{k});
@@ -62,7 +62,30 @@ function [cand, chk] = make_candidate_v1_1(ROOT)
             m3diff{end+1} = sprintf('%s(structure)', gStruct{k}); %#ok<SAGROW>
         end
     end
+    % G6 专项（D-B19/D-B20：checker fail-closed 化后条目集合法演进）——比较：
+    %   ① 确定性 item 的 pass 位一致；② fresh 的 comparability_pass 必须 true 且
+    %   compared==required、skipped==0（fail-closed 语义生效的证据本身即 candidate 内容）。
+    g6a = v10.checks.G6; g6b = fresh.checks.G6;
+    pa = g6a.pass; pb = g6b.pass;
+    if isfield(g6b, 'comparability_pass')
+        g6ok = pb && g6b.comparability_pass && g6b.compared_fields == g6b.required_fields ...
+            && g6b.skipped_fields == 0;
+    else
+        g6ok = false;   % candidate 必须携带 fail-closed G6（否则判据未升级）
+    end
+    % 确定性 item pass 位一致
+    detA = v10.checks.G6.checks{1}.pass;
+    detB = false;
+    for c = 1:numel(g6b.checks)
+        if contains(g6b.checks{c}.item, 'determinism'), detB = g6b.checks{c}.pass; end
+    end
+    g6ok = g6ok && (detA == detB);
+    if ~(pb == pa && g6ok)
+        m3 = false;
+        m3diff{end+1} = 'G6(special: fail-closed determinism)'; %#ok<SAGROW>
+    end
     chk.M3_threshold_structure_equal = m3;
+    chk.M3_g6_fail_closed_verified = g6ok;
     chk.M3_diff = m3diff;
     ok = ok && m3;
 

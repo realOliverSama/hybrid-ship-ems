@@ -99,6 +99,18 @@ function neg = run_negative(ROOT)
     c7 = gate_ctrl.check_c7_audit_completeness(rowsD6, dsA, 'D6_episode', T_start, false);
     mark('D6', 'episode 一对一破坏（双 start 单饱和事件）', ~c7.pass, 'C7 one_to_one');
 
+    %% ---- D7：G6/C1 尺寸不匹配 → 必须 FAIL（fail-closed 结构关闭，T-014 amendment 2）----
+    %   D-B19 的机制级关闭验证：构造尺寸不匹配（A2 期空洞 PASS 的确切形态——
+    %   E01b 航次终止时刻差一采样），fail-closed G6/C1 必须拒绝并整体 FAIL。
+    dsD7 = dsA;
+    dsD7.t = dsD7.t(1:end-1);            % 截断时间轴（尺寸不匹配）
+    dsD7.SOC = dsD7.SOC(1:end-1);
+    g6 = gate_e.check_g6_runtime(dsA, dsD7, 0);
+    c1 = gate_ctrl.check_c1_determinism(dsA, dsD7, 'D7_size_mismatch');
+    det7 = ~g6.pass && ~c1.pass && g6.skipped_fields > 0 && ~g6.comparability_pass;
+    mark('D7', '尺寸不匹配必须 FAIL（旧 G6 会跳过比较空洞 PASS）', det7, ...
+        sprintf('G6 skipped=%d comparability=%d | C1 skipped=%d', g6.skipped_fields, g6.comparability_pass, c1.skipped_fields));
+
     %% ---- 汇总 ----
     for k = 1:numel(neg.defects)
         allDetected = allDetected && neg.defects{k}.correctly_detected;

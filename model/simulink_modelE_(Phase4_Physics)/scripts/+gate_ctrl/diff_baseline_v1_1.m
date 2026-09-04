@@ -65,10 +65,11 @@ function diff = diff_baseline_v1_1(ROOT)
     end
     add('dd9_machine_check', '（无）', '（新增：M1/M2/M3/M4 全过）', 'added');
 
-    outPath = fullfile(ROOT, 'docs', 'phase4', 'b_pms_safety', 'baseline_v1_0_to_v1_1_diff.json');
-    if ~exist(fullfile(ROOT, 'docs', 'phase4', 'b_pms_safety'), 'dir')
-        mkdir(fullfile(ROOT, 'docs', 'phase4', 'b_pms_safety'));
-    end
+    % 仓库级证据目录（与 A2 a2_model_e 同惯例；ROOT 为 Model E 工作区 → 上一级为 model/，
+    %   再上一级为仓库根）
+    repoDocs = fullfile(ROOT, '..', '..', 'docs', 'phase4', 'b_pms_safety');
+    if ~exist(repoDocs, 'dir'), mkdir(repoDocs); end
+    outPath = fullfile(repoDocs, 'baseline_v1_0_to_v1_1_diff.json');
     fid = fopen(outPath, 'w', 'n', 'UTF-8');
     fwrite(fid, jsonencode(diff, 'PrettyPrint', true));
     fclose(fid);

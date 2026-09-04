@@ -20,7 +20,7 @@ function spec = injection_scenarios()
     spec = struct( ...
         'name', {}, 'prep_fn', {}, 'stop_time_s', {}, 'expected', {}, ...
         'law', {}, 'src', {}, 'use_manual', {}, 'manual_ts', {}, 'voyage_distance_m', {}, ...
-        'soc_init', {}, 'force_mode', {}, 'hotel_kW', {});
+        'soc_init', {}, 'force_mode', {}, 'hotel_kW', {}, 'expect_reason_start', {});
 
     % ---- S1 ----
     s = blank();
@@ -35,16 +35,26 @@ function spec = injection_scenarios()
     s.voyage_distance_m = 1e6;
     spec(1) = s;
 
-    % ---- S2 ----
-    s = blank();
     s.name = 'S2_realized_supply_deficit';
     s.prep_fn = @prep_s2;
-    s.stop_time_s = 90;
+    s.stop_time_s = 150;
     s.expected = {'force_start_dg2'};
+    s.expect_reason_start = 4;                  % T-014 amendment 1：必须实测 reason=4 端到端
     s.law = 0; s.src = 0;
-    s.use_manual = false; s.manual_ts = [];
+    % —— deliverability-deficit bench（T-014 amendment 1，用户裁决；参数全部冻结）——
+    %   语义差利用：S4 看**额定 firm capacity**（N_ON·500+SOP），S2 看**实际可交付**
+    %   （ΣP_DG,actual+SOP）。MANUAL 延迟阶跃：启动窗（t=0~40，u=0，负荷 103 kW）使
+    %   N_ON=0 时 D_firm=103+50−SOP<0（S4 不可见）；DG1 ON（t=30）后 t=40 阶跃至
+    %   u=0.69（realized≈601 kW）：demand LPF(τ=60 s) 滞后使 refs 追不上 realized →
+    %   realized−ΣP_actual>SOP 持续 2 s → S2 触发（reason=4）；
+    %   同时 D_firm=601+50−500−SOP≈−260<0（N_ON=1）→ S4 全程静默。
+    %   SOC_init=0.15（SOP_dis_g≈308~361：>153 保证 N_ON=0 窗口 S4 不误触发，
+    %   <583 保证 realized 缺口可越）。
+    s.law = 0; s.src = 0;                       % P2（baseline demand source）
+    s.use_manual = true;
+    s.manual_ts = [0 0; 40 0; 40.01 0.69; 1e6 0.69];
     s.voyage_distance_m = 1e6;
-    s.soc_init = 0.12;                          % SOP_dis 崩缩（realized 缺口路径）
+    s.soc_init = 0.15;
     spec(2) = s;
 
     % ---- S3 ----
@@ -90,7 +100,7 @@ end
 function s = blank()
     s = struct('name', '', 'prep_fn', [], 'stop_time_s', 0, 'expected', {{}}, ...
         'law', 0, 'src', 0, 'use_manual', false, 'manual_ts', [], 'voyage_distance_m', 1e6, ...
-        'soc_init', 0.60, 'force_mode', 0, 'hotel_kW', 100);
+        'soc_init', 0.60, 'force_mode', 0, 'hotel_kW', 100, 'expect_reason_start', 0);
 end
 
 function prep_nominal()
@@ -113,7 +123,7 @@ function prep_s1()
 end
 
 function prep_s2()
-    prep_nominal();   % SOC_init=0.12 经 spec.soc_init → scn.initial_SOC（runOne 统一注入）
+    prep_nominal();   % SOC_init=0.15 经 spec.soc_init；MANUAL 延迟阶跃见 spec.manual_ts
 end
 
 function prep_s3()

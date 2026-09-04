@@ -1,6 +1,6 @@
 {
   "schema": "gate_control_result_v1",
-  "generated_at": "2026-09-04T17:47:20***",
+  "generated_at": "2026-09-04T18:25:27***",
   "checks": [
     {
       "name": "C2_transition_legality",
@@ -619,6 +619,11 @@
     },
     {
       "name": "C7_audit_completeness",
+      "label": "INJ/S2_realized_supply_deficit",
+      "pass": true
+    },
+    {
+      "name": "injection_start_reason",
       "label": "INJ/S2_realized_supply_deficit",
       "pass": true
     },
@@ -1488,21 +1493,21 @@
     },
     "S2_realized_supply_deficit": {
       "metrics": {
-        "duration_s": 90,
-        "fuel_total_kg": 3.8728657643482602,
-        "fuel_1_kg": 1.9579664178123291,
-        "fuel_2_kg": 1.9148993465359259,
-        "DG1_online_time_s": 60,
-        "DG2_online_time_s": 58,
-        "twoDG_low_load_dwell_s": 58,
-        "SOC_min": 0.11674680502324294,
-        "SOC_end": 0.11674680502324294,
-        "Vdc_min": 603.48456245062664,
+        "duration_s": 150,
+        "fuel_total_kg": 8.2811713484545262,
+        "fuel_1_kg": 5.1084318084906588,
+        "fuel_2_kg": 3.1727395399638456,
+        "DG1_online_time_s": 120,
+        "DG2_online_time_s": 74.649999999999991,
+        "twoDG_low_load_dwell_s": 7.97999999999999,
+        "SOC_min": 0.14448472832108739,
+        "SOC_end": 0.14448675717763959,
+        "Vdc_min": 711.13081811003929,
         "Vdc_viol_600_s": 0,
-        "batt_discharge_kWh": 11.473826592507068,
-        "batt_charge_kWh": 0,
-        "unserved_energy_kWh": 4.7520658958141979,
-        "surplus_energy_kWh": 0,
+        "batt_discharge_kWh": 19.747683721206503,
+        "batt_charge_kWh": 0.00794603027156359,
+        "unserved_energy_kWh": 3.0938144329896571,
+        "surplus_energy_kWh": 0.00021907216494840984,
         "safety_force_start_events": 1,
         "safety_force_stop_events": 0,
         "fault_latch_final": [
@@ -1608,48 +1613,5 @@
     "note": "candidate 由 T-012（40 --baseline_path）机器检查背书",
     "candidate_path": "config/gate_baseline_modele_candidate_v1_1.json"
   },
-  "wall_time_s": 323.492659,
-  "negative_control": {
-    "schema": "gate_control_negative_v1",
-    "generated_at": "2026-09-04T17:53:49***",
-    "defects": [
-      {
-        "id": "D1",
-        "desc": "FORCED(7) reason（force 通道绕过阈值）",
-        "correctly_detected": true,
-        "detail": "C2 reason domain + FORCED ban"
-      },
-      {
-        "id": "D2",
-        "desc": "正常 start timer 不足（t_start=1500<3000）",
-        "correctly_detected": true,
-        "detail": "C2 normal_start_timer"
-      },
-      {
-        "id": "D3",
-        "desc": "正常 stop min_up 不足（t_online=10000<30000）",
-        "correctly_detected": true,
-        "detail": "C2 normal_stop_timer"
-      },
-      {
-        "id": "D4",
-        "desc": "应触发未触发 override（屏蔽 S2+S4 → S4 场景缺 force_start）",
-        "correctly_detected": true,
-        "detail": "C6 expect_trigger"
-      },
-      {
-        "id": "D5",
-        "desc": "确定性破坏（单采样点改写）",
-        "correctly_detected": true,
-        "detail": "C1 bitwise"
-      },
-      {
-        "id": "D6",
-        "desc": "episode 一对一破坏（双 start 单饱和事件）",
-        "correctly_detected": true,
-        "detail": "C7 one_to_one"
-      }
-    ],
-    "all_detected": true
-  }
+  "wall_time_s": 415.02817808333333
 }

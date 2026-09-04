@@ -40,23 +40,31 @@ requirements.md / design.md（FR-445 S2/S5 联动修订）。
 
 ## 3. 偏差登记索引（详见 spec design.md §12 偏差登记）
 
-- **D-B16**：06 号停机通路激活（In5 + Max 合成）——PMS v2 因果停机的机械缺口修复；M3 全链
-  与 T-412(candidate) 逐位 bench 背书。
+- **D-B16**（T-014 批准，分类 = **controlled interface defect correction**）：06 号停机通路
+  激活（In5 + Max 合成）——PMS v2 因果停机的机械缺口修复；M3 全链与 T-412(candidate) 逐位
+  bench 背书。正式表述：No uncontrolled spec drift. One approved implementation deviation
+  D-B16 modifies only the previously unconnected stop-command routing of subsystem 06;
+  genset physical state-machine equations, power dynamics and parameters remain unchanged.
 - **D-B17**：16 号不消费 dispatch 诊断三件套（D-B14 联动），仅 logging。
-- **D-B18**：集成级 S2/S4 reason 竞速（S4 阈值严格低 50 kW → S2 场景 reason=5）；枚举分离由
-  单测证；诚实登记。
-- **D-B19**：A2 期 G6 为空洞通过（E01b 携带 E09 遗留注入 + 尺寸不匹配跳过比较）；B 包修复
-  E01b 前恢复 bench nominal → G6 成为真实逐位比较。
+- **D-B18**（T-014 amendment 1 更新）：normal path S4 preempts S2（S4 阈值严格低 50 kW——
+  prospective margin 不对称）；**专用 deliverability-deficit bench 证实 S2 reason=4 端到端**
+  （audit 1→2 @t=45.35 reason=4，injection_start_reason 断言 PASS）；S2 定位 = S4 的
+  deliverability/fault/ramp 后备防线。
+- **D-B19**（T-014 amendment 2 更新）：scenario contamination fixed（E01b 前恢复 bench
+  nominal）；**checker 本身已 fail-closed**（缺字段/尺寸不匹配/计数 0 → 整体 FAIL；元数据
+  compared=required=96、skipped=0；44 D7 负向证实旧空洞形态被拒）。
+- **D-B20**（新增）：G6/C1 确定性判据 fail-closed 化（REQUIRED 对称并集 / skipped 计数 /
+  comparability_pass 元数据 / N_compared=N_required ∧ N_skipped=0 门禁不变量）。
 
 ## 4. 基线纪律（DD-9 执行记录）
 
 | Step | 状态 |
 |---|---|
 | A v1.0 永久保留不回写 | ✓（默认 40 号行为不变） |
-| B candidate 生成 + 机器检查 | M1 物理参数 sha 一致 / M2 Model D 四哈希一致 / M3 判据一致性（G3/G4 force bench 逐位=DD-8 证据；G1/G2/G5/G6 结构一致）/ M4 E10 ok ✓ |
-| C T-412 against candidate | overall=true（G1~G6 全过） |
+| B candidate 生成 + 机器检查 | M1 物理参数 sha 一致 / M2 Model D 四哈希一致 / M3 判据一致性（G3/G4 force bench 逐位=DD-8 证据；G1/G2/G5 结构一致；**G6 fail-closed 专项：comparability_pass ∧ 96/96/0**）/ M4 E10 ok ✓（amendment 2 后重生成） |
+| C T-412 against candidate | overall=true（G1~G6 全过；**T-014 amendment 2 后以 fail-closed G6 复验：96/96/0**） |
 | D field-level diff | `baseline_v1_0_to_v1_1_diff.json`（本目录） |
-| E promotion | **待 T-014 用户书面批准**（未批准前 candidate 不转正，`gate_baseline_modele_control.json` v1.0 不冻结） |
+| E promotion | **T-014 裁决 = HOLD（2 targeted amendments 已闭合，待最终 APPROVED）**；promotion 时将同步显式保存 `gate_baseline_modele_v1_0.json`（immutable historical）→ `gate_baseline_modele.json` 指向 current v1.1 + 冻结 `gate_baseline_modele_control.json` v1.0（版本化资产三件套，用户建议） |
 
 ## 5. 配套产物
 

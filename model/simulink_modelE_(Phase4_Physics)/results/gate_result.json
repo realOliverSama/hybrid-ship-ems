@@ -1,7 +1,7 @@
 {
   "schema": "modelE_gate_result_v1",
   "spec": "phase4-a2-model-e-construction / T-412",
-  "generated_at": "2026-09-04T17:36:52***",
+  "generated_at": "2026-09-04T18:35:17***",
   "overall": true,
   "checks": {
     "G1": {
@@ -191,6 +191,26 @@
       "gate_class": "regression",
       "checks": [
         {
+          "item": "comparability_fail_closed",
+          "pass": true,
+          "required_fields": 96,
+          "compared_fields": 96,
+          "skipped_fields": 0,
+          "skipped_detail": [],
+          "extra_fields_in_run_b": []
+        },
+        {
+          "item": "comparison_count_equals_required",
+          "pass": true,
+          "N_compared": 96,
+          "N_required": 96
+        },
+        {
+          "item": "no_extra_fields_in_run_b",
+          "pass": true,
+          "extra": []
+        },
+        {
           "item": "determinism_two_runs_bitwise_identical",
           "pass": true,
           "differing_fields": ""
@@ -198,9 +218,13 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 73.16802225
+          "total_wall_time_s": 89.789074666666664
         }
       ],
+      "required_fields": 96,
+      "compared_fields": 96,
+      "skipped_fields": 0,
+      "comparability_pass": true,
       "pass": true
     },
     "E10_compat_smoke": {
@@ -211,5 +235,5 @@
       ]
     }
   },
-  "baseline_path": "config/gate_baseline_modele_candidate_v1_1.json（生成中）"
+  "baseline_path": "config/gate_baseline_modele_candidate_v1_1.json"
 }

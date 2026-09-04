@@ -127,8 +127,18 @@ function R = run_gate(ROOT, QUICK)
             addCheck('C6_safety_assertions', lbl, c6.pass);
             c4 = gate_ctrl.check_c4_vdc(ds, lbl, true);
             addCheck('C4_vdc_injection', lbl, c4.pass);
-                c7 = gate_ctrl.check_c7_audit_completeness(rows, ds, lbl, T_start, injSpec(k).force_mode);
+            c7 = gate_ctrl.check_c7_audit_completeness(rows, ds, lbl, T_start, injSpec(k).force_mode);
             addCheck('C7_audit_completeness', lbl, c7.pass);
+            % T-014 amendment 1：注入场景可断言首条 start 迁移的 reason（S2 reason=4 端到端）
+            if injSpec(k).expect_reason_start > 0
+                iStart = find(arrayfun(@(x) x.old == 1 && x.new == 2, rows), 1);
+                rOK = ~isempty(iStart) && rows(iStart).reason == injSpec(k).expect_reason_start;
+                addCheck('injection_start_reason', lbl, rOK);
+                if rOK
+                    fprintf('[43]   %s: audit start reason=%g @t=%.2f（端到端 reason 断言过）\n', ...
+                        injSpec(k).name, rows(iStart).reason, rows(iStart).t);
+                end
+            end
             R.injruns.(matlab.lang.makeValidName(injSpec(k).name)) = ...
                 struct('metrics', mm, 'n_audit_rows', numel(rows));
         end

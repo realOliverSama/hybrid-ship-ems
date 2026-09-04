@@ -1,6 +1,6 @@
 {
   "schema": "baseline_diff_v1_0_to_v1_1",
-  "generated_at": "2026-09-04T17:55:20***",
+  "generated_at": "2026-09-04T18:37:16***",
   "fields": [
     {
       "field": "version",
@@ -89,7 +89,7 @@
     {
       "field": "checks.G6",
       "v1_0": "（值级差异 items）",
-      "v1_1_candidate": "runtime_informational,",
+      "v1_1_candidate": "determinism_two_runs_bitwise_identical,runtime_informational,",
       "class": "values_drift（判据结构一致，全部 PASS；AUTO 跑执行序浮点漂移 / G6 wall time）"
     },
     {

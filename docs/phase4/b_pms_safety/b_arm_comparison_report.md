@@ -49,13 +49,15 @@ NORMAL_HIGH_LOAD 启动（reason=1，t_start_hold 饱和 3000 tick），滞回�
 | 场景 | 注入 | 触发证据 | audit |
 |---|---|---|---|
 | S1 DG fault | t=400 s 非指令停机（GEN_CMD_STOP_TS） | fault_latch_DG2 锁存 + FORCE_STOP 语义 | 3→1，reason=3（t=400.01） |
-| S2 realized deficit | SOC=0.12 → SOP 崩缩 | force_start 事件 | start+confirm，reason=5*（见 D-B18） |
+| S2 realized deficit | **deliverability bench（T-014 amendment 1）**：MANUAL 延迟阶跃 + SOC=0.15 | force_start 事件 + **audit reason=4**（t=45.35） | 端到端 07→16→UD→Commitment，injection_start_reason PASS |
 | S3 min gen surplus | bench force 125/125 + hotel 10 + SOC 0.90 | 充电爬入死区（SOC→0.9389）→ FORCE_STOP | （force 模式 chart 旁路，D-B16） |
 | S4 prospective deficit | SOC=0.15 → D_firm>0 2 s | force_start 事件 | start+confirm，reason=5 |
 | S5 EMS health | EMS_HEALTH_TS t=100 拉低 | fallback 锁存 + selector 切 BASELINE | 无 commitment 迁移（设计语义） |
 
-\* S2 场景集成级 reason=5：S4 的 prospective 阈值严格低于 S2 50 kW（margin 不对称），
-realized≤commanded 恒成立 → S4 先行；reason 4/5 枚举分离由 T-004 单测证（D-B18）。
+S2/S4 reason 归属（T-014 amendment 1 闭合）：normal path S4 preempts S2（50 kW margin
+不对称，S4 场景实测 reason=5）；专用 deliverability-deficit bench 证实 S2 reason=4 端到端
+（S4 看 N_ON·500+SOP 额定口径、S2 看 ΣP_actual+SOP 实际口径 + demand LPF 滞后）。S2 = S4 的
+deliverability/fault/ramp 后备防线。
 
 ## 5. 判据与负向验证
 
