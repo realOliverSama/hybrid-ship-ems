@@ -37,15 +37,37 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/42_run_modelE_gate_negative.m` | 物理 Gate 负向验证 |
 | `scripts/43_run_modelE_control_gate.m` | ★ **B 包控制层 Gate**（三臂 AUTO 矩阵 + MANUAL×P2 + 注入 S1~S5 + 确定性两跑，判据 C1~C7，输出 `results/gate_control_result.json`） |
 | `scripts/44_run_control_gate_negative.m` | ★ **B 包控制 Gate 负向验证**（六类缺陷注入，结果附入 gate_control_result.json） |
-| `scripts/10_build_modelE.m` / `10b_smoke_modelE.m` | builder 入口 / smoke（10/10b 的 ensure_canonical 调用已移除——A2 D-13，B 包 T-001） |
+| `scripts/10_build_modelE.m` / `10b_smoke_modelE.m` | builder 入口 / smoke（10/10b 的 ensure_canonical 调用已移除——A2 D-13，B 包 T-001；**10b 已接入 T-005 CCS 稳态 eligibility mask**（DGN-14，阈值不变，暂态豁免留证 + fail-closed） |
+| `config/dataset_v3_signal_registry.json` | ★ **D 包机器事实源**（T-001，FR-465）：Dataset v3 signal/role registry（91 条信号 × 八 storage role × aggregation 枚举 + self_hash；H1/H2 集合与 FR-461 逐名锚定） |
+| `config/dataset_v3_producer_schema.json` | ★ **D 包机器事实源**（T-003，FR-495）：C-producer interface schema（十一项能力族 + forecast provenance 六字段 + formal 航次合格判据槽位，activation 值不预填） |
+| `scripts/+gate_e/ccs_eligibility_mask.m` | ★ T-005 CCS 稳态 eligibility mask（预声明规则纯函数；单测 `tests/test_ccs_eligibility_mask.m`） |
+| `scripts/+gate_e/reset_bench_nominal.m` | ★ T-006 case 隔离不变量（bench 注入通道显式恢复 nominal；10b/40/42/43/44 全 case 接线；⚠ 禁止在 base 重跑 config 脚本——循环变量覆写事故见文件头） |
+| `scripts/+dataset_v3/export_pilot.m` | ★ T-007 pilot 导出主体（registry 驱动 stream / K-F causal fixtures / PILOT_ONLY；70 号薄入口调用） |
+| `scripts/70_export_dataset_v3_pilot.m` | ★ **T-007 pilot producer 薄入口**（导出 `datasets_v3/pilot/*.mat` + manifest；FAILED 航次即 GATE FAIL） |
+| `scripts/71_run_dataset_v3_pilot_gate.m` | ★ **T-015 pilot Gate 薄入口**（调用 Python `run_pipeline`；`results/dataset_v3/pilot/pilot_gate_result.json` overall=true 方 PASS，标 PILOT） |
+| `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项检查；D0 为 NON-FORMAL 骨架自检） |
+| `dataset_v3/` | ★ **D 包 Python 构建与审计包**（T-008~T-016：聚合/窗口/target/split/L1-L3 审计/OOD/manifest/E2E 编排/契约校验 + pytest；详见该目录 README.md） |
+| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
 | `model/HybridShip_ModelE.slx` | builder 生成（脚本驱动，禁 GUI 修改；B 包顶层 16 块含 07_PMS_v2/16_Safety_Interlock） |
 | `results/` | `gate_result.json`（T-412 against candidate overall=true）、`gate_control_result.json`（43+44：overall + C1~C7 + 三臂指标 + negative_control）、`config_manifest.json`（4 config sha256+有效值快照） |
 | `docs/` | 证据文档指向仓库级 `docs/phase4/b_pms_safety/`（field-level diff / 三臂对比 / 裁决链） |
 | `reports/parameter_audit.csv` | builder 生成的参数审计（ParamMeta，40 项） |
-| `datasets/` `python/` `legacy_reference/` | 自 Model D 分叉继承（D 包适配前保持原样；legacy_reference 为历史模型只读副本） |
+
+## Legacy / Superseded（FR-492/493：不删不搬不改行为，仅 README 标记）
+
+| 条目 | 标记 | 说明 |
+|---|---|---|
+| `scripts/03_run_smoke_tests.m` | **LEGACY / SUPERSEDED / NOT A MODELE VALIDATION ENTRYPOINT** | Model D 时代 smoke（`model.ensure_canonical` 依赖）；Model E 验证入口 = 10b/40/43；Dataset v3 新链禁止调用，其结果不作 Model E/Dataset v3 科学证据 |
+| `scripts/05_export_dataset.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D 时代导出脚本；Dataset v3 导出 = `70/71` 号 + `dataset_v3/`（两段式），schema/特征/目标假设不继承 |
+| `scripts/30_export_load_profiles.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D 时代负荷剖面导出 |
+| `scripts/60_generate_voyages_v2.m` `scripts/61_generate_fleet_profiles_v2.m` `scripts/63_integrate_gate_v2.m` `scripts/64_run_matrix_v2.m` `scripts/66_export_fw_reference.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D Phase 2/2.5 fleet/固件参考链；formal fleet 生成 = T-432 `73_generate_fleet_v3.m`（BLOCKED，activation 后施工） |
+| `python/` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Phase 2.5 训练/数据集链（build_dataset_v2.py 等）；v2 纪律 reuse-only、schema 不继承；Dataset v3 构建在 `dataset_v3/` |
+| `datasets/` | **SUPERSEDED FOR MODELE DATASET V3（历史产物只读）** | Phase 2/2.5 窗口化 npz/norm JSON；不作为 Model E 研究数据 |
+| `legacy_reference/` | **LEGACY（历史模型只读副本）** | 分叉继承件，仅证据对照 |
 
 **注意**：`scripts/01~07/10~66` 等编号脚本为 Model D 流水线继承件——Model E 只保证
-**02 build / 03 smoke / 40 gate** 链路；05/07 等数据集/AI 对比脚本适配属 D 包。禁止在 Model E
+**02 build / 40 gate / 43 控制门**链路；旧数据集链（05/30/60/66）已标 SUPERSEDED，
+Dataset v3 新链 = `70/71/72` + `dataset_v3/`。禁止在 Model E
 任何入口调用 `model.ensure_canonical`（Model D 自愈机制会破坏参数隔离，design D-13）。
 
 ## 快速入口

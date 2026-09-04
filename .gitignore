@@ -201,3 +201,8 @@ model/simulink_modelD/results/ecms_phase2/plots/
 
 # Phase 2.5 门控集成中间产物（63 生成，可随时重建；gate_result_v2.json 等结论产物已入库）
 model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
+
+# ==========================================================
+# Phase 4-D Dataset v3（2026-09-05，DGN-01：pilot 大数据本地不入库）
+# ==========================================================
+model/simulink_modelE_(Phase4_Physics)/datasets_v3/
