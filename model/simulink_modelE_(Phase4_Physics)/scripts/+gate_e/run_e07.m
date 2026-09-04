@@ -1,5 +1,6 @@
 function [E, sim_rec] = run_e07(mdl, f1, f2)
 % gate_e.run_e07 — E07 双机燃油区分 runner（force 注入 1×500 vs 2×250 同总负荷）
+    gate_e.reset_bench_nominal();   % T-006 case 隔离不变量（先恢复 nominal，再施加本 case 注入）
     % assignin 式注入（SiN.setVariable 对 From Workspace 非确定，见 40 号 E06 注记）
     SCN7 = evalin('base', 'SCENARIOS(1)'); SCN7.voyage_distance_m = 3000; SCN7.initial_SOC = 0.60;
     gate_e.gate_assign_bench_inputs(1, f1, f2, [0 0 0; 1e5 0 0], SCN7);

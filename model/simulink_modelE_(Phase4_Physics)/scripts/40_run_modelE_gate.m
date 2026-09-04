@@ -36,6 +36,7 @@ BENCH_DEF_FORCE_P2 = ADAPTER_FORCE_P2_KW;
 
 %% ================= E01 静水巡航稳态（law=0，深水 5000 m 全程）=================
 fprintf('[GATE] E01 hull steady 11 kn ...\n');
+gate_e.reset_bench_nominal();   % T-006（DGN-15）：每 case 显式恢复 nominal（case 隔离不变量）
 SCN = SCENARIOS(1); SCN.initial_SOC = 0.60;
 assignin('base', 'Bat_SOC_init', 0.60);
 out = model.run_scenario_sim(MDL, SCN, 0, 6000);
@@ -51,6 +52,7 @@ E01a = ds01;
 
 %% ================= E02 静水全功率 ramp（极速带 + 推力平衡）=================
 fprintf('[GATE] E02 full-power ramp ...\n');
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量
 SCN2 = SCENARIOS(1);
 SCN2.v_knots_v = [8.0 0 0 0 0 0];                     % 速度剖面查表 8 m/s → PI 饱和 → 推进指令打满 700 kW
 SCN2.voyage_distance_m = 30000;                        % 距离放宽（时间终止为主）
@@ -73,6 +75,7 @@ sims{end+1} = srec;
 fprintf('[GATE] E05 shallow H/T tiers ...\n');
 E05 = struct('cases', struct('HT_ratio', {}, 'R_hull_N', {}, 'domain_warning', {}));
 for k = 31:36
+    gate_e.reset_bench_nominal();   % T-006 case 隔离不变量
     SCNs = SCENARIOS(k); SCNs.voyage_distance_m = 1200; SCNs.initial_SOC = 0.60;
     assignin('base', 'Bat_SOC_init', 0.60);
     out = model.run_scenario_sim(MDL, SCNs, 0, 1500);
@@ -86,6 +89,7 @@ end
 fprintf('[GATE] E06 genset start/stop sequence ...\n');
 % assignin 式注入（与 run_scenario_sim 同通道；SiN.setVariable 对 From Workspace
 % 数据源在本环境非确定，2026-09-04 夜班 Gate 调试结论）
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量（先恢复 nominal，再施加本 case 注入）
 gate_e.gate_assign_e06_inputs();
 set_param(MDL, 'StopTime', '160');
 out = sim(MDL);
@@ -102,6 +106,7 @@ E07.fuel_1x500_kg = E07.fuel_total_kg; E07.fuel_2x250_kg = E07b.fuel_total_kg;
 
 %% ================= E08 电池充放/SOP（大负荷冲击逼近 SOP 边界）=================
 fprintf('[GATE] E08 battery SOP shock ...\n');
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量（修复 E08 曾携带 E07b force 注入）
 SCN8 = SCENARIOS(1); SCN8.voyage_distance_m = 2000; SCN8.hotel_kW = 800;  % 大负荷冲击
 SCN8.initial_SOC = 0.35;                                   % 低 SOC → SOP 降额带
 assignin('base', 'Bat_SOC_init', 0.35);
@@ -128,6 +133,7 @@ E08 = struct('name', 'E08', 'soc_start', ds08.SOC(1), 'soc_end', ds08.SOC(end), 
 
 %% ================= E09 组合暂态（全机停机 + 欠压保护链）=================
 fprintf('[GATE] E09 combined transient (all-genset stop + undervolt protection) ...\n');
+gate_e.reset_bench_nominal();   % T-006 case 隔离不变量（先恢复 nominal，再施加本 case 注入）
 gate_e.gate_assign_e09_inputs();
 set_param(MDL, 'StopTime', '260');
 out = sim(MDL);
@@ -138,6 +144,16 @@ fprintf('[GATE]   protection chain triggered: %d\n', E09.protection_triggered);
 
 %% ================= E10 law=0/law=5 兼容 smoke（不作物理判据，D-9）=================
 fprintf('[GATE] E10 law=0/5 compatibility smoke ...\n');
+% T-006（DGN-15/FR-491）：E10 曾携带 E09 遗留注入（GEN_CMD_STOP_TS 全停表 +
+% ADAPTER_FORCE_*) 运行——A2 继承行为。修复：case 前显式 reset nominal 并留证。
+gate_e.reset_bench_nominal();
+e10_nominal = all([ ...
+    evalin('base', 'ADAPTER_FORCE_MODE') == 0, ...
+    evalin('base', 'ADAPTER_FORCE_P1_KW') == 0, ...
+    evalin('base', 'ADAPTER_FORCE_P2_KW') == 0, ...
+    isequal(evalin('base', 'GEN_CMD_STOP_TS'), [0 0 0; 1e6 0 0])]);
+fprintf('[GATE]   E10 bench nominal verified: %d（E09 注入残留检查）\n', e10_nominal);
+assert(e10_nominal, 'E10 bench 注入通道未恢复 nominal（case 隔离不变量违反）');
 SCN10 = SCENARIOS(1); SCN10.voyage_distance_m = 600;
 e10_ok = true; e10_note = {};
 for law = [0 5]
@@ -145,21 +161,18 @@ for law = [0 5]
         out = model.run_scenario_sim(MDL, SCN10, law, 900);
         dst = model.extract_logsout(out);
         if ~all(isfinite(dst.V_dc_V)), error('NaN in V_dc'); end
-        e10_note{end+1} = sprintf('law=%d OK', law); %#ok<SAGROW>
+        e10_note{end+1} = sprintf('law=%d OK (bench nominal verified)', law); %#ok<SAGROW>
     catch e
         e10_ok = false;
         e10_note{end+1} = sprintf('law=%d FAIL: %s', law, e.message); %#ok<SAGROW>
     end
 end
-E10 = struct('ok', e10_ok, 'note', {e10_note});
+E10 = struct('ok', e10_ok, 'bench_nominal_verified', e10_nominal, 'note', {e10_note});
 
 %% ================= E01b 确定性第二跑（G6）=================
 fprintf('[GATE] E01b determinism re-run ...\n');
-% 恢复 bench 注入 nominal（E06~E09 遗留污染防线；否则 E01b 携带 E09 停机表+force）
-assignin('base', 'GEN_CMD_STOP_TS', BENCH_DEF_GEN_CMD);
-assignin('base', 'ADAPTER_FORCE_MODE', BENCH_DEF_FORCE_MODE);
-assignin('base', 'ADAPTER_FORCE_P1_KW', BENCH_DEF_FORCE_P1);
-assignin('base', 'ADAPTER_FORCE_P2_KW', BENCH_DEF_FORCE_P2);
+% T-006：E06~E09 bench 注入残留防线统一收口为 reset_bench_nominal（原为内联 4 行恢复）
+gate_e.reset_bench_nominal();
 SCN = SCENARIOS(1); SCN.initial_SOC = 0.60;
 assignin('base', 'Bat_SOC_init', 0.60);
 out = model.run_scenario_sim(MDL, SCN, 0, 6000);

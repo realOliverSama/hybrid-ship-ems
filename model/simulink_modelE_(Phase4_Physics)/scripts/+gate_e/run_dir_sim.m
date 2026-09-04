@@ -1,5 +1,6 @@
 function [E, sim_rec] = run_dir_sim(mdl, cur_mps)
 % gate_e.run_dir_sim — E03/E04 顺逆水方向性 runner（design §5.2）
+    gate_e.reset_bench_nominal();   % T-006 case 隔离不变量
     % 水流语义由工况表驱动（S02 顺水表 +1 / S03 逆水表 -1）；river_current_mps 仅默认值
     if cur_mps > 0
         SCN = evalin('base', 'SCENARIOS(2)');
