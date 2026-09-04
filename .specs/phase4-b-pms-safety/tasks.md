@@ -131,7 +131,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: 七变体编译/构建成功；law=0/5 短程无错误
   - Notes: 不作物理判据（A2 既定口径）
 
-- [ ] 9. 43 号控制 Gate 脚本 + 检查函数包 + 指标后处理
+- [x] 9. 43 号控制 Gate 脚本 + 检查函数包 + 指标后处理
   - ID: T-009
   - Requirement(s): FR-452, FR-454, FR-455（判据 1~7）, FR-456
   - Roadmap: T-418
