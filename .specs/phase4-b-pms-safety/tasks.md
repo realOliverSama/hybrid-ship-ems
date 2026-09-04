@@ -153,7 +153,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: 五场景在 43 Phase 4 中按断言通过
   - Notes: S2/S3/S4 注入必须确定性（assignin 通道，禁 setVariable）
 
-- [ ] 11. 44 号负向验证
+- [x] 11. 44 号负向验证
   - ID: T-011
   - Requirement(s): FR-455（判据 6 负向 + FORCED 负向）
   - Roadmap: T-418（负向验证，42 号模式延续）
