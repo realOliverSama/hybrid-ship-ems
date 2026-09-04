@@ -1,7 +1,7 @@
 {
   "schema": "modelE_gate_result_v1",
   "spec": "phase4-a2-model-e-construction / T-412",
-  "generated_at": "2026-09-04T18:35:17***",
+  "generated_at": "2026-09-04T19:51:01***",
   "overall": true,
   "checks": {
     "G1": {
@@ -218,7 +218,7 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 89.789074666666664
+          "total_wall_time_s": 77.797379708333338
         }
       ],
       "required_fields": 96,
@@ -234,6 +234,5 @@
         "law=5 OK"
       ]
     }
-  },
-  "baseline_path": "config/gate_baseline_modele_candidate_v1_1.json"
+  }
 }

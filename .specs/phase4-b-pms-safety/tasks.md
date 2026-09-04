@@ -1,7 +1,7 @@
 # Phase 4-B — 真实控制逻辑 / PMS v2 / Safety-Interlock（T-413~T-418）Tasks
 
 Spec: `phase4-b-pms-safety`  
-Status: tasks-approved（2026-09-04 用户批准：APPROVED WITH MINOR AMENDMENTS——
+Status: implementation-complete
 ① T-012 bench 等值比较限定为 A2 历史物理观测量/指标，B 包新增控制/logging 信号不参与；
 ② T-004 只测 Safety 函数本体，UnitDelay 一拍拍序断言移至集成层 T-007；
 ③ 依赖图澄清 T-006 为单写者资源串行而非设计依赖；用户指示：施工移交新 session，
@@ -190,7 +190,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
   - Validation: §20 检查（新增文件全部登记）；扫描零命中
   - Notes: A2 spec 文件修改仅限追加 D-14 条目（已批准事项的补登记）
 
-- [ ] 14. 用户评审门 + 基线 promotion + 收官
+- [x] 14. 用户评审门 + 基线 promotion + 收官
   - ID: T-014
   - Requirement(s): AC-422, AC-423, AC-424, FR-456
   - Roadmap: T-418 收官

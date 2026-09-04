@@ -1,6 +1,6 @@
 {
   "schema": "modelE_config_manifest_v1",
-  "generated_at": "2026-09-04T18:33:23***",
+  "generated_at": "2026-09-04T19:49:20***",
   "config_sha256": {
     "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
     "ModelE_Control_Parameters_m": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63",

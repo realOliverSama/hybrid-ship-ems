@@ -1,8 +1,8 @@
 {
   "schema": "modelE_gate_baseline_v1",
-  "version": "1.0",
-  "spec": "phase4-a2-model-e-construction / T-412",
-  "frozen_from": "results/gate_result.json (overall=true, 2026-09-04 夜班；用户裁决 T-412 APPROVED / T-013 CONDITIONAL APPROVAL——4 项修正含 R_0 充放电共用后重跑确认)",
+  "version": "1.1",
+  "spec": "phase4-a2-model-e-construction / T-412 + phase4-b-pms-safety / T-012（current，v1.1，2026-09-04 T-014 用户批准 promotion）",
+  "frozen_from": "results/gate_result.json（T-412 against candidate，overall=true，2026-09-04；fail-closed G6 required=96 compared=96 skipped=0 comparability=true；T-014/APPROVED 用户书面批准 2026-09-04）",
   "checks": {
     "G1": {
       "name": "G1_structure",
@@ -53,12 +53,12 @@
           "pass": true,
           "violations": 0,
           "R_by_tier": [
-            32082.038992865695,
-            32716.652736531843,
-            35315.1062254943,
-            38374.218244104966,
-            40890.611696012085,
-            44685.4610649159
+            32082.09791873487,
+            32716.713410687244,
+            35315.17231005271,
+            38374.31526367282,
+            40890.71507212177,
+            44685.551048129724
           ]
         },
         {
@@ -69,7 +69,7 @@
           "item": "cruise_power_band_274_335_kW",
           "pass": true,
           "gate_class": "design_derived",
-          "value_kW": 298.38229243383023
+          "value_kW": 298.3822924338302
         },
         {
           "item": "full_power_speed_band_12.5_15.5_kn",
@@ -160,15 +160,15 @@
         {
           "item": "closure_E01_cruise",
           "pass": true,
-          "ratio": 3.95647779741507e-06,
-          "int_Pres_J": 324366.67642623384,
-          "dEcap_J": 322863.22088572895,
-          "E_throughput_J": 379998477.80951995
+          "ratio": 3.956538994314859e-06,
+          "int_Pres_J": -27221.71392581445,
+          "dEcap_J": -28725.17051438568,
+          "E_throughput_J": 379992865.1610778
         },
         {
           "item": "steady_mean_residual_lt_1kW_E01_cruise",
           "pass": true,
-          "mean_abs_residual_kW": 0.015120559336648208
+          "mean_abs_residual_kW": 0.001455933997358246
         },
         {
           "item": "closure_E09_transient",
@@ -191,6 +191,26 @@
       "gate_class": "regression",
       "checks": [
         {
+          "item": "comparability_fail_closed",
+          "pass": true,
+          "required_fields": 96,
+          "compared_fields": 96,
+          "skipped_fields": 0,
+          "skipped_detail": [],
+          "extra_fields_in_run_b": []
+        },
+        {
+          "item": "comparison_count_equals_required",
+          "pass": true,
+          "N_compared": 96,
+          "N_required": 96
+        },
+        {
+          "item": "no_extra_fields_in_run_b",
+          "pass": true,
+          "extra": []
+        },
+        {
           "item": "determinism_two_runs_bitwise_identical",
           "pass": true,
           "differing_fields": ""
@@ -198,9 +218,13 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 51.96278520833334
+          "total_wall_time_s": 89.78907466666666
         }
       ],
+      "required_fields": 96,
+      "compared_fields": 96,
+      "skipped_fields": 0,
+      "comparability_pass": true,
       "pass": true
     },
     "E10_compat_smoke": {
@@ -213,7 +237,8 @@
   },
   "config_sha256": {
     "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
-    "ModelE_TestScenarios_m": "04dfd2e2918dc47b44aadd37cdfb0f6522a60bbe7ae224c4211a5e8e20bf1da8",
+    "ModelE_Control_Parameters_m": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63",
+    "ModelE_TestScenarios_m": "50d9a2e59addae2d89093a4d39c380251415abddf99a9285adeb773e9aead924",
     "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
   },
   "model_D_reference_hashes": {
@@ -221,5 +246,28 @@
     "config_Model_Scenarios_m": "cafd670fbacf162b8dd8ffe4cc82c680f8913f9b362059bce3b079a685be02ac",
     "scripts__model_build_model_c_m": "90b7c9c9a0d77dc14d331fba4d976f09937fb5d31f04f59fb312aeba70f979e3",
     "model_HybridShip_ModelD_DCBus_slx": "50359e65d584fd6c889db5802795665531c6cf031cf8de83344e894fe150730b"
+  },
+  "dd9_machine_check": {
+    "M1_physics_sha_equal": true,
+    "M2_modelD_hashes_equal": true,
+    "M2_detail": [
+      "config/Model_Parameters.m=true",
+      "config/Model_Scenarios.m=true",
+      "scripts/+model/build_model_c.m=true",
+      "model/HybridShip_ModelD_DCBus.slx=true"
+    ],
+    "M3_threshold_structure_equal": true,
+    "M3_g6_fail_closed_verified": true,
+    "M3_diff": [],
+    "M4_e10_ok_equal": true
+  },
+  "promotion_record": {
+    "approved": "T-014 / AC-424 APPROVED（2026-09-04，用户书面批准）",
+    "amendments": [
+      "amendment 1: S2 deliverability bench reason=4 end-to-end",
+      "amendment 2: G6/C1 fail-closed（D-B20）"
+    ],
+    "historical_v1_0": "config/gate_baseline_modele_v1_0.json（immutable）",
+    "control_baseline": "config/gate_baseline_modele_control.json（v1.0，同场冻结）"
   }
 }

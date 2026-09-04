@@ -477,3 +477,9 @@ From Workspace 注入表 Interpolate=off；43/44 数字开头脚本 eval(filerea
 牺牲 0.01 s 决策即时性（对安全判据无影响）换取无代数环确定性。
 
 （实施期新增偏差按 D-B14+ 续登。）
+
+## 13. Promotion 记录（T-014 / AC-424 APPROVED，2026-09-04）
+
+- **用户书面批准**：T-014 / AC-424 APPROVED（2026-09-04）。
+- **版本资产三件套**：`config/gate_baseline_modele_v1_0.json`（A2 immutable historical）/ `config/gate_baseline_modele.json`（current **v1.1**）/ `config/gate_baseline_modele_control.json`（**B 控制基线 v1.0**，overall=true / 134 判据 / negative 7-7 / S2 reason=4 证据引用冻结）。
+- **Post-promotion 默认双双重跑**（用户放行条件）：40 默认 overall=true（G1~G6 全过）+ 43 默认 overall=true（134 判据）+ 44 7/7。

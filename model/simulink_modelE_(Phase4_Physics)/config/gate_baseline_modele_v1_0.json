@@ -1,0 +1,225 @@
+{
+  "schema": "modelE_gate_baseline_v1",
+  "version": "1.0",
+  "spec": "phase4-a2-model-e-construction / T-412",
+  "frozen_from": "results/gate_result.json (overall=true, 2026-09-04 夜班；用户裁决 T-412 APPROVED / T-013 CONDITIONAL APPROVAL——4 项修正含 R_0 充放电共用后重跑确认)",
+  "checks": {
+    "G1": {
+      "name": "G1_structure",
+      "gate_class": "physics_invariant",
+      "checks": [
+        {
+          "item": "solver_fixed_step_ode3_0.01s",
+          "pass": true
+        },
+        {
+          "item": "algebraic_loop_error_mode",
+          "pass": true
+        },
+        {
+          "item": "zero_NaN_Inf_all_sims",
+          "pass": true,
+          "offenders": []
+        },
+        {
+          "item": "modelD_zero_change_sha256",
+          "pass": true,
+          "detail": [
+            "config/Model_Parameters.m=true",
+            "config/Model_Scenarios.m=true",
+            "scripts/+model/build_model_c.m=true",
+            "model/HybridShip_ModelD_DCBus.slx=true"
+          ]
+        }
+      ],
+      "pass": true
+    },
+    "G2": {
+      "name": "G2_hull_shallow",
+      "gate_class": "physics_invariant",
+      "checks": [
+        {
+          "item": "V_up_R_up",
+          "pass": true,
+          "detail": "R(11kn)=28512 N < R(vmax)=50339 N"
+        },
+        {
+          "item": "U_against_up_P_prop_up",
+          "pass": true,
+          "detail": "P_downstream=166.5 < P_upstream=486.1 kW"
+        },
+        {
+          "item": "shallow_mono_HT_down_R_up_zero_violation",
+          "pass": true,
+          "violations": 0,
+          "R_by_tier": [
+            32082.038992865695,
+            32716.652736531843,
+            35315.1062254943,
+            38374.218244104966,
+            40890.611696012085,
+            44685.4610649159
+          ]
+        },
+        {
+          "item": "domain_warning_not_triggered_in_valid_domain",
+          "pass": true
+        },
+        {
+          "item": "cruise_power_band_274_335_kW",
+          "pass": true,
+          "gate_class": "design_derived",
+          "value_kW": 298.38229243383023
+        },
+        {
+          "item": "full_power_speed_band_12.5_15.5_kn",
+          "pass": true,
+          "gate_class": "design_derived",
+          "value_kn": 14.620235101130554
+        }
+      ],
+      "pass": true
+    },
+    "G3": {
+      "name": "G3_genset",
+      "gate_class": "physics_invariant",
+      "checks": [
+        {
+          "item": "STARTING_25_pm_1_s",
+          "pass": true,
+          "gate_class": "external_literature",
+          "value_s": 25
+        },
+        {
+          "item": "SYNC_5_pm_0.5_s",
+          "pass": true,
+          "gate_class": "external_literature",
+          "value_s": 5
+        },
+        {
+          "item": "COOLDOWN_30_pm_1_s",
+          "pass": true,
+          "value_s": 30
+        },
+        {
+          "item": "startup_gap_zero_output_no_fiction",
+          "pass": true
+        },
+        {
+          "item": "C_start_0.6_pm_0.01_kg",
+          "pass": true,
+          "value_kg": 0.5999999999999666
+        },
+        {
+          "item": "ON_state_steady_P_ge_Pmin_or_flag",
+          "pass": true,
+          "steady_min_kW": 222.2064995094043
+        },
+        {
+          "item": "fuel_1x500_vs_2x250_distinguishable_gt_1pct",
+          "pass": true,
+          "diff_pct": 23.657528804384732
+        }
+      ],
+      "pass": true
+    },
+    "G4": {
+      "name": "G4_battery",
+      "gate_class": "physics_invariant",
+      "checks": [
+        {
+          "item": "discharge_I_gt0_SOC_down_Vt_below_OCV",
+          "pass": true,
+          "detail": "SOC 0.3500->0.2777, mean(V_t/OCV_est)=0.9662"
+        },
+        {
+          "item": "SOP_envelope_respected_every_step",
+          "pass": true
+        },
+        {
+          "item": "no_0.95_port_efficiency_in_SOC_path",
+          "pass": true
+        },
+        {
+          "item": "SOP_four_constraint_injection_tests",
+          "pass": true,
+          "detail": "scripts/tests/test_battery_sop.m ALL PASS（四约束起控点注入）"
+        },
+        {
+          "item": "power_limit_flags_semantics",
+          "pass": true,
+          "detail": "E08 flags_consistent=1, E01 flags zero=1"
+        }
+      ],
+      "pass": true
+    },
+    "G5": {
+      "name": "G5_energy_closure",
+      "gate_class": "physics_invariant",
+      "checks": [
+        {
+          "item": "closure_E01_cruise",
+          "pass": true,
+          "ratio": 3.95647779741507e-06,
+          "int_Pres_J": 324366.67642623384,
+          "dEcap_J": 322863.22088572895,
+          "E_throughput_J": 379998477.80951995
+        },
+        {
+          "item": "steady_mean_residual_lt_1kW_E01_cruise",
+          "pass": true,
+          "mean_abs_residual_kW": 0.015120559336648208
+        },
+        {
+          "item": "closure_E09_transient",
+          "pass": true,
+          "ratio": 1.2057105832447454e-05,
+          "int_Pres_J": -1161894.0330323721,
+          "dEcap_J": -1163397.477330782,
+          "E_throughput_J": 124693630.40372974
+        },
+        {
+          "item": "steady_mean_residual_lt_1kW_E09_transient",
+          "pass": true,
+          "mean_abs_residual_kW": 0.0010295078573321083
+        }
+      ],
+      "pass": true
+    },
+    "G6": {
+      "name": "G6_runtime",
+      "gate_class": "regression",
+      "checks": [
+        {
+          "item": "determinism_two_runs_bitwise_identical",
+          "pass": true,
+          "differing_fields": ""
+        },
+        {
+          "item": "runtime_informational",
+          "pass": true,
+          "total_wall_time_s": 51.96278520833334
+        }
+      ],
+      "pass": true
+    },
+    "E10_compat_smoke": {
+      "ok": true,
+      "note": [
+        "law=0 OK",
+        "law=5 OK"
+      ]
+    }
+  },
+  "config_sha256": {
+    "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
+    "ModelE_TestScenarios_m": "04dfd2e2918dc47b44aadd37cdfb0f6522a60bbe7ae224c4211a5e8e20bf1da8",
+    "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
+  },
+  "model_D_reference_hashes": {
+    "config_Model_Parameters_m": "830eec47fda301242e8ef4aa6a3165726d79aca8cb67b52c0b023b8863e719d8",
+    "config_Model_Scenarios_m": "cafd670fbacf162b8dd8ffe4cc82c680f8913f9b362059bce3b079a685be02ac",
+    "scripts__model_build_model_c_m": "90b7c9c9a0d77dc14d331fba4d976f09937fb5d31f04f59fb312aeba70f979e3",
+    "model_HybridShip_ModelD_DCBus_slx": "50359e65d584fd6c889db5802795665531c6cf031cf8de83344e894fe150730b"
+  }
+}

@@ -1,6 +1,6 @@
 {
   "schema": "gate_control_result_v1",
-  "generated_at": "2026-09-04T18:25:27***",
+  "generated_at": "2026-09-04T19:51:43***",
   "checks": [
     {
       "name": "C2_transition_legality",
@@ -1610,8 +1610,56 @@
   },
   "overall": true,
   "phase1": {
-    "note": "candidate 由 T-012（40 --baseline_path）机器检查背书",
-    "candidate_path": "config/gate_baseline_modele_candidate_v1_1.json"
+    "note": "GATE43_BASELINE_PATH 未设（骨架/评审前模式）"
   },
-  "wall_time_s": 415.02817808333333
+  "wall_time_s": 399.20159475,
+  "negative_control": {
+    "schema": "gate_control_negative_v1",
+    "generated_at": "2026-09-04T19:59:06***",
+    "defects": [
+      {
+        "id": "D1",
+        "desc": "FORCED(7) reason（force 通道绕过阈值）",
+        "correctly_detected": true,
+        "detail": "C2 reason domain + FORCED ban"
+      },
+      {
+        "id": "D2",
+        "desc": "正常 start timer 不足（t_start=1500<3000）",
+        "correctly_detected": true,
+        "detail": "C2 normal_start_timer"
+      },
+      {
+        "id": "D3",
+        "desc": "正常 stop min_up 不足（t_online=10000<30000）",
+        "correctly_detected": true,
+        "detail": "C2 normal_stop_timer"
+      },
+      {
+        "id": "D4",
+        "desc": "应触发未触发 override（屏蔽 S2+S4 → S4 场景缺 force_start）",
+        "correctly_detected": true,
+        "detail": "C6 expect_trigger"
+      },
+      {
+        "id": "D5",
+        "desc": "确定性破坏（单采样点改写）",
+        "correctly_detected": true,
+        "detail": "C1 bitwise"
+      },
+      {
+        "id": "D6",
+        "desc": "episode 一对一破坏（双 start 单饱和事件）",
+        "correctly_detected": true,
+        "detail": "C7 one_to_one"
+      },
+      {
+        "id": "D7",
+        "desc": "尺寸不匹配必须 FAIL（旧 G6 会跳过比较空洞 PASS）",
+        "correctly_detected": true,
+        "detail": "G6 skipped=2 comparability=0 | C1 skipped=2"
+      }
+    ],
+    "all_detected": true
+  }
 }
