@@ -416,7 +416,7 @@ SURROGATE，除注明外）：
 |---|---|
 | `tests/test_pms_demand_e.m` | LPF 阶跃响应（τ 校验）、滞回进出含等号边界、削减公式（max(0,…) + 单/双机容量档）、初值 |
 | `tests/test_dispatch_e.m` | 均分、clamp 125/500、N_dispatch 排除 STARTING/SYNC/COOLDOWN、诊断三件套公式、N=0 防御 |
-| `tests/test_safety_interlock_e.m` | S1a/S1b/S2/S3（含单健康机 flag-only）/S4/S5 触发与不误触发、监视 flags、UnitDelay 拍序 |
+| `tests/test_safety_interlock_e.m` | S1a/S1b/S2/S3（含单健康机 flag-only）/S4/S5 触发与不误触发、监视 flags（**UnitDelay 拍序属集成层断言**，见 tasks T-007） |
 | `tests/build_commitment_harness.m` + `tests/test_commitment_chart_e.m` | Stateflow 脚本化 harness（禁 GUI）：阈值/hold/滞回驻留/并行计时最短 ON=恰 300 s/min_down=0 即时重启/仲裁顺序 veto>safety>normal/审计九元组完整性 |
 | 43 Gate | §6 全矩阵 + 负向验证（`scripts/44_run_control_gate_negative.m`，42 号模式） |
 

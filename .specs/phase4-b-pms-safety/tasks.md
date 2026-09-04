@@ -1,7 +1,11 @@
 # Phase 4-B — 真实控制逻辑 / PMS v2 / Safety-Interlock（T-413~T-418）Tasks
 
 Spec: `phase4-b-pms-safety`  
-Status: tasks-draft  
+Status: tasks-approved（2026-09-04 用户批准：APPROVED WITH MINOR AMENDMENTS——
+① T-012 bench 等值比较限定为 A2 历史物理观测量/指标，B 包新增控制/logging 信号不参与；
+② T-004 只测 Safety 函数本体，UnitDelay 一拍拍序断言移至集成层 T-007；
+③ 依赖图澄清 T-006 为单写者资源串行而非设计依赖；用户指示：施工移交新 session，
+handoff 见 `./HANDOFF.md`）  
 Created: 2026-09-04  
 Brainstorm: `./brainstorm.md`（D-B1~D-B9 + 终审 5 项修正）  
 Requirements: `./requirements.md`（requirements-approved + design 联动修订 FR-445 S2/S5）  
@@ -73,7 +77,10 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
     flag-only 分支、S4 firm headroom 公式、S5 isfinite+EMS_AGGREGATE 门控、
     监视 flags、fault_latch 锁存、全部触发/不误触发对）
   - Validation: 单测全过
-  - Notes: S2/S4 公式以 design §5.6（评审修订版）为准，禁止引用 brainstorm 旧口径
+  - Notes: S2/S4 公式以 design §5.6（评审修订版）为准，禁止引用 brainstorm 旧口径；
+    **本任务只测 Safety 函数本体**；Safety→Commitment 的 UnitDelay 一拍拍序
+    （override(t) ⇒ t+0.01 s 恰好一拍到达、非两拍、无代数环）是集成层断言，
+    移交 T-007
 
 - [ ] 5. DG_Commitment_Supervisor Stateflow chart + harness 单测
   - ID: T-005
@@ -110,7 +117,9 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
     adapter 删除与接线替换（05→07→06，端口契约 design §5.1）、UnitDelay 防环、
     Unit Delay 输入反馈、logging 扩展（design §5.8 清单）、force 通道保名（DD-8）、
     EMS_HEALTH_TS From Workspace 通道
-  - Validation: 构建无错误；结构指纹幂等（两建逐位一致）；无代数环（编译诊断）
+  - Validation: 构建无错误；结构指纹幂等（两建逐位一致）；无代数环（编译诊断）；
+    **集成拍序断言：Safety override(t) ⇒ Commitment 于 t+0.01 s 恰好一拍收到
+    （非零拍/非两拍）**
   - Notes: 集成前 T-002~T-006 必须全部完成；X_b2g_* 块名清单入 43 结构断言
 
 - [ ] 8. 七变体兼容 + law=0/5 smoke
@@ -162,8 +171,10 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
     生成 `config/gate_baseline_modele_candidate_v1_1.json`（机器检查：物理参数 sha
     一致/G2~G6 阈值一致/Model D hash 一致）；43 全矩阵（AUTO×3 臂 + MANUAL×P2 +
     Safety×5 + 确定性两跑）至 overall=true；v1.0→v1.1 field-level diff 报告
-  - Validation: **43 overall=true ∧ T-412(candidate) overall=true**；bench 结果与
-    A2 冻结值逐位一致（DD-8 兼容性实证）；Model D sha256 零改动
+  - Validation: **43 overall=true ∧ T-412(candidate) overall=true**；**A2 历史物理
+    bench 观测量/指标（原 Gate 指定的 physical observables/metrics）在 DD-8 force
+    兼容适用范围内逐位一致；B 包新增控制/logging 信号不参与该等值比较**；
+    Model D sha256 零改动
   - Notes: 任一 FAIL → error('GATE:*') 停下升级用户；禁改参数凑 PASS
 
 - [ ] 13. 归档（README/文档/日志/D-14 补记）
@@ -194,10 +205,14 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
 ## 依赖与并行策略
 
 ```text
-T-001 ──► T-002/T-003/T-004（三链并行 delegate，手动 detached worktree 隔离，
-          A2 D-11 模式：主树未跟踪目录不清理）+ T-005（可并行）
-              └──────► T-006 ──► T-007（主 Agent 独占集成）
-                                    └─► T-008 ──► T-009 ──► T-010 ──► T-011
+T-001 ──┬─ T-002（链 A delegate） ┐
+        ├─ T-003（链 B delegate） ├─ 逻辑并行四链
+        ├─ T-004（链 C delegate） ┤
+        ├─ T-005（chart harness） ┘
+        └─ T-006（01/02 改组——**逻辑上同样并行**；仅因 build_model_e.m 主 Agent
+                  单写者纪律而与 T-007 串行于主树，属 resource/write serialization，
+                  不是设计依赖）
+T-002~T-006 ──► T-007（主 Agent 独占集成）──► T-008 ──► T-009 ──► T-010 ──► T-011
                                                         └──────► T-012 ──► T-013 ──► T-014（用户门）
 ```
 
