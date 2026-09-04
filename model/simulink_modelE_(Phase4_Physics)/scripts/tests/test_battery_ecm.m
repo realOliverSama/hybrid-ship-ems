@@ -29,7 +29,7 @@ try
     % OCV=550, V1=0, R0=0.007, P_t=50000 W → E=550, D=301100, I≈91.0145 A；
     % 自洽：V_t*I ≈ 50000 W（±0.1%）。eta=1 使 P_t = P_bus*1000。
     lut_c1 = {[0.4 0.6], [550 550], [0.007 0.007], [0.009 0.009], [3000 3000]};  % 常值双节点 LUT（interp1 线性需>=2 点）
-    tail_c1 = {1.15, 0.98, 1860, 360, 657, 1823, 1e9, 1.0, 0.10, 0.95, 0.25, 0.90};
+    tail_c1 = {1.0, 0.98, 1860, 360, 657, 1823, 1e9, 1.0, 0.10, 0.95, 0.25, 0.90};
     clear BatteryECM
     [Pb, SOC_out, Vb, I_m, dsoc, Pdis, Pchg, fl_pl, fl_dl, fl_lut] = ...
         BatteryECM(50, 0.5, dt_s, lut_c1{:}, tail_c1{:});
@@ -57,7 +57,7 @@ try
 
     % ================= T3 方向性：放电/充电 =================
     lut_c3 = {[0.4 0.6], [593 593], [0.00715 0.00715], [0.008 0.008], [2600 2600]};
-    tail_c3 = {1.15, 0.98, 1860, 360, 657, 1823, 1e9, 0.97, 0.10, 0.95, 0.25, 0.90};
+    tail_c3 = {1.0, 0.98, 1860, 360, 657, 1823, 1e9, 0.97, 0.10, 0.95, 0.25, 0.90};
     clear BatteryECM
     [Pb, ~, Vb, I_m, dsoc, ~, ~, fl_pl, fl_dl, ~] = BatteryECM(500, 0.5, dt_s, lut_c3{:}, tail_c3{:});
     assert(I_m > 0 && dsoc < 0 && Vb < 593, 'T3: 放电方向性失败 (I=%.4f, dSOC=%.3e, Vt=%.4f)', I_m, dsoc, Vb);
@@ -91,13 +91,14 @@ try
     fprintf('T4 coulomb-counting asymmetry: PASS (|dSOC_chg|/|dSOC_dis|=%.6f)\n', ratio);
 
     % ================= T5 充电方向 R_0×1.15（同功率 |I_chg| < |I_dis|） =================
-    tail_c5 = {1.15, 0.98, 1860, 360, 657, 1e6, 1e9, 1.0, 0.10, 0.95, 0.25, 0.90};
+    tail_c5 = {1.0, 0.98, 1860, 360, 657, 1e6, 1e9, 1.0, 0.10, 0.95, 0.25, 0.90};
     clear BatteryECM
     [~, ~, ~, I_dis] = BatteryECM(50, 0.5, dt_s, lut_c4{:}, tail_c5{:});
     clear BatteryECM
     [~, ~, ~, I_chg] = BatteryECM(-50, 0.5, dt_s, lut_c4{:}, tail_c5{:});
-    assert(abs(I_chg) < abs(I_dis), 'T5: 充电方向 R_0×1.15 未生效: |I_chg|=%.6f vs |I_dis|=%.6f', abs(I_chg), abs(I_dis));
-    fprintf('T5 direction-aware R_0 (x1.15): PASS (|I_chg|=%.4f < |I_dis|=%.4f A)\n', abs(I_chg), abs(I_dis));
+    assert(abs(I_chg) < abs(I_dis), 'T5: 共用 R_0 不等（不应发生）: |I_chg|=%.6f vs |I_dis|=%.6f', abs(I_chg), abs(I_dis));
+    assert(abs(I_chg) - abs(I_dis) <= 1e-9, 'T5: 充放电共用 R_0 下同功率电流应相等');
+    fprintf('T5 shared R_0 (T-013 ruling, chg_mult=1.0): PASS (|I_chg|=|I_dis|=%.4f A)\n', abs(I_chg));
 
     % ================= T6 LUT 边界（九节点冻结 LUT，域外 clamp + flag） =================
     clear BatteryECM
@@ -117,7 +118,7 @@ try
     % (a) 恰在边界（fp 精确构造：R0=0.03125、E=500、eta=1 → P_t = E^2/(4R0) = 2e6 W,
     %     D = 250000 - 0.125*2e6 = 0 精确为零）→ 不置 flag
     lut_c7 = {[0.4 0.6], [500 500], [0.03125 0.03125], [0.01 0.01], [3000 3000]};
-    tail_c7a = {1.15, 0.98, 1860, 250, 657, 1e6, 1e9, 1.0, 0.10, 0.95, 0.25, 0.90};
+    tail_c7a = {1.0, 0.98, 1860, 250, 657, 1e6, 1e9, 1.0, 0.10, 0.95, 0.25, 0.90};
     clear BatteryECM
     [Pb, ~, Vb, I_m, ~, Pdis, ~, fl_pl, fl_dl, ~] = BatteryECM(2000, 0.5, dt_s, lut_c7{:}, tail_c7a{:});
     assert(fl_pl == 0 && fl_dl == 0, 'T7a: 判别式恰为零不应置 flag');

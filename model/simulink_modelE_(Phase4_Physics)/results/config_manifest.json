@@ -1,8 +1,8 @@
 {
   "schema": "modelE_config_manifest_v1",
-  "generated_at": "2026-09-04T05:32:35***",
+  "generated_at": "2026-09-04T10:03:21***",
   "config_sha256": {
-    "ModelE_Physics_Parameters_m": "bd44ac0af1004cfd86d84462788d1c7f3eae3c1b25a8d6cbbc0f8458cc46d2a2",
+    "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
     "ModelE_TestScenarios_m": "04dfd2e2918dc47b44aadd37cdfb0f6522a60bbe7ae224c4211a5e8e20bf1da8",
     "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
   },
@@ -101,7 +101,7 @@
     ],
     "Bat_I_limit_surrogate_A": 1823,
     "Bat_P_conv_bus_max_kW": 1050,
-    "Bat_R0_chg_mult": 1.15,
+    "Bat_R0_chg_mult": 1,
     "ASSUMED_Gen_MinStablePower": 125,
     "ASSUMED_eta_dcdc": 0.97
   },

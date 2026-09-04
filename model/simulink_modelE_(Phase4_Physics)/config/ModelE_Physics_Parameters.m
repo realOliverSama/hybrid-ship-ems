@@ -68,7 +68,7 @@ nu_water     = 1.19e-6; % 运动粘度 [m^2/s] LITERATURE_NOMINAL（淡水 15°C
 Hull_K_R     = 890;     % [N/(m/s)^2] DERIVED（线性 Δ 缩放，Q4 裁决）
 
 %  浅水修正链（design §4.1 相对增量法：文献公式只算 Δr，绝对水平由 K_R 锚定）
-Hull_k_form  = 0.2;     % 形状因子 k [-]，1+k=1.2；LITERATURE_RANGE 1.15~1.30 取中值
+Hull_k_form  = 0.2;     % 形状因子 k [-]，1+k=1.2；ENGINEERING_SURROGATE（T-013 裁决：1+k∈1.15~1.30 行业带内的工程取值，无单篇文献直接锚定本船型；待 Rhine86 报告/ITTC 惯例类资料确认）
 Shallow_deltak_coef = 0.644;    % Δk = 0.644·(H/T)^(-1.72)，Millward [4]
 Shallow_deltak_exp  = -1.72;    %   （Zhang 2023 [1] 亦采用）
 Shallow_c1   = 1.1680;  % 摩擦修正 C_F* 系数 [1][3]（Rhine86 标定族；C_B=0.86 型差外推局限见证据链文档）
@@ -149,7 +149,7 @@ DG_P_min_kW     = 125;   % 最低稳定负荷 25% [kW/unit] LITERATURE_NOMINAL [
 DG_P_opt_kW     = 375;   % 最佳效率点 75% [kW/unit] LITERATURE_NOMINAL [6]
 DG_ramp_kW_per_s = 20;   % 爬坡率 [kW/s/unit] engineering-calibrated（[9] 1.67%~4% rated/s 带内；冻结 {10,20,50}）
 DG_tau_s        = 5;     % 一阶时间常数 [s] engineering-calibrated（无机型精确数据；冻结 {2,5,10}）
-DG_t_starting_s = 25;    % STARTING 段 [s] LITERATURE_NOMINAL [7]（30 s start-to-online 拆分）
+DG_t_starting_s = 25;    % STARTING 段 [s] DERIVED + LITERATURE_SURROGATE：由总 start-to-online ≈28~30 s [7] 与 SYNC ≈3~5 s [8] 组合推得（30−5=25），非文献直接给出 25 s
 DG_t_sync_s     = 5;     % SYNCHRONIZING 段 [s] LITERATURE_NOMINAL [8]（同步 3~5 s）
 DG_t_cooldown_s = 30;    % COOLDOWN 段 [s] surrogate（[7] 量级；怠速油耗未计，登记局限）
 N_ticks_starting = 2500; % 状态机 tick 数（0.01 s 采样 → 25 s；整数 tick 判据，OQ-6）
@@ -189,7 +189,9 @@ Bat_OCV_LUT_V  = [541.08 578.68 585.99 591.12 592.87 593.42 594.97 600.12 600.55
 Bat_R0_LUT_ohm = [0.00866 0.00815 0.00770 0.00745 0.00715 0.00702 0.00682 0.00662 0.00632];
 Bat_R1_LUT_ohm = [0.01887 0.01225 0.00986 0.00923 0.00798 0.00785 0.00722 0.00883 0.00705];
 Bat_C1_LUT_F   = [1697 2070 2254 2458 2579 2733 2862 2969 3058];
-Bat_R0_chg_mult = 1.15;  % 充电方向 R_0 系数（HPPC surrogate，顾问参数集 v1）
+Bat_R0_chg_mult = 1.0;   % 充放电共用 R_0(SOC)（2026-09-04 T-013 裁决：charging gain
+                         % ×1.15 无具体文献/实验支撑——顾问参数表 v1 仅表注一行，Tran 2021
+                         % HPPC [12] 未单列充电方向拟合；暂不人为引入，待真实 BMS 数据）
 %  功率/电流边界（OQ-9 定稿：1050 kW = bus-side 图纸约束，作为 SOP 上界之一）
 ASSUMED_eta_dcdc = 0.97;             % DC/DC 效率 INHERITED_LEGACY（保持）
 Bat_P_conv_bus_max_kW  = 1050;       % DC/DC 母线侧额定 [kW] DRAWING（20260526设备参数）
@@ -204,6 +206,9 @@ ASSUMED_SOC_min             = 0.10;
 ASSUMED_SOC_max             = 0.95;
 ASSUMED_SOC_DisDerate_Start = 0.25;  % SOC≤0.25 线性降额 → SOC_min 归零
 ASSUMED_SOC_ChgDerate_Start = 0.90;  % SOC≥0.90 线性降额 → SOC_max(0.95) 归零
+% [T-013 裁决 2026-09-04] SOC 降额族 provenance 升级：ENGINEERING_SURROGATE
+% （保守 BMS/SOP surrogate safety envelope，沿用 Model D 降额族数值；Model E
+%  独立理由=电池绝对边界+DC/DC 约束的保守运行包络；待真实 BMS 策略数据重评）
 Bat_SOC_init = 0.60;                 % 初始 SOC INHERITED_LEGACY
 %  【Q5 裁决】旧端口效率 0.95 不再乘到电池端口功率（ECM 内阻显式损耗已含）。
 %  ASSUMED_Bat_Eff_* 定义保留（ECMS k_eq 派生引用，INHERITED_LEGACY），Plant 侧停用：

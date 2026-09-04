@@ -1,7 +1,7 @@
 {
   "schema": "modelE_gate_result_v1",
   "spec": "phase4-a2-model-e-construction / T-412",
-  "generated_at": "2026-09-04T05:33:46***",
+  "generated_at": "2026-09-04T10:04:32***",
   "overall": true,
   "checks": {
     "G1": {
@@ -160,15 +160,15 @@
         {
           "item": "closure_E01_cruise",
           "pass": true,
-          "ratio": 3.9564777972095034E-6,
-          "int_Pres_J": 324370.60731195915,
-          "dEcap_J": 322867.15177153237,
+          "ratio": 3.95647779741507E-6,
+          "int_Pres_J": 324366.67642623384,
+          "dEcap_J": 322863.22088572895,
           "E_throughput_J": 3.7999847780951995E+8
         },
         {
           "item": "steady_mean_residual_lt_1kW_E01_cruise",
           "pass": true,
-          "mean_abs_residual_kW": 0.015116076609844799
+          "mean_abs_residual_kW": 0.015120559336648208
         },
         {
           "item": "closure_E09_transient",
@@ -198,7 +198,7 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 52.720136083333337
+          "total_wall_time_s": 51.962785208333337
         }
       ],
       "pass": true
@@ -209,21 +209,6 @@
         "law=0 OK",
         "law=5 OK"
       ]
-    }
-  },
-  "negative_validation": {
-    "defects": [],
-    "defect_A_hull_K_R": {
-      "pass_detected": true,
-      "P_prop_kW": 172.27891182107172
-    },
-    "defect_B_ocv_lut": {
-      "pass_detected": true,
-      "manifest_consistent": true
-    },
-    "recovery": {
-      "pass": true,
-      "P_prop_kW": 298.38204660838903
     }
   }
 }
