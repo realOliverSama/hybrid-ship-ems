@@ -1,7 +1,11 @@
 # Phase 4-B — 真实控制逻辑 / PMS v2 / Safety-Interlock（T-413~T-418）Requirements
 
 Spec: `phase4-b-pms-safety`  
-Status: requirements-draft  
+Status: requirements-approved（2026-09-04 用户批准：APPROVED WITH 5 MANDATORY AMENDMENTS——
+① FR-451A canonical power domain 全 PMS 禁混域运算；② R0/R5/P2 三臂全部经过 Safety，
+臂间唯一差异为 demand source；③ M3 门槛化（design 换算冻结电平）；④ S3 仅在有第二台
+健康机时 FORCE_STOP 否则 flag-only；⑤ S2/S4 transition reason code 分离——+4 项编辑修正，
+用户预先授权修订后直接置 approved，无需再次评审 requirements）  
 Created: 2026-09-04  
 Brainstorm: `./brainstorm.md`（九轮裁决 D-B1~D-B9 + 终审 5 项修正，用户书面批准）
 
@@ -88,9 +92,13 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
   contract/future extension；接口命名 `manual_power_cmd_pct`；一切文档/论文表述须注明
   "normalized operator propulsion command surrogate; not a measured bridge-lever
   transfer function"；不单独产出文献综述文档。
-- **FR-431**: SHALL 新增 MANUAL 最小工况三个：M1（step，30%→70%）、M2（ramp，20%→80%）、
-  M3（staged maneuver，30%→70%→40%，验证 1DG→2DG→1DG 链）；MANUAL 不复制 AUTO 工况
-  矩阵；工况注入沿用 `VOYAGE_*` 编译期变量 + assignin 通道。
+- **FR-431**: SHALL 新增 MANUAL 最小工况三个：M1（step）、M2（ramp）、M3（staged
+  maneuver，low→high→low 三段）；**M3 的具体百分比不硬编码**，由 design 按
+  `P_prop_max + P_hotel + canonical power domain 换算`（FR-451A）计算冻结，使
+  `P_commit,low < 350 kW`、`P_commit,high > 425 kW` 且各段时长满足 30/120/300 s
+  时序，从而**确定性跨越 start/stop threshold** 走完 1DG→2DG→1DG 链；M1/M2 电平
+  同法在 design 冻结；MANUAL 不复制 AUTO 工况矩阵；工况注入沿用 `VOYAGE_*`
+  编译期变量 + assignin 通道。
 
 ### Baseline Demand Policy（T-415）
 
@@ -132,9 +140,11 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
 - **FR-440**: 每次 commitment transition SHALL 记录审计条目
   `{timestamp, old_state, new_state, reason_code, P_commit, normal_start_timer,
   normal_stop_timer, online_timer, safety_override}`；`reason_code ∈
-  {NORMAL_HIGH_LOAD, NORMAL_LOW_LOAD, SAFETY_DG_FAULT, SAFETY_FIRM_DEFICIT,
-  SAFETY_MIN_GEN_SURPLUS}`（可扩展）；审计入 `12_Data_Logging` 并供 43 号 Gate 做
-  规则可追溯性校验。
+  {NORMAL_HIGH_LOAD, NORMAL_LOW_LOAD, SAFETY_DG_FAULT,
+  SAFETY_REALIZED_SUPPLY_DEFICIT, SAFETY_PROSPECTIVE_FIRM_CAPACITY_DEFICIT,
+  SAFETY_MIN_GEN_SURPLUS}`（**S2 与 S4 必须使用不同 reason code**，可扩展）；
+  S5 一般不产生 commitment transition，以独立 `baseline_fallback_reason` /事件日志
+  记录；审计入 `12_Data_Logging` 并供 43 号 Gate 做规则可追溯性校验。
 
 ### DG Dispatch Allocator（T-416）
 
@@ -164,8 +174,13 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
     FORCE_START 健康机；
   - **S2 Realized supply deficit**：`P_gen_unserved > P_bat_dis_avail` 持续 2 s →
     FORCE_START 可用健康离线机组（缺口已由 Dispatch 兑现且电池 SOP 补不上）；
-  - **S3 Min generation surplus**：`N_dispatch·125 − P_load > P_bat_chg_avail` →
-    FORCE_STOP DG2（旁路 dwell）；
+  - **S3 Min generation surplus**：`N_dispatch·125 − P_load > P_bat_chg_avail`
+    **且 `N_healthy,ON ≥ 2`**（停掉 lag 后仍保留至少一台健康机组在线）→
+    FORCE_STOP DG2（旁路 dwell）；若只剩一台健康在线机组，**不得** FORCE_STOP
+    （保持 FR-439 的 `N_DG_on ≥ 1` 约束），仅 flag 并记录
+    `minimum_generation_surplus_unresolved=true`——该极端工况（单健康机的最低
+    稳定功率仍无法被负荷+BESS 吸收）为 **known out-of-scope condition**，不为此
+    新增 0DG/dump load/load shedding；
   - **S4 Prospective firm-capacity deficit**：`D_firm = P_load,req,bus + 50 −
     P_firm,avail,bus > 0` 持续 2 s，其中
     `P_firm,avail,bus = N_ON,healthy · P_DG,rated,bus + P_bat_dis_avail`、
@@ -193,21 +208,33 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
   `Legacy_Commitment_Adapter`；Genset Plant 接口不变；FR-421 防线随替换转移：
   **论文经济性对照只允许使用 P2 臂**（R0 仅行为上下文）。
 - **FR-450**: source selector SHALL 以 `PMS_SOURCE_MODE` 编译期选择
-  `BASELINE_POLICY | EMS_AGGREGATE`；EMS 七变体聚合 `P_gen_ref_kW` 经 EMS_AGGREGATE
+  `BASELINE_POLICY | EMS_AGGREGATE`；`PMS_SOURCE_MODE` 为 nominal source，
+  **S5 fallback 可 runtime override**：`source_effective = (ems_health_ok==0) ?
+  BASELINE_POLICY : PMS_SOURCE_MODE`；EMS 七变体聚合 `P_gen_ref_kW` 经 EMS_AGGREGATE
   通道接入共享 Commitment/Dispatch；**全部七变体编译/构建成功**（A2 FR-426 契约
   延续），law=0/law=5 短程运行无错误。
 - **FR-451**: 控制参数 SHALL 集中于独立配置文件（**不动** `ModelE_Physics_Parameters.m`
   的 Plant 事实源；文件名与加载顺序 design 定），逐参数 provenance 标记；敏感性注册表
   （α_start∈{0.80,0.85,0.90}、α_stop∈{0.60,0.70,0.80}、min_up∈{0,300,600}、
   firm_margin∈{0,100}、τ∈{30,120}）冻结登记不扫；min_down 不登记。
+- **FR-451A**: PMS v2 SHALL 定义**唯一 canonical 内部功率域**（canonical power
+  domain）：`P_load`、`P_gen_req`、`P_commit`、recovery 容量项（500·N_dispatch）、
+  dispatch 容量与 clamp（125/500）、commitment 阈值（425/350）、S2/S3/S4 全部
+  比较量 SHALL 在参与任何算术或比较**之前**转换到同一域；域转换只允许发生在
+  **显式子系统边界**（专用 conversion 环节）；**禁止 bus-side 与 pre-rectifier
+  （genset-side）混域运算**。canonical 域的选择（generator-side 或 bus-side）由
+  design 门源码核查后冻结（Dependencies ①②为其核查输入）。
 
 ### Baseline 验证与控制 Gate（T-418）
 
-- **FR-452**: SHALL 实现三臂对比：**R0**=旧 law=0 + 新 Commitment/Dispatch（historical
-  context）、**R5**=law=5 + 新链（advanced integration）、**P2**=BaselineDemand +
-  Commitment + Dispatch + Safety（**唯一 conventional economic baseline**）；
-  **R0/R5 的燃油优劣不参与 B 包 PASS/FAIL**（只过 interface/determinism/safety/
-  no-crash/no-illegal-command）；P2 独承 behavioral-quality Gate。
+- **FR-452**: SHALL 实现三臂对比：**R0**=旧 law=0 + 共享 Commitment/Dispatch +
+  Safety（historical context）、**R5**=law=5 + 共享 Commitment/Dispatch + Safety
+  （advanced integration）、**P2**=BaselineDemand + 共享 Commitment/Dispatch +
+  Safety（**唯一 conventional economic baseline**）；**三臂唯一差异是 aggregate
+  generation demand source——Safety 层对全部控制臂恒在**（先进 AI/MPC 不可绕过
+  的架构保证）；**R0/R5 的燃油优劣不参与 B 包 PASS/FAIL**（只过
+  interface/determinism/safety/no-crash/no-illegal-command）；P2 独承
+  behavioral-quality Gate。
 - **FR-453**: 工况矩阵 SHALL 为：AUTO（S20 复合航次 + S01 静水巡航 + 顺水/逆水 +
   浅水代表档 S31/S34/S36）× 三臂；MANUAL（M1/M2/M3）仅 P2 臂；Safety 确定性注入
   **S1~S5 各至少一个独立场景**。
@@ -269,8 +296,10 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
 
 ## Acceptance Criteria
 
-- **AC-416**（FR-428~431）：双模式构建成功；AUTO 既有工况行为不变（T-412 重跑背书）；
-  MANUAL M1~M3 运行无错误，指令方向/rate limiter 行为正确；T-413 决策小节落档。
+- **AC-416**（FR-428~431）：双模式构建成功；**AUTO 推进控制律/PI 参数化保持行为
+  不变**（T-412 为 Plant 零回归背书，非全控制系统输出回归）；MANUAL M1~M3 运行
+  无错误，指令方向/rate limiter 行为正确；M3 按 design 冻结电平确定性跨越
+  425/350 门槛完成 1DG→2DG→1DG；T-413 决策小节落档。
 - **AC-417**（FR-432~435）：Baseline Demand 单测通过（LPF 阶跃响应、滞回进出点含
   边界等号、削减公式含 `max(0,…)` 与单机/双机容量两档）。
 - **AC-418**（FR-436~440）：Commitment 单测通过——threshold/hold 计时、滞回带驻留、
@@ -299,7 +328,9 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
 - SOC 降额带内 SOP 收缩与 commitment 相互作用（S2 兜底）；
 - 800→300 kW 回落后 DG2 停机 ≈258 s 的已知保守现象（T-418 报告 dwell，不加滤波）；
 - DG fault 发生于另一机 STARTING 中（不重复启动，flag-only，A2 时序语义延续）；
-- 单机 ON 且 req>500 的瞬态缺口（battery 下垂 + S2 判据，不属 dispatch 职责）。
+- 单机 ON 且 req>500 的瞬态缺口（battery 下垂 + S2 判据，不属 dispatch 职责）；
+- 单健康机 + 最低发电盈余无法消纳（S3 降级 flag-only，known out-of-scope
+  condition，见 FR-445 S3）。
 
 ## Dependencies and Constraints
 
@@ -310,10 +341,12 @@ Phase 4（系统优化重构，`Phase4` 长期主分支）工作包 B「真实�
 - 参考文献链：`项目开发进展.md` 2026-09-04 条目 [1]~[19] + brainstorm 新增
   Kongsberg/Høglund/ComAp/Siemens PMA 300/IFAC 2017/GB/T 47666—2026 引用
   （provenance 按 D-B4 修正后的组合口径表述）；
-- design 门待核查/待决六项：① `P_prop_demand_kW` 电气/机械口径；② 500 kW 的
-  rectifier 前后口径（`P_DG,rated,bus` 是否乘 η_rect）；③ A2 `below_min_flag` 精确
-  语义；④ 控制参数文件名与加载顺序；⑤ Manual rate limiter 数值；⑥
-  `N_eligible_high-load_episodes` 机器判定算法；⑦ EMS 变体接入 source selector 接线。
+- design 门待核查/待决**七项**：① `P_prop_demand_kW` 电气/机械口径；② 500 kW 的
+  rectifier 前后口径（`P_DG,rated,bus` 是否乘 η_rect）——①②合并为 FR-451A
+  canonical power domain 决策的源码核查输入；③ A2 `below_min_flag` 精确语义；
+  ④ 控制参数文件名与加载顺序；⑤ Manual rate limiter 数值；⑥
+  `N_eligible_high-load_episodes` 机器判定算法；⑦ EMS 变体接入 source selector
+  接线。
 
 ## Open Questions
 
