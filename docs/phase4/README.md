@@ -12,8 +12,9 @@ Phase 4（系统优化重构，`Phase4` 分支）各工作包的审计报告、�
 | `a1_model_audit/` | 目录 | 工作包 A 第一段（spec `phase4-a1-model-e-audit`）：Model D → Model E 建模审计 + 参数真实性审计产物（架构审计 JSON/报告、参数总表 CSV、Gate 结果与脚本） |
 | `a2_model_e/` | 目录 | 工作包 A 第二段（spec `phase4-a2-model-e-construction`）：Model E v1 参数证据链（值/provenance/文献 [1]~[17]/推导式 + 效率链审计 + 螺旋桨重标定推导）+ 螺旋桨 ±20% OAT 敏感性报告 |
 | `b_pms_safety/` | 目录 | ★ 工作包 B（spec `phase4-b-pms-safety`，2026-09-04）：PMS v2 + Safety-Interlock 控制侧证据——三臂对比报告（R0/R5/P2）、裁决链索引、基线 v1.0→v1.1 candidate field-level diff（DD-9 Step D） |
+| `d_dataset_v3/` | 目录 | ★ 工作包 D（spec `phase4-d-dataset-v3`，2026-09-04/05）：Dataset v3 契约文档——observation_contract / future_information_contract / c_producer_interface_contract / dataset_v3_schema（解释层，机器事实源为 Model E config 两 JSON）+ T-432 activation record 与 unblock checklist 模板；索引见该目录 README.md |
 
-| `d_dataset_v3_HANDOFF.md` | 文件 | ★ 工作包 D（spec 未建，分支 `feat/phase4-d-dataset-v3`）开工提示词：Phase 4 现状 / D 包任务范围（T-430~T-435）/ 必读材料 / 挂账 / 纪律 / 顺序建议 |
+| `d_dataset_v3_HANDOFF.md` | 文件 | ★ 工作包 D（spec 未建 → 已建 `.specs/phase4-d-dataset-v3`，分支 `feat/phase4-d-dataset-v3`）开工提示词：Phase 4 现状 / D 包任务范围（T-430~T-435）/ 必读材料 / 挂账 / 纪律 / 顺序建议 |
 
 ## 维护规则
 
