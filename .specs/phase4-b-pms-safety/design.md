@@ -446,6 +446,10 @@ From Workspace 注入表 Interpolate=off；43/44 数字开头脚本 eval(filerea
 | D-B13 | `gate_baseline_modele.json` 走 candidate→promotion 升级 v1.1（§7） | B 包结构变更必然；v1.0 永久保留；物理判据节零改动；promotion 需用户书面批准（评审修订后纪律） |
 | D-B14 | **S2 语义重定义为 realized supply deficit**（`max(0,P_load−ΣP_DG_actual)>SOP_dis` 持续 2 s），`P_gen_unserved` 降级为纯诊断量；requirements FR-445 S2 联动修订 | design 评审暴露：指令错配≠实际缺口（EMS 过度请求反例）；用户书面裁决 2026-09-04 |
 | D-B15 | Dispatch 输出与分母统一 `is_dispatching` 单一谓词；S5 health authority 收窄为显式通道+isfinite（无 freeze 推断）且仅 EMS_AGGREGATE 模式报警；requirements FR-445 S5 联动修订 | 评审暴露：分母/输出谓词不一致可致 STARTING 机组获非零 ref（违反 A2 契约）；常值输出≠控制器死亡；同场裁决 |
+| D-B16 | **06 号停机通路激活（In5）**：GensetUnitE 仅接受 cmd_stop 停机，而 A2 的 In5（DG_cmd_stop）悬空、停机仅经内部 From Workspace 注入（GEN_CMD_STOP_TS）。PMS v2 的因果停机（FR-437 正常停 / S3 FORCE_STOP）必须到达 Plant。裁决：激活 In5——06 内部加 Max 合成（stop_demux 输入 = max(注入表, 外部停机向量)），状态机/功率链/参数零改动，bench 注入语义逐位不变（force 模式下 07 停机向量恒 [0;0]）。07_PMS_v2 新增第 5 输出 DG_cmd_stop [1×2]（auto 模式 = [1−cmd_onoff]，兼作故障禁启互锁） | design §5.1 端口清单未枚举停机向量的机械缺口；A2 chain_b_integration_notes 已预留“二选一，主 Agent 定”授权；T-412(candidate) 重跑 + M3 全链实测背书（T-007/T-012） |
+| D-B17 | 16_Safety_Interlock 函数不消费 dispatch 诊断三件套（unserved/surplus/min_clamp）——D-B14 已禁用作 Safety 判据，函数签名即契约；三者仅 logging 导出。design §5.1“诊断回流→16”按消费需求收窄为 N_dispatch/cmd/state/SOP/health | T-004 函数签名定义时的口径收窄（D-B14 联动） |
+| D-B18 | 集成级 S2/S4 reason 竞速：D_firm 阈值（P_load_req>SOP+450）严格低于 S2（realized>SOP+500）50 kW（S4 的 prospective margin），且 realized≤commanded 恒成立 → 低 SOP 场景 S4 总是先触发（audit reason=5）。S2 场景注入实测 reason=5。reason 4/5 枚举分离的正确性由 T-004 单测（独立触发 reason=4/5）证；集成级 reason=4 需 realized>commanded 的 plant 缺陷（本模型无此路径），留后续/F 包 | T-010 五场景实证；诚实登记而非改判据凑 reason |
+| D-B19 | **A2 期 G6 判据为空洞通过**：40 号 E01b 在 E09 之后运行，携带遗留 bench 注入（GEN_CMD_STOP_TS 停机表 + ADAPTER_FORCE_*）；E01a/E01b 航次终止时刻差一采样 → 尺寸不匹配 → check_g6_runtime 全字段跳过比较 → “两跑逐位一致”未实际比较。B 包重跑尺寸恰好相同 → 真比较 → G6 FAIL 暴露。修复：40 号配置载入后快照 bench 注入默认值、E01b 前恢复 nominal → G6 成为真实逐位确定性比较（40 号入口设施修复，Plant 零改动；A2 冻结基线不动，candidate v1.1 携带修复后 G6） | T-412(candidate) 重跑首次暴露；复刻实验（preT006 模型 + 同序列）证实 A2 尺寸差 |
 
 ## Requirements Traceability
 

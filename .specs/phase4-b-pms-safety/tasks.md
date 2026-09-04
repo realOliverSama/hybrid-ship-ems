@@ -177,7 +177,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
     Model D sha256 零改动
   - Notes: 任一 FAIL → error('GATE:*') 停下升级用户；禁改参数凑 PASS
 
-- [ ] 13. 归档（README/文档/日志/D-14 补记）
+- [x] 13. 归档（README/文档/日志/D-14 补记）
   - ID: T-013
   - Requirement(s): FR-457, NFR-416, NFR-418
   - Roadmap: T-418 收尾
