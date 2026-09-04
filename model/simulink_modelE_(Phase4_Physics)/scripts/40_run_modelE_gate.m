@@ -11,6 +11,7 @@ ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 run(fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m'));
+run(fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m'));   % Phase 4-B T-001：控制参数在物理参数之后（FR-451）
 run(fullfile(ROOT, 'config', 'ModelE_TestScenarios.m'));
 model.write_config_manifest(ROOT, ModelE_Sensitivity_Profile());
 MDL = 'HybridShip_ModelE';

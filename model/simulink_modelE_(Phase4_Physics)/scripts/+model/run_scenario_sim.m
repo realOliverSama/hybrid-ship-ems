@@ -3,6 +3,12 @@ function out = run_scenario_sim(mdl, SCN, mode, stopTimeLimit)
 % mdl: 模型名；SCN: 工况结构体；mode: 0=Baseline 1=AI_Enhanced 2=ScheduledFF；stopTimeLimit: 安全上限 [s]
 % 副作用: 向 base workspace 写入 SCN / EMS_CTRL_LAW / EMS_MODE(兼容) / Bat_SOC_init（运行参数）
 % 返回: SimulationOutput；若仿真被 Voyage_Stop_Logic 提前终止则正常返回。
+    % Phase 4-B T-001（FR-451）：控制参数防御性确保加载（幂等）——本函数可能被不经
+    % 40/41/42 入口的调用方使用；Parameter 作用域块参数在 base 求值，缺失即仿真报错
+    if ~evalin('base', "exist('PMS_LoadLPF_tau_s', 'var')")
+        cROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
+        evalin('base', sprintf("run('%s')", fullfile(cROOT, 'config', 'ModelE_Control_Parameters.m')));
+    end
     assignin('base', 'SCN', SCN);
     assignin('base', 'EMS_CTRL_LAW', double(mode));
     assignin('base', 'EMS_MODE', double(mode > 0));   % 兼容列（日志 ems_mode）

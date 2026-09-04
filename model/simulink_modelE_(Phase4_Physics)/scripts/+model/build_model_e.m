@@ -18,6 +18,9 @@ end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 % 配置脚本必须在基础工作区执行：模块参数表达式在 base 中求值
 evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m')));
+% Phase 4-B（T-001, FR-451）：控制侧参数事实源，必须在物理参数之后、场景之前加载
+% （PMS_*/Manual/Selector 参数 + DERIVED 阈值/ tick 换算，引用物理事实源变量）
+evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m')));
 evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_TestScenarios.m')));
 model.write_config_manifest(ROOT, ModelE_Sensitivity_Profile());   % design §2：每次 build 写 manifest
 

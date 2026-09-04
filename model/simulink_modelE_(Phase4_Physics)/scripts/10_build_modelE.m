@@ -9,6 +9,8 @@ if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir')
     ROOT = pwd;  % 兼容非文件方式执行（如 eval 场景）
 end
 addpath(fullfile(ROOT, 'scripts'));
-model.ensure_canonical(ROOT);
+% Phase 4-A2 D-13：Model E 全部入口禁止调用 model.ensure_canonical（Model D 自愈机制
+% 会把 Model D canonical config/01-06/README_Model.md 复活进 Model E，破坏 _legacy_reference
+% 隔离；2026-09-04 B 包 T-001 入口接线时移除本调用，偏差随 D-B 登记簿落账）
 
 model.build_model_e(ROOT);

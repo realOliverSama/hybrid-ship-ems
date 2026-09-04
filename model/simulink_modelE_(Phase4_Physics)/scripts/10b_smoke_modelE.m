@@ -7,8 +7,10 @@ ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 
-model.ensure_canonical(ROOT);
+% Phase 4-A2 D-13：Model E 入口禁止 ensure_canonical（Model D 自愈会污染 Model E 隔离区，
+% B 包 T-001 移除本调用并登记偏差）；控制参数加载（FR-451，物理参数之后）
 run(fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m'));
+run(fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m'));
 run(fullfile(ROOT, 'config', 'ModelE_TestScenarios.m'));
 
 MDL = 'HybridShip_ModelE';

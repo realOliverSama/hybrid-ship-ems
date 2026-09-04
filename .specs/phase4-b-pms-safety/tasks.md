@@ -34,7 +34,7 @@ Design: `./design.md`（design-approved，DD-1~DD-9 + 偏差登记 D-B10~D-B15�
 
 ## Implementation Plan
 
-- [ ] 1. 控制参数事实源 + 全入口加载接线
+- [x] 1. 控制参数事实源 + 全入口加载接线
   - ID: T-001
   - Requirement(s): FR-451, FR-451A, NFR-416, NFR-418
   - Roadmap: T-415 参数基础
