@@ -30,8 +30,19 @@ nominal 档均值: v=11.01 kn, P=298.4 kW, fuel=18.073 kg
 - **K_Qv**: v ∈ [11.01, 11.01] kn（nominal 11.01）；P ∈ [278.5, 318.3] kW；fuel ∈ [17.824, 18.666] kg
 - **Wake_w_deep**: v ∈ [11.01, 11.01] kn（nominal 11.01）；P ∈ [290.7, 306.2] kW；fuel ∈ [17.921, 18.306] kg
 
-## 结论稳健域
+## 结论稳健域（2026-09-04 用户评审定稿）
 
 <!-- MANUAL:conclusion_robustness -->
-（待 T-013 用户评审：基于上表对速度-功率曲线与油耗结论的影响幅度，界定 keep_simplified 简化桨的结论稳健域；±20% OAT 全部 15 cases 零失败。）
+Within the ±20% one-at-a-time propeller-surrogate perturbation range, the model
+preserved physical trend consistency and numerical stability; however, the
+substantial power sensitivity to K_Fw (−29%/+49%) and K_Qw (±27%) identifies
+propeller characterization as a dominant plant uncertainty. Robustness of
+future EMS performance rankings must be evaluated separately.
 <!-- /MANUAL:conclusion_robustness -->
+
+**口径说明**：1×500 kW（BSFC 453）与 2×250 kW（BSFC 547）的燃油差 23.66% 为
+**稳态段差**——按 S01 静水短工况（3000 m，t≈[0,1500]s）双机稳态爬坡完成后积分，
+含 GensetUnitE 爬坡（20 kW/s）与一阶惯性（τ=5 s）动态过程，不含 STARTING/SYNC
+启动燃油（两组工况各含一次 0.6 kg 启动均摊，对比中相消）。读者复算：稳态
+fuel_rate 差 = |500×453 − 2×250×547|/3.6e6 ÷ (500×453/3.6e6) ≈ 20.8%（纯 BSFC），
+Gate 实测 23.66% 含双机 droop/惯性动态分配的暂态贡献。

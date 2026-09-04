@@ -119,11 +119,11 @@ K_Qv = (24971.4−20809.5)/5.0926² = 160.47 N·m/(m/s)
 | Bat_Q_nom_Ah | 1860 Ah（≈1071.36 kWh @576 V） | DERIVED（930 Ah×2，与 DRAWING 一致） |
 | Bat_eta_coul | 0.98（仅进 SOC 计量） | LITERATURE_NOMINAL [14] |
 | V_min/V_max | 360 / 657 V | LITERATURE_NOMINAL（cell 2.00/3.65 V×180s [12]） |
-| R_0 充电增益 | ×1.15 | surrogate（顾问参数集 v1） |
+| R_0 充电增益 | **1.0（充放电共用 R_0(SOC)）** | **ENGINEERING_SURROGATE（T-013 裁决 2026-09-04）**：charging gain ×1.15 无具体文献/实验支撑（顾问表 v1 仅表注一行，Tran 2021 HPPC [12] 未单列充电方向拟合），暂不人为引入；Bat_R0_chg_mult=1.0 保留定义，待真实 BMS 数据重评 |
 | P_converter | 1050 kW **bus-side** | DRAWING（20260526 设备参数；OQ-9 冻结） |
 | 端子换算 | 放电 1082.5 / 充电 1018.5 kW | DERIVED（方向感知 ÷η、×η） |
 | I_bat_limit_surrogate_A | 1823 A | DERIVED（=1050 kW/576 V，**非独立 BMS 电流额定**） |
-| SOC 域/降额 | [0.10, 0.95]；DisDerate 0.25→0.10 归零；ChgDerate 0.90→0.95 归零 | INHERITED_LEGACY |
+| SOC 域/降额 | [0.10, 0.95]；DisDerate 0.25→0.10 归零；ChgDerate 0.90→0.95 归零 | **ENGINEERING_SURROGATE（T-013 裁决）**：保守 BMS/SOP surrogate safety envelope（沿用 Model D 降额族数值，Model E 独立理由=电池绝对边界+DC/DC 约束的保守运行包络；待真实 BMS 策略数据重评） |
 | 旧 η_bat=0.95 | Plant 侧停用（ECMS k_eq 引用保留） | Q5 裁决（防 double-count） |
 | 1RC 求解 | I = 2P_t/(E+√(E²−4R_0P_t))，D<0 → P_actual=P_max,R=E²/(4R_0)+双 flag | OQ-9（无迭代、无代数环、HIL-friendly） |
 
@@ -156,3 +156,10 @@ K_Qv = (24971.4−20809.5)/5.0926² = 160.47 N·m/(m/s)
 |---|---|---|
 | 2026-09-04 | v1 初稿（参数表+效率链审计+重标定推导） | A2 spec 四门禁 + T-002/T-004/T-005 施工 |
 | 2026-09-04 | 敏感性报告链接 + Gate overall=true 结果引用 | T-011/T-012 施工完成 |
+
+## 9. 附加引用（T-013 裁决并入正式参考文献）
+
+- **[18]** 中国船级社. 海上公务船船体结构指南[S]. 北京: 中国船级社, 2021. https://www.ccs.org.cn/ccswz/file/download?fileid=202311090263358506 （原 [CB-2]；C_B=0.60 公务船丰满度上界佐证）
+- **[19]** SCHNEEKLUTH H, BERTRAM V. Ship Design for Efficiency and Economy[M]. 2nd ed. Oxford: Butterworth-Heinemann, 1998.（原 [CB-1]；Alexander 临界方形系数公式与 Troost 最优回归收录）
+- 原任务书 [CB-3]（快速巡逻艇 Cb 统计旁证）未单独并表，作为 [19] 的船型统计旁证记录于开发日志 2026-09-04 条目。
+- `Hull_k_form = 0.2`（1+k=1.2）：**ENGINEERING_SURROGATE**（T-013 裁决降级——1+k∈1.15~1.30 为行业工程带，无单篇文献直接锚定本船型；待 Rhine86 报告/ITTC 惯例类资料确认）。
