@@ -1,9 +1,10 @@
 {
   "schema": "modelE_config_manifest_v1",
-  "generated_at": "2026-09-04T10:03:21***",
+  "generated_at": "2026-09-04T19:49:20***",
   "config_sha256": {
     "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
-    "ModelE_TestScenarios_m": "04dfd2e2918dc47b44aadd37cdfb0f6522a60bbe7ae224c4211a5e8e20bf1da8",
+    "ModelE_Control_Parameters_m": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63",
+    "ModelE_TestScenarios_m": "50d9a2e59addae2d89093a4d39c380251415abddf99a9285adeb773e9aead924",
     "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
   },
   "effective_values": {
@@ -103,7 +104,26 @@
     "Bat_P_conv_bus_max_kW": 1050,
     "Bat_R0_chg_mult": 1,
     "ASSUMED_Gen_MinStablePower": 125,
-    "ASSUMED_eta_dcdc": 0.97
+    "ASSUMED_eta_dcdc": 0.97,
+    "PMS_LoadLPF_tau_s": 60,
+    "PMS_SOC_lo": 0.55,
+    "PMS_SOC_recovered": 0.6,
+    "PMS_P_chg_recovery_kW": 100,
+    "PMS_alpha_start": 0.85,
+    "PMS_alpha_stop": 0.7,
+    "T_start_hold_s": 30,
+    "T_stop_hold_s": 120,
+    "PMS_min_up_s": 300,
+    "PMS_min_down_s": 0,
+    "PMS_firm_margin_kW": 50,
+    "PMS_S2_hold_s": 2,
+    "PMS_S4_hold_s": 2,
+    "PMS_start_fail_window_s": 40,
+    "Manual_Cmd_RateLimit_pct_s": 20,
+    "PMS_SOURCE_MODE": 1,
+    "VOYAGE_CTRL_MODE": 0,
+    "PMS_start_threshold_kW": 425,
+    "PMS_stop_threshold_kW": 350
   },
   "sensitivity_profile": {
     "profile_name": "nominal",

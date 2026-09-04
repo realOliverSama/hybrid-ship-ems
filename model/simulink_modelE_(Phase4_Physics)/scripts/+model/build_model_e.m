@@ -18,6 +18,9 @@ end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 % 配置脚本必须在基础工作区执行：模块参数表达式在 base 中求值
 evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m')));
+% Phase 4-B（T-001, FR-451）：控制侧参数事实源，必须在物理参数之后、场景之前加载
+% （PMS_*/Manual/Selector 参数 + DERIVED 阈值/ tick 换算，引用物理事实源变量）
+evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m')));
 evalin('base', sprintf('run(''%s'')', fullfile(ROOT, 'config', 'ModelE_TestScenarios.m')));
 model.write_config_manifest(ROOT, ModelE_Sensitivity_Profile());   % design §2：每次 build 写 manifest
 
@@ -56,12 +59,13 @@ try
     pos10 = [260 380 420 470]; pos11 = [480 380 640 470]; pos12 = [700 380 860 470];
 
     buildScenarioManager(MDL, pos01);
-    buildSpeedController(MDL, pos02);
+    buildPropulsionController(MDL, pos02);
     buildPropulsionPlant(MDL, pos03);
     buildLoadMeasurement(MDL, pos04);
     buildEMSControllerC(MDL, pos05);
     buildGensetSystemE(MDL, pos06);
-    buildCommitmentAdapter(MDL, [480 540 640 630]);   % PLACEHOLDER（FR-421）
+    model.build_pms_v2_e(MDL, [480 540 640 630]);     % 替换 Legacy_Commitment_Adapter（FR-449，T-007）
+    model.build_safety_interlock_e(MDL, [700 540 860 630]); % 独立 Safety/Interlock 层（FR-444，T-007）
     buildBatteryConverter(MDL, pos07);
     buildUndervoltDerate(MDL, pos08);
     buildBusResidualMonitor(MDL, pos09);
@@ -121,12 +125,17 @@ model.write_param_csv(fullfile(ROOT, 'reports', 'parameter_audit.csv'));
 end
 
 function buildScenarioManager(mdl, pos)
-% 01_Scenario_Manager: 输出 v_cmd/v_current/resistance_multiplier/P_hotel/scenario_id/water_depth_m
-    sys = [mdl '/01_Scenario_Manager'];
+% 01_Operator_Interface（Phase 4-B T-006 改组，FR-428）：既有航次/环境输出不变 + 新增
+%   驾驶意图输出 {ctrl_mode(Out7), v_ref_mps(Out1 改名), manual_power_cmd_pct(Out8)}
+%   ctrl_mode = VOYAGE_CTRL_MODE 编译期求值（0=AUTO 1=MANUAL，工况内固定）；
+%   manual_power_cmd_pct 经 From Workspace VOYAGE_MANUAL_CMD_TS 注入（Interpolate off，
+%   支持 M1/M2/M3 序列）；既有输出端口序号 1~6 保持（接线稳定性）。
+    sys = [mdl '/01_Operator_Interface'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
     add_block('simulink/Sources/In1', [sys '/x_ship_m'], 'Position', [20 80 50 110]);
-    outs = {'v_cmd_mps','v_current_mps','resistance_multiplier','P_hotel_kW','scenario_id','water_depth_m'};
+    outs = {'v_ref_mps','v_current_mps','resistance_multiplier','P_hotel_kW','scenario_id','water_depth_m', ...
+        'ctrl_mode','manual_power_cmd_pct'};
     for k = 1:numel(outs)
         add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [430 30+50*(k-1) 460 60+50*(k-1)]);
     end
@@ -156,7 +165,7 @@ function buildScenarioManager(mdl, pos)
         'RisingSlewLimit', 'SCN.accel_ramp_mps2', 'FallingSlewLimit', '-SCN.decel_ramp_mps2', ...
         'InitialCondition', '0');
     add_line(sys, 'v_cmd_profile/1', 'v_cmd ramp/1');
-    add_line(sys, 'v_cmd ramp/1', 'v_cmd_mps/1');
+    add_line(sys, 'v_cmd ramp/1', 'v_ref_mps/1');
     % 水流（T-101）：距离节点（既有）+ 时间序列表（S20 段 9 逆水 -1 m/s，其余 0）
     fnc = [sys '/current_profile'];
     add_block('simulink/User-Defined Functions/MATLAB Function', fnc, 'Position', [200 240 320 300]);
@@ -204,18 +213,31 @@ function buildScenarioManager(mdl, pos)
     add_block('simulink/Sources/Constant', [sys '/C_water_depth'], 'Position', [30 250 100 280], ...
         'Value', 'VOYAGE_WATER_DEPTH_M');
     add_line(sys, 'C_water_depth/1', 'water_depth_m/1');
+    % 驾驶意图（T-006, FR-428）：ctrl_mode 编译期常量 + MANUAL 归一化指令表
+    add_block('simulink/Sources/Constant', [sys '/C_ctrl_mode'], 'Position', [30 300 100 330], ...
+        'Value', 'VOYAGE_CTRL_MODE');
+    add_line(sys, 'C_ctrl_mode/1', 'ctrl_mode/1');
+    add_block('simulink/Sources/From Workspace', [sys '/manual_cmd_src'], 'Position', [20 340 95 365], ...
+        'VariableName', 'VOYAGE_MANUAL_CMD_TS', 'SampleTime', '0.01', 'Interpolate', 'off', ...
+        'OutputAfterFinalValue', 'HoldingFinalValue');   % ZOH：禁线性插值（cmd 类通道同 GEN_CMD_STOP_TS 教训）
+    add_line(sys, 'manual_cmd_src/1', 'manual_power_cmd_pct/1');
 end
 
-function buildSpeedController(mdl, pos)
-% 02_Ship_Speed_Controller: PI 船速环 -> P_prop_demand_kW（限幅+抗饱和）
-    sys = [mdl '/02_Ship_Speed_Controller'];
+function buildPropulsionController(mdl, pos)
+% 02_Propulsion_Controller（Phase 4-B T-006 改组，FR-429）：AUTO 速度 PI 原样保留（AC-416
+%   行为不变仅指本条）；新增 MANUAL 路径（归一化线性映射 × Mot_P_nom → command-side
+%   Rate Limiter 140 kW/s）→ Switch（ctrl_mode 编译期选路）→ 同一 Saturation →
+%   唯一输出 P_prop_demand_kW；禁止新建 RPM 环/torque 域接口。
+    sys = [mdl '/02_Propulsion_Controller'];
     add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
     delete_block([sys '/In1']); delete_block([sys '/Out1']);
-    add_block('simulink/Sources/In1', [sys '/v_cmd_mps'], 'Position', [20 60 50 90]);
+    add_block('simulink/Sources/In1', [sys '/v_ref_mps'], 'Position', [20 60 50 90]);
     add_block('simulink/Sources/In1', [sys '/v_ship_mps'], 'Position', [20 110 50 140]);
+    add_block('simulink/Sources/In1', [sys '/ctrl_mode'], 'Position', [20 300 50 330]);
+    add_block('simulink/Sources/In1', [sys '/manual_power_cmd_pct'], 'Position', [20 350 50 380]);
     add_block('simulink/Sinks/Out1', [sys '/P_prop_demand_kW'], 'Position', [330 80 360 110]);
     add_block('simulink/Math Operations/Sum', [sys '/err'], 'Position', [90 80 120 120], 'Inputs', '+-');
-    add_line(sys, 'v_cmd_mps/1', 'err/1');
+    add_line(sys, 'v_ref_mps/1', 'err/1');
     add_line(sys, 'v_ship_mps/1', 'err/2');
     add_block('simulink/Math Operations/Gain', [sys '/Kp'], 'Position', [150 60 190 90], 'Gain', 'ASSUMED_SpeedPI_Kp');
     add_block('simulink/Continuous/Integrator', [sys '/Ki_int'], 'Position', [150 120 190 160], ...
@@ -229,9 +251,23 @@ function buildSpeedController(mdl, pos)
     add_block('simulink/Math Operations/Sum', [sys '/PI out'], 'Position', [250 70 280 110], 'Inputs', '++');
     add_line(sys, 'Kp/1', 'PI out/1');
     add_line(sys, 'Ki/1', 'PI out/2');
+    % MANUAL 路径（线性映射 × Mot_P_nom → command-side rate limiter，与 DG 20 kW/s 独立）
+    add_block('simulink/Math Operations/Gain', [sys '/manual_gain'], 'Position', [150 340 200 370], 'Gain', 'Mot_P_nom');
+    add_block('simulink/Discontinuities/Rate Limiter', [sys '/manual_cmd_ramp'], 'Position', [220 340 260 370], ...
+        'RisingSlewLimit', 'Manual_Cmd_RateLimit_kW_per_s', 'FallingSlewLimit', '-Manual_Cmd_RateLimit_kW_per_s', ...
+        'InitialCondition', '0');
+    addL(sys, 'manual_power_cmd_pct', 1, 'manual_gain', 1);
+    addL(sys, 'manual_gain', 1, 'manual_cmd_ramp', 1);
+    % 模式选路（编译期）：Switch criteria u2>=0.5 满足走输入 1（MANUAL）、否则输入 3（AUTO PI）；
+    % 两路径汇聚后过同一 Saturation → 唯一输出（design §5.2）
+    add_block('simulink/Signal Routing/Switch', [sys '/mode_switch'], 'Position', [290 90 320 170], ...
+        'Criteria', 'u2 >= Threshold', 'Threshold', '0.5');
+    addL(sys, 'manual_cmd_ramp', 1, 'mode_switch', 1); % MANUAL（ctrl_mode>=0.5）
+    addL(sys, 'ctrl_mode', 1, 'mode_switch', 2);
+    addL(sys, 'PI out', 1, 'mode_switch', 3);          % AUTO（ctrl_mode<0.5）
     add_block('simulink/Discontinuities/Saturation', [sys '/Limit'], 'Position', [300 80 320 110], ...
         'UpperLimit', 'Mot_P_nom', 'LowerLimit', '0');
-    add_line(sys, 'PI out/1', 'Limit/1');
+    add_line(sys, 'mode_switch/1', 'Limit/1');
     add_line(sys, 'Limit/1', 'P_prop_demand_kW/1');
 end
 
@@ -868,36 +904,6 @@ function buildNNECMSVariant(ch)
     end
 end
 
-function buildCommitmentAdapter(mdl, pos)
-% Legacy_Commitment_Adapter: 占位机组组合适配器（PLACEHOLDER，FR-421，Plant 之外可拔插）
-%   EMS 聚合 P_gen_ref_kW → DG1/DG2 enable+ref；B 包 PMS v2 (T-415/T-416) 直接替换本模块
-%   ⚠ 不得用于任何正式 EMS 经济性/节油结论（FR-421 防线）
-    sys = [mdl '/Legacy_Commitment_Adapter'];
-    add_block('simulink/Ports & Subsystems/Subsystem', sys, 'Position', pos);
-    delete_block([sys '/In1']); delete_block([sys '/Out1']);
-    add_block('simulink/Sources/In1', [sys '/P_gen_ref_kW'], 'Position', [20 80 50 110]);
-    outs = {'DG1_enable','P_DG1_ref_kW','DG2_enable','P_DG2_ref_kW'};
-    for k = 1:numel(outs)
-        add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [430 30+55*(k-1) 460 60+55*(k-1)]);
-    end
-    fn = [sys '/adapter'];
-    add_block('simulink/User-Defined Functions/MATLAB Function', fn, 'Position', [120 60 300 160]);
-    setMFCode(fn, model.code_commitment_adapter_e(), {});
-    addL(sys, 'P_gen_ref_kW', 1, 'adapter', 1);
-    % force 端口（默认 0=auto；scenario 脚本化强制组合测试时改 Constant 值）
-    forces = {'ADAPTER_FORCE_MODE','ADAPTER_FORCE_P1_KW','ADAPTER_FORCE_P2_KW'};
-    for k = 1:numel(forces)
-        % force 通道（base 变量默认 0=auto；T-412 E06/E07 与组件测试经 setVariable 注入强制组合）
-        add_block('simulink/Sources/Constant', [sys '/C_force_' num2str(k)], 'Position', [20 190+45*(k-1) 90 210+45*(k-1)], 'Value', forces{k});
-        addL(sys, ['C_force_' num2str(k)], 1, 'adapter', k+1);
-    end
-    addL(sys, 'adapter', 1, 'DG1_enable', 1);
-    addL(sys, 'adapter', 2, 'P_DG1_ref_kW', 1);
-    addL(sys, 'adapter', 3, 'DG2_enable', 1);
-    addL(sys, 'adapter', 4, 'P_DG2_ref_kW', 1);
-    set_param(sys, 'MaskDisplay', ['disp(sprintf(''Legacy_Commitment_Adapter\nPLACEHOLDER (FR-421)\n不得用于经济性结论''))']);
-end
-
 function buildGensetSystemE(mdl, pos)
 % 06_Genset_System (Model E T-006, FR-418/419): DG1/DG2 独立 500 kW Plant + 启停状态机
 %   每机组: OFF→STARTING(2500 tick)→SYNC(500)→ON→COOLDOWN(3000)→OFF，整数 tick 判据（OQ-6）
@@ -914,14 +920,21 @@ function buildGensetSystemE(mdl, pos)
     for k = 1:numel(outs)
         add_block('simulink/Sinks/Out1', [sys '/' outs{k}], 'Position', [640 20+50*(k-1) 670 50+50*(k-1)]);
     end
-    % DG_cmd_stop（2 维向量 [DG1;DG2]）拆分；默认 Constant 0（E06 aborted-start 直接注入用）
+    % DG_cmd_stop（2 维向量 [DG1;DG2]）拆分
     add_block('simulink/Signal Routing/Demux', [sys '/stop_demux'], 'Position', [90 240 100 280], 'Outputs', '2');
     % cmd_stop 经 From Workspace 通道（base 变量 GEN_CMD_STOP_TS，默认全零表=恒 0；
     % T-412 E06 aborted-start/停机时序经此注入时变启停指令）
     add_block('simulink/Sources/From Workspace', [sys '/cmd_stop_src'], 'Position', [15 248 75 272], ...
         'VariableName', 'GEN_CMD_STOP_TS', 'SampleTime', '0.01', 'Interpolate', 'off', ...
         'OutputAfterFinalValue', 'HoldingFinalValue');   % ZOH：禁线性插值（插值曾致 cmd_stop 过渡区半置位 0.6>0.5）
-    add_line(sys, 'cmd_stop_src/1', 'stop_demux/1');
+    % Phase 4-B（D-B16，T-007）：In5 外部停机命令激活——stop_demux 输入 = max(注入表, 外部停机)；
+    %   07_PMS_v2 停机向量（auto 模式 [1−cmd_onoff]）与场景注入（GEN_CMD_STOP_TS）取大合并；
+    %   状态机/功率链零改动（物理零改动），bench 注入语义不变（07 force 模式停机向量恒 [0;0]）
+    add_block('simulink/Math Operations/MinMax', [sys '/stop_combine'], 'Position', [130 240 160 280], ...
+        'Function', 'max', 'Inputs', '2');
+    addL(sys, 'cmd_stop_src', 1, 'stop_combine', 1);
+    addL(sys, 'DG_cmd_stop', 1, 'stop_combine', 2);
+    addL(sys, 'stop_combine', 1, 'stop_demux', 1);
     % 两个 GensetUnitE 实例（同一源码，persistent 按块隔离）
     unitPos = {[150 30 310 140], [150 170 310 280]};
     for u = 1:2
@@ -1163,30 +1176,90 @@ function wireTopLevel(mdl)
 % Model D 顶层接线（EMS 变体动态端口 + 电气层闭环）
     emsPort = emsPortMap(mdl);
     L = @(src, dst) add_line(mdl, src, dst, 'autorouting', 'on');
-    L('01_Scenario_Manager/1', '02_Ship_Speed_Controller/1');          % v_cmd
-    L('01_Scenario_Manager/2', '03_Propulsion_Plant/3');               % v_current
-    L('01_Scenario_Manager/3', '03_Propulsion_Plant/4');               % resistance_multiplier
-    L('01_Scenario_Manager/6', '03_Propulsion_Plant/5');               % water_depth_m (T-003)
-    L('01_Scenario_Manager/4', '04_Load_Measurement/2');               % P_hotel
-    L('02_Ship_Speed_Controller/1', '03_Propulsion_Plant/1');          % P_prop_demand
-    L('02_Ship_Speed_Controller/1', '08_Undervolt_Derate/2');          % demand -> 欠压降额
+    L('01_Operator_Interface/1', '02_Propulsion_Controller/1');          % v_ref_mps
+    L('01_Operator_Interface/2', '03_Propulsion_Plant/3');               % v_current
+    L('01_Operator_Interface/3', '03_Propulsion_Plant/4');               % resistance_multiplier
+    L('01_Operator_Interface/6', '03_Propulsion_Plant/5');               % water_depth_m (T-003)
+    L('01_Operator_Interface/4', '04_Load_Measurement/2');               % P_hotel
+    L('01_Operator_Interface/7', '02_Propulsion_Controller/3');          % ctrl_mode（编译期，T-006）
+    L('01_Operator_Interface/8', '02_Propulsion_Controller/4');          % manual_power_cmd_pct
+    L('02_Propulsion_Controller/1', '03_Propulsion_Plant/1');          % P_prop_demand
+    L('02_Propulsion_Controller/1', '08_Undervolt_Derate/2');          % demand -> 欠压降额
     L('03_Propulsion_Plant/1', '04_Load_Measurement/1');               % P_prop_actual
-    L('03_Propulsion_Plant/2', '02_Ship_Speed_Controller/2');          % v_ship
+    L('03_Propulsion_Plant/2', '02_Propulsion_Controller/2');          % v_ship
     L('03_Propulsion_Plant/2', sprintf('05_EMS_Controller/%d', emsPort('v_ship_mps')));
-    L('01_Scenario_Manager/1', sprintf('05_EMS_Controller/%d', emsPort('v_cmd_mps')));
-    L('03_Propulsion_Plant/3', '01_Scenario_Manager/1');              % x_ship
+    L('01_Operator_Interface/1', sprintf('05_EMS_Controller/%d', emsPort('v_cmd_mps')));
+    L('03_Propulsion_Plant/3', '01_Operator_Interface/1');              % x_ship
     L('03_Propulsion_Plant/3', '11_Voyage_Stop_Logic/1');             % x_ship -> stop
     L('03_Propulsion_Plant/3', sprintf('05_EMS_Controller/%d', emsPort('x_ship_m')));
     L('03_Propulsion_Plant/4', sprintf('05_EMS_Controller/%d', emsPort('acceleration_mps2')));
     L('04_Load_Measurement/1', sprintf('05_EMS_Controller/%d', emsPort('P_load_total_kW')));
     L('04_Load_Measurement/1', '13_DC_Bus/3');                        % P_load -> 母线
     L('04_Load_Measurement/1', '09_Bus_Residual_Monitor/3');
-    % Model E：EMS 聚合参考 → PLACEHOLDER 组合适配器（FR-421）→ 双机 Plant（T-006）
-    L(sprintf('05_EMS_Controller/%d', emsPort('P_gen_ref_kW')), 'Legacy_Commitment_Adapter/1');
-    L('Legacy_Commitment_Adapter/1', '06_Genset_System/1');           % DG1_enable (cmd_start)
-    L('Legacy_Commitment_Adapter/2', '06_Genset_System/2');           % P_DG1_ref
-    L('Legacy_Commitment_Adapter/3', '06_Genset_System/3');           % DG2_enable (cmd_start)
-    L('Legacy_Commitment_Adapter/4', '06_Genset_System/4');           % P_DG2_ref
+    % Phase 4-B（T-007）：EMS 聚合参考 → 07_PMS_v2（替换 Legacy_Commitment_Adapter，FR-449）
+    L(sprintf('05_EMS_Controller/%d', emsPort('P_gen_ref_kW')), '07_PMS_v2/1');   % P_gen_ref（genset-side）
+    % 07 输入侧（canonical 域转换在 07 内 X_b2g_* 完成）
+    L('04_Load_Measurement/1', '07_PMS_v2/2');                        % P_load_total（bus）
+    L('14_Battery_Converter/2', '07_PMS_v2/3');                       % SOC
+    L('14_Battery_Converter/3', '07_PMS_v2/4');                       % P_bat_dis_avail（bus）
+    L('14_Battery_Converter/4', '07_PMS_v2/5');                       % P_bat_chg_avail（bus）
+    L('02_Propulsion_Controller/1', '07_PMS_v2/6');                   % P_prop_demand（bus）
+    L('01_Operator_Interface/4', '07_PMS_v2/7');                      % P_hotel
+    L('06_Genset_System/2', '07_PMS_v2/8');                           % state_DG1
+    L('06_Genset_System/6', '07_PMS_v2/9');                           % state_DG2
+    L('06_Genset_System/1', '07_PMS_v2/10');                          % P_DG1_kW（genset-side 实发）
+    L('06_Genset_System/5', '07_PMS_v2/11');                          % P_DG2_kW
+    % 16_Safety_Interlock 输入（诊断回流，design §5.1/§5.6）
+    L('06_Genset_System/2', '16_Safety_Interlock/1');                 % state_DG1
+    L('06_Genset_System/6', '16_Safety_Interlock/2');                 % state_DG2
+    L('07_PMS_v2/16', '16_Safety_Interlock/3');                       % cmd_onoff_DG1
+    L('07_PMS_v2/17', '16_Safety_Interlock/4');                       % cmd_onoff_DG2
+    L('07_PMS_v2/6',  '16_Safety_Interlock/5');                       % P_load_gen（canonical）
+    L('02_Propulsion_Controller/1', '16_Safety_Interlock/6');         % P_prop_demand（bus，S4 用）
+    L('01_Operator_Interface/4', '16_Safety_Interlock/7');            % P_hotel
+    L('06_Genset_System/1', '16_Safety_Interlock/8');                 % P_DG1_kW（genset-side 实发）
+    L('06_Genset_System/5', '16_Safety_Interlock/9');                 % P_DG2_kW
+    L('07_PMS_v2/7',  '16_Safety_Interlock/10');                      % P_bat_dis_avail_g（canonical）
+    L('07_PMS_v2/8',  '16_Safety_Interlock/11');                      % P_bat_chg_avail_g（canonical）
+    L('07_PMS_v2/11', '16_Safety_Interlock/12');                      % N_dispatch
+    L('14_Battery_Converter/2', '16_Safety_Interlock/13');            % SOC
+    L('13_DC_Bus/1', '16_Safety_Interlock/14');                       % Vdc
+    L('14_Battery_Converter/7', '16_Safety_Interlock/15');            % battery_power_limited
+    L('14_Battery_Converter/8', '16_Safety_Interlock/16');            % battery_discriminant_limit
+    L('14_Battery_Converter/9', '16_Safety_Interlock/17');            % ecm_lut_boundary_flag
+    L(sprintf('05_EMS_Controller/%d', emsPort('P_gen_ref_kW')), '16_Safety_Interlock/18'); % P_gen_ref（S5 isfinite）
+    % 16 override 输出 → UnitDelay 0.01 s（一拍防环）→ 07 高优先级输入（§5.6）
+    % override 总线序 = 16 输出序 = 07 输入 12..19（一一对应）；IC 按信号维度：2 维信号 [0 0]，标量 0
+    ud16 = {'fault_latch','force_start_req','force_start_reason','force_stop_req', ...
+        'force_stop_reason','ems_health_ok','baseline_fallback_active','baseline_fallback_reason'};
+    udIsVec = logical([1 1 0 1 0 0 0 0]);
+    for k = 1:numel(ud16)
+        ud = sprintf('UD_safety_%s', ud16{k});
+        if udIsVec(k), ic0 = '[0 0]'; else, ic0 = '0'; end
+        add_block('simulink/Discrete/Unit Delay', [mdl '/' ud], ...
+            'Position', [880 540+45*(k-1) 915 575+45*(k-1)], 'SampleTime', '0.01', 'InitialCondition', ic0);
+        L(sprintf('16_Safety_Interlock/%d', k), sprintf('%s/1', ud));
+        L(sprintf('%s/1', ud), sprintf('07_PMS_v2/%d', 11 + k));      % 07/12..19
+    end
+    % 07 输出侧（替换旧 adapter 四根线 + D-B16 停机向量）
+    L('07_PMS_v2/1', '06_Genset_System/1');                           % DG1_enable (cmd_start)
+    L('07_PMS_v2/2', '06_Genset_System/2');                           % P_DG1_ref
+    L('07_PMS_v2/3', '06_Genset_System/3');                           % DG2_enable (cmd_start)
+    L('07_PMS_v2/4', '06_Genset_System/4');                           % P_DG2_ref
+    L('07_PMS_v2/5', '06_Genset_System/5');                           % DG_cmd_stop [1×2]（D-B16）
+    % 仅记录信号的 07/16 输出接 Terminator（A2 同模式：保证信号线存在、可打点）
+    term07 = [9 10 12 13 14 15 18 19 20 21 22 23 24 25 26 27 28 29 30 31 32 33 34 35];
+    for k = 1:numel(term07)
+        tb = sprintf('T_pms_%d', term07(k));
+        add_block('simulink/Sinks/Terminator', [mdl '/' tb], 'Position', [1000 540+30*(k-1) 1020 560+30*(k-1)]);
+        L(sprintf('07_PMS_v2/%d', term07(k)), sprintf('%s/1', tb));
+    end
+    term16 = [9 10 11 12 13 14];
+    for k = 1:numel(term16)
+        tb = sprintf('T_safety_%d', term16(k));
+        add_block('simulink/Sinks/Terminator', [mdl '/' tb], 'Position', [1040 540+30*(k-1) 1060 560+30*(k-1)]);
+        L(sprintf('16_Safety_Interlock/%d', term16(k)), sprintf('%s/1', tb));
+    end
     L('06_Genset_System/9', '13_DC_Bus/1');                           % P_gen_actual -> 母线
     L('06_Genset_System/9', '09_Bus_Residual_Monitor/1');
     L('06_Genset_System/1', '10_Fuel_Consumption/1');                 % P_DG1 -> per-genset 燃油
@@ -1202,7 +1275,7 @@ function wireTopLevel(mdl)
     L('08_Undervolt_Derate/1', '03_Propulsion_Plant/2');              % P_prop_limit
     L('t/1', sprintf('05_EMS_Controller/%d', emsPort('t')));
     % 仅记录信号的输出接 Terminator（保证信号线存在、可命名）
-    terms = {'01_Scenario_Manager/5'; ...                             % scenario_id
+    terms = {'01_Operator_Interface/5'; ...                             % scenario_id
         '03_Propulsion_Plant/5'; '03_Propulsion_Plant/6'; '03_Propulsion_Plant/7'; ...
         '03_Propulsion_Plant/8'; '03_Propulsion_Plant/9'; '03_Propulsion_Plant/10'; ...
         '14_Battery_Converter/3'; '14_Battery_Converter/4'; '14_Battery_Converter/5'; ...
@@ -1240,12 +1313,14 @@ end
 function configureLogging(mdl)
 % 在信号源端口上启用 DataLogging（logsout）
     L = @(blk, portIdx, nm) logPort(blk, portIdx, nm);
-    L([mdl '/01_Scenario_Manager/v_cmd_mps'], 1, 'v_cmd_mps');
-    L([mdl '/01_Scenario_Manager/v_current_mps'], 1, 'v_current_mps');
-    L([mdl '/01_Scenario_Manager/resistance_multiplier'], 1, 'resistance_multiplier');
-    L([mdl '/01_Scenario_Manager/P_hotel_kW'], 1, 'P_hotel_kW');
-    L([mdl '/01_Scenario_Manager/scenario_id'], 1, 'scenario_id');
-    L([mdl '/02_Ship_Speed_Controller/P_prop_demand_kW'], 1, 'P_prop_demand_kW');
+    L([mdl '/01_Operator_Interface/v_ref_mps'], 1, 'v_ref_mps');   % T-006 改名（FR-428）
+    L([mdl '/01_Operator_Interface/v_current_mps'], 1, 'v_current_mps');
+    L([mdl '/01_Operator_Interface/resistance_multiplier'], 1, 'resistance_multiplier');
+    L([mdl '/01_Operator_Interface/P_hotel_kW'], 1, 'P_hotel_kW');
+    L([mdl '/01_Operator_Interface/scenario_id'], 1, 'scenario_id');
+    L([mdl '/01_Operator_Interface/ctrl_mode'], 1, 'ctrl_mode');   % T-006 驾驶意图
+    L([mdl '/01_Operator_Interface/manual_power_cmd_pct'], 1, 'manual_power_cmd_pct');
+    L([mdl '/02_Propulsion_Controller/P_prop_demand_kW'], 1, 'P_prop_demand_kW');
     L([mdl '/03_Propulsion_Plant/P_prop_actual_kW'], 1, 'P_prop_actual_kW');
     L([mdl '/03_Propulsion_Plant/v_ship_mps'], 1, 'v_ship_mps');
     L([mdl '/03_Propulsion_Plant/x_ship_m'], 1, 'x_ship_m');
@@ -1270,6 +1345,57 @@ function configureLogging(mdl)
     L([mdl '/06_Genset_System/below_min_DG2'], 1, 'below_min_DG2');
     L([mdl '/06_Genset_System/start_count_DG1'], 1, 'start_count_DG1');
     L([mdl '/06_Genset_System/start_count_DG2'], 1, 'start_count_DG2');
+    % Phase 4-B T-007 logging 扩展（design §5.8 DD-10）：07/16 全量打点 + 14 补盲区
+    L([mdl '/07_PMS_v2/DG1_enable'], 1, 'DG1_enable');
+    L([mdl '/07_PMS_v2/DG2_enable'], 1, 'DG2_enable');
+    L([mdl '/07_PMS_v2/P_DG1_ref_kW'], 1, 'P_DG1_ref_kW');
+    L([mdl '/07_PMS_v2/P_DG2_ref_kW'], 1, 'P_DG2_ref_kW');
+    L([mdl '/07_PMS_v2/DG_cmd_stop'], 1, 'DG_cmd_stop');
+    L([mdl '/07_PMS_v2/P_load_gen_kW'], 1, 'P_load_gen_kW');
+    L([mdl '/07_PMS_v2/P_bat_dis_avail_g_kW'], 1, 'P_bat_dis_avail_g_kW');
+    L([mdl '/07_PMS_v2/P_bat_chg_avail_g_kW'], 1, 'P_bat_chg_avail_g_kW');
+    L([mdl '/07_PMS_v2/P_commit_kW'], 1, 'P_commit_kW');
+    L([mdl '/07_PMS_v2/P_gen_req_eff_kW'], 1, 'P_gen_req_eff_kW');
+    L([mdl '/07_PMS_v2/N_dispatch'], 1, 'N_dispatch');
+    L([mdl '/07_PMS_v2/P_gen_unserved_kW'], 1, 'P_gen_unserved_kW');
+    L([mdl '/07_PMS_v2/P_gen_surplus_kW'], 1, 'P_gen_surplus_kW');
+    L([mdl '/07_PMS_v2/dispatch_min_clamp_active'], 1, 'dispatch_min_clamp_active');
+    L([mdl '/07_PMS_v2/dispatch_n_zero_flag'], 1, 'dispatch_n_zero_flag');
+    L([mdl '/07_PMS_v2/cmd_onoff_DG1'], 1, 'cmd_onoff_DG1');
+    L([mdl '/07_PMS_v2/cmd_onoff_DG2'], 1, 'cmd_onoff_DG2');
+    L([mdl '/07_PMS_v2/commitment_state'], 1, 'commitment_state');
+    L([mdl '/07_PMS_v2/reason_code'], 1, 'reason_code');
+    L([mdl '/07_PMS_v2/u_recovery'], 1, 'u_recovery');
+    L([mdl '/07_PMS_v2/P_recovery_actual_kW'], 1, 'P_recovery_actual_kW');
+    L([mdl '/07_PMS_v2/start_hold_timer'], 1, 'start_hold_timer');
+    L([mdl '/07_PMS_v2/stop_hold_timer'], 1, 'stop_hold_timer');
+    L([mdl '/07_PMS_v2/online_timer'], 1, 'online_timer');
+    L([mdl '/07_PMS_v2/audit_valid'], 1, 'audit_valid');
+    L([mdl '/07_PMS_v2/audit_old_state'], 1, 'audit_old_state');
+    L([mdl '/07_PMS_v2/audit_new_state'], 1, 'audit_new_state');
+    L([mdl '/07_PMS_v2/audit_P_commit_kW'], 1, 'audit_P_commit_kW');
+    L([mdl '/07_PMS_v2/audit_t_start_hold'], 1, 'audit_t_start_hold');
+    L([mdl '/07_PMS_v2/audit_t_stop_hold'], 1, 'audit_t_stop_hold');
+    L([mdl '/07_PMS_v2/audit_t_online'], 1, 'audit_t_online');
+    L([mdl '/07_PMS_v2/audit_safety_override'], 1, 'audit_safety_override');
+    L([mdl '/07_PMS_v2/selector_baseline_active'], 1, 'selector_baseline_active');
+    L([mdl '/07_PMS_v2/out_baseline_fallback_active'], 1, 'baseline_fallback_active');
+    L([mdl '/07_PMS_v2/out_baseline_fallback_reason'], 1, 'baseline_fallback_reason');
+    L([mdl '/16_Safety_Interlock/fault_latch'], 1, 'fault_latch');
+    L([mdl '/16_Safety_Interlock/force_start_req'], 1, 'safety_force_start_req');
+    L([mdl '/16_Safety_Interlock/force_start_reason'], 1, 'safety_force_start_reason');
+    L([mdl '/16_Safety_Interlock/force_stop_req'], 1, 'safety_force_stop_req');
+    L([mdl '/16_Safety_Interlock/force_stop_reason'], 1, 'safety_force_stop_reason');
+    L([mdl '/16_Safety_Interlock/ems_health_ok'], 1, 'ems_health_ok');
+    L([mdl '/16_Safety_Interlock/baseline_fallback_active'], 1, 'safety_baseline_fallback_active');
+    L([mdl '/16_Safety_Interlock/baseline_fallback_reason'], 1, 'safety_baseline_fallback_reason');
+    L([mdl '/16_Safety_Interlock/min_gen_surplus_unresolved'], 1, 'min_gen_surplus_unresolved');
+    L([mdl '/16_Safety_Interlock/D_firm_kW'], 1, 'D_firm_kW');
+    L([mdl '/16_Safety_Interlock/S2_supply_gap_kW'], 1, 'S2_supply_gap_kW');
+    L([mdl '/16_Safety_Interlock/flag_soc_low'], 1, 'flag_soc_low');
+    L([mdl '/16_Safety_Interlock/flag_vdc_low'], 1, 'flag_vdc_low');
+    L([mdl '/16_Safety_Interlock/flag_bat_passthrough'], 1, 'flag_bat_passthrough');
+    L([mdl '/14_Battery_Converter/P_bat_chg_avail_kW'], 1, 'P_bat_chg_avail_kW');   % 补盲区（§5.8）
     L([mdl '/14_Battery_Converter/P_bat_bus_kW'], 1, 'P_bat_actual_kW');
     L([mdl '/14_Battery_Converter/SOC'], 1, 'SOC');
     L([mdl '/14_Battery_Converter/P_bat_dis_avail_kW'], 1, 'P_bat_dis_avail_kW');

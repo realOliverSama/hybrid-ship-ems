@@ -1,0 +1,1665 @@
+{
+  "schema": "gate_control_result_v1",
+  "generated_at": "2026-09-04T19:51:43***",
+  "checks": [
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R0/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R0/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R0/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R0/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R0/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "R5/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "R5/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "R5/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "R5/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "R5/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/S20_composite_voyage",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/S01_still_water",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/S02_downstream",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/S03_upstream",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/E05_shallow_HT3.0",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/E05_shallow_HT1.6",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C3_soc_band",
+      "label": "P2/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C5_energy_closure",
+      "label": "P2/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/E05_shallow_HT1.2",
+      "pass": true
+    },
+    {
+      "name": "C1_determinism",
+      "label": "R0/S01",
+      "pass": true
+    },
+    {
+      "name": "C1_determinism",
+      "label": "R5/S01",
+      "pass": true
+    },
+    {
+      "name": "C1_determinism",
+      "label": "P2/S01",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/M1_step",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/M1_step",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/M1_step",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/M2_ramp",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/M2_ramp",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/M2_ramp",
+      "pass": true
+    },
+    {
+      "name": "C2_transition_legality",
+      "label": "P2/M3_staged",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc",
+      "label": "P2/M3_staged",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "P2/M3_staged",
+      "pass": true
+    },
+    {
+      "name": "M3_full_chain_1DG_2DG_1DG",
+      "label": "P2/M3_staged",
+      "pass": true
+    },
+    {
+      "name": "C6_safety_assertions",
+      "label": "INJ/S1_dg_fault_unexpected_loss",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc_injection",
+      "label": "INJ/S1_dg_fault_unexpected_loss",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "INJ/S1_dg_fault_unexpected_loss",
+      "pass": true
+    },
+    {
+      "name": "C6_safety_assertions",
+      "label": "INJ/S2_realized_supply_deficit",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc_injection",
+      "label": "INJ/S2_realized_supply_deficit",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "INJ/S2_realized_supply_deficit",
+      "pass": true
+    },
+    {
+      "name": "injection_start_reason",
+      "label": "INJ/S2_realized_supply_deficit",
+      "pass": true
+    },
+    {
+      "name": "C6_safety_assertions",
+      "label": "INJ/S3_min_gen_surplus",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc_injection",
+      "label": "INJ/S3_min_gen_surplus",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "INJ/S3_min_gen_surplus",
+      "pass": true
+    },
+    {
+      "name": "C6_safety_assertions",
+      "label": "INJ/S4_prospective_firm_deficit",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc_injection",
+      "label": "INJ/S4_prospective_firm_deficit",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "INJ/S4_prospective_firm_deficit",
+      "pass": true
+    },
+    {
+      "name": "C6_safety_assertions",
+      "label": "INJ/S5_ems_health_fallback",
+      "pass": true
+    },
+    {
+      "name": "C4_vdc_injection",
+      "label": "INJ/S5_ems_health_fallback",
+      "pass": true
+    },
+    {
+      "name": "C7_audit_completeness",
+      "label": "INJ/S5_ems_health_fallback",
+      "pass": true
+    }
+  ],
+  "autoruns": {
+    "R0_S20_composite_voyage": {
+      "label": "R0/S20_composite_voyage",
+      "metrics": {
+        "duration_s": 14233.33,
+        "fuel_total_kg": 402.45759475369255,
+        "fuel_1_kg": 376.24658684491249,
+        "fuel_2_kg": 26.211007912418943,
+        "DG1_online_time_s": 14203.33,
+        "DG2_online_time_s": 698.77000000000044,
+        "twoDG_low_load_dwell_s": 120,
+        "SOC_min": 0.58187850526462181,
+        "SOC_end": 0.6203604248349005,
+        "Vdc_min": 680.52451527806113,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 77.32936419480086,
+        "batt_charge_kWh": 169.69420962549756,
+        "unserved_energy_kWh": 27.284656498901029,
+        "surplus_energy_kWh": 208.1032756792093,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.6203604248349005,
+      "fuel_total_kg": 402.45759475369255,
+      "n_saturation_events": 1
+    },
+    "R0_S01_still_water": {
+      "label": "R0/S01_still_water",
+      "metrics": {
+        "duration_s": 900.84,
+        "fuel_total_kg": 55.048046366131864,
+        "fuel_1_kg": 29.149183927104612,
+        "fuel_2_kg": 25.898862439027145,
+        "DG1_online_time_s": 870.84,
+        "DG2_online_time_s": 803.63000000000011,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58776213111881281,
+        "SOC_end": 0.58776213111881281,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 46.185568383734946,
+        "batt_charge_kWh": 0.023448136389108719,
+        "unserved_energy_kWh": 29.564925285475514,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58776213111881281,
+      "fuel_total_kg": 55.048046366131864,
+      "n_saturation_events": 1
+    },
+    "R0_S02_downstream": {
+      "label": "R0/S02_downstream",
+      "metrics": {
+        "duration_s": 898.28,
+        "fuel_total_kg": 36.725236219315107,
+        "fuel_1_kg": 29.634267983551631,
+        "fuel_2_kg": 7.0909682357632047,
+        "DG1_online_time_s": 868.28,
+        "DG2_online_time_s": 300.02,
+        "twoDG_low_load_dwell_s": 288.03000000000003,
+        "SOC_min": 0.58917203634477366,
+        "SOC_end": 0.58917203634477366,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 40.95834432346858,
+        "batt_charge_kWh": 0.14695375960575094,
+        "unserved_energy_kWh": 27.329977877766268,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.58917203634477366,
+      "fuel_total_kg": 36.725236219315107,
+      "n_saturation_events": 1
+    },
+    "R0_S03_upstream": {
+      "label": "R0/S03_upstream",
+      "metrics": {
+        "duration_s": 905.38,
+        "fuel_total_kg": 72.3007025411008,
+        "fuel_1_kg": 38.059158694099771,
+        "fuel_2_kg": 34.241543847001289,
+        "DG1_online_time_s": 875.38,
+        "DG2_online_time_s": 808.17,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58403630277045915,
+        "SOC_end": 0.58403630277045915,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 60.352761881018168,
+        "batt_charge_kWh": 0,
+        "unserved_energy_kWh": 37.52140633628369,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58403630277045915,
+      "fuel_total_kg": 72.3007025411008,
+      "n_saturation_events": 1
+    },
+    "R0_E05_shallow_HT3_0": {
+      "label": "R0/E05_shallow_HT3.0",
+      "metrics": {
+        "duration_s": 548.02,
+        "fuel_total_kg": 34.737719485633264,
+        "fuel_1_kg": 19.107475061275693,
+        "fuel_2_kg": 15.63024442435748,
+        "DG1_online_time_s": 518.02,
+        "DG2_online_time_s": 450.81,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58830281774219528,
+        "SOC_end": 0.58830281774219528,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 44.061219128806016,
+        "batt_charge_kWh": 0,
+        "unserved_energy_kWh": 30.230540329733273,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58830281774219528,
+      "fuel_total_kg": 34.737719485633264,
+      "n_saturation_events": 1
+    },
+    "R0_E05_shallow_HT1_6": {
+      "label": "R0/E05_shallow_HT1.6",
+      "metrics": {
+        "duration_s": 549.2,
+        "fuel_total_kg": 38.965819333566728,
+        "fuel_1_kg": 21.393767047536652,
+        "fuel_2_kg": 17.572052286029884,
+        "DG1_online_time_s": 519.2,
+        "DG2_online_time_s": 451.99000000000007,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58722242600282748,
+        "SOC_end": 0.58722242600282748,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 48.172548376283693,
+        "batt_charge_kWh": 0,
+        "unserved_energy_kWh": 32.8399419528829,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58722242600282748,
+      "fuel_total_kg": 38.965819333566728,
+      "n_saturation_events": 1
+    },
+    "R0_E05_shallow_HT1_2": {
+      "label": "R0/E05_shallow_HT1.2",
+      "metrics": {
+        "duration_s": 549.48,
+        "fuel_total_kg": 39.791350373790948,
+        "fuel_1_kg": 21.805580131223344,
+        "fuel_2_kg": 17.985770242567437,
+        "DG1_online_time_s": 519.48,
+        "DG2_online_time_s": 452.27000000000004,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.5868475625634697,
+        "SOC_end": 0.5868475625634697,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 49.601851225812105,
+        "batt_charge_kWh": 0,
+        "unserved_energy_kWh": 33.75680162080404,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.5868475625634697,
+      "fuel_total_kg": 39.791350373790948,
+      "n_saturation_events": 1
+    },
+    "R5_S20_composite_voyage": {
+      "label": "R5/S20_composite_voyage",
+      "metrics": {
+        "duration_s": 14233.33,
+        "fuel_total_kg": 412.45160964452828,
+        "fuel_1_kg": 386.50122546757774,
+        "fuel_2_kg": 25.950384180539118,
+        "DG1_online_time_s": 14203.33,
+        "DG2_online_time_s": 698.77000000000044,
+        "twoDG_low_load_dwell_s": 120,
+        "SOC_min": 0.59629142647718159,
+        "SOC_end": 0.639553477797395,
+        "Vdc_min": 680.52451527806113,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 212.92144226930063,
+        "batt_charge_kWh": 398.74803785450092,
+        "unserved_energy_kWh": 592.76203092783453,
+        "surplus_energy_kWh": 1530.777499999999,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.639553477797395,
+      "fuel_total_kg": 412.45160964452828,
+      "n_saturation_events": 1
+    },
+    "R5_S01_still_water": {
+      "label": "R5/S01_still_water",
+      "metrics": {
+        "duration_s": 900.84,
+        "fuel_total_kg": 58.238296178132806,
+        "fuel_1_kg": 31.232794463529434,
+        "fuel_2_kg": 27.005501714603437,
+        "DG1_online_time_s": 870.84,
+        "DG2_online_time_s": 803.63000000000011,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58983700602756706,
+        "SOC_end": 0.60066284302722239,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 86.733851486143919,
+        "batt_charge_kWh": 99.0212374514591,
+        "unserved_energy_kWh": 56.156030927835168,
+        "surplus_energy_kWh": 123.20999999999982,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.60066284302722239,
+      "fuel_total_kg": 58.238296178132806,
+      "n_saturation_events": 1
+    },
+    "R5_S02_downstream": {
+      "label": "R5/S02_downstream",
+      "metrics": {
+        "duration_s": 898.28,
+        "fuel_total_kg": 39.98044422129648,
+        "fuel_1_kg": 31.598909206354652,
+        "fuel_2_kg": 8.381535014941381,
+        "DG1_online_time_s": 868.28,
+        "DG2_online_time_s": 300.02,
+        "twoDG_low_load_dwell_s": 288.03000000000003,
+        "SOC_min": 0.59074233223090211,
+        "SOC_end": 0.59998142878638372,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 66.723970929660709,
+        "batt_charge_kWh": 74.074645863516636,
+        "unserved_energy_kWh": 118.85603092783518,
+        "surplus_energy_kWh": 95.314999999999714,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.59998142878638372,
+      "fuel_total_kg": 39.98044422129648,
+      "n_saturation_events": 1
+    },
+    "R5_S03_upstream": {
+      "label": "R5/S03_upstream",
+      "metrics": {
+        "duration_s": 905.38,
+        "fuel_total_kg": 74.903238695647985,
+        "fuel_1_kg": 39.5659339014096,
+        "fuel_2_kg": 35.337304794238804,
+        "DG1_online_time_s": 875.38,
+        "DG2_online_time_s": 808.17,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58738864514681133,
+        "SOC_end": 0.60033435319471917,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 91.2194632520505,
+        "batt_charge_kWh": 102.59368997872933,
+        "unserved_energy_kWh": 56.156030927835168,
+        "surplus_energy_kWh": 49.594999999999985,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.60033435319471917,
+      "fuel_total_kg": 74.903238695647985,
+      "n_saturation_events": 1
+    },
+    "R5_E05_shallow_HT3_0": {
+      "label": "R5/E05_shallow_HT3.0",
+      "metrics": {
+        "duration_s": 548.02,
+        "fuel_total_kg": 38.361525219992942,
+        "fuel_1_kg": 21.294911785396376,
+        "fuel_2_kg": 17.066613434596523,
+        "DG1_online_time_s": 518.02,
+        "DG2_online_time_s": 450.81,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58960663979040229,
+        "SOC_end": 0.60067602465550729,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 63.075548532163623,
+        "batt_charge_kWh": 73.210534014248282,
+        "unserved_energy_kWh": 56.156030927832013,
+        "surplus_energy_kWh": 54.00500000000541,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.60067602465550729,
+      "fuel_total_kg": 38.361525219992942,
+      "n_saturation_events": 1
+    },
+    "R5_E05_shallow_HT1_6": {
+      "label": "R5/E05_shallow_HT1.6",
+      "metrics": {
+        "duration_s": 549.2,
+        "fuel_total_kg": 41.871276283654176,
+        "fuel_1_kg": 23.049947399107122,
+        "fuel_2_kg": 18.821328884546897,
+        "DG1_online_time_s": 519.2,
+        "DG2_online_time_s": 451.99000000000007,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.5887653558984941,
+        "SOC_end": 0.59957176517947686,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 67.013704595136886,
+        "batt_charge_kWh": 72.904222945422674,
+        "unserved_energy_kWh": 56.156030927832013,
+        "surplus_energy_kWh": 37.250000000002011,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.59957176517947686,
+      "fuel_total_kg": 41.871276283654176,
+      "n_saturation_events": 1
+    },
+    "R5_E05_shallow_HT1_2": {
+      "label": "R5/E05_shallow_HT1.2",
+      "metrics": {
+        "duration_s": 549.48,
+        "fuel_total_kg": 42.631899583478884,
+        "fuel_1_kg": 23.430262273300904,
+        "fuel_2_kg": 19.201637310178029,
+        "DG1_online_time_s": 519.48,
+        "DG2_online_time_s": 452.27000000000004,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58850289222102281,
+        "SOC_end": 0.59944452011695137,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 67.668607134068537,
+        "batt_charge_kWh": 73.085262051766122,
+        "unserved_energy_kWh": 56.156030927832013,
+        "surplus_energy_kWh": 34.75000000000189,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.59944452011695137,
+      "fuel_total_kg": 42.631899583478884,
+      "n_saturation_events": 1
+    },
+    "P2_S20_composite_voyage": {
+      "label": "P2/S20_composite_voyage",
+      "metrics": {
+        "duration_s": 14233.33,
+        "fuel_total_kg": 408.25568597675732,
+        "fuel_1_kg": 381.12148942499289,
+        "fuel_2_kg": 27.134196555464904,
+        "DG1_online_time_s": 14203.33,
+        "DG2_online_time_s": 698.77000000000044,
+        "twoDG_low_load_dwell_s": 120,
+        "SOC_min": 0.58959634715872,
+        "SOC_end": 0.63072547250053779,
+        "Vdc_min": 680.52451527806113,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 64.240596556391338,
+        "batt_charge_kWh": 199.38512379682965,
+        "unserved_energy_kWh": 5.9433516522561742,
+        "surplus_energy_kWh": 148.26150510637297,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.63072547250053779,
+      "fuel_total_kg": 408.25568597675732,
+      "n_saturation_events": 1
+    },
+    "P2_S01_still_water": {
+      "label": "P2/S01_still_water",
+      "metrics": {
+        "duration_s": 900.84,
+        "fuel_total_kg": 56.9502888055525,
+        "fuel_1_kg": 30.333411293742138,
+        "fuel_2_kg": 26.616877511810365,
+        "DG1_online_time_s": 870.84,
+        "DG2_online_time_s": 803.63000000000011,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58983700602756706,
+        "SOC_end": 0.591273639181745,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 38.1722019226571,
+        "batt_charge_kWh": 6.0036000714867654,
+        "unserved_energy_kWh": 7.64283099154321,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.591273639181745,
+      "fuel_total_kg": 56.9502888055525,
+      "n_saturation_events": 1
+    },
+    "P2_S02_downstream": {
+      "label": "P2/S02_downstream",
+      "metrics": {
+        "duration_s": 898.28,
+        "fuel_total_kg": 38.55372319028438,
+        "fuel_1_kg": 30.952313158998408,
+        "fuel_2_kg": 7.60141003128629,
+        "DG1_online_time_s": 868.28,
+        "DG2_online_time_s": 300.02,
+        "twoDG_low_load_dwell_s": 288.03000000000003,
+        "SOC_min": 0.590741319196437,
+        "SOC_end": 0.59320677803841,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 35.88623845300495,
+        "batt_charge_kWh": 11.518298871386135,
+        "unserved_energy_kWh": 7.4936841303128237,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.59320677803841,
+      "fuel_total_kg": 38.55372319028438,
+      "n_saturation_events": 1
+    },
+    "P2_S03_upstream": {
+      "label": "P2/S03_upstream",
+      "metrics": {
+        "duration_s": 905.38,
+        "fuel_total_kg": 73.180861009635024,
+        "fuel_1_kg": 38.499210946004744,
+        "fuel_2_kg": 34.681650063630322,
+        "DG1_online_time_s": 875.38,
+        "DG2_online_time_s": 808.17,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58701172292742365,
+        "SOC_end": 0.58701342871331752,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 48.894411667360579,
+        "batt_charge_kWh": 0.0071293755078459409,
+        "unserved_energy_kWh": 10.9826789456052,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58701342871331752,
+      "fuel_total_kg": 73.180861009635024,
+      "n_saturation_events": 1
+    },
+    "P2_E05_shallow_HT3_0": {
+      "label": "P2/E05_shallow_HT3.0",
+      "metrics": {
+        "duration_s": 548.02,
+        "fuel_total_kg": 35.985353494891768,
+        "fuel_1_kg": 19.900719963021732,
+        "fuel_2_kg": 16.084633531870036,
+        "DG1_online_time_s": 518.02,
+        "DG2_online_time_s": 450.81,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58960663979040229,
+        "SOC_end": 0.59062626508941429,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 39.03999307948208,
+        "batt_charge_kWh": 4.2605432907340806,
+        "unserved_energy_kWh": 8.01955657135697,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.59062626508941429,
+      "fuel_total_kg": 35.985353494891768,
+      "n_saturation_events": 1
+    },
+    "P2_E05_shallow_HT1_6": {
+      "label": "P2/E05_shallow_HT1.6",
+      "metrics": {
+        "duration_s": 549.2,
+        "fuel_total_kg": 39.70350309920299,
+        "fuel_1_kg": 21.761290399221764,
+        "fuel_2_kg": 17.942212699981408,
+        "DG1_online_time_s": 519.2,
+        "DG2_online_time_s": 451.99000000000007,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58867806329826478,
+        "SOC_end": 0.58894142690219431,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 42.56631969895588,
+        "batt_charge_kWh": 1.100754327803912,
+        "unserved_energy_kWh": 9.4383938967504939,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58894142690219431,
+      "fuel_total_kg": 39.70350309920299,
+      "n_saturation_events": 1
+    },
+    "P2_E05_shallow_HT1_2": {
+      "label": "P2/E05_shallow_HT1.2",
+      "metrics": {
+        "duration_s": 549.48,
+        "fuel_total_kg": 40.467518360446704,
+        "fuel_1_kg": 22.142884166065009,
+        "fuel_2_kg": 18.324634194381758,
+        "DG1_online_time_s": 519.48,
+        "DG2_online_time_s": 452.27000000000004,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58835443795680176,
+        "SOC_end": 0.58854219903018135,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 43.798589153798105,
+        "batt_charge_kWh": 0.78470024593202015,
+        "unserved_energy_kWh": 9.7305977505507339,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58854219903018135,
+      "fuel_total_kg": 40.467518360446704,
+      "n_saturation_events": 1
+    },
+    "P2_M1_step": {
+      "metrics": {
+        "duration_s": 360,
+        "fuel_total_kg": 24.680288961793266,
+        "fuel_1_kg": 15.295252830465323,
+        "fuel_2_kg": 9.3850361313279933,
+        "DG1_online_time_s": 330,
+        "DG2_online_time_s": 218.82,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.5898218411407985,
+        "SOC_end": 0.5898218411407985,
+        "Vdc_min": 698.30825193596093,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 38.811423021031729,
+        "batt_charge_kWh": 0,
+        "unserved_energy_kWh": 5.0008354520822538,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.5898218411407985,
+      "fuel_total_kg": 24.680288961793266
+    },
+    "P2_M2_ramp": {
+      "metrics": {
+        "duration_s": 360,
+        "fuel_total_kg": 21.190404635389758,
+        "fuel_1_kg": 14.749711282655403,
+        "fuel_2_kg": 6.4406933527343542,
+        "DG1_online_time_s": 330,
+        "DG2_online_time_s": 143.73,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58853905145341467,
+        "SOC_end": 0.58853905145341467,
+        "Vdc_min": 709.98315852388941,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 43.797492954562344,
+        "batt_charge_kWh": 0,
+        "unserved_energy_kWh": 5.836787739841073,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2,
+      "SOC_end": 0.58853905145341467,
+      "fuel_total_kg": 21.190404635389758
+    },
+    "P2_M3_staged": {
+      "metrics": {
+        "duration_s": 960,
+        "fuel_total_kg": 52.056563058259705,
+        "fuel_1_kg": 37.902814964042534,
+        "fuel_2_kg": 14.153748094216846,
+        "DG1_online_time_s": 930,
+        "DG2_online_time_s": 400.75000000000006,
+        "twoDG_low_load_dwell_s": 120.00000000000006,
+        "SOC_min": 0.58998735016869519,
+        "SOC_end": 0.59385877503497531,
+        "Vdc_min": 719.00128402025371,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 39.604686434476591,
+        "batt_charge_kWh": 17.680844132915695,
+        "unserved_energy_kWh": 5.00111788403809,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3,
+      "SOC_end": 0.59385877503497531,
+      "fuel_total_kg": 52.056563058259705
+    }
+  },
+  "injruns": {
+    "S1_dg_fault_unexpected_loss": {
+      "metrics": {
+        "duration_s": 900,
+        "fuel_total_kg": 46.764924191736519,
+        "fuel_1_kg": 38.909778159962883,
+        "fuel_2_kg": 7.8551460317732626,
+        "DG1_online_time_s": 870,
+        "DG2_online_time_s": 185.45,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58998735016869519,
+        "SOC_end": 0.59366259514720821,
+        "Vdc_min": 719.00128402025371,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 38.413486666564879,
+        "batt_charge_kWh": 15.547701116924797,
+        "unserved_energy_kWh": 5.0011178840380888,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 1,
+        "fault_latch_final": [
+          0,
+          1
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 3
+    },
+    "S2_realized_supply_deficit": {
+      "metrics": {
+        "duration_s": 150,
+        "fuel_total_kg": 8.2811713484545262,
+        "fuel_1_kg": 5.1084318084906588,
+        "fuel_2_kg": 3.1727395399638456,
+        "DG1_online_time_s": 120,
+        "DG2_online_time_s": 74.649999999999991,
+        "twoDG_low_load_dwell_s": 7.97999999999999,
+        "SOC_min": 0.14448472832108739,
+        "SOC_end": 0.14448675717763959,
+        "Vdc_min": 711.13081811003929,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 19.747683721206503,
+        "batt_charge_kWh": 0.00794603027156359,
+        "unserved_energy_kWh": 3.0938144329896571,
+        "surplus_energy_kWh": 0.00021907216494840984,
+        "safety_force_start_events": 1,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2
+    },
+    "S3_min_gen_surplus": {
+      "metrics": {
+        "duration_s": 820,
+        "fuel_total_kg": 33.778333333308936,
+        "fuel_1_kg": 16.889166666654468,
+        "fuel_2_kg": 16.889166666654468,
+        "DG1_online_time_s": 790,
+        "DG2_online_time_s": 790,
+        "twoDG_low_load_dwell_s": 790,
+        "SOC_min": 0.89992463200923722,
+        "SOC_end": 0.94188421368339381,
+        "Vdc_min": 749.00004396548366,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 0.2939072477214133,
+        "batt_charge_kWh": 178.93554718298248,
+        "unserved_energy_kWh": 0.30938144329896838,
+        "surplus_energy_kWh": 189.3532731957975,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 1,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 0
+    },
+    "S4_prospective_firm_deficit": {
+      "metrics": {
+        "duration_s": 90,
+        "fuel_total_kg": 4.749292664569623,
+        "fuel_1_kg": 2.4032448744552295,
+        "fuel_2_kg": 2.3460477901143895,
+        "DG1_online_time_s": 60,
+        "DG2_online_time_s": 58,
+        "twoDG_low_load_dwell_s": 25.490000000000002,
+        "SOC_min": 0.14269856904399955,
+        "SOC_end": 0.14276678188181036,
+        "Vdc_min": 624.83305359729968,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 25.946338823894081,
+        "batt_charge_kWh": 0.26483864964501758,
+        "unserved_energy_kWh": 5.77835180193603,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 1,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 0,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2
+    },
+    "S5_ems_health_fallback": {
+      "metrics": {
+        "duration_s": 300,
+        "fuel_total_kg": 17.378080981317726,
+        "fuel_1_kg": 10.314501802088305,
+        "fuel_2_kg": 7.0635791792292295,
+        "DG1_online_time_s": 270,
+        "DG2_online_time_s": 202.79000000000002,
+        "twoDG_low_load_dwell_s": 0,
+        "SOC_min": 0.58977112531705445,
+        "SOC_end": 0.59042507634877828,
+        "Vdc_min": 672.41379309775812,
+        "Vdc_viol_600_s": 0,
+        "batt_discharge_kWh": 38.446585779532953,
+        "batt_charge_kWh": 2.7582706363057072,
+        "unserved_energy_kWh": 29.564925285475525,
+        "surplus_energy_kWh": 0,
+        "safety_force_start_events": 0,
+        "safety_force_stop_events": 0,
+        "fault_latch_final": [
+          0,
+          0
+        ],
+        "baseline_fallback_active_end": 1,
+        "DG2_plant_starts": 1,
+        "DG1_plant_starts": 1
+      },
+      "n_audit_rows": 2
+    }
+  },
+  "overall": true,
+  "phase1": {
+    "note": "GATE43_BASELINE_PATH 未设（骨架/评审前模式）"
+  },
+  "wall_time_s": 399.20159475,
+  "negative_control": {
+    "schema": "gate_control_negative_v1",
+    "generated_at": "2026-09-04T19:59:06***",
+    "defects": [
+      {
+        "id": "D1",
+        "desc": "FORCED(7) reason（force 通道绕过阈值）",
+        "correctly_detected": true,
+        "detail": "C2 reason domain + FORCED ban"
+      },
+      {
+        "id": "D2",
+        "desc": "正常 start timer 不足（t_start=1500<3000）",
+        "correctly_detected": true,
+        "detail": "C2 normal_start_timer"
+      },
+      {
+        "id": "D3",
+        "desc": "正常 stop min_up 不足（t_online=10000<30000）",
+        "correctly_detected": true,
+        "detail": "C2 normal_stop_timer"
+      },
+      {
+        "id": "D4",
+        "desc": "应触发未触发 override（屏蔽 S2+S4 → S4 场景缺 force_start）",
+        "correctly_detected": true,
+        "detail": "C6 expect_trigger"
+      },
+      {
+        "id": "D5",
+        "desc": "确定性破坏（单采样点改写）",
+        "correctly_detected": true,
+        "detail": "C1 bitwise"
+      },
+      {
+        "id": "D6",
+        "desc": "episode 一对一破坏（双 start 单饱和事件）",
+        "correctly_detected": true,
+        "detail": "C7 one_to_one"
+      },
+      {
+        "id": "D7",
+        "desc": "尺寸不匹配必须 FAIL（旧 G6 会跳过比较空洞 PASS）",
+        "correctly_detected": true,
+        "detail": "G6 skipped=2 comparability=0 | C1 skipped=2"
+      }
+    ],
+    "all_detected": true
+  }
+}

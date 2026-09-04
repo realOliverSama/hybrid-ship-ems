@@ -1,0 +1,51 @@
+{
+  "schema": "modelE_gate_baseline_control_v1",
+  "version": "1.0",
+  "spec": "phase4-b-pms-safety / T-014",
+  "frozen_from": "results/gate_control_result.json（overall=true，134 判据 0 FAIL；negative_control 7/7；S2 reason=4 端到端 t=45.35；2026-09-04 T-014/APPROVED 用户书面批准）",
+  "overall": true,
+  "n_checks": 134,
+  "n_fail": 0,
+  "arms": {
+    "R0": "law0+EMS_AGGREGATE",
+    "R5": "law5+EMS_AGGREGATE",
+    "P2": "BASELINE_POLICY（唯一 conventional economic baseline）"
+  },
+  "frozen_check_names": [
+    "C1_determinism",
+    "C2_transition_legality",
+    "C3_soc_band",
+    "C4_vdc",
+    "C4_vdc_injection",
+    "C5_energy_closure",
+    "C6_safety_assertions",
+    "C7_audit_completeness",
+    "M3_full_chain_1DG_2DG_1DG",
+    "injection_start_reason"
+  ],
+  "config_sha256": {
+    "ModelE_Physics_Parameters_m": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264",
+    "ModelE_Control_Parameters_m": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63",
+    "ModelE_TestScenarios_m": "50d9a2e59addae2d89093a4d39c380251415abddf99a9285adeb773e9aead924",
+    "ModelE_Sensitivity_Profile_m": "cbec1bbce6b3330fe277c7ce3984f81aaec261afb7d77787517b18e6f97032f3"
+  },
+  "injection_summary": {
+    "S1_dg_fault_unexpected_loss": {
+      "n_audit_rows": 3
+    },
+    "S2_realized_supply_deficit": {
+      "n_audit_rows": 2
+    },
+    "S3_min_gen_surplus": {
+      "n_audit_rows": 0
+    },
+    "S4_prospective_firm_deficit": {
+      "n_audit_rows": 2
+    },
+    "S5_ems_health_fallback": {
+      "n_audit_rows": 2
+    }
+  },
+  "negative_all_detected": true,
+  "dd9_note": "promotion 需 T-014 用户书面批准（已获 2026-09-04）；判据阈值/结构以 .specs/phase4-b-pms-safety design §6 为准，冻结不扫"
+}

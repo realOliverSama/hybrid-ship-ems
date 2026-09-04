@@ -1,7 +1,7 @@
 {
   "schema": "modelE_gate_result_v1",
   "spec": "phase4-a2-model-e-construction / T-412",
-  "generated_at": "2026-09-04T10:04:32***",
+  "generated_at": "2026-09-04T19:51:01***",
   "overall": true,
   "checks": {
     "G1": {
@@ -53,12 +53,12 @@
           "pass": true,
           "violations": 0,
           "R_by_tier": [
-            32082.038992865695,
-            32716.652736531843,
-            35315.1062254943,
-            38374.218244104966,
-            40890.611696012085,
-            44685.4610649159
+            32082.097918734871,
+            32716.713410687244,
+            35315.172310052709,
+            38374.315263672819,
+            40890.715072121769,
+            44685.551048129724
           ]
         },
         {
@@ -69,7 +69,7 @@
           "item": "cruise_power_band_274_335_kW",
           "pass": true,
           "gate_class": "design_derived",
-          "value_kW": 298.38229243383023
+          "value_kW": 298.38229243383017
         },
         {
           "item": "full_power_speed_band_12.5_15.5_kn",
@@ -160,15 +160,15 @@
         {
           "item": "closure_E01_cruise",
           "pass": true,
-          "ratio": 3.95647779741507E-6,
-          "int_Pres_J": 324366.67642623384,
-          "dEcap_J": 322863.22088572895,
-          "E_throughput_J": 3.7999847780951995E+8
+          "ratio": 3.956538994314859E-6,
+          "int_Pres_J": -27221.713925814449,
+          "dEcap_J": -28725.170514385682,
+          "E_throughput_J": 3.799928651610778E+8
         },
         {
           "item": "steady_mean_residual_lt_1kW_E01_cruise",
           "pass": true,
-          "mean_abs_residual_kW": 0.015120559336648208
+          "mean_abs_residual_kW": 0.0014559339973582461
         },
         {
           "item": "closure_E09_transient",
@@ -191,6 +191,26 @@
       "gate_class": "regression",
       "checks": [
         {
+          "item": "comparability_fail_closed",
+          "pass": true,
+          "required_fields": 96,
+          "compared_fields": 96,
+          "skipped_fields": 0,
+          "skipped_detail": [],
+          "extra_fields_in_run_b": []
+        },
+        {
+          "item": "comparison_count_equals_required",
+          "pass": true,
+          "N_compared": 96,
+          "N_required": 96
+        },
+        {
+          "item": "no_extra_fields_in_run_b",
+          "pass": true,
+          "extra": []
+        },
+        {
           "item": "determinism_two_runs_bitwise_identical",
           "pass": true,
           "differing_fields": ""
@@ -198,9 +218,13 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 51.962785208333337
+          "total_wall_time_s": 77.797379708333338
         }
       ],
+      "required_fields": 96,
+      "compared_fields": 96,
+      "skipped_fields": 0,
+      "comparability_pass": true,
       "pass": true
     },
     "E10_compat_smoke": {

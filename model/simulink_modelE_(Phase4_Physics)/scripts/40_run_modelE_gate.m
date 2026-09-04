@@ -11,12 +11,28 @@ ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir'), ROOT = pwd; end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 run(fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m'));
+run(fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m'));   % Phase 4-B T-001：控制参数在物理参数之后（FR-451）
 run(fullfile(ROOT, 'config', 'ModelE_TestScenarios.m'));
 model.write_config_manifest(ROOT, ModelE_Sensitivity_Profile());
+% Phase 4-B T-012（DD-9 Step C）：可选显式 baseline_path——指定 candidate 基线时仅在
+% gate_result.json 记录其路径（判据仍现场计算，基线为冻结记录非运行时比较器）；
+% 未设时行为与 A2 完全一致（默认 v1.0 语义不变）
+GATE40_BASELINE_NOTE = '';
+if evalin('base', 'exist(''GATE40_BASELINE_PATH'', ''var'')')
+    GATE40_BASELINE_NOTE = evalin('base', 'GATE40_BASELINE_PATH');
+    fprintf('[GATE] baseline_path=%s（candidate 记录模式，DD-9 Step C）\n', GATE40_BASELINE_NOTE);
+end
 MDL = 'HybridShip_ModelE';
 load_system(fullfile(ROOT, 'model', [MDL '.slx']));
 t_all = tic;
 sims = {};
+% Phase 4-B T-012（偏差 D-B19）：bench 注入默认值快照——E06~E09 的 gate_assign_bench_inputs
+% 会遗留 ADAPTER_FORCE_* 与 GEN_CMD_STOP_TS，污染其后的 run_scenario_sim 类跑（E01b）。
+% A2 期 G6 的“逐位一致”实为尺寸不匹配跳过比较的空洞通过；本包修复：E01b 前恢复 nominal。
+BENCH_DEF_GEN_CMD = GEN_CMD_STOP_TS;
+BENCH_DEF_FORCE_MODE = ADAPTER_FORCE_MODE;
+BENCH_DEF_FORCE_P1 = ADAPTER_FORCE_P1_KW;
+BENCH_DEF_FORCE_P2 = ADAPTER_FORCE_P2_KW;
 
 %% ================= E01 静水巡航稳态（law=0，深水 5000 m 全程）=================
 fprintf('[GATE] E01 hull steady 11 kn ...\n');
@@ -139,6 +155,11 @@ E10 = struct('ok', e10_ok, 'note', {e10_note});
 
 %% ================= E01b 确定性第二跑（G6）=================
 fprintf('[GATE] E01b determinism re-run ...\n');
+% 恢复 bench 注入 nominal（E06~E09 遗留污染防线；否则 E01b 携带 E09 停机表+force）
+assignin('base', 'GEN_CMD_STOP_TS', BENCH_DEF_GEN_CMD);
+assignin('base', 'ADAPTER_FORCE_MODE', BENCH_DEF_FORCE_MODE);
+assignin('base', 'ADAPTER_FORCE_P1_KW', BENCH_DEF_FORCE_P1);
+assignin('base', 'ADAPTER_FORCE_P2_KW', BENCH_DEF_FORCE_P2);
 SCN = SCENARIOS(1); SCN.initial_SOC = 0.60;
 assignin('base', 'Bat_SOC_init', 0.60);
 out = model.run_scenario_sim(MDL, SCN, 0, 6000);
@@ -161,6 +182,9 @@ res = struct('schema', 'modelE_gate_result_v1', ...
     'spec', 'phase4-a2-model-e-construction / T-412', ...
     'generated_at', char(datetime('now', 'Format', 'yyyy-MM-dd''T''HH:mm:ssZZZ')), ...
     'overall', overall, 'checks', {checks});
+if ~isempty(GATE40_BASELINE_NOTE)
+    res.baseline_path = GATE40_BASELINE_NOTE;   % DD-9 Step C：candidate 记录
+end
 if ~exist(fullfile(ROOT, 'results'), 'dir'), mkdir(fullfile(ROOT, 'results')); end
 fid = fopen(fullfile(ROOT, 'results', 'gate_result.json'), 'w');
 fwrite(fid, jsonencode(res, 'PrettyPrint', true)); fclose(fid);
