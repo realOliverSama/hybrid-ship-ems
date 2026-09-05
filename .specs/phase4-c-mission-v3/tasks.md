@@ -252,7 +252,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 负向——改动任一注册表后复合 hash 必变；十项缺一必 FAIL
   - Completion evidence: 单测 PASS + 测试文件归属裁决记录
 
-- [ ] 17. 负向测试套件（AC-436 全清单）
+- [x] 17. 负向测试套件（AC-436 全清单）
   - ID: T-017
   - Requirement(s): FR-524, FR-526~533, FR-558~562；AC-436
   - 路线映射: 横切
