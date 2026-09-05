@@ -1,0 +1,40 @@
+{
+  "schema": "mission_v3_seed_tree_policy_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "policy_version": "seed_tree_v1",
+  "lineage_algorithm": {
+    "formula": "lineage_id = SHA256(UTF8(policy_version + '|' + formal_generation_seed + '|' + base_draw_index + '|' + branch_name))",
+    "digest": "SHA256",
+    "encoding": "UTF-8",
+    "hex_case": "lowercase",
+    "identity_status": "lineage_id = 权威科学身份（scientific lineage identity，全 32 字节十六进制串，artifact 全量存储、可审计；scientific lineage identity != 32-bit RNG seed）",
+    "engine_mapping": {
+      "rng": "Threefry4x64",
+      "uint32_seed_rule": "uint32 引擎 seed = lineage digest 前 4 字节 big-endian 解释",
+      "status": "仅 Threefry4x64 引擎输入，非科学血统身份（DGN-07 R6）"
+    },
+    "collision_detection": {
+      "policy": "fail-closed",
+      "rule": "不同 branch path 映射到同一有效 RNG seed/状态 ⇒ Gate FAIL",
+      "registry": "lineage 登记表（branch_path ↔ lineage_id ↔ engine seed）入 manifest，每 fleet 生成后机器校验"
+    }
+  },
+  "branches": ["current_truth", "water_level", "traffic", "operator_residual", "hotel_residual", "resistance", "segment_geometry", "forecast_obs_noise"],
+  "branch_note": "八分支清单（DGN-07）；forecast_obs_noise 为 DEGRADED_V1 观测误差专属分支",
+  "intervention_branch_rule": {
+    "naming": "intervention_<axis>",
+    "rule": "干预专属分支按预声明 intervention matrix 的轴生成（matrix 生成前确定，FR-518/521）；PHYSICAL/INFORMATION 分型见 conditional_dag_config intervention 节点"
+  },
+  "invariants": {
+    "information_counterfactual": "INFORMATION counterfactual 成员共用全部 truth 分支 lineage（仅 forecast_obs_noise 分支不同）⇒ truth hash 相同的机器校验（FR-529）",
+    "physical_counterfactual": "PHYSICAL counterfactual 仅声明干预分支不同",
+    "undeclared_reuse": "未声明复用 = Gate FAIL"
+  },
+  "reproducibility": {
+    "rule": "同 lineage + 同冻结配置 ⇒ 同实现（两跑 payload hash 一致可复现）",
+    "forbidden": "禁隐藏 seed / 禁全局 RNG；每航次 meta 记录全分支 lineage_id（auditable lineage，FR-522）"
+  },
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "15ba30df31646285d5ec441a4e1ba79e66a6c954cdefec8c7335b2d25ff74b29"}
+}

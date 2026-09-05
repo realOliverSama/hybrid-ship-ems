@@ -1,0 +1,143 @@
+{
+  "schema": "mission_v3_conditional_dag_config_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "semantics": {
+    "factorization": "p(X) = prod_i p(X_i | Pa(X_i))",
+    "independence": "除本文件 nodes 中声明的父子边外，全部节点条件独立（design DGN-03 / FR-513）"
+  },
+  "river_coordinate_semantics": {
+    "rule_id": "DGN-03-R1",
+    "rules": [
+      "环境流真值在河流坐标生成（沿程下游为正）：U_river(t) ~ p(U | environment_regime, route/reach)",
+      "沿迹相对流分量为派生量 = ±U_river（由段方向/heading 推导）→ adverse/following 分类；id_support_bounds 的 adverse/following 支撑界作用于该派生分量",
+      "船舶换向不触发环境重抽",
+      "同一 base draw 的往返段共享同一物理流实现 ancestry"
+    ]
+  },
+  "levels": {
+    "L0": "template：任务模板层（配额驱动，非随机）",
+    "L1": "regime：环境 regime（配额驱动）与 reach 序列（由模板确定性派生）",
+    "L2": "operator：操作员画像（类别分布，条件于模板）",
+    "L3": "realization：环境/任务实现量（流均值、δU 过程、水位、交通、航向、段几何、hotel 计划）",
+    "BASE_DRAW": "base_draw：逐航次常量抽取聚合层（delta_p_hotel_unplanned、resistance_mult）；层句柄 base_draw（大小写不敏感）供 L4 intervention 父引用（DGN-03 逐字 [base_draw]）",
+    "L4": "intervention：干预层（预声明 matrix 生成前确定；PHYSICAL/INFORMATION 分型）"
+  },
+  "nodes": [
+    {
+      "node_id": "template",
+      "level": "L0",
+      "parents": [],
+      "distribution": "QUOTA_DRIVEN",
+      "notes": "配额驱动非随机（DGN-03：scenario strata 配额）"
+    },
+    {
+      "node_id": "regime",
+      "level": "L1",
+      "parents": [],
+      "distribution": "QUOTA_DRIVEN",
+      "params": {"enum": ["NORMAL", "FLOOD", "DRY"]},
+      "notes": "三 regime 枚举（DGN-04）"
+    },
+    {
+      "node_id": "reach_sequence",
+      "level": "L1",
+      "parents": ["template"],
+      "distribution": "DETERMINISTIC",
+      "params_ref": "mission_template_registry.mission_templates[].segment_sequence[].reach",
+      "notes": "每 template 固定 reach 序列（mission_template_registry）"
+    },
+    {
+      "node_id": "operator_profile",
+      "level": "L2",
+      "parents": ["template"],
+      "distribution": "CATEGORICAL",
+      "params_ref": "mission_template_registry.mission_templates[].operator_prior",
+      "notes": "先验见 mission_template_registry.operator_prior（EMERGENCY→URGENT 1.0；ROUTINE/WORK 见注册表）"
+    },
+    {
+      "node_id": "u_river_mean",
+      "level": "L3",
+      "parents": ["regime", "reach_sequence"],
+      "distribution": "TRUNCATED_NORMAL",
+      "params_ref": "environment_regime_params.regimes[].u_river_mag",
+      "support_ref": "id_support_bounds",
+      "notes": "河流坐标均值（下游为正，R1）；支撑界见 id_support_bounds"
+    },
+    {
+      "node_id": "delta_u_process",
+      "level": "L3",
+      "parents": ["regime"],
+      "distribution": "OU",
+      "params_ref": "environment_regime_params.regimes[].delta_u",
+      "notes": "河流坐标 OU 过程（DGN-04 冻结候选：tau_u=900 s 全 regime；sigma 按 regime）；经时间模流场接口注入"
+    },
+    {
+      "node_id": "water_level_offset",
+      "level": "L3",
+      "parents": ["regime"],
+      "distribution": "TRUNCATED_NORMAL",
+      "params_ref": "environment_regime_params.regimes[].water_level_offset",
+      "notes": "ΔWL 逐航次常量；H_effective = h_chart + ΔWL（DGN-06 R4 认识论分层）"
+    },
+    {
+      "node_id": "traffic_rate_lambda",
+      "level": "L3",
+      "parents": ["regime", "reach_sequence"],
+      "distribution": "POISSON_RATE",
+      "params_ref": "environment_regime_params.traffic.rate_per_hour",
+      "notes": "λ 条件于 regime×reach（桥/港段高，DGN-04）"
+    },
+    {
+      "node_id": "heading",
+      "level": "L3",
+      "parents": ["template"],
+      "distribution": "DETERMINISTIC",
+      "params_ref": "mission_template_registry.mission_templates[].segment_sequence",
+      "notes": "段拓扑决定；沿迹相对流分量符号源（R1）"
+    },
+    {
+      "node_id": "segment_stretch",
+      "level": "L3",
+      "parents": ["template"],
+      "distribution": "UNIFORM",
+      "params": {"low": 0.8, "high": 1.25},
+      "notes": "段长拉伸因子 U[0.8,1.25]，条件于 template（DGN-03）"
+    },
+    {
+      "node_id": "hotel_plan",
+      "level": "L3",
+      "parents": ["template"],
+      "distribution": "LOOKUP",
+      "params_ref": "mission_template_registry.mission_templates[].p_hotel_base_kW",
+      "notes": "DGN-09 Path B：plan = base 常量查表（M×30 列填计划常量）"
+    },
+    {
+      "node_id": "delta_p_hotel_unplanned",
+      "level": "BASE_DRAW",
+      "parents": [],
+      "distribution": "TRUNCATED_NORMAL",
+      "params": {"mu": 0, "sigma": 10, "trunc_abs_kw": 20},
+      "notes": "future-unknown，predictor-forbidden（DGN-09 Path B：δ_hotel 只存在于 truth/ORACLE 侧）"
+    },
+    {
+      "node_id": "resistance_mult",
+      "level": "BASE_DRAW",
+      "parents": [],
+      "distribution": "UNIFORM",
+      "params": {"low": 0.95, "high": 1.05},
+      "notes": "base draw 族内共享（FR-517 候选）"
+    },
+    {
+      "node_id": "intervention",
+      "level": "L4",
+      "parents": ["base_draw"],
+      "distribution": "PREDECLARED_MATRIX",
+      "notes": "FR-518/521：matrix 生成前确定；PHYSICAL/INFORMATION 分型；父 base_draw = BASE DRAW 层句柄（见 levels，DGN-03 逐字）"
+    }
+  ],
+  "independence_invariant": "除 nodes 声明的父子边外全部条件独立；任何采样实现不得引入未声明依赖（FR-513）；DGN-03 节点表冻结，不得增删父子边",
+  "hash_note": "本文件 hash 入 qualified generation stack identity（DGN-14 / FR-513）",
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725"}
+}
