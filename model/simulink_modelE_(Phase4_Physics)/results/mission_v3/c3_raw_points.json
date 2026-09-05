@@ -1,0 +1,295 @@
+{
+  "schema": "mission_v3_id_feasibility_sweep_v1",
+  "task": "T-005 read-only joint feasibility matrix sweep (DGN-05 R2/R3 pre-freeze evidence)",
+  "generated_at": "2026-09-05T16:06:07",
+  "readonly_discipline": "Model E files untouched; runtime SCN struct construction via gate_e.reset_bench_nominal + model.run_scenario_sim",
+  "grid": {
+    "mode": "custom_pointlist",
+    "planned_sog_mps": [
+      6.5,
+      7
+    ],
+    "adverse_flow_mps": 0,
+    "following_flow_mps": [],
+    "following_ht_ratio": [],
+    "ht_ratio_list": [
+      1.5,
+      2,
+      3
+    ],
+    "draft_m": 2.188,
+    "ht_to_depth_conversion": "h = H/T * draft (T-412 E05 S31..S36 convention)",
+    "leg_duration_s": 900,
+    "hotel_kW": 100,
+    "initial_soc": 0.6,
+    "voyage_distance_m": 40000,
+    "accel_ramp_mps2": 0.05,
+    "pms_source_mode": 0,
+    "ems_ctrl_law": 0,
+    "current_sign_convention": "negative = adverse (against heading), positive = following",
+    "current_grid_s": 1,
+    "n_points_requested": 4,
+    "n_points_recorded": 4
+  },
+  "points": [
+    {
+      "key": "sog6.500_adverse_0.00_ht1.50",
+      "sog_plan_mps": 6.5,
+      "flow_dir": "adverse",
+      "flow_mag_mps": 0,
+      "ht_ratio": 1.5,
+      "water_depth_m": 3.282,
+      "leg_duration_s": 900,
+      "current_component_mps": -0,
+      "sim_duration_s": 900,
+      "sog_mean_last120_mps": 6.5000000001162066,
+      "sog_mean_all_mps": 6.3092077121477281,
+      "sog_margin_mps": 1.1620659989830529E-10,
+      "speed_achieved": true,
+      "sog_slope_last120_mps2": -2.789969989726988E-12,
+      "n_fault_latch_steps": 0,
+      "fault_latch_final_dg1": 0,
+      "fault_latch_final_dg2": 0,
+      "n_force_stop_events": 0,
+      "n_force_start_events": 0,
+      "no_safety_trip": true,
+      "n_sop_sat_steps": 0,
+      "sop_envelope_max_exceed_kW": -274.13793097758116,
+      "no_sop_saturation": true,
+      "n_domain_warning_steps": 0,
+      "ht_ratio_min_sim": 1.5,
+      "no_domain_warning": true,
+      "P_prop_peak_kW": 699.99999999999727,
+      "P_load_peak_kW": 799.99999999999727,
+      "P_prop_mean_last120_kW": 613.245790191775,
+      "P_load_mean_last120_kW": 713.24579019177543,
+      "R_hull_mean_last120_N": 52045.516493817093,
+      "R_shallow_mean_last120_N": 14443.016492472274,
+      "soc_end": 0.58428471443677077,
+      "soc_min": 0.58428471443677077,
+      "fuel_total_kg": 78.0828443321797,
+      "feasible": true,
+      "sim_completed": true,
+      "err_msg": "",
+      "wall_time_s": 19.21
+    },
+    {
+      "key": "sog6.500_adverse_0.00_ht2.00",
+      "sog_plan_mps": 6.5,
+      "flow_dir": "adverse",
+      "flow_mag_mps": 0,
+      "ht_ratio": 2,
+      "water_depth_m": 4.376,
+      "leg_duration_s": 900,
+      "current_component_mps": -0,
+      "sim_duration_s": 900,
+      "sog_mean_last120_mps": 6.500000000048141,
+      "sog_mean_all_mps": 6.32264020949696,
+      "sog_margin_mps": 4.8141046704586188E-11,
+      "speed_achieved": true,
+      "sog_slope_last120_mps2": -1.2055681638960967E-12,
+      "n_fault_latch_steps": 0,
+      "fault_latch_final_dg1": 0,
+      "fault_latch_final_dg2": 0,
+      "n_force_stop_events": 0,
+      "n_force_start_events": 0,
+      "no_safety_trip": true,
+      "n_sop_sat_steps": 0,
+      "sop_envelope_max_exceed_kW": -274.13793097758116,
+      "no_sop_saturation": true,
+      "n_domain_warning_steps": 0,
+      "ht_ratio_min_sim": 2,
+      "no_domain_warning": true,
+      "P_prop_peak_kW": 699.99999999999727,
+      "P_load_peak_kW": 799.99999999999727,
+      "P_prop_mean_last120_kW": 523.280967637338,
+      "P_load_mean_last120_kW": 623.28096763733913,
+      "R_hull_mean_last120_N": 46527.051825838906,
+      "R_shallow_mean_last120_N": 8924.5518252818347,
+      "soc_end": 0.58610421573203575,
+      "soc_min": 0.58610421573203575,
+      "fuel_total_kg": 74.659505785287237,
+      "feasible": true,
+      "sim_completed": true,
+      "err_msg": "",
+      "wall_time_s": 7.68
+    },
+    {
+      "key": "sog7.000_adverse_0.00_ht2.00",
+      "sog_plan_mps": 7,
+      "flow_dir": "adverse",
+      "flow_mag_mps": 0,
+      "ht_ratio": 2,
+      "water_depth_m": 4.376,
+      "leg_duration_s": 900,
+      "current_component_mps": -0,
+      "sim_duration_s": 900,
+      "sog_mean_last120_mps": 7.0000000000842428,
+      "sog_mean_all_mps": 6.7709506541511164,
+      "sog_margin_mps": 8.4242834930137178E-11,
+      "speed_achieved": true,
+      "sog_slope_last120_mps2": -2.0391050898395565E-12,
+      "n_fault_latch_steps": 0,
+      "fault_latch_final_dg1": 0,
+      "fault_latch_final_dg2": 0,
+      "n_force_stop_events": 0,
+      "n_force_start_events": 0,
+      "no_safety_trip": true,
+      "n_sop_sat_steps": 0,
+      "sop_envelope_max_exceed_kW": -274.13793097758116,
+      "no_sop_saturation": true,
+      "n_domain_warning_steps": 0,
+      "ht_ratio_min_sim": 2,
+      "no_domain_warning": true,
+      "P_prop_peak_kW": 699.99999999999727,
+      "P_load_peak_kW": 799.99999999999727,
+      "P_prop_mean_last120_kW": 653.787687308562,
+      "P_load_mean_last120_kW": 753.78768730856189,
+      "R_hull_mean_last120_N": 53978.2702811042,
+      "R_shallow_mean_last120_N": 10368.270280054558,
+      "soc_end": 0.58351971328288355,
+      "soc_min": 0.58351971328288355,
+      "fuel_total_kg": 78.941101499086386,
+      "feasible": true,
+      "sim_completed": true,
+      "err_msg": "",
+      "wall_time_s": 12.62
+    },
+    {
+      "key": "sog7.000_adverse_0.00_ht3.00",
+      "sog_plan_mps": 7,
+      "flow_dir": "adverse",
+      "flow_mag_mps": 0,
+      "ht_ratio": 3,
+      "water_depth_m": 6.564,
+      "leg_duration_s": 900,
+      "current_component_mps": -0,
+      "sim_duration_s": 900,
+      "sog_mean_last120_mps": 7.0000000000746549,
+      "sog_mean_all_mps": 6.775703828525752,
+      "sog_margin_mps": 7.4654948889474326E-11,
+      "speed_achieved": true,
+      "sog_slope_last120_mps2": -1.8269030237620579E-12,
+      "n_fault_latch_steps": 0,
+      "fault_latch_final_dg1": 0,
+      "fault_latch_final_dg2": 0,
+      "n_force_stop_events": 0,
+      "n_force_start_events": 0,
+      "no_safety_trip": true,
+      "n_sop_sat_steps": 0,
+      "sop_envelope_max_exceed_kW": -274.13793097758116,
+      "no_sop_saturation": true,
+      "n_domain_warning_steps": 0,
+      "ht_ratio_min_sim": 3,
+      "no_domain_warning": true,
+      "P_prop_peak_kW": 699.99999999999727,
+      "P_load_peak_kW": 799.99999999999727,
+      "P_prop_mean_last120_kW": 630.154738680992,
+      "P_load_mean_last120_kW": 730.154738680985,
+      "R_hull_mean_last120_N": 49050.253428449432,
+      "R_shallow_mean_last120_N": 5440.2534275192984,
+      "soc_end": 0.58394080487754407,
+      "soc_min": 0.58394080487754407,
+      "fuel_total_kg": 78.630074336895234,
+      "feasible": true,
+      "sim_completed": true,
+      "err_msg": "",
+      "wall_time_s": 17.23
+    }
+  ],
+  "summary": {
+    "n_points": 4,
+    "n_feasible": 4,
+    "n_infeasible": 0,
+    "n_sim_failed": 0,
+    "feasibility_rate": 1,
+    "by_sog": [
+      {
+        "value": 6.5,
+        "n_points": 2,
+        "n_feasible": 2
+      },
+      {
+        "value": 7,
+        "n_points": 2,
+        "n_feasible": 2
+      }
+    ],
+    "by_adverse_flow": [
+      {
+        "value": 0,
+        "n_points": 4,
+        "n_feasible": 4
+      }
+    ],
+    "by_ht_ratio": [
+      {
+        "value": 1.5,
+        "n_points": 1,
+        "n_feasible": 1
+      },
+      {
+        "value": 2,
+        "n_points": 2,
+        "n_feasible": 2
+      },
+      {
+        "value": 3,
+        "n_points": 1,
+        "n_feasible": 1
+      }
+    ],
+    "criterion_fail_counts": {
+      "sim_completed": 0,
+      "no_safety_trip": 0,
+      "no_sop_saturation": 0,
+      "no_domain_warning": 0,
+      "speed_achieved": 0
+    },
+    "candidate_interior_infeasible": [],
+    "candidate_interior_infeasible_n": 0
+  },
+  "g2_cross_check": {
+    "reference_source": "results/gate_result.json checks.G2",
+    "reference": {
+      "name": "G2_hull_shallow",
+      "pass": true
+    },
+    "sprint_reachability": {
+      "point": "",
+      "direction_consistent": []
+    },
+    "adverse_vs_following_power": [],
+    "shallow_R_monotonicity_adverse0": [
+      {
+        "sog_mps": 6.5,
+        "ht_descending": [
+          2,
+          1.5
+        ],
+        "R_hull_mean_N_ascending_ht_desc": [
+          46527.051825838906,
+          52045.516493817093
+        ],
+        "monotone_ok": true
+      },
+      {
+        "sog_mps": 7,
+        "ht_descending": [
+          3,
+          2
+        ],
+        "R_hull_mean_N_ascending_ht_desc": [
+          49050.253428449432,
+          53978.2702811042
+        ],
+        "monotone_ok": true
+      }
+    ]
+  },
+  "degradation": {
+    "applied": false,
+    "reason": "",
+    "note": "set by caller if Fixed Decision 10 degrade rule triggered"
+  }
+}
