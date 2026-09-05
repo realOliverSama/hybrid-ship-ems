@@ -1,0 +1,67 @@
+{
+  "schema": "mission_v3_phase1_freeze_amendment_v1",
+  "amendment_id": "PHASE1-FREEZE-AMEND-SPRINT",
+  "ruling": "T-010 escalation adjudication (main agent, 2026-09-05): rush planned-speed policy semantic refinement under Day-1 Gate Ruling section B/C authority",
+  "generated_at": "2026-09-05T18:28:47",
+  "amends": {
+    "file": "phase1_freeze.json",
+    "self_hash": "67b9b81e991ee8f21a7fef97ca31b1387cce1d41827d2c3e7cd3f315bb787246",
+    "mode": "immutable chain: base -> amendment_d6 -> this; no silent overwrite"
+  },
+  "amendment_chain": [
+    {
+      "file": "phase1_freeze.json",
+      "self_hash": "67b9b81e991ee8f21a7fef97ca31b1387cce1d41827d2c3e7cd3f315bb787246"
+    },
+    {
+      "file": "phase1_freeze_amendment_d6.json",
+      "self_hash": "dd84f9654e90409b39e3ae805b9301282a58b68b9f20f69decd5d88323c5743c"
+    },
+    {
+      "file": "phase1_freeze_amendment_sprint.json",
+      "role": "this amendment"
+    }
+  ],
+  "rush_policy_refinement": {
+    "tier_semantics": "rush_tiers (HT in [1.5,2.0) -> 6.5 / HT >= 2.0 -> 7.0 m/s) = task EXPECTATION upper bound (dispatch requirement); values unchanged",
+    "platform_rule": "v_rush_platform = min( rush_tier(ht_effective), W_max(ht_effective) + u_signed_min_of_rush_segment )",
+    "w_max_interpolation": "piecewise-linear on frozen w_max_table {HT 1.5: 6.7928, 2.0: 7.1609, 3.0: 7.2492}; HT >= 3.0 capped at 7.2492 (conservative; deep_20m=7.5207 kept as G2 anchor reference only)",
+    "u_signed_min": "most-adverse instantaneous along-track component within the rush segment window (T-009 segment summary; conservative => platform feasible over the whole window)",
+    "infeasible_sprint_gate": "v_rush_platform < 5.5 m/s (return host speed; sprint semantic floor, v1 proposal) => GATE:MISSION_V3:PLAN:INFEASIBLE_SPRINT fail-closed",
+    "operator_isolation": "operator profile coefficients do NOT apply to the rush platform (physical clamp precedes style)"
+  },
+  "authority": [
+    "Day-1 Gate Ruling section B: Mission-v3 may implement the feasible SOG frontier using frozen W_max(H/T) plus signed along-track current",
+    "Day-1 Gate Ruling section C literal: T-009/T-010 SHALL still enforce joint feasibility using the frozen speed/current/H-T capability rule; do NOT treat the 6.5/7.0 table as permission to command an infeasible combination when adverse current reduces feasible SOG"
+  ],
+  "evidence_t010_probe": {
+    "method": "env_realize('sample') probe, 12 ACCEPTED EMERGENCY_RESPONSE implementations per regime, frozen params, zero override",
+    "frontier_trip_rates": {
+      "NORMAL": "12/12 (margin mean -0.561 m/s, best -0.141)",
+      "FLOOD": "11/12",
+      "DRY": "4/12"
+    },
+    "root_cause": "rush 7.0 m/s SOG upstream requires water-speed 7.0+U_river > W_max at NORMAL/FLOOD mean flows; tiers were frozen from still-water corner validation only (T-006) without joint mean-flow frontier check - gap exposed by the T-010 fail-closed assertion as designed",
+    "secondary": "C3 token excludes HT in [1.5,2.0] from IID pipeline by design => in-pipeline rush platform is always the 7.0 tier; the 6.5 tier is reachable only via the OOD generator (REQUIRE side)"
+  },
+  "unchanged_confirmations": {
+    "slice_geometry": "unchanged (120/30/60)",
+    "iid_support_bounds": "unchanged",
+    "c3_feasibility": "unchanged (still-water corner evidence remains valid; platform refinement is a plan-layer policy, not a capability statement)",
+    "d6_contrast_rebinding": "unchanged",
+    "model_e_baseline": "zero change"
+  },
+  "effective_phase1_configuration": {
+    "registry_hashes_note": "registry files unchanged by this amendment (policy semantic refinement only); see amendment_d6 for the nine-file hashes",
+    "amendment_chain_hashes": {
+      "base": "67b9b81e991ee8f21a7fef97ca31b1387cce1d41827d2c3e7cd3f315bb787246",
+      "d6": "dd84f9654e90409b39e3ae805b9301282a58b68b9f20f69decd5d88323c5743c"
+    },
+    "composite_hash": "340c8f5458830bceff29c03d12fd626028a6db446305e7f11673ce2130d3ffb1"
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "5834da54cfb9b81be52a72c4f5433dfa09bafbe13699bd30705434e7a70077b9"
+  }
+}
