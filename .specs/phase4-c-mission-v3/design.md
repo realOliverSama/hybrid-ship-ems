@@ -1,8 +1,9 @@
 # Phase 4-C — 真实内河航次与工况生成器 v3（Mission v3，T-419~T-429） Design
 
 Spec: `phase4-c-mission-v3`  
-Status: design-draft  
+Status: design-approved  
 Created: 2026-09-05  
+Approved: 2026-09-05（CONDITIONAL PASS + R1~R9 修正闭合）  
 Brainstorm: `./brainstorm.md`（C-D1~C-D7 + Closeout A/B/C）
 Requirements: `./requirements.md`（FR-501~562 / NFR-427~433 / AC-433~440，2026-09-05 requirements-approved）
 
@@ -85,19 +86,22 @@ scripts/81_run_mission_v3_t429.m           ← 薄入口：T-429 Gate
 
 ### DGN-03 conditional-DAG 具体节点表（FR-513~518）
 
+**R1 修正（河流坐标语义）**：环境流真值在**河流坐标**生成——`U_river(t) ~ p(U | environment_regime, route/reach)`（沿程下游为正）；船舶航向/行进方向是**派生量**：along-track 相对流分量 = ±U_river（由段方向推导）→ ADVERSE/FOLLOWING 分类。**船舶换向不得触发环境重抽**；同一 base draw 的往返段共享同一物理流实现 ancestry。DGN-05 的 adverse/following 支撑界与 C1 token 均作用于**派生沿迹相对流分量**。
+
 | 节点 | 父节点 | 分布族（候选） | 说明 |
 |---|---|---|---|
 | template | — | 配额驱动（非随机） | L0 |
 | regime | — | 配额驱动 | L1：NORMAL/FLOOD/DRY |
 | reach（河段特征） | template | 每 template 固定 reach 序列 | 桥区/港区/浅滩段位置载体 |
 | operator_profile | template | 类别分布（EMERGENCY→URGENT 先验 1.0；ROUTINE→{CALM .3, STANDARD .6, URGENT .1}；WORK→{CALM .2, STANDARD .7, URGENT .1}） | L2 |
-| Ū（均值流，带符号） | regime × direction | 截断正态（DGN-05 支撑界） | 方向=up/downstream 段 |
-| δU 过程参数 (σ_u, L_u) | regime | 查表（DGN-04） | 时间相关扰动强度 |
-| water_depth（逐航次常量） | regime | 截断正态（DGN-05） | Model E 标量接口约束 |
+| U_river 均值（河流坐标，下游正） | regime × reach | 截断正态（DGN-05 支撑界） | **河流坐标环境真值（R1）** |
+| δU 过程参数 (σ_u, τ_u) | regime | 查表（DGN-04） | 时间相关扰动强度 |
+| water_level_offset（ΔWL，逐航次常量） | regime | 截断正态（DGN-05） | 有效水深 = 海图 + 偏移（DGN-06/R4） |
 | traffic 暴露率 λ | regime × reach（桥/港段 λ 高） | Poisson 率参数 | DGN-04 |
+| 行进方向/heading | template（段拓扑） | 确定性（模板决定） | 派生沿迹流分量的符号源 |
 | segment 长度拉伸因子 | template | U[0.8, 1.25] | L3 |
-| hotel plan 参数 | template × phase | 查表 + 小幅扰动 | DGN-09 |
-| ΔP_hotel,unplanned 过程 | — | AR(1) 小幅度 | U 类残差（FR-516） |
+| hotel plan 参数 | template | 查表 + 小幅扰动 | DGN-09（R7 重写） |
+| ΔP_hotel,unplanned | — | 逐航次常量偏移抽取 | U 类残差（DGN-09 Path B） |
 | resistance_mult | — | U[0.95, 1.05]（候选） | base draw 共享（FR-517） |
 | 干预变量 | base draw | 预声明 matrix | L4（FR-518/521） |
 
@@ -105,43 +109,69 @@ scripts/81_run_mission_v3_t429.m           ← 薄入口：T-429 Gate
 
 ### DGN-04 环境真值过程（FR-508；T-423 落地）
 
-- **δU(t)**：Ornstein-Uhlenbeck 实现，经**时间模流场接口**（`current_time_s`/`current_value_mps`，1 s 网格 ZOH，From Workspace Interpolate off 纪律）注入：U(t) = Ū + δU(t)，δU 平稳 OU（dX = −X/τ dt + σ√(2/τ) dW，候选 τ=900 s；σ_regime：NORMAL 0.10 / FLOOD 0.20 / DRY 0.08 m/s，候选值）；**有界性**由 DGN-05 支撑界 reject/resample 保证（禁 clamp，FR-520）。
-- **水位**：逐航次常量（Model E 接口约束）——从 regime 条件分布抽取（DGN-05）；航次内日尺度慢变在 v1 不建模（航次时长 ≤1 h ≪ 水位日变尺度；候选裁决）。
+- **δU(t)**：河流坐标的 Ornstein-Uhlenbeck 实现（dX = −X/τ dt + σ√(2/τ) dW，候选 τ=900 s；σ_regime：NORMAL 0.10 / FLOOD 0.20 / DRY 0.08 m/s，候选值）；scenario_compile 将河流坐标实现**按段方向合成带符号沿迹时间序列**（R1：U_alongtrack(t) = ±(Ū_river + δU_river(t))，往返段共享同一实现），经**时间模流场接口**（`current_time_s`/`current_value_mps`，1 s 网格 ZOH，From Workspace Interpolate off 纪律）注入；**有界性**由 DGN-05 支撑界 reject/resample 保证（禁 clamp，FR-520）。
+- **水位**：ΔWL 逐航次常量抽取（Model E 标量接口约束；有效水深 H_effective = h_chart + ΔWL，见 DGN-06/R4）；航次内日尺度慢变在 v1 不建模（航次时长 ≤1 h ≪ 水位日变尺度；候选裁决）。
 - **交通事件**：Poisson 到达（λ 条件于 regime×reach）；事件 = 前船 slowdown→follow→recover（duration ~ U[60,180] s、speed ratio ~ U[0.5,0.8]，候选），作用于计划层（operator 响应前船），非直接改 Plant。
 
-### DGN-05 ID 支撑界与 guard band（候选值，FR-519）
+### DGN-05 ID 支撑界、联合可行性与 guard band（FR-519；R2/R3 修正）
 
-| 轴 | IID 支撑（候选） | guard band（候选） | formal OOD（activation 冻结） |
+**边际包线候选值（Design Gate 冻结候选，非 OOD 数值）**：
+
+| 轴 | IID 边际支撑（候选） | guard band（候选） | formal OOD（**ACTIVATION_CANDIDATE**，T-432 activation 冻结） |
 |---|---|---|---|
-|  adverse current \|U\|（逆水） | ≤ 1.8 m/s | (1.8, 2.0] | 轴 A：>2.0（≤2.8，T-432 activation） |
-| 顺水 \|U\| | ≤ 1.5 m/s | (1.5, 1.8] | 轴 A 同框架 |
-| H/T | ≥ 1.5 | [1.35, 1.5) | 轴 B：(1.2, 1.35) |
+| 沿迹 adverse 相对流 \|U\| | ≤ 1.8 m/s | (1.8, 2.0] | 轴 A 候选：>2.0（≤2.8） |
+| 沿迹 following 相对流 \|U\| | ≤ 1.5 m/s | (1.5, 1.8] | 轴 A 同框架 |
+| H/T | ≥ 1.5 | [1.35, 1.5) | 轴 B 候选：(1.2, 1.35) |
 
-依据：T-412 E05 验证域 H/T∈{3.0,2.7,2.0,1.6,1.4,1.2}（单调零违例，clamp 界 1.2）；轴 B 必须留经验证的 Model-E 域内（>1.2）。**数值为 design 候选，Design Gate 冻结**；OOD 数值仍走 T-432 activation。
+注意：adverse/following 作用于 **R1 的派生沿迹相对流分量**（非河流坐标原始值）。
 
-### DGN-06 预报生成器（FR-526~531）
+**R2 联合可行性**：边际界内不代表笛卡尔组合均可行。formal 接受判据 = `inside_marginal_ID_support ∩ inside_joint_ModelE_feasible_set`——联合可行性规则覆盖（适用时）：planned SOG/速度意图 × mission archetype × 段角色 × 沿迹相对流分量 × H/T × 既有执行器/Plant 约束。**冻结 ID 包线前 SHALL 执行只读可行性矩阵扫描**（重点：高计划速度段 × 高 adverse 流候选组合——对照 T-412 G2 功率/速度包线证据；read-only，禁改 Model E 参数）；不得靠过量 reject/resample 掩盖不可行的支撑设计。
 
-- **GOOD_V1**：u_fcst(t₀+h|t₀) = Ū + (u_obs(t₀)−Ū)·e^{−h/τ}，u_obs(t₀) = U(t₀)（OBSERVED——流速为部署可测量，H1 列）；wl_fcst = 航次常量水深的部署可得估计（海图值；K 类精确语义下 wl forecast 与 h_chart 的关系：wl_fcst = chart-derived causal estimate，GOOD 下 = 真值常量）。
+**R3 activation 边界守护**：轴 A/B 的 OOD 数值（>2.0/≤2.8、(1.2,1.35)）仅作 ACTIVATION_CANDIDATE 记录——**formal 轴 A/B OOD 数值域的冻结权属 T-432 activation**，不因 C design 批准而冻结。若 1.50/1.35 边界保留在最终 design，design 收官前 SHALL 对边界点做只读 sanity 检查（H/T=1.50/1.35 处的阻力/功率域内行为，read-only bench）。依据：T-412 E05 验证域 H/T∈{3.0,2.7,2.0,1.6,1.4,1.2}（单调零违例，clamp 界 1.2）；轴 B 必须留经验证的 Model-E 域内（>1.2）。
+
+### DGN-06 预报生成器（FR-526~531；R4/R5 修正）
+
+**R4 水位/水深认识论分层**（概念分解，各层独立）：
+
+```text
+H_effective = h_chart + ΔWL_actual
+   │             │          └─ 实际水位偏移 → ORACLE truth（realized）
+   │             └─ 海图水深 → INPUT_K（K 类静态精确先验）
+   └─ 编译进 Model E 的既有逐航次标量 water_depth_m 输入
+wl_fcst（INPUT_F）= ΔWL 的因果预报（条件均值；v1 中 ΔWL 为航次常量，预报退化为因果估计的持久化）
+```
+
+GOOD 可以等于 realized 常量**仅当**该值被显式定义为部署可观测/因果可估计（内河水位=水文站/测深仪可测，OBSERVED 类合法）；禁止仅因 simulator 内部可知而使用真值。
+
+- **GOOD_V1**：u_fcst(t₀+h|t₀) = Ū_reach + (u_obs(t₀)−Ū_reach)·e^{−h/τ}，u_obs(t₀) = U_alongtrack(t₀)（OBSERVED——流速为部署可测量，H1 列）；wl_fcst = 部署可观测的当前水位因果估计（OBSERVED）。
 - **DEGRADED_V1**（候选参数，Design Gate 冻结）：u_obs(t₀) = U(t₀−Δ_lag) + b_voyage + η(t₀)，Δ_lag=1800 s、b_voyage~N(0, 0.05²) 航次级偏置、η 为 AR(1)（τ_η=600 s，σ_η=0.05 m/s）时间相关观测误差——全部仅消费 t≤t₀ 信息；source_cutoff=t₀−Δ_lag；wl 同构（bias 主导）。
+- **R5 prehistory 闭合（Path A）**：Mission-v3 SHALL 生成并存储 ≥1800 s 的**因果航次前环境历史**（环境过程从 t=−1800 s 起演化，航次 truth 从 t=0 起计；prehistory 属 ℐ_{≤t₀} 的合法成员，provenance 记录 `forecast_prehistory_s=1800`；source_cutoff 可为负值但仍满足 ≤ issue_time 不变量）。不得冻结其因果源历史不存在的 lag。
 - provenance：generator_id=`mission_v3_env_forecast`、version、hash=forecast_issue.m SHA256、issue/cutoff 逐快照、class=CAUSAL_GENERATOR、`forecast_quality_profile_id`∈{GOOD_V1, DEGRADED_V1}。
 - **因果性机器验证**：forecast_issue 只接受 t≤t₀ 的流切片（函数接口上 truth 向量截断传入）；负向测试注入 future truth 必须被检出（AC-436）。
 
-### DGN-07 科学 seed 树（Closeout A / FR-532）
+### DGN-07 科学 seed 树（Closeout A / FR-532；R6 修正）
 
-- 算法（design 冻结候选）：`seed(branch_path) = uint32(SHA256(policy_version ‖ formal_generation_seed ‖ base_draw_index ‖ branch_name)[1:4])`；MATLAB 侧 `RandStream('Threefry4x64', 'Seed', seed)`，每命名分支独立流；分支清单：current_truth / water_level / traffic / operator_residual / hotel_residual / resistance / segment_geometry / forecast_obs_noise（DEGRADED）/ intervention 专属分支。
-- 不变量实现：INFORMATION counterfactual 成员共用全部 truth 分支 seed（仅 forecast_obs_noise 分支不同）→ truth hash 相同的机器校验（FR-529）；PHYSICAL counterfactual 仅声明干预分支 seed 不同。
-- seed_tree_policy.json 登记算法版本/分支清单/hash；每航次 meta 记录全分支 seed（auditable lineage，FR-522）。
+- **权威血统标识 = 完整 SHA256 branch-path digest**：`lineage_id(branch_path) = SHA256(policy_version ‖ formal_generation_seed ‖ base_draw_index ‖ branch_name)`（全 32 字节十六进制串，artifact 全量存储、可审计）。
+- **引擎输入派生**：MATLAB `RandStream('Threefry4x64','Seed',s)` 的 uint32 s 由 lineage digest 确定性映射（取 digest 前 4 字节）——**仅为引擎输入，不是科学血统身份**；核心不变量：scientific lineage identity ≠ 32-bit RNG seed。
+- **碰撞检测（fail-closed）**：每 fleet 生成后机器校验——不同 branch path 映射到同一有效 RNG seed/状态 ⇒ Gate FAIL；lineage 登记表（branch_path ↔ lineage_id ↔ engine seed）入 manifest。
+- 分支清单：current_truth / water_level / traffic / operator_residual / hotel_residual / resistance / segment_geometry / forecast_obs_noise（DEGRADED）/ intervention 专属分支。
+- 不变量实现：INFORMATION counterfactual 成员共用全部 truth 分支 lineage（仅 forecast_obs_noise 分支不同）→ truth hash 相同的机器校验（FR-529）；PHYSICAL counterfactual 仅声明干预分支不同。
+- seed_tree_policy.json 登记算法版本/分支清单/映射规则/hash；每航次 meta 记录全分支 lineage_id（auditable lineage，FR-522）。
 
 ### DGN-08 s_plan / K/F 构建（FR-558~562）
 
 - 计划载体：plan_compose 产出**计划速度表**（time-mode：v_plan(t) 由模板段序列+operator profile+nav constraints 合成；emergency/bridge/harbor 语义在此层成形）。
 - s_plan/v_plan[k|t₀]：从 **issue 时刻计划位置** x_plan(t₀) 按计划表前向积分（1 s 子步，同 pilot 布局惯例）；位置相关约束（h_chart/speed_limit_zones/bridge_zones）沿**计划轨迹** interval-aware 采样（FR-560）；K/F 网格严格 {10..300}×30 bin（FR-561）。
-- 布局与 export_pilot 对齐：kf.issue_time_s (M×1)、lead_s (M×30)、各列 (M×30) issue-major；artifact `.mat -v7` {stream, kf, meta}。
+- 布局与 export_pilot 对齐：kf.issue_time_s (M×1)、lead_s (M×30)、各列 (M×30) issue-major；artifact `.mat -v7` {stream, kf, meta}——**格式一致性已核实**：D 包 design 偏差登记 D-2 明确 voyage artifact 用 .mat v7（scipy.io 直读、单航次恒 <2GB），C 设计 conforming，不构成对 D 契约的降级/变更。
 - 缺快照 = FAILED_CONTRACT（FR-562），禁填补。
 
-### DGN-09 hotel 计划分解（FR-516）
+### DGN-09 hotel 计划分解（FR-516；R7 Path B 重写）
 
-P_hotel,plan：template×phase 查表（如 ROUTINE_PATROL patrol 段 100 kW、WORK_MISSION work 段 180 kW、EMERGENCY mission 段 220 kW——候选值，Design Gate 冻结）；ΔP_unplanned：AR(1)（τ=300 s、σ=8 kW，候选）；实际注入 Model E 的 hotel_kW 通道 = plan + 已实现的 unplanned 残差；K 列只暴露 plan 分量（P_hotel_plan_kW），残差只存在于 truth/ORACLE 侧。
+**接口证据（2026-09-05 勘察 `+model/build_model_e.m:204`）**：Model E hotel 通道为 01_Operator_Interface 内 Constant 块 `'Value','SCN.hotel_kW'`——**逐航次标量，无时变接口**。Path A 不存在 ⇒ 按 Path B 重构 v1：
+
+- **物理实现**：P_hotel,actual = 逐航次常量 = P_hotel,base(template) + δ_hotel（base draw 抽取的 U 类未计划偏移，候选 N(0, 10²) kW 截断 ±20 kW）；template 条件化的常量水平承载任务差异（EMERGENCY/WORK 的较高任务负荷体现为该 template 的较高 P_hotel,base——候选值 ROUTINE 100 / WORK 160 / EMERGENCY 200 kW，Design Gate 冻结）；FR-510 的"同步改变 P_hotel/mission"在 v1 以**航次级常量**满足。
+- **认识论分层保持**：INPUT_K `P_hotel_plan_kW` = P_hotel,base(template)（计划分量，M×30 列填计划常量）；δ_hotel 只存在于 truth/ORACLE 侧（future-unknown 残差，predictor-forbidden）；禁反向贴标签（FR-516 不变量成立：plan 来自 template 查表而非 realized 反推）。
+- **已知限制登记**：相位变化的物理 hotel 负荷（如 work 段升载）需要 Model E 时变 hotel 接口——属 Model E 改动，**v1 范围外**，登记为后续 Phase 候选；不得虚构 Plant 实际只收航次标量时的相位相关物理实现。
 
 ### DGN-10 合格判据与失败分类学机器实现（FR-535~540）
 
@@ -150,18 +180,28 @@ P_hotel,plan：template×phase 查表（如 ROUTINE_PATROL patrol 段 100 kW、W
 ### DGN-11 OOD 生成面与 token 谓词（FR-541~546）
 
 heldout_token_registry.json 三 token（C-D5 机器名）谓词形式化：
-- C1：`segment.role==BRIDGE_PASSAGE ∧ U_adverse(segment) ∈ HIGH_ID_BAND`；HIGH_ID_BAND 候选 = adverse |U| ∈ [1.4, 1.8]（ID 支撑上带，Design Gate 冻结）；
+- C1：`segment.role==BRIDGE_PASSAGE ∧ U_adverse(segment) ∈ HIGH_ID_BAND`——U_adverse 为 **R1 派生沿迹相对流分量**（非河流坐标原始值）；HIGH_ID_BAND 候选 = adverse |U| ∈ [1.4, 1.8]（ID 支撑上带，Design Gate 冻结）；
 - C2：`segment.role==HARBOR ∧ H/T_voyage ∈ LOW_ID_BAND`；LOW_ID_BAND 候选 = H/T ∈ [1.5, 2.0]；
 - C3：`segment.role==EMERGENCY_SPRINT（mission-plan 段角色） ∧ H/T_voyage ∈ LOW_ID_BAND`；
 - 谓词只消费生成侧 metadata；IID 生成器 EXCLUDE / OOD 生成器 REQUIRE 消费同一注册表文件；边际覆盖义务：每 token 的 A∧¬B 与 ¬A∧B 各 ≥ **10 unique split groups**（候选，activation 复核）；C-3 可行性前置验证：预资格阶段实测 C3 谓词满足航次的可达性（rush 段在低 H/T 下无 domain_warning 聚集、SOP 不饱和），证据落报告。
 - ood_config_surface 输出：ood_axis/ood_def_version=`C-D5-v1`/physics_domain_ref=`ModelE validated domain (T-412 v1.1; H/T∈[1.2,…] E05)`；越域标 PHYSICS_EXTRAPOLATION/STRESS_SET。
 
-### DGN-12 T-429 可辨识性审计实现（FR-547~551）
+### DGN-12 T-429 可辨识性审计实现（FR-547~551；R8/R9 修正）
 
-- **诊断切片**：SEGMENT_PURE_DIAGNOSTIC_SLICE = 段角色区间内去边界缓冲后的定长切片：候选 时长 240 s、边界缓冲 60 s、stride 120 s、1 Hz 聚合（同 D time_mean 语义）；不足 3 组（split_group）或 10 切片/类 ⇒ INSUFFICIENT_IDENTIFIABILITY_EVIDENCE fail-closed。
-- **SBD**：复用 D 的 SBD 引擎（1 Hz P_load_total_kW shape）；R = median(cross)/max(Q0.95 within₁, Q0.95 within₂)；**R_min=1.5 候选，Gate 首跑前冻结**；group bootstrap（1000 次重抽样 split_group，95% LCB ≥ 1.0 且点估计 ≥ R_min）。
-- **探针**：logistic 回归（liblinear 式固定配置：L2 C=1.0、class_weight balanced、seed 固定），特征 = 切片级 H1 派生摘要统计（mean/std/max of P_load_total, v_ship, accel, n_prop, P_hotel, v_current + hotel 占比 + 低速时间占比；候选编码，Gate 前冻结）；CV 按 split_group_id 分 5 折，scaler train-only；**A_min=0.80 候选（BA，Gate 首跑前冻结）**。
-- **contrast registry 初始清单**（design 候选，Design Gate 冻结）：SEG_BRIDGE_VS_HARBOR（控制：同 regime×direction）、SEG_BERTH_VS_DEPARTURE（同 template）、DIR_UPSTREAM_VS_DOWNSTREAM（同 regime×reach）、DEPTH_LOW_ID_VS_NORMAL_ID（同 template×regime）、SEG_EMERGENCY_SPRINT_VS_CRUISE（同 regime）、SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE（同 regime×reach）、SEG_HARBOR_VS_SHALLOW_CRUISE、SEG_BRIDGE_VS_SHALLOW_CRUISE。
+- **诊断切片几何（evidence-derived，非便利值）**：冻结前 SHALL 对 template registry 全部必需段角色做**段时长普查**（duration census）；硬约束 `slice_duration + 2×edge_buffer ≤ min usable segment duration`（对每条必需对比成立）；240/60/120 候选因要求 ≥360 s 纯段而**撤回**；起始评估候选 120 s/30 s/60 s，最终值由普查证据决定（Design Gate 后的施工期任务，Gate 首跑前冻结）。
+- **组覆盖 vs CV**：5-fold grouped CV 要求每类 ≥5 组为数学必要；v1 候选冻结为**每类 ≥10 unique split groups**（每折约 ≥2 独立组/类）；切片数为附加判据但不能替代组覆盖。
+- **SBD**：复用 D 的 SBD 引擎（1 Hz P_load_total_kW shape）；R = median(cross)/max(Q0.95 within₁, Q0.95 within₂)；**默认稳健 PASS 规则 = LCB₉₅(R) ≥ R_min**（group bootstrap 1000 次重抽样 split_group）；R_min=1.5 候选，Gate 首跑前冻结。弃用"点估计≥1.5 ∧ LCB≥1.0"双轨弱规则；若未来需要点/LCB 双阈值须单独预注册论证。
+- **探针**：logistic 回归（固定配置：L2 C=1.0、class_weight balanced、seed 固定），特征 = 切片级 H1 派生摘要统计（候选编码，Gate 前冻结）；CV 按 split_group_id 分 5 折，scaler train-only；BA 指标 + **组层级不确定度规则**：LCB₉₅(BA) ≥ A_min（A_min=0.80 候选，Gate 首跑前冻结）。
+- **contrast registry（R9 清理后必需清单，Design Gate 冻结）**：
+  | contrast_id | 语义轴 | 混杂控制（matched cohort / 分层） |
+  |---|---|---|
+  | SEG_BRIDGE_VS_HARBOR | 段角色 | 同 regime ∧ 同 direction ∧（可行时）同 template ∧（可行时）同 operator profile |
+  | SEG_BERTH_VS_DEPARTURE | 段角色 | 同 template |
+  | DIR_UPSTREAM_VS_DOWNSTREAM | 方向 | 同 regime × 同 reach |
+  | DEPTH_LOW_ID_VS_NORMAL_ID | 深度/浅水（主对比） | 同 template × 同 regime |
+  | SEG_EMERGENCY_SPRINT_VS_CRUISE | 任务强度 | **EMERGENCY_RESPONSE 内部** ∧ 同 regime ∧（可能时）同 base-draw/template cohort |
+  | SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE | 交通 | **同 base draw / family 的 traffic ON vs OFF 物理反事实**（首选；非仅 regime×reach 匹配） |
+  - SEG_HARBOR_VS_SHALLOW_CRUISE 与 SEG_BRIDGE_VS_SHALLOW_CRUISE **移出必需 Gate**（段角色轴 × 深度/环境轴混轴），仅保留为 SECONDARY_DIAGNOSTIC；深度轴主对比由 DEPTH_LOW_ID_VS_NORMAL_ID 承担。
 - FAIL 处置：仅允许回到 T-420~T-426 重设计；阈值/registry 冻结后不得因失败修改（FR-551）。
 
 ### DGN-13 strata registry 与预资格审计（FR-552~557）
@@ -197,8 +237,12 @@ C 产物逐字段对 producer schema；C/D Interface Gate 正式版（含 D-15 �
 
 ## Error Handling
 
-- 失败分类学六类 disposition（DGN-10）；FAILED_* 为 slot failure（同 seed retry，禁换 seed）；REJECTED_* 为正常抽样/结构性事件（审计计数）；
-- 单航次导出失败：记录原因继续（同 pilot 纪律，禁静默补数）；任何 FAILED ⇒ 薄入口 error('GATE:*') 终止；
+- 失败分类学六类 disposition（DGN-10）；**REJECTED_***（SAMPLING_ELIGIBILITY / STRUCTURAL_HELDOUT）为正常抽样/结构性事件：审计计数、不占 slot、按预注册策略重采样；**FAILED_***（CONTRACT / GENERATION / PHYSICAL_DOMAIN）为 slot failure（R8 行为修正）：
+  1. 记录失败与原因；
+  2. 适用时执行已批准的同 slot/同 config/同科学 seed retry（禁换无关新 seed）；
+  3. **继续执行**其余候选/航次，直到预资格所需的 stratum/拒绝/失败审计完整产出；
+  4. 在受控的运行末汇点置 overall=false / Gate FAIL（薄入口 `error('GATE:*')`）；
+  不得在首个失败处终止而导致审计证据残缺；也不得以"记录后继续"默许失败航次静默进入 accepted 集。
 - 约束违反（支撑界/物理域/token）：reject + 计数，禁 clamp；
 - T-429 证据不足/对比失败：fail-closed（INSUFFICIENT_IDENTIFIABILITY_EVIDENCE / Gate FAIL），升级主 Agent。
 
@@ -236,8 +280,16 @@ C 产物逐字段对 producer schema；C/D Interface Gate 正式版（含 D-15 �
 
 ## Risks and Trade-offs
 
-- **H/T OOD 空间狭窄**（验证域下沿 1.2，guard 后轴 B 仅 (1.2,1.35)）：轴 B 科学价值有限——缓解：轴 B 数值 activation 时再评估，必要时轴 B 降级为 stress-set 证据；备选：不动验证域（红线）。
+- **H/T OOD 空间狭窄**（验证域下沿 1.2，guard 后轴 B 候选仅 (1.2,1.35)）：轴 B 科学价值有限——缓解：轴 B 数值 activation 时再评估，必要时轴 B 降级为 stress-set 证据；备选：不动验证域（红线）。
 - **9 格 × 14 组 ⇒ ≥126 组的 formal 下限**：舰队规模与单航次仿真时长（Model E 全物理 0.01 s 步长，20~60 min 航次）决定 Stage-B 墙钟成本——预资格实测吞吐后由 activation 定夺；不在本 design 承诺规模。
 - **δU 经 ZOH 时间模注入**：1 s 网格对 0.01 s 模型步长足够平滑（OU τ=900 s ≫ 1 s）；备选空间模注入被否（航速变化会破坏时间相关性语义）。
 - **水位逐航次常量**：放弃航次内水位日变（≪航次时长）；若 E 包证明需要再经 spec amendment。
+- **hotel 时变缺失**（R7 Path B）：相位升载语义仅能以航次级常量近似——已登记为已知限制；若后续研究证明 phase-varying hotel 关键，需 Model E 接口演进（另 Phase）。
 - **T-429 阈值候选 1.5/0.80 未经校核**：Gate 首跑前以预资格数据做**盲冻结**（看分布定夺是否调整候选——调整须 amendment 记录，且首跑后锁定）。
+
+## 修订记录
+
+| 日期 | 修订 | 来源 |
+|---|---|---|
+| 2026-09-05 | design 初稿（DGN-01~16） | 本 session |
+| 2026-09-05 | design 批准（CONDITIONAL PASS + R1~R9 闭合）：R1 河流坐标流语义（换向不重抽、沿迹相对分量为派生量）；R2 边际包线+联合可行性（冻结前只读可行性矩阵扫描）；R3 轴 A/B OOD 数值降为 ACTIVATION_CANDIDATE（T-432 权属守护 + 边界只读 sanity 检查义务）；R4 水位认识论分层 H_effective=h_chart+ΔWL；R5 DEGRADED 1800 s lag 走 Path A（≥1800 s 因果航次前环境历史，provenance 记录）；R6 seed 血统=完整 SHA256 digest（uint32 仅引擎输入+碰撞 fail-closed）；R7 hotel 时变接口不存在（Constant 块标量证据）→ Path B 航次级常量重构 + plan/unplanned 分层保持；R8 切片几何改段时长普查驱动（撤 240/60/120）、组覆盖 ≥10 组/类、SBD/BA 统一 LCB₉₅≥阈值规则、FAILED slot 行为矛盾消解（记录→retry→继续审计→受控末汇 FAIL）；R9 混轴对比移出必需 Gate（仅 SECONDARY_DIAGNOSTIC）+ 三项对比混杂控制加强；artifact .mat v7 与 D 包 D-2 一致性核实。DGN-02（WORK_MISSION 重构）用户正式 APPROVED | 用户 design gate 评审 |
