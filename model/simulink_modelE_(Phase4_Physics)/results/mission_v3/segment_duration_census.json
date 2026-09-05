@@ -1,0 +1,1367 @@
+{
+  "schema": "mission_v3_segment_duration_census_v1",
+  "generated_at": "2026-09-05T07:39:20Z",
+  "task_id": "T-004",
+  "route_mapping": "T-429; FR-547; DGN-12 (R8); proposal consumed by T-007 freeze",
+  "method": "pure registry arithmetic census; no Model E simulation; no T-429 metric execution; registry values untouched",
+  "read_only_statement": "registries, Model E files and .specs are read-only for this task; all proposed values are proposals for main-agent adjudication (T-007 freeze)",
+  "guards_enforced": [
+    "G1 stretch lower bound must exist (segment_stretch.params.low)",
+    "G2 every role needs a positive candidate speed or duration-defined standby",
+    "G3 exactly six REQUIRED contrasts expected",
+    "G4 REQUIRED contrast ids and class values must match the delegation spec host rules",
+    "hard-constraint comparison tolerance 1e-9 s"
+  ],
+  "inputs": {
+    "source_registries": {
+      "mission_template_registry": {
+        "path_relative_to_model_root": "config/mission_v3/mission_template_registry.json",
+        "self_hash_algorithm": "sha256",
+        "self_hash_value": "b2da90cb37262d1ef8021c6ca74e8149762f006cbc79272f7cb3256edbfc5762",
+        "file_sha256": "750ffcf9018e0498c4330184bf75ad69780bcf534b0224bef2150685e22edb91"
+      },
+      "identifiability_contrast_registry": {
+        "path_relative_to_model_root": "config/mission_v3/identifiability_contrast_registry.json",
+        "self_hash_algorithm": "sha256",
+        "self_hash_value": "65f1051a95679b4024cf90d6d11fd86fa023902aa1b0782b14b23b05a35a2d5c",
+        "file_sha256": "0d08580a72a1c694179ce550263bf87ec7a7a1565e303f9bce81e5787edb720c"
+      },
+      "conditional_dag_config": {
+        "path_relative_to_model_root": "config/mission_v3/conditional_dag_config.json",
+        "self_hash_algorithm": "sha256",
+        "self_hash_value": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725",
+        "file_sha256": "7eee82239b91bef70b455973c89f604ec7af8018d5af1457e49b0022de72ace5"
+      }
+    },
+    "candidate_speed_table_mps": {
+      "departure": 2.5,
+      "harbor": 2.5,
+      "berth": 2,
+      "bridge": 3.5,
+      "cruise": 5.5,
+      "patrol": 5,
+      "return": 5.5,
+      "rush": 7.522,
+      "mission": 5,
+      "work": 1.2,
+      "standby": null
+    },
+    "speed_basis": {
+      "departure": "census proposal candidate (main agent)",
+      "harbor": "census proposal candidate (main agent)",
+      "berth": "census proposal candidate (main agent)",
+      "bridge": "census proposal candidate (main agent)",
+      "cruise": "census proposal candidate (main agent)",
+      "patrol": "census proposal candidate (main agent)",
+      "return": "census proposal candidate (main agent)",
+      "rush": "FR-510/T-412 G2 value_kn=14.620 (read-only reference); value fixed by delegation spec",
+      "mission": "census proposal candidate (main agent)",
+      "work": "low-speed work semantics (T-010 plan-layer candidate)",
+      "standby": "duration-defined segment; usable = nominal_duration_s (registry, 600 s); speed conversion not applicable (distance=0)"
+    },
+    "stretch_factor": {
+      "low": 0.8,
+      "high": 1.25,
+      "source_path_relative_to_model_root": "config/mission_v3/conditional_dag_config.json",
+      "source_pointer": "nodes[node_id=segment_stretch].params.low"
+    },
+    "geometry_candidate": {
+      "slice_duration_s": 120,
+      "edge_buffer_s": 30,
+      "stride_s": 60,
+      "hard_constraint": "slice_duration_s + 2 * edge_buffer_s <= min usable segment duration",
+      "hard_constraint_required_s": 180
+    },
+    "usable_duration_formula": "usable_s(role) = nominal_distance_m * stretch_low / v_role; standby: usable_s = nominal_duration_s",
+    "overrides_applied": {
+      "speed_override_applied": false,
+      "geometry_override_applied": false,
+      "speed_override": [],
+      "geometry_override": []
+    }
+  },
+  "per_template_role": [
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "departure",
+      "direction": "upstream",
+      "nominal_distance_m": 500,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 2.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 160,
+      "usable_s_exact": 160,
+      "notes": [],
+      "seq_indices": 1,
+      "distances_m": 500,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "harbor",
+      "direction": "upstream",
+      "nominal_distance_m": 1200,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 2.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 384,
+      "usable_s_exact": 384,
+      "notes": [],
+      "seq_indices": 2,
+      "distances_m": 1200,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "cruise",
+      "direction": "upstream",
+      "nominal_distance_m": 4000,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 581.818182,
+      "usable_s_exact": 581.81818181818187,
+      "notes": [],
+      "seq_indices": 3,
+      "distances_m": 4000,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "bridge",
+      "direction": "upstream",
+      "nominal_distance_m": 400,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 3.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 91.428571,
+      "usable_s_exact": 91.428571428571431,
+      "notes": [],
+      "seq_indices": 4,
+      "distances_m": 400,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "patrol",
+      "direction": "upstream",
+      "nominal_distance_m": 2500,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 400,
+      "usable_s_exact": 400,
+      "notes": [],
+      "seq_indices": 5,
+      "distances_m": 2500,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "return",
+      "direction": "downstream",
+      "nominal_distance_m": 8600,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 1250.909091,
+      "usable_s_exact": 1250.909090909091,
+      "notes": [],
+      "seq_indices": 6,
+      "distances_m": 8600,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "berth",
+      "direction": "none",
+      "nominal_distance_m": 500,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 2,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 200,
+      "usable_s_exact": 200,
+      "notes": [
+        "moored segment; excluded from direction host sets (non-berth rule, Fixed Decision 5)"
+      ],
+      "seq_indices": 7,
+      "distances_m": 500,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "standby",
+      "direction": "upstream",
+      "nominal_distance_m": 0,
+      "nominal_duration_s": 600,
+      "candidate_speed_mps": null,
+      "speed_basis": "duration-defined segment; usable = nominal_duration_s (registry, 600 s); speed conversion not applicable (distance=0)",
+      "usable_s": 600,
+      "usable_s_exact": 600,
+      "notes": [
+        "stationary segment (distance=0, duration-defined); upstream per mechanical non-berth outbound rule - inclusion flagged for main agent",
+        "duration-defined segment: usable = nominal_duration_s; stretch not applied (distance=0)"
+      ],
+      "seq_indices": 1,
+      "distances_m": 0,
+      "durations_s": 600
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "departure",
+      "direction": "upstream",
+      "nominal_distance_m": 500,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 2.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 160,
+      "usable_s_exact": 160,
+      "notes": [],
+      "seq_indices": 2,
+      "distances_m": 500,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "rush",
+      "direction": "upstream",
+      "nominal_distance_m": 4000,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 7.522,
+      "speed_basis": "FR-510/T-412 G2 value_kn=14.620 (read-only reference); value fixed by delegation spec",
+      "usable_s": 425.418772,
+      "usable_s_exact": 425.418771603297,
+      "notes": [],
+      "seq_indices": 3,
+      "distances_m": 4000,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "bridge",
+      "direction": "upstream",
+      "nominal_distance_m": 400,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 3.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 91.428571,
+      "usable_s_exact": 91.428571428571431,
+      "notes": [
+        "presence CONDITIONAL (registry): segment may be absent in some voyages; census uses nominal geometry if present"
+      ],
+      "seq_indices": 4,
+      "distances_m": 400,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "mission",
+      "direction": "upstream",
+      "nominal_distance_m": 2000,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 320,
+      "usable_s_exact": 320,
+      "notes": [],
+      "seq_indices": 5,
+      "distances_m": 2000,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "return",
+      "direction": "downstream",
+      "nominal_distance_m": 6900,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 1003.636364,
+      "usable_s_exact": 1003.6363636363636,
+      "notes": [],
+      "seq_indices": 6,
+      "distances_m": 6900,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "departure",
+      "direction": "upstream",
+      "nominal_distance_m": 500,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 2.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 160,
+      "usable_s_exact": 160,
+      "notes": [],
+      "seq_indices": 1,
+      "distances_m": 500,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "cruise",
+      "direction": "upstream",
+      "nominal_distance_m": 4000,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 581.818182,
+      "usable_s_exact": 581.81818181818187,
+      "notes": [],
+      "seq_indices": 2,
+      "distances_m": 4000,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "work",
+      "direction": "upstream",
+      "nominal_distance_m": 2000,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 1.2,
+      "speed_basis": "low-speed work semantics (T-010 plan-layer candidate)",
+      "usable_s": 1333.333333,
+      "usable_s_exact": 1333.3333333333335,
+      "notes": [],
+      "seq_indices": 3,
+      "distances_m": 2000,
+      "durations_s": null
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "return",
+      "direction": "downstream",
+      "nominal_distance_m": 6500,
+      "nominal_duration_s": null,
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)",
+      "usable_s": 945.454545,
+      "usable_s_exact": 945.4545454545455,
+      "notes": [],
+      "seq_indices": 4,
+      "distances_m": 6500,
+      "durations_s": null
+    }
+  ],
+  "role_min_usable_s": {
+    "departure": 160,
+    "harbor": 384,
+    "cruise": 581.818182,
+    "bridge": 91.428571,
+    "patrol": 400,
+    "return": 945.454545,
+    "berth": 200,
+    "standby": 600,
+    "rush": 425.418772,
+    "mission": 320,
+    "work": 1333.333333
+  },
+  "role_min_detail": [
+    {
+      "role": "departure",
+      "min_usable_s": 160,
+      "achieved_in_templates": [
+        "ROUTINE_PATROL",
+        "EMERGENCY_RESPONSE",
+        "WORK_MISSION"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL",
+        "EMERGENCY_RESPONSE",
+        "WORK_MISSION"
+      ],
+      "candidate_speed_mps": 2.5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "harbor",
+      "min_usable_s": 384,
+      "achieved_in_templates": [
+        "ROUTINE_PATROL"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL"
+      ],
+      "candidate_speed_mps": 2.5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "cruise",
+      "min_usable_s": 581.818182,
+      "achieved_in_templates": [
+        "ROUTINE_PATROL",
+        "WORK_MISSION"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL",
+        "WORK_MISSION"
+      ],
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "bridge",
+      "min_usable_s": 91.428571,
+      "achieved_in_templates": [
+        "ROUTINE_PATROL",
+        "EMERGENCY_RESPONSE"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL",
+        "EMERGENCY_RESPONSE"
+      ],
+      "candidate_speed_mps": 3.5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "patrol",
+      "min_usable_s": 400,
+      "achieved_in_templates": [
+        "ROUTINE_PATROL"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL"
+      ],
+      "candidate_speed_mps": 5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "return",
+      "min_usable_s": 945.454545,
+      "achieved_in_templates": [
+        "WORK_MISSION"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL",
+        "EMERGENCY_RESPONSE",
+        "WORK_MISSION"
+      ],
+      "candidate_speed_mps": 5.5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "berth",
+      "min_usable_s": 200,
+      "achieved_in_templates": [
+        "ROUTINE_PATROL"
+      ],
+      "present_in_templates": [
+        "ROUTINE_PATROL"
+      ],
+      "candidate_speed_mps": 2,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "standby",
+      "min_usable_s": 600,
+      "achieved_in_templates": [
+        "EMERGENCY_RESPONSE"
+      ],
+      "present_in_templates": [
+        "EMERGENCY_RESPONSE"
+      ],
+      "candidate_speed_mps": null,
+      "speed_basis": "duration-defined segment; usable = nominal_duration_s (registry, 600 s); speed conversion not applicable (distance=0)"
+    },
+    {
+      "role": "rush",
+      "min_usable_s": 425.418772,
+      "achieved_in_templates": [
+        "EMERGENCY_RESPONSE"
+      ],
+      "present_in_templates": [
+        "EMERGENCY_RESPONSE"
+      ],
+      "candidate_speed_mps": 7.522,
+      "speed_basis": "FR-510/T-412 G2 value_kn=14.620 (read-only reference); value fixed by delegation spec"
+    },
+    {
+      "role": "mission",
+      "min_usable_s": 320,
+      "achieved_in_templates": [
+        "EMERGENCY_RESPONSE"
+      ],
+      "present_in_templates": [
+        "EMERGENCY_RESPONSE"
+      ],
+      "candidate_speed_mps": 5,
+      "speed_basis": "census proposal candidate (main agent)"
+    },
+    {
+      "role": "work",
+      "min_usable_s": 1333.333333,
+      "achieved_in_templates": [
+        "WORK_MISSION"
+      ],
+      "present_in_templates": [
+        "WORK_MISSION"
+      ],
+      "candidate_speed_mps": 1.2,
+      "speed_basis": "low-speed work semantics (T-010 plan-layer candidate)"
+    }
+  ],
+  "contrast_coverage": {
+    "hard_constraint_required_s": 180,
+    "required": [
+      {
+        "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+        "factor_axis": "segment_role",
+        "class_A": "bridge",
+        "class_B": "harbor",
+        "hard_constraint_required_s": 180,
+        "class_A_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "bridge",
+            "usable_s": 91.428571
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "bridge",
+            "usable_s": 91.428571
+          }
+        ],
+        "class_A_min_usable_s": 91.428571,
+        "class_A_pass": false,
+        "class_B_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "harbor",
+            "usable_s": 384
+          }
+        ],
+        "class_B_min_usable_s": 384,
+        "class_B_pass": true,
+        "contrast_min_usable_s": 91.428571,
+        "contrast_pass": false,
+        "violating_hosts": [
+          {
+            "class": "A",
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "bridge",
+            "usable_s": 91.428571,
+            "deficit_s": 88.571429
+          },
+          {
+            "class": "A",
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "bridge",
+            "usable_s": 91.428571,
+            "deficit_s": 88.571429
+          }
+        ],
+        "note": "class hosts = all census rows with the matching segment role"
+      },
+      {
+        "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+        "factor_axis": "segment_role",
+        "class_A": "berth",
+        "class_B": "departure",
+        "hard_constraint_required_s": 180,
+        "class_A_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "berth",
+            "usable_s": 200
+          }
+        ],
+        "class_A_min_usable_s": 200,
+        "class_A_pass": true,
+        "class_B_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "departure",
+            "usable_s": 160
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "departure",
+            "usable_s": 160
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "departure",
+            "usable_s": 160
+          }
+        ],
+        "class_B_min_usable_s": 160,
+        "class_B_pass": false,
+        "contrast_min_usable_s": 160,
+        "contrast_pass": false,
+        "violating_hosts": [
+          {
+            "class": "B",
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "departure",
+            "usable_s": 160,
+            "deficit_s": 20
+          },
+          {
+            "class": "B",
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "departure",
+            "usable_s": 160,
+            "deficit_s": 20
+          },
+          {
+            "class": "B",
+            "mission_template_id": "WORK_MISSION",
+            "role": "departure",
+            "usable_s": 160,
+            "deficit_s": 20
+          }
+        ],
+        "note": "class hosts = all census rows with the matching segment role"
+      },
+      {
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "factor_axis": "direction",
+        "class_A": "upstream",
+        "class_B": "downstream",
+        "hard_constraint_required_s": 180,
+        "class_A_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "departure",
+            "usable_s": 160
+          },
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "harbor",
+            "usable_s": 384
+          },
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "cruise",
+            "usable_s": 581.818182
+          },
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "bridge",
+            "usable_s": 91.428571
+          },
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "patrol",
+            "usable_s": 400
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "standby",
+            "usable_s": 600
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "departure",
+            "usable_s": 160
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "rush",
+            "usable_s": 425.418772
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "bridge",
+            "usable_s": 91.428571
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "mission",
+            "usable_s": 320
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "departure",
+            "usable_s": 160
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "cruise",
+            "usable_s": 581.818182
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "work",
+            "usable_s": 1333.333333
+          }
+        ],
+        "class_A_min_usable_s": 91.428571,
+        "class_A_pass": false,
+        "class_B_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "return",
+            "usable_s": 1250.909091
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "return",
+            "usable_s": 1003.636364
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "return",
+            "usable_s": 945.454545
+          }
+        ],
+        "class_B_min_usable_s": 945.454545,
+        "class_B_pass": true,
+        "contrast_min_usable_s": 91.428571,
+        "contrast_pass": false,
+        "violating_hosts": [
+          {
+            "class": "A",
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "departure",
+            "usable_s": 160,
+            "deficit_s": 20
+          },
+          {
+            "class": "A",
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "bridge",
+            "usable_s": 91.428571,
+            "deficit_s": 88.571429
+          },
+          {
+            "class": "A",
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "departure",
+            "usable_s": 160,
+            "deficit_s": 20
+          },
+          {
+            "class": "A",
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "bridge",
+            "usable_s": 91.428571,
+            "deficit_s": 88.571429
+          },
+          {
+            "class": "A",
+            "mission_template_id": "WORK_MISSION",
+            "role": "departure",
+            "usable_s": 160,
+            "deficit_s": 20
+          }
+        ],
+        "note": "hosts = all non-berth segments carrying the class direction, listed per template (Fixed Decision 5)"
+      },
+      {
+        "contrast_id": "DEPTH_LOW_ID_VS_NORMAL_ID",
+        "factor_axis": "depth",
+        "class_A": "low_id",
+        "class_B": "normal_id",
+        "hard_constraint_required_s": 180,
+        "class_A_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "return",
+            "usable_s": 1250.909091
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "return",
+            "usable_s": 1003.636364
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "work",
+            "usable_s": 1333.333333
+          }
+        ],
+        "class_A_min_usable_s": 1003.636364,
+        "class_A_pass": true,
+        "class_B_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "return",
+            "usable_s": 1250.909091
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "return",
+            "usable_s": 1003.636364
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "work",
+            "usable_s": 1333.333333
+          }
+        ],
+        "class_B_min_usable_s": 1003.636364,
+        "class_B_pass": true,
+        "contrast_min_usable_s": 1003.636364,
+        "contrast_pass": true,
+        "violating_hosts": [],
+        "note": "voyage-level depth classes share segment hosts; host record = longest usable role per template (Fixed Decision 5)"
+      },
+      {
+        "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+        "factor_axis": "mission_intensity",
+        "class_A": "rush",
+        "class_B": "cruise",
+        "hard_constraint_required_s": 180,
+        "class_A_hosts": [
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "rush",
+            "usable_s": 425.418772
+          }
+        ],
+        "class_A_min_usable_s": 425.418772,
+        "class_A_pass": true,
+        "class_B_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "cruise",
+            "usable_s": 581.818182
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "cruise",
+            "usable_s": 581.818182
+          }
+        ],
+        "class_B_min_usable_s": 581.818182,
+        "class_B_pass": true,
+        "contrast_min_usable_s": 425.418772,
+        "contrast_pass": true,
+        "violating_hosts": [],
+        "note": "class hosts = all census rows with the matching segment role"
+      },
+      {
+        "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
+        "factor_axis": "traffic",
+        "class_A": "traffic_follow",
+        "class_B": "free_cruise",
+        "hard_constraint_required_s": 180,
+        "class_A_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "cruise",
+            "usable_s": 581.818182
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "cruise",
+            "usable_s": 581.818182
+          }
+        ],
+        "class_A_min_usable_s": 581.818182,
+        "class_A_pass": true,
+        "class_B_hosts": [
+          {
+            "mission_template_id": "ROUTINE_PATROL",
+            "role": "cruise",
+            "usable_s": 581.818182
+          },
+          {
+            "mission_template_id": "WORK_MISSION",
+            "role": "cruise",
+            "usable_s": 581.818182
+          }
+        ],
+        "class_B_min_usable_s": 581.818182,
+        "class_B_pass": true,
+        "contrast_min_usable_s": 581.818182,
+        "contrast_pass": true,
+        "violating_hosts": [],
+        "note": "traffic events are injected on cruise segments; both traffic classes host on cruise (Fixed Decision 5)"
+      }
+    ],
+    "excluded": [
+      {
+        "contrast_id": "SEG_HARBOR_VS_SHALLOW_CRUISE",
+        "gate_role": "SECONDARY_DIAGNOSTIC",
+        "note": "excluded from hard-constraint obligations (gate_role not REQUIRED)"
+      },
+      {
+        "contrast_id": "SEG_BRIDGE_VS_SHALLOW_CRUISE",
+        "gate_role": "SECONDARY_DIAGNOSTIC",
+        "note": "excluded from hard-constraint obligations (gate_role not REQUIRED)"
+      }
+    ]
+  },
+  "window_arithmetic": [
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "departure",
+      "usable_s": 160,
+      "hard_constraint_required_s": 180,
+      "eligible": false,
+      "n_slices_at_stride": 0
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "harbor",
+      "usable_s": 384,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 4
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "cruise",
+      "usable_s": 581.818182,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 7
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "bridge",
+      "usable_s": 91.428571,
+      "hard_constraint_required_s": 180,
+      "eligible": false,
+      "n_slices_at_stride": 0
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "patrol",
+      "usable_s": 400,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 4
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "return",
+      "usable_s": 1250.909091,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 18
+    },
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "role": "berth",
+      "usable_s": 200,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 1
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "standby",
+      "usable_s": 600,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 8
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "departure",
+      "usable_s": 160,
+      "hard_constraint_required_s": 180,
+      "eligible": false,
+      "n_slices_at_stride": 0
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "rush",
+      "usable_s": 425.418772,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 5
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "bridge",
+      "usable_s": 91.428571,
+      "hard_constraint_required_s": 180,
+      "eligible": false,
+      "n_slices_at_stride": 0
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "mission",
+      "usable_s": 320,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 3
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "role": "return",
+      "usable_s": 1003.636364,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 14
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "departure",
+      "usable_s": 160,
+      "hard_constraint_required_s": 180,
+      "eligible": false,
+      "n_slices_at_stride": 0
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "cruise",
+      "usable_s": 581.818182,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 7
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "work",
+      "usable_s": 1333.333333,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 20
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "role": "return",
+      "usable_s": 945.454545,
+      "hard_constraint_required_s": 180,
+      "eligible": true,
+      "n_slices_at_stride": 13
+    }
+  ],
+  "proposal": {
+    "candidate_geometry": {
+      "slice_duration_s": 120,
+      "edge_buffer_s": 30,
+      "stride_s": 60
+    },
+    "hard_constraint": "slice_duration_s + 2 * edge_buffer_s <= min usable segment duration",
+    "hard_constraint_required_s": 180,
+    "candidate_geometry_source": "design.md DGN-12 starting evaluation candidate (240/60/120 withdrawn: required >= 360 s pure segment); final values frozen via T-007",
+    "overall_verdict": "FAIL",
+    "per_contrast_verdict": [
+      {
+        "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+        "contrast_pass": false,
+        "contrast_min_usable_s": 91.428571
+      },
+      {
+        "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+        "contrast_pass": false,
+        "contrast_min_usable_s": 160
+      },
+      {
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "contrast_pass": false,
+        "contrast_min_usable_s": 91.428571
+      },
+      {
+        "contrast_id": "DEPTH_LOW_ID_VS_NORMAL_ID",
+        "contrast_pass": true,
+        "contrast_min_usable_s": 1003.636364
+      },
+      {
+        "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+        "contrast_pass": true,
+        "contrast_min_usable_s": 425.418772
+      },
+      {
+        "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
+        "contrast_pass": true,
+        "contrast_min_usable_s": 581.818182
+      }
+    ],
+    "violating_host_detail": [
+      {
+        "class": "A",
+        "mission_template_id": "ROUTINE_PATROL",
+        "role": "bridge",
+        "usable_s": 91.428571,
+        "deficit_s": 88.571429,
+        "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+        "max_plan_speed_for_pass_mps": 1.777778,
+        "required_distance_at_candidate_speed_m": 787.5
+      },
+      {
+        "class": "A",
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "role": "bridge",
+        "usable_s": 91.428571,
+        "deficit_s": 88.571429,
+        "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+        "max_plan_speed_for_pass_mps": 1.777778,
+        "required_distance_at_candidate_speed_m": 787.5
+      },
+      {
+        "class": "B",
+        "mission_template_id": "ROUTINE_PATROL",
+        "role": "departure",
+        "usable_s": 160,
+        "deficit_s": 20,
+        "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+        "max_plan_speed_for_pass_mps": 2.222222,
+        "required_distance_at_candidate_speed_m": 562.5
+      },
+      {
+        "class": "B",
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "role": "departure",
+        "usable_s": 160,
+        "deficit_s": 20,
+        "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+        "max_plan_speed_for_pass_mps": 2.222222,
+        "required_distance_at_candidate_speed_m": 562.5
+      },
+      {
+        "class": "B",
+        "mission_template_id": "WORK_MISSION",
+        "role": "departure",
+        "usable_s": 160,
+        "deficit_s": 20,
+        "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+        "max_plan_speed_for_pass_mps": 2.222222,
+        "required_distance_at_candidate_speed_m": 562.5
+      },
+      {
+        "class": "A",
+        "mission_template_id": "ROUTINE_PATROL",
+        "role": "departure",
+        "usable_s": 160,
+        "deficit_s": 20,
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "max_plan_speed_for_pass_mps": 2.222222,
+        "required_distance_at_candidate_speed_m": 562.5
+      },
+      {
+        "class": "A",
+        "mission_template_id": "ROUTINE_PATROL",
+        "role": "bridge",
+        "usable_s": 91.428571,
+        "deficit_s": 88.571429,
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "max_plan_speed_for_pass_mps": 1.777778,
+        "required_distance_at_candidate_speed_m": 787.5
+      },
+      {
+        "class": "A",
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "role": "departure",
+        "usable_s": 160,
+        "deficit_s": 20,
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "max_plan_speed_for_pass_mps": 2.222222,
+        "required_distance_at_candidate_speed_m": 562.5
+      },
+      {
+        "class": "A",
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "role": "bridge",
+        "usable_s": 91.428571,
+        "deficit_s": 88.571429,
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "max_plan_speed_for_pass_mps": 1.777778,
+        "required_distance_at_candidate_speed_m": 787.5
+      },
+      {
+        "class": "A",
+        "mission_template_id": "WORK_MISSION",
+        "role": "departure",
+        "usable_s": 160,
+        "deficit_s": 20,
+        "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+        "max_plan_speed_for_pass_mps": 2.222222,
+        "required_distance_at_candidate_speed_m": 562.5
+      }
+    ],
+    "remediation_candidates": [
+      {
+        "id": "R1",
+        "title": "geometry-only global revision (slice 90 / buffer 30 / stride 45)",
+        "geometry_candidate": {
+          "slice_duration_s": 90,
+          "edge_buffer_s": 30,
+          "stride_s": 45
+        },
+        "hard_constraint_required_s": 150,
+        "per_contrast_pass": [
+          {
+            "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+            "contrast_pass": false,
+            "contrast_min_usable_s": 91.428571
+          },
+          {
+            "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 160
+          },
+          {
+            "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+            "contrast_pass": false,
+            "contrast_min_usable_s": 91.428571
+          },
+          {
+            "contrast_id": "DEPTH_LOW_ID_VS_NORMAL_ID",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 1003.636364
+          },
+          {
+            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 425.418772
+          },
+          {
+            "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 581.818182
+          }
+        ],
+        "flags": [],
+        "arithmetic": [
+          "required = 90 + 2*30 = 150 s"
+        ],
+        "verdict": "STILL_FAILS for the contrasts listed in fails_note",
+        "fails_note": "still failing: SEG_BRIDGE_VS_HARBOR, DIR_UPSTREAM_VS_DOWNSTREAM"
+      },
+      {
+        "id": "R2",
+        "title": "geometry-only global revision (slice 60 / buffer 15 / stride 30)",
+        "geometry_candidate": {
+          "slice_duration_s": 60,
+          "edge_buffer_s": 15,
+          "stride_s": 30
+        },
+        "hard_constraint_required_s": 90,
+        "per_contrast_pass": [
+          {
+            "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 91.428571
+          },
+          {
+            "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 160
+          },
+          {
+            "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 91.428571
+          },
+          {
+            "contrast_id": "DEPTH_LOW_ID_VS_NORMAL_ID",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 1003.636364
+          },
+          {
+            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 425.418772
+          },
+          {
+            "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 581.818182
+          }
+        ],
+        "flags": [
+          "fragile_margin_on_bridge"
+        ],
+        "arithmetic": [
+          "required = 60 + 2*15 = 90 s",
+          "bridge margin at R2 = usable 91.428571 s - required 90 s = 1.428571 s; in speed terms v_threshold = 400*0.8/90 = 3.555556 m/s vs candidate 3.500000 m/s (+1.59%) - margin consumed by candidate-speed uncertainty"
+        ],
+        "verdict": "ALL_SIX_CONTRASTS_PASS (check flags for freeze risk)",
+        "fails_note": ""
+      },
+      {
+        "id": "R3",
+        "title": "keep candidate 120/30/60; T-010-level template/plan revisions for bridge and departure",
+        "geometry_candidate": {
+          "slice_duration_s": 120,
+          "edge_buffer_s": 30,
+          "stride_s": 60
+        },
+        "hard_constraint_required_s": 180,
+        "per_contrast_pass": [
+          {
+            "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+            "contrast_pass": false,
+            "contrast_min_usable_s": 91.428571
+          },
+          {
+            "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+            "contrast_pass": false,
+            "contrast_min_usable_s": 160
+          },
+          {
+            "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+            "contrast_pass": false,
+            "contrast_min_usable_s": 91.428571
+          },
+          {
+            "contrast_id": "DEPTH_LOW_ID_VS_NORMAL_ID",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 1003.636364
+          },
+          {
+            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 425.418772
+          },
+          {
+            "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
+            "contrast_pass": true,
+            "contrast_min_usable_s": 581.818182
+          }
+        ],
+        "flags": [
+          "requires_template_revision",
+          "requires_main_agent_decision"
+        ],
+        "arithmetic": [
+          "R3a bridge: usable >= 180 s at v=3.500000 m/s requires nominal_distance >= 180*3.500000/0.8 = 787.5 m (registry 400 m; +387.5 m); OR at 400 m requires v <= 400*0.8/180 = 1.777778 m/s (not a plausible bridge-transit plan vs candidate 3.500000 m/s)",
+          "R3b departure: at 500 m requires v <= 500*0.8/180 = 2.222222 m/s (candidate 2.500000 m/s; 11.11% slower plan); OR at v=2.500000 requires nominal_distance >= 180*2.500000/0.8 = 562.5 m (registry 500 m)",
+          "R3c all other hosts already pass at 120/30/60 (see contrast_coverage)"
+        ],
+        "fails_note": "candidate geometry itself still fails for bridge/departure hosts until the registry/plan revisions land",
+        "verdict": "NOT_EVALUABLE_AS_IS (conditional on revisions)"
+      },
+      {
+        "id": "R4",
+        "title": "per-contrast (or per-axis) geometry split",
+        "geometry_candidate": {
+          "slice_duration_s": 120,
+          "edge_buffer_s": 30,
+          "stride_s": 60
+        },
+        "hard_constraint_required_s": 180,
+        "flags": [
+          "requires_design_interpretation",
+          "possible_spec_amendment"
+        ],
+        "arithmetic": [
+          "FR-547 defines the main analysis unit as SEGMENT_PURE_DIAGNOSTIC_SLICE with FIXED duration / FIXED edge buffer; whether one global geometry or per-axis geometries is allowed is a design interpretation question reserved to the main agent"
+        ],
+        "fails_note": "",
+        "verdict": "NOT_DECIDABLE_IN_THIS_TASK"
+      }
+    ],
+    "freeze_note": "census proposes only; nothing is frozen here. Final geometry values are decided by the main agent and frozen via T-007 (tasks.md item 7).",
+    "main_agent_decision_items": [
+      "D1 (escalation per delegation spec Escalate-If): bridge host cannot satisfy the 180 s hard constraint under any plausible bridge-transit speed at registry nominal 400 m (v_threshold = 1.777778 m/s). Choose between R2 (tighter global geometry, fragile margin), R3a (template-level bridge distance/speed revision at T-010), or R4 (per-contrast geometry; design interpretation needed).",
+      "D2 departure host fails at 160.000000 s vs 180 s but is fixable by R1 (slice 90: 150 <= 160.000000), or a modest departure plan-speed reduction (<= 2.222222 m/s), or distance increase (>= 562.5 m).",
+      "D3 standby is included as a DIR upstream host per the mechanical non-berth outbound rule, but it is a stationary segment; if the main agent excludes it from direction hosts, no numeric verdict changes (its 600 s is not the set minimum).",
+      "D4 standby usable duration applies no stretch (duration-defined, distance=0). If T-007 prefers a conservative 0.8x duration stretch, usable = 480 s - still >= 180 s; no verdict change.",
+      "D5 berth exists only in ROUTINE_PATROL; SEG_BERTH_VS_DEPARTURE declares same-template pairing. This census covers geometry only; cohort feasibility belongs to later tasks.",
+      "D6 cruise does not appear in the EMERGENCY_RESPONSE segment sequence while SEG_EMERGENCY_SPRINT_VS_CRUISE cohort predicate pins template == EMERGENCY_RESPONSE; class_B host rows therefore live in ROUTINE_PATROL / WORK_MISSION (usable 581.818182 s, geometrically feasible). The cross-template pairing semantics belong to the main agent; the registry is read-only here.",
+      "D7 the candidate speed table itself is a proposal (Fixed Decision 1); rush = 7.522 m/s is quoted as-is from the delegation spec (FR-510/T-412 G2 value_kn=14.620, read-only reference). Use SpeedOverride to run sensitivity variants."
+    ],
+    "speed_table_basis": {
+      "departure": "census proposal candidate (main agent)",
+      "harbor": "census proposal candidate (main agent)",
+      "berth": "census proposal candidate (main agent)",
+      "bridge": "census proposal candidate (main agent)",
+      "cruise": "census proposal candidate (main agent)",
+      "patrol": "census proposal candidate (main agent)",
+      "return": "census proposal candidate (main agent)",
+      "rush": "FR-510/T-412 G2 value_kn=14.620 (read-only reference); value fixed by delegation spec",
+      "mission": "census proposal candidate (main agent)",
+      "work": "low-speed work semantics (T-010 plan-layer candidate)",
+      "standby": "duration-defined segment; usable = nominal_duration_s (registry, 600 s); speed conversion not applicable (distance=0)"
+    }
+  }
+}
