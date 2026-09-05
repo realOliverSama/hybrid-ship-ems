@@ -47,8 +47,8 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/71_run_dataset_v3_pilot_gate.m` | ★ **T-015 pilot Gate 薄入口**（调用 Python `run_pipeline`；`results/dataset_v3/pilot/pilot_gate_result.json` overall=true 方 PASS，标 PILOT） |
 | `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项检查；D0 为 NON-FORMAL 骨架自检） |
 | `config/mission_v3/` | ★ **C 包生成侧注册表九件**（Phase 4-C T-001/T-002，候选态 CANDIDATE；模板三 archetype / conditional-DAG 十四节点 / 环境 regime 参数 / ID 支撑界 / 预报 quality profiles / seed 树策略 / **scenario strata 九格 / heldout token C1~C3 / identifiability contrast 六必需+二诊断**；各含 self_hash；详见该目录 README.md；**预测模型：无**——纯配置注册表） |
-| `scripts/+mission_v3/` | ★ **C 包 Mission v3 生成器 MATLAB 包**（T-001 起建：`validate_registries.m` 注册表 validator——canonical JSON + SHA256 跨语言复算；**`+audits/feasibility_sweep.m` T-005 联合可行性扫描 + `+audits/segment_duration_census.m` T-004 段时长普查**；后续 T-008~T-015 生成链函数按 DGN-01 布局增补） |
-| `scripts/+mission_v3/tests/` | C 包单测/负向 harness（`test_validate_registries.m`：正向 PASS + 八类负向注入全检出，tempdir 副本运行不触真文件） |
+| `scripts/+mission_v3/` | ★ **C 包 Mission v3 生成器 MATLAB 包**（T-001 起建：`validate_registries.m` 注册表 validator——canonical JSON + SHA256 跨语言复算；**`seed_tree.m` T-008 科学 seed 树——SHA256 branch-path 血统/uint32 引擎映射/碰撞 fail-closed/干预不变量**；**`+audits/feasibility_sweep.m` T-005 联合可行性扫描 + `+audits/segment_duration_census.m` T-004 段时长普查**；后续 T-009~T-015 生成链函数按 DGN-01 布局增补） |
+| `scripts/+mission_v3/tests/` | C 包单测/负向 harness（`test_validate_registries.m` 九件 validator 正/负向 9/9、`test_seed_tree.m` seed 树 8/8；tempdir 副本运行不触真文件） |
 | `scripts/75_run_mission_v3_feasibility_sweep.m` | ★ **T-005 ID 联合可行性扫描薄入口**（SOG×沿迹流×H/T 网格只读 Model E 扫描；600 s 腿全格 + 3000 s 稳态精化） |
 | `scripts/76_run_mission_v3_segment_census.m` | ★ **T-004 段时长普查薄入口**（注册表算术普查：usable duration 分布 + 切片几何硬约束判定 + 冻结提案） |
 | `results/mission_v3/` | C 包精选证据（T-001 `registry_validation.json` validator 记录、T-005 `id_feasibility_sweep.json/md` + `_steady.json` 稳态精化、T-004 `segment_duration_census.json/md`；后续 prequal/T-429 审计 JSON 按任务增补） |

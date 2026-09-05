@@ -142,7 +142,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
 
 ## Phase 2 — 生成器核心（T-420~T-428）【PHASE2_ENTRY_GATE 后】
 
-- [ ] 8. 科学 seed 树（full-digest 血统）
+- [x] 8. 科学 seed 树（full-digest 血统）
   - ID: T-008
   - Requirement(s): FR-522, FR-529, FR-532；Design: DGN-07（R6）
   - 路线映射: T-428
