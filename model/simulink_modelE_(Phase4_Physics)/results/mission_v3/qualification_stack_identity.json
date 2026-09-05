@@ -1,0 +1,113 @@
+{
+  "schema": "mission_v3_stack_identity_v1",
+  "mode": "collect",
+  "generated_at": "2026-09-06T02:40:01+0800",
+  "components": [
+    {
+      "component": "mission_v3_generator",
+      "version": "package",
+      "sha256": "f9fbe6dfa304ca517f8d0e716547b2d9a1729a91d124cb8017eebc92867e21b8",
+      "source_path": "scripts/+mission_v3",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 1; FD2 hash-domain ruling (Tasks Gate R6): top-level package functions only; tests/ and +audits/ excluded (verification assets, not the generation chain)"
+    },
+    {
+      "component": "mission_template_registry",
+      "version": "1.0.0-candidate",
+      "sha256": "5025e32a876d11b2e6d29f3f15988ac637eb0bdb1a0c5bc2fc797f62338047cc",
+      "source_path": "config/mission_v3/mission_template_registry.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 2; T-001 frozen mission template registry (DGN-02 triple)"
+    },
+    {
+      "component": "conditional_dag_config",
+      "version": "1.0.0-candidate",
+      "sha256": "d1f8551caf797ccba9f650dab8e2ce212fe50532c1b8664717fd9585d6726a42",
+      "source_path": "config/mission_v3/conditional_dag_config.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 3; T-001 frozen conditional DAG config (DGN-03 node table)"
+    },
+    {
+      "component": "seed_tree_policy",
+      "version": "1.0.0-candidate",
+      "sha256": "674973ead98ac98a7ec9a6c12dc6ddb11c0e814d8b99a3ab945dbf2489c5c456",
+      "source_path": "config/mission_v3/seed_tree_policy.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 4; T-001 frozen seed tree policy (DGN-07)"
+    },
+    {
+      "component": "forecast_generator",
+      "version": "",
+      "sha256": "313b4a330516f61bc14bdb86df3eccc3651208a4e09888588321d82f72f1e92f",
+      "source_path": "scripts/+mission_v3/forecast_issue.m",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 5; T-012 forecast generator; PENDING allowed while T-012 is in flight (FD3)"
+    },
+    {
+      "component": "scenario_stratum_registry",
+      "version": "1.0.0-candidate",
+      "sha256": "392638d408de36a81e830297075d0a9942765d512d6ff65ba1654b53e9e0bd1a",
+      "source_path": "config/mission_v3/scenario_stratum_registry.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 6; T-002 frozen stratum registry (DGN-13)"
+    },
+    {
+      "component": "heldout_token_registry",
+      "version": "1.0.0-candidate",
+      "sha256": "1423686c57c07ef7529a225de915c768fe6ce92d1793581528103f5297fd75e9",
+      "source_path": "config/mission_v3/heldout_token_registry.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 7; T-002 frozen heldout token registry (DGN-11)"
+    },
+    {
+      "component": "modele_physical_baseline",
+      "version": "1.1-candidate",
+      "sha256": "db7f5c3369477f76f4c99235275b12d02f0f35be6b67ff70f2066aa4aa2b0e59",
+      "source_path": "config/gate_baseline_modele_candidate_v1_1.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 8; Model E frozen physical baseline v1.1; 72 item-(10) baseline mechanism reuse (FD3)"
+    },
+    {
+      "component": "modele_control_baseline",
+      "version": "1.0",
+      "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273",
+      "source_path": "config/gate_baseline_modele_control.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 9; Model E frozen control baseline v1.0; 72 item-(10) baseline mechanism reuse (FD3)"
+    },
+    {
+      "component": "d_producer_schema",
+      "version": "1.0.0",
+      "sha256": "7993e141e8a88875297694604552b266b4fecc757b042792aa502a8abed28b40",
+      "source_path": "config/dataset_v3_producer_schema.json",
+      "status": "PRESENT",
+      "provenance": "DGN-14 item 10; dataset v3 producer schema; sha256 field records embedded self_hash.value (canonical JSON, D convention)"
+    }
+  ],
+  "generator_hash_domain": {
+    "component": "mission_v3_generator",
+    "ruling": "FD2 (Tasks Gate R6): the mission_v3_generator composite hash domain = top-level package functions scripts/+mission_v3/*.m (non-recursive); the tests/ subdirectory and the +audits/ audit assets are excluded",
+    "rationale": "test files are verification assets, not scientific generation logic; including them would freeze the generator identity on test additions and block T-017/T-018 test growth; +audits/ members produce evidence, not the generation chain",
+    "included_files": [
+      "dag_sample.m",
+      "eligibility.m",
+      "env_realize.m",
+      "family_expand.m",
+      "forecast_issue.m",
+      "kf_snapshots.m",
+      "nav_constraints.m",
+      "plan_compose.m",
+      "producer_export.m",
+      "scenario_compile.m",
+      "seed_tree.m",
+      "stack_identity.m",
+      "validate_registries.m"
+    ],
+    "excluded_dirs": [
+      "tests",
+      "+audits"
+    ]
+  },
+  "pending": [],
+  "composite_hash": "f3c2666b46a009876c41fca705f4ce157dba33778f94824fbfe13274c6fae111"
+}

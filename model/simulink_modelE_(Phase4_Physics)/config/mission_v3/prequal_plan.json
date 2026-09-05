@@ -1,0 +1,148 @@
+{
+  "schema": "mission_v3_prequal_plan_v1",
+  "task": "T-019 MISSION_V3_PREQUALIFICATION plan pre-registration (PREQUAL_PLAN_GATE, R4/R5)",
+  "version": "1.0.0",
+  "status": "FROZEN_PRE_REGISTRATION",
+  "frozen_at": "2026-09-06T02:40:45",
+  "frozen_before_generation": true,
+  "frozen_by": "main agent (pre-registration discipline: no generation has run; FLOOD probe statistics known and disclosed)",
+  "scale": {
+    "n_strata": 9,
+    "strata": [
+      "STRAT_ROUTINE_PATROL__NORMAL",
+      "STRAT_ROUTINE_PATROL__FLOOD",
+      "STRAT_ROUTINE_PATROL__DRY",
+      "STRAT_EMERGENCY_RESPONSE__NORMAL",
+      "STRAT_EMERGENCY_RESPONSE__FLOOD",
+      "STRAT_EMERGENCY_RESPONSE__DRY",
+      "STRAT_WORK_MISSION__NORMAL",
+      "STRAT_WORK_MISSION__FLOOD",
+      "STRAT_WORK_MISSION__DRY"
+    ],
+    "accepted_target_per_stratum": 12,
+    "total_accepted_target": 108,
+    "nominal_note": "design DGN-13 工程规模 ≈100 航次；108 = 9 格 × 12 = 9 × (3 base draws × 2×2 family)"
+  },
+  "family_plan": {
+    "matrix": {
+      "traffic": {
+        "type": "PHYSICAL",
+        "arms": [
+          "ON",
+          "OFF"
+        ]
+      },
+      "forecast": {
+        "type": "INFORMATION",
+        "arms": [
+          "GOOD_V1",
+          "DEGRADED_V1"
+        ]
+      }
+    },
+    "members_per_family": 4,
+    "base_draws_per_stratum": 3,
+    "intervention_coverage": "full 2x2 factorial per family (C-D1)",
+    "operator_coverage": "template operator_prior (EMERGENCY→URGENT 1.0; ROUTINE/WORK per registry)",
+    "direction_coverage": "template segment sequence (outbound upstream / return downstream)"
+  },
+  "seed_plan": {
+    "formal_generation_seed": "MISSION_V3_PREQUAL_SEED_V1_2026_09_05",
+    "draw_index_ranges": {
+      "rule": "stratum i (0-based in strata list) uses base_draw_index in [i*1000, (i+1)*1000)",
+      "ranges": {
+        "STRAT_ROUTINE_PATROL__NORMAL": [
+          0,
+          1000
+        ],
+        "STRAT_ROUTINE_PATROL__FLOOD": [
+          1000,
+          2000
+        ],
+        "STRAT_ROUTINE_PATROL__DRY": [
+          2000,
+          3000
+        ],
+        "STRAT_EMERGENCY_RESPONSE__NORMAL": [
+          3000,
+          4000
+        ],
+        "STRAT_EMERGENCY_RESPONSE__FLOOD": [
+          4000,
+          5000
+        ],
+        "STRAT_EMERGENCY_RESPONSE__DRY": [
+          5000,
+          6000
+        ],
+        "STRAT_WORK_MISSION__NORMAL": [
+          6000,
+          7000
+        ],
+        "STRAT_WORK_MISSION__FLOOD": [
+          7000,
+          8000
+        ],
+        "STRAT_WORK_MISSION__DRY": [
+          8000,
+          9000
+        ]
+      }
+    }
+  },
+  "sampling_policy": {
+    "sampler": "mission_v3.env_realize('sample', formal_seed, base_draw_start, template, regime, stratum)",
+    "max_attempts_per_slot": 200,
+    "eligibility_semantics_frozen": {
+      "env_layer_prefilter": "whole-voyage sup |U_river| (T-009, conservative, incl. prehistory)",
+      "authoritative_check": "per-segment support bound (DGN-05 faithful reading): upstream segments u_adverse_abs_sup <= 1.8; return segments u_following_abs_sup <= 1.5 (realization.segments summaries)",
+      "refinement_rationale": "T-009 env-layer sup was a delegation-spec conservative pre-plan filter; DGN-05 bounds act on the per-segment along-track component. Refined at pre-registration BEFORE generation (no distribution peeking: T-009 FLOOD×WORK probe 58.1% under conservative sup is disclosed as the motivation, the refined semantics is the DGN-05-literal reading, NOT threshold tuning)",
+      "token_structural_heldout": "C1/C2/C3 EXCLUDE per frozen heldout_token_registry (IID side)",
+      "ht_support": "HT < 1.5 reject (SUPPORT_BOUND); HT <= 1.2 reject (PHYSICAL_DOMAIN_BOUND)"
+    }
+  },
+  "retry_policy": {
+    "slot_failed_retry_max": 2,
+    "rule": "FAILED_* slot: same slot, same config, same scientific seed retry (FR-537/R8); retry ledger rows recorded; REJECTED_* never occupy a slot (resampling per frozen policy)"
+  },
+  "rejection_threshold_frozen": {
+    "per_stratum_max": 0.5,
+    "overall_max": 0.5,
+    "definition": "rejection_rate = (total_attempts - accepted) / total_attempts, per stratum and overall, at run end",
+    "verdict_rule": "any stratum > 0.50 OR overall > 0.50 ⇒ MISSION_V3_PREQUALIFICATION FAIL (DGN-10 frozen candidate + R5 frozen-before-generation); controlled exposure by design (FR-539 拒绝率报告按 stratum 分组)",
+    "known_projection": "T-009 FLOOD×WORK probe: 58.1% under conservative whole-voyage sup; under refined per-segment semantics projected materially lower (return following bound binds at ~25-30%) — projection is disclosed, NOT a threshold adjustment"
+  },
+  "guards": {
+    "T429_result_metrics_zero": "prequal manifest/artifacts SHALL NOT contain any SBD/BA/confidence/混淆结果度量（R3/R4）——only non-result readiness info",
+    "no_post_hoc_augmentation": "禁看结果后增补航次；计划修订须显式登记 amendment（R4）",
+    "pilot_only_in_formal_forbidden": "FR-500",
+    "two_run_determinism": "预资格链两跑 payload hash 一致（AC-438）"
+  },
+  "consumes": {
+    "registries_frozen": {
+      "mission_template_registry.json": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1",
+      "conditional_dag_config.json": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725",
+      "environment_regime_params.json": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2",
+      "id_support_bounds.json": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+      "forecast_quality_profiles.json": "caa77068d0093dbe48ef0b29a809407dc9123c6702cba21038b06a001b425b1f",
+      "seed_tree_policy.json": "15ba30df31646285d5ec441a4e1ba79e66a6c954cdefec8c7335b2d25ff74b29",
+      "scenario_stratum_registry.json": "8db52974bad2a72b53ea88c9096890cdc739f4bc6660052798f2eead4080adc1",
+      "heldout_token_registry.json": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+      "identifiability_contrast_registry.json": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad"
+    },
+    "qualification_stack_identity": {
+      "file": "results/mission_v3/qualification_stack_identity.json",
+      "composite_hash": "f3c2666b46a009876c41fca705f4ce157dba33778f94824fbfe13274c6fae111"
+    },
+    "amendment_chain": [
+      "phase1_freeze.json",
+      "phase1_freeze_amendment_d6.json",
+      "phase1_freeze_amendment_sprint.json"
+    ]
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "e3fd066cbbe98336bb741538b8ba20924d6a017a61588a92d03f18e36c88c5f9"
+  }
+}

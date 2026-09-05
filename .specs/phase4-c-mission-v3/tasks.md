@@ -276,7 +276,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
 
 ## Phase 4 — 预资格与交付
 
-- [ ] 19. 预资格计划预注册 + qualification stack 捕获（PREQUAL_PLAN_GATE）
+- [x] 19. 预资格计划预注册 + qualification stack 捕获（PREQUAL_PLAN_GATE）
   - ID: T-019
   - Requirement(s): FR-534, FR-537, FR-539, FR-557；Design: DGN-10/13/14；Tasks Gate R4/R5/R6
   - 路线映射: T-428
