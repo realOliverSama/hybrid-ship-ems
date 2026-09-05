@@ -240,7 +240,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——判据边界（1199.99 s reject / 1200 accept）；窗计数算术（1590→100）；PILOT_ONLY 混入 formal 检出
   - Completion evidence: 单测 PASS
 
-- [ ] 16. stack identity 实现与测试（非最终捕获）
+- [x] 16. stack identity 实现与测试（非最终捕获）
   - ID: T-016
   - Requirement(s): FR-534；Design: DGN-14；Tasks Gate R6
   - 路线映射: T-432 解锁链支撑
