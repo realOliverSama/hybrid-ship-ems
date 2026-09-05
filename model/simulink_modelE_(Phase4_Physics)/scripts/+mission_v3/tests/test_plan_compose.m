@@ -839,6 +839,15 @@ function fpath = local_plot_plan(pl, stem, out_dir)
     fig = figure('Visible', 'off', 'Color', 'w', 'Position', ...
         [80, 80, 1180, 460]);
     ax = axes(fig);
+    % R2026a headless -batch defaults to the dark figure theme (dark axes,
+    % light text): alpha 0.18 shading composited over it renders nearly
+    % black. Pin light theme explicitly.
+    ax.Color = 'w';
+    ax.XColor = 'k';
+    ax.YColor = 'k';
+    ax.Title.Color = 'k';
+    ax.XLabel.Color = 'k';
+    ax.YLabel.Color = 'k';
     hold(ax, 'on');
     tg = pl.t_grid_s;
     vp = pl.v_plan_mps;
@@ -885,7 +894,7 @@ function fpath = local_plot_plan(pl, stem, out_dir)
     xlim(ax, [0, t_end]);
     grid(ax, 'on');
     xlabel(ax, 't (s)', 'Interpreter', 'none');
-    ylabel(ax, 'v_plan (m/s)', 'Interpreter', 'none');
+    ylabel(ax, 'v_{plan} (m/s)');
     title(ax, sprintf(['%s / %s / op=%s / HT=%.2f / rush platform ', ...
         'floor=%.1f m/s'], pl.template_id, pl.regime_id, ...
         pl.operator_profile, pl.ht_effective, pl.sprint_floor_mps), ...
@@ -896,26 +905,31 @@ function fpath = local_plot_plan(pl, stem, out_dir)
         rl_k = plotted_roles{k};
         leg_names{end + 1} = rl_k;  %#ok<AGROW>
         leg_handles(end + 1) = constant_patch(ax, ...
-            local_role_color(rl_k));  %#ok<AGROW>
+            local_role_color(rl_k), 0.18);  %#ok<AGROW>
     end
     if ~isempty(zl)
         leg_names{end + 1} = 'UKC limit zone';
-        leg_handles(end + 1) = constant_patch(ax, [1.0, 0.9, 0.2]);  %#ok<AGROW>
+        leg_handles(end + 1) = constant_patch(ax, [1.0, 0.9, 0.2], 0.35);  %#ok<AGROW>
     end
     if ~isempty(tws)
         leg_names{end + 1} = 'traffic window';
-        leg_handles(end + 1) = constant_patch(ax, [0.5, 0.5, 0.5]);  %#ok<AGROW>
+        leg_handles(end + 1) = constant_patch(ax, [0.5, 0.5, 0.5], 0.25);  %#ok<AGROW>
     end
-    leg_names{end + 1} = 'v_plan';
+    leg_names{end + 1} = 'v_{plan}';
     leg_handles(end + 1) = constant_line(ax);  %#ok<AGROW>
     legend(leg_handles, leg_names, 'Location', 'best', 'FontSize', 7);
     fpath = fullfile(out_dir, [stem, '.png']);
-    print(fig, fpath, '-dpng', '-r110');
+    % exportgraphics honors FaceAlpha at high resolution (print -dpng can
+    % switch to the painters renderer, which drops patch transparency).
+    exportgraphics(fig, fpath, 'Resolution', 300);
     close(fig);
 end
 
-function h = constant_patch(ax, c)
-    h = patch(ax, NaN, NaN, c, 'EdgeColor', 'none');
+function h = constant_patch(ax, c, face_alpha)
+% Legend swatch with the SAME FaceAlpha as the plotted background shading,
+% so the legend matches the figure (user-reported color mismatch fix).
+    h = patch(ax, NaN, NaN, c, 'EdgeColor', 'none', ...
+        'FaceAlpha', face_alpha);
 end
 
 function h = constant_line(ax)
