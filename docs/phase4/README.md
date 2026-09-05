@@ -15,6 +15,7 @@ Phase 4（系统优化重构，`Phase4` 分支）各工作包的审计报告、�
 | `d_dataset_v3/` | 目录 | ★ 工作包 D（spec `phase4-d-dataset-v3`，2026-09-04/05）：Dataset v3 契约文档——observation_contract / future_information_contract / c_producer_interface_contract / dataset_v3_schema（解释层，机器事实源为 Model E config 两 JSON）+ T-432 activation record 与 unblock checklist 模板；索引见该目录 README.md |
 
 | `d_dataset_v3_HANDOFF.md` | 文件 | ★ 工作包 D（spec 未建 → 已建 `.specs/phase4-d-dataset-v3`，分支 `feat/phase4-d-dataset-v3`）开工提示词：Phase 4 现状 / D 包任务范围（T-430~T-435）/ 必读材料 / 挂账 / 纪律 / 顺序建议 |
+| `c_mission_v3_HANDOFF.md` | 文件 | ★ 工作包 C（T-419~T-429，spec 未建）开工提示词（2026-09-05，D0 完成后）：D 冻结契约输入 / 任务范围 / 契约红线 / brainstorm 必裁清单 / 完成定义 |
 
 ## 维护规则
 
