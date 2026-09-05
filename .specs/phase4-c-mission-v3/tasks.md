@@ -214,7 +214,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——**因果不变量测试（R7，替代相关性断言）**：固定 issue 时刻计划与全部合法 K 输入，变异 t₀ 之后的 realized 未来轨迹，重建 s_plan/INPUT_K 必须逐位不变（Δactual_future ⇏ Δs_plan）；网格严格 {10..300}；布局维度断言；与 export_pilot 布局逐字段一致；**计划与实现的高统计相关性不得作为泄漏证据**
   - Completion evidence: 单测 PASS
 
-- [ ] 14. L4 干预层与 grouping（family/base_draw/must-link）
+- [x] 14. L4 干预层与 grouping（family/base_draw/must-link）
   - ID: T-014
   - Requirement(s): FR-518, FR-521~525, FR-529；Design: DGN-01/07
   - 路线映射: T-428
