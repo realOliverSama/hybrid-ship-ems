@@ -1,0 +1,87 @@
+{
+  "schema": "mission_v3_prequal_amendment_v1",
+  "amendment_id": "PREQUAL-AMEND-01",
+  "trigger": "PREQUAL_REJECTION_GATE_FAIL (T-020 run 1: overall rejection 56.45% > frozen 50%)",
+  "ruling": "Day-2 Prequalification Rejection-Gate Ruling: FAIL VALID IN PRINCIPLE / AMENDMENT AUTHORIZED WITH MODIFICATION → A(i')+B(i) after mandatory accounting reconciliation",
+  "generated_at": "2026-09-06T07:31:53",
+  "accounting_reconciliation": {
+    "file": "prequal_reconciliation.json",
+    "closure": "62 == 27 accepted draws + 35 unique rejected + 0 failed slots (holds)",
+    "frozen_formula_recompute": "56.45% > 50% → FAIL confirmed (denominator = unique env draw attempts)",
+    "reason_hit_rows_non_exclusive": {
+      "SUPPORT_BOUND": 45,
+      "C2": 21,
+      "C3": 16,
+      "PHYSICAL_DOMAIN_BOUND": 2
+    }
+  },
+  "amendments": {
+    "A_iprime": {
+      "what": "chart_depth_voyage_base: per-regime 表废止 → 单一全局 TruncNormal(6.0, 1.0, >=3.5)",
+      "epistemics": "h_chart = INPUT_K 静态已知河床，environment_regime ↛ h_chart；regime 水文变异全部由 water_level_offset（ΔWL）承载",
+      "dry_effect": "DRY HT 中心 1.83 → 2.377（σ_ht 0.49）：主体移出 [1.5,2.0] 保留带（in-band ≈22%→OOD 面保留供给）；P(HT<1.5)≈4%",
+      "normal_effect": "全局参数 == 前 NORMAL 参数且 NORMAL ΔWL 不变 → NORMAL 抽签流/值逐位不变（六格重跑、三 NORMAL 格复用）"
+    },
+    "B_i": {
+      "what": "FLOOD u_river_mag mu 1.2→0.9, sigma 0.4→0.35（汛期常遇流取样口径）",
+      "unchanged": "1.5/1.8 m/s 支撑界、Model E、Phase-1 联合可行前沿、Axis-A OOD activation 权属、T-429 阈值、reject/resample 纪律（无 clip）",
+      "ordering_check": "regime 流均值排序保持 FLOOD 0.9 > NORMAL 0.5 > DRY 0.1"
+    },
+    "rejected_alternatives": [
+      "A(i) 按 regime 改 h_chart（epistemic 违例）",
+      "A(ii) 降 DRY 配额掩盖效率",
+      "B(ii) 接受 50-77% 拒绝",
+      "B(iii) 分位/窗语义改界"
+    ]
+  },
+  "hash_chain": {
+    "environment_regime_params": {
+      "old": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2",
+      "new": "1a79858972204fef5ec97b605c29951c9743d206528513e5bdc3554d7054b5cd"
+    },
+    "prequal_plan": {
+      "old": "e3fd066cbbe98336bb741538b8ba20924d6a017a61588a92d03f18e36c88c5f9",
+      "new": "6222c79e212d3adc71afd5b0756cf150de255c51483c5ad1d4d61811d3316f4b",
+      "version": "1.0.0 → 1.1.0"
+    },
+    "unchanged": {
+      "id_support_bounds": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+      "heldout_token_registry": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+      "model_e_baselines": "zero change (git diff empty)",
+      "stack_composite_at_baseline": "f3c2666b46a009876c41fca705f4ce157dba33778f94824fbfe13274c6fae111"
+    }
+  },
+  "rerun_scope": {
+    "regenerate_6_strata": [
+      "ROUTINE×DRY",
+      "EMERGENCY×DRY",
+      "WORK×DRY",
+      "ROUTINE×FLOOD",
+      "EMERGENCY×FLOOD",
+      "WORK×FLOOD"
+    ],
+    "normal_reuse": [
+      "ROUTINE×NORMAL",
+      "EMERGENCY×NORMAL",
+      "WORK×NORMAL"
+    ],
+    "post_rerun": [
+      "regenerate 9-cell audit",
+      "recalc frozen rejection gate",
+      "refresh qualification stack identity",
+      "confirm ACTIVE stratum/group/marginal coverage",
+      "then T-021 T429_FREEZE"
+    ]
+  },
+  "superseded_artifacts": [
+    "results/mission_v3/prequal_strata_audit.json (run 1)",
+    "results/mission_v3/prequal_manifest.json (run 1)",
+    "datasets_v3/mission_v3/prequal/ (run 1, FLOOD/DRY strata superseded; NORMAL retained)"
+  ],
+  "self_hash_note": "chain: phase1_freeze → d6 → sprint → prequal_plan v1.1.0 → this amendment",
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "a0484664dfa38b1aa07c63fcd8c6a13a7c0ccd4862340436ef0433f72622bf23"
+  }
+}

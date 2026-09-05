@@ -1,0 +1,109 @@
+{
+  "schema": "mission_v3_prequal_reconciliation_v1",
+  "task": "T-020 rejection-gate accounting reconciliation (Day-2 Ruling section 0)",
+  "generated_at": "2026-09-06T07:29:07",
+  "counting_basis": "unique (stratum_id, base_draw_index) draws — one row per attempt; member/voyage rows expand from accepted draws x4",
+  "closure": {
+    "attempted": 62,
+    "accepted_draws": 27,
+    "unique_rejected_attempts": 35,
+    "failed_slots": 0,
+    "equation": "62 == 27 + 35 + 0",
+    "holds": true
+  },
+  "voyage_level": {
+    "voyages_total": 108,
+    "voyages_accepted": 108,
+    "voyages_failed": 0,
+    "note": "all sims succeeded; corpus complete"
+  },
+  "frozen_formula_recompute": {
+    "formula": "rejection_rate = (total_attempts - accepted)/total_attempts (T-019 frozen)",
+    "denominator": "unique env draw attempts (62)",
+    "overall_rate": 0.5645161290322581,
+    "threshold": 0.5,
+    "verdict": "FAIL — confirmed after reconciliation"
+  },
+  "per_stratum_unique": [
+    {
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL",
+      "att": 3,
+      "acc": 3,
+      "rej": 0,
+      "rate": 0.0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+      "att": 6,
+      "acc": 3,
+      "rej": 3,
+      "rate": 0.5,
+      "verdict": "PASS(=boundary)"
+    },
+    {
+      "stratum": "STRAT_ROUTINE_PATROL__DRY",
+      "att": 11,
+      "acc": 3,
+      "rej": 8,
+      "rate": 0.727,
+      "verdict": "FAIL"
+    },
+    {
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+      "att": 3,
+      "acc": 3,
+      "rej": 0,
+      "rate": 0.0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+      "att": 6,
+      "acc": 3,
+      "rej": 3,
+      "rate": 0.5,
+      "verdict": "PASS(=boundary)"
+    },
+    {
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+      "att": 14,
+      "acc": 3,
+      "rej": 11,
+      "rate": 0.786,
+      "verdict": "FAIL"
+    },
+    {
+      "stratum": "STRAT_WORK_MISSION__NORMAL",
+      "att": 3,
+      "acc": 3,
+      "rej": 0,
+      "rate": 0.0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum": "STRAT_WORK_MISSION__FLOOD",
+      "att": 13,
+      "acc": 3,
+      "rej": 10,
+      "rate": 0.769,
+      "verdict": "FAIL"
+    },
+    {
+      "stratum": "STRAT_WORK_MISSION__DRY",
+      "att": 3,
+      "acc": 3,
+      "rej": 0,
+      "rate": 0.0,
+      "verdict": "PASS"
+    }
+  ],
+  "reason_hit_rows_non_exclusive": {
+    "SUPPORT_BOUND": 45,
+    "HELDOUT:C2": 21,
+    "HELDOUT:C3": 16,
+    "PHYSICAL_DOMAIN_BOUND": 2
+  },
+  "multiplicity_note": "84 non-ACCEPT reason rows over 35 unique rejected draws (one rejected draw can carry multiple member/reason rows); unique-draw counts are authoritative",
+  "conclusion": "FAIL confirmed under the frozen formula and correct denominator → amendment A(i')+B(i) authorized per Day-2 Ruling"
+}
