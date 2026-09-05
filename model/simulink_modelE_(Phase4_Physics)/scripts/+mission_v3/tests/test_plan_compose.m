@@ -917,7 +917,10 @@ function fpath = local_plot_plan(pl, stem, out_dir)
     end
     leg_names{end + 1} = 'v_{plan}';
     leg_handles(end + 1) = constant_line(ax);  %#ok<AGROW>
-    legend(leg_handles, leg_names, 'Location', 'best', 'FontSize', 7);
+    lg = legend(leg_handles, leg_names, 'Location', 'best', 'FontSize', 7);
+    lg.Color = 'w';           % R2026a headless dark theme: pin legend to light
+    lg.TextColor = 'k';
+    lg.EdgeColor = [0.15, 0.15, 0.15];
     fpath = fullfile(out_dir, [stem, '.png']);
     % exportgraphics honors FaceAlpha at high resolution (print -dpng can
     % switch to the painters renderer, which drops patch transparency).
