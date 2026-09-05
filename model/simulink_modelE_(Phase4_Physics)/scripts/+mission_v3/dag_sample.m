@@ -156,12 +156,15 @@ function dag = dag_sample(mode, varargin)
     urm = env_r.u_river_mag;
     wl = env_r.water_level_offset;
     cdb = env.chart_depth_voyage_base;
-    cdb_r = cdb.per_regime;
-    if ~isfield(cdb_r, regime_id)
+    % Day-2 Gate Ruling (prequal amendment 01, section A): h_chart is
+    % regime-independent static bathymetry (INPUT_K); the former per-regime
+    % table is superseded by a single global distribution.  The regime id
+    % is retained in the signature for caller stability only.
+    if ~isfield(cdb, 'mu') || ~isfield(cdb, 'sigma') || ~isfield(cdb, 'lower')
         error('GATE:MISSION_V3:DAG:REGIME', ...
-            'chart_depth_voyage_base lacks regime: %s', regime_id);
+            'chart_depth_voyage_base lacks global mu/sigma/lower');
     end
-    ch = cdb_r.(regime_id);
+    ch = cdb;
 
     % ---- one Threefry4x64 substream per seed-tree branch (DGN-07) ----
     lin = mission_v3.seed_tree('branches', formal_seed, draw_index);

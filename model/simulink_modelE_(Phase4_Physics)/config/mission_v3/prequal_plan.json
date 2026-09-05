@@ -1,7 +1,7 @@
 {
   "schema": "mission_v3_prequal_plan_v1",
   "task": "T-019 MISSION_V3_PREQUALIFICATION plan pre-registration (PREQUAL_PLAN_GATE, R4/R5)",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "status": "FROZEN_PRE_REGISTRATION",
   "frozen_at": "2026-09-06T02:40:45",
   "frozen_before_generation": true,
@@ -122,7 +122,7 @@
     "registries_frozen": {
       "mission_template_registry.json": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1",
       "conditional_dag_config.json": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725",
-      "environment_regime_params.json": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2",
+      "environment_regime_params.json": "1a79858972204fef5ec97b605c29951c9743d206528513e5bdc3554d7054b5cd",
       "id_support_bounds.json": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
       "forecast_quality_profiles.json": "caa77068d0093dbe48ef0b29a809407dc9123c6702cba21038b06a001b425b1f",
       "seed_tree_policy.json": "15ba30df31646285d5ec441a4e1ba79e66a6c954cdefec8c7335b2d25ff74b29",
@@ -137,12 +137,30 @@
     "amendment_chain": [
       "phase1_freeze.json",
       "phase1_freeze_amendment_d6.json",
-      "phase1_freeze_amendment_sprint.json"
+      "phase1_freeze_amendment_sprint.json",
+      "prequal_amendment_01.json"
     ]
   },
   "self_hash": {
     "algorithm": "sha256",
     "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
-    "value": "e3fd066cbbe98336bb741538b8ba20924d6a017a61588a92d03f18e36c88c5f9"
+    "value": "6222c79e212d3adc71afd5b0756cf150de255c51483c5ad1d4d61811d3316f4b"
+  },
+  "amendment_ref": {
+    "amendment_id": "PHASE1-FREEZE-AMEND-PREQUAL01",
+    "ruling": "Day-2 Prequalification Rejection-Gate Ruling (FAIL VALID IN PRINCIPLE / AMENDMENT AUTHORIZED WITH MODIFICATION)",
+    "changes": [
+      "chart_depth_voyage_base per-regime → 全局（A(i')，h_chart 与 regime 解耦）",
+      "FLOOD u_river_mag mu 1.2→0.9 sigma 0.4→0.35（B(i)）"
+    ],
+    "rerun_scope": [
+      "ROUTINE×DRY",
+      "EMERGENCY×DRY",
+      "WORK×DRY",
+      "ROUTINE×FLOOD",
+      "EMERGENCY×FLOOD",
+      "WORK×FLOOD"
+    ],
+    "normal_reuse_basis": "全局 h_chart 参数 == 前 NORMAL 参数且 NORMAL ΔWL 不变 → NORMAL 流/值不变"
   }
 }

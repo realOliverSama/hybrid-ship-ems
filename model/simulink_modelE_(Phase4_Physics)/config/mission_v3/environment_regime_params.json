@@ -6,21 +6,61 @@
   "regimes": {
     "NORMAL": {
       "description_zh": "常水期",
-      "u_river_mag": {"distribution": "TRUNCATED_NORMAL", "mu": 0.5, "sigma": 0.3, "lower": 0},
-      "delta_u": {"tau_s": 900, "sigma_mps": 0.1},
-      "water_level_offset": {"distribution": "TRUNCATED_NORMAL", "mu": 0.0, "sigma": 0.5, "unit": "m"}
+      "u_river_mag": {
+        "distribution": "TRUNCATED_NORMAL",
+        "mu": 0.5,
+        "sigma": 0.3,
+        "lower": 0
+      },
+      "delta_u": {
+        "tau_s": 900,
+        "sigma_mps": 0.1
+      },
+      "water_level_offset": {
+        "distribution": "TRUNCATED_NORMAL",
+        "mu": 0.0,
+        "sigma": 0.5,
+        "unit": "m"
+      }
     },
     "FLOOD": {
       "description_zh": "洪水期",
-      "u_river_mag": {"distribution": "TRUNCATED_NORMAL", "mu": 1.2, "sigma": 0.4, "lower": 0},
-      "delta_u": {"tau_s": 900, "sigma_mps": 0.2},
-      "water_level_offset": {"distribution": "TRUNCATED_NORMAL", "mu": 1.0, "sigma": 0.5, "unit": "m"}
+      "u_river_mag": {
+        "distribution": "TRUNCATED_NORMAL",
+        "mu": 0.9,
+        "sigma": 0.35,
+        "lower": 0,
+        "amendment": "PHASE1-FREEZE-AMEND-PREQUAL01 B(i)：mu 1.2→0.9、sigma 0.4→0.35（汛期常遇流取样口径）；界 1.5/1.8 与 Model E 零改动；regime 流排序 FLOOD 0.9 > NORMAL 0.5 > DRY 0.1 保持"
+      },
+      "delta_u": {
+        "tau_s": 900,
+        "sigma_mps": 0.2
+      },
+      "water_level_offset": {
+        "distribution": "TRUNCATED_NORMAL",
+        "mu": 1.0,
+        "sigma": 0.5,
+        "unit": "m"
+      }
     },
     "DRY": {
       "description_zh": "枯水期",
-      "u_river_mag": {"distribution": "TRUNCATED_NORMAL", "mu": 0.1, "sigma": 0.1, "lower": 0},
-      "delta_u": {"tau_s": 900, "sigma_mps": 0.08},
-      "water_level_offset": {"distribution": "TRUNCATED_NORMAL", "mu": -0.8, "sigma": 0.4, "unit": "m"}
+      "u_river_mag": {
+        "distribution": "TRUNCATED_NORMAL",
+        "mu": 0.1,
+        "sigma": 0.1,
+        "lower": 0
+      },
+      "delta_u": {
+        "tau_s": 900,
+        "sigma_mps": 0.08
+      },
+      "water_level_offset": {
+        "distribution": "TRUNCATED_NORMAL",
+        "mu": -0.8,
+        "sigma": 0.4,
+        "unit": "m"
+      }
     }
   },
   "ou_process": {
@@ -28,7 +68,11 @@
     "sde": "dX = -(X/tau) dt + sigma * sqrt(2/tau) dW",
     "tau_s": 900,
     "tau_note": "tau_u = 900 s 全 regime（DGN-04 冻结候选）",
-    "sigma_per_regime_mps": {"NORMAL": 0.1, "FLOOD": 0.2, "DRY": 0.08},
+    "sigma_per_regime_mps": {
+      "NORMAL": 0.1,
+      "FLOOD": 0.2,
+      "DRY": 0.08
+    },
     "coordinate": "河流坐标（下游为正，DGN-03 R1）；scenario_compile 按段方向合成带符号沿迹时间序列，往返段共享同一实现",
     "injection": {
       "interface": "时间模流场接口（current_time_s / current_value_mps）",
@@ -45,27 +89,56 @@
   "traffic": {
     "event_process": "POISSON",
     "rate_per_hour": {
-      "BRIDGE": {"NORMAL": 6, "FLOOD": 5, "DRY": 6},
-      "HARBOR": {"NORMAL": 6, "FLOOD": 5, "DRY": 6},
-      "OPEN_WATER": {"NORMAL": 2, "FLOOD": 1.5, "DRY": 2},
-      "SHOAL": {"NORMAL": 2, "FLOOD": 1.5, "DRY": 2}
+      "BRIDGE": {
+        "NORMAL": 6,
+        "FLOOD": 5,
+        "DRY": 6
+      },
+      "HARBOR": {
+        "NORMAL": 6,
+        "FLOOD": 5,
+        "DRY": 6
+      },
+      "OPEN_WATER": {
+        "NORMAL": 2,
+        "FLOOD": 1.5,
+        "DRY": 2
+      },
+      "SHOAL": {
+        "NORMAL": 2,
+        "FLOOD": 1.5,
+        "DRY": 2
+      }
     },
     "rate_note": "主 Agent 提案候选：λ 条件于 regime×reach，桥/港段高",
-    "event_duration_s": {"distribution": "UNIFORM", "low": 60, "high": 180},
-    "speed_ratio": {"distribution": "UNIFORM", "low": 0.5, "high": 0.8},
+    "event_duration_s": {
+      "distribution": "UNIFORM",
+      "low": 60,
+      "high": 180
+    },
+    "speed_ratio": {
+      "distribution": "UNIFORM",
+      "low": 0.5,
+      "high": 0.8
+    },
     "semantics": "事件 = 前船 slowdown→follow→recover（duration~U[60,180] s、speed ratio~U[0.5,0.8]）；作用于计划层（operator 响应前船），非直接改 Plant（DGN-04）"
   },
-  "chart_depth_by_reach": {"OPEN_WATER": 20.0, "BRIDGE": 10.0, "HARBOR": 8.0, "SHOAL": 4.5},
+  "chart_depth_by_reach": {
+    "OPEN_WATER": 20.0,
+    "BRIDGE": 10.0,
+    "HARBOR": 8.0,
+    "SHOAL": 4.5
+  },
   "chart_depth_note": "海图水深（m，主 Agent 提案候选）；与 DGN-05 H/T 域下限 1.2/1.35/1.5 的算术关系是 T-004/T-005 证据对象（H_effective = h_chart + ΔWL）。T-007 修订注记：Model E 水深接口为逐航次标量（design DGN-06 R4），逐 reach 变深 v1 不可编译——本表降级为 route 层文档值（documentation only），生成用 chart_depth_voyage_base",
   "chart_depth_voyage_base": {
-    "semantics": "v1 航次级标量水深：H_effective = h_chart + ΔWL 编译进 Model E 逐航次标量 water_depth_m（DGN-06 R4 认识论分层：h_chart→INPUT_K、ΔWL 预报→INPUT_F、实际→ORACLE）；航次级浅水暴露语义 = 低 H/T 航次 × 段角色组合（design Summary）",
+    "semantics": "h_chart = route/voyage static known bathymetry (INPUT_K)，与 hydrologic regime 无关（Day-2 Ruling §A：environment_regime ↛ h_chart）；regime 水文变异全部由 water_level_offset（ΔWL，hydrologic）承载；H_effective = h_chart + ΔWL",
     "distribution": "TRUNCATED_NORMAL",
-    "per_regime": {
-      "NORMAL": {"mu": 6.0, "sigma": 1.0, "lower": 3.5, "unit": "m"},
-      "FLOOD": {"mu": 7.5, "sigma": 1.0, "lower": 4.5, "unit": "m"},
-      "DRY": {"mu": 4.8, "sigma": 0.6, "lower": 3.5, "unit": "m"}
-    },
-    "ht_note": "HT = (h_chart + ΔWL)/Hull_T_m(2.188 m)；三档名义 HT ≈ 2.74/3.88/1.83；DRY 档为 C2/C3 LOW_ID 带 [1.5,2.0] 主要落点；HT<1.5（IID 支撑下界）由 id_support_bounds reject/resample 拒收（禁 clamp，FR-520）",
+    "mu": 6.0,
+    "sigma": 1.0,
+    "lower": 3.5,
+    "unit": "m",
+    "ht_note": "HT = (h_chart + ΔWL)/Hull_T_m(2.188)；三档名义 HT ≈ 2.74/3.20/2.28（NORMAL/FLOOD/DRY）；HT<1.5 由 id_support_bounds reject/resample 拒收（禁 clamp）",
+    "amendment": "PHASE1-FREEZE-AMEND-PREQUAL01：per-regime 表（NORMAL 6.0/FLOOD 7.5/DRY 4.8）按 Day-2 Ruling §A 废止——h_chart 不得 condition on regime；全局值取原 NORMAL 参数（NORMAL 流/值不变故可复用）；DRY HT 中心 1.83→2.28 移出 LOW_ID 保留带主体",
     "status": "CANDIDATE"
   },
   "notes": {
@@ -76,11 +149,15 @@
       "traffic：Poisson 到达、事件语义 slowdown→follow→recover、duration~U[60,180] s、speed ratio~U[0.5,0.8]"
     ],
     "proposal_candidates": [
-      "u_river_mag mu/sigma（三 regime，lower=0 截断）",
       "water_level_offset mu/sigma（三 regime，单位 m）",
       "traffic rate_per_hour 二维表",
-      "chart_depth_by_reach 四值"
+      "chart_depth_by_reach 四值",
+      "u_river_mag FLOOD mu/sigma 经 PHASE1-FREEZE-AMEND-PREQUAL01 修正（0.9/0.35）；NORMAL/DRY 未动"
     ]
   },
-  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2"}
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "1a79858972204fef5ec97b605c29951c9743d206528513e5bdc3554d7054b5cd"
+  }
 }
