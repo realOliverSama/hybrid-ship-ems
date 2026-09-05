@@ -56,7 +56,18 @@
     "semantics": "事件 = 前船 slowdown→follow→recover（duration~U[60,180] s、speed ratio~U[0.5,0.8]）；作用于计划层（operator 响应前船），非直接改 Plant（DGN-04）"
   },
   "chart_depth_by_reach": {"OPEN_WATER": 20.0, "BRIDGE": 10.0, "HARBOR": 8.0, "SHOAL": 4.5},
-  "chart_depth_note": "海图水深（m，主 Agent 提案候选）；与 DGN-05 H/T 域下限 1.2/1.35/1.5 的算术关系是 T-004/T-005 证据对象（H_effective = h_chart + ΔWL）",
+  "chart_depth_note": "海图水深（m，主 Agent 提案候选）；与 DGN-05 H/T 域下限 1.2/1.35/1.5 的算术关系是 T-004/T-005 证据对象（H_effective = h_chart + ΔWL）。T-007 修订注记：Model E 水深接口为逐航次标量（design DGN-06 R4），逐 reach 变深 v1 不可编译——本表降级为 route 层文档值（documentation only），生成用 chart_depth_voyage_base",
+  "chart_depth_voyage_base": {
+    "semantics": "v1 航次级标量水深：H_effective = h_chart + ΔWL 编译进 Model E 逐航次标量 water_depth_m（DGN-06 R4 认识论分层：h_chart→INPUT_K、ΔWL 预报→INPUT_F、实际→ORACLE）；航次级浅水暴露语义 = 低 H/T 航次 × 段角色组合（design Summary）",
+    "distribution": "TRUNCATED_NORMAL",
+    "per_regime": {
+      "NORMAL": {"mu": 6.0, "sigma": 1.0, "lower": 3.5, "unit": "m"},
+      "FLOOD": {"mu": 7.5, "sigma": 1.0, "lower": 4.5, "unit": "m"},
+      "DRY": {"mu": 4.8, "sigma": 0.6, "lower": 3.5, "unit": "m"}
+    },
+    "ht_note": "HT = (h_chart + ΔWL)/Hull_T_m(2.188 m)；三档名义 HT ≈ 2.74/3.88/1.83；DRY 档为 C2/C3 LOW_ID 带 [1.5,2.0] 主要落点；HT<1.5（IID 支撑下界）由 id_support_bounds reject/resample 拒收（禁 clamp，FR-520）",
+    "status": "CANDIDATE"
+  },
   "notes": {
     "dgn04_frozen_candidates": [
       "delta_u tau_s=900（全 regime）",
@@ -71,5 +82,5 @@
       "chart_depth_by_reach 四值"
     ]
   },
-  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "8262a84188385c707f3826c583989aebe9568e000448968d29213f648ac6efce"}
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2"}
 }
