@@ -1,15 +1,16 @@
 # Phase 4-C — 真实内河航次与工况生成器 v3（Mission v3，T-419~T-429） Requirements
 
 Spec: `phase4-c-mission-v3`  
-Status: requirements-draft  
+Status: requirements-approved  
 Created: 2026-09-05  
+Approved: 2026-09-05（CONDITIONAL PASS + R1~R7 修正闭合）  
 Brainstorm: `./brainstorm.md`（C-D1~C-D7 + Closeout 约束 A/B/C，2026-09-05 用户逐项书面批准 + 书面收官）
 
 ## Overview
 
 Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生成逻辑 Route → Environment → Navigation Constraint → Operator → Plant（非 segment→speed）。C 是 Dataset v3 的**生产侧**：D 包已冻结消费侧契约（`docs/phase4/d_dataset_v3/c_producer_interface_contract.md` + `model/simulink_modelE_(Phase4_Physics)/config/dataset_v3_producer_schema.json` 机器权威，self_hash=7993e141…），C 必须 conforming 实现 producer schema 十一项能力族。
 
-覆盖：T-419 架构设计（先设计不写生成器）、T-420~T-426 六类工况（bridge/harbor/shallow/current/traffic/emergency/berthing-departure）、T-427 Full Voyage Template v3、T-428 条件随机生成器、T-429 可辨识性审计。
+覆盖：T-419 架构设计（先设计不写生成器）、T-420~T-426 七类任务级工况族（bridge/harbor/shallow/current/traffic/emergency/berthing-departure；berthing/departure 为 T-426 内的配对语义设计，不新增任务）、T-427 Full Voyage Template v3、T-428 条件随机生成器、T-429 可辨识性审计。
 
 本文件只把已批准的 C-D1~C-D7 与 Closeout A/B/C 翻译为 FR/NFR/AC，不新增科学裁决；尚属 design/activation 的参数以 bounded obligation 形式给出（见「不得冻结事项」节）。
 
@@ -20,19 +21,19 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 ### In Scope
 
 - T-419 Mission Generator v3 架构设计（conditional-DAG、模块边界、与 D producer schema 的接口映射；**先设计后施工**）；
-- T-420~T-426 六类工况的生成语义与实现（全部经 Model E 既有接口表达）；
+- T-420~T-426 七类任务级工况族的生成语义与实现（全部经 Model E 既有接口表达）；
 - T-427 Full Voyage Template v3（routine patrol / emergency response / heavy-current）；
 - T-428 Stochastic Mission Generator（条件随机 + 科学 seed 树 + 干预层）；
 - T-429 可辨识性审计（硬 Gate）；
 - D→C 接口必做项：producer schema 十一项能力族逐项实现（truth stream native 0.01 s、s_plan 直出、K/F issue-time snapshots、forecast provenance 六字段+quality profile、ORACLE 双存分离、五族 metadata+base_draw/seed-lineage、generation seed、OOD 配置面）；
 - 机器可读注册表：mission/route template registry、conditional-DAG config、scenario-stratum registry、compositional held-out token registry、required-identifiability contrast registry、forecast-quality profile registry；
 - C/D Interface Gate 正式版执行配合（D-15 必改项的施工在 D 侧，C 侧提供被检产物与证据）；
-- Stage A qualification 规模的生成验证（≈100 条量级，工程 nominal）。
+- MISSION_V3_PREQUALIFICATION（C 自有预资格生成验证，≈100 条量级，工程 nominal）：生成器稳定性/producer-schema 正确性/provenance/拒绝审计/strata 与 token 初步覆盖/T-429 证据/C/D Gate 就绪度。**它不是、也不替代 D/T-432 Stage A**——正式 Stage A 在 C/D Interface Gate overall=true、T-432 READY 后由 D 侧执行。
 
 ### Out of Scope
 
 - Model E 物理/控制任何改动（含 Gate 阈值、冻结参数、`.slx` 结构）；
-- T-432 formal fleet 生成与 T-435-formal 审计执行（D 包职责，C 完成后 D 侧另立项收尾；C 包交付至 C/D Gate 就绪 + Stage A 级生成验证 + T-429 PASS）；
+- T-432 Stage A qualification / Stage B formal fleet 生成与 T-435-formal 审计执行（均为 D 包职责，C 完成 + C/D Gate overall=true 后 D 侧另立项收尾；C 包交付至 C/D Gate 就绪 + MISSION_V3_PREQUALIFICATION + T-429 PASS）；
 - Phase 4-E 预测模型（T-436~T-444）与 Phase 4-F 预测式 EMS（T-445~T-455）；
 - N6/HIL/部署侧工作；
 - formal OOD 轴 A/B 数值、fleet 精确规模（T-432 activation record 冻结）；
@@ -55,19 +56,27 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 - **FR-503**: 基线法律角色——formal 生成 SHALL 使用 current frozen Model-E physical baseline v1.1 + control baseline v1.0；A2 historical v1.0 SHALL remain immutable historical regression/reference asset，不得作为 Mission-v3 formal 生成源；`meta.model_baseline_ref` SHALL 如实引用（不得混同三角色）。
 - **FR-504**: 阶段隔离——formal 产物 `fixture_kind=NONE`；任何 PILOT_ONLY/fixture 标记不得进入 formal 路径；pilot causal fixtures（persistence 等）仅用于管线验证。
 
-### B. 工况语义（T-420~T-426）
+### A2. 生产侧认识论红线（D 契约内化为 C 编号需求）
+
+- **FR-558**: `v_plan_mps` SHALL 为 planned/reference along-track SOG（计划语义），不是 realized future speed；禁止无条件复用 realized v_ref（D design R5）。
+- **FR-559**: `s_plan_m[k|t₀]` SHALL 由 t₀ 时刻已知的计划轨迹/航线信息前向积分构造（x(t₀+k|t₀)）；`s_actual,future`、realized future speed、realized future position SHALL NOT 以任何形式进入 INPUT_K。
+- **FR-560**: 位置相关的未来约束（海图水深、限速区、桥区）SHALL 经 planned route / s_plan 语义的 interval-aware sampling 取值（沿计划轨迹采样），不得沿 realized 未来位置采样。
+- **FR-561**: K/F SHALL 为 issue-major (issue_time_s (M×1), lead_s (M×30), 各列 (M×30)) 双索引快照；lead 网格严格等于冻结的 {10,20,…,300} 且与 30×10 s target 网格同源对齐；禁止从最终 future series 反推 vintage。
+- **FR-562**: formal 缺失 K/F 快照 = 契约/数据质量失败（FAILED_CONTRACT，FR-537），SHALL NOT 通过重建 future truth 填补；缺 snapshot 的窗口按 D 侧 DGN-07 规则 invalid 计数（阈值 0 ⇒ pipeline FAIL）。
+
+### B. 工况语义（T-420~T-426，七类任务级工况族）
 
 - **FR-505**: Bridge 工况 SHALL 表达为 Approach → Deceleration → Controlled bridge transit → Exit → Acceleration 段序列，重点形成出桥恢复的 propulsion transient；法规语义为"保持舵效的安全航速"（非越慢越好）；桥区几何与限速 SHALL 落 `static_constraints.bridge_zones` / `speed_limit_zones`（K 类静态约束）。
 - **FR-506**: Harbor 工况 SHALL 表达为较长低速段 + 小幅速度调整 + 低加速度 + higher relative hotel load（"港区慢速通过"语义）；与 bridge 工况 SHALL 在生成语义与 metadata 标签上明确分离。
 - **FR-507**: Shallow-water 工况 SHALL 以 water depth 为输入（经既有 `VOYAGE_WATER_DEPTH_M` 接口），navigation supervisor 决定 UKC 限速 v_limit；阻力增加 SHALL 由 Model E 既有浅水机制按水深自增（v-P 解耦）；不得绕过 Plant 直接注入 resistance multiplier 冒充浅水效应。
 - **FR-508**: 水流工况 SHALL 将 U = −1 m/s 固定值升级为 U(t) = Ū + δU(t)，δU(t) 为时间相关的 smooth/bounded 随机过程（禁白噪声）；该实现 SHALL 同时作为 INPUT_F 真实预报语义（C-D2）的真值载体。
 - **FR-509**: Traffic disturbance SHALL 表达为 cruise → slowdown → follow → recover 事件序列（前船减速/临时避让/速度恢复），作为 AI 预测难点工况。
-- **FR-510**: Emergency mission SHALL 表达为 Standby → Emergency dispatch → Rapid acceleration → High speed → Mission operation 序列（公务船属性），可同步改变 P_hotel/mission load；高速段 SHALL 使用 Model E 真实极速空间（≈14.5 kn）而非人为限速。
+- **FR-510**: Emergency mission SHALL 表达为 Standby → Emergency dispatch → Rapid acceleration → High speed → Mission operation 序列（公务船属性），可同步改变 P_hotel/mission load；高速段 SHALL 使用冻结 Model-E 可行/已验证速度包线的证据支持上段，而非人为便利限速。能力证据（继承只读引用，非 C 包选定参数）：T-412 v1.1 Gate G2 `full_power_speed_band_12.5_15.5_kn`，实测 `value_kn=14.620`（`model/simulink_modelE_(Phase4_Physics)/results/gate_result.json`，2026-09-05，band [12.5, 15.5] kn）；实现 SHALL NOT 硬编码新的 Plant 能力假设，具体计划高速区间在 design 从只读 Model-E 证据冻结。
 - **FR-511**: Berthing 与 departure SHALL 分别设计（离泊 = startup → 低速操纵 → 驶入航道加速；靠泊 = 减速 → 低速接近 → 靠泊），禁止简单镜像复用。
 
 ### C. Full Voyage Template v3（T-427）
 
-- **FR-512**: C SHALL 实现三类 full voyage template：routine patrol（departure→harbor→cruise→bridge→upstream→patrol→return→berth）、emergency response（standby→departure→rush→shallow→bridge→mission→return）、heavy-current mission（departure→cruise→upstream→shallow→work→return）；模板组合段序列在 mission/route template registry 机器可读登记；template 是 `route_template_id` / `mission_template_id` 的语义载体。
+- **FR-512**: v1 SHALL 冻结三个 mission-archetype 槽位：routine patrol、emergency response、以及第三个 work/transit/high-demand 任务原型——第三槽位的最终身份/语义服从 FR-553 正交性裁决（`HEAVY_CURRENT` 保留为工作候选名；候选段序列 departure→cruise→upstream→shallow→work→return 见路线 §4/T-427）。硬顺序：**HEAVY_CURRENT 正交性审查 → 第三模板语义冻结 → template/stratum registry 冻结**；若与 environment regime 语义正交则保留，若重复编码水文条件则按 C-D7 授权重构为环境无关任务原型。routine patrol（departure→harbor→cruise→bridge→upstream→patrol→return→berth）与 emergency response（standby→departure→rush→shallow→bridge→mission→return）段序列按路线 §4 落 registry；模板组合段序列在 mission/route template registry 机器可读登记；template 是 `route_template_id` / `mission_template_id` 的语义载体。
 
 ### D. 条件随机化架构（T-428 / C-D3）
 
@@ -78,7 +87,7 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 - **FR-517**: Resistance uncertainty v1 SHALL 为 bounded voyage/base-draw 变量：属 base draw、family 成员共享同一实现（除非 family 显式声明 resistance 为干预轴）、predictor-forbidden、可作 METADATA/ORACLE 审计。
 - **FR-518**: L4 干预 SHALL 分型：PHYSICAL_COUNTERFACTUAL（物理 truth 仅经声明干预改变，非干预 base-draw ancestry 固定）与 INFORMATION_COUNTERFACTUAL（物理/环境 truth 不变，仅信息产物/INPUT_F 改变）；family metadata SHALL 暴露 intervention type / axis / level，使 validator 能判定哪些 truth 字段必须不变。
 - **FR-519**: ID/OOD guard-band 原则：连续变量的 IID 支撑与 OOD 支撑之间 SHALL 留显式缓冲带（δ>0），缓冲带不属 IID train/val/test 也不属 formal OOD 科学评估；H/T 方向反转；正式 ID 支撑界在 design 冻结，OOD 数值走 T-432 activation 纪律。
-- **FR-520**: 禁止静默 clamp——随机抽取越出声明支撑或 Model E 验证域时 SHALL reject/resample 并记录（attempts、原因、按约束/stratum 的拒绝计数与率）；拒绝率过高 SHALL 暴露为生成设计问题（阈值留 design/Stage-A 预注册）。
+- **FR-520**: 禁止静默 clamp——随机抽取越出声明支撑或 Model E 验证域时 SHALL reject/resample 并记录（attempts、原因、按约束/stratum 的拒绝计数与率）；此类**接受前约束抽样拒绝**属正常生成行为（类别见 FR-537 的 REJECTED_SAMPLING_ELIGIBILITY，reason=SUPPORT_BOUND / PHYSICAL_DOMAIN_BOUND），不是 generator/契约缺陷；拒绝率过高 SHALL 暴露为生成设计问题（阈值留 design/C 预资格预注册）。
 
 ### E. Grouping 与 split 隔离（C-D1）
 
@@ -113,9 +122,15 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 
 - **FR-535**: formal accepted voyage SHALL 同时满足：min_duration_s=1200 ∧ min_canonical_windows=60 ∧ unexpected_invalid_canonical_windows=0（全局 AND，不分 template；N(D)=⌊(D−600)/10⌋+1）；该判据为 artifact-eligibility 判据而非独立样本量声明；全局下限 SHALL NOT 用于静默延长/修改已抽取的任务轨迹。
 - **FR-536**: 每 formal artifact SHALL 记录 expected_canonical_windows / valid_canonical_windows / invalid_canonical_windows / invalid_window_reason_counts；缺 K/F snapshot、schema 字段、forecast provenance、stream 数据 SHALL 判 producer 数据质量缺陷，不得被"剩余窗口≥60"掩盖。
-- **FR-537**: 失败分类学——SHALL 区分 REJECTED_SAMPLING_ELIGIBILITY（合法抽取但不合格：不入 formal、不占配额、记录 attempt/seed lineage/原因、仅按预注册 constrained-sampling 策略重采样）、FAILED_CONTRACT（schema/provenance 违例：slot failure）、FAILED_GENERATION（仿真/导出运行时失败：slot failure）、FAILED_PHYSICAL_DOMAIN（违反冻结物理域规则：单独记录）；契约/生成失败 SHALL NOT 静默换无关新 seed 顶替；formal retry SHALL 走同 slot/同 config/同科学 seed 策略；最终配额不符 = Gate FAIL。
+- **FR-537**: 失败/排除分类学——SHALL 区分：
+  - **REJECTED_SAMPLING_ELIGIBILITY**：接受前的正常约束抽样拒绝（合法抽取但不满足接受条件），reason 至少区分 `DURATION_BELOW_MIN`（D<1200）、`SUPPORT_BOUND`（越 ID 支撑）、`PHYSICAL_DOMAIN_BOUND`（越冻结物理域边界）；处置：不入 formal accepted、不占配额、记录 attempt/seed lineage/原因、仅按预注册 constrained-sampling seed-lineage 策略重采样；**不是 generator/契约失败**；
+  - **REJECTED_STRUCTURAL_HELDOUT**：命中组合 held-out token 的结构性剔除（intentional support design，非缺陷，FR-543）；
+  - **FAILED_CONTRACT**：schema/provenance 违例（缺 K/F 快照/缺必填字段/cutoff>issue 等）——slot failure；
+  - **FAILED_GENERATION**：仿真/导出运行时失败——slot failure；
+  - **FAILED_PHYSICAL_DOMAIN**：保留给**意外的域契约失败**——本已通过冻结生成器/域检查的候选或产物事后被发现物理非法/不一致（非正常的接受前支撑界拒绝）；
+  契约/生成/意外域失败 SHALL NOT 静默换无关新 seed 顶替；formal retry SHALL 走同 slot/同 config/同科学 seed 策略；最终配额不符 = Gate FAIL。核心不变量：**expected constrained-sampling rejection ≠ generator/domain defect**。
 - **FR-538**: formal accepted fleet 禁 D<1200 s 航次（含 <600 s 零窗口航次）；pilot/smoke 可故意含短航次/边界/拒绝用例验证管线；禁止"抽样不足→拼接延长→接受"式静默时长修补（除非延长本身是预注册生成器语义）。
-- **FR-539**: Stage A SHALL 按相关 stratum（mission template / environment regime / operator profile 等）报告 attempts/accepted/拒绝计数与率/原因，检测全局下限是否隐性重塑某一科学 stratum。
+- **FR-539**: MISSION_V3_PREQUALIFICATION SHALL 按相关 stratum（mission template / environment regime / operator profile 等）报告 attempts/accepted/拒绝计数与率/原因（含 SUPPORT_BOUND/PHYSICAL_DOMAIN_BOUND/STRUCTURAL_HELDOUT 分类），检测全局合格下限是否隐性重塑某一科学 stratum。
 - **FR-540**: Activation 纪律——design 携带 C-D4 数值；T-432 activation record 通常原样复制；无"一次免费修订"；数值变更 SHALL 在 Phase-4E 结果检视前经显式 design/activation amendment（理由+影响分析+provenance）；activation 冻结后不得为迁就生成/模型结果改值。
 
 ### K. OOD 配置面与组合 held-out（C-D5）
@@ -125,7 +140,7 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 - **FR-543**: C SHALL 建单一权威机器可读 held-out token registry（token_id/predicate_version/factor_a/factor_b/predicate_definition/predicate_scope/support_band_refs/id_action=EXCLUDE/ood_action=REQUIRE/physical_feasibility_rule）；IID 与 OOD 生成器 SHALL 消费同一谓词定义（禁手工双版本）；IID 侧命中 token 的候选 SHALL 在接受前结构性剔除并记 REJECTED_STRUCTURAL_HELDOUT（intentional support design，非缺陷，不得归入 FAILED_* 类）；OOD 侧 SHALL 定向要求谓词为真；validator SHALL 机器证明 IID 三 split 产物 P(token)=0 且 OOD 含意图 token；token 带边界在 formal 生成前预注册（显式数值或预注册生成分布分位带；禁事后用 formal-train 经验分位）。
 - **FR-544**: primary 轴 C 科学评估集 SHALL 满足 token_match_count=1 且 axis_A_ood=false ∧ axis_B_ood=false；多 token 命中标 COMPOSITIONAL_MULTI_TOKEN_STRESS（保留为附加 stress 证据，不入主指标）；同时越连续支撑且命中 token 者标 marginal/multi-axis stress set；v1 token 集固定为三个，增删/语义替换需显式 spec amendment。
 - **FR-545**: C-3 物理可行性前置——formal activation 前 SHALL 证明 C-3 在冻结 Model-E plant/control 与所选带/强度范围下具有非零可行支撑（验证域内、执行器/任务可行、无隐藏 clipping）；不得为保 C-3 修改 Model E 或放宽物理约束；若无可行测度，token 替换/删除需显式 spec amendment。
-- **FR-546**: OOD 配置面——C 产物 SHALL 输出 ood_axis / ood_def_version / physics_domain_ref；越出 Model E 已验证物理域的场景 SHALL 标 PHYSICS_EXTRAPOLATION/STRESS_SET，不混入 OOD 指标；组合 held-out SHALL 预注册并在 IID 生成前结构性排除（禁事后按模型表现定 held-out）；Stage A SHALL 报告剔除前后计数（按 token/stratum）与剔除后边际因子覆盖。
+- **FR-546**: OOD 配置面——C 产物 SHALL 输出 ood_axis / ood_def_version / physics_domain_ref；越出 Model E 已验证物理域的场景 SHALL 标 PHYSICS_EXTRAPOLATION/STRESS_SET，不混入 OOD 指标；组合 held-out SHALL 预注册并在 IID 生成前结构性排除（禁事后按模型表现定 held-out）；MISSION_V3_PREQUALIFICATION SHALL 报告剔除前后计数（按 token/stratum）与剔除后边际因子覆盖。
 
 ### L. T-429 可辨识性审计（C-D6）
 
@@ -141,8 +156,8 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 - **FR-553**: C SHALL 建预注册机器可读 scenario_stratum_registry（scenario_stratum_id/mission_template_id/environment_regime/status∈{ACTIVE, STRUCTURAL_NOT_APPLICABLE, OUT_OF_SCIENTIFIC_SCOPE}/reason/version）；非 ACTIVE 格 SHALL 在 formal 生成前预注册并附科学/物理可辩护理由，禁事后空格化；ACTIVE 格不满足代表性要求 = 生成/设计缺陷；registry 冻结前 SHALL 完成 mission template 与 environment regime 的语义正交性检查（特别裁决 HEAVY_CURRENT 是否已编码水文条件；合法处置 = 重构为环境无关任务原型，或声明不兼容格非 ACTIVE；禁为凑九格硬做 Cartesian 完备）。
 - **FR-554**: 代表性下限——每个 ACTIVE 格 SHALL 满足 n_unique_split_groups ≥ 14（计数单位=unique split_group_id，非 voyage/view 记录；70/15/15 下约 10/2/2；floor 非统计功效声明、非强制均衡配额，formal 配额通常应超过）；不足 = STRATUM_REPRESENTATION_DEFECT → Gate FAIL；pilot 单成员 stratum 全落 train 行为 SHALL NOT 延续到 formal。
 - **FR-555**: 禁止自动/数据依赖的粗化回退（mission×regime→regime-only→template-only）；分类法粗化唯一合法路径 = evidence → 显式 design/spec amendment → 用户批准 → 冻结修订 → formal 重新生成（须 Stage-B 前且在 E 包结果使用前）；粗投影（mission/regime projection）仅作审计/报告，不替换 canonical 2D 键；组合 OOD held-out 不自动清空 stratum（格级总体与格内 held-out 区分）。
-- **FR-556**: OOD 记录 SHALL 携显式 domain metadata（dataset_domain=OOD、ood_axis、ood_token_id 如适用）；仅 dataset_domain==IID 记录入 IID 70/15/15 stratum-aware splitter；OOD 记录的 scenario_stratum_id 仅为审计参照；格内 direction/operator/traffic 覆盖 SHALL 在 Stage A/formal 报告（合法条件排除不算失败，但不对称须可见且与预注册 DAG 一致）。
-- **FR-557**: Stage-A stratum 审计 SHALL 报告：registry status、attempted base draws、accepted unique split groups、voyage/view 计数、family-size 分布、投影 train/val/test 组数、direction/operator 覆盖、structural-heldout 与 eligibility 拒绝计数；ACTIVE 格 ≥14 组方可支撑 Stage-B activation 提案；formal fleet 规模 SHALL 从冻结分类法/配额推导（联合满足 stratum floor、family 倍数、IID/OOD 配额、C-D5 边际覆盖义务），不得拍通用区间。
+- **FR-556**: OOD 记录 SHALL 携显式 domain metadata（dataset_domain=OOD、ood_axis、ood_token_id 如适用）；仅 dataset_domain==IID 记录入 IID 70/15/15 stratum-aware splitter；OOD 记录的 scenario_stratum_id 仅为审计参照；格内 direction/operator/traffic 覆盖 SHALL 在预资格/formal 报告（合法条件排除不算失败，但不对称须可见且与预注册 DAG 一致）。
+- **FR-557**: MISSION_V3_PREQUALIFICATION SHALL 产出**实际执行的机器可读 stratum 审计报告**（非仅存在检查器）：对每个候选/注册格报告 registry status、attempted base draws、accepted unique split groups、voyage/view 计数、family-size 分布、投影 train/val/test 组数、direction/operator 覆盖、structural-heldout 与 eligibility/support/domain 拒绝计数、当前样本对 14 组下限的满足情况；预资格 SHALL NOT 宣称最终 formal Stage-B 配额已满足——「∀ ACTIVE 格 n_unique_split_groups≥14」的最终义务留在 D/T-432 qualification/activation 链（Stage B 前约束）；formal fleet 规模 SHALL 从冻结分类法/配额推导（联合满足 stratum floor、family 倍数、IID/OOD 配额、C-D5 边际覆盖义务），不得拍通用区间。
 
 ## Non-Functional Requirements
 
@@ -157,21 +172,22 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 ## Acceptance Criteria
 
 - [ ] **AC-433**: T-419 架构设计交付——Mission Generator v3 架构文档（conditional-DAG、L0~L4 层语义、模块边界、与 producer schema 的接口映射、全部机器可读 registry 清单）落库并经用户批准（先设计后施工）。
-- [ ] **AC-434**: 工况与模板实现——T-420~T-426 六类工况 + T-427 三模板在 Model E 零改动下生成并仿真成功（机器可读结果）；每工况/模板有确定性复跑证据（同 seed 同结果）。
+- [ ] **AC-434**: 工况与模板实现——T-420~T-426 七类任务级工况族 + T-427 三模板在 Model E 零改动下生成并仿真成功（机器可读结果）；每工况/模板有确定性复跑证据（同 seed 同结果）。
 - [ ] **AC-435**: Producer schema 十一项能力落地——C 产物经 `validate_contracts --producer-schema` PASS + C/D Interface Gate 正式版（含 D-15 必改项）overall=true（FR-501/526~531/535~536/541~546）。
-- [ ] **AC-436**: 因果与隔离负向验证——注入缺陷全部正确检出：future-truth 冒充 INPUT_F、realized future 冒充 s_plan、simulator-latent-privileged 预报源、未声明跨 split_group truth 复用、GOOD/DEGRADED truth 漂移、PILOT_ONLY 混入 formal、FORBIDDEN/ORACLE 越权入 view（FR-524/526~533/504）。
+- [ ] **AC-436**: 因果与隔离负向验证——注入缺陷全部正确检出：future-truth 冒充 INPUT_F、realized future 冒充 s_plan/v_plan（FR-558/559）、沿 realized 未来位置取位置约束（FR-560）、lead 网格偏移或 vintage 反推（FR-561）、formal 缺快照被静默填补（FR-562）、simulator-latent-privileged 预报源、未声明跨 split_group truth 复用、GOOD/DEGRADED truth 漂移、PILOT_ONLY 混入 formal、FORBIDDEN/ORACLE 越权入 view（FR-524/526~533/504/558~562）。
 - [ ] **AC-437**: T-429 可辨识性 Gate overall PASS——required contrast registry 全对比双度量（SBD 分离比 + split-grouped 探针 BA）PASS，group-level 推断与混杂控制证据落库（FR-547~551）。
 - [ ] **AC-438**: Seed tree 与生成栈身份——同 seed lineage+同配置两跑科学产物 payload hash 一致；INFORMATION counterfactual 成员 truth hash 相同；qualified generation-stack 十项身份机器可审计（FR-532/534/529）。
-- [ ] **AC-439**: Strata/OOD 审计——scenario_stratum_registry 冻结（含 HEAVY_CURRENT 正交性裁决记录）；Stage-A 审计报告全项（FR-557）；ACTIVE 格 split-group 下限验证机制就绪（N_grp≥14 检查存在且 fail-closed）；token registry 双向谓词一致性机器校验（FR-543）。
+- [ ] **AC-439**: Strata/OOD 审计——scenario_stratum_registry 冻结（含 HEAVY_CURRENT 正交性裁决记录，硬顺序 FR-512）；MISSION_V3_PREQUALIFICATION 的机器可读 stratum 审计报告实际产出且全项（FR-557），N_grp≥14 检查机制存在且 fail-closed 被实证执行；**预资格不宣称 Stage-B 配额已满足**——ACTIVE 格 14 组下限的最终满足留 D/T-432 qualification/activation 链；token registry 双向谓词一致性机器校验（FR-543）。
 - [ ] **AC-440**: 归档与卫生——README 两级同步、绝对路径扫描零命中、D 侧接口文档（c_producer_interface_contract）标注 C 实现完成状态；C→Phase4 PR 创建交用户审批。
 
 ## Edge Cases
 
 - 航次生成失败（FAILED_GENERATION/FAILED_CONTRACT）：slot failure 记录 + 同 seed 策略 retry，禁静默换 seed（FR-537）；
 - 合法抽取但 D<1200：REJECTED_SAMPLING_ELIGIBILITY，重采样须预注册策略+审计（FR-537/538）；
-- 随机实现越出 ID 支撑/物理域：reject/resample+计数，禁 clamp（FR-520）；
-- 组合 token 命中：REJECTED_STRUCTURAL_HELDOUT（intentional，非缺陷）（FR-543）；
-- 某 stratum 拒绝率异常高：生成设计问题暴露，Stage-A 报告（FR-539/557）；
+- 随机实现越出 ID 支撑/冻结物理域边界：REJECTED_SAMPLING_ELIGIBILITY（reason=SUPPORT_BOUND/PHYSICAL_DOMAIN_BOUND）+ reject/resample+计数，禁 clamp——正常约束抽样拒绝，非缺陷（FR-520/537）；
+- 本已通过冻结检查的候选/产物事后发现物理非法：FAILED_PHYSICAL_DOMAIN（意外域契约失败，slot failure）（FR-537）；
+- 组合 token 命中：REJECTED_STRUCTURAL_HELDOUT（intentional，非缺陷）（FR-543/537）；
+- 某 stratum 拒绝率异常高：生成设计问题暴露，预资格报告（FR-539/557）；
 - T-429 证据不足：INSUFFICIENT_IDENTIFIABILITY_EVIDENCE fail-closed（FR-547）；
 - 两工况确证物理等价：spec amendment 路径，禁静默并族（FR-551）；
 - forecast source_cutoff>issue 或 provenance class 非法：validator 拒收（FR-530/526）。
@@ -186,7 +202,7 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 
 ## Requirements 中不得冻结的事项（bounded design/activation obligations）
 
-以下事项本文件只冻结义务与法律地位，具体值由 design / Stage-A 预注册 / T-432 activation 冻结，且 SHALL NOT 从 Phase-4E 模型结果回调：
+以下事项本文件只冻结义务与法律地位，具体值由 design / C 预资格预注册 / T-432 activation 冻结，且 SHALL NOT 从 Phase-4E 模型结果回调：
 
 1. current/H-T 的 IID 支撑界数值与 guard-band δ（design 冻结；OOD 数值仍走 activation）；
 2. HIGH_ID_BAND / LOW_ID_BAND 边界（formal 生成前预注册）；
@@ -194,8 +210,8 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 4. 环境过程（δU、水位）具体参数与 traffic 过程族/细节（design）；
 5. T-429 诊断切片时长/边界缓冲/stride、H1 探针特征编码、R_min/A_min、group-bootstrap 置信规则（design，Gate 首跑前冻结）；
 6. required_identifiability_contrast_registry 完整清单与每对比 nuisance controls（design）；
-7. 轴 C 边际覆盖下限（design/activation 预注册）；
-8. Stage-A 拒绝率合格阈值（design/Stage-A 预注册）；
+7. 轴 C 边际覆盖下限（design/C 预资格预注册）；
+8. 拒绝率合格阈值（design/C 预资格预注册）；
 9. scenario_stratum_registry active/non-active 格清单（design；HEAVY_CURRENT 正交性裁决为其冻结前置）；
 10. seed 派生/hash/substream 算法与 qualified-stack 复合 hash 实现（design）；
 11. formal fleet 精确规模与配额（T-432 activation record，由冻结分类法推导）；
@@ -210,3 +226,4 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 | 日期 | 修订 | 来源 |
 |---|---|---|
 | 2026-09-05 | requirements 初稿（C-D1~C-D7 + Closeout A/B/C 翻译） | 本 session |
+| 2026-09-05 | requirements 批准（CONDITIONAL PASS + R1~R7 闭合）：R1 T-420~T-426 更正为七类任务级工况族；R2 FR-512 改三 mission-archetype 槽位制（第三槽位服从 FR-553 正交性裁决，硬顺序冻结）；R3 C 自有 ≈100 规模生成验证更名 MISSION_V3_PREQUALIFICATION（与 D/T-432 Stage A 法律分离）；R4 预资格须实际产出机器可读 stratum 审计、14 组下限最终义务留 T-432 链；R5 失败分类学拆分——接受前约束抽样拒绝（SUPPORT_BOUND/PHYSICAL_DOMAIN_BOUND）≠ 意外域契约失败（FAILED_PHYSICAL_DOMAIN）；R6 生产侧认识论红线提升为 FR-558~562（v_plan/s_plan 计划语义、禁 realized future 入 K、interval-aware 约束采样、issue-major 快照、缺快照=FAILED_CONTRACT）；R7 FR-510 极速值补上游证据（T-412 v1.1 G2 value_kn=14.620，继承只读引用） | 用户 requirements gate 评审 |
