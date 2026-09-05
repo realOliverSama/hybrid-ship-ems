@@ -166,7 +166,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——OU 平稳性/自相关与 τ 一致；prehistory 长度 ≥1800 s；越界实现必 reject 且计数；往返段共享同一流实现（R1 不变量）
   - Completion evidence: 单测 PASS
 
-- [ ] 10. 工况语义与计划层（T-420~T-427 施工核心）
+- [x] 10. 工况语义与计划层（T-420~T-427 施工核心）
   - ID: T-010
   - Requirement(s): FR-505~512, FR-515；Design: DGN-01/02
   - 路线映射: T-420 / T-421 / T-422 / T-425 / T-426 / T-427
