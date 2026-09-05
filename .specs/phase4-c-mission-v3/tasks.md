@@ -190,7 +190,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——编译产物字段完备性对照既有 SCN schema；hotel 标量 = plan+δ 恒等式；水深 = h_chart+ΔWL 恒等式；注入白名单覆盖检查
   - Completion evidence: 单测 PASS + Model E 零改动 sha256 快照比对
 
-- [ ] 12. 因果预报器（GOOD/DEGRADED）
+- [x] 12. 因果预报器（GOOD/DEGRADED）
   - ID: T-012
   - Requirement(s): FR-526~531；Design: DGN-06（R4/R5）
   - 路线映射: T-423（预报语义载体）
