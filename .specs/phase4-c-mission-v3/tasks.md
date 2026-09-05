@@ -154,7 +154,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——同 lineage 同实现 / 异分支独立 / 构造碰撞必须检出 FAIL / digest 登记完整
   - Completion evidence: 单测 PASS 记录
 
-- [ ] 9. 环境真值生成（河流坐标 OU + prehistory + 水位偏移 + 交通）
+- [x] 9. 环境真值生成（河流坐标 OU + prehistory + 水位偏移 + 交通）
   - ID: T-009
   - Requirement(s): FR-508, FR-513, FR-514, FR-520；Design: DGN-03（R1）/04/06（R5）
   - 路线映射: T-423 / T-424
