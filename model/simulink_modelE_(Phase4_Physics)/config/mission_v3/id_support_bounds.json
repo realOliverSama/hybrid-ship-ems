@@ -1,0 +1,49 @@
+{
+  "schema": "mission_v3_id_support_bounds_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "axis_semantics": "adverse/following 支撑界作用于 DGN-03 R1 的派生沿迹相对流分量（非河流坐标原始值）：U_alongtrack = ±U_river，符号由段方向（heading）派生；H/T = 有效水深/吃水，H_effective = h_chart + ΔWL（DGN-06 R4）",
+  "axes": {
+    "adverse_current": {
+      "quantity": "alongtrack relative current magnitude, adverse heading",
+      "unit": "m/s",
+      "direction": "HIGH_IS_OOD",
+      "iid_support": {"min": 0.0, "min_inclusive": true, "max": 1.8, "max_inclusive": true},
+      "guard_band": {"min": 1.8, "min_inclusive": false, "max": 2.0, "max_inclusive": true},
+      "ood_activation_candidate": {"min": 2.0, "min_inclusive": false, "max": 2.8, "max_inclusive": true},
+      "ood_status": "ACTIVATION_CANDIDATE",
+      "ood_freeze_authority": "T-432 activation"
+    },
+    "following_current": {
+      "quantity": "alongtrack relative current magnitude, following heading",
+      "unit": "m/s",
+      "direction": "HIGH_IS_OOD",
+      "iid_support": {"min": 0.0, "min_inclusive": true, "max": 1.5, "max_inclusive": true},
+      "guard_band": {"min": 1.5, "min_inclusive": false, "max": 1.8, "max_inclusive": true},
+      "ood_activation_candidate": {"min": 1.8, "min_inclusive": false, "max": 2.8, "max_inclusive": true},
+      "ood_status": "ACTIVATION_CANDIDATE",
+      "ood_freeze_authority": "T-432 activation"
+    },
+    "ht_ratio": {
+      "quantity": "H/T = effective water depth / draft",
+      "unit": "dimensionless",
+      "direction": "LOW_IS_OOD",
+      "iid_support": {"min": 1.5, "min_inclusive": true},
+      "guard_band": {"min": 1.35, "min_inclusive": true, "max": 1.5, "max_inclusive": false},
+      "ood_activation_candidate": {"min": 1.2, "min_inclusive": false, "max": 1.35, "max_inclusive": false},
+      "domain_floor": 1.2,
+      "domain_note": "轴 B 域下限 1.2 = Model E E05 clamp 界；E05 验证域 H/T∈{3.0,2.7,2.0,1.6,1.4,1.2}（T-412，单调零违例）；轴 B 必须留经验证的 Model-E 域内（>1.2）",
+      "ood_status": "ACTIVATION_CANDIDATE",
+      "ood_freeze_authority": "T-432 activation"
+    }
+  },
+  "joint_feasibility_rule": {
+    "rule_id": "DGN-05-R2",
+    "statement": "边际界内不代表笛卡尔组合均可行；formal 接受判据 = inside_marginal_ID_support ∩ inside_joint_ModelE_feasible_set；联合可行性规则覆盖维度（适用时）：planned SOG/速度意图 × mission archetype × 段角色 × 沿迹相对流分量 × H/T × 既有执行器/Plant 约束",
+    "obligation": "冻结 ID 包线前 SHALL 执行只读可行性矩阵扫描（重点：高计划速度段 × 高 adverse 流候选组合——对照 T-412 G2 功率/速度包线证据；read-only，禁改 Model E 参数）；不得靠过量 reject/resample 掩盖不可行的支撑设计"
+  },
+  "boundary_sanity_obligation": "若 1.50/1.35 边界保留在最终 design，design 收官前 SHALL 对边界点做只读 sanity 检查（H/T=1.50/1.35 处的阻力/功率域内行为，read-only bench；DGN-05 R3）",
+  "guard_band_principle": "delta > 0：guard band 非空；guard band 不属 IID 支撑也不属 formal OOD（FR-519）；formal OOD 数值冻结权属 T-432 activation，本文件 OOD 数值一律 ACTIVATION_CANDIDATE",
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8"}
+}

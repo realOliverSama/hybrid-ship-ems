@@ -54,7 +54,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
 
 ## Phase 0 — 注册表与架构（T-419）
 
-- [ ] 1. 生成侧注册表六件 + validator
+- [x] 1. 生成侧注册表六件 + validator
   - ID: T-001
   - Requirement(s): FR-512, FR-513, FR-514, FR-519, FR-528, FR-532；Design: DGN-02/03/04/05/06/07
   - 路线映射: T-427（模板槽位）/ T-428（DAG/seed 策略）

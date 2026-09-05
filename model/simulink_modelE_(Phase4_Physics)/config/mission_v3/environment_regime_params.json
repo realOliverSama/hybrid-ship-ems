@@ -1,0 +1,75 @@
+{
+  "schema": "mission_v3_environment_regime_params_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "regimes": {
+    "NORMAL": {
+      "description_zh": "常水期",
+      "u_river_mag": {"distribution": "TRUNCATED_NORMAL", "mu": 0.5, "sigma": 0.3, "lower": 0},
+      "delta_u": {"tau_s": 900, "sigma_mps": 0.1},
+      "water_level_offset": {"distribution": "TRUNCATED_NORMAL", "mu": 0.0, "sigma": 0.5, "unit": "m"}
+    },
+    "FLOOD": {
+      "description_zh": "洪水期",
+      "u_river_mag": {"distribution": "TRUNCATED_NORMAL", "mu": 1.2, "sigma": 0.4, "lower": 0},
+      "delta_u": {"tau_s": 900, "sigma_mps": 0.2},
+      "water_level_offset": {"distribution": "TRUNCATED_NORMAL", "mu": 1.0, "sigma": 0.5, "unit": "m"}
+    },
+    "DRY": {
+      "description_zh": "枯水期",
+      "u_river_mag": {"distribution": "TRUNCATED_NORMAL", "mu": 0.1, "sigma": 0.1, "lower": 0},
+      "delta_u": {"tau_s": 900, "sigma_mps": 0.08},
+      "water_level_offset": {"distribution": "TRUNCATED_NORMAL", "mu": -0.8, "sigma": 0.4, "unit": "m"}
+    }
+  },
+  "ou_process": {
+    "form": "Ornstein-Uhlenbeck (river coordinate)",
+    "sde": "dX = -(X/tau) dt + sigma * sqrt(2/tau) dW",
+    "tau_s": 900,
+    "tau_note": "tau_u = 900 s 全 regime（DGN-04 冻结候选）",
+    "sigma_per_regime_mps": {"NORMAL": 0.1, "FLOOD": 0.2, "DRY": 0.08},
+    "coordinate": "河流坐标（下游为正，DGN-03 R1）；scenario_compile 按段方向合成带符号沿迹时间序列，往返段共享同一实现",
+    "injection": {
+      "interface": "时间模流场接口（current_time_s / current_value_mps）",
+      "grid_s": 1,
+      "hold": "ZOH",
+      "interp_discipline": "From Workspace Interpolate off 纪律"
+    },
+    "boundedness": {
+      "mechanism": "reject/resample（id_support_bounds 支撑界）",
+      "clamp_forbidden": true,
+      "ref": "FR-520 / DGN-04：禁 clamp"
+    }
+  },
+  "traffic": {
+    "event_process": "POISSON",
+    "rate_per_hour": {
+      "BRIDGE": {"NORMAL": 6, "FLOOD": 5, "DRY": 6},
+      "HARBOR": {"NORMAL": 6, "FLOOD": 5, "DRY": 6},
+      "OPEN_WATER": {"NORMAL": 2, "FLOOD": 1.5, "DRY": 2},
+      "SHOAL": {"NORMAL": 2, "FLOOD": 1.5, "DRY": 2}
+    },
+    "rate_note": "主 Agent 提案候选：λ 条件于 regime×reach，桥/港段高",
+    "event_duration_s": {"distribution": "UNIFORM", "low": 60, "high": 180},
+    "speed_ratio": {"distribution": "UNIFORM", "low": 0.5, "high": 0.8},
+    "semantics": "事件 = 前船 slowdown→follow→recover（duration~U[60,180] s、speed ratio~U[0.5,0.8]）；作用于计划层（operator 响应前船），非直接改 Plant（DGN-04）"
+  },
+  "chart_depth_by_reach": {"OPEN_WATER": 20.0, "BRIDGE": 10.0, "HARBOR": 8.0, "SHOAL": 4.5},
+  "chart_depth_note": "海图水深（m，主 Agent 提案候选）；与 DGN-05 H/T 域下限 1.2/1.35/1.5 的算术关系是 T-004/T-005 证据对象（H_effective = h_chart + ΔWL）",
+  "notes": {
+    "dgn04_frozen_candidates": [
+      "delta_u tau_s=900（全 regime）",
+      "delta_u sigma_mps：NORMAL 0.1 / FLOOD 0.2 / DRY 0.08",
+      "OU 过程形式与时间模流场注入纪律（1 s 网格 ZOH、Interpolate off、reject/resample 禁 clamp）",
+      "traffic：Poisson 到达、事件语义 slowdown→follow→recover、duration~U[60,180] s、speed ratio~U[0.5,0.8]"
+    ],
+    "proposal_candidates": [
+      "u_river_mag mu/sigma（三 regime，lower=0 截断）",
+      "water_level_offset mu/sigma（三 regime，单位 m）",
+      "traffic rate_per_hour 二维表",
+      "chart_depth_by_reach 四值"
+    ]
+  },
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "8262a84188385c707f3826c583989aebe9568e000448968d29213f648ac6efce"}
+}

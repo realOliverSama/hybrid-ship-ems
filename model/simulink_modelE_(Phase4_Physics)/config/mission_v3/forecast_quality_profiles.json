@@ -1,0 +1,51 @@
+{
+  "schema": "mission_v3_forecast_quality_profiles_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "prehistory_s": 1800,
+  "prehistory_note": "R5 Path A：环境过程自 t=-1800 s 起演化，航次 truth 从 t=0 起计；prehistory 属 I_{<=t0} 的合法成员，provenance 记录 forecast_prehistory_s=1800；source_cutoff 可为负值仍满足 <= issue_time 不变量（不得冻结其因果源历史不存在的 lag）",
+  "provenance": {
+    "generator_id": "mission_v3_env_forecast",
+    "provenance_class_formal": "CAUSAL_GENERATOR",
+    "note": "formal class 仅 CAUSAL_GENERATOR（FIXTURE_CAUSAL_STUB 仅限 pilot，ORACLE_DERIVED 永拒收，DGN-06）"
+  },
+  "observability_whitelist": ["OBSERVED", "CAUSALLY_ESTIMATED", "STATIC_KNOWN_PARAMETER", "PREDECLARED_MODEL_PARAMETER"],
+  "observability_forbidden": ["FUTURE_TRUTH", "ORACLE_STATE", "SIMULATOR_LATENT_PRIVILEGED"],
+  "profiles": {
+    "GOOD_V1": {
+      "description_zh": "一致因果预报（部署可测源）",
+      "u_forecast": {
+        "formula": "u_fcst(t0+h|t0) = U_reach_mean + (u_obs(t0) - U_reach_mean) * exp(-h/tau_u)",
+        "u_obs_source_class": "OBSERVED",
+        "u_obs_definition": "u_obs(t0) = U_alongtrack(t0)（R1 派生沿迹相对流分量在 issue 时刻的观测）",
+        "tau_u_s": 900,
+        "measurability_note": "流速为部署可测量（H1 列），OBSERVED 类合法"
+      },
+      "wl_forecast": {
+        "source_class": "OBSERVED",
+        "definition": "wl_fcst = 部署可观测的当前水位因果估计（v1 中 ΔWL 为航次常量，预报退化为因果估计的持久化）",
+        "measurability_note": "内河水位 = 水文站/测深仪可测；禁仅因 simulator 内部可知而用真值（DGN-06 R4）"
+      },
+      "source_cutoff_lag_s": 0,
+      "source_cutoff_rule": "source_cutoff = t0（逐 issue；GOOD 可以等于 realized 常量仅当其被显式定义为部署可观测/因果可估计）"
+    },
+    "DEGRADED_V1": {
+      "description_zh": "降级因果预报（滞后 + 航次级偏置 + AR(1) 时间相关观测误差，全部仅消费 t<=t0 信息）",
+      "delta_lag_s": 1800,
+      "u_obs_at_issue": "u_obs(t0) = U(t0 - delta_lag) + b_voyage + eta(t0)",
+      "b_voyage": {"distribution": "NORMAL", "mu": 0.0, "sigma": 0.05, "unit": "m/s", "scope": "航次级偏置（voyage-level constant）"},
+      "eta_ar1": {"process": "AR(1)", "tau_s": 600, "sigma_mps": 0.05, "note": "时间相关观测误差（tau_eta=600 s，sigma_eta=0.05 m/s，DGN-06 冻结候选）"},
+      "wl_forecast": {
+        "structure": "wl 同构降级（bias 主导）",
+        "definition": "wl 侧仅声明同构 bias 主导结构（滞后 + 航次级偏置主导），细化参数冻结属 T-007 快照"
+      },
+      "source_cutoff_lag_s": 1800,
+      "source_cutoff_rule": "source_cutoff = t0 - 1800 s（可为负值仍满足 <= issue_time 不变量，R5 Path A）",
+      "seed_branch_ref": "forecast_obs_noise",
+      "iid_jitter_note": "禁逐 issue iid jitter 作为正式默认（时间相关误差为默认结构，DGN-06）"
+    }
+  },
+  "single_track_note": "FR-531：单轨 deterministic point conditional mean，无 ensemble/PDF/confidence（v1）",
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "caa77068d0093dbe48ef0b29a809407dc9123c6702cba21038b06a001b425b1f"}
+}
