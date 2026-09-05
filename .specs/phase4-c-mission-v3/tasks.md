@@ -228,7 +228,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
 
 ## Phase 3 — 导出与审计链
 
-- [ ] 15. producer 导出 + 合格判据/失败分类学
+- [x] 15. producer 导出 + 合格判据/失败分类学
   - ID: T-015
   - Requirement(s): FR-501, FR-504, FR-535~540；Design: DGN-10/15
   - 路线映射: T-430 接口的 C 侧实现
