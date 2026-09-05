@@ -1,0 +1,21 @@
+{
+  "schema": "mission_v3_scenario_stratum_registry_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "status_enum": ["ACTIVE", "STRUCTURAL_NOT_APPLICABLE", "OUT_OF_SCIENTIFIC_SCOPE"],
+  "dgn02_adjudication": "HEAVY_CURRENT 正交性裁决（design DGN-02 用户正式 APPROVED）：第三槽位重构为环境无关 WORK_MISSION，强流任务语义 = WORK_MISSION × FLOOD 组合表达；裁决后 mission_template × environment_regime 语义正交，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格（FR-553：禁为凑九格硬做 Cartesian 完备——本九格为正交性裁决后的合法完备格）",
+  "stratum_key_note": "canonical scenario_stratum 键 = mission_template_id × environment_regime（FR-552）；direction/operator profile/traffic/resistance 等为格内 metadata/variation，不入 split 键；stratum 是 base-draw/split-group 属性：base_draw_id → exactly one stratum、split_group_id → exactly one stratum（一组多格 = Gate FAIL）；L4 干预不改变 stratum",
+  "strata": [
+    {"scenario_stratum_id": "STRAT_ROUTINE_PATROL__NORMAL", "mission_template_id": "ROUTINE_PATROL", "environment_regime": "NORMAL", "status": "ACTIVE", "reason": "例行巡航 × 常水期：基线代表性工况格；DGN-02 正交性裁决：三 archetype 环境无关，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_ROUTINE_PATROL__FLOOD", "mission_template_id": "ROUTINE_PATROL", "environment_regime": "FLOOD", "status": "ACTIVE", "reason": "例行巡航 × 洪水期：高流巡航暴露格；DGN-02 正交性裁决：三 archetype 环境无关，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_ROUTINE_PATROL__DRY", "mission_template_id": "ROUTINE_PATROL", "environment_regime": "DRY", "status": "ACTIVE", "reason": "例行巡航 × 枯水期：低流低水位巡航格；DGN-02 正交性裁决：三 archetype 环境无关，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_EMERGENCY_RESPONSE__NORMAL", "mission_template_id": "EMERGENCY_RESPONSE", "environment_regime": "NORMAL", "status": "ACTIVE", "reason": "应急出动 × 常水期：应急任务基线格；DGN-02 正交性裁决：三 archetype 环境无关，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_EMERGENCY_RESPONSE__FLOOD", "mission_template_id": "EMERGENCY_RESPONSE", "environment_regime": "FLOOD", "status": "ACTIVE", "reason": "应急出动 × 洪水期：高流应急暴露格；DGN-02 正交性裁决：三 archetype 环境无关，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_EMERGENCY_RESPONSE__DRY", "mission_template_id": "EMERGENCY_RESPONSE", "environment_regime": "DRY", "status": "ACTIVE", "reason": "应急出动 × 枯水期：低水位应急格；DGN-02 正交性裁决：三 archetype 环境无关，九格全 ACTIVE，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_WORK_MISSION__NORMAL", "mission_template_id": "WORK_MISSION", "environment_regime": "NORMAL", "status": "ACTIVE", "reason": "作业任务 × 常水期：作业任务基线格；DGN-02 正交性裁决：HEAVY_CURRENT 重构为环境无关 WORK_MISSION，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_WORK_MISSION__FLOOD", "mission_template_id": "WORK_MISSION", "environment_regime": "FLOOD", "status": "ACTIVE", "reason": "作业任务 × 洪水期：强流作业语义格（HEAVY_CURRENT 正交性重构的组合表达落点 = WORK_MISSION × FLOOD）；无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"},
+    {"scenario_stratum_id": "STRAT_WORK_MISSION__DRY", "mission_template_id": "WORK_MISSION", "environment_regime": "DRY", "status": "ACTIVE", "reason": "作业任务 × 枯水期：低水位作业格；DGN-02 正交性裁决：HEAVY_CURRENT 重构为环境无关 WORK_MISSION，无 STRUCTURAL_NOT_APPLICABLE 格", "version": "1.0.0-candidate"}
+  ],
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "8db52974bad2a72b53ea88c9096890cdc739f4bc6660052798f2eead4080adc1"}
+}

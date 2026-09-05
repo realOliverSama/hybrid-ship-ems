@@ -1,12 +1,17 @@
-% test_validate_registries.m - T-001: mission_v3 registry validator test harness
+% test_validate_registries.m - T-001/T-002: mission_v3 registry validator harness
 %   Positive: real config/mission_v3 passes (record write disabled).
-%   Negative (5 classes, each on a tempdir copy via ConfigDir override, never
+%   Negative (8 classes, each on a tempdir copy via ConfigDir override, never
 %   touching the real files, never writing results/):
 %     N1 illegal enum (regime -> TIDAL)            -> FAIL
 %     N2 missing required field (operator_prior)   -> FAIL
 %     N3 tampered value with stale self_hash       -> FAIL
 %     N4 dangling params_ref (dag -> env)          -> FAIL
 %     N5 self_hash.value flipped one hex digit     -> FAIL
+%     N6 token predicate field outside whitelist   -> FAIL (PREDICATE_FIELD)
+%     N7 strata cell count violation (10th cell)   -> FAIL (STRATA)
+%     N8 contrast minimum_group_coverage != 10     -> FAIL (CONTRAST)
+%   N6/N7/N8 additionally assert the targeted issue class, so a stale-hash
+%   failure cannot mask a missing targeted check.
 %   All failures must raise error identifiers with the GATE: prefix.
 %   Run (from the Model E workspace root):
 %     matlab -batch "run('scripts/+mission_v3/tests/test_validate_registries.m')"
@@ -24,7 +29,7 @@ try
     res = mission_v3.validate_registries(ROOT, 'RecordPath', 'none');
     ok_p = isstruct(res) && (res.overall == true) && (res.n_issues == 0);
     if ok_p
-        fprintf('[T] P1 positive real config: PASS (6 files, self_hash cross-verified)\n');
+        fprintf('[T] P1 positive real config: PASS (9 files, self_hash cross-verified)\n');
     end
 catch p_err
     fprintf('[T] P1 positive real config: FAIL (%s)\n', p_err.message);
@@ -95,12 +100,57 @@ end
 n_fail = n_fail + ~ok5;
 local_cleanup(tmp5);
 
+%% N6: token predicate field outside the whitelist (realized-signal style)
+tmp6 = local_stage_tmp();
+ok6 = local_mutate(tmp6, 'heldout_token_registry.json', ...
+    '"field": "segment.u_adverse_abs", "operator": "in_band"', ...
+    '"field": "segment.p_load_realized_kw", "operator": "in_band"');
+if ok6
+    [ok6, id6] = local_expect_gate_fail_class(ROOT, tmp6, 'PREDICATE_FIELD');
+    fprintf('[T] N6 off-whitelist predicate field: %s (id=%s)\n', local_verdict(ok6), id6);
+else
+    id6 = 'MUTATION_FAILED';
+end
+n_fail = n_fail + ~ok6;
+local_cleanup(tmp6);
+
+%% N7: strata cell count violation (synthetic 10th cell inserted)
+tmp7 = local_stage_tmp();
+anchor7 = sprintf('[\n    {"scenario_stratum_id": "STRAT_ROUTINE_PATROL__NORMAL"');
+extra7 = sprintf(['[\n    {"scenario_stratum_id": "STRAT_EXTRA__EXTRA", ' ...
+    '"mission_template_id": "EXTRA", "environment_regime": "EXTRA", ' ...
+    '"status": "ACTIVE", "reason": "count violation probe", ' ...
+    '"version": "1.0.0-candidate"},\n    ' ...
+    '{"scenario_stratum_id": "STRAT_ROUTINE_PATROL__NORMAL"']);
+ok7 = local_mutate(tmp7, 'scenario_stratum_registry.json', anchor7, extra7);
+if ok7
+    [ok7, id7] = local_expect_gate_fail_class(ROOT, tmp7, 'STRATA');
+    fprintf('[T] N7 strata count violation: %s (id=%s)\n', local_verdict(ok7), id7);
+else
+    id7 = 'MUTATION_FAILED';
+end
+n_fail = n_fail + ~ok7;
+local_cleanup(tmp7);
+
+%% N8: contrast minimum_group_coverage lowered below the frozen candidate
+tmp8 = local_stage_tmp();
+ok8 = local_mutate(tmp8, 'identifiability_contrast_registry.json', ...
+    '"minimum_group_coverage": 10', '"minimum_group_coverage": 5');
+if ok8
+    [ok8, id8] = local_expect_gate_fail_class(ROOT, tmp8, 'CONTRAST');
+    fprintf('[T] N8 contrast coverage violation: %s (id=%s)\n', local_verdict(ok8), id8);
+else
+    id8 = 'MUTATION_FAILED';
+end
+n_fail = n_fail + ~ok8;
+local_cleanup(tmp8);
+
 %% summary
-fprintf('[T] test_validate_registries: %d/6 cases passed\n', 6 - n_fail);
+fprintf('[T] test_validate_registries: %d/9 cases passed\n', 9 - n_fail);
 if n_fail > 0
     error('GATE:test_validate_registries %d case(s) failed', n_fail);
 end
-fprintf('test_validate_registries: ALL PASS (6/6)\n');
+fprintf('test_validate_registries: ALL PASS (9/9)\n');
 
 %% ======================== local functions ==========================
 
@@ -113,12 +163,14 @@ function verdict = local_verdict(ok)
 end
 
 function tmp = local_stage_tmp()
-% Copy the six registry files into a fresh tempdir workspace.
+% Copy the nine registry files into a fresh tempdir workspace.
     tmp = tempname();
     mkdir(tmp);
     names = {'mission_template_registry.json', 'conditional_dag_config.json', ...
         'environment_regime_params.json', 'id_support_bounds.json', ...
-        'forecast_quality_profiles.json', 'seed_tree_policy.json'};
+        'forecast_quality_profiles.json', 'seed_tree_policy.json', ...
+        'scenario_stratum_registry.json', 'heldout_token_registry.json', ...
+        'identifiability_contrast_registry.json'};
     src = fullfile(fileparts(fileparts(fileparts(fileparts(mfilename('fullpath'))))), ...
         'config', 'mission_v3');
     for k = 1:numel(names)
@@ -184,6 +236,16 @@ function [ok, id] = local_expect_gate_fail(ROOT, tmp)
             ok = false;
             id = ident;
         end
+    end
+end
+
+function [ok, id] = local_expect_gate_fail_class(ROOT, tmp, want_class)
+% Like local_expect_gate_fail, but additionally requires the raised error
+% identifier to carry the targeted issue class (so a stale self_hash failure
+% cannot mask a missing targeted check).
+    [ok, id] = local_expect_gate_fail(ROOT, tmp);
+    if ok && ~contains(char(id), want_class)
+        ok = false;
     end
 end
 

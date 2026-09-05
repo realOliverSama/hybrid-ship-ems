@@ -46,7 +46,7 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/70_export_dataset_v3_pilot.m` | ★ **T-007 pilot producer 薄入口**（导出 `datasets_v3/pilot/*.mat` + manifest；FAILED 航次即 GATE FAIL） |
 | `scripts/71_run_dataset_v3_pilot_gate.m` | ★ **T-015 pilot Gate 薄入口**（调用 Python `run_pipeline`；`results/dataset_v3/pilot/pilot_gate_result.json` overall=true 方 PASS，标 PILOT） |
 | `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项检查；D0 为 NON-FORMAL 骨架自检） |
-| `config/mission_v3/` | ★ **C 包生成侧注册表六件**（Phase 4-C T-001，候选态 CANDIDATE；模板三 archetype / conditional-DAG 十四节点 / 环境 regime 参数 / ID 支撑界 / 预报 quality profiles / seed 树策略；各含 self_hash；详见该目录 README.md；**预测模型：无**——纯配置注册表） |
+| `config/mission_v3/` | ★ **C 包生成侧注册表九件**（Phase 4-C T-001/T-002，候选态 CANDIDATE；模板三 archetype / conditional-DAG 十四节点 / 环境 regime 参数 / ID 支撑界 / 预报 quality profiles / seed 树策略 / **scenario strata 九格 / heldout token C1~C3 / identifiability contrast 六必需+二诊断**；各含 self_hash；详见该目录 README.md；**预测模型：无**——纯配置注册表） |
 | `scripts/+mission_v3/` | ★ **C 包 Mission v3 生成器 MATLAB 包**（T-001 起建：`validate_registries.m` 注册表 validator——canonical JSON + SHA256 跨语言复算；后续 T-008~T-015 生成链函数按 DGN-01 布局增补） |
 | `scripts/+mission_v3/tests/` | C 包单测/负向 harness（`test_validate_registries.m`：正向 PASS + 五类负向注入全检出，tempdir 副本运行不触真文件） |
 | `results/mission_v3/` | C 包精选证据（T-001 `registry_validation.json` validator 记录；后续 prequal/T-429 审计 JSON 按任务增补） |

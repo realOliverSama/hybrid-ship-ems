@@ -1,0 +1,113 @@
+{
+  "schema": "mission_v3_heldout_token_registry_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效（HIGH_ID_BAND/LOW_ID_BAND 数值与 min_unique_split_groups_per_marginal=10 均为候选，activation 复核）",
+  "predicate_field_whitelist": [
+    {"field": "voyage.mission_template_id", "description": "航次级：任务模板 ID（mission_template_registry 三值；生成侧 DAG L0）"},
+    {"field": "voyage.environment_regime", "description": "航次级：环境 regime（NORMAL/FLOOD/DRY；生成侧 DAG L1）"},
+    {"field": "voyage.operator_profile", "description": "航次级：操作员画像（CALM/STANDARD/URGENT；生成侧 DAG L2）"},
+    {"field": "voyage.ht_effective", "description": "航次级：有效水深吃水比 H/T = (h_chart + ΔWL)/draft（生成侧计划量，非 realized 信号）"},
+    {"field": "segment.role", "description": "段级：段角色（mission_template_registry.segment_role_enum 实际值，小写）"},
+    {"field": "segment.reach", "description": "段级：航段类型（OPEN_WATER/BRIDGE/HARBOR/SHOAL）"},
+    {"field": "segment.direction", "description": "段级：段方向 metadata（upstream/downstream，heading 派生，DGN-03 R1）"},
+    {"field": "segment.u_adverse_abs", "description": "段级：派生沿迹相对流分量绝对值（adverse 语义，R1 派生量，非河流坐标原始值）"}
+  ],
+  "whitelist_note": "谓词白名单 = 生成侧因果 metadata 字段（DGN-11/FR-542：谓词仅消费生成侧因果 metadata）；引用白名单外任何字段（尤其 realized/simulator 输出信号：P_load、SOC、realized SOG 等）⇒ validator FAIL；token 与 contrast cohort 谓词同受本白名单约束",
+  "consumption_note": "id_action=EXCLUDE：IID 生成器拒收满足谓词的候选航次（REJECTED_STRUCTURAL_HELDOUT，intentional support design，非缺陷，FR-543）；ood_action=REQUIRE：OOD 生成器定向要求满足；IID 与 OOD 消费同一注册表文件（禁手工双版本）",
+  "role_semantics_note": "谓词 role 值引用 mission_template_registry.segment_role_enum 实际值（bridge/harbor/rush，小写）；rush 段在 T-010 计划层语义 = emergency sprint 高速段；DGN-11 语义标签 BRIDGE_PASSAGE/EMERGENCY_SPRINT 记于各 token 的 dgn11_label；后续 T-010 生成段角色 metadata 必须与此一致",
+  "marginal_coverage_note": "边际覆盖义务：每 token 的 A∧¬B 与 ¬A∧B 各 >= min_unique_split_groups_per_marginal 个 unique split groups（FR-541 边际覆盖下限；候选，activation 复核）",
+  "tokens": [
+    {
+      "token_id": "C1_BRIDGE_X_HIGH_ID_ADVERSE_CURRENT",
+      "dgn11_label": "BRIDGE_PASSAGE",
+      "predicate_version": "1.0.0-candidate",
+      "factor_a": "BRIDGE_PASSAGE",
+      "factor_b": "HIGH_ID_ADVERSE_CURRENT",
+      "predicate_scope": "generation_side_metadata_only",
+      "predicate": [
+        {"field": "segment.role", "operator": "==", "value": "bridge"},
+        {"field": "segment.u_adverse_abs", "operator": "in_band", "value": "HIGH_ID_BAND"}
+      ],
+      "support_band": {
+        "band_id": "HIGH_ID_BAND",
+        "min": 1.4,
+        "min_inclusive": true,
+        "max": 1.8,
+        "max_inclusive": true,
+        "unit": "m/s",
+        "support_relation": "HIGH_ID_BAND = adverse |U| ∈ [1.4, 1.8]（含端点）= ID 支撑上带；HIGH_ID_BAND ⊆ id_support_bounds.axes.adverse_current.iid_support [0.0, 1.8]"
+      },
+      "id_action": "EXCLUDE",
+      "ood_action": "REQUIRE",
+      "min_unique_split_groups_per_marginal": 10,
+      "ood_config_surface": {
+        "ood_axis": "adverse_current",
+        "ood_def_version": "C-D5-v1",
+        "physics_domain_ref": "ModelE validated domain (T-412 v1.1; H/T∈[1.2,…] E05)"
+      },
+      "physical_feasibility_rule": "adverse band within Model E validated domain; feasibility evidence at T-432 activation"
+    },
+    {
+      "token_id": "C2_HARBOR_X_LOW_ID_HT",
+      "dgn11_label": "HARBOR",
+      "predicate_version": "1.0.0-candidate",
+      "factor_a": "HARBOR",
+      "factor_b": "LOW_ID_HT",
+      "predicate_scope": "generation_side_metadata_only",
+      "predicate": [
+        {"field": "segment.role", "operator": "==", "value": "harbor"},
+        {"field": "voyage.ht_effective", "operator": "in_band", "value": "LOW_ID_BAND"}
+      ],
+      "support_band": {
+        "band_id": "LOW_ID_BAND",
+        "min": 1.5,
+        "min_inclusive": true,
+        "max": 2.0,
+        "max_inclusive": true,
+        "unit": "dimensionless",
+        "support_relation": "LOW_ID_BAND = H/T ∈ [1.5, 2.0]（含端点）；LOW_ID_BAND.min == id_support_bounds.axes.ht_ratio.iid_support.min（1.5）"
+      },
+      "id_action": "EXCLUDE",
+      "ood_action": "REQUIRE",
+      "min_unique_split_groups_per_marginal": 10,
+      "ood_config_surface": {
+        "ood_axis": "ht_ratio",
+        "ood_def_version": "C-D5-v1",
+        "physics_domain_ref": "ModelE validated domain (T-412 v1.1; H/T∈[1.2,…] E05)"
+      },
+      "physical_feasibility_rule": "H/T band within Model E validated domain (E05 verified domain); feasibility evidence at T-432 activation"
+    },
+    {
+      "token_id": "C3_EMERGENCY_SPRINT_X_LOW_ID_HT",
+      "dgn11_label": "EMERGENCY_SPRINT",
+      "predicate_version": "1.0.0-candidate",
+      "factor_a": "EMERGENCY_SPRINT",
+      "factor_b": "LOW_ID_HT",
+      "predicate_scope": "generation_side_metadata_only",
+      "predicate": [
+        {"field": "segment.role", "operator": "==", "value": "rush"},
+        {"field": "voyage.ht_effective", "operator": "in_band", "value": "LOW_ID_BAND"}
+      ],
+      "support_band": {
+        "band_id": "LOW_ID_BAND",
+        "min": 1.5,
+        "min_inclusive": true,
+        "max": 2.0,
+        "max_inclusive": true,
+        "unit": "dimensionless",
+        "support_relation": "LOW_ID_BAND = H/T ∈ [1.5, 2.0]（含端点）；LOW_ID_BAND.min == id_support_bounds.axes.ht_ratio.iid_support.min（1.5）"
+      },
+      "id_action": "EXCLUDE",
+      "ood_action": "REQUIRE",
+      "min_unique_split_groups_per_marginal": 10,
+      "ood_config_surface": {
+        "ood_axis": "ht_ratio",
+        "ood_def_version": "C-D5-v1",
+        "physics_domain_ref": "ModelE validated domain (T-412 v1.1; H/T∈[1.2,…] E05)"
+      },
+      "physical_feasibility_rule": "FR-545 feasibility precheck before formal activation: rush segments at low H/T must show nonzero feasible support (no domain_warning clustering, no SOP saturation); evidence recorded in prequalification report"
+    }
+  ],
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25"}
+}

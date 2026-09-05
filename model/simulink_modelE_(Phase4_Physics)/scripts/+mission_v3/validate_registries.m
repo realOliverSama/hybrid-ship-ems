@@ -4,10 +4,13 @@ function res = validate_registries(ROOT, varargin)
 %   res = mission_v3.validate_registries(ROOT)
 %   res = mission_v3.validate_registries(ROOT, 'ConfigDir', DIR, 'RecordPath', P)
 %
-% Validates the six candidate Mission v3 registries under config/mission_v3:
+% Validates the nine candidate Mission v3 registries under config/mission_v3:
 %   mission_template_registry.json / conditional_dag_config.json /
 %   environment_regime_params.json / id_support_bounds.json /
-%   forecast_quality_profiles.json / seed_tree_policy.json
+%   forecast_quality_profiles.json / seed_tree_policy.json /
+%   scenario_stratum_registry.json (T-002, DGN-13) /
+%   heldout_token_registry.json (T-002, DGN-11) /
+%   identifiability_contrast_registry.json (T-002, DGN-12)
 %
 % Checks: JSON parseable (jsondecode + strict local parser), required header
 % fields, schema names, enums, structural rules, frozen DAG node table,
@@ -58,13 +61,19 @@ function res = validate_registries(ROOT, varargin)
 
     files = {'mission_template_registry.json', 'conditional_dag_config.json', ...
         'environment_regime_params.json', 'id_support_bounds.json', ...
-        'forecast_quality_profiles.json', 'seed_tree_policy.json'};
+        'forecast_quality_profiles.json', 'seed_tree_policy.json', ...
+        'scenario_stratum_registry.json', 'heldout_token_registry.json', ...
+        'identifiability_contrast_registry.json'};
     stems = {'mission_template_registry', 'conditional_dag_config', ...
         'environment_regime_params', 'id_support_bounds', ...
-        'forecast_quality_profiles', 'seed_tree_policy'};
+        'forecast_quality_profiles', 'seed_tree_policy', ...
+        'scenario_stratum_registry', 'heldout_token_registry', ...
+        'identifiability_contrast_registry'};
     schemas = {'mission_v3_template_registry_v1', 'mission_v3_conditional_dag_config_v1', ...
         'mission_v3_environment_regime_params_v1', 'mission_v3_id_support_bounds_v1', ...
-        'mission_v3_forecast_quality_profiles_v1', 'mission_v3_seed_tree_policy_v1'};
+        'mission_v3_forecast_quality_profiles_v1', 'mission_v3_seed_tree_policy_v1', ...
+        'mission_v3_scenario_stratum_registry_v1', 'mission_v3_heldout_token_registry_v1', ...
+        'mission_v3_identifiability_contrast_registry_v1'};
     n_files = numel(files);
 
     % ---- phase 1: read + parse all six ----
@@ -155,6 +164,12 @@ function res = validate_registries(ROOT, varargin)
                 [issues, detail] = local_check_forecast(t, stem, issues, detail);
             case 'seed_tree_policy'
                 [issues, detail] = local_check_seed(t, stem, issues, detail);
+            case 'scenario_stratum_registry'
+                [issues, detail] = local_check_strata(t, stem, issues, detail);
+            case 'heldout_token_registry'
+                [issues, detail] = local_check_tokens(t, stem, issues, detail);
+            case 'identifiability_contrast_registry'
+                [issues, detail] = local_check_contrasts(t, stem, issues, detail);
         end
     end
 
@@ -167,6 +182,7 @@ function res = validate_registries(ROOT, varargin)
     end
     if have_all
         [issues, detail] = local_check_cross(trees, stems, issues, detail);
+        [issues, detail] = local_check_cross_c(trees, issues, detail);
     end
 
     % ---- phase 5: self_hash recomputation (last, so semantic defects ----
@@ -233,7 +249,7 @@ function res = validate_registries(ROOT, varargin)
 
     rec = struct();
     rec.overall = isempty(issues);
-    rec.generated_at = char(datetime('now', 'Format', 'yyyy-MM-dd''T''HH:mm:ssZZZ'));
+    rec.generated_at = char(datetime('now', 'TimeZone', 'local', 'Format', 'yyyy-MM-dd''T''HH:mm:ssZ'));
     rec.validator = fullfile('scripts', '+mission_v3', 'validate_registries.m');
     cfg_char = char(cfg_dir);
     root_char = char(ROOT);
@@ -1648,6 +1664,637 @@ function [issues, detail] = local_check_seed(t, stem, issues, detail)
     detail.(stem) = d;
 end
 
+%% ================ T-002 per-file semantic checks ====================
+
+function [issues, detail] = local_check_strata(t, stem, issues, detail)
+% T-002 / DGN-13 / FR-553: nine-cell scenario stratum registry, all ACTIVE
+% (DGN-02 orthogonality adjudication), ids STRAT_<TEMPLATE>__<REGIME>.
+    d = detail.(stem);
+    d.checks{end+1} = 'required_fields';
+    [ok, msg] = local_have(t, 'schema', 'string', 'schema');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'version', 'string', 'version');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'status', 'string', 'status');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'value_basis', 'string', 'value_basis');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    if ~isfield(t, 'self_hash') || ~strcmp(local_value_class(t.self_hash), 'object')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'missing self_hash object');
+    end
+    if ~isfield(t, 'strata')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'strata array required');
+    end
+    if ~isfield(t, 'status_enum')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'status_enum required');
+    end
+    if ~isfield(t, 'dgn02_adjudication') || ~ischar(t.dgn02_adjudication) || isempty(t.dgn02_adjudication)
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', ...
+            'dgn02_adjudication note required (FR-553 orthogonality record)');
+    end
+
+    d.checks{end+1} = 'header';
+    if isfield(t, 'version') && ~strcmp(t.version, '1.0.0-candidate')
+        issues = local_add_issue(issues, stem, 'HEADER', 'version must be 1.0.0-candidate');
+    end
+    if isfield(t, 'status') && ~strcmp(t.status, 'CANDIDATE')
+        issues = local_add_issue(issues, stem, 'HEADER', 'status must be CANDIDATE');
+    end
+
+    d.checks{end+1} = 'schema_name';
+    if isfield(t, 'schema') && ~strcmp(t.schema, 'mission_v3_scenario_stratum_registry_v1')
+        issues = local_add_issue(issues, stem, 'SCHEMA_NAME', 'unexpected schema name');
+    end
+
+    d.checks{end+1} = 'status_enum';
+    se = local_str_cell(t.status_enum);
+    want_se = {'ACTIVE', 'STRUCTURAL_NOT_APPLICABLE', 'OUT_OF_SCIENTIFIC_SCOPE'};
+    if ~isempty(setdiff(se, want_se)) || ~isempty(setdiff(want_se, se))
+        issues = local_add_issue(issues, stem, 'ENUM', ...
+            'status_enum deviates from FR-553 triple');
+    end
+
+    d.checks{end+1} = 'strata_cells';
+    want_ids = local_strata_ids();
+    want_tpl = {'ROUTINE_PATROL', 'EMERGENCY_RESPONSE', 'WORK_MISSION'};
+    want_reg = {'NORMAL', 'FLOOD', 'DRY'};
+    cells = local_as_list(t.strata, 'strata');
+    if numel(cells) ~= 9
+        issues = local_add_issue(issues, stem, 'STRATA', ...
+            sprintf('exactly 9 strata cells expected, got %d (DGN-02: full 3x3 grid, no STRUCTURAL_NOT_APPLICABLE)', ...
+            numel(cells)));
+    end
+    got_ids = cell(1, numel(cells));
+    for a = 1:numel(cells)
+        c = cells{a};
+        cid = '';
+        if isfield(c, 'scenario_stratum_id') && ischar(c.scenario_stratum_id)
+            cid = c.scenario_stratum_id;
+        elseif isfield(c, 'scenario_stratum_id')
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: scenario_stratum_id must be a string', a));
+        else
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: scenario_stratum_id required', a));
+        end
+        got_ids(a) = {cid};
+        if ~isfield(c, 'mission_template_id') || ~isfield(c, 'environment_regime') ...
+                || ~isfield(c, 'status') || ~isfield(c, 'reason') || ~isfield(c, 'version')
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: mission_template_id/environment_regime/status/reason/version required', a));
+            continue;
+        end
+        tpl = c.mission_template_id;
+        reg = c.environment_regime;
+        if ~ischar(tpl) || ~ischar(reg)
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: template/regime must be strings', a));
+            continue;
+        end
+        if ~ismember(tpl, want_tpl)
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: template not in frozen DGN-02 triple: %s', a, tpl));
+        end
+        if ~ismember(reg, want_reg)
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: regime not in NORMAL/FLOOD/DRY: %s', a, reg));
+        end
+        want_cid = ['STRAT_', tpl, '__', reg];
+        if ~strcmp(cid, want_cid)
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %d: id deviates from STRAT_<TEMPLATE>__<REGIME> pattern (expected %s, got %s)', ...
+                a, want_cid, cid));
+        end
+        if ~strcmp(c.status, 'ACTIVE')
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %s: status must be ACTIVE (DGN-02 adjudication), got %s', cid, c.status));
+        end
+        if ~ischar(c.reason) || isempty(c.reason)
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %s: reason must be a non-empty string', cid));
+        end
+        if ~strcmp(c.version, '1.0.0-candidate')
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                sprintf('stratum %s: version must be 1.0.0-candidate', cid));
+        end
+    end
+    if numel(got_ids) == 9
+        if ~isempty(setdiff(got_ids, want_ids)) || ~isempty(setdiff(want_ids, got_ids))
+            issues = local_add_issue(issues, stem, 'STRATA', ...
+                'stratum id set deviates from frozen 3x3 grid');
+        end
+    end
+    detail.(stem) = d;
+end
+
+function ids = local_strata_ids()
+% The nine expected stratum ids (3 templates x 3 regimes, DGN-02/DGN-13).
+    tpl = {'ROUTINE_PATROL', 'EMERGENCY_RESPONSE', 'WORK_MISSION'};
+    reg = {'NORMAL', 'FLOOD', 'DRY'};
+    ids = cell(1, 9);
+    k = 0;
+    for i = 1:numel(tpl)
+        for j = 1:numel(reg)
+            k = k + 1;
+            ids{k} = ['STRAT_', tpl{i}, '__', reg{j}];
+        end
+    end
+end
+
+function [lbl, band_id, axis] = local_token_expect(tid)
+% Frozen per-token expectations (DGN-11 / C-D5 machine names).
+    lbl = '';
+    band_id = '';
+    axis = '';
+    if strcmp(tid, 'C1_BRIDGE_X_HIGH_ID_ADVERSE_CURRENT')
+        lbl = 'BRIDGE_PASSAGE';
+        band_id = 'HIGH_ID_BAND';
+        axis = 'adverse_current';
+    elseif strcmp(tid, 'C2_HARBOR_X_LOW_ID_HT')
+        lbl = 'HARBOR';
+        band_id = 'LOW_ID_BAND';
+        axis = 'ht_ratio';
+    elseif strcmp(tid, 'C3_EMERGENCY_SPRINT_X_LOW_ID_HT')
+        lbl = 'EMERGENCY_SPRINT';
+        band_id = 'LOW_ID_BAND';
+        axis = 'ht_ratio';
+    end
+end
+
+function wl = local_token_whitelist()
+% Frozen predicate field whitelist (DGN-11 / FR-542: generation-side causal
+% metadata only; realized/simulator output signals are forbidden).
+    wl = {'voyage.mission_template_id', 'voyage.environment_regime', ...
+        'voyage.operator_profile', 'voyage.ht_effective', ...
+        'segment.role', 'segment.reach', 'segment.direction', ...
+        'segment.u_adverse_abs'};
+end
+
+function [issues, detail] = local_check_tokens(t, stem, issues, detail)
+% T-002 / DGN-11 / FR-541~546: three held-out tokens with structured
+% whitelist-constrained predicates and candidate support bands.
+    d = detail.(stem);
+    d.checks{end+1} = 'required_fields';
+    [ok, msg] = local_have(t, 'schema', 'string', 'schema');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'version', 'string', 'version');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'status', 'string', 'status');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'value_basis', 'string', 'value_basis');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    if ~isfield(t, 'self_hash') || ~strcmp(local_value_class(t.self_hash), 'object')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'missing self_hash object');
+    end
+    if ~isfield(t, 'predicate_field_whitelist') || ~iscell(t.predicate_field_whitelist)
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', ...
+            'predicate_field_whitelist array of {field, description} entries required');
+    end
+    if ~isfield(t, 'tokens')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'tokens array required');
+    end
+
+    d.checks{end+1} = 'header';
+    if isfield(t, 'version') && ~strcmp(t.version, '1.0.0-candidate')
+        issues = local_add_issue(issues, stem, 'HEADER', 'version must be 1.0.0-candidate');
+    end
+    if isfield(t, 'status') && ~strcmp(t.status, 'CANDIDATE')
+        issues = local_add_issue(issues, stem, 'HEADER', 'status must be CANDIDATE');
+    end
+
+    d.checks{end+1} = 'schema_name';
+    if isfield(t, 'schema') && ~strcmp(t.schema, 'mission_v3_heldout_token_registry_v1')
+        issues = local_add_issue(issues, stem, 'SCHEMA_NAME', 'unexpected schema name');
+    end
+
+    d.checks{end+1} = 'predicate_whitelist';
+    wl = local_token_whitelist();
+    if isfield(t, 'predicate_field_whitelist') && iscell(t.predicate_field_whitelist)
+        wl_entries = t.predicate_field_whitelist;
+        wl_keys = cell(1, numel(wl_entries));
+        for j = 1:numel(wl_entries)
+            entry = wl_entries{j};
+            key = '';
+            if isstruct(entry) && isfield(entry, 'field') && ischar(entry.field)
+                key = entry.field;
+            else
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('whitelist entry %d needs a string field', j));
+            end
+            wl_keys(j) = {key};
+            if ~isstruct(entry) || ~isfield(entry, 'description') ...
+                    || ~ischar(entry.description) || isempty(entry.description)
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('whitelist %s: description string required', key));
+            end
+        end
+        if numel(wl_keys) ~= numel(wl) || ~isempty(setdiff(wl_keys, wl)) ...
+                || ~isempty(setdiff(wl, wl_keys))
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                'predicate_field_whitelist deviates from frozen eight-field set');
+        end
+    elseif isfield(t, 'predicate_field_whitelist')
+        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+            'predicate_field_whitelist must be an array of {field, description} entries');
+    end
+
+    d.checks{end+1} = 'tokens';
+    toks = local_as_list(t.tokens, 'tokens');
+    want_ids = {'C1_BRIDGE_X_HIGH_ID_ADVERSE_CURRENT', 'C2_HARBOR_X_LOW_ID_HT', ...
+        'C3_EMERGENCY_SPRINT_X_LOW_ID_HT'};
+    role_vals = {'bridge', 'harbor', 'rush'};
+    if numel(toks) ~= 3
+        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+            'exactly 3 tokens expected (C1/C2/C3, DGN-11 frozen triple)');
+    end
+    got_ids = cell(1, numel(toks));
+    for a = 1:numel(toks)
+        tk = toks{a};
+        tid = '';
+        if isfield(tk, 'token_id') && ischar(tk.token_id)
+            tid = tk.token_id;
+        end
+        got_ids(a) = {tid};
+        if ~ismember(tid, want_ids)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('token_id not in frozen C-D5 triple: %s', tid));
+            continue;
+        end
+        [lbl, band_id, axis] = local_token_expect(tid);
+        simple_need = {'dgn11_label', 'predicate_version', 'factor_a', ...
+            'factor_b', 'predicate_scope', 'physical_feasibility_rule'};
+        for j = 1:numel(simple_need)
+            fname = simple_need{j};
+            if ~isfield(tk, fname) || ~ischar(tk.(fname)) || isempty(tk.(fname))
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('%s: %s non-empty string required', tid, fname));
+            end
+        end
+        if isfield(tk, 'dgn11_label') && ~strcmp(tk.dgn11_label, lbl)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: dgn11_label must be %s', tid, lbl));
+        end
+        if ~isfield(tk, 'id_action') || ~strcmp(tk.id_action, 'EXCLUDE')
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: id_action must be EXCLUDE (IID generator rejects)', tid));
+        end
+        if ~isfield(tk, 'ood_action') || ~strcmp(tk.ood_action, 'REQUIRE')
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: ood_action must be REQUIRE (OOD generator requires)', tid));
+        end
+        if ~isfield(tk, 'support_band') || ~strcmp(local_value_class(tk.support_band), 'object')
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: support_band object required', tid));
+        else
+            sb = tk.support_band;
+            issues = local_check_band(sb, band_id, tid, stem, issues);
+        end
+        if ~isfield(tk, 'min_unique_split_groups_per_marginal') ...
+                || ~isnumeric(tk.min_unique_split_groups_per_marginal) ...
+                || isempty(tk.min_unique_split_groups_per_marginal) ...
+                || tk.min_unique_split_groups_per_marginal < 10
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: min_unique_split_groups_per_marginal must be numeric >= 10', tid));
+        end
+        if ~isfield(tk, 'ood_config_surface') || ~strcmp(local_value_class(tk.ood_config_surface), 'object')
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: ood_config_surface object required', tid));
+        else
+            ocs = tk.ood_config_surface;
+            if ~isfield(ocs, 'ood_axis') || ~strcmp(ocs.ood_axis, axis)
+                issues = local_add_issue(issues, stem, 'ENUM', ...
+                    sprintf('%s: ood_axis must be %s', tid, axis));
+            end
+            if ~isfield(ocs, 'ood_def_version') || ~strcmp(ocs.ood_def_version, 'C-D5-v1')
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('%s: ood_def_version must be C-D5-v1', tid));
+            end
+            if ~isfield(ocs, 'physics_domain_ref') || ~ischar(ocs.physics_domain_ref) ...
+                    || ~strncmp(ocs.physics_domain_ref, 'ModelE validated domain', 23)
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('%s: physics_domain_ref must reference the ModelE validated domain', tid));
+            end
+        end
+        if ~isfield(tk, 'predicate') || ~iscell(tk.predicate) || isempty(tk.predicate)
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: predicate must be a non-empty structured AND list', tid));
+        else
+            prd = tk.predicate;
+            for b = 1:numel(prd)
+                it = prd{b};
+                if ~isstruct(it) || ~isfield(it, 'field') || ~ischar(it.field)
+                    issues = local_add_issue(issues, stem, 'PREDICATE_FIELD', ...
+                        sprintf('%s: predicate item %d needs a string field', tid, b));
+                    continue;
+                end
+                if ~ismember(it.field, wl)
+                    issues = local_add_issue(issues, stem, 'PREDICATE_FIELD', ...
+                        sprintf('%s: predicate field outside whitelist: %s', tid, it.field));
+                end
+                if ~isfield(it, 'operator') || ~ischar(it.operator)
+                    issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                        sprintf('%s: predicate item %d needs a string operator', tid, b));
+                    continue;
+                end
+                if strcmp(it.operator, '==')
+                    if ~isfield(it, 'value') || ~ischar(it.value)
+                        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                            sprintf('%s: predicate operator == needs a string value', tid));
+                    elseif strcmp(it.field, 'segment.role') && ~ismember(it.value, role_vals)
+                        issues = local_add_issue(issues, stem, 'ENUM', ...
+                            sprintf('%s: role value not in frozen bridge/harbor/rush triple: %s', tid, it.value));
+                    end
+                elseif strcmp(it.operator, 'in_band')
+                    if ~isfield(it, 'value') || ~ischar(it.value) || ~strcmp(it.value, band_id)
+                        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                            sprintf('%s: in_band value must reference the token band %s', tid, band_id));
+                    end
+                else
+                    issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                        sprintf('%s: predicate operator must be == or in_band, got %s', tid, it.operator));
+                end
+            end
+        end
+    end
+    if numel(got_ids) == 3
+        if ~isempty(setdiff(got_ids, want_ids)) || ~isempty(setdiff(want_ids, got_ids))
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                'token id set deviates from frozen C-D5 triple');
+        end
+    end
+    detail.(stem) = d;
+end
+
+function issues = local_check_band(sb, band_id, tid, stem, issues)
+% Candidate band arithmetic (T-002 Fixed Decision 2):
+%   HIGH_ID_BAND = adverse |U| in [1.4, 1.8] closed, inside [0, 1.8]
+%   LOW_ID_BAND  = H/T in [1.5, 2.0] closed
+    if ~isfield(sb, 'band_id') || ~ischar(sb.band_id) || ~strcmp(sb.band_id, band_id)
+        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+            sprintf('%s: support_band.band_id must be %s', tid, band_id));
+    end
+    if ~isfield(sb, 'min') || ~isnumeric(sb.min) || isempty(sb.min) ...
+            || ~isfield(sb, 'max') || ~isnumeric(sb.max) || isempty(sb.max)
+        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+            sprintf('%s: support_band.min/max numeric required', tid));
+        return;
+    end
+    inc_ok = isfield(sb, 'min_inclusive') && islogical(sb.min_inclusive) && sb.min_inclusive ...
+        && isfield(sb, 'max_inclusive') && islogical(sb.max_inclusive) && sb.max_inclusive;
+    if ~inc_ok
+        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+            sprintf('%s: band endpoints must be inclusive (closed candidate band)', tid));
+    end
+    if strcmp(band_id, 'HIGH_ID_BAND')
+        if sb.min ~= 1.4 || sb.max ~= 1.8
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: HIGH_ID_BAND must be [1.4, 1.8] (DGN-11 candidate)', tid));
+        end
+        if sb.min < 0 || sb.max > 1.8
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: HIGH_ID_BAND must stay inside [0, 1.8] (adverse IID support)', tid));
+        end
+    elseif strcmp(band_id, 'LOW_ID_BAND')
+        if sb.min ~= 1.5 || sb.max ~= 2.0
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: LOW_ID_BAND must be [1.5, 2.0] (DGN-11 candidate)', tid));
+        end
+    end
+    if ~isfield(sb, 'support_relation') || ~ischar(sb.support_relation) || isempty(sb.support_relation)
+        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+            sprintf('%s: support_band.support_relation note required (id_support_bounds relation)', tid));
+    end
+end
+
+function ids = local_contrast_required_ids()
+% The six REQUIRED contrasts (DGN-12 R9 list, Design Gate frozen).
+    ids = {'SEG_BRIDGE_VS_HARBOR', 'SEG_BERTH_VS_DEPARTURE', ...
+        'DIR_UPSTREAM_VS_DOWNSTREAM', 'DEPTH_LOW_ID_VS_NORMAL_ID', ...
+        'SEG_EMERGENCY_SPRINT_VS_CRUISE', 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE'};
+end
+
+function ids = local_contrast_secondary_ids()
+% The two SECONDARY_DIAGNOSTIC contrasts (R9: mixed-axis, off the gate).
+    ids = {'SEG_HARBOR_VS_SHALLOW_CRUISE', 'SEG_BRIDGE_VS_SHALLOW_CRUISE'};
+end
+
+function [role, axis, cls_a, cls_b, cfields] = local_contrast_expect(cid)
+% Frozen per-contrast expectations (DGN-12 R9 list / T-002 Fixed Decision 4).
+    role = '';
+    axis = '';
+    cls_a = '';
+    cls_b = '';
+    cfields = {};
+    switch cid
+        case 'SEG_BRIDGE_VS_HARBOR'
+            role = 'REQUIRED'; axis = 'segment_role';
+            cls_a = 'bridge'; cls_b = 'harbor';
+            cfields = {'voyage.environment_regime', 'segment.direction', ...
+                'voyage.mission_template_id', 'voyage.operator_profile'};
+        case 'SEG_BERTH_VS_DEPARTURE'
+            role = 'REQUIRED'; axis = 'segment_role';
+            cls_a = 'berth'; cls_b = 'departure';
+            cfields = {'voyage.mission_template_id'};
+        case 'DIR_UPSTREAM_VS_DOWNSTREAM'
+            role = 'REQUIRED'; axis = 'direction';
+            cls_a = 'upstream'; cls_b = 'downstream';
+            cfields = {'voyage.environment_regime', 'segment.reach'};
+        case 'DEPTH_LOW_ID_VS_NORMAL_ID'
+            role = 'REQUIRED'; axis = 'depth';
+            cls_a = 'low_id'; cls_b = 'normal_id';
+            cfields = {'voyage.mission_template_id', 'voyage.environment_regime'};
+        case 'SEG_EMERGENCY_SPRINT_VS_CRUISE'
+            role = 'REQUIRED'; axis = 'mission_intensity';
+            cls_a = 'rush'; cls_b = 'cruise';
+            cfields = {'voyage.mission_template_id', 'voyage.environment_regime'};
+        case 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE'
+            role = 'REQUIRED'; axis = 'traffic';
+            cls_a = 'traffic_follow'; cls_b = 'free_cruise';
+            cfields = {};
+        case 'SEG_HARBOR_VS_SHALLOW_CRUISE'
+            role = 'SECONDARY_DIAGNOSTIC'; axis = 'mixed_segment_depth';
+            cls_a = 'harbor'; cls_b = 'shallow_cruise';
+            cfields = {};
+        case 'SEG_BRIDGE_VS_SHALLOW_CRUISE'
+            role = 'SECONDARY_DIAGNOSTIC'; axis = 'mixed_segment_depth';
+            cls_a = 'bridge'; cls_b = 'shallow_cruise';
+            cfields = {};
+    end
+end
+
+function [issues, detail] = local_check_contrasts(t, stem, issues, detail)
+% T-002 / DGN-12 / FR-550: identifiability contrast registry (R9 list).
+    d = detail.(stem);
+    d.checks{end+1} = 'required_fields';
+    [ok, msg] = local_have(t, 'schema', 'string', 'schema');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'version', 'string', 'version');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'status', 'string', 'status');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    [ok, msg] = local_have(t, 'value_basis', 'string', 'value_basis');
+    if ~ok, issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', msg); end
+    if ~isfield(t, 'self_hash') || ~strcmp(local_value_class(t.self_hash), 'object')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'missing self_hash object');
+    end
+    if ~isfield(t, 'contrasts')
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', 'contrasts array required');
+    end
+    if ~isfield(t, 'r9_adjudication') || ~ischar(t.r9_adjudication) || isempty(t.r9_adjudication)
+        issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', ...
+            'r9_adjudication note required (R9 cleanup record)');
+    end
+
+    d.checks{end+1} = 'header';
+    if isfield(t, 'version') && ~strcmp(t.version, '1.0.0-candidate')
+        issues = local_add_issue(issues, stem, 'HEADER', 'version must be 1.0.0-candidate');
+    end
+    if isfield(t, 'status') && ~strcmp(t.status, 'CANDIDATE')
+        issues = local_add_issue(issues, stem, 'HEADER', 'status must be CANDIDATE');
+    end
+
+    d.checks{end+1} = 'schema_name';
+    if isfield(t, 'schema') && ~strcmp(t.schema, 'mission_v3_identifiability_contrast_registry_v1')
+        issues = local_add_issue(issues, stem, 'SCHEMA_NAME', 'unexpected schema name');
+    end
+
+    d.checks{end+1} = 'contrast_table';
+    req_ids = local_contrast_required_ids();
+    sec_ids = local_contrast_secondary_ids();
+    all_ids = [req_ids, sec_ids];
+    sig_view = '1 Hz P_load_total_kW slice-level summary statistics (H1-derived)';
+    wl = local_token_whitelist();
+    cts = local_as_list(t.contrasts, 'contrasts');
+    if numel(cts) ~= 8
+        issues = local_add_issue(issues, stem, 'CONTRAST', ...
+            sprintf('exactly 8 contrasts expected (6 REQUIRED + 2 SECONDARY_DIAGNOSTIC), got %d', numel(cts)));
+    end
+    got_req = cell(1, 0);
+    got_sec = cell(1, 0);
+    for a = 1:numel(cts)
+        ct = cts{a};
+        cid = '';
+        if isfield(ct, 'contrast_id') && ischar(ct.contrast_id)
+            cid = ct.contrast_id;
+        end
+        if ~ismember(cid, all_ids)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('contrast_id not in frozen R9 list: %s', cid));
+            continue;
+        end
+        [role, axis, cls_a, cls_b, cfields] = local_contrast_expect(cid);
+        need = {'contrast_id', 'factor_axis', 'class_A', 'class_B', 'cohort_predicate', ...
+            'nuisance_controls', 'signal_view', 'SBD_required', 'probe_required', ...
+            'minimum_group_coverage', 'gate_role'};
+        for j = 1:numel(need)
+            if ~isfield(ct, need{j})
+                issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', ...
+                    sprintf('%s: missing field %s', cid, need{j}));
+            end
+        end
+        if ~isfield(ct, 'factor_axis') || ~strcmp(ct.factor_axis, axis)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: factor_axis must be %s', cid, axis));
+        end
+        if ~isfield(ct, 'class_A') || ~strcmp(ct.class_A, cls_a)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: class_A must be %s', cid, cls_a));
+        end
+        if ~isfield(ct, 'class_B') || ~strcmp(ct.class_B, cls_b)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: class_B must be %s', cid, cls_b));
+        end
+        if ~isfield(ct, 'nuisance_controls') || ~ischar(ct.nuisance_controls) || isempty(ct.nuisance_controls)
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: nuisance_controls non-empty string required (FR-550)', cid));
+        end
+        if ~isfield(ct, 'signal_view') || ~strcmp(ct.signal_view, sig_view)
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: signal_view deviates from frozen H1-derived P_load view', cid));
+        end
+        if ~isfield(ct, 'SBD_required') || ~islogical(ct.SBD_required) || ~ct.SBD_required
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: SBD_required must be true', cid));
+        end
+        if ~isfield(ct, 'probe_required') || ~islogical(ct.probe_required) || ~ct.probe_required
+            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                sprintf('%s: probe_required must be true', cid));
+        end
+        if ~isfield(ct, 'minimum_group_coverage') || ~isnumeric(ct.minimum_group_coverage) ...
+                || isempty(ct.minimum_group_coverage) || ct.minimum_group_coverage ~= 10
+            issues = local_add_issue(issues, stem, 'CONTRAST', ...
+                sprintf('%s: minimum_group_coverage must be 10 (candidate; T-004 evidence then T-007 freeze)', cid));
+        end
+        if ~isfield(ct, 'gate_role') || ~strcmp(ct.gate_role, role)
+            issues = local_add_issue(issues, stem, 'ENUM', ...
+                sprintf('%s: gate_role must be %s', cid, role));
+        end
+        if isfield(ct, 'cohort_predicate')
+            cp = ct.cohort_predicate;
+            if ~iscell(cp)
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('%s: cohort_predicate must be a structured AND list (JSON array)', cid));
+            else
+                used_fields = cell(1, numel(cp));
+                for b = 1:numel(cp)
+                    it = cp{b};
+                    if ~isstruct(it) || ~isfield(it, 'field') || ~ischar(it.field)
+                        issues = local_add_issue(issues, stem, 'PREDICATE_FIELD', ...
+                            sprintf('%s: cohort item %d needs a string field', cid, b));
+                        used_fields(b) = {''};
+                        continue;
+                    end
+                    used_fields(b) = {it.field};
+                    if ~ismember(it.field, wl)
+                        issues = local_add_issue(issues, stem, 'PREDICATE_FIELD', ...
+                            sprintf('%s: cohort field outside whitelist: %s', cid, it.field));
+                    end
+                    if ~isfield(it, 'operator') || ~ischar(it.operator) || isempty(it.operator)
+                        issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                            sprintf('%s: cohort item %d needs a string operator', cid, b));
+                    elseif strcmp(it.operator, '==')
+                        if ~isfield(it, 'value') || ~ischar(it.value) || isempty(it.value)
+                            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                                sprintf('%s: cohort operator == needs a string value', cid));
+                        end
+                    end
+                end
+                used_fields = used_fields(~cellfun(@isempty, used_fields));
+                if ~isempty(setdiff(used_fields, cfields)) || ~isempty(setdiff(cfields, used_fields))
+                    issues = local_add_issue(issues, stem, 'CONTRAST', ...
+                        sprintf('%s: cohort_predicate field set deviates from frozen R9 declaration', cid));
+                end
+            end
+        end
+        if strcmp(cid, 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE')
+            if ~isfield(ct, 'preferred_mechanism') || ~strcmp(ct.preferred_mechanism, 'same_base_draw_counterfactual')
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('%s: preferred_mechanism must be same_base_draw_counterfactual', cid));
+            end
+        end
+        if strcmp(role, 'SECONDARY_DIAGNOSTIC')
+            if ~isfield(ct, 'reason') || ~ischar(ct.reason) || isempty(ct.reason)
+                issues = local_add_issue(issues, stem, 'REQUIRED_FIELD', ...
+                    sprintf('%s: reason (R9 removal basis) required', cid));
+            end
+        end
+        if strcmp(role, 'REQUIRED')
+            got_req{end+1} = cid; %#ok<AGROW>
+        else
+            got_sec{end+1} = cid; %#ok<AGROW>
+        end
+    end
+    if ~isempty(setdiff(got_req, req_ids)) || ~isempty(setdiff(req_ids, got_req))
+        issues = local_add_issue(issues, stem, 'CONTRAST', ...
+            'REQUIRED contrast id set deviates from frozen R9 six');
+    end
+    if ~isempty(setdiff(got_sec, sec_ids)) || ~isempty(setdiff(sec_ids, got_sec))
+        issues = local_add_issue(issues, stem, 'CONTRAST', ...
+            'SECONDARY_DIAGNOSTIC id set deviates from frozen R9 pair');
+    end
+    detail.(stem) = d;
+end
+
 %% ======================= cross-file checks ==========================
 
 function [issues, detail] = local_check_cross(trees, stems, issues, detail)
@@ -1768,6 +2415,124 @@ function [issues, detail] = local_check_cross(trees, stems, issues, detail)
     if ~ismember('forecast_obs_noise', seed_br)
         issues = local_add_issue(issues, 'seed_tree_policy', ...
             'CROSS_REF', 'branch list must contain forecast_obs_noise');
+    end
+end
+
+function [issues, detail] = local_check_cross_c(trees, issues, detail)
+% T-002 cross-registry closure (delegation spec B):
+%   - strata cells vs template registry ids and env regime keys
+%   - token ood_axis / support bands vs id_support_bounds numerics
+%   - token predicate role values vs segment_role_enum
+    d = detail.scenario_stratum_registry;
+    d.checks{end+1} = 'cross_refs';
+    detail.scenario_stratum_registry = d;
+    d2 = detail.heldout_token_registry;
+    d2.checks{end+1} = 'cross_refs';
+    detail.heldout_token_registry = d2;
+
+    tpl = trees.mission_template_registry;
+    env = trees.environment_regime_params;
+    bnd = trees.id_support_bounds;
+    tok_reg = trees.heldout_token_registry;
+    strata_reg = trees.scenario_stratum_registry;
+
+    % 1. strata cells vs template registry ids and env regime keys
+    tpl_list = local_as_list(tpl.mission_templates, 'mission_templates');
+    tpl_ids = cell(1, numel(tpl_list));
+    for a = 1:numel(tpl_list)
+        titem = tpl_list{a};
+        if isfield(titem, 'mission_template_id')
+            tpl_ids(a) = {titem.mission_template_id};
+        else
+            tpl_ids(a) = {''};
+        end
+    end
+    reg_obj = env.regimes;
+    reg_keys = fieldnames(reg_obj);
+    strata = local_as_list(strata_reg.strata, 'strata');
+    for a = 1:numel(strata)
+        c = strata{a};
+        if isfield(c, 'mission_template_id') && ischar(c.mission_template_id)
+            if ~ismember(c.mission_template_id, tpl_ids)
+                issues = local_add_issue(issues, 'scenario_stratum_registry', 'CROSS_REF', ...
+                    sprintf('mission_template_id not in template registry: %s', c.mission_template_id));
+            end
+        end
+        if isfield(c, 'environment_regime') && ischar(c.environment_regime)
+            if ~ismember(c.environment_regime, reg_keys)
+                issues = local_add_issue(issues, 'scenario_stratum_registry', 'CROSS_REF', ...
+                    sprintf('environment_regime not in environment_regime_params keys: %s', ...
+                    c.environment_regime));
+            end
+        end
+    end
+
+    % 2. token axes and bands vs id_support_bounds
+    axes_obj = bnd.axes;
+    axis_keys = fieldnames(axes_obj);
+    toks = local_as_list(tok_reg.tokens, 'tokens');
+    for a = 1:numel(toks)
+        tk = toks{a};
+        if ~isfield(tk, 'token_id') || ~ischar(tk.token_id), continue; end
+        tid = tk.token_id;
+        if isfield(tk, 'ood_config_surface') && strcmp(local_value_class(tk.ood_config_surface), 'object')
+            ocs = tk.ood_config_surface;
+            if isfield(ocs, 'ood_axis') && ischar(ocs.ood_axis)
+                if ~ismember(ocs.ood_axis, axis_keys)
+                    issues = local_add_issue(issues, 'heldout_token_registry', 'CROSS_REF', ...
+                        sprintf('%s: ood_axis not in id_support_bounds axes: %s', tid, ocs.ood_axis));
+                end
+            end
+        end
+        if ~isfield(tk, 'support_band') || ~strcmp(local_value_class(tk.support_band), 'object')
+            continue;
+        end
+        sb = tk.support_band;
+        if ~isfield(sb, 'min') || ~isnumeric(sb.min) || isempty(sb.min) ...
+                || ~isfield(sb, 'max') || ~isnumeric(sb.max) || isempty(sb.max)
+            continue;
+        end
+        if ~isempty(regexp(tid, '^C1_', 'once')) && isfield(axes_obj, 'adverse_current')
+            adv = axes_obj.adverse_current;
+            if isfield(adv, 'iid_support')
+                iid = adv.iid_support;
+                if isfield(iid, 'min') && isfield(iid, 'max') && (sb.min < iid.min || sb.max > iid.max)
+                    issues = local_add_issue(issues, 'heldout_token_registry', 'CROSS_REF', ...
+                        sprintf('%s: HIGH_ID_BAND escapes adverse_current.iid_support', tid));
+                end
+            end
+        end
+        if ~isempty(regexp(tid, '^C[23]_', 'once')) && isfield(axes_obj, 'ht_ratio')
+            ht = axes_obj.ht_ratio;
+            if isfield(ht, 'iid_support')
+                iid = ht.iid_support;
+                if isfield(iid, 'min') && sb.min ~= iid.min
+                    issues = local_add_issue(issues, 'heldout_token_registry', 'CROSS_REF', ...
+                        sprintf('%s: LOW_ID_BAND.min must equal ht_ratio.iid_support.min (%g)', tid, iid.min));
+                end
+            end
+        end
+    end
+
+    % 3. token predicate role values vs segment_role_enum
+    role_enum = local_str_cell(tpl.segment_role_enum);
+    for a = 1:numel(toks)
+        tk = toks{a};
+        if ~isfield(tk, 'token_id') || ~isfield(tk, 'predicate'), continue; end
+        if ~iscell(tk.predicate), continue; end
+        tid = tk.token_id;
+        prd = tk.predicate;
+        for b = 1:numel(prd)
+            it = prd{b};
+            if isstruct(it) && isfield(it, 'field') && ischar(it.field) ...
+                    && strcmp(it.field, 'segment.role') && isfield(it, 'operator') ...
+                    && strcmp(it.operator, '==') && isfield(it, 'value') && ischar(it.value)
+                if ~ismember(it.value, role_enum)
+                    issues = local_add_issue(issues, 'heldout_token_registry', 'CROSS_REF', ...
+                        sprintf('%s: role value not in segment_role_enum: %s', tid, it.value));
+                end
+            end
+        end
     end
 end
 
