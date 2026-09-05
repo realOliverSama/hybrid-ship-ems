@@ -263,7 +263,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 每项注入必须被对应机器检查检出（100% 检出率）
   - Completion evidence: 检出报告
 
-- [ ] 18. 单元测试集成与确定性回归
+- [x] 18. 单元测试集成与确定性回归
   - ID: T-018
   - Requirement(s): NFR-428, NFR-432；AC-438
   - 路线映射: 横切
