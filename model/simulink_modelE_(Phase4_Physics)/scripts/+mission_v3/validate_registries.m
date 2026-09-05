@@ -2067,10 +2067,11 @@ function issues = local_check_band(sb, band_id, tid, stem, issues)
 end
 
 function ids = local_contrast_required_ids()
-% The six REQUIRED contrasts (DGN-12 R9 list, Design Gate frozen).
+% The six REQUIRED contrasts (DGN-12 R9 list, Design Gate frozen; D6 host
+% rebinding per Day-1 Gate Ruling 2026-09-05 section D).
     ids = {'SEG_BRIDGE_VS_HARBOR', 'SEG_BERTH_VS_DEPARTURE', ...
         'DIR_UPSTREAM_VS_DOWNSTREAM', 'DEPTH_LOW_ID_VS_NORMAL_ID', ...
-        'SEG_EMERGENCY_SPRINT_VS_CRUISE', 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE'};
+        'SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE', 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE'};
 end
 
 function ids = local_contrast_secondary_ids()
@@ -2103,10 +2104,11 @@ function [role, axis, cls_a, cls_b, cfields] = local_contrast_expect(cid)
             role = 'REQUIRED'; axis = 'depth';
             cls_a = 'low_id'; cls_b = 'normal_id';
             cfields = {'voyage.mission_template_id', 'voyage.environment_regime'};
-        case 'SEG_EMERGENCY_SPRINT_VS_CRUISE'
+        case 'SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE'
             role = 'REQUIRED'; axis = 'mission_intensity';
-            cls_a = 'rush'; cls_b = 'cruise';
-            cfields = {'voyage.mission_template_id', 'voyage.environment_regime'};
+            cls_a = 'rush'; cls_b = 'return';
+            cfields = {'voyage.mission_template_id', 'voyage.environment_regime', ...
+                'voyage.operator_profile', 'segment.reach'};
         case 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE'
             role = 'REQUIRED'; axis = 'traffic';
             cls_a = 'traffic_follow'; cls_b = 'free_cruise';

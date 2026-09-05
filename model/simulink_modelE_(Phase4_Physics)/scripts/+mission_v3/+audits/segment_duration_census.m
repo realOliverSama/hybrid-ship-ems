@@ -544,11 +544,17 @@ function row = evalOneContrast(c, agg, requiredS)
             hB = hA;
             note = ['voyage-level depth classes share segment hosts; host ' ...
                 'record = longest usable role per template (Fixed Decision 5)'];
-        case 'SEG_EMERGENCY_SPRINT_VS_CRUISE'
-            assertClasses(c, 'rush', 'cruise');
+        case 'SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE'
+            % D6 host rebinding (Day-1 Gate Ruling 2026-09-05 section D):
+            % class_B host = RETURN steady return-transit segment.
+            assertClasses(c, 'rush', 'return');
             hA = rowsWithRole(agg, 'rush');
-            hB = rowsWithRole(agg, 'cruise');
-            note = 'class hosts = all census rows with the matching segment role';
+            hB = rowsWithRole(agg, 'return');
+            note = ['class hosts = all census rows with the matching ' ...
+                'segment role (class_B host rebound from cruise to ' ...
+                'return per D6; cruise host rejected - EMERGENCY_RESPONSE ' ...
+                'has no cruise segment and mission role carries ' ...
+                'mission-load nuisance)'];
         case 'SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE'
             assertClasses(c, 'traffic_follow', 'free_cruise');
             hA = rowsWithRole(agg, 'cruise');
