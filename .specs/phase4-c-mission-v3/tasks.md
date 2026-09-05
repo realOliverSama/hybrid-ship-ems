@@ -66,7 +66,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: validator 全过；负向：非法枚举/缺字段/篡改后 hash 不符必须 FAIL
   - Completion evidence: validator 输出 + 六件 hash 清单
 
-- [ ] 2. strata / held-out token / identifiability contrast 注册表三件 + validator 扩展
+- [x] 2. strata / held-out token / identifiability contrast 注册表三件 + validator 扩展
   - ID: T-002
   - Requirement(s): FR-541~545, FR-550, FR-552~556；Design: DGN-11/12/13
   - 路线映射: T-428（OOD 面）/ T-429（contrast registry）

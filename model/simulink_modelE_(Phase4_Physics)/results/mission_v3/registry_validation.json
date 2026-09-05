@@ -1,6 +1,6 @@
 {
   "overall": true,
-  "generated_at": "2026-09-05T13:23:16***",
+  "generated_at": "2026-09-05T15:08:27+0800",
   "validator": "scripts/+mission_v3/validate_registries.m",
   "config_dir": "config/mission_v3",
   "files": {
@@ -83,6 +83,49 @@
         "header",
         "schema_name",
         "structure",
+        "self_hash"
+      ]
+    },
+    "scenario_stratum_registry": {
+      "schema": "mission_v3_scenario_stratum_registry_v1",
+      "status": "PASSED",
+      "self_hash": "8db52974bad2a72b53ea88c9096890cdc739f4bc6660052798f2eead4080adc1",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "status_enum",
+        "strata_cells",
+        "cross_refs",
+        "self_hash"
+      ]
+    },
+    "heldout_token_registry": {
+      "schema": "mission_v3_heldout_token_registry_v1",
+      "status": "PASSED",
+      "self_hash": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "predicate_whitelist",
+        "tokens",
+        "cross_refs",
+        "self_hash"
+      ]
+    },
+    "identifiability_contrast_registry": {
+      "schema": "mission_v3_identifiability_contrast_registry_v1",
+      "status": "PASSED",
+      "self_hash": "65f1051a95679b4024cf90d6d11fd86fa023902aa1b0782b14b23b05a35a2d5c",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "contrast_table",
         "self_hash"
       ]
     }
