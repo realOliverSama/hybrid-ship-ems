@@ -1,0 +1,128 @@
+{
+  "schema": "mission_v3_id_feasibility_sweep_v1",
+  "task": "T-005 read-only joint feasibility matrix sweep (DGN-05 R2/R3 pre-freeze evidence)",
+  "generated_at": "2026-09-05T16:09:16",
+  "readonly_discipline": "Model E files untouched; runtime SCN struct construction via gate_e.reset_bench_nominal + model.run_scenario_sim",
+  "grid": {
+    "mode": "custom_pointlist",
+    "planned_sog_mps": 7.522,
+    "adverse_flow_mps": 0,
+    "following_flow_mps": [],
+    "following_ht_ratio": [],
+    "ht_ratio_list": 9.1407678244972566,
+    "draft_m": 2.188,
+    "ht_to_depth_conversion": "h = H/T * draft (T-412 E05 S31..S36 convention)",
+    "leg_duration_s": 3000,
+    "hotel_kW": 100,
+    "initial_soc": 0.6,
+    "voyage_distance_m": 40000,
+    "accel_ramp_mps2": 0.05,
+    "pms_source_mode": 0,
+    "ems_ctrl_law": 0,
+    "current_sign_convention": "negative = adverse (against heading), positive = following",
+    "current_grid_s": 1,
+    "n_points_requested": 1,
+    "n_points_recorded": 1
+  },
+  "points": [
+    {
+      "key": "sog7.522_adverse_0.00_ht9.14",
+      "sog_plan_mps": 7.522,
+      "flow_dir": "adverse",
+      "flow_mag_mps": 0,
+      "ht_ratio": 9.1407678244972566,
+      "water_depth_m": 20,
+      "leg_duration_s": 3000,
+      "current_component_mps": -0,
+      "sim_duration_s": 3000,
+      "sog_mean_last120_mps": 7.52069706848387,
+      "sog_mean_all_mps": 7.436966517616221,
+      "sog_margin_mps": -0.0013029315161299238,
+      "speed_achieved": true,
+      "sog_slope_last120_mps2": -2.3256927471299711E-18,
+      "n_fault_latch_steps": 0,
+      "fault_latch_final_dg1": 0,
+      "fault_latch_final_dg2": 0,
+      "n_force_stop_events": 0,
+      "n_force_start_events": 0,
+      "no_safety_trip": true,
+      "n_sop_sat_steps": 0,
+      "sop_envelope_max_exceed_kW": -274.13793097758116,
+      "no_sop_saturation": true,
+      "n_domain_warning_steps": 0,
+      "ht_ratio_min_sim": 9.1407678244972566,
+      "no_domain_warning": true,
+      "P_prop_peak_kW": 699.99999999999727,
+      "P_load_peak_kW": 799.99999999999727,
+      "P_prop_mean_last120_kW": 699.99999999999989,
+      "P_load_mean_last120_kW": 799.99999999999989,
+      "R_hull_mean_last120_N": 50339.187112350643,
+      "R_shallow_mean_last120_N": 0,
+      "soc_end": 0.582730571816871,
+      "soc_min": 0.582730571816871,
+      "fuel_total_kg": 287.23249968454957,
+      "feasible": true,
+      "sim_completed": true,
+      "err_msg": "",
+      "wall_time_s": 34
+    }
+  ],
+  "summary": {
+    "n_points": 1,
+    "n_feasible": 1,
+    "n_infeasible": 0,
+    "n_sim_failed": 0,
+    "feasibility_rate": 1,
+    "by_sog": [
+      {
+        "value": 7.522,
+        "n_points": 1,
+        "n_feasible": 1
+      }
+    ],
+    "by_adverse_flow": [
+      {
+        "value": 0,
+        "n_points": 1,
+        "n_feasible": 1
+      }
+    ],
+    "by_ht_ratio": [
+      {
+        "value": 9.1407678244972566,
+        "n_points": 1,
+        "n_feasible": 1
+      }
+    ],
+    "criterion_fail_counts": {
+      "sim_completed": 0,
+      "no_safety_trip": 0,
+      "no_sop_saturation": 0,
+      "no_domain_warning": 0,
+      "speed_achieved": 0
+    },
+    "candidate_interior_infeasible": [],
+    "candidate_interior_infeasible_n": 0
+  },
+  "g2_cross_check": {
+    "reference_source": "results/gate_result.json checks.G2",
+    "reference": {
+      "name": "G2_hull_shallow",
+      "pass": true
+    },
+    "sprint_reachability": {
+      "point": "sog7.522_adverse_0.00_ht9.14",
+      "sog_mean_last120_mps": 7.52069706848387,
+      "speed_achieved": 1,
+      "g2_full_power_speed_band_kn": 14.620235101130554,
+      "direction_consistent": 1
+    },
+    "adverse_vs_following_power": [],
+    "shallow_R_monotonicity_adverse0": []
+  },
+  "degradation": {
+    "applied": false,
+    "reason": "",
+    "note": "set by caller if Fixed Decision 10 degrade rule triggered"
+  }
+}
