@@ -1,6 +1,6 @@
 # T-004 Segment Duration Census and T-429 Slice Geometry Freeze Proposal
 
-Generated: 2026-09-05T08:14:14Z (UTC)
+Generated: 2026-09-05T08:41:58Z (UTC)
 Method: pure registry arithmetic census; no Model E simulation; no T-429 metric execution.
 Authority: .specs/phase4-c-mission-v3/{requirements,design,tasks}.md (FR-547, DGN-12 R8);
 delegation spec experiments/mission_v3/T-004_delegation_spec.md.
@@ -10,8 +10,8 @@ All values below are PROPOSALS for main-agent adjudication; the freeze happens v
 
 | registry | declared self_hash (first 16) | computed file sha256 (first 16) |
 |---|---|---|
-| mission_template_registry.json | 81efdbb8d0aa0ea5...... | 373e58db31dbad51...... |
-| identifiability_contrast_registry.json | 65f1051a95679b40...... | 0d08580a72a1c694...... |
+| mission_template_registry.json | f4079f91a5e38f85...... | 097df451109d2d2b...... |
+| identifiability_contrast_registry.json | b980a457bf459302...... | 0ae5b7dbf8caa4e9...... |
 | conditional_dag_config.json | 297c1dc8e9968eb8...... | 7eee82239b91bef7...... |
 
 - Stretch factor lower bound: 0.8000 (source: config/mission_v3/conditional_dag_config.json, nodes[node_id=segment_stretch].params.low); high = 1.2500
@@ -87,8 +87,8 @@ Hard constraint: slice + 2 x buffer = 180 s must be <= min usable duration per c
 | DIR_UPSTREAM_VS_DOWNSTREAM | B (downstream) | return (RP, ER, WM) | 974.545 | 180 | PASS |
 | DEPTH_LOW_ID_VS_NORMAL_ID | A (low_id) | return (RP, ER); work (WM) | 1120.000 | 180 | PASS |
 | DEPTH_LOW_ID_VS_NORMAL_ID | B (normal_id) | return (RP, ER); work (WM) | 1120.000 | 180 | PASS |
-| SEG_EMERGENCY_SPRINT_VS_CRUISE | A (rush) | rush (ER) | 425.419 | 180 | PASS |
-| SEG_EMERGENCY_SPRINT_VS_CRUISE | B (cruise) | cruise (RP, WM) | 581.818 | 180 | PASS |
+| SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE | A (rush) | rush (ER) | 425.419 | 180 | PASS |
+| SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE | B (return) | return (RP, ER, WM) | 974.545 | 180 | PASS |
 | SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE | A (traffic_follow) | cruise (RP, WM) | 581.818 | 180 | PASS |
 | SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE | B (free_cruise) | cruise (RP, WM) | 581.818 | 180 | PASS |
 

@@ -4,8 +4,10 @@
 > 本文是 **T-003 交付物（AC-433）**：把 design DGN-01~16 落为工程架构说明——模块边界、数据流、
 > 注册表清单、与 D 侧 producer schema 十一项能力族的接口映射、seed 树与 stack identity、无旁路边界。
 > **数值/语义唯一事实源仍是 spec 三件 + 九件机器注册表；本文不得与其冲突，只做工程化转述与落点索引。**
-> 状态：待用户批准（AC-433）。批准前 Phase 2 生成器施工（T-008 起）不解锁（PHASE2_ENTRY_GATE）。
-> 创建：2026-09-05。
+> 状态：**用户已批准（AC-433，2026-09-05 Day-1 Gate Ruling，CONDITIONAL PASS → A1/A2/A3 收尾项已全部落地）**；
+> **PHASE2_ENTRY_GATE = true**（T-003 批准 ∧ T-007 phase1_freeze.json + 修正案 PHASE1-FREEZE-AMEND-D6）。
+> Phase 2 生成器施工（T-008 起）已解锁。
+> 创建：2026-09-05；批准：2026-09-05。
 
 ## 1. 定位与权威链
 
@@ -89,7 +91,7 @@ INFORMATION 成员共享全部 truth 分支（仅 forecast_obs_noise 异）⇒ t
 
 | producer schema 能力族 | C 侧实现载体 | 关键契约点 |
 |---|---|---|
-| truth_stream | `producer_export` stream | realization-time 单轴；1 Hz；双存隔离的 ORACLE 侧 |
+| truth_stream | `producer_export` stream | realization-time 单轴；**native Model-E realization-rate（0.01 s）真值流**（Day-1 Gate Ruling §A1 更正：1 Hz 是 D 侧历史 H1/H2 聚合视图，不是 C producer native truth——两者不得混同）；双存隔离的 ORACLE 侧 |
 | s_plan | `kf_snapshots` | 计划前向积分（1 s 子步、bin 右端点、issue 时刻计划位置起步） |
 | planned_future_trajectory | `kf_snapshots` | v_plan/s_plan 沿计划轨迹；禁 realized future |
 | static_constraints | `scenario_compile` | h_chart/speed_limit_zones/bridge_zones → INPUT_K 侧 |
@@ -136,32 +138,36 @@ C（本包）──producer contract──▶ D（Dataset v3）──▶ E/F（�
 - VOYAGE_* 注入经显式 assignin 白名单；PMS_SOURCE_MODE 显式设定（D-14）；
 - 零改动证明机制：Model E 基线五件 sha256 快照比对（72 号同款）入 T-018 回归与预资格 manifest。
 
-## 8. Phase-1 证据链与冻结点（T-004/T-005/T-006 → T-007）
+## 8. Phase-1 证据链与冻结点（Day-1 终态：T-004/T-005/T-006/T-007 全部 PASS）
 
-Phase 1 只读可行性证据完成后，由 **T-007 机器可读冻结快照（phase1_freeze.json）** 固化：
-最终切片几何、IID 支撑 registry hash、可行性证据 hash、C-3 状态、token/support registry hash、amendment 记录。
-自此 T-008 起只消费快照指向的冻结配置（候选/批准注册表不得混用）。
-
-**本架构落库时点的 Phase-1 在途证据与待裁决项**（裁决记录将入 T-007 快照，均不改变本文模块架构）：
-
-1. **切片几何**（T-004 普查证据）：候选 120/30/60 对 3/6 必需对比违反 180 s 硬约束
-   （bridge 宿主 usable 91.4 s、departure 160 s）。修正候选：R2 缩几何（60/15/30，bridge 裕度脆弱）/
-   R3 模板候选值修订（bridge/departure 名义距离上调，保持 120/30/60）/ R4 按轴拆分几何（FR-547 语义风险）。
-   倾向 R3（模板值本为提案候选，修订属 T-007 授权范围），**待用户认可后冻结**。
-2. **冲刺速度可行性口径**（T-005 扫描 + 3000 s 稳态精化，已闭合）：600 s 腿判定经测量证实**就是稳态真实判定**（末段斜率 ~e-18 m/s²，非暂态截断）；联合可行性前沿呈精确线性规律 `V_max_SOG(U,HT) = W_max(HT) − U_adverse`（83 点验证至 4.2e-5 m/s；阻力仅依赖水速、功率顶 700 kW=Mot_P_nom）。G2 14.6202 kn 锚点 = 真深水（20 m）口径：深水锚点复现实测 14.6190 kn（偏差 −0.008%）；HT=3.0 档因浅水增量阻力为 14.09 kn。rush 计划速度按证据分层冻结（HT∈[1.5,2.0)→6.5 m/s；HT≥2.0→7.0 m/s），均在 G2 验证带内（FR-510：14.620 kn 为能力锚点非选定参数）。
-3. **SEG_EMERGENCY_SPRINT_VS_CRUISE 的 class_B 宿主**：EMERGENCY_RESPONSE 模板序列无 cruise 段，
-   与 DGN-12"EMERGENCY_RESPONSE 内部"cohort 语义存在张力——候选处置：模板序列增补 cruise 段（spec amendment
-   级裁决）或 class_B 宿主映射定义（registry 注记级）。待 T-007 裁决，本文仅登记。
-4. **候选段速度表**（T-004 普查输入）：departure 2.5/harbor 2.5/berth 2.0/bridge 3.5/cruise 5.5/patrol 5.0/
-   return 5.5/rush 7.522/mission 5.0/work 1.2 m/s——T-010 计划层落地时的提案基线。
-
-## 9. 施工顺序与门禁（引自 tasks.md，重述要点）
+Phase 1 只读可行性证据已完成闭合，冻结配置以**不可变修正案链**维护：
 
 ```text
-Phase 0（本文档所在）: T-001 ✅ → T-002 ✅ → T-003（本文，待批准 AC-433）
-Phase 1 只读证据: T-004 ✅（普查+提案）→ T-005（补测中）→ T-006 → T-007 冻结
-  【PHASE2_ENTRY_GATE = T-003 用户批准 ∧ T-007 完成】
-Phase 2 生成器核心: T-008 seed 树 → T-009 环境 → T-010 工况/计划 → T-011 编译
+phase1_freeze.json（self_hash 67b9b81e…，基础冻结）
+  + phase1_freeze_amendment_d6.json（self_hash dd84f965…，Day-1 Gate Ruling 修正案）
+生效 Phase-1 配置复合 hash：f665b953d9f18df0d38cf3a08973a608e4fb7a7a5bc1d5d4a1932d9602af4492
+PHASE2_ENTRY_GATE = true（T-003 用户批准 ∧ T-007 + 修正案）
+```
+
+**Day-1 最终证据清单**（裁决 §A2 要求项逐条）：
+
+1. **最终诊断切片几何**：slice 120 s / edge buffer 30 s（两侧）/ stride 60 s——T-004 普查（D6 重绑定后重跑）对六必需对比全部宿主 PASS（`segment_duration_census.json`）。
+2. **departure 宿主长度修订**：500→700 m（离泊操纵场景宿主全长：startup→低速操纵→驶入航道加速）；**bridge 宿主长度修订**：400→1000 m（**BRIDGE_OPERATION 场景宿主全长：Approach→Deceleration→Controlled transit→Exit→Acceleration**）。裁决 §A3 语义边界：`L_bridge_operation ≠ L_bridge_zone`——1000 m 不是物理桥孔长度、桥区几何长度或限速区长度，除非独立航线证据使两者相等；departure 同理非泊位几何长度。T-010 在宿主内布置子阶段，禁静默 reinterpret 为物理航段长度。
+3. **联合可行性前沿证据**（T-005 PASS，裁决 §B 采纳）：246 点 600 s 全格扫 + 83 点 3000 s 稳态精化 + 真深水锚点。**签名约定（采纳形式）**：`V_SOG,max = W_max(H/T) + U_along`（U_along > 0 顺流、< 0 逆流；与实测逆流形式 `W_max − U_adverse` 等价，避免重复符号逻辑）；W_max 表 {HT1.2: 6.6943 / 1.35: 6.7692 / 1.5: 6.7928 / 2.0: 7.1609 / 3.0: 7.2492 / 深水 20 m: 7.5207} m/s。
+4. **真深水锚点闭环**（正式 Phase-1 证据）：20 m 处实测 14.6190 kn vs G2 E02 14.6202 kn（−0.008%）。**已采纳解释**：600 s 案例本已达稳态（末段斜率 ~e-18，"暂态截断"解释被测量否决）；早期锚点偏差源于水深口径；H/T=3.0 仍含浅水增量阻力（+12.5% R，与 G2 R_by_tier 定量自洽）；20 m 真深水复现 G2 能力锚点。
+5. **rush 计划速度政策**（T-007 冻结，裁决 §C 采纳）：HT∈[1.5,2.0) → 6.5 m/s；HT≥2.0 → 7.0 m/s。≈14.620 kn 保持为只读 Model-E 能力锚点，**不是** Mission-v3 选定速度指令。**T-009/T-010 SHALL 继续用冻结的速度/流/H-T 能力规则执行联合可行性**——6.5/7.0 表不授权在逆流降低可行 SOG 时强行下达不可行组合。
+6. **C3 可行性结果**（T-006 PASS）：C3_SUPPORTED_CANDIDATE——冻结 rush 速度在 LOW_ID 带静水精确可达，domain_warning/SOP/跳机全零（FR-545 三条件）。
+7. **生效冻结 artifact/hash**：见本节头部修正案链；九件注册表生效 hash 登记于修正案 `effective_phase1_configuration.registry_hashes`（contrast `b980a457…`、template `f4079f91…` 为修正案后值）。
+8. **D6 裁决**（§D，APPROVED WITH HOST REBINDING）：`SEG_EMERGENCY_SPRINT_VS_CRUISE` → **`SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE`**（class_A=rush/EMERGENCY_SPRINT，class_B=**return** 稳态返航宿主；mission 段宿主被否决——mission-load/hotel 语义经 P_load_total 形成强混杂捷径）。cohort 加强：模板内 ∧ 同 regime ∧ 同 operator profile ∧（可行时）同 reach ∧（可能时）同 base-draw cohort；标签保持生成侧 metadata，禁由 realized 速度反推。属窄域 registry/design-note 修正，非 spec/DGN-02 amendment。
+9. **水深接口修正**（裁决 §F 批准）：`chart_depth_by_reach` 降级为文档/未来能力值；`chart_depth_voyage_base` 为 v1 生成的物理/K 表征。formal v1 中 `h_chart(s) = h_chart,voyage`（沿航线常量的已知函数）；**不提供**与当前 Plant 实现不对应的 route-varying 海图水深预报特征。Model E 零改动。
+
+## 9. 施工顺序与门禁（Day-1 终态）
+
+```text
+Phase 0（本文档所在）: T-001 ✅ → T-002 ✅ → T-003 ✅（APPROVED，AC-433 闭合）
+Phase 1 只读证据: T-004 ✅ → T-005 ✅ → T-006 ✅ → T-007 ✅（+ D6 修正案）
+  【PHASE2_ENTRY_GATE = true】
+Phase 2 生成器核心: T-008 seed 树（进行中）→ T-009 环境 → T-010 工况/计划 → T-011 编译
   → T-012 预报 → T-013 K/F → T-014 干预层
 Phase 3 导出与审计: T-015 导出/判据 → T-016 stack identity → T-017 负向套件 → T-018 集成回归
 Phase 4 预资格与交付: T-019 预注册+捕获 → T-020 预资格 → T-021 T429_FREEZE → T-022 T429_EVALUATE
@@ -174,3 +180,4 @@ Phase 4 预资格与交付: T-019 预注册+捕获 → T-020 预资格 → T-021
 | 日期 | 修订 | 来源 |
 |---|---|---|
 | 2026-09-05 | 初稿（T-003 交付物，含 §8 Phase-1 在途证据快照） | 主 Agent |
+| 2026-09-05 | Day-1 Gate Ruling 收尾：A1 truth_stream 更正为 native 0.01 s realization-rate（1 Hz 属 D 侧历史聚合视图）；A2 §8/§9 更新为 Day-1 终态（T-004~T-007 PASS + 证据清单）；A3 bridge=BRIDGE_OPERATION 宿主语义边界（L_bridge_operation≠L_bridge_zone）；B 采纳签名前沿约定 V_SOG,max=W_max(H/T)+U_along；C rush 政策确认 + 联合可行性强制；D6 SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE 宿主重绑定；F chart_depth_voyage_base 生效/h_chart(s)=航次常量；AC-433=APPROVED、PHASE2_ENTRY_GATE=true | 用户 Day-1 Gate Ruling + 主 Agent 收尾 |

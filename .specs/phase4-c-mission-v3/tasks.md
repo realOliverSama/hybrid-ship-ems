@@ -78,7 +78,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: validator 全过；谓词字段白名单负向（引用 realized 信号的谓词必须拒收）
   - Completion evidence: validator 输出
 
-- [ ] 3. T-419 架构文档（先设计交付物）
+- [x] 3. T-419 架构文档（先设计交付物）
   - ID: T-003
   - Requirement(s): FR-501, FR-513, FR-533, FR-534；AC-433；Design: DGN-01
   - 路线映射: T-419

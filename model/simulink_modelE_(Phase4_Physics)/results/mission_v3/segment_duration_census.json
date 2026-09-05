@@ -1,6 +1,6 @@
 {
   "schema": "mission_v3_segment_duration_census_v1",
-  "generated_at": "2026-09-05T08:14:14Z",
+  "generated_at": "2026-09-05T08:41:58Z",
   "task_id": "T-004",
   "route_mapping": "T-429; FR-547; DGN-12 (R8); proposal consumed by T-007 freeze",
   "method": "pure registry arithmetic census; no Model E simulation; no T-429 metric execution; registry values untouched",
@@ -17,14 +17,14 @@
       "mission_template_registry": {
         "path_relative_to_model_root": "config/mission_v3/mission_template_registry.json",
         "self_hash_algorithm": "sha256",
-        "self_hash_value": "81efdbb8d0aa0ea500bc948946b8b996a3f5ca4574c5639a904454bdf7a7c783",
-        "file_sha256": "373e58db31dbad517dfede6bb84a58f4f7d5bf03630597ca677658b8bd136106"
+        "self_hash_value": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1",
+        "file_sha256": "097df451109d2d2b1486b028bd758d89e6682b4a2ca9375fdcf77296ddc495b2"
       },
       "identifiability_contrast_registry": {
         "path_relative_to_model_root": "config/mission_v3/identifiability_contrast_registry.json",
         "self_hash_algorithm": "sha256",
-        "self_hash_value": "65f1051a95679b4024cf90d6d11fd86fa023902aa1b0782b14b23b05a35a2d5c",
-        "file_sha256": "0d08580a72a1c694179ce550263bf87ec7a7a1565e303f9bce81e5787edb720c"
+        "self_hash_value": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad",
+        "file_sha256": "0ae5b7dbf8caa4e9d5455ac761929e03100a72b909e4de82e1d399b5402e081e"
       },
       "conditional_dag_config": {
         "path_relative_to_model_root": "config/mission_v3/conditional_dag_config.json",
@@ -726,10 +726,10 @@
         "note": "voyage-level depth classes share segment hosts; host record = longest usable role per template (Fixed Decision 5)"
       },
       {
-        "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+        "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
         "factor_axis": "mission_intensity",
         "class_A": "rush",
-        "class_B": "cruise",
+        "class_B": "return",
         "hard_constraint_required_s": 180,
         "class_A_hosts": [
           {
@@ -743,21 +743,26 @@
         "class_B_hosts": [
           {
             "mission_template_id": "ROUTINE_PATROL",
-            "role": "cruise",
-            "usable_s": 581.818182
+            "role": "return",
+            "usable_s": 1367.272727
+          },
+          {
+            "mission_template_id": "EMERGENCY_RESPONSE",
+            "role": "return",
+            "usable_s": 1120
           },
           {
             "mission_template_id": "WORK_MISSION",
-            "role": "cruise",
-            "usable_s": 581.818182
+            "role": "return",
+            "usable_s": 974.545455
           }
         ],
-        "class_B_min_usable_s": 581.818182,
+        "class_B_min_usable_s": 974.545455,
         "class_B_pass": true,
         "contrast_min_usable_s": 425.418772,
         "contrast_pass": true,
         "violating_hosts": [],
-        "note": "class hosts = all census rows with the matching segment role"
+        "note": "class hosts = all census rows with the matching segment role (class_B host rebound from cruise to return per D6; cruise host rejected - EMERGENCY_RESPONSE has no cruise segment and mission role carries mission-load nuisance)"
       },
       {
         "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
@@ -982,7 +987,7 @@
         "contrast_min_usable_s": 1120
       },
       {
-        "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+        "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
         "contrast_pass": true,
         "contrast_min_usable_s": 425.418772
       },
@@ -1025,7 +1030,7 @@
             "contrast_min_usable_s": 1120
           },
           {
-            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
             "contrast_pass": true,
             "contrast_min_usable_s": 425.418772
           },
@@ -1073,7 +1078,7 @@
             "contrast_min_usable_s": 1120
           },
           {
-            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
             "contrast_pass": true,
             "contrast_min_usable_s": 425.418772
           },
@@ -1124,7 +1129,7 @@
             "contrast_min_usable_s": 1120
           },
           {
-            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+            "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
             "contrast_pass": true,
             "contrast_min_usable_s": 425.418772
           },

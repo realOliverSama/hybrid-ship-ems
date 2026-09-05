@@ -171,7 +171,7 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 
 ## Acceptance Criteria
 
-- [ ] **AC-433**: T-419 架构设计交付——Mission Generator v3 架构文档（conditional-DAG、L0~L4 层语义、模块边界、与 producer schema 的接口映射、全部机器可读 registry 清单）落库并经用户批准（先设计后施工）。
+- [x] **AC-433**: T-419 架构设计交付——Mission Generator v3 架构文档（conditional-DAG、L0~L4 层语义、模块边界、与 producer schema 的接口映射、全部机器可读 registry 清单）落库并经用户批准（先设计后施工）。**✅ 2026-09-05 Day-1 Gate Ruling：CONDITIONAL PASS，A1/A2/A3 收尾项（truth_stream 0.01s 口径/Day-1 终态/BRIDGE_OPERATION 宿主语义）已落地 → APPROVED；PHASE2_ENTRY_GATE=true**
 - [ ] **AC-434**: 工况与模板实现——T-420~T-426 七类任务级工况族 + T-427 三模板在 Model E 零改动下生成并仿真成功（机器可读结果）；每工况/模板有确定性复跑证据（同 seed 同结果）。
 - [ ] **AC-435**: Producer schema 十一项能力落地——C 产物经 `validate_contracts --producer-schema` PASS + C/D Interface Gate 正式版（含 D-15 必改项）overall=true（FR-501/526~531/535~536/541~546）。
 - [ ] **AC-436**: 因果与隔离负向验证——注入缺陷全部正确检出：future-truth 冒充 INPUT_F、realized future 冒充 s_plan/v_plan（FR-558/559）、沿 realized 未来位置取位置约束（FR-560）、lead 网格偏移或 vintage 反推（FR-561）、formal 缺快照被静默填补（FR-562）、simulator-latent-privileged 预报源、未声明跨 split_group truth 复用、GOOD/DEGRADED truth 漂移、PILOT_ONLY 混入 formal、FORBIDDEN/ORACLE 越权入 view（FR-524/526~533/504/558~562）。
