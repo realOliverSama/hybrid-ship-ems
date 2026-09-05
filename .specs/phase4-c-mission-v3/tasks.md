@@ -92,7 +92,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
 
 ## Phase 1 — 只读可行性证据（PHASE2_ENTRY_GATE 前置）
 
-- [ ] 4. 段时长普查 → T-429 切片几何冻结提案
+- [x] 4. 段时长普查 → T-429 切片几何冻结提案
   - ID: T-004
   - Requirement(s): FR-547；Design: DGN-12（R8）
   - 路线映射: T-429
@@ -104,7 +104,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 每条必需对比的段角色覆盖；提案满足硬约束的算术自检
   - Completion evidence: 普查报告 + 主 Agent 裁决记录
 
-- [ ] 5. 只读联合可行性矩阵扫描（ID 包线冻结前置）
+- [x] 5. 只读联合可行性矩阵扫描（ID 包线冻结前置）
   - ID: T-005
   - Requirement(s): FR-519, FR-520；Design: DGN-05（R2/R3）
   - 路线映射: T-428
@@ -116,7 +116,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 网格点全覆盖无 NaN；与 T-412 G2 包线证据交叉一致；若发现候选界内不可行组合 → 升级主 Agent（支撑界修订走 amendment）
   - Completion evidence: 扫描报告 + 主 Agent 对 ID 包线的冻结/修订裁决
 
-- [ ] 6. C-3 物理可行性前置验证
+- [x] 6. C-3 物理可行性前置验证
   - ID: T-006
   - Requirement(s): FR-545；Design: DGN-11
   - 路线映射: T-428（OOD 面）
@@ -128,7 +128,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 证据满足 FR-545 三条件
   - Completion evidence: 报告 + 主 Agent 确认
 
-- [ ] 7. Phase-1 配置冻结快照（PHASE2_ENTRY_GATE 组成）
+- [x] 7. Phase-1 配置冻结快照（PHASE2_ENTRY_GATE 组成）
   - ID: T-007
   - Requirement(s): FR-519, FR-545, FR-547；Design: DGN-05/11/12；Tasks Gate R2
   - 路线映射: 横切（屏障任务）
