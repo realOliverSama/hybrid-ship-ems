@@ -178,7 +178,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——每工况计划剖面结构断言（段序/限速区/UKC）；bridge vs harbor 计划语义差异断言；emergency 高速段不越证据包线
   - Completion evidence: 单测 PASS + 计划剖面示例图（入报告）
 
-- [ ] 11. 场景编译器（SCN 构造 + assignin 白名单注入）
+- [x] 11. 场景编译器（SCN 构造 + assignin 白名单注入）
   - ID: T-011
   - Requirement(s): FR-502, FR-516, FR-517；Design: DGN-08/09（R7 Path B）
   - 路线映射: T-420~T-427（落地层）
@@ -202,7 +202,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 单测——解析式与数值积分一致；cutoff≤issue 不变量；future-truth 注入必须检出；DEGRADED 误差时间相关性（非 iid jitter）统计断言
   - Completion evidence: 单测 PASS
 
-- [ ] 13. K/F issue-major 快照构建（s_plan 计划前向积分）
+- [x] 13. K/F issue-major 快照构建（s_plan 计划前向积分）
   - ID: T-013
   - Requirement(s): FR-558~562；Design: DGN-08；Tasks Gate R7
   - 路线映射: T-431 接口的 C 侧实现
