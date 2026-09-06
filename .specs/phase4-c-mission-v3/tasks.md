@@ -301,7 +301,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Completion evidence: 报告 + 主 Agent 复核
   - Delegation: 可委派 subagent 执行批量生成（主 Agent 复核证据，HANDOFF §5 授权）
 
-- [ ] 21. T429_FREEZE（盲冻结 artifact，先于一切度量计算）
+- [x] 21. T429_FREEZE（盲冻结 artifact，先于一切度量计算）
   - ID: T-021
   - Requirement(s): FR-547, FR-549, FR-550；Design: DGN-12；Tasks Gate R3
   - 路线映射: T-429
