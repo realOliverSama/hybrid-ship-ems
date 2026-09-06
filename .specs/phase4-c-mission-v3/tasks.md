@@ -288,7 +288,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: 计划字段完备；stack identity 与 T-018 末态代码/配置一致；阈值冻结记录先于任何生成
   - Completion evidence: 两件 JSON + 主 Agent 批准计划
 
-- [ ] 20. MISSION_V3_PREQUALIFICATION 执行
+- [x] 20. MISSION_V3_PREQUALIFICATION 执行
   - ID: T-020
   - Requirement(s): FR-534~540, FR-546, FR-557；AC-434/438/439；Design: DGN-10/13；Tasks Gate R3/R4/R6
   - 路线映射: T-428（生成器整体验证）

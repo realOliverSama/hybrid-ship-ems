@@ -1,7 +1,7 @@
 {
   "schema": "mission_v3_regression_report_v1",
-  "generated_at": "2026-09-05T18:38:23Z",
-  "mode": "tworun",
+  "generated_at": "2026-09-06T02:16:31Z",
+  "mode": "run",
   "suites": [
     {
       "name": "validate_registries",
@@ -54,25 +54,8 @@
       "n_cases": 10
     }
   ],
-  "determinism": {
-    "hashes": {
-      "run1": {
-        "realization_u_river_mps": "a37e4dd1c26d061f8e8d9cb24a0d4b9fd3f4b6f93abeb2b0618d402ebb4c24d4",
-        "scn": "dbdb3d7036763f34b542e5b635db3dace248481ff05e8510dc2fc6dafcb6063d",
-        "kf": "ebe3127f8bb098594a9f5ecb21260351c728d38df6f9532e4b9b9b4497906735",
-        "plan": "8060f94a0162354cd87d1d9b0ec2e474ad46fc7527cda216b833f13353941e2f"
-      },
-      "run2": {
-        "realization_u_river_mps": "a37e4dd1c26d061f8e8d9cb24a0d4b9fd3f4b6f93abeb2b0618d402ebb4c24d4",
-        "scn": "dbdb3d7036763f34b542e5b635db3dace248481ff05e8510dc2fc6dafcb6063d",
-        "kf": "ebe3127f8bb098594a9f5ecb21260351c728d38df6f9532e4b9b9b4497906735",
-        "plan": "8060f94a0162354cd87d1d9b0ec2e474ad46fc7527cda216b833f13353941e2f"
-      }
-    },
-    "identical": true
-  },
   "stack_identity": {
-    "composite_hash": "f3c2666b46a009876c41fca705f4ce157dba33778f94824fbfe13274c6fae111",
+    "composite_hash": "db5da613061fe92ba156814b90a9d26c301010ae418fd4eca8f9a4dd0a12bd2f",
     "generator_hash_domain": {
       "component": "mission_v3_generator",
       "ruling": "FD2 (Tasks Gate R6): the mission_v3_generator composite hash domain = top-level package functions scripts/+mission_v3/*.m (non-recursive); the tests/ subdirectory and the +audits/ audit assets are excluded",
@@ -87,6 +70,7 @@
         "nav_constraints.m",
         "plan_compose.m",
         "producer_export.m",
+        "producer_prequal.m",
         "scenario_compile.m",
         "seed_tree.m",
         "stack_identity.m",
