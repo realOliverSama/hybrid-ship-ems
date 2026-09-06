@@ -54,7 +54,7 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/75_run_mission_v3_feasibility_sweep.m` | ★ **T-005 ID 联合可行性扫描薄入口**（SOG×沿迹流×H/T 网格只读 Model E 扫描；600 s 腿全格 + 3000 s 稳态精化） |
 | `scripts/76_run_mission_v3_segment_census.m` | ★ **T-004 段时长普查薄入口**（注册表算术普查：usable duration 分布 + 切片几何硬约束判定 + 冻结提案） |
 | `scripts/80_run_mission_v3_prequal.m` | ★ **T-020 预资格执行薄入口**（T020_MODE=pilot|run|tworun；108 航次全链生成+两跑确定性+拒绝率冻结门） |
-| `results/mission_v3/` | C 包精选证据（T-001 validator 记录、T-005 可行性扫描三件、T-004 普查、T-017 `negative_detection_report.json`、T-018 `regression_report.json`、T-019 `qualification_stack_identity.json`、T-020 `prequal_strata_audit.json` + `prequal_manifest.json` + `prequal_reconciliation.json` + `prequal_amendment_01.json`；T-429 审计按任务增补） |
+| `results/mission_v3/` | C 包精选证据（T-001 validator 记录、T-005 可行性扫描三件、T-004 普查、T-017 `negative_detection_report.json`、T-018 `regression_report.json`、T-019 `qualification_stack_identity.json`、T-020 prequal 四件（strata_audit/manifest/reconciliation/amendment_01）、T-021 `t429_freeze.json`（盲冻结，self_hash f8152ffe…）；T-422 检出报告按任务增补） |
 | `dataset_v3/` | ★ **D 包 Python 构建与审计包**（T-008~T-016：聚合/窗口/target/split/L1-L3 审计/OOD/manifest/E2E 编排/契约校验 + pytest；详见该目录 README.md） |
 | `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
 | `model/HybridShip_ModelE.slx` | builder 生成（脚本驱动，禁 GUI 修改；B 包顶层 16 块含 07_PMS_v2/16_Safety_Interlock） |
