@@ -313,7 +313,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: artifact 字段完备 + hash 链完整；写入后其引用对象任何变更 ⇒ 后续 Gate 结果无效（机器校验）
   - Completion evidence: freeze artifact + 主 Agent 确认
 
-- [ ] 22. T429_EVALUATE（可辨识性 Gate 执行）
+- [x] 22. T429_EVALUATE（可辨识性 Gate 执行）
   - ID: T-022
   - Requirement(s): FR-547~551；AC-437；Design: DGN-12（R8/R9）；Tasks Gate R3
   - 路线映射: T-429
