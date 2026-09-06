@@ -1,7 +1,7 @@
 {
   "schema": "mission_v3_identifiability_gate_result_v1",
   "task": "T-022 T429_EVALUATE identifiability Gate (FR-547~551; AC-437; DGN-12 R8/R9; T429-AMENDMENT-V2 execution conformance rerun EXECFIX-01)",
-  "generated_at": "2026-09-06T18:21:55Z",
+  "generated_at": "2026-09-06T18:33:58Z",
   "freeze_verification": {
     "freeze_file": "results/mission_v3/t429_freeze_v2.json",
     "freeze_self_hash": "213127b267e0e210540ad7188fdfc0d4afc0d2ff03bf91663d8407b0978290f0",
@@ -957,5 +957,5 @@
     "artifact_basename_discipline_ok": true,
     "note": "products are identifiability_gate_result.json and identifiability_report.md; the D-side leakage_sbd_* naming is never reused (FR-547 / Tasks Gate R8)"
   },
-  "wall_s": 20.540371666666665
+  "wall_s": 19.3491645
 }
