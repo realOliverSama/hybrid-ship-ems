@@ -289,6 +289,8 @@ C 产物逐字段对 producer schema；C/D Interface Gate 正式版（含 D-15 �
 
 ## 修订记录
 
+> **DGN-12 Amendment Record（Day-3 T429 V2 Gate Ruling，2026-09-06）**：① DIR paired cohort = same base_draw/split_group directional counterfactual（D1-A：配对方向 BA 0.944/p=7.2e-5，池化混杂证实），gate=paired_physical_effect ∧ probe 双判据，SBD 降为 SECONDARY_DIAGNOSTIC（NCC 幅度不变性）；② TRAFFIC class-A host = 生成侧显式 STEADY_FOLLOW 区间（≥180 s；D1-B HOST_CONTAMINATION_CONFIRMED：follow 平台 max 113 s<120 s 窗、L≥180 事件 0/5），事件 duration 重设计 U[225,320] s，A 类切片 overlap==1 机器断言；③ DEPTH_LOW_ID_VS_NORMAL_ID 宿主改 WORK_MISSION×DRY token-safe 层（12+12 组、NORMAL_ID_DEPTH_BAND=[2.2,2.6] 生成前冻结、population 不动、T429_IID_DIAGNOSTIC 语义）；④ 组覆盖 12 groups/class 预注册。T429_FREEZE_v2 语料=T429_CONFIRMATION_V2（fresh，禁与 v1 拼接）。机器记录：t429_amendment_v2.json。
+
 | 日期 | 修订 | 来源 |
 |---|---|---|
 | 2026-09-05 | design 初稿（DGN-01~16） | 本 session |

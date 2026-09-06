@@ -113,15 +113,17 @@
     "rate_note": "主 Agent 提案候选：λ 条件于 regime×reach，桥/港段高",
     "event_duration_s": {
       "distribution": "UNIFORM",
-      "low": 60,
-      "high": 180
+      "low": 225,
+      "high": 320,
+      "amendment_v2": "Day-3 Ruling section 3: STEADY_FOLLOW host >= 180 s 结构保证（平台 0.8*d in [180,256]）；原 U[60,180] 致 host 污染（D1-B HOST_CONTAMINATION_CONFIRMED）",
+      "semantics_v2": "事件 = slowdown(10%) -> STEADY_FOLLOW(80% 平台, >=180s) -> recover(10%)"
     },
     "speed_ratio": {
       "distribution": "UNIFORM",
       "low": 0.5,
       "high": 0.8
     },
-    "semantics": "事件 = 前船 slowdown→follow→recover（duration~U[60,180] s、speed ratio~U[0.5,0.8]）；作用于计划层（operator 响应前船），非直接改 Plant（DGN-04）"
+    "semantics": "事件 = slowdown(前10%) -> STEADY_FOLLOW(中80%平台) -> recover(后10%)；作用于计划层（operator 响应前船），非直接改 Plant；duration 经 PREQUAL-AMEND-02 重设计以供给 T-429 pure host（FR-551 工况重设计路径）"
   },
   "chart_depth_by_reach": {
     "OPEN_WATER": 20.0,
@@ -158,6 +160,6 @@
   "self_hash": {
     "algorithm": "sha256",
     "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
-    "value": "1a79858972204fef5ec97b605c29951c9743d206528513e5bdc3554d7054b5cd"
+    "value": "345cfc25baa3c7b4b90dd9d993f21e43c791a2ca2a9886c790502bfd2e9c9c7a"
   }
 }
