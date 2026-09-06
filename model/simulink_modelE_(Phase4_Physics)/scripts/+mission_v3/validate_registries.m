@@ -2100,13 +2100,15 @@ function [role, axis, cls_a, cls_b, cfields] = local_contrast_expect(cid)
             cls_a = 'berth'; cls_b = 'departure';
             cfields = {'voyage.mission_template_id'};
         case 'DIR_UPSTREAM_VS_DOWNSTREAM'
+            % T429-AMENDMENT-V2: paired same-base-draw directional cohort.
             role = 'REQUIRED'; axis = 'direction';
             cls_a = 'upstream'; cls_b = 'downstream';
-            cfields = {'voyage.environment_regime', 'segment.reach'};
+            cfields = {'voyage.mission_template_id', 'voyage.environment_regime', 'pairing'};
         case 'DEPTH_LOW_ID_VS_NORMAL_ID'
+            % T429-AMENDMENT-V2: WORK_MISSION x DRY token-safe diagnostic layer.
             role = 'REQUIRED'; axis = 'depth';
             cls_a = 'low_id'; cls_b = 'normal_id';
-            cfields = {'voyage.mission_template_id', 'voyage.environment_regime'};
+            cfields = {'voyage.mission_template_id', 'voyage.environment_regime', 'class'};
         case 'SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE'
             role = 'REQUIRED'; axis = 'mission_intensity';
             cls_a = 'rush'; cls_b = 'return';
@@ -2169,6 +2171,10 @@ function [issues, detail] = local_check_contrasts(t, stem, issues, detail)
     all_ids = [req_ids, sec_ids];
     sig_view = '1 Hz P_load_total_kW slice-level summary statistics (H1-derived)';
     wl = local_token_whitelist();
+    % T429-AMENDMENT-V2: contrast cohort predicates gain two structural
+    % operator fields ('pairing' / 'class') alongside the causal-metadata
+    % token whitelist (Day-3 Ruling sections 1-2).
+    wl = [wl, {'pairing', 'class'}];
     cts = local_as_list(t.contrasts, 'contrasts');
     if numel(cts) ~= 8
         issues = local_add_issue(issues, stem, 'CONTRAST', ...
@@ -2218,8 +2224,23 @@ function [issues, detail] = local_check_contrasts(t, stem, issues, detail)
                 sprintf('%s: signal_view deviates from frozen H1-derived P_load view', cid));
         end
         if ~isfield(ct, 'SBD_required') || ~islogical(ct.SBD_required) || ~ct.SBD_required
-            issues = local_add_issue(issues, stem, 'STRUCTURE', ...
-                sprintf('%s: SBD_required must be true', cid));
+            % T429-AMENDMENT-V2 (Day-3 Ruling section 1): DIR may set
+            % SBD_required=false when the paired physical-effect profile is
+            % fully declared (sbd_role + paired_physical_effect_required +
+            % gate_profile).
+            ok_sbd = false;
+            if ~ct.SBD_required && isfield(ct, 'sbd_role') && ...
+                    strcmp(ct.sbd_role, 'SECONDARY_DIAGNOSTIC_NOT_APPLICABLE_TO_LEVEL_SHIFT_FACTOR') && ...
+                    isfield(ct, 'paired_physical_effect_required') && ...
+                    islogical(ct.paired_physical_effect_required) && ct.paired_physical_effect_required && ...
+                    isfield(ct, 'gate_profile') && ischar(ct.gate_profile) && ...
+                    ~isempty(regexp(ct.gate_profile, 'paired_physical_effect AND', 'once'))
+                ok_sbd = true;
+            end
+            if ~ok_sbd
+                issues = local_add_issue(issues, stem, 'STRUCTURE', ...
+                    sprintf('%s: SBD_required must be true (or declared AMENDMENT-V2 paired profile)', cid));
+            end
         end
         if ~isfield(ct, 'probe_required') || ~islogical(ct.probe_required) || ~ct.probe_required
             issues = local_add_issue(issues, stem, 'STRUCTURE', ...
