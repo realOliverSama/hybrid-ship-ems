@@ -68,3 +68,15 @@ accepted；④ D0 pilot pipeline qualification PASS；⑤ formal fleet generatio
 ⑥ OOD 定义预注册；⑦ Model-E 物理基线完整性 PASS；⑧ 控制基线完整性 PASS。
 全部满足才允许 T-432=READY。模板：`docs/phase4/d_dataset_v3/t432_unblock_checklist.json`
 + `t432_activation_record.md`（activation 时填值）。
+
+---
+
+## 7. C 侧实现完成状态（T-023 交接更新，2026-09-06）
+
+**C Mission-v3（T-001~T-024）施工完成**，分支 `feat/phase4-c-mission-v3`：
+
+- **T-429 可辨识性 Gate：FINAL FAIL（0/6 required contrasts）**——Day-3 最终裁决显式记录。证据链：t429_freeze_v1 → result_v1 FAIL（VALID）→ D1 双诊断 → T429-AMENDMENT-V2 → fresh T429_CONFIRMATION_V2 语料（144×2 两跑一致）→ conformance rerun → `results/mission_v3/t429_final_verdict.json`（self_hash eb389ae8…）。
+- 逐项身份：BRIDGE/BERTH/SPRINT/TRAFFIC = VALID FAIL；DIR = INVALID/UNRESOLVED（matched-segment 实现缺陷）；DEPTH = INSUFFICIENT EVIDENCE（frozen grouped-CV 规则）。
+- **AC-437 未达成**；T-432 不解锁——D/E/F 路线待 downstream scientific-roadmap amendment（保留 T-429 负结果前提下）。
+- C 侧就绪包：`model/simulink_modelE_(Phase4_Physics)/results/mission_v3/cd_gate_readiness.json`（self_hash 8d55e989…）。
+- D 侧 formal C/D Gate（含 D-15 必改）执行时须知悉 T-429 FINAL FAIL 状态。
