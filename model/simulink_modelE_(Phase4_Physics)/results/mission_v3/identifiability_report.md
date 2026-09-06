@@ -1,8 +1,8 @@
 # T-022 T429 EVALUATE - Identifiability Gate Report
 
-generated_at: 2026-09-06T18:21:55Z
+generated_at: 2026-09-06T18:33:58Z
 implementation sha256 (scripts/+mission_v3/+audits/identifiability.m): c2091d4bf27f3ba1ae060071856effd9da65997ed61f09c526b44199adbab405
-wall_s: 20.5
+wall_s: 19.3
 
 ## 1. Freeze verification (machine, fail-closed)
 

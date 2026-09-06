@@ -1,0 +1,85 @@
+{
+  "schema": "mission_v3_t429_final_verdict_v1",
+  "ruling": "Day-3 FINAL Ruling: T-429 overall FINAL FAIL accepted; per-contrast identity taxonomy fixed; no third T-429 round; T-432 not unlocked",
+  "generated_at": "2026-09-07T05:42:38",
+  "overall": "FINAL FAIL (fail-closed, 0/6 required contrasts PASS)",
+  "evidence_chain": {
+    "t429_freeze_v1": "f8152ffeffa228a4371c0a43d6aa987df523931ce23f91c24acfdfff3ac5a4cb",
+    "result_v1": "FAIL_INSUFFICIENT_EVIDENCE (VALID, 4 INSUFFICIENT + 2 METRIC_FAIL on prequal corpus)",
+    "t429_freeze_v2": "confirmation corpus manifest + stack hash chain (see freeze_v2 file)",
+    "result_v2_run01": "INVALID_CONFIRMATION — IMPLEMENTATION_NONCONFORMANCE (commit 9c8e1ab8, preserved)",
+    "execfix01": "evaluator conformance repair (commit 8a1ed398): registry-driven metric routing + DIR paired effect + TRAFFIC pure-host filter + DEPTH strict selector + C1~C4",
+    "result_v2_conformance": {
+      "file": "identifiability_gate_result.json",
+      "verdict": "FAIL_METRIC/INSUFFICIENT (0/6)",
+      "freeze_v2_verified": true
+    }
+  },
+  "per_contrast_final_identity": {
+    "SEG_BRIDGE_VS_HARBOR": "VALID FAIL",
+    "SEG_BERTH_VS_DEPARTURE": "VALID FAIL under frozen SBD∧probe rule",
+    "DIR_UPSTREAM_VS_DOWNSTREAM": "INVALID/UNRESOLVED due matched-segment implementation defect",
+    "DEPTH_LOW_ID_VS_NORMAL_ID": "INSUFFICIENT EVIDENCE under frozen grouped-CV rule",
+    "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE": "VALID FAIL under frozen SBD∧probe rule",
+    "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE": "VALID FAIL after pure-host repair"
+  },
+  "per_contrast_metrics_v2": {
+    "SEG_BRIDGE_VS_HARBOR": {
+      "n_groups_A": 12,
+      "n_groups_B": 12,
+      "R_lcb95": 0.6815147347491232,
+      "BA_lcb95": 0.6843681917211328,
+      "metric_profile": "STANDARD_SHAPE"
+    },
+    "SEG_BERTH_VS_DEPARTURE": {
+      "n_groups_A": 12,
+      "n_groups_B": 12,
+      "R_lcb95": 0.8230774998664856,
+      "BA_lcb95": 0.9711538461538461,
+      "metric_profile": "STANDARD_SHAPE"
+    },
+    "DIR_UPSTREAM_VS_DOWNSTREAM": {
+      "n_groups_A": 60,
+      "n_groups_B": 60,
+      "R_lcb95": 0.6252371149278935,
+      "BA_lcb95": 0.6354008383645728,
+      "metric_profile": "PAIRED_LEVEL_SHIFT"
+    },
+    "DEPTH_LOW_ID_VS_NORMAL_ID": {
+      "n_groups_A": 12,
+      "n_groups_B": 12,
+      "R_lcb95": 0.5460706949234009,
+      "BA_lcb95": null,
+      "metric_profile": "STANDARD_SHAPE"
+    },
+    "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE": {
+      "n_groups_A": 12,
+      "n_groups_B": 12,
+      "R_lcb95": 0.6217282725649232,
+      "BA_lcb95": 0.9160700464396285,
+      "metric_profile": "STANDARD_SHAPE"
+    },
+    "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE": {
+      "n_groups_A": 35,
+      "n_groups_B": 35,
+      "R_lcb95": 0.5048824548721313,
+      "BA_lcb95": 0.6648444444444445,
+      "metric_profile": "STANDARD_SHAPE"
+    }
+  },
+  "scientific_findings": [
+    "SBD (1−max NCC, amplitude-invariant) R_lcb95 ∈ [0.50, 0.82] across ALL six contrasts — structurally below R_min=1.5 for level-shift-type contrasts; metric-loadspace mismatch is a DGN-12 candidate-calibration finding for future work",
+    "Probe machinery validated: BERTH 0.97 / SPRINT 0.92 (real level-shift signals detected); DEPTH 0.50 (chance = no H1-visible depth signal at these operating points)",
+    "DIR: D1-A paired diagnostic showed direction signal (BA 0.944, ΔP +83.8 kW) but the pooled probe (0.59-0.64) and the conformance paired-effect (sign reversed by segment-mix) both fail — DIR identity: INVALID/UNRESOLVED (implementation defect), not scientific negative",
+    "TRAFFIC: pure-host repair completed (214/214 overlap==1) and still fails → traffic physics finding is valid"
+  ],
+  "t429_result_metrics_zero_check": "T429_CONFIRMATION_V2 corpus and audit artifacts contain no D-side T-432 result metrics (schema integrity verified in manifest)",
+  "downstream": {
+    "T432_unlocked": false,
+    "note": "待 C 收口后另做一次 downstream scientific-roadmap amendment 决定如何在保留 T-429 负结果的前提下继续 D/E/F"
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "value": "eb389ae89104161dc3715654e4e44ea13acf38bf5943e43ec95876fb968621d5"
+  }
+}
