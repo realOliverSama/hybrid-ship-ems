@@ -1,0 +1,30 @@
+{
+  "schema": "mission_v3_t429_v1_development_marker_v1",
+  "ruling": "Day-3 Gate FAIL Ruling Stage D0: first preregistered T-429 Gate execution preserved permanently",
+  "generated_at": "2026-09-06T13:41:50",
+  "preserved_artifacts": {
+    "t429_freeze_v1": {
+      "file": "results/mission_v3/t429_freeze.json",
+      "self_hash": "f8152ffeffa228a4371c0a43d6aa987df523931ce23f91c24acfdfff3ac5a4cb"
+    },
+    "t429_result_v1_fail": {
+      "file": "results/mission_v3/identifiability_gate_result.json",
+      "verdict": "FAIL_INSUFFICIENT_EVIDENCE",
+      "overall": false
+    }
+  },
+  "status_flags": {
+    "development_after_first_gate": true,
+    "result_role": "DEVELOPMENT / FAILED_GATE_EVIDENCE — 不得与后续 confirmation corpus 拼接为第二次无偏 Gate；诊断结果绝不可回写 v1",
+    "three_revealed_defects": [
+      "coverage design defect: 9 < 10 groups/class (template-hosted contrasts)",
+      "support-composition conflict: LOW_ID_HT class drawn empty in IID corpus",
+      "physical/contrast identifiability defect: DIR/TRAFFIC dual-metric below frozen thresholds"
+    ]
+  },
+  "narrative": "initial preregistered audit FAIL -> mechanism diagnosis -> scenario redesign -> fresh confirmation",
+  "self_hash": {
+    "algorithm": "sha256",
+    "value": "4db085b954e78ebabd2e43b52ac4090817e7228c02e3a217e8bb70d2be6375e4"
+  }
+}
