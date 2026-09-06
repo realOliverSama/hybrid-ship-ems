@@ -1,12 +1,12 @@
 {
   "schema": "mission_v3_stack_identity_v1",
   "mode": "collect",
-  "generated_at": "2026-09-06T02:40:01+0800",
+  "generated_at": "2026-09-06T07:40:58+0800",
   "components": [
     {
       "component": "mission_v3_generator",
       "version": "package",
-      "sha256": "f9fbe6dfa304ca517f8d0e716547b2d9a1729a91d124cb8017eebc92867e21b8",
+      "sha256": "dea417fc74a79811240c8c8bcd0ac969e72fd3c7a2173caeff79fa5766a48821",
       "source_path": "scripts/+mission_v3",
       "status": "PRESENT",
       "provenance": "DGN-14 item 1; FD2 hash-domain ruling (Tasks Gate R6): top-level package functions only; tests/ and +audits/ excluded (verification assets, not the generation chain)"
@@ -98,6 +98,7 @@
       "nav_constraints.m",
       "plan_compose.m",
       "producer_export.m",
+      "producer_prequal.m",
       "scenario_compile.m",
       "seed_tree.m",
       "stack_identity.m",
@@ -109,5 +110,5 @@
     ]
   },
   "pending": [],
-  "composite_hash": "f3c2666b46a009876c41fca705f4ce157dba33778f94824fbfe13274c6fae111"
+  "composite_hash": "db5da613061fe92ba156814b90a9d26c301010ae418fd4eca8f9a4dd0a12bd2f"
 }
