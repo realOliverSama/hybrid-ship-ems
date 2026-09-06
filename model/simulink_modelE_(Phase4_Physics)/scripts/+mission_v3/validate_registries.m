@@ -1288,9 +1288,12 @@ function [issues, detail] = local_check_env(t, stem, issues, detail)
             'traffic.event_duration_s object required');
     else
         evd = tr.event_duration_s;
-        if ~isfield(evd, 'low') || ~isfield(evd, 'high') || evd.low ~= 60 || evd.high ~= 180
+        % T429-AMENDMENT-V2 (Day-3 Ruling section 3): U[60,180] superseded by
+        % U[225,320] so the STEADY_FOLLOW platform (0.8*d) guarantees >= 180 s
+        % = slice + 2*edge_buffer (D1-B HOST_CONTAMINATION_CONFIRMED basis).
+        if ~isfield(evd, 'low') || ~isfield(evd, 'high') || evd.low ~= 225 || evd.high ~= 320
             issues = local_add_issue(issues, stem, 'STRUCTURE', ...
-                'traffic.event_duration_s must be U[60,180] (DGN-04 frozen)');
+                'traffic.event_duration_s must be U[225,320] (T429-AMENDMENT-V2 frozen)');
         end
     end
     if ~isfield(tr, 'speed_ratio') || ~strcmp(local_value_class(tr.speed_ratio), 'object')
