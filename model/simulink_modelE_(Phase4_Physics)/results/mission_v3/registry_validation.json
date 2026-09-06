@@ -1,6 +1,6 @@
 {
   "overall": true,
-  "generated_at": "2026-09-05T16:42:07+0800",
+  "generated_at": "2026-09-06T15:54:23+0800",
   "validator": "scripts/+mission_v3/validate_registries.m",
   "config_dir": "config/mission_v3",
   "files": {
@@ -35,7 +35,7 @@
     "environment_regime_params": {
       "schema": "mission_v3_environment_regime_params_v1",
       "status": "PASSED",
-      "self_hash": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2",
+      "self_hash": "345cfc25baa3c7b4b90dd9d993f21e43c791a2ca2a9886c790502bfd2e9c9c7a",
       "checks": [
         "number_literals",
         "required_fields",
@@ -119,7 +119,7 @@
     "identifiability_contrast_registry": {
       "schema": "mission_v3_identifiability_contrast_registry_v1",
       "status": "PASSED",
-      "self_hash": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad",
+      "self_hash": "2274da4aeb7784f4026f51f03f5c0e020a5a192ffc59044f2970850c66f50c2b",
       "checks": [
         "number_literals",
         "required_fields",
