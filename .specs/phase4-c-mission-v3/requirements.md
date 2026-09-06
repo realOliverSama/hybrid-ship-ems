@@ -223,6 +223,8 @@ Phase 4-C：Mission Generator v3——真实内河航次与工况生成器，生
 
 ## 修订记录
 
+> **FR-549 Amendment Record（Day-3 T429 V2 Gate Ruling，2026-09-06）**：DIR_UPSTREAM_VS_DOWNSTREAM 的 SBD_required=false（NCC 幅度不变性，D1-A 实证 R_paired=0.315 vs 方向 BA 0.944）；DIR Gate = PASS_paired_physical_effect AND PASS_probe（paired physical effect：same base_draw/split_group directional pair、组级聚合 signed paired delta、符号必须正确、bootstrap 95% CI 排除零、配对符号检验 alpha=0.05、禁从 D1-A 83.8 kW 推幅度阈值）；probe 不变（A_min=0.80 + 冻结组级不确定度规则）；SBD 转为 SECONDARY_DIAGNOSTIC_NOT_APPLICABLE_TO_LEVEL_SHIFT_FACTOR 仍报告不判 Gate。机器记录：results/mission_v3/t429_amendment_v2.json（self_hash 796a8b07…）。
+
 | 日期 | 修订 | 来源 |
 |---|---|---|
 | 2026-09-05 | requirements 初稿（C-D1~C-D7 + Closeout A/B/C 翻译） | 本 session |

@@ -1,0 +1,205 @@
+{
+  "schema": "mission_v3_t429_amendment_v2_preregistration",
+  "amendment_id": "T429-AMENDMENT-V2",
+  "ruling": "Day-3 T429_CONFIRMATION_V2 Amendment Gate: CONDITIONAL PASS (DIR metric amendment + DEPTH token-safe layer + TRAFFIC host redesign + exact allocation)",
+  "generated_at": "2026-09-06T15:42:47",
+  "frozen_before_generation": true,
+  "d1_diagnostics": {
+    "d1a": {
+      "verdict": "SIGNAL_PARTIAL",
+      "direction_BA": "17/18=0.944 (p=7.2e-5)",
+      "R_paired": 0.315,
+      "root_cause": "cohort confounding, not physical indivisibility"
+    },
+    "d1b": {
+      "verdict": "HOST_CONTAMINATION_CONFIRMED",
+      "of_lt1": "173/173 (100%)",
+      "follow_ge180": "0/5 events",
+      "root_cause": "host contamination (duration design ceiling)"
+    }
+  },
+  "fix1_coverage_12": {
+    "rule": "每受影响模板宿主型对比 12 unique groups/class，预注册精确配额（禁边跑边补）",
+    "allocation": {
+      "SEG_BRIDGE_VS_HARBOR": {
+        "host_template": "ROUTINE_PATROL",
+        "draws": "4 x 3 regimes",
+        "groups_per_class": 12
+      },
+      "SEG_BERTH_VS_DEPARTURE": {
+        "host_template": "ROUTINE_PATROL",
+        "draws": "shared with bridge layer",
+        "groups_per_class": 12
+      },
+      "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE": {
+        "host_template": "EMERGENCY_RESPONSE",
+        "draws": "4 x 3 regimes",
+        "groups_per_class": 12
+      }
+    }
+  },
+  "fix2_depth_token_safe_layer": {
+    "host": "WORK_MISSION x DRY (no harbor/rush segments -> C2/C3 immune)",
+    "class_A": "12 unique split groups, HT in LOW_ID_BAND [1.5,2.0] (conditional draw selection)",
+    "class_B": "12 unique split groups, HT in NORMAL_ID_DEPTH_BAND [2.2,2.6] (frozen before generation)",
+    "constraints": {
+      "C1": false,
+      "C2": false,
+      "C3": false,
+      "ood_require_usage": false,
+      "population_distribution_change": false
+    },
+    "audit_semantics": "T429_IID_DIAGNOSTIC — within-IID-support conditional balanced sampling; NOT formal Dataset-v3 population-prevalence or D/T-432 formal IID fleet evidence"
+  },
+  "fix3a_dir_metric_profile": {
+    "SBD_required": false,
+    "sbd_role": "SECONDARY_DIAGNOSTIC_NOT_APPLICABLE_TO_LEVEL_SHIFT_FACTOR",
+    "gate": "PASS_DIR = PASS_paired_physical_effect AND PASS_probe",
+    "paired_physical_effect": {
+      "cohort_unit": "same base_draw/split_group directional pair",
+      "metric": "signed paired delta in group-aggregated mean P_load",
+      "sign": "upstream > return required",
+      "ci": "group bootstrap 95% excludes zero",
+      "sign_test_alpha": 0.05,
+      "magnitude_threshold": "none (D1-A 83.8 kW diagnostic only)"
+    },
+    "probe": "frozen low-capacity grouped probe, A_min=0.80, frozen group-level uncertainty rule"
+  },
+  "fix3b_traffic_host": {
+    "semantics": "slowdown -> transition -> STEADY_FOLLOW -> recover; class-A host = explicit generation-side STEADY_FOLLOW interval",
+    "duration": {
+      "event_total_s": [
+        225,
+        320
+      ],
+      "steady_follow_s": [
+        180,
+        256
+      ],
+      "guarantee": "0.8*duration >= 180"
+    },
+    "invariants": [
+      "class-A slice overlap with STEADY_FOLLOW == 1.0",
+      "every traffic-ON group >= 1 legal pure slice",
+      "steady_follow >= slice+2*buffer = 180 s"
+    ],
+    "no_amplitude_increase": "禁加大扰动幅度凑指标"
+  },
+  "confirmation_plan_exact": {
+    "seed_root": "MISSION_V3_T429CONF_V2_SEED_2026_09_06",
+    "draw_allocation": [
+      {
+        "stratum": "STRAT_ROUTINE_PATROL__NORMAL",
+        "draws": 4,
+        "members": 4,
+        "purpose": "Fix1 bridge/berth groups"
+      },
+      {
+        "stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "draws": 4,
+        "members": 4,
+        "purpose": "Fix1"
+      },
+      {
+        "stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "draws": 4,
+        "members": 4,
+        "purpose": "Fix1"
+      },
+      {
+        "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "draws": 4,
+        "members": 4,
+        "purpose": "Fix1 sprint/return groups"
+      },
+      {
+        "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "draws": 4,
+        "members": 4,
+        "purpose": "Fix1"
+      },
+      {
+        "stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "draws": 4,
+        "members": 4,
+        "purpose": "Fix1"
+      },
+      {
+        "stratum": "STRAT_WORK_MISSION__DRY",
+        "draws": 24,
+        "members": "GOOD_ON only",
+        "purpose": "Fix2 DEPTH 12 low (conditional HT in [1.5,2.0]) + 12 normal (HT in [2.2,2.6])"
+      },
+      {
+        "stratum": "STRAT_WORK_MISSION__NORMAL",
+        "draws": 12,
+        "members": "GOOD_ON + GOOD_OFF (traffic counterfactual pair)",
+        "purpose": "Fix3b TRAFFIC (conditional: cruise segment contains >=1 event)"
+      }
+    ],
+    "expected_voyages": {
+      "coverage": 48,
+      "emergency": 48,
+      "depth": 24,
+      "traffic": 24,
+      "total": 144
+    },
+    "passes": 2,
+    "expected_artifacts": 288,
+    "dir_group_source": "WORK x DRY normal-depth 12 draws (cruise-upstream vs return-downstream same-draw pairs; groups>=12)",
+    "sampling_conditions": {
+      "depth_low": "resample until ht_effective in [1.5,2.0]",
+      "depth_normal": "resample until ht_effective in [2.2,2.6]",
+      "traffic": "resample until cruise segment contains >=1 traffic event (new U[225,320] events)"
+    },
+    "retry_discipline": "FAILED slot: same seed/config retry <=2; sampling rejects: resample with draw increment (no slot)"
+  },
+  "freeze_sequence": [
+    "this preregistration",
+    "fresh confirmation corpus generation (2 passes)",
+    "corpus manifest freeze",
+    "T429_FREEZE_v2 (add corpus manifest hash + stack hash + artifact list only)",
+    "one V2 confirmation run"
+  ],
+  "unchanged_gate_parameters": {
+    "A_min": 0.8,
+    "R_min_sbd_applicable": 1.5,
+    "slice_geometry": [
+      120,
+      30,
+      60
+    ],
+    "bootstrap": "1000, split_group, frozen seeds",
+    "probe": "frozen low-capacity config",
+    "train_only_preprocessing": true,
+    "inference_unit": "split_group/base_draw"
+  },
+  "preserved_v1": {
+    "t429_freeze_v1": "f8152ffe…",
+    "result_v1": "FAIL_INSUFFICIENT_EVIDENCE (permanent, development/failed-gate evidence)"
+  },
+  "v2_fail_consequences_frozen": {
+    "insufficient_coverage": "STOP, no third-round top-up",
+    "dir_still_fail": "scientific/spec decision, no current-strength tuning",
+    "traffic_still_fail_pure_host": "investigate scenario physics",
+    "depth_still_fail_legal_cohort": "accept possible depth-identifiability limit at current Model-E/H1 fidelity"
+  },
+  "registry_and_generator_changes": {
+    "identifiability_contrast_registry": {
+      "old": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad",
+      "new": "2274da4aeb7784f4026f51f03f5c0e020a5a192ffc59044f2970850c66f50c2b"
+    },
+    "environment_regime_params": {
+      "old": "1a79858972204fef5ec97b605c29951c9743d206528513e5bdc3554d7054b5cd",
+      "new": "345cfc25baa3c7b4b90dd9d993f21e43c791a2ca2a9886c790502bfd2e9c9c7a",
+      "change": "traffic.event_duration_s U[60,180] -> U[225,320] (STEADY_FOLLOW >=180s guarantee)"
+    },
+    "model_e_baselines": "zero change",
+    "low_id_band": "unchanged [1.5,2.0] (Day-3 section D: single-variable attribution)"
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "796a8b07d0b3c521d10c41f4291ca8b8a54fb32925e93f926c02ec10c08427d8"
+  }
+}
