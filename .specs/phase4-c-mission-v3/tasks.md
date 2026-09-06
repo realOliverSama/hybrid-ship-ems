@@ -325,7 +325,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: overall=true；任一对比失败 ⇒ Gate FAIL 升级主 Agent（工况重设计路径）
   - Completion evidence: Gate 报告 + 主 Agent 复核
 
-- [ ] 23. C/D Interface Gate 就绪包
+- [x] 23. C/D Interface Gate 就绪包
   - ID: T-023
   - Requirement(s): FR-501, FR-534；AC-435；Design: DGN-16；Tasks Gate R8
   - 路线映射: T-432 解锁链第①②环
@@ -336,7 +336,7 @@ Phase 4 预资格与交付: T-019 预资格计划+stack 捕获 → T-020 预资�
   - Validation: schema validator PASS；就绪包字段完备
   - Completion evidence: 就绪包 + 主 Agent 复核
 
-- [ ] 24. 归档与 PR（spec 收官受 EXT-CD-GATE 约束）
+- [x] 24. 归档与 PR（spec 收官受 EXT-CD-GATE 约束）
   - ID: T-024
   - Requirement(s): NFR-429, NFR-430, NFR-433；AC-440；Tasks Gate R8
   - 路线映射: 横切
