@@ -38,6 +38,9 @@ function out = gen_iid(plan, ctx)
     if strcmp(mode, 'smoke')
         art_dir = fullfile(plan.modele_root, 'datasets_v3', ...
             'qualification_smoke', 'iid');
+    elseif strcmp(mode, 'stage_b_iid')
+        art_dir = fullfile(plan.modele_root, 'datasets_v3', ...
+            'formal', 'iid');
     else
         art_dir = fullfile(plan.modele_root, 'datasets_v3', ...
             'qualification', 'stage_a_iid');
@@ -54,64 +57,67 @@ function out = gen_iid(plan, ctx)
     draws_all = 0;
     t_run = tic;
 
-    for si_loop = 1:numel(strata_sel)
-        st = char(strata_sel{si_loop});
-        parts = strsplit(st, '__');
-        if numel(parts) ~= 2
-            error('GATE:FLEETV3:IID:STRATUM', ...
-                'stratum id not of the form <TPL>__<REG>: %s', st);
-        end
-        tpl = strrep(char(parts{1}), 'STRAT_', '');
-        reg = char(parts{2});
-        si_plan = find(strcmp(plan.iid.strata, st), 1);
-        if isempty(si_plan)
-            error('GATE:FLEETV3:IID:STRATUM', ...
-                'stratum %s not in the frozen plan list', st);
-        end
-
-        draw_start = draw_base;
-        slot_fails = 0;
-        attempts_st = 0;
-
-        for slot = 1:draws
-            samp = local_sample_logged(plan, seed, draw_start, tpl, ...
-                reg, st, slot);
-            attempts_st = attempts_st + samp.n_attempts;
-            for jj = 1:numel(samp.new_rows)
-                samp_c{end+1} = samp.new_rows{jj}; %#ok<AGROW>
+    % strata are independent (each starts its own draw segment at
+    % draw_base with local slot bookkeeping), so per-stratum task
+    % splitting is semantically exact vs the serial loop; run_tasks
+    % dispatches them in parallel (PCT) or serially, and this collector
+    % merges in canonical task (= strata) order.
+    args_cell = cell(1, numel(strata_sel));
+    if strcmp(char(plan.mode), 'stage_b_iid')
+        % FR-497 Stage B formal: stratum i draws k=0..15 starting at
+        % i*draw_stride; each (stratum, family k) is an independent task
+        % with a RESERVED attempt window [i*stride+k*W, (k+1)*W) so that
+        % parallel slots can never sample the same draw index
+        % (W = floor(stride/k_formal); rejected attempts advance within
+        % the window only).  stage_a/smoke keep the sequential-advance
+        % semantics (audited serial path).
+        W = floor(double(plan.iid.draw_stride) / ...
+            double(plan.iid.k_formal));
+        n_tasks = 0;
+        for si_loop = 1:numel(strata_sel)
+            st = char(strata_sel{si_loop});
+            si_plan = find(strcmp(plan.iid.strata, st), 1);
+            if isempty(si_plan)
+                error('GATE:FLEETV3:IID:STRATUM', ...
+                    'stratum %s not in the frozen plan list', st);
             end
-            if ~samp.accepted
-                slot_fails = slot_fails + 1;
-                draw_start = draw_start + plan.iid.max_attempts;
-                continue;
-            end
-            s2 = samp.sample;
-            led = s2.ledger;
-            acc_row = led(s2.n_attempts);
-            dag = acc_row.draw;
-            rl = s2.realization;
-            bdi = dag.base_draw_index;
-            draw_start = bdi + 1;
-
-            fam = mission_v3.family_expand('expand', dag, ...
-                'Realization', rl);
-            for k = 1:double(fam.n_members)
-                [row, retry_c] = local_member_with_retry(plan, ctx, ...
-                    art_dir, si_plan, st, bdi, dag, rl, fam, k, ...
-                    retry_c);
-                voy_c{end+1} = row; %#ok<AGROW>
+            i0 = si_plan - 1;
+            for k = 0:(double(plan.iid.k_formal) - 1)
+                pb = plan;
+                pb.iid.max_attempts = double(W);
+                n_tasks = n_tasks + 1;
+                args_cell{n_tasks} = {pb, ctx, st, si_plan, 1, ...
+                    i0 * plan.iid.draw_stride + k * W, seed, art_dir};
             end
         end
+        args_cell = args_cell(1:n_tasks);
+    else
+        for si_loop = 1:numel(strata_sel)
+            st = char(strata_sel{si_loop});
+            si_plan = find(strcmp(plan.iid.strata, st), 1);
+            if isempty(si_plan)
+                error('GATE:FLEETV3:IID:STRATUM', ...
+                    'stratum %s not in the frozen plan list', st);
+            end
+            args_cell{si_loop} = {plan, ctx, st, si_plan, draws, ...
+                draw_base, seed, art_dir};
+        end
+    end
+    outs = fleet_v3.run_tasks(@fleet_v3.task_iid_stratum, args_cell, ...
+        local_worker_cap(), 'IID');
 
-        sa = local_stratum_summary(plan, st, si_plan, draws, ...
-            slot_fails, attempts_st, voy_c, samp_c);
+    for t = 1:numel(outs)
+        o = outs{t};
+        voy_c = [voy_c, o.voyages]; %#ok<AGROW>
+        samp_c = [samp_c, o.sampling]; %#ok<AGROW>
+        retry_c = [retry_c, o.retry]; %#ok<AGROW>
         if isempty(stratum_audit)
-            stratum_audit = sa;
+            stratum_audit = o.stratum_audit;
         else
-            stratum_audit(end+1) = sa; %#ok<AGROW>
+            stratum_audit(end+1) = o.stratum_audit; %#ok<AGROW>
         end
-        attempts_all = attempts_all + attempts_st;
-        draws_all = draws_all + (draws - slot_fails);
+        attempts_all = attempts_all + o.attempts;
+        draws_all = draws_all + o.draws_ok;
     end
 
     rate = local_rate(attempts_all, draws_all);
@@ -267,10 +273,13 @@ function [row, retry_c] = local_member_with_retry(plan, ctx, art_dir, ...
 end
 
 function p = local_prefix(plan)
-    if strcmp(char(plan.mode), 'smoke')
-        p = 'FLTS';
-    else
-        p = 'FLTA';
+    switch char(plan.mode)
+        case 'smoke'
+            p = 'FLTS';
+        case 'stage_b_iid'
+            p = 'FLTB';
+        otherwise
+            p = 'FLTA';
     end
 end
 
@@ -374,6 +383,21 @@ function sa = local_stratum_summary(plan, st, si_plan, draws, ...
         sa.verdict = 'FAIL';
     else
         sa.verdict = 'PASS';
+    end
+end
+
+function n = local_worker_cap()
+% Memory-bound parallel width: 8 GB machine - each pool worker holds a
+% full Simulink model instance, so the default cap is 3 (override with
+% FLEET_WORKERS; run_tasks serial-falls-back when PCT is unavailable).
+    v = getenv('FLEET_WORKERS');
+    if isempty(v)
+        n = 3;
+        return;
+    end
+    n = max(1, min(8, str2double(v)));
+    if isnan(n)
+        n = 3;
     end
 end
 

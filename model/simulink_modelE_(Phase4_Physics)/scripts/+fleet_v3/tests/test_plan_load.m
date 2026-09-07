@@ -153,7 +153,7 @@ assert(~strcmp(ra_plan.provenance.ood_override_sha256, ...
 % ---- negative: bad mode fails closed ----
 ra_threw = false;
 try
-    fleet_v3.plan_load(ra_act, 'stage_b_iid');
+    fleet_v3.plan_load(ra_act, 'stage_b');
 catch ME
     ra_threw = strncmp(char(ME.identifier), 'GATE:FLEETV3:PLAN', 17);
 end

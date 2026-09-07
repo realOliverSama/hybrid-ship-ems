@@ -37,7 +37,12 @@
 % mfilename, pwd fallback); read-only consumption of +mission_v3/,
 % config/mission_v3/, Model E and the activation record.
 
-FLEET_MODE = 'smoke';   % 'stage_a' | 'smoke' | Phase 2: stage_b_*
+FLEET_MODE = 'stage_a';   % 'stage_a' | 'smoke' | 'stage_b_iid' | 'stage_b_ood'
+% Overnight driver override (T-019; the agent sets FLEET_MODE per pass):
+FM = getenv('FLEET_MODE');
+if ~isempty(FM)
+    FLEET_MODE = FM;   % env override (driver face; values gated below)
+end
 
 ROOT = fileparts(fileparts(mfilename('fullpath')));
 if isempty(ROOT) || ~exist(fullfile(ROOT, 'config'), 'dir')
@@ -117,13 +122,29 @@ switch FLEET_MODE
         end
         fprintf('FLEETV3_VERDICT=PASS\n');
     case {'stage_b_iid', 'stage_b_ood'}
-        error('GATE:FLEETV3:NOT_IMPLEMENTED', ...
-            ['mode ''%s'' is Phase 2 scope: the internal generators ', ...
-             'already carry the formal Stage B parameterization (seed ', ...
-             'segments, families, gates) via fleet_v3.plan_load, but ', ...
-             'Stage B execution is enabled only after the Stage A ', ...
-             'qualified stack freeze'], FLEET_MODE);
-    otherwise
+        % T-019 Stage B formal generation (FR-497; enabled after the
+        % Stage A qualified-stack freeze; activation record + amendment
+        % 01 are the frozen pre-registration)
+        plan = fleet_v3.plan_load(ACTIVATION_JSON, FLEET_MODE);
+        ctx = fleet_v3.ctx_build(plan);
+        if strcmp(FLEET_MODE, 'stage_b_iid')
+            out = fleet_v3.gen_iid(plan, ctx);
+            fprintf('FLEETV3_VERDICT=%s\n', out.verdict);
+            fprintf('FLEETV3_IID_VOYAGES=%d ACCEPTED=%d\n', ...
+                numel(out.voyages), out.n_simulated);
+        else
+            out = fleet_v3.gen_ood(plan, ctx);
+            fprintf('FLEETV3_OOD_CONDITIONS=%d VOYAGES=%d ACCEPTED=%d\n', ...
+                numel(out.conditions), numel(out.voyages), ...
+                out.n_simulated);
+            fprintf('FLEETV3_OOD_STRESS_REMOVED=%d\n', ...
+                out.n_stress_removed);
+        end
+        try
+            close_system(ctx.MDL, 0);
+        catch
+        end
+        fprintf('FLEETV3_VERDICT=%s\n', 'DONE');    otherwise
         error('GATE:FLEETV3:ARG', ...
             'unknown FLEET_MODE: %s', FLEET_MODE);
 end

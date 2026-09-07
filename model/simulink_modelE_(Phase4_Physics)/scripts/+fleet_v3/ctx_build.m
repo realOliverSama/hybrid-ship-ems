@@ -1,4 +1,4 @@
-function ctx = ctx_build(plan)
+function ctx = ctx_build(plan, varargin)
 % fleet_v3.ctx_build - shared generation context for the 73 Stage A
 % pipeline (T-018 Phase 4-D).  Mirrors the C-side producer_prequal ctx
 % provision (config scripts into the base workspace, Model E loaded,

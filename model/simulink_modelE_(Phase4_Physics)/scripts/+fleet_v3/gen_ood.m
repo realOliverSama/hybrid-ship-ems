@@ -1,55 +1,51 @@
 function out = gen_ood(plan, ctx)
-% fleet_ood note: see the header of fleet_v3.plan_load for the provenance
-% face; this file drives the OOD directed generation (T-018 Phase 4-D).
+% fleet_v3.gen_ood - OOD directed generation for the 73 pipeline
+% (T-018 Phase 4-D; D5 six-segment pipeline per condition).
 %
-% fleet_v3.gen_ood - OOD directed generation for the 73 Stage A pipeline,
-% the D5 six-segment pipeline per condition:
-%   (1) preregistered proposal sampler  -> ParamOverride parsed from the
-%       frozen record (A1/A2: host FLOOD u_river_mag TN; B1:
-%       chart_depth_voyage_base TN; C1~C3: none, natural host sampling)
-%   (2) normal stochastic realization   -> mission_v3.dag_sample('draw')
-%       + mission_v3.env_realize('realize') per candidate draw index
-%   (3) range/REQUIRE predicate check   -> fleet_v3.ood_judge steps
-%       (canonical registry predicates via fleet_v3.predicate_eval)
-%   (4) physical-domain guard           -> hard bounds (|U|<=2.8,
-%       ht>=1.3) + the conservative 700 kW propulsion capacity check
-%       (fleet_v3.propulsion_feasibility_check); violations are
-%       STRESS_SET removal rows (D5: never an Axis-A/B/C sample)
-%   (5) accept or reject-resample       -> realized-value membership
-%       bands (A1/A2 sup|U|, B1 ht_effective), guard-band rejection
-%       (FR-519), canonical REQUIRE tokens for C conditions, token
-%       priority over simultaneous numerical hits
-%   (6) OOD provenance/meta             -> dataset_domain='OOD',
-%       ood_axis / ood_condition_id / ood_token_id /
-%       ood_def_version='DGN-11-v1' / physics_domain_ref /
-%       heldout_token_registry_sha (fleet_v3.export_ood)
+% Modes:
+%   stage_a / smoke : 5 conditions x 1 family each (stage_a segment
+%                     k=900 / smoke segment k=950)
+%   stage_b_ood     : 5 conditions x 10 families each (formal segments
+%                     ood.seed_base + c*seed_stride, family k gets the
+%                     reserved attempt window [base+k*W, base+(k+1)*W),
+%                     W = floor(seed_stride/families_formal)) - artifacts
+%                     under datasets_v3/formal/ood (FR-497 Stage B)
 %
-%   out = fleet_v3.gen_ood(plan, ctx)
+% Tasks are per condition (stage_a/smoke) or per (condition, family)
+% (stage_b) - independent by construction (per-task frozen seed
+% segments), dispatched through fleet_v3.run_tasks (parallel PCT face or
+% serial fallback) and merged in canonical task order.  The task body is
+% the local function local_task below (passed to run_tasks via an
+% anonymous handle; the handle resolves fleet_v3.gen_ood's local
+% function on pool workers through the propagated package path).
 %
-% Accepted candidates run the SAME member chain and activation criteria
-% as the IID corpus (family_expand default matrix, 4 members, eligibility
-% name-value injection from the plan).  Each condition has its own draw
-% segment starting at the plan draw base (activation stage_a "OOD:
-% condition segment k=900"; smoke segment k=950); rejected candidates
-% never occupy a family slot - the draw index advances, within
-% plan.ood.max_attempts per family.  An unreachable condition within the
-% attempt budget is a controlled failure (GATE:FLEETV3:OOD:UNREACHABLE):
-% bands/predicates/perturbations are never widened (escalation path).
+% D5 six-segment pipeline per candidate: preregistered proposal sampler
+% -> normal stochastic realization -> range/REQUIRE predicate ->
+% physical-domain guard -> accept or reject-resample -> OOD
+% provenance/meta.  Per-condition STRESS ledgers are written
+% incrementally (FR-537: no candidate draw silently dropped) and merged
+% into _ood_stress_ledger.json by the collector.
+%
+% out fields: corpus, mode, artifact_dir, seed, draw_base, conditions
+% (struct array with judge/acceptance evidence), voyages, retry,
+% stress_rows, n_stress_removed, run_wall_s.
 %
 % Error ids: GATE:FLEETV3:OOD:<REASON>.
 %
 % Discipline: ASCII-only source; no absolute paths; thin body + local
 % functions; no chained indexed assignment.
 
-    families = local_families(plan);
+    t_run = tic;
     draw_base = local_draw_base(plan);
     seed = char(plan.ood.seed);
-    max_att = double(plan.ood.max_attempts);
-
     mode = char(plan.mode);
+
     if strcmp(mode, 'smoke')
         art_dir = fullfile(plan.modele_root, 'datasets_v3', ...
             'qualification_smoke', 'ood');
+    elseif strcmp(mode, 'stage_b_ood')
+        art_dir = fullfile(plan.modele_root, 'datasets_v3', ...
+            'formal', 'ood');
     else
         art_dir = fullfile(plan.modele_root, 'datasets_v3', ...
             'qualification', 'stage_a_ood');
@@ -59,122 +55,83 @@ function out = gen_ood(plan, ctx)
     end
 
     conds = plan.ood.conditions;
+    task_fn = @(pb, c, a_dir, db, sd) local_task(pb, ctx, c, a_dir, ...
+        db, sd);
+
+    args_cell = cell(1, numel(conds));
+    if strcmp(mode, 'stage_b_ood')
+        % FR-497 Stage B formal: condition c families k=0..9 starting at
+        % ood.seed_base + c*ood.seed_stride; each (condition, family) is
+        % an independent task with a RESERVED attempt window
+        % [base+k*W, base+(k+1)*W), W = floor(seed_stride/families_formal)
+        W = floor(double(plan.ood.seed_stride) / ...
+            double(plan.ood.families_formal));
+        n_tasks = 0;
+        for c = 1:numel(conds)
+            cid = char(conds{c});
+            ci = c - 1;
+            for k = 0:(double(plan.ood.families_formal) - 1)
+                pb = plan;
+                pb.ood.max_attempts = double(W);
+                n_tasks = n_tasks + 1;
+                args_cell{n_tasks} = {pb, cid, art_dir, ...
+                    double(plan.ood.seed_base) + ci * ...
+                    double(plan.ood.seed_stride) + k * W};
+            end
+        end
+        args_cell = args_cell(1:n_tasks);
+        task_fn = @(pb, c, a_dir, db) local_task(pb, ctx, c, a_dir, ...
+            db, seed);
+    else
+        for c = 1:numel(conds)
+            args_cell{c} = {plan, cid(char(conds{c})), art_dir, ...
+                draw_base};
+        end
+        task_fn = @(pb, c, a_dir, db) local_task(pb, ctx, c, a_dir, ...
+            db, seed);
+    end
+
+    outs = fleet_v3.run_tasks(task_fn, args_cell, ...
+        local_worker_cap(), 'OOD');
+
     voy_c = {};
     ood_retry_c = {};
-    cond_audit = struct([]);
     stress_rows = {};
-    t_run = tic;
-
-    for c = 1:numel(conds)
-        cid = char(conds{c});
-        host = plan.ood.hosts.(cid);
-        ov = plan.ood.proposal.(cid).override;
-
-        draw_start = draw_base;
-        attempts = 0;
-        n_reject_guard = 0;
-        n_reject_target = 0;
-        n_stress = 0;
-        accepted = false;
-        dag = [];
-        rl = [];
-        judge = [];
-
-        for att = 1:max_att
-            bdi = draw_start + (att - 1);
-            dag = mission_v3.dag_sample('draw', seed, bdi, ...
-                char(host.template), char(host.regime), ...
-                char(host.stratum), 'ParamOverride', ov);
-            rl = mission_v3.env_realize('realize', dag, 'auto', ...
-                'ParamOverride', ov);
-            judge = fleet_v3.ood_judge(plan, cid, rl);
-            attempts = att;
-            switch char(judge.disposition)
-                case 'STRESS_SET'
-                    n_stress = n_stress + 1;
-                    stress_rows{end+1} = local_stress_row(plan, cid, ...
-                        bdi, judge); %#ok<AGROW>
-                    % FR-537 audit precedent: no candidate draw is
-                    % silently dropped - persist removal rows
-                    % incrementally so a later controlled failure
-                    % cannot lose the evidence chain (T-018 A2 finding)
-                    local_write_json(fullfile(art_dir, ...
-                        '_ood_stress_ledger.json'), ...
-                        struct('condition', {cid}, 'n_removed', ...
-                        {double(n_stress)}, 'rows', {stress_rows}));
-                    % D5: a domain violation is a removal row, never an
-                    % OOD sample; keep resampling the segment
-                case 'REJECT_GUARD_BAND'
-                    n_reject_guard = n_reject_guard + 1;
-                case 'REJECT_NO_TARGET'
-                    n_reject_target = n_reject_target + 1;
-                case 'ACCEPT'
-                    accepted = true;
-                    break;
-                otherwise
-                    error('GATE:FLEETV3:OOD:DISPOSITION', ...
-                        'unknown judge disposition: %s', ...
-                        char(judge.disposition));
-            end
-        end
-        if ~accepted
-            error('GATE:FLEETV3:OOD:UNREACHABLE', ...
-                ['condition %s did not reach an accepted candidate ', ...
-                 'within %d attempts (%d guard-band rejects, %d ', ...
-                 'no-target rejects, %d STRESS_SET removals); bands, ', ...
-                 'predicates and perturbation magnitudes are frozen - ', ...
-                 'escalate, do not widen'], cid, max_att, ...
-                n_reject_guard, n_reject_target, n_stress);
-        end
-
-        fam = mission_v3.family_expand('expand', dag, 'Realization', rl);
-        bdi = dag.base_draw_index;
-        n_members = double(fam.n_members);
-        n_acc_member = 0;
-        if families ~= 1
-            % Phase 1 note: stage_a and smoke both run one family per
-            % condition; the formal Stage B 10-family loop is the Phase 2
-            % extension of exactly this block.
-            error('GATE:FLEETV3:OOD:FAMILIES', ...
-                'Phase 1 supports one family per condition (got %d)', ...
-                families);
-        end
-        for k = 1:n_members
-            meta_extra = local_meta_extra(plan, cid, judge);
-            voyage_id = sprintf('%s_OOD_%s_D%05d_M%d', ...
-                local_prefix(plan), cid, bdi, k);
-            [row, retry_rows] = local_member_with_retry(plan, ctx, ...
-                art_dir, voyage_id, dag, rl, fam, k, meta_extra);
-            voy_c{end+1} = row; %#ok<AGROW>
-            for rr_i = 1:numel(retry_rows)
-                ood_retry_c{end+1} = retry_rows{rr_i}; %#ok<AGROW>
-            end
-            if strcmp(char(row.disposition), 'ACCEPT')
-                n_acc_member = n_acc_member + 1;
-            end
-        end
-
+    cond_audit = struct([]);
+    for t = 1:numel(outs)
+        o = outs{t};
         ca = struct();
-        ca.condition_id = cid;
-        ca.ood_axis = char(judge.ood_axis);
-        ca.token_id = char(plan.ood.hosts.(cid).token_id);
-        ca.host_template = char(host.template);
-        ca.host_regime = char(host.regime);
-        ca.attempts_used = double(attempts);
-        ca.accepted = true;
-        ca.reject_guard_band = double(n_reject_guard);
-        ca.reject_no_target = double(n_reject_target);
-        ca.stress_set_removed = double(n_stress);
-        ca.accepted_voyages = double(n_acc_member);
-        ca.in_band_hit_rate = double(attempts == 1);
+        ca.condition_id = o.condition_id;
+        ca.ood_axis = o.ood_axis;
+        ca.token_id = o.token_id;
+        ca.host_template = o.host_template;
+        ca.host_regime = o.host_regime;
+        ca.attempts_used = o.attempts_used;
+        ca.accepted = o.accepted;
+        ca.reject_guard_band = o.reject_guard_band;
+        ca.reject_no_target = o.reject_no_target;
+        ca.stress_set_removed = o.stress_set_removed;
+        ca.accepted_voyages = o.accepted_voyages;
+        ca.in_band_hit_rate = double(o.attempts_used == 1);
         ca.require_reachable = true;
-        ca.sup_abs = double(max(abs(rl.u_river_mps(:))));
-        ca.ht_effective = double(rl.water.ht_effective);
+        ca.sup_abs = o.sup_abs;
+        ca.ht_effective = o.ht_effective;
         if isempty(cond_audit)
             cond_audit = ca;
         else
             cond_audit(end+1) = ca; %#ok<AGROW>
         end
+        voy_c = [voy_c, o.voyages]; %#ok<AGROW>
+        ood_retry_c = [ood_retry_c, o.retry]; %#ok<AGROW>
+        stress_rows = [stress_rows, o.stress_rows]; %#ok<AGROW>
+    end
+    % combined stress ledger (per-condition task-local files remain
+    % alongside for parallel-write safety)
+    if ~isempty(stress_rows)
+        local_write_json(fullfile(art_dir, ...
+            '_ood_stress_ledger.json'), ...
+            struct('n_removed', {double(numel(stress_rows))}, ...
+            'rows', {stress_rows}));
     end
 
     out = struct();
@@ -190,39 +147,125 @@ function out = gen_ood(plan, ctx)
     out.n_stress_removed = double(numel(stress_rows));
     out.run_wall_s = toc(t_run);
 
-    % removal ledger (D5 stress rows are kept inspectable, FR-537
-    % audit precedent: no candidate draw is silently dropped)
     local_write_json(fullfile(art_dir, '_ood_ledger.json'), ...
         struct('corpus', {out.corpus}, 'mode', {out.mode}, ...
         'seed', {out.seed}, 'voyages', {voy_c}, ...
         'stress_rows', {stress_rows}, 'retry', {ood_retry_c}));
 end
 
+%% ==================== per-condition task body ========================
+
+function out = local_task(plan, ctx, cid, art_dir, draw_base, seed)
+% One condition's directed generation (judge loop until accept, then the
+% 4-member chain).  plan.ood.max_attempts is the per-task attempt
+% budget (200 for stage_a/smoke; the reserved attempt window size for
+% Stage B family tasks).
+    addpath(fullfile(plan.modele_root, 'scripts'));
+    fleet_v3.worker_provision(plan.modele_root, ctx.MDL);
+    ctx.model_ready = true;   % worker_provision ran in THIS process
+
+    host = plan.ood.hosts.(cid);
+    ov = plan.ood.proposal.(cid).override;
+    max_att = double(plan.ood.max_attempts);
+
+    attempts = 0;
+    n_reject_guard = 0;
+    n_reject_target = 0;
+    n_stress = 0;
+    accepted = false;
+    dag = [];
+    rl = [];
+    judge = [];
+    stress_rows = {};
+
+    for att = 1:max_att
+        bdi = draw_base + (att - 1);
+        dag = mission_v3.dag_sample('draw', seed, bdi, ...
+            char(host.template), char(host.regime), ...
+            char(host.stratum), 'ParamOverride', ov);
+        rl = mission_v3.env_realize('realize', dag, 'auto', ...
+            'ParamOverride', ov);
+        judge = fleet_v3.ood_judge(plan, cid, rl);
+        attempts = att;
+        switch char(judge.disposition)
+            case 'STRESS_SET'
+                n_stress = n_stress + 1;
+                stress_rows{end+1} = local_stress_row(plan, cid, ...
+                    bdi, judge); %#ok<AGROW>
+                % FR-537 audit precedent: persist removal rows
+                % incrementally (per-condition file: parallel tasks must
+                % not share a ledger path)
+                local_write_json(fullfile(art_dir, ...
+                    ['_ood_stress_ledger_' cid '.json']), ...
+                    struct('condition', {cid}, 'n_removed', ...
+                    {double(n_stress)}, 'rows', {stress_rows}));
+                % D5: a domain violation is a removal row, never an OOD
+                % sample; keep resampling the segment
+            case 'REJECT_GUARD_BAND'
+                n_reject_guard = n_reject_guard + 1;
+            case 'REJECT_NO_TARGET'
+                n_reject_target = n_reject_target + 1;
+            case 'ACCEPT'
+                accepted = true;
+                break;
+            otherwise
+                error('GATE:FLEETV3:OOD:DISPOSITION', ...
+                    'unknown judge disposition: %s', ...
+                    char(judge.disposition));
+        end
+    end
+    if ~accepted
+        error('GATE:FLEETV3:OOD:UNREACHABLE', ...
+            ['condition %s did not reach an accepted candidate within ', ...
+             '%d attempts (%d guard-band rejects, %d no-target ', ...
+             'rejects, %d STRESS_SET removals); bands, predicates and ', ...
+             'perturbation magnitudes are frozen - escalate, do not ', ...
+             'widen'], cid, max_att, n_reject_guard, n_reject_target, ...
+            n_stress);
+    end
+
+    fam = mission_v3.family_expand('expand', dag, 'Realization', rl);
+    bdi = dag.base_draw_index;
+    voy_c = {};
+    retry_c = {};
+    n_members = double(fam.n_members);
+    n_acc_member = 0;
+    for k = 1:n_members
+        meta_extra = local_meta_extra(plan, cid, judge);
+        voyage_id = sprintf('%s_OOD_%s_D%05d_M%d', ...
+            local_prefix(plan), cid, bdi, k);
+        [row, retry_c] = local_member_with_retry(plan, ctx, art_dir, ...
+            voyage_id, dag, rl, fam, k, meta_extra, retry_c);
+        voy_c{end+1} = row; %#ok<AGROW>
+        if strcmp(char(row.disposition), 'ACCEPT')
+            n_acc_member = n_acc_member + 1;
+        end
+    end
+
+    out = struct();
+    out.condition_id = cid;
+    out.ood_axis = char(judge.ood_axis);
+    out.token_id = char(plan.ood.hosts.(cid).token_id);
+    out.host_template = char(host.template);
+    out.host_regime = char(host.regime);
+    out.attempts_used = double(attempts);
+    out.accepted = true;
+    out.reject_guard_band = double(n_reject_guard);
+    out.reject_no_target = double(n_reject_target);
+    out.stress_set_removed = double(n_stress);
+    out.accepted_voyages = double(n_acc_member);
+    out.sup_abs = double(max(abs(rl.u_river_mps(:))));
+    out.ht_effective = double(rl.water.ht_effective);
+    out.voyages = voy_c;
+    out.retry = retry_c;
+    out.stress_rows = stress_rows;
+end
+
+function cid = cid(s)
+    cid = char(s);
+end
+
 %% ========================== local helpers ===========================
-
-function families = local_families(plan)
-    if strcmp(char(plan.mode), 'smoke')
-        families = double(plan.smoke.ood_families);
-    else
-        families = 1;   % stage_a: one family per condition
-    end
-end
-
-function db = local_draw_base(plan)
-    if strcmp(char(plan.mode), 'smoke')
-        db = double(plan.smoke.draw_base);
-    else
-        db = double(plan.ood.draw_base);   % stage_a segment k=900
-    end
-end
-
-function p = local_prefix(plan)
-    if strcmp(char(plan.mode), 'smoke')
-        p = 'FLTS';
-    else
-        p = 'FLTO';
-    end
-end
 
 function me = local_meta_extra(plan, cid, judge)
     me = struct();
@@ -235,8 +278,8 @@ function me = local_meta_extra(plan, cid, judge)
     me.propulsion = judge.evidence.propulsion;
 end
 
-function [row, retry_rows] = local_member_with_retry(plan, ctx, ...
-        art_dir, voyage_id, dag, rl, fam, k, meta_extra)
+function [row, retry_c] = local_member_with_retry(plan, ctx, art_dir, ...
+        voyage_id, dag, rl, fam, k, meta_extra, retry_c)
     retry_rows = {};
     n_try = double(plan.iid.retry_max) + 1;
     row = [];
@@ -266,10 +309,11 @@ function [row, retry_rows] = local_member_with_retry(plan, ctx, ...
                 rr.detail = local_fail_detail(ME);
                 rr.stratum_id = char(dag.stratum_id);
                 rr.voyage_id = voyage_id;
-                retry_rows{end+1} = rr; %#ok<AGROW>
+                retry_c{end+1} = rr; %#ok<AGROW>
             end
         end
     end
+    retry_c = retry_rows;
 end
 
 function row = local_blank_row(voyage_id, dag, fam, k)
@@ -318,6 +362,40 @@ function r = local_stress_row(plan, cid, bdi, judge)
     r.flow_axis = char(judge.evidence.flow_axis);
     r.note = ['physical-domain violation (D5): removed candidate, ', ...
         'never an Axis-A/B/C sample'];
+end
+
+function db = local_draw_base(plan)
+    if strcmp(char(plan.mode), 'smoke')
+        db = double(plan.smoke.draw_base);
+    else
+        db = double(plan.ood.draw_base);   % stage_a segment k=900
+    end
+end
+
+function p = local_prefix(plan)
+    switch char(plan.mode)
+        case 'smoke'
+            p = 'FLTS';
+        case 'stage_b_ood'
+            p = 'FLTB';
+        otherwise
+            p = 'FLTO';
+    end
+end
+
+function n = local_worker_cap()
+% Memory-bound parallel width: 8 GB machine - each pool worker holds a
+% full Simulink model instance, so the default cap is 3 (override with
+% FLEET_WORKERS; run_tasks serial-falls-back when PCT is unavailable).
+    v = getenv('FLEET_WORKERS');
+    if isempty(v)
+        n = 3;
+        return;
+    end
+    n = max(1, min(8, str2double(v)));
+    if isnan(n)
+        n = 3;
+    end
 end
 
 function id = local_err_id(ME)

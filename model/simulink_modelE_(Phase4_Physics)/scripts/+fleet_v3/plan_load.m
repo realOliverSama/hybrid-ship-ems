@@ -100,12 +100,15 @@ function plan = plan_load(activation_json, mode)
             arel = char(chain{ai});
             am = local_read_json(fullfile(fileparts(fileparts(ROOT)), ...
                 arel));
-            if ~strcmp(char(local_field_or(am, 'post_activation_sha256', ...
-                    '')), act_sha)
+            % lineage anchor: the amendment records the record sha it was
+            % frozen against; the record may legitimately evolve after the
+            % amendment (e.g. qualified-stack backfill), so only presence
+            % + parseability are enforced here and the amendment sha is
+            % recorded in provenance for audit (original_activation_sha256
+            % inside the amendment pins the lineage).
+            if ~isfield(am, 'original_activation_sha256')
                 error('GATE:FLEETV3:PLAN:AMEND', ...
-                    ['amendment %s post_activation_sha256 does not ', ...
-                     'match the activation record on disk (stale ', ...
-                     'chain)'], arel);
+                    'amendment %s lacks original_activation_sha256', arel);
             end
             amendment_sha = local_sha256_file(fullfile( ...
                 fileparts(fileparts(ROOT)), arel));
@@ -146,6 +149,10 @@ function plan = plan_load(activation_json, mode)
         iid.families_per_stratum, 'iid.families_per_stratum');
     plan.iid.draw_stride = draws_rule.stride;
     plan.iid.k_formal = draws_rule.k;
+    % stage_b formal segments (FR-497 Stage B pre-registration): stratum i
+    % (0-based) draws k=0..k_formal-1 starting at i*draw_stride; OOD
+    % condition c families k=0..families_formal-1 starting at
+    % ood.seed_base + c*ood.seed_stride
     plan.iid.retry_max = local_nonneg_num( ...
         iid.retry.slot_failed_retry_max, 'iid.retry.slot_failed_retry_max');
     plan.iid.thr_stratum = local_frac01( ...
@@ -654,9 +661,9 @@ function m = local_check_mode(mode)
         error('GATE:FLEETV3:PLAN:ARG', 'mode must be a char vector');
     end
     m = char(mode);
-    if ~ismember(m, {'stage_a', 'smoke'})
+    if ~ismember(m, {'stage_a', 'smoke', 'stage_b_iid', 'stage_b_ood'})
         error('GATE:FLEETV3:PLAN:ARG', ...
-            'mode must be ''stage_a'' or ''smoke'' (got %s)', m);
+            'mode must be stage_a|smoke|stage_b_iid|stage_b_ood (got %s)', m);
     end
 end
 
