@@ -84,19 +84,29 @@ switch FLEET_MODE
         % pass (failed-voyage handling records it, the verdict gates it)
         n_bad_iid = 0;
         for vi = 1:numel(out_iid.voyages)
-            if ~strcmp(char(out_iid.voyages(vi).disposition), 'ACCEPT')
+            if iscell(out_iid.voyages)
+                vrow = out_iid.voyages{vi};
+            else
+                vrow = out_iid.voyages(vi);
+            end
+            if ~strcmp(char(vrow.disposition), 'ACCEPT')
                 n_bad_iid = n_bad_iid + 1;
             end
+        end
+        exp_members = double(plan.ood.members_per_family);
+        if strncmp(FLEET_MODE, 'stage_b', 7)
+            exp_members = exp_members * ...
+                double(plan.ood.per_condition_families);
         end
         n_bad_cond = 0;
         for ci = 1:numel(out_ood.conditions)
             if double(out_ood.conditions(ci).accepted_voyages) ...
-                    < double(plan.ood.members_per_family)
+                    < exp_members
                 n_bad_cond = n_bad_cond + 1;
                 fprintf('FLEETV3_CONDITION_INCOMPLETE %s accept=%d/%d\n', ...
                     out_ood.conditions(ci).condition_id, ...
                     out_ood.conditions(ci).accepted_voyages, ...
-                    plan.ood.members_per_family);
+                    exp_members);
             end
         end
         if n_bad_iid > 0 || n_bad_cond > 0

@@ -43,6 +43,8 @@ function row = member_exec(ctx, voyage_id, dag, rl, fam, k, meta_extra)
         error('GATE:FLEETV3:MEMBER:ARG', ...
             'meta_extra must be a scalar struct (possibly empty)');
     end
+    is_ood = isfield(meta_extra, 'ood_final_domain') ...
+        && strcmp(char(meta_extra.ood_final_domain), 'OOD');
     if ~ctx.model_ready
         error('GATE:FLEETV3:MEMBER:CTX', ...
             ['ctx.model_ready is false - run fleet_v3.ctx_build with ', ...
@@ -185,8 +187,6 @@ function row = member_exec(ctx, voyage_id, dag, rl, fam, k, meta_extra)
 
     % ---- OOD meta extension (bridge via FORMAL through the untouched
     %         producer_export face, then rewrite; D5 provenance) --------
-    is_ood = isfield(meta_extra, 'ood_final_domain') ...
-        && strcmp(char(meta_extra.ood_final_domain), 'OOD');
     if is_ood
         meta.ood_axis = char(meta_extra.ood_axis);
     end
