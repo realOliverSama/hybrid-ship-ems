@@ -1,7 +1,7 @@
 # Phase 4-D 数据集 v3（T-430~T-435）Tasks
 
 Spec: `phase4-d-dataset-v3`  
-Status: implementation-in-progress（**D0 contract/pipeline complete** 2026-09-05：T-001~T-017 全勾；T-432/T-435-formal 仍 BLOCKED——不得升 implementation-complete）  
+Status: implementation-in-progress（D0 complete 2026-09-05 + D-15/EXT-CD-GATE 2026-09-07；roadmap amendment v1 (c′) APPROVED；**T-432 READY 2026-09-07**（activation record FROZEN，checklist ALL_GREEN）——T-018/T-019 可施工；仍不得升 implementation-complete〔T-020 审计冻结未完〕）  
 Created: 2026-09-04  
 Approved: 2026-09-04（CONDITIONAL PASS + R1~R7 修正闭合）  
 Brainstorm: `./brainstorm.md`（D-D1~D-D9 批准）  
@@ -244,7 +244,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 > 解锁须 Unblock Checklist 八项全绿（FR-498）+ C/D Interface Gate overall=true（FR-496）。
 > tasks.md 批准本身不构成解锁。activation-time 值（fleet 规模/strata/seeds/OOD 轴 A 数值/OOD counts/formal 航次合格判据数值）只能在 activation record 预注册后消费，本文件不预填。
 
-- [ ] 18. T-432 Stage A — generation qualification（BLOCKED）
+- [ ] 18. T-432 Stage A — generation qualification（UNBLOCKED 2026-09-07：checklist ALL_GREEN + activation record FROZEN）
   - ID: T-018
   - Requirement(s): FR-497；Design: DGN-17
   - blocked_by: T-432 Unblock Checklist（FR-498 全绿）
@@ -254,7 +254,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: qualification gate PASS + 审计管线全绿
   - Completion evidence: qualification 报告
 
-- [ ] 19. T-432 Stage B — formal fleet（BLOCKED）
+- [ ] 19. T-432 Stage B — formal fleet（UNBLOCKED 2026-09-07：依赖 T-018；activation record 已预注册 FROZEN）
   - ID: T-019
   - Requirement(s): FR-497；Design: DGN-17 + R8
   - depends_on: T-018；blocked_by: 同 T-018 + activation record 预注册完成

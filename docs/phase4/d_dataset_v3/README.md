@@ -17,8 +17,9 @@ T-432 激活设施。**机器事实源**（schema/registry 两 JSON）在
 | `future_information_contract.md` | 文件 | T-004 未来信息契约：K/F/U 认识论分类 + issue-time causality x(t₀+k\|t₀) + 双索引存储 + forecast provenance 六字段 + pilot causal fixtures（DGN-13） |
 | `c_producer_interface_contract.md` | 文件 | T-004 D→C producer 接口契约（C 包开工输入）：十一项能力 + formal 航次合格判据义务（数值 activation 预注册，不预填）+ C/D Gate 十项 + reopening 纪律 |
 | `dataset_v3_schema.md` | 文件 | T-004/T-010 schema 文档：voyage artifact 双表 + 八 role + 窗口几何 + target/E300/predictive quantile 契约 + Dataset views + manifest 字段 |
-| `t432_activation_record.md` | 文件 | T-432 激活记录**模板**（activation 时填值；不预填任何 activation 数值） |
-| `t432_unblock_checklist.json` | 文件 | FR-498 八项 Unblock Checklist 机器化模板（D0 交付时全 RED） |
+| `t432_activation_record.md` | 文件 | T-432 激活记录（**FROZEN 2026-09-07**，D1~D5 Final Ruling 批准含窄修正）：IID 576 + OOD 240 = 816、seeds/分配/retry/合格判据 1200/60/0、OOD 轴带+guard band 不变量+canonical token 消费+定向生成机制六段管线 |
+| `t432_activation_record.json` | 文件 | 激活记录机器副本（schema t432_activation_record_v1；`formal_voyage_qualification` 节供 cd_interface_gate 项⑦消费；72 号自动探测传入） |
+| `t432_unblock_checklist.json` | 文件 | FR-498 八项 Unblock Checklist（**ALL_GREEN 2026-09-07**，逐项 evidence 归档；T-432 READY） |
 
 ## 维护规则
 
