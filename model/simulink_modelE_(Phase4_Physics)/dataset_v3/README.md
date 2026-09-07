@@ -28,8 +28,8 @@ Phase 4-D（spec `.specs/phase4-d-dataset-v3`）Dataset v3 两段式管线的 Py
 | `audit_ood.py` | OOD 装载/物理域检查（T-012；DGN-11 三轴 + PHYSICS_EXTRAPOLATION/STRESS_SET） |
 | `manifest.py` | FR-488 十五项 manifest + deterministic payload hash（T-014；DGN-12 + R8 payload/run_metadata 分离） |
 | `run_pipeline.py` | pilot E2E 编排（T-015）：.mat 航次 → 聚合/窗口/target → split → 审计 → 归一化 → manifest → pilot_gate_result.json |
-| `cd_interface_gate.py` | C/D Interface Gate 十项检查（T-016；DGN-16；D0 为 NON-FORMAL 骨架自检） |
-| `tests/` | 单元 + 负向 + 确定性测试（164 例，pytest，`.venv_tf` 环境） |
+| `cd_interface_gate.py` | C/D Interface Gate 十项独立机器键 c01~c10（T-016/D-15；DGN-16；result schema v2；`--formality FORMAL\|NON-FORMAL` 双域——FORMAL=EXT-CD-GATE（⑤ 载体双存/embedded self_hash 核对/⑥ fixture+producer_script_sha/⑦ embedded eligibility），⑩ 基线快照消费 fail-closed；NON-FORMAL 骨架自检不构成 T-432 解锁） |
+| `tests/` | 单元 + 负向 + 确定性测试（178 例，pytest，`.venv_tf` 环境；含 `test_cd_interface_gate.py`——Gate v2 十键独立/双域/⑤ 收紧/⑩ fail-closed 负向） |
 
 ## 使用
 

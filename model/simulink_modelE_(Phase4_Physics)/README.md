@@ -45,9 +45,9 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/+dataset_v3/export_pilot.m` | ★ T-007 pilot 导出主体（registry 驱动 stream / K-F causal fixtures / PILOT_ONLY；70 号薄入口调用） |
 | `scripts/70_export_dataset_v3_pilot.m` | ★ **T-007 pilot producer 薄入口**（导出 `datasets_v3/pilot/*.mat` + manifest；FAILED 航次即 GATE FAIL） |
 | `scripts/71_run_dataset_v3_pilot_gate.m` | ★ **T-015 pilot Gate 薄入口**（调用 Python `run_pipeline`；`results/dataset_v3/pilot/pilot_gate_result.json` overall=true 方 PASS，标 PILOT） |
-| `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项检查；D0 为 NON-FORMAL 骨架自检） |
+| `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项独立键检查；env 参数化 `EMS_CD_VOYAGE_DIR` / `EMS_CD_FORMALITY` / `EMS_CD_RESULT`——D-15，缺省 = pilot NON-FORMAL 骨架自检，`EMS_CD_FORMALITY=FORMAL` 即 EXT-CD-GATE） |
 | `dataset_v3/` | ★ **D 包 Python 构建与审计包**（T-008~T-016：聚合/窗口/target/split/L1-L3 审计/OOD/manifest/E2E 编排/契约校验 + pytest；详见该目录 README.md） |
-| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
+| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / **cd_interface_formal_prequal / cd_interface_formal_t429conf_v2**（EXT-CD-GATE formal 语料结果，D-15）/ split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
 | `model/HybridShip_ModelE.slx` | builder 生成（脚本驱动，禁 GUI 修改；B 包顶层 16 块含 07_PMS_v2/16_Safety_Interlock） |
 | `results/` | `gate_result.json`（T-412 against candidate overall=true）、`gate_control_result.json`（43+44：overall + C1~C7 + 三臂指标 + negative_control）、`config_manifest.json`（4 config sha256+有效值快照） |
 | `docs/` | 证据文档指向仓库级 `docs/phase4/b_pms_safety/`（field-level diff / 三臂对比 / 裁决链） |
