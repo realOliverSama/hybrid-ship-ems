@@ -45,7 +45,7 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/+dataset_v3/export_pilot.m` | ★ T-007 pilot 导出主体（registry 驱动 stream / K-F causal fixtures / PILOT_ONLY；70 号薄入口调用） |
 | `scripts/70_export_dataset_v3_pilot.m` | ★ **T-007 pilot producer 薄入口**（导出 `datasets_v3/pilot/*.mat` + manifest；FAILED 航次即 GATE FAIL） |
 | `scripts/71_run_dataset_v3_pilot_gate.m` | ★ **T-015 pilot Gate 薄入口**（调用 Python `run_pipeline`；`results/dataset_v3/pilot/pilot_gate_result.json` overall=true 方 PASS，标 PILOT） |
-| `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项检查；D0 为 NON-FORMAL 骨架自检） |
+| `scripts/72_run_cd_interface_gate.m` | ★ **T-016 C/D Interface Gate 薄入口**（⑩ 基线完整性 hash 快照 + Python 十项独立键检查；env 参数化 `EMS_CD_VOYAGE_DIR` / `EMS_CD_FORMALITY` / `EMS_CD_RESULT`——D-15，缺省 = pilot NON-FORMAL 骨架自检，`EMS_CD_FORMALITY=FORMAL` 即 EXT-CD-GATE） |
 | `config/mission_v3/prequal_plan.json` | ★ **T-019 预资格计划预注册**（FROZEN_PRE_REGISTRATION：9 格×12 accepted=108、3 base draws×2×2 family、seed/draw 段位、retry 政策、拒绝率阈值 0.50 生成前冻结、eligibility 语义精化裁决入册；self_hash） |
 | `config/mission_v3/` | ★ **C 包生成侧注册表九件**（Phase 4-C T-001/T-002，候选态 CANDIDATE；模板三 archetype / conditional-DAG 十四节点 / 环境 regime 参数 / ID 支撑界 / 预报 quality profiles / seed 树策略 / **scenario strata 九格 / heldout token C1~C3 / identifiability contrast 六必需+二诊断**；各含 self_hash；详见该目录 README.md；**预测模型：无**——纯配置注册表） |
 | `scripts/+mission_v3/producer_prequal.m` | ★ **T-020 预资格主循环**（ctx/run/member/compare 四模式：hotel 逐航次守卫/traffic OFF 剥离/DEGRADED arm/白名单注入/1 Hz 网格化/payload hash 记账/NORMAL 复用机器验证/PREQUAL-AMEND-01 引用/T429 写前自检） |
@@ -53,11 +53,11 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/+mission_v3/tests/` | C 包单测/负向 harness（`test_validate_registries.m` 九件 validator 正/负向 9/9、`test_seed_tree.m` seed 树 8/8、`test_env_realize.m` 环境真值 8/8、`test_plan_compose.m` 计划层 9/9、`test_stack_identity.m` stack identity 7/7、`test_forecast_issue.m` 预报器 8/8（解析式 vs 数值积分/因果门负向/衰减形状/AR(1) 时间相关/白名单/provenance/确定性/wl 通道）、`test_scenario_compile.m` 编译器 8/8（字段完备/hotel+水深恒等式/R1 符号映射/白名单/确定性）、`test_kf_snapshots.m` 快照 7/7（布局/R7 因果不变量+BAD_ARG/积分/缺快照/zones/网格门/确定性）、`test_family_expand.m` 干预层 8/8、`test_producer_export.m` 导出判据 8/8、`test_negative.m` **AC-436 十项注入集成负向套件 10/10**（future-truth/realized future/realized 约束/网格与 vintage/禁填补/latent 源/未声明复用/truth drift/PILOT_ONLY/越权源——全链真实组装+阳性对照+检出报告 JSON）、**`producer_prequal` 主循环、`run_all.m` 十套件集成入口（run/tworun：全链四级确定性 hash 两跑+stack_identity Strict 零改动快照入回归记录 regression_report.json）**；注入参数/tempdir 运行不触真文件） |
 | `scripts/75_run_mission_v3_feasibility_sweep.m` | ★ **T-005 ID 联合可行性扫描薄入口**（SOG×沿迹流×H/T 网格只读 Model E 扫描；600 s 腿全格 + 3000 s 稳态精化） |
 | `scripts/76_run_mission_v3_segment_census.m` | ★ **T-004 段时长普查薄入口**（注册表算术普查：usable duration 分布 + 切片几何硬约束判定 + 冻结提案） |
-| `scripts/81_run_mission_v3_t429.m` | ★ **T-022 T-429 Gate 薄入口**（T429_MODE=evaluate|verify；freeze 机器校验→切片→SBD/probe→六必需对比→fail-closed 判定） |
+| `scripts/81_run_mission_v3_t429.m` | ★ **T-422 T-429 Gate 薄入口**（T429_MODE=evaluate|verify；freeze 机器校验→切片→SBD/probe→六必需对比→fail-closed 判定） |
 | `scripts/80_run_mission_v3_prequal.m` | ★ **T-020 预资格执行薄入口**（T020_MODE=pilot|run|tworun；108 航次全链生成+两跑确定性+拒绝率冻结门） |
 | `results/mission_v3/` | C 包精选证据（T-001 validator 记录、T-005 可行性扫描三件、T-004 普查、T-017 `negative_detection_report.json`、T-018 `regression_report.json`、T-019 `qualification_stack_identity.json`、T-020 prequal 四件（strata_audit/manifest/reconciliation/amendment_01）、T-021 `t429_freeze.json`（盲冻结 f8152ffe…）、T-022 `identifiability_gate_result.json` + `identifiability_report.md`（**Gate FAIL_INSUFFICIENT_EVIDENCE 已落盘，处置待裁决**）） |
 | `dataset_v3/` | ★ **D 包 Python 构建与审计包**（T-008~T-016：聚合/窗口/target/split/L1-L3 审计/OOD/manifest/E2E 编排/契约校验 + pytest；详见该目录 README.md） |
-| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
+| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / **cd_interface_formal_prequal / cd_interface_formal_t429conf_v2**（EXT-CD-GATE formal 语料结果，D-15）/ split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
 | `model/HybridShip_ModelE.slx` | builder 生成（脚本驱动，禁 GUI 修改；B 包顶层 16 块含 07_PMS_v2/16_Safety_Interlock） |
 | `results/` | `gate_result.json`（T-412 against candidate overall=true）、`gate_control_result.json`（43+44：overall + C1~C7 + 三臂指标 + negative_control）、`config_manifest.json`（4 config sha256+有效值快照） |
 | `docs/` | 证据文档指向仓库级 `docs/phase4/b_pms_safety/`（field-level diff / 三臂对比 / 裁决链） |
