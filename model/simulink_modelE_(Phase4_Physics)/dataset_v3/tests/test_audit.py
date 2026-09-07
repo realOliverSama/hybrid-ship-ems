@@ -268,9 +268,11 @@ class TestOODAxisA:
 
 class TestOODAxisB:
     def test_paths(self):
+        # T-018 重构：训练支持下界 = 1.5（T-432 activation record 生效）
         assert classify_ood(_rec("B", ht_ratio=2.5))["verdict"] == "NONE"           # 支持域
-        assert classify_ood(_rec("B", ht_ratio=2.0))["verdict"] == "NONE"           # ≥2.0 支持域
-        assert classify_ood(_rec("B", ht_ratio=1.9))["verdict"] == "OOD"
+        assert classify_ood(_rec("B", ht_ratio=2.0))["verdict"] == "NONE"           # ≥1.5 支持域
+        assert classify_ood(_rec("B", ht_ratio=1.5))["verdict"] == "NONE"           # 1.5 含于支持域（OOD 带上开端）
+        assert classify_ood(_rec("B", ht_ratio=1.4999))["verdict"] == "OOD"
         assert classify_ood(_rec("B", ht_ratio=1.3))["verdict"] == "OOD"            # 含下端点
         assert classify_ood(_rec("B", ht_ratio=1.25))["verdict"] == "UNCLASSIFIED"  # 1.2~1.3 margin 带
         assert classify_ood(_rec("B", ht_ratio=1.2))["verdict"] == "UNCLASSIFIED"
@@ -280,20 +282,24 @@ class TestOODAxisB:
 
 
 class TestOODAxisC:
+    """轴 C 词表 = registry factor 名（T-018 重构：canonical token registry
+    驱动，D4；词表见 heldout_token_registry.json factor_a/factor_b）。"""
+
     def test_held_out_combo_hit(self):
-        rec = _rec("C", composition=["bridge_zone", "strong_counter_current"])
+        rec = _rec("C", composition=["BRIDGE_PASSAGE",
+                                     "HIGH_ID_ADVERSE_CURRENT"])
         assert classify_ood(rec)["verdict"] == "OOD"
 
     def test_combo_with_extra_factors_still_hits(self):
-        rec = _rec("C", composition=["port_area", "shallow_water", "fog"])
+        rec = _rec("C", composition=["HARBOR", "LOW_ID_HT", "FOG"])
         assert classify_ood(rec)["verdict"] == "OOD"
 
     def test_single_factors_only_none(self):
-        rec = _rec("C", composition=["bridge_zone", "shallow_water"])  # 均为单因子，无 held-out 组合
+        rec = _rec("C", composition=["BRIDGE_PASSAGE", "HARBOR"])  # 均为单因子，无 held-out 组合
         assert classify_ood(rec)["verdict"] == "NONE"
 
-    def test_all_three_preregistered_combos(self):
-        for combo in ood.AXIS_C_HELD_OUT_COMBINATIONS:
+    def test_all_registry_combos(self):
+        for combo in ood.held_out_combinations():
             rec = _rec("C", composition=sorted(combo))
             assert classify_ood(rec)["verdict"] == "OOD"
 
@@ -303,7 +309,7 @@ class TestOODLoader:
         records = [
             _rec("A", voyage_id="a1", u_abs_mps=2.4),
             _rec("B", voyage_id="b1", ht_ratio=1.5),
-            _rec("C", voyage_id="c1", composition=["bridge_zone"]),
+            _rec("C", voyage_id="c1", composition=["HARBOR"]),
         ]
         assert validate_ood_records(records) == []
 

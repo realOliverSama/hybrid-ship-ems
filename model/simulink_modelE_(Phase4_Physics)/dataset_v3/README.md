@@ -25,11 +25,11 @@ Phase 4-D（spec `.specs/phase4-d-dataset-v3`）Dataset v3 两段式管线的 Py
 | `build_dataset_v3.py` | role 白名单 model views + quantile 契约守卫（T-010；E2E 编排在 run_pipeline.py） |
 | `split.py` | deterministic group-aware split（T-011；DGN-09：SHA256 64-bit u + half-up + 完备性三不变量） |
 | `audit_leakage.py` | L1/L2/L3 三级泄漏审计（T-012；DGN-10：L1 Hard FAIL / L2 provenance 三分类禁自动剔除 / L3 SBD suspect flag） |
-| `audit_ood.py` | OOD 装载/物理域检查（T-012；DGN-11 三轴 + PHYSICS_EXTRAPOLATION/STRESS_SET） |
+| `audit_ood.py` | OOD 装载/物理域检查（T-012；DGN-11 三轴 + PHYSICS_EXTRAPOLATION/STRESS_SET；**T-018 重构**：轴 B 训练支持下界 2.0→1.5（T-432 activation record `train_support_min_ht` 生效），轴 C held-out 组合改由冻结 `config/mission_v3/heldout_token_registry.json` 加载（D4——canonical token 禁手抄，composition 词表 = registry factor_a/factor_b 名，手写组合常量移除，classify_ood 签名向后兼容） |
 | `manifest.py` | FR-488 十五项 manifest + deterministic payload hash（T-014；DGN-12 + R8 payload/run_metadata 分离） |
 | `run_pipeline.py` | pilot E2E 编排（T-015）：.mat 航次 → 聚合/窗口/target → split → 审计 → 归一化 → manifest → pilot_gate_result.json |
 | `cd_interface_gate.py` | C/D Interface Gate 十项独立机器键 c01~c10（T-016/D-15；DGN-16；result schema v2；`--formality FORMAL\|NON-FORMAL` 双域——FORMAL=EXT-CD-GATE（⑤ 载体双存/embedded self_hash 核对/⑥ fixture+producer_script_sha/⑦ embedded eligibility），⑩ 基线快照消费 fail-closed；NON-FORMAL 骨架自检不构成 T-432 解锁） |
-| `tests/` | 单元 + 负向 + 确定性测试（178 例，pytest，`.venv_tf` 环境；含 `test_cd_interface_gate.py`——Gate v2 十键独立/双域/⑤ 收紧/⑩ fail-closed 负向） |
+| `tests/` | 单元 + 负向 + 确定性测试（197 例，pytest，`.venv_tf` 环境；含 `test_cd_interface_gate.py`——Gate v2 十键独立/双域/⑤ 收紧/⑩ fail-closed 负向、`test_audit_ood.py`——T-018 activation 生效专项（轴 B 1.5 边界/[1.2,1.3) margin 不入 formal OOD/轴 C registry 驱动组合与独立文件读取对照/接口向后兼容） |
 
 ## 使用
 

@@ -19,40 +19,97 @@
       "members_per_family": 4,
       "strata_equal_allocation": true,
       "split_groups_per_stratum": 16,
-      "family_matrix": {"traffic": ["ON", "OFF"], "forecast": ["GOOD_V1", "DEGRADED_V1"], "typing": "PHYSICAL x INFORMATION"},
+      "family_matrix": {
+        "traffic": [
+          "ON",
+          "OFF"
+        ],
+        "forecast": [
+          "GOOD_V1",
+          "DEGRADED_V1"
+        ],
+        "typing": "PHYSICAL x INFORMATION"
+      },
       "seed_root": "MISSION_V3_T432_FORMAL_SEED_2026_09_07",
       "draw_index_rule": "stratum i (0-based) uses base_draw_index in [i*1000, (i+1)*1000), k=0..15",
-      "retry": {"slot_failed_retry_max": 2, "same_slot_config_seed": true, "rejected_never_occupies_slot": true},
-      "rejection_rate_gate": {"per_stratum_max": 0.5, "overall_max": 0.5}
+      "retry": {
+        "slot_failed_retry_max": 2,
+        "same_slot_config_seed": true,
+        "rejected_never_occupies_slot": true
+      },
+      "rejection_rate_gate": {
+        "per_stratum_max": 0.5,
+        "overall_max": 0.5
+      }
     },
     "ood": {
       "total_voyages": 240,
       "definition_version": "DGN-11-v1",
       "axis_a": {
         "metric": "sup|u_river| both directions (absolute-current definition)",
-        "conditions": {"A1": "(2.0, 2.4]", "A2": "(2.4, 2.8]"},
-        "iid_support_max": {"adverse": 1.8, "following": 1.5},
+        "conditions": {
+          "A1": "(2.0, 2.4]",
+          "A2": "(2.4, 2.8]"
+        },
+        "iid_support_max": {
+          "adverse": 1.8,
+          "following": 1.5
+        },
         "guard_band_rule": "GUARD(direction) = (IID_SUPPORT_MAX(direction), 2.0]",
-        "guard_bands": {"adverse": "(1.8, 2.0]", "following": "(1.5, 2.0]"},
-        "guard_semantics": "neither formal IID nor formal OOD (FR-519); formal generation reject-resamples into guard bands"
+        "guard_bands": {
+          "adverse": "(1.8, 2.0]",
+          "following": "(1.5, 2.0]"
+        },
+        "guard_semantics": "neither formal IID nor formal OOD (FR-519); formal generation reject-resamples into guard bands",
+        "hosts": {
+          "A1": "ROUTINE_PATROL x FLOOD",
+          "A2": "ROUTINE_PATROL x FLOOD"
+        }
       },
       "axis_b": {
         "name": "LOW_EFFECTIVE_DEPTH / LOW_EFFECTIVE_HT EXTRAPOLATION",
         "scientific_definition": "1.3 <= ht_effective < 1.5 (membership judged on realized ht_effective after DRY water-level realization)",
         "train_support_min_ht": 1.5,
         "in_support_low_band": "1.5 <= ht_effective < 2.0 remains numerical IID support; NOT auto-classified Axis C; predicate-driven only",
-        "domain_bounds": {"stress_margin_band": "[1.2, 1.3) -> STRESS_SET if generated", "hard_floor": 1.2}
+        "domain_bounds": {
+          "stress_margin_band": "[1.2, 1.3) -> STRESS_SET if generated",
+          "hard_floor": 1.2
+        },
+        "host": "WORK_MISSION x DRY"
       },
       "axis_c": {
         "token_source": "heldout_token_registry.json (canonical token IDs/predicates; hand-coded copies forbidden)",
         "token_priority": "Axis C token > simultaneous numerical-axis hit",
         "conditions": {
-          "C1": {"token": "C1_BRIDGE_X_HIGH_ID_ADVERSE_CURRENT", "predicate": "segment.role==bridge AND adverse|U| in [1.4,1.8]", "host": "ROUTINE_PATROL x FLOOD"},
-          "C2": {"token": "C2_HARBOR_X_LOW_ID_HT", "predicate": "segment.role==harbor AND ht_effective in [1.5,2.0]", "host": "ROUTINE_PATROL x DRY"},
-          "C3": {"token": "C3_EMERGENCY_SPRINT_X_LOW_ID_HT", "predicate": "segment.role==rush AND ht_effective in [1.5,2.0]", "host": "EMERGENCY_RESPONSE x DRY"}
+          "C1": {
+            "token": "C1_BRIDGE_X_HIGH_ID_ADVERSE_CURRENT",
+            "predicate": "segment.role==bridge AND adverse|U| in [1.4,1.8]",
+            "host": "ROUTINE_PATROL x FLOOD"
+          },
+          "C2": {
+            "token": "C2_HARBOR_X_LOW_ID_HT",
+            "predicate": "segment.role==harbor AND ht_effective in [1.5,2.0]",
+            "host": "ROUTINE_PATROL x DRY"
+          },
+          "C3": {
+            "token": "C3_EMERGENCY_SPRINT_X_LOW_ID_HT",
+            "predicate": "segment.role==rush AND ht_effective in [1.5,2.0]",
+            "host": "EMERGENCY_RESPONSE x DRY"
+          }
         }
       },
-      "counts": {"per_condition_families": 10, "per_condition_voyages": 40, "conditions": ["A1", "A2", "B1", "C1", "C2", "C3"]},
+      "counts": {
+        "per_condition_families": 10,
+        "per_condition_voyages": 40,
+        "conditions": [
+          "A1",
+          "A2",
+          "B1",
+          "C1",
+          "C2",
+          "C3"
+        ]
+      },
       "seed_rule": "condition c (0-based, order A1/A2/B1/C1/C2/C3) uses base_draw_index in [10000+c*1000, 10000+(c+1)*1000), k=0..9; same formal seed root",
       "proposal_samplers": {
         "note": "efficiency-oriented proposal samplers ONLY; scientific membership always from realized values",
@@ -61,9 +118,24 @@
         "B1": "h_chart ~ TN(3.86, 0.15, lower=3.64, upper=4.08) targeting E[ht_effective|DRY dWL~TN(-0.8,0.4)] ~= 1.40",
         "C1_C2_C3": "natural sampling per host regime frozen distributions + canonical REQUIRE predicate"
       },
-      "generation_pipeline": ["preregistered proposal sampler", "normal stochastic realization", "range/REQUIRE predicate check", "physical-domain guard (700 kW propulsion capacity at 11 kn adverse; hard bounds |U|<=2.8, ht>=1.3)", "accept or reject-resample", "OOD provenance/meta"],
+      "generation_pipeline": [
+        "preregistered proposal sampler",
+        "normal stochastic realization",
+        "range/REQUIRE predicate check",
+        "physical-domain guard (700 kW propulsion capacity at 11 kn adverse; hard bounds |U|<=2.8, ht>=1.3)",
+        "accept or reject-resample",
+        "OOD provenance/meta"
+      ],
       "physical_domain_violation": "STRESS_SET / rejected formal-OOD candidate, never an Axis-A/B/C sample",
-      "ood_metadata_fields": ["dataset_domain=OOD", "ood_axis in {A,B,C}", "ood_condition_id", "ood_token_id (where applicable)", "ood_def_version=DGN-11-v1", "physics_domain_ref", "heldout_token_registry version/self_hash"],
+      "ood_metadata_fields": [
+        "dataset_domain=OOD",
+        "ood_axis in {A,B,C}",
+        "ood_condition_id",
+        "ood_token_id (where applicable)",
+        "ood_def_version=DGN-11-v1",
+        "physics_domain_ref",
+        "heldout_token_registry version/self_hash"
+      ],
       "splitter": "OOD records never enter the IID splitter (independent evaluation collection)"
     }
   },
