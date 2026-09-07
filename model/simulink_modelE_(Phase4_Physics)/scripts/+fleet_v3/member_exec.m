@@ -57,7 +57,8 @@ function row = member_exec(ctx, voyage_id, dag, rl, fam, k, meta_extra)
         use_rl.traffic = rl.traffic([]);
     end
 
-    plan_cmp = mission_v3.plan_compose('compose', use_rl);
+    plan_cmp = mission_v3.plan_compose('compose', use_rl, ...
+        'OODMode', is_ood);
     comp = mission_v3.scenario_compile('compile', plan_cmp, use_rl);
     scn = comp.scn;
 

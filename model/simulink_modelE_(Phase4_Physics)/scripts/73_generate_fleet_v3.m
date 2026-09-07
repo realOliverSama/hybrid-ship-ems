@@ -78,6 +78,33 @@ switch FLEET_MODE
                 c.stress_set_removed);
         end
         fprintf('FLEETV3_MANIFEST=%s\n', res.manifest_path);
+        % verdict gate (T-018 qualification semantics): every IID member
+        % ACCEPT and every OOD condition fully populated at the member
+        % level - a condition whose members failed generation is NOT a
+        % pass (failed-voyage handling records it, the verdict gates it)
+        n_bad_iid = 0;
+        for vi = 1:numel(out_iid.voyages)
+            if ~strcmp(char(out_iid.voyages(vi).disposition), 'ACCEPT')
+                n_bad_iid = n_bad_iid + 1;
+            end
+        end
+        n_bad_cond = 0;
+        for ci = 1:numel(out_ood.conditions)
+            if double(out_ood.conditions(ci).accepted_voyages) ...
+                    < double(plan.ood.members_per_family)
+                n_bad_cond = n_bad_cond + 1;
+                fprintf('FLEETV3_CONDITION_INCOMPLETE %s accept=%d/%d\n', ...
+                    out_ood.conditions(ci).condition_id, ...
+                    out_ood.conditions(ci).accepted_voyages, ...
+                    plan.ood.members_per_family);
+            end
+        end
+        if n_bad_iid > 0 || n_bad_cond > 0
+            error('GATE:FLEETV3:VERDICT', ...
+                ['smoke/stage_a verdict FAIL: %d non-ACCEPT IID member(s), ', ...
+                 '%d incomplete OOD condition(s) (see manifest/ledger)'], ...
+                n_bad_iid, n_bad_cond);
+        end
         fprintf('FLEETV3_VERDICT=PASS\n');
     case {'stage_b_iid', 'stage_b_ood'}
         error('GATE:FLEETV3:NOT_IMPLEMENTED', ...

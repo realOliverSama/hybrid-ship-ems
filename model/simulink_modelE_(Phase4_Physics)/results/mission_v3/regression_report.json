@@ -1,6 +1,6 @@
 {
   "schema": "mission_v3_regression_report_v1",
-  "generated_at": "2026-09-06T02:16:31Z",
+  "generated_at": "2026-09-07T09:30:50Z",
   "mode": "run",
   "suites": [
     {
@@ -55,7 +55,7 @@
     }
   ],
   "stack_identity": {
-    "composite_hash": "db5da613061fe92ba156814b90a9d26c301010ae418fd4eca8f9a4dd0a12bd2f",
+    "composite_hash": "591f63c05a29ca43e21e74cc28a457d1c1a2ead22dabc8bf11685fed6c3f3165",
     "generator_hash_domain": {
       "component": "mission_v3_generator",
       "ruling": "FD2 (Tasks Gate R6): the mission_v3_generator composite hash domain = top-level package functions scripts/+mission_v3/*.m (non-recursive); the tests/ subdirectory and the +audits/ audit assets are excluded",
@@ -69,6 +69,7 @@
         "kf_snapshots.m",
         "nav_constraints.m",
         "plan_compose.m",
+        "producer_confirm.m",
         "producer_export.m",
         "producer_prequal.m",
         "scenario_compile.m",

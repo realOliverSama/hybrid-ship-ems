@@ -1,0 +1,57 @@
+{
+  "schema": "t432_activation_amendment_v1",
+  "amendment_id": "T432_ACTIVATION_AMENDMENT_01",
+  "frozen_at": "2026-09-07",
+  "approved_by": "user Final Ruling (option (a') precision-corrected)",
+  "trigger": {
+    "condition": "A2",
+    "gate_error": "GATE:FLEETV3:OOD:UNREACHABLE",
+    "attempts": 200,
+    "formal_accepts": 0,
+    "stress_set_removals": 200,
+    "evidence_log": "results/dataset_v3/qualification_smoke/smoke_run_20260907_a2_unreachable.log",
+    "evidence_log_sha256": "379ef28261e30093eead5721f3b0d5d9c56dab0cc779fa397e5d4d74411f17ca"
+  },
+  "original_activation_sha256": "ca8926dcd32a83069d882ec1e25671a0ea700248255efe278d299376ac0250a9",
+  "post_activation_sha256": "3f0116fa205a1270723f02fc719060e0733e0a688eb146651ea3a920eed491cb",
+  "a1_feasible_edge_evidence": {
+    "FLTS_OOD_A1_D00970_M1.mat": "5d278ac4b0d2214682f9c6e4579b1c8ad418b3cc1e4a91b4855ab903ac2b7c48",
+    "FLTS_OOD_A1_D00970_M2.mat": "a13087e8e11ed3c3793e37a0680fa6ca26024942dfc10610850353655927d550",
+    "FLTS_OOD_A1_D00970_M3.mat": "0baeead29782dc9866d86ce8335ae328f173d08913a99012a12a1b41e599c389",
+    "FLTS_OOD_A1_D00970_M4.mat": "9abdf583c8f21c889d373e8e7e4677f389d774a40ab81da562d612c010df4835",
+    "observed": "sup_abs=2.3917 m/s, p_demand=684.6 kW feasible (edge of envelope)"
+  },
+  "guard": "700 kW propulsion feasibility check UNCHANGED (formula/version); nominal boundary |U|~2.5 m/s by reconstruction",
+  "changes": {
+    "axis_a_formal_conditions": [
+      "A1"
+    ],
+    "axis_a_conditions_removed": [
+      "A2 (2.4,2.8] -> RETIRED_AFTER_QUALIFICATION_SMOKE -> stress/domain-boundary investigation band"
+    ],
+    "ood_conditions": [
+      "A1",
+      "B1",
+      "C1",
+      "C2",
+      "C3"
+    ],
+    "ood_voyages": 200,
+    "formal_fleet_total": 776,
+    "stage_a_voyages": 92
+  },
+  "interpretation_constraints": [
+    "do not state every point in (2.4,2.8] proven infeasible; the finding is that A2 as a complete preregistered formal OOD condition is not robustly generatable inside the validated envelope",
+    "do not relax the 700 kW guard; do not shrink A2 to a narrow band to preserve the label",
+    "no new post-smoke A1 subbands; A2/>2.4 m/s reported separately as stress/domain-boundary characterization, never mixed into formal OOD metrics"
+  ],
+  "unaffected": [
+    "D1 IID 576",
+    "axis B (B1 [1.3,1.5), train support 1.5)",
+    "axis C tokens C1~C3",
+    "guard band invariant",
+    "retry/rejection gates",
+    "qualification criteria 1200/60/0",
+    "seeds"
+  ]
+}

@@ -30,7 +30,8 @@ function plan = plan_load(activation_json, mode)
 % closed on anything unexpected (GATE:FLEETV3:PLAN:*).
 %
 % OOD host assignment (mechanical, from the frozen record):
-%   A1/A2  ROUTINE_PATROL x FLOOD  (proposal_samplers: FLOOD host
+%   A1     ROUTINE_PATROL x FLOOD  (proposal_samplers: FLOOD host
+%          u_river_mag override; A2 retired - amendment 01)
 %          u_river_mag override, per the T-018 delegation ruling text)
 %   B1     WORK_MISSION x DRY    (proposal_samplers B1: "targeting
 %          E[ht_effective | DRY dWL ~ TN(-0.8, 0.4)] ~= 1.40" - the DRY
@@ -89,6 +90,26 @@ function plan = plan_load(activation_json, mode)
         error('GATE:FLEETV3:PLAN:STATUS', ...
             'activation record is not FROZEN (status=%s)', ...
             local_s(char(local_field_or(act, 'status', 'MISSING'))));
+    end
+    % ---- amendment chain (fail-closed; T432_ACTIVATION_AMENDMENT_01) --
+    act_sha = local_sha256_file(apath);
+    amendment_sha = '';
+    if isfield(act, 'amendment_chain')
+        chain = local_cellstr_of(act.amendment_chain);
+        for ai = 1:numel(chain)
+            arel = char(chain{ai});
+            am = local_read_json(fullfile(fileparts(fileparts(ROOT)), ...
+                arel));
+            if ~strcmp(char(local_field_or(am, 'post_activation_sha256', ...
+                    '')), act_sha)
+                error('GATE:FLEETV3:PLAN:AMEND', ...
+                    ['amendment %s post_activation_sha256 does not ', ...
+                     'match the activation record on disk (stale ', ...
+                     'chain)'], arel);
+            end
+            amendment_sha = local_sha256_file(fullfile( ...
+                fileparts(fileparts(ROOT)), arel));
+        end
     end
 
     plan = struct();
@@ -174,10 +195,14 @@ function plan = plan_load(activation_json, mode)
 
     % axis A bands/guards (interval strings decoded mechanically)
     axa = ood.axis_a;
+    % post-amendment-01: A1 is the only formal Axis-A condition; the
+    % retired A2 (2.4,2.8] survives as the stress/domain-boundary
+    % investigation band (documented, never a membership target)
     plan.ood.band_A1 = local_parse_band( ...
         char(local_field_or(axa.conditions, 'A1', '')), 'A1');
-    plan.ood.band_A2 = local_parse_band( ...
-        char(local_field_or(axa.conditions, 'A2', '')), 'A2');
+    plan.ood.stress_investigation_band = local_parse_band( ...
+        char(local_field_or(axa, 'stress_investigation_band', '')), ...
+        'stress_investigation_band');
     plan.ood.iid_support_max_adverse = local_pos_num( ...
         axa.iid_support_max.adverse, 'iid_support_max.adverse');
     plan.ood.iid_support_max_following = local_pos_num( ...
@@ -201,10 +226,10 @@ function plan = plan_load(activation_json, mode)
             ['guard_band_rule construction disagrees with the ', ...
              'guard_bands strings in the frozen record']);
     end
-    % hard domain bound |U| <= 2.8 (D5 "hard bounds |U|<=2.8"): the A2
-    % band top is that hard bound (closed), so the numeric source of the
-    % guard is the frozen A2 interval itself
-    plan.ood.sup_domain_max = plan.ood.band_A2.max;
+    % hard domain bound |U| <= 2.8 (D5 "hard bounds |U|<=2.8"): the
+    % retired A2 investigation-band top is that hard bound (closed), so
+    % the numeric source of the guard is the frozen interval itself
+    plan.ood.sup_domain_max = plan.ood.stress_investigation_band.max;
 
     % axis B (membership judged on realized ht_effective)
     axb = ood.axis_b;
@@ -263,14 +288,10 @@ function plan = plan_load(activation_json, mode)
     % A/B hosts + proposal sampler overrides (parsed, injected as
     % existing-key paths only; upper stays uninjected - band-enforced)
     plan.ood.hosts.A1 = local_parse_host(char(act.formal_fleet.ood.axis_a.hosts.A1));
-    plan.ood.hosts.A2 = local_parse_host(char(act.formal_fleet.ood.axis_a.hosts.A2));
     plan.ood.hosts.B1 = local_parse_host(char(act.formal_fleet.ood.axis_b.host));
     plan.ood.proposal.A1 = local_parse_sampler( ...
         char(act.formal_fleet.ood.proposal_samplers.A1), ...
         'regimes.FLOOD.u_river_mag', 'A1');
-    plan.ood.proposal.A2 = local_parse_sampler( ...
-        char(act.formal_fleet.ood.proposal_samplers.A2), ...
-        'regimes.FLOOD.u_river_mag', 'A2');
     plan.ood.proposal.B1 = local_parse_sampler( ...
         char(act.formal_fleet.ood.proposal_samplers.B1), ...
         'chart_depth_voyage_base', 'B1');
@@ -293,6 +314,7 @@ function plan = plan_load(activation_json, mode)
     ood_cfg = local_ood_config_canon(plan);
     plan.provenance = struct();
     plan.provenance.activation_sha256 = act_sha;
+    plan.provenance.amendment_sha256 = amendment_sha;
     plan.provenance.ood_override_sha256 = local_sha256_text(ood_cfg);
     plan.provenance.heldout_registry_sha = reg_sha;
     plan.provenance.ood_override_canon = ood_cfg;
@@ -419,9 +441,11 @@ function h = local_parse_host(s)
         error('GATE:FLEETV3:PLAN:HOST', ...
             'cannot parse host string: %s', s);
     end
-    h = struct('template', char(t{1}{1}), 'regime', char(t{1}{2}), ...
-        'stratum', sprintf('STRAT_%s__%s', upper(char(t{1}{1})), upper(char(t{1}{2}))), ...
-        'token_id', '');
+    % 'tokens','once' returns the token cell directly: t{1}=template,
+    % t{2}=regime (no double brace level)
+    h = struct('template', char(t{1}), 'regime', char(t{2}), ...
+        'stratum', sprintf('STRAT_%s__%s', upper(char(t{1})), ...
+        upper(char(t{2}))), 'token_id', '');
 end
 
 function b = local_parse_band(s, what)
@@ -592,7 +616,8 @@ function s = local_ood_config_canon(plan)
             pr.upper_uninjected); %#ok<AGROW>
     end
     parts{end+1} = local_band_canon('A1', plan.ood.band_A1); %#ok<AGROW>
-    parts{end+1} = local_band_canon('A2', plan.ood.band_A2); %#ok<AGROW>
+    parts{end+1} = local_band_canon('stress_inv', ...
+        plan.ood.stress_investigation_band); %#ok<AGROW>
     parts{end+1} = local_band_canon('B1', plan.ood.band_B1); %#ok<AGROW>
     parts{end+1} = sprintf('guard_adverse=%.17g,%.17g,%d,%d', ...
         plan.ood.guard_adverse.min, plan.ood.guard_adverse.max, ...

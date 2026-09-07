@@ -16,6 +16,8 @@ function overall = run_all(varargin)
 %                                argument guards
 %   test_export_ood              FORMAL bridge + OOD meta rewrite
 %                                round-trip + untouched exporter face
+%   test_ood_plan_face           amendment-01 OOD floor 1.3 + default
+%                                face unchanged + UKC clamp
 %
 % Usage from the Model E workspace root (thin-entry convention):
 %   matlab -batch "run('scripts/+fleet_v3/tests/run_all.m')"
@@ -33,7 +35,7 @@ function overall = run_all(varargin)
 
     rr_suites = {'test_plan_load', 'test_predicate_eval', ...
         'test_ood_judge', 'test_propulsion_feasibility', ...
-        'test_export_ood'};
+        'test_export_ood', 'test_ood_plan_face'};
     % resolve the package parents: tests/ -> +fleet_v3 -> scripts (the
     % packages fleet_v3 / mission_v3 live under scripts/)
     addpath(fileparts(fileparts(fileparts(mfilename('fullpath')))));

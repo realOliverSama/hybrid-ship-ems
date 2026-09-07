@@ -156,10 +156,6 @@ function judge = ood_judge(plan, cond_id, rl)
             if local_in_band(sup, plan.ood.band_A1)
                 band_hit = 'A1';
             end
-        case 'A2'
-            if local_in_band(sup, plan.ood.band_A2)
-                band_hit = 'A2';
-            end
         case 'B1'
             if local_in_band(ht, plan.ood.band_B1)
                 band_hit = 'B1';
@@ -208,8 +204,6 @@ function judge = ood_judge(plan, cond_id, rl)
     judge.reason = 'numerical_band_membership';
     switch band_hit
         case 'A1'
-            judge.ood_axis = 'A';
-        case 'A2'
             judge.ood_axis = 'A';
         case 'B1'
             judge.ood_axis = 'B';

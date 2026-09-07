@@ -1,0 +1,16 @@
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+{错误使用 fleet_v3.gen_ood (第 113 行)
+condition A2 did not reach an accepted candidate within 200 attempts (0
+guard-band rejects, 0 no-target rejects, 200 STRESS_SET removals); bands,
+predicates and perturbation magnitudes are frozen - escalate, do not widen
+} 
+[警告: 无法关闭模型 'HybridShip_ModelE'，因为它已更改。要保存更改，请使用
+close_system('HybridShip_ModelE',1)。要放弃更改，请使用
+close_system('HybridShip_ModelE',0)。] 

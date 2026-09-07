@@ -48,8 +48,7 @@
       "axis_a": {
         "metric": "sup|u_river| both directions (absolute-current definition)",
         "conditions": {
-          "A1": "(2.0, 2.4]",
-          "A2": "(2.4, 2.8]"
+          "A1": "(2.0, 2.4]"
         },
         "iid_support_max": {
           "adverse": 1.8,
@@ -62,9 +61,9 @@
         },
         "guard_semantics": "neither formal IID nor formal OOD (FR-519); formal generation reject-resamples into guard bands",
         "hosts": {
-          "A1": "ROUTINE_PATROL x FLOOD",
-          "A2": "ROUTINE_PATROL x FLOOD"
-        }
+          "A1": "ROUTINE_PATROL x FLOOD"
+        },
+        "stress_investigation_band": "(2.4, 2.8] (A2 retired: non-formal stress/domain-boundary investigation band; RETIRED_AFTER_QUALIFICATION_SMOKE)"
       },
       "axis_b": {
         "name": "LOW_EFFECTIVE_DEPTH / LOW_EFFECTIVE_HT EXTRAPOLATION",
@@ -103,7 +102,6 @@
         "per_condition_voyages": 40,
         "conditions": [
           "A1",
-          "A2",
           "B1",
           "C1",
           "C2",
@@ -114,7 +112,6 @@
       "proposal_samplers": {
         "note": "efficiency-oriented proposal samplers ONLY; scientific membership always from realized values",
         "A1": "u_river_mag ~ TN(2.2, 0.15, lower=2.05, upper=2.4)",
-        "A2": "u_river_mag ~ TN(2.6, 0.15, lower=2.45, upper=2.8)",
         "B1": "h_chart ~ TN(3.86, 0.15, lower=3.64, upper=4.08) targeting E[ht_effective|DRY dWL~TN(-0.8,0.4)] ~= 1.40",
         "C1_C2_C3": "natural sampling per host regime frozen distributions + canonical REQUIRE predicate"
       },
@@ -137,7 +134,8 @@
         "heldout_token_registry version/self_hash"
       ],
       "splitter": "OOD records never enter the IID splitter (independent evaluation collection)"
-    }
+    },
+    "total_voyages": 776
   },
   "split": {
     "policy": "DGN-09 70/15/15 stratum-aware by split_group_id",
@@ -152,5 +150,23 @@
     "draw_index": "IID: stratum k=900..901; OOD: condition segment k=900",
     "disposable": true,
     "qualified_stack_freeze": "_POST_STAGE_A_: eight hashes (73 script SHA / producer schema hash / registry hash / four baseline hashes / Stage A fleet manifest hash / OOD def version / split policy version / checklist json hash)"
+  },
+  "amendment_chain": [
+    "docs/phase4/d_dataset_v3/t432_activation_amendment_01.json"
+  ],
+  "amendments": {
+    "T432_ACTIVATION_AMENDMENT_01": {
+      "trigger": "T-018 Phase 1 smoke: condition A2 GATE:FLEETV3:OOD:UNREACHABLE (200/200 STRESS_SET by the frozen 700 kW propulsion guard)",
+      "ruling": "user Final Ruling 2026-09-07 option (a') precision-corrected",
+      "original_activation_sha256": "ca8926dcd32a83069d882ec1e25671a0ea700248255efe278d299376ac0250a9",
+      "changes": [
+        "axis A formal conditions 2->1 (A2 retired: FORMAL_OOD_STATUS=RETIRED_AFTER_QUALIFICATION_SMOKE)",
+        "(2.4,2.8] -> non-formal stress/domain-boundary investigation band",
+        "formal OOD conditions 6->5 (A1/B1/C1/C2/C3)",
+        "formal OOD voyages 240->200; formal fleet 816->776",
+        "Stage A 96->92 (72 IID + 20 OOD)",
+        "physics-qualification-driven, not effect-size-driven; 700 kW guard unchanged"
+      ]
+    }
   }
 }
