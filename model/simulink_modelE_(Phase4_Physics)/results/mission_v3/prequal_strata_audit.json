@@ -1,0 +1,361 @@
+{
+  "schema": "mission_v3_prequal_strata_audit_v1",
+  "task": "T-020 MISSION_V3_PREQUALIFICATION strata audit (FR-557)",
+  "run_label": "prequal_rerun",
+  "generated_at": "2026-09-06T02:05:00Z",
+  "frozen_plan": {
+    "rel_path": "config/mission_v3/prequal_plan.json",
+    "self_hash": "6222c79e212d3adc71afd5b0756cf150de255c51483c5ad1d4d61811d3316f4b"
+  },
+  "formal_seed": "MISSION_V3_PREQUAL_SEED_V1_2026_09_05",
+  "thresholds": {
+    "per_stratum_max": 0.5,
+    "overall_max": 0.5,
+    "definition": "rejection_rate = (total_attempts - accepted) / total_attempts, per stratum and overall, at run end",
+    "accounting_note": "draw-level accounting: attempts = environment candidate draws tried per stratum; accepted = accepted draws; each accepted draw expands to 4 member voyages (12 accepted voyages per stratum = 3 draws x 2x2)"
+  },
+  "strata": [
+    {
+      "stratum_id": "STRAT_ROUTINE_PATROL__NORMAL",
+      "stratum_index": 1,
+      "template_id": "ROUTINE_PATROL",
+      "regime_id": "NORMAL",
+      "draw_start_base": 0,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 3,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_ROUTINE_PATROL__FLOOD",
+      "stratum_index": 2,
+      "template_id": "ROUTINE_PATROL",
+      "regime_id": "FLOOD",
+      "draw_start_base": 1000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 3,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_ROUTINE_PATROL__DRY",
+      "stratum_index": 3,
+      "template_id": "ROUTINE_PATROL",
+      "regime_id": "DRY",
+      "draw_start_base": 2000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 4,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "C2_HARBOR_X_LOW_ID_HT": 1
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0.25,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+      "stratum_index": 4,
+      "template_id": "EMERGENCY_RESPONSE",
+      "regime_id": "NORMAL",
+      "draw_start_base": 3000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 3,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+      "stratum_index": 5,
+      "template_id": "EMERGENCY_RESPONSE",
+      "regime_id": "FLOOD",
+      "draw_start_base": 4000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 5,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0.4,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_EMERGENCY_RESPONSE__DRY",
+      "stratum_index": 6,
+      "template_id": "EMERGENCY_RESPONSE",
+      "regime_id": "DRY",
+      "draw_start_base": 5000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 4,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "C3_EMERGENCY_SPRINT_X_LOW_ID_HT": 1
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0.25,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_WORK_MISSION__NORMAL",
+      "stratum_index": 7,
+      "template_id": "WORK_MISSION",
+      "regime_id": "NORMAL",
+      "draw_start_base": 6000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 3,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_WORK_MISSION__FLOOD",
+      "stratum_index": 8,
+      "template_id": "WORK_MISSION",
+      "regime_id": "FLOOD",
+      "draw_start_base": 7000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 5,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0.4,
+      "verdict": "PASS"
+    },
+    {
+      "stratum_id": "STRAT_WORK_MISSION__DRY",
+      "stratum_index": 9,
+      "template_id": "WORK_MISSION",
+      "regime_id": "DRY",
+      "draw_start_base": 8000,
+      "slots_planned": 3,
+      "accepted_draws": 3,
+      "slots_failed": 0,
+      "env_attempts_total": 3,
+      "accepted_voyages": 12,
+      "rejected_voyages": 0,
+      "failed_voyages": 0,
+      "rejected_reason_counts": {
+        "none": 0
+      },
+      "token_heldout_counts": {
+        "none": 0
+      },
+      "n_families": 3,
+      "n_split_groups": 3,
+      "split_group_projection": {
+        "unique_split_groups_current": 3,
+        "lower_bound_reference": 14,
+        "note": "projection only: current unique split-group count vs the 14 lower bound; no Stage-B quota satisfaction claim is made here"
+      },
+      "rejection_rate": 0,
+      "verdict": "PASS"
+    }
+  ],
+  "overall": {
+    "env_attempts_total": 33,
+    "accepted_draws": 27,
+    "rejection_rate": 0.18181818181818182,
+    "voyages_total": 108,
+    "voyages_accepted": 108,
+    "voyages_failed": 0,
+    "run_wall_total_s": 96.065447041666673,
+    "verdict": "PASS"
+  },
+  "regime_flow_statistics": [
+    {
+      "regime": "NORMAL",
+      "n_accepted_draws": 9,
+      "n_samples": 53528,
+      "u_mean": 0.471143511940134,
+      "u_median": 0.31563478139579559,
+      "u_q05": 0.032011594513713194,
+      "u_q25": 0.16480155954682671,
+      "u_q75": 0.71070008745960389,
+      "u_q95": 1.2625247275530889,
+      "draw_peak_abs_min": 0.30427060740072986,
+      "draw_peak_abs_median": 0.47594657920304628,
+      "draw_peak_abs_mean": 0.66019029363605553,
+      "draw_peak_abs_max": 1.4599446039689064,
+      "note": "U_river (river coordinate, downstream positive) realized samples pooled over accepted draws; quantiles of the pooled 1 Hz series; draw peaks are the per-draw sup|U_river| over the full grid including prehistory (PREQUAL-AMEND-01 section B verification)"
+    },
+    {
+      "regime": "FLOOD",
+      "n_accepted_draws": 9,
+      "n_samples": 51972,
+      "u_mean": 0.732464537307614,
+      "u_median": 0.75962776047322311,
+      "u_q05": 0.05318384880870676,
+      "u_q25": 0.557430563139972,
+      "u_q75": 0.9739037136762968,
+      "u_q95": 1.1973471256383967,
+      "draw_peak_abs_min": 0.49203605344460294,
+      "draw_peak_abs_median": 1.1207509751211953,
+      "draw_peak_abs_mean": 1.1256738715844861,
+      "draw_peak_abs_max": 1.4585823533777575,
+      "note": "U_river (river coordinate, downstream positive) realized samples pooled over accepted draws; quantiles of the pooled 1 Hz series; draw peaks are the per-draw sup|U_river| over the full grid including prehistory (PREQUAL-AMEND-01 section B verification)"
+    },
+    {
+      "regime": "DRY",
+      "n_accepted_draws": 9,
+      "n_samples": 51835,
+      "u_mean": 0.12528773455796552,
+      "u_median": 0.1264103354379392,
+      "u_q05": -0.01577840677874047,
+      "u_q25": 0.0633791237821002,
+      "u_q75": 0.18789565104073822,
+      "u_q95": 0.26563850195348238,
+      "draw_peak_abs_min": 0.1696754679558137,
+      "draw_peak_abs_median": 0.290695873942982,
+      "draw_peak_abs_mean": 0.268581679474756,
+      "draw_peak_abs_max": 0.35770184904960756,
+      "note": "U_river (river coordinate, downstream positive) realized samples pooled over accepted draws; quantiles of the pooled 1 Hz series; draw peaks are the per-draw sup|U_river| over the full grid including prehistory (PREQUAL-AMEND-01 section B verification)"
+    }
+  ],
+  "amendment": {
+    "file": "results/mission_v3/prequal_amendment_01.json",
+    "amendment_id": "PREQUAL-AMEND-01",
+    "self_hash": "a0484664dfa38b1aa07c63fcd8c6a13a7c0ccd4862340436ef0433f72622bf23"
+  },
+  "normal_strata_reuse": {
+    "verified": true,
+    "voyage_id": "PREQ_S1_D0000_M1",
+    "payload_hash_recorded": "6f91b54712b8f57cc4e7a32f12afcadd6caad744942b7478c17e7c4ac7aeb897",
+    "payload_hash_recomputed": "6f91b54712b8f57cc4e7a32f12afcadd6caad744942b7478c17e7c4ac7aeb897",
+    "basis_note": "PREQUAL-AMEND-01 section A: the global chart_depth_voyage_base TruncNormal(6.0, 1.0, lower 3.5) equals the pre-amendment NORMAL per-regime values, so the three NORMAL strata draw streams are bitwise unchanged; the existing NORMAL artifacts are reused as verified by this payload hash comparison"
+  },
+  "t429_self_check": true,
+  "two_run_consistency": {
+    "enabled": true,
+    "first_ledger": "datasets_v3/mission_v3/prequal/_run_ledger.json",
+    "second_ledger": "datasets_v3/mission_v3/prequal_rerun/_run_ledger.json",
+    "voyages_compared": 108,
+    "mismatches": [],
+    "payload_hash_consistent": true
+  }
+}

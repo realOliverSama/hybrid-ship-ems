@@ -1,0 +1,18 @@
+{
+  "schema": "mission_v3_d1a_dir_paired_v1",
+  "development": "DEVELOPMENT_DIAGNOSTIC_NOT_GATE_EVIDENCE",
+  "n_pairs": 18,
+  "dP_mean_median_kW": 83.77443028965786,
+  "dP_mean_iqr_kW": [
+    42.27575402576167,
+    207.16941119662783
+  ],
+  "within_pair_sbd_median": 0.19694641538074253,
+  "q95_up_between_voyage": 0.6257092567813223,
+  "q95_dn_between_voyage": 0.43277847888241594,
+  "R_paired": 0.31475707486548005,
+  "direction_BA": 0.9444444444444444,
+  "n_dir_correct": 17,
+  "binom_p_ge": 7.2479248046875e-05,
+  "verdict": "SIGNAL_PARTIAL"
+}

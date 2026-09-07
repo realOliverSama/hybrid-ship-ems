@@ -1,0 +1,116 @@
+{
+  "schema": "mission_v3_phase1_freeze_amendment_v1",
+  "amendment_id": "PHASE1-FREEZE-AMEND-D6",
+  "ruling": "Day-1 Gate Ruling 2026-09-05 (T-003/AC-433 CONDITIONAL PASS; D6 APPROVED WITH HOST REBINDING)",
+  "generated_at": "2026-09-05T16:43:26",
+  "amends": {
+    "file": "phase1_freeze.json",
+    "self_hash": "67b9b81e991ee8f21a7fef97ca31b1387cce1d41827d2c3e7cd3f315bb787246",
+    "mode": "immutable base + this amendment (no silent overwrite)"
+  },
+  "d6_host_rebinding": {
+    "old_contrast_id": "SEG_EMERGENCY_SPRINT_VS_CRUISE",
+    "new_contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
+    "class_A": "rush (EMERGENCY_SPRINT label)",
+    "class_B": "return (steady return-transit host; mission-role host REJECTED - mission-load/hotel nuisance shortcut through P_load_total)",
+    "cohort_strengthened": [
+      "mission_template_id == EMERGENCY_RESPONSE",
+      "same environment_regime",
+      "same operator_profile",
+      "same_when_feasible segment.reach",
+      "where possible same voyage/base-draw cohort; compatible route/environment context"
+    ],
+    "labels": "generation-side metadata only (segment.role); never inferred from realized speed",
+    "scope": "narrow registry/design-note amendment; NOT a spec amendment, NOT a DGN-02/template amendment"
+  },
+  "hash_chain": {
+    "contrast_registry": {
+      "old": "65f1051a95679b4024cf90d6d11fd86fa023902aa1b0782b14b23b05a35a2d5c",
+      "new": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad"
+    },
+    "mission_template_registry": {
+      "old_at_base_freeze": "81efdbb8d0aa0ea500bc948946b8b996a3f5ca4574c5639a904454bdf7a7c783",
+      "new": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1",
+      "change": "A3 host-semantics annotation only (BRIDGE_OPERATION/departure host scope); no numeric value change vs base freeze"
+    },
+    "unchanged_confirmations": {
+      "id_support_bounds": {
+        "hash": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+        "unchanged": true
+      },
+      "c3_feasibility": {
+        "sha256": "8e677be09b1d7969f30b4b722360f0e3a1d1b56363cbca1656d10d864b9fd3a4",
+        "unchanged": true
+      },
+      "model_e_baseline": {
+        "zero_change": true,
+        "method": "git diff protected paths empty; formal five-file sha256 snapshot at T-018"
+      },
+      "slice_geometry": {
+        "slice_duration_s": 120,
+        "edge_buffer_s": 30,
+        "stride_s": 60,
+        "unchanged": true
+      }
+    }
+  },
+  "scoped_census_evidence": {
+    "file": "segment_duration_census.json",
+    "sha256": "2ecc79c61a116845912c704f48866ca395ab79cdd738a8a2c8e3be8d083ee6bc",
+    "verdict": "PASS (120/30/60, post-D6-rebinding rerun)",
+    "d6_pair_hosts": {
+      "class_A_rush_usable_s": 425.418772,
+      "class_B_return_min_usable_s": 974.545455,
+      "hard_constraint_required_s": 180,
+      "pass": true
+    }
+  },
+  "signed_frontier_convention_accepted": {
+    "rule": "V_SOG_max = W_max(HT) + U_along (U_along > 0 following, < 0 adverse); equivalent to measured V_max = W_max(HT) - U_adverse",
+    "w_max_table": {
+      "HT_1.2": 6.6943,
+      "HT_1.35": 6.7692,
+      "HT_1.5": 6.7928,
+      "HT_2.0": 7.1609,
+      "HT_3.0": 7.2492,
+      "deep_20m": 7.5207
+    },
+    "accepted_interpretation": [
+      "600 s cases were already steady (slope ~e-18; transient-truncation explanation rejected)",
+      "earlier anchor discrepancy was water-depth convention",
+      "H/T=3.0 still contains shallow-water resistance increment (+12.5% R)",
+      "true deep water at 20 m reproduces G2 capability anchor (14.6190 vs 14.6202 kn, -0.008%)"
+    ],
+    "enforcement": "T-009/T-010 SHALL enforce joint feasibility via this frozen rule; rush 6.5/7.0 m/s table does not permit commanding infeasible (speed, U_along, HT) combinations"
+  },
+  "rush_speed_policy_accepted": {
+    "HT_in_[1.5,2.0)": 6.5,
+    "HT_ge_2.0": 7.0,
+    "note": "14.620 kn remains read-only Model-E capability anchor, not a selected speed command"
+  },
+  "effective_phase1_configuration": {
+    "registry_hashes": {
+      "mission_template_registry.json": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1",
+      "conditional_dag_config.json": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725",
+      "environment_regime_params.json": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2",
+      "id_support_bounds.json": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+      "forecast_quality_profiles.json": "caa77068d0093dbe48ef0b29a809407dc9123c6702cba21038b06a001b425b1f",
+      "seed_tree_policy.json": "15ba30df31646285d5ec441a4e1ba79e66a6c954cdefec8c7335b2d25ff74b29",
+      "scenario_stratum_registry.json": "8db52974bad2a72b53ea88c9096890cdc739f4bc6660052798f2eead4080adc1",
+      "heldout_token_registry.json": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+      "identifiability_contrast_registry.json": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad"
+    },
+    "composite_hash": "f665b953d9f18df0d38cf3a08973a608e4fb7a7a5bc1d5d4a1932d9602af4492",
+    "composite_rule": "SHA256(canonical JSON of this object minus self_hash)"
+  },
+  "approvals": {
+    "T003_AC433": "APPROVED (Day-1 Gate Ruling 2026-09-05; closeout items A1/A2/A3 discharged in architecture.md)",
+    "PHASE2_ENTRY_GATE": true,
+    "gate_composition": "T-003 user approval (AC-433) AND T-007 phase1_freeze.json + this amendment"
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "dd84f9654e90409b39e3ae805b9301282a58b68b9f20f69decd5d88323c5743c"
+  }
+}

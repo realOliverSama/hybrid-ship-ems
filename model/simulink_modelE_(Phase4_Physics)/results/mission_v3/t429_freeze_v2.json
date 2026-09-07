@@ -1,0 +1,112 @@
+{
+  "schema": "mission_v3_t429_freeze_v2",
+  "task": "T429_FREEZE_v2 — second blind freeze for the one-shot V2 confirmation run (Day-3 Ruling sections 14/15)",
+  "generated_at": "2026-09-06T22:55:19",
+  "v1_preserved": {
+    "freeze_v1_self_hash": "f8152ffeffa228a4371c0a43d6aa987df523931ce23f91c24acfdfff3ac5a4cb",
+    "result_v1": "FAIL_INSUFFICIENT_EVIDENCE (development/failed-gate evidence, permanent)"
+  },
+  "unchanged_from_v1": {
+    "R_min": 1.5,
+    "A_min": 0.8,
+    "sbd_config": "1 Hz P_load_total_kW; R=median(cross)/max(Q0.95 within); group bootstrap 1000x split_group seed 42901; LCB95 percentile",
+    "probe_config": "logistic L2 C=1.0 balanced, 12-dim slice summary encoding, grouped 5-fold, train-only scaler, BA LCB95 seed 42902",
+    "slice_geometry": [
+      120,
+      30,
+      60
+    ],
+    "inference_units": "split_group/base_draw",
+    "sign_test_alpha_dir": 0.05
+  },
+  "changed_per_amendment_v2": {
+    "contrast_registry": {
+      "hash": "2274da4aeb7784f4026f51f03f5c0e020a5a192ffc59044f2970850c66f50c2b",
+      "changes": "DIR: SBD_required=false + paired_effect profile (sign/CI/alpha) + gate=paired_effect AND probe; TRAFFIC: STEADY_FOLLOW host (overlap==1, >=180 s); DEPTH: WORK_MISSION x DRY cohort + NORMAL_ID_DEPTH_BAND [2.2,2.6]"
+    },
+    "environment_regime_params": {
+      "hash": "345cfc25baa3c7b4b90dd9d993f21e43c791a2ca2a9886c790502bfd2e9c9c7a",
+      "changes": "traffic.event_duration_s U[225,320] (STEADY_FOLLOW >=180 s structural guarantee)"
+    },
+    "dir_metric_profile": "PASS_DIR = PASS_paired_physical_effect (sign correct AND bootstrap 95% CI excludes zero, alpha=0.05) AND PASS_probe (BA LCB95 >= 0.80); SBD reported as SECONDARY_DIAGNOSTIC_NOT_APPLICABLE_TO_LEVEL_SHIFT_FACTOR, not gate-deciding",
+    "traffic_host": "class-A slice must satisfy overlap_fraction == 1.0 with generation-side STEADY_FOLLOW interval"
+  },
+  "confirmation_corpus": {
+    "manifest_file": "results/mission_v3/t429conf_v2_manifest.json",
+    "sha256": "9cbeb3cace84fe844ec0b1b9d94604191b4196b7abbcc90d7f29e9eb3cfe551d",
+    "layer_stats": {
+      "coverage": {
+        "voyages": 96,
+        "unique_split_groups": 24,
+        "draws": "ROUTINE/EMERGENCY x NORMAL/FLOOD/DRY, 4 draws each"
+      },
+      "depth": {
+        "voyages": 24,
+        "unique_split_groups_low": 12,
+        "unique_split_groups_normal": 12,
+        "host": "WORK_MISSION x DRY"
+      },
+      "traffic": {
+        "voyages": 48,
+        "unique_split_groups": 12,
+        "pairs": "ON/OFF same-draw counterfactual, cruise segment contains >=1 event"
+      }
+    },
+    "voyages": 144,
+    "two_run_identical": true,
+    "groups": {
+      "coverage_per_template_class": 12,
+      "depth_low": 4,
+      "depth_normal": 12,
+      "traffic": 12
+    },
+    "normal_reuse_note": "三 NORMAL 格复用自 prequal（PREQUAL-AMEND-01 值不变依据）——如 v2 语义下需重生成由主 Agent 在冻结前补跑",
+    "development_corpus_excluded": "T-022 v1 corpus (prequal_rerun used for development diagnostics only) SHALL NOT enter V2 confirmation statistics"
+  },
+  "qualified_generation_stack": {
+    "composite_hash": "re-collect at confirmation run start (Strict); mismatch vs this record => Gate result invalid"
+  },
+  "frozen_threshold_policy": "FR-551 unchanged: thresholds/geometry/encoding frozen; v2 failure paths per Day-3 Ruling section 16 (pre-frozen legal consequences)",
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "213127b267e0e210540ad7188fdfc0d4afc0d2ff03bf91663d8407b0978290f0"
+  },
+  "confirmation_corpus_manifest": {
+    "file": "results/mission_v3/t429conf_v2_manifest.json",
+    "sha256": "bcf4e1a7e5b863e6707a8178b51409cf135a167debfb13019bb17de27ff3266a",
+    "voyages": 144
+  },
+  "contrast_registry_hash": "2274da4aeb7784f4026f51f03f5c0e020a5a192ffc59044f2970850c66f50c2b",
+  "nuisance_control_config_hash": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+  "qualified_generation_stack_hash": {
+    "sha256": "bbd0a8fdb96b7183960d1d5f531df43fe331595433bd6287e526bb06b9591e87",
+    "composite": "19180c21bef9a4285e4e0fa4dddbea0b4367bbdd98db8664410e14560dc17deb"
+  },
+  "sbd_config": {
+    "signal": "1 Hz P_load_total_kW（D 包 SBD 引擎同源语义）",
+    "separation_ratio": "R = median(cross)/max(Q0.95 within_A, Q0.95 within_B)",
+    "bootstrap": {
+      "method": "group bootstrap",
+      "unit": "split_group_id",
+      "n_resamples": 1000,
+      "bootstrap_seed": 42901,
+      "ci": "LCB95 percentile"
+    }
+  },
+  "slice_geometry": {
+    "slice_duration_s": 120,
+    "edge_buffer_s": 30,
+    "stride_s": 60,
+    "source": "T-004 segment_duration_census（模板修订后重跑）PASS + T-007 冻结 + Day-1 §A2",
+    "hard_constraint": "120 + 2×30 = 180 <= min usable segment duration（六必需对比全部宿主）"
+  },
+  "thresholds": {
+    "R_min": 1.5,
+    "R_min_source": "DGN-12 候选，盲冻结维持（无预资格期证据支持调整；调整须 amendment 且首跑后锁定）",
+    "A_min": 0.8,
+    "A_min_source": "DGN-12 候选，盲冻结维持",
+    "rule": "SBD: LCB95(R) >= R_min；probe: LCB95(BA) >= A_min；六必需对比逐一 PASS ∧ 才 overall=true（DGN-12 统一 LCB95 规则，弃用点估计双轨）",
+    "fail_closed": "证据不足 ⇒ INSUFFICIENT_IDENTIFIABILITY_EVIDENCE；任一必需对比失败 ⇒ Gate FAIL 升级（FR-551 红线：阈值冻结后不得因失败修改）"
+  }
+}

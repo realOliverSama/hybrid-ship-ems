@@ -1,0 +1,144 @@
+{
+  "schema": "mission_v3_phase1_freeze_v1",
+  "task": "T-007 Phase-1 configuration freeze snapshot (PHASE2_ENTRY_GATE component)",
+  "generated_at": "2026-09-05T16:16:53",
+  "spec": ".specs/phase4-c-mission-v3 (tasks-approved 2026-09-05)",
+  "frozen_by": "main agent (Phase 4-C implementation session)",
+  "freeze_semantics": "自此 T-008 起只消费本快照指向的冻结配置；盘上候选注册表与本快照登记的批准值不得混用（tasks.md T-007）",
+  "slice_geometry": {
+    "slice_duration_s": 120,
+    "edge_buffer_s": 30,
+    "stride_s": 60,
+    "status": "FROZEN",
+    "basis": "T-004 段时长普查（模板修订后重跑）: 120+2×30=180s 硬约束对六必需对比全部宿主成立",
+    "census_evidence": {
+      "file": "segment_duration_census.json",
+      "sha256": "b3f30f747f8d66203f7786901de829e418fc057ff73c4b3ea280b91299e22862",
+      "verdict": "PASS"
+    }
+  },
+  "iid_support_registry": {
+    "file": "config/mission_v3/id_support_bounds.json",
+    "self_hash": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+    "status": "FROZEN (Phase-1 evidence-based)",
+    "values": "adverse |U| ≤1.8 [guard (1.8,2.0)] / following ≤1.5 [guard (1.5,1.8)] / H/T ≥1.5 [guard (1.35,1.5)]；OOD 数值保持 ACTIVATION_CANDIDATE（冻结权属 T-432）"
+  },
+  "joint_feasibility_evidence": {
+    "frontier_rule": "V_max_SOG(U_adverse, HT) = W_max(HT) − U_adverse（83 点稳态重测验证至 4.2e-5 m/s；阻力仅依赖水速，功率顶 700 kW=Mot_P_nom）",
+    "w_max_table": {
+      "HT_1.2": 6.6943,
+      "HT_1.35": 6.7692,
+      "HT_1.5": 6.7928,
+      "HT_2.0": 7.1609,
+      "HT_3.0": 7.2492,
+      "deep_20m": 7.5207
+    },
+    "g2_anchor": {
+      "e02_kn": 14.6202,
+      "deep_anchor_kn": 14.619,
+      "deviation_pct": -0.008,
+      "note": "E02 用 S01 WaterDepth_default_m=20.0 真深水；HT=3.0 档仍带浅水增量（+12.5% R，与 G2 R_by_tier 定量自洽）"
+    },
+    "files": [
+      {
+        "file": "id_feasibility_sweep.json",
+        "sha256": "5e134cea4fa89a7c5e7be5c776aca03f2e7e7877a2ad0fd4010ee7c0a8fefcad",
+        "role": "246 点 600s 全格初扫"
+      },
+      {
+        "file": "id_feasibility_sweep_steady.json",
+        "sha256": "86d37d8065313d531a493de6a9af1392e70c4bb60ac54998b9697dbe9da49843",
+        "role": "83 点 3000s 稳态精化（600s=稳态真实判定，斜率 ~e-18 证）"
+      },
+      {
+        "file": "deepwater_anchor.json",
+        "sha256": "e38f43a3f259381bc2a5769b0df3edcc6a85ce20a6d61a408c41a3ecfb1a67fe",
+        "role": "真深水 E02 锚点闭环"
+      }
+    ],
+    "candidate_interior_infeasible_n": 22,
+    "interpretation": "22 个候选界内组合在名义指令速度（6.0/7.522 m/s）下稳态不可行——非包线失效，而是计划速度须受 V_max 前沿约束的证据；包线本身（adverse≤1.8 ∧ HT≥1.5）内处处存在正可行支撑"
+  },
+  "c3_feasibility": {
+    "status": "SUPPORTED_CANDIDATE",
+    "file": "c3_feasibility.json",
+    "sha256": "8e677be09b1d7969f30b4b722360f0e3a1d1b56363cbca1656d10d864b9fd3a4",
+    "basis": "冻结 rush 速度 6.5/7.0 m/s 在 HT 1.5/2.0/3.0 静水精确可达；domain_warning/SOP/跳机全零（FR-545 三条件）"
+  },
+  "registry_hashes_frozen": {
+    "mission_template_registry.json": "81efdbb8d0aa0ea500bc948946b8b996a3f5ca4574c5639a904454bdf7a7c783",
+    "conditional_dag_config.json": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725",
+    "environment_regime_params.json": "c85524c0a31d2acd95ab541c6aa15c7d92b27b18c29d8a42bdc27bd2c4e24aa2",
+    "id_support_bounds.json": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+    "forecast_quality_profiles.json": "caa77068d0093dbe48ef0b29a809407dc9123c6702cba21038b06a001b425b1f",
+    "seed_tree_policy.json": "15ba30df31646285d5ec441a4e1ba79e66a6c954cdefec8c7335b2d25ff74b29",
+    "scenario_stratum_registry.json": "8db52974bad2a72b53ea88c9096890cdc739f4bc6660052798f2eead4080adc1",
+    "heldout_token_registry.json": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+    "identifiability_contrast_registry.json": "65f1051a95679b4024cf90d6d11fd86fa023902aa1b0782b14b23b05a35a2d5c"
+  },
+  "plan_speed_table_frozen": {
+    "role_speeds_mps": {
+      "departure": 2.5,
+      "harbor": 2.5,
+      "berth": 2.0,
+      "bridge": 3.5,
+      "cruise": 5.5,
+      "patrol": 5.0,
+      "return": 5.5,
+      "mission": 5.0,
+      "work": 1.2
+    },
+    "rush_tiers": {
+      "HT_in_[1.5,2.0)": 6.5,
+      "HT_ge_2.0": 7.0
+    },
+    "standby": "duration-defined 600 s（不适用速度折算，不加拉伸）",
+    "status": "FROZEN_CANDIDATE (T-010 计划层落地基线)",
+    "note": "速度为对水计划语义下的人口统计候选；生成时计划 SOG 组合须满足 V_max 前沿，违反即 REJECTED_SAMPLING_ELIGIBILITY（SUPPORT_BOUND），拒绝率由 T-019 冻结阈值在 T-020 判定"
+  },
+  "adjudications": [
+    {
+      "id": "D1/D2",
+      "decision": "R3a：保切片几何 120/30/60，修订模板候选值",
+      "changes": "departure 500→700 m（三模板）；bridge 400→1000 m（ROUTINE/EMERGENCY）；return 级联 8600→9400/6900→7700/6500→6700",
+      "authority": "tasks.md T-007（config/registry 修订，主 Agent 裁决）"
+    },
+    {
+      "id": "D3",
+      "decision": "standby 不作 direction 宿主（静止段语义）；无数值影响"
+    },
+    {
+      "id": "D4",
+      "decision": "duration-defined 段不加 0.8 拉伸（确定性时长）；备选保守口径 480 s 亦满足约束，不影响判定"
+    },
+    {
+      "id": "D7",
+      "decision": "普查候选速度表冻结（见 plan_speed_table_frozen）；rush 7.522 撤销，改证据分层值 6.5/7.0（FR-510：14.620 kn 为能力锚点非选定参数）"
+    },
+    {
+      "id": "EXTRA-1",
+      "decision": "environment_regime_params 新增 chart_depth_voyage_base（航次级标量水深 base：NORMAL 6.0/1.0/3.5、FLOOD 7.5/1.0/4.5、DRY 4.8/0.6/3.5）；chart_depth_by_reach 降级为 route 层文档值",
+      "reason": "Model E 水深为逐航次标量接口（DGN-06 R4），逐 reach 变深 v1 不可编译——修正 T-001 委派 spec 的字段级过冲"
+    }
+  ],
+  "open_adjudications": [
+    {
+      "id": "D6",
+      "item": "SEG_EMERGENCY_SPRINT_VS_CRUISE class_B 宿主：EMERGENCY_RESPONSE 序列无 cruise 段，与 DGN-12 'EMERGENCY_RESPONSE 内部' cohort 语义张力",
+      "options": "(a) registry 注记级绑定 class_B 宿主=mission 段（模板零改动）；(b) spec amendment 修改 DGN-02 序列插入 cruise 段",
+      "status": "PENDING_USER_DECISION",
+      "impact": "contrast registry 当前 hash 按现状冻结；若用户选择 (b)，冻结快照以 amendment 记录刷新 contrast hash"
+    }
+  ],
+  "approvals": {
+    "t003_architecture_doc": "PENDING_USER_APPROVAL (AC-433)",
+    "gate_note": "PHASE2_ENTRY_GATE = T-003 用户批准 ∧ T-007 本快照；本快照完成后 T-008 仍须待 T-003 批准"
+  },
+  "amendments": "none（D1/D2/D7/EXTRA-1 均为 T-007 授权范围内的候选值修订，已记录于 adjudications）",
+  "model_e_integrity": "零改动（git diff 保护路径为空；T-018 将做基线五件 sha256 快照正式比对）",
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "67b9b81e991ee8f21a7fef97ca31b1387cce1d41827d2c3e7cd3f315bb787246"
+  }
+}

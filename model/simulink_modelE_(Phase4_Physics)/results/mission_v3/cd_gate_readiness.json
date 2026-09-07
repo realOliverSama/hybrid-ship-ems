@@ -1,0 +1,70 @@
+{
+  "schema": "mission_v3_cd_gate_readiness_v1",
+  "task": "T-023 C/D Interface Gate readiness / handoff package (Day-3 Ruling item ④: FINAL_FAIL explicitly recorded)",
+  "generated_at": "2026-09-07T05:47:07",
+  "readiness_is_not_gate_pass": "本就绪包 ≠ C/D Interface Gate PASS；D 侧 formal C/D Gate（含 D-15 必改）由 D 侧执行（EXT-CD-GATE）",
+  "t429_final_status": {
+    "verdict": "FINAL FAIL (0/6 required contrasts)",
+    "per_contrast_identity": {
+      "SEG_BRIDGE_VS_HARBOR": "VALID FAIL",
+      "SEG_BERTH_VS_DEPARTURE": "VALID FAIL under frozen SBD∧probe rule",
+      "DIR_UPSTREAM_VS_DOWNSTREAM": "INVALID/UNRESOLVED due matched-segment implementation defect",
+      "DEPTH_LOW_ID_VS_NORMAL_ID": "INSUFFICIENT EVIDENCE under frozen grouped-CV rule",
+      "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE": "VALID FAIL under frozen SBD∧probe rule",
+      "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE": "VALID FAIL after pure-host repair"
+    },
+    "verdict_record": {
+      "file": "results/mission_v3/t429_final_verdict.json",
+      "self_hash": "eb389ae89104161dc3715654e4e44ea13acf38bf5943e43ec95876fb968621d5"
+    },
+    "evidence_chain": [
+      "t429_freeze_v1 (f8152ffe…) → result_v1 FAIL → D1 diagnostics → AMENDMENT_V2 (796a8b07…) → fresh corpus 144×2 → freeze_v2 → conformance rerun FAIL → FINAL FAIL"
+    ],
+    "T432_unlocked": false,
+    "downstream_note": "D/E/F 路线待 downstream scientific-roadmap amendment（保留 T-429 负结果前提下）"
+  },
+  "producer_schema_conformance": {
+    "validator": "dataset_v3.validate_contracts --producer-schema",
+    "result": "PASS",
+    "exit_code": 0,
+    "schema_self_hash": "7993e141e8a88875297694604552b266b4fecc757b042792aa502a8abed28b40"
+  },
+  "confirmation_corpus_summary": {
+    "file": "results/mission_v3/t429conf_v2_manifest.json",
+    "sha256": "bcf4e1a7e5b863e6707a8178b51409cf135a167debfb13019bb17de27ff3266a",
+    "voyages": 144,
+    "two_run_identical": true,
+    "layers": {
+      "coverage": 96,
+      "depth": 24,
+      "traffic": 24
+    },
+    "local_path": "datasets_v3/mission_v3/t429conf_v2[_rerun]/（不入库）"
+  },
+  "qualified_generation_stack": {
+    "file": "results/mission_v3/qualification_stack_identity.json",
+    "composite": "19180c21bef9a4285e4e0fa4dddbea0b4367bbdd98db8664410e14560dc17deb",
+    "components": 10
+  },
+  "deliverables_index": {
+    "generator": "scripts/+mission_v3/（14 组件函数 + 10 测试套件 + 3 审计件）",
+    "registries": "config/mission_v3/ 九件 + prequal_plan.json",
+    "thin_entries": "scripts/75~82 号",
+    "evidence": "results/mission_v3/（validator/普查/可行性/负向/回归/冻结/终判全链）",
+    "docs": "docs/phase4/c_mission_v3/architecture.md + README"
+  },
+  "t432_unblock_checklist_item1": {
+    "item": "C Mission-v3 完成（T-001~T-024）",
+    "status": "COMPLETE_WITH_T429_FINAL_FAIL",
+    "note": "T-001~T-018/T-020~T-024 全部执行；T-429 Gate FAIL_METRIC 为正式科学结论（Day-3 最终裁决）；T-019/T-021/T-022 v2 证据链完整可审计"
+  },
+  "open_items": {
+    "AC_437": "NOT MET（T-429 FINAL FAIL）",
+    "EXT_CD_GATE": "待 D 侧 formal C/D Gate（D-15 必改后执行）",
+    "T432": "NOT unlocked——待 downstream scientific-roadmap amendment"
+  },
+  "self_hash": {
+    "algorithm": "sha256",
+    "value": "8d55e9892fe8783f5300b06895dbd9f2b12a2064c940dfd12cf5ca8b480df21e"
+  }
+}

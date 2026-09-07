@@ -1,0 +1,91 @@
+{
+  "diagnostic_id": "D1-B",
+  "diagnostic_name": "TRAFFIC overlap / pure-host diagnostic (class_A=traffic_follow slice purity)",
+  "nature": "DEVELOPMENT_DIAGNOSTIC_NOT_GATE_EVIDENCE",
+  "spec": "experiments/mission_v3/T429_D1_diagnostics_spec.md (v2), section D1-B; two-step architecture: MATLAB mechanical export + Python statistics",
+  "generated_at": "2026-09-06T15:24:09",
+  "inputs": {
+    "export_file": "/tmp/d1b_export.json (temporary, not committed)",
+    "manifest": "results/mission_v3/prequal_manifest.json",
+    "seed_source": "config/mission_v3/prequal_plan.json seed_plan.formal_generation_seed = MISSION_V3_PREQUAL_SEED_V1_2026_09_05",
+    "selection": "arms_forecast == GOOD_V1 and arms_traffic == ON"
+  },
+  "replay": {
+    "n_voyages": 27,
+    "n_cruise_segments": 18,
+    "n_cruise_events": 5,
+    "cache": "keyed by stratum#base_draw_index (27 unique keys)",
+    "lineage_check": "replay ACCEPT + stratum_id + base_draw_index match against manifest row: all 27 passed"
+  },
+  "slice_convention": {
+    "window_s": 120.0,
+    "buffer_s": 30.0,
+    "stride_s": 60.0,
+    "rule": "windows start at t_start+30, stride 60, fully inside [t_start+30, t_end-30]",
+    "follow_platform": "[t + 0.1d, t + 0.9d] (T-010 FD4: first/last 10% of event duration = ramp)"
+  },
+  "results": {
+    "n_slices": 173,
+    "overlap_fraction_distribution": {
+      "of_eq_0": {
+        "count": 163,
+        "frac": 0.9421965317919075
+      },
+      "of_partial": {
+        "count": 10,
+        "frac": 0.057803468208092484
+      },
+      "of_eq_1": {
+        "count": 0,
+        "frac": 0.0
+      },
+      "of_lt_1": {
+        "count": 173,
+        "frac": 1.0
+      },
+      "tolerances": {
+        "of_eq_0": 1e-12,
+        "of_eq_1": 1e-09
+      }
+    },
+    "follow_platform_length": {
+      "n_events": 5,
+      "l_follow_min": 57.954649769171695,
+      "l_follow_p25": 64.7540802363351,
+      "l_follow_median": 76.17688869143136,
+      "l_follow_p75": 81.2515251976968,
+      "l_follow_max": 113.14293827880577,
+      "n_ge_180": 0,
+      "n_ge_120": 0,
+      "design_upper_bound": 144.0,
+      "durations_s": [
+        72.44331221146462,
+        80.94260029541887,
+        95.22111086428919,
+        101.56440649712098,
+        141.4286728485072
+      ]
+    },
+    "pure_slice_supply_backsolve": {
+      "demand_pure_slices": 458,
+      "demand_source": "T-022 identifiability_gate_result.json: contrasts[class_A=traffic_follow].n_slices_A",
+      "need_hosts_ge_180_conservative": 458,
+      "need_hosts_ge_180_grid_min": 229,
+      "current_grid_capacity_of_exported_events": 0,
+      "current_supply_shortfall_conservative": 458,
+      "design_feasibility": "duration ~ U[60,180] -> L_follow = 0.8*d in [48,144] < 180: no event can ever host a buffered pure 120 s slice (design mismatch)"
+    },
+    "in_class_p_contrast": {
+      "status": "NOT_AVAILABLE",
+      "reason": "branch B Step 1 export carries no P_load stream (spec allows: 'Step 1 P optional, branch B may omit'); interval statistics only",
+      "of_ge_0_99_count": 0,
+      "of_lt_0_99_count": 173
+    }
+  },
+  "verdict": "HOST_CONTAMINATION_CONFIRMED",
+  "verdict_rule": "of<1 frac > 0.5 AND n(L_follow>=180)==0 -> HOST_CONTAMINATION_CONFIRMED; of<1 frac <= 0.10 -> NOT_HOST_ISSUE; else CONTAMINATION_MINOR",
+  "notes": [
+    "Per-slice detail (voyage/stratum/segment/s0/s1/of) is held in the export + recomputable from it; not duplicated here.",
+    "The 27-voyage replay yields 173 candidate A-class slices on the same convention; the T-022 corpus counted 458 (full 108-draw corpus), so counts are not directly comparable - the demand constant 458 is taken from T-022 as specified."
+  ]
+}

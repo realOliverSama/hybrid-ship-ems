@@ -1,0 +1,88 @@
+{
+  "schema": "mission_v3_negative_detection_report_v1",
+  "generated_at": "2026-09-05T18:14:32Z",
+  "cases": [
+    {
+      "case_id": "N1",
+      "ac436_item": "AC-436: future-truth masquerading as INPUT_F (FR-526/530)",
+      "injection_summary": "full realized t_grid (max=4268 s > t0=600 s) passed as the INPUT_F slice; positive control = truncated slice issue",
+      "expected_gate_id": "GATE:MISSION_V3:FCST:FUTURE_INPUT",
+      "observed_gate_id": "GATE:MISSION_V3:FCST:FUTURE_INPUT",
+      "detected": true
+    },
+    {
+      "case_id": "N2",
+      "ac436_item": "AC-436: realized future masquerading as s_plan/v_plan (FR-558/559)",
+      "injection_summary": "realization struct pushed as a 4th positional argument of kf_snapshots build (causal signature admits no realized-future argument); positive control = clean build at t0=600",
+      "expected_gate_id": "GATE:MISSION_V3:KF:BAD_ARG",
+      "observed_gate_id": "GATE:MISSION_V3:KF:BAD_ARG",
+      "detected": true
+    },
+    {
+      "case_id": "N3",
+      "ac436_item": "AC-436: position constraints taken along realized future positions (FR-560)",
+      "injection_summary": "realized t>t0 segment shifted by 0.5 m/s and the K snapshot rebuilt from the same plan: bitwise unchanged=1; plan.zones window injected at t0+10 s: output changed=1",
+      "expected_gate_id": "STRUCTURAL_ASSERTION_FR560",
+      "observed_gate_id": "STRUCTURAL_ASSERTION_FR560",
+      "detected": true
+    },
+    {
+      "case_id": "N4",
+      "ac436_item": "AC-436: lead grid offset or vintage inversion (FR-561)",
+      "injection_summary": "Fblk issued on the offset lead grid 9:10:299 fed to build (hit=GATE:MISSION_V3:KF:GRID); Fblk issued at t0=600 fed to the t0=660 row (hit=GATE:MISSION_V3:KF:VINTAGE); positive control = clean build",
+      "expected_gate_id": "GATE:MISSION_V3:KF:GRID / GATE:MISSION_V3:KF:VINTAGE",
+      "observed_gate_id": "GATE:MISSION_V3:KF:GRID;GATE:MISSION_V3:KF:VINTAGE",
+      "detected": true
+    },
+    {
+      "case_id": "N5",
+      "ac436_item": "AC-436: formal missing snapshots silently filled (FR-562)",
+      "injection_summary": "issue t0=4118 with leads beyond the plan end (D=4268): missing_mask exact=1, contract=FAILED_CONTRACT, missing entries all NaN=1, non-missing entries bitwise equal to the fully covered reference run=1 (reference finite on missing leads=1, zone flags false=1); positive control = fully covered t0=600 build",
+      "expected_gate_id": "STRUCTURAL_ASSERTION_FR562",
+      "observed_gate_id": "STRUCTURAL_ASSERTION_FR562",
+      "detected": true
+    },
+    {
+      "case_id": "N6",
+      "ac436_item": "AC-436: simulator-latent-privileged forecast source (FR-527)",
+      "injection_summary": "DEGRADED_V1 issue declaring a SIMULATOR_LATENT_PRIVILEGED observation source (deployment unobservable simulator latent state); positive control = same issue with the default CAUSALLY_ESTIMATED class",
+      "expected_gate_id": "GATE:MISSION_V3:FCST:SOURCE_CLASS",
+      "observed_gate_id": "GATE:MISSION_V3:FCST:SOURCE_CLASS",
+      "detected": true
+    },
+    {
+      "case_id": "N7",
+      "ac436_item": "AC-436: undeclared cross-split_group truth reuse (FR-524)",
+      "injection_summary": "real family_expand products of one base draw (FamilySeq 1 and 2, same realized truth lineage) audited together: lineage identical=1, declared families differ=1; positive control = single-family audit",
+      "expected_gate_id": "GATE:MISSION_V3:FAMILY:UNDECLARED_REUSE",
+      "observed_gate_id": "GATE:MISSION_V3:FAMILY:UNDECLARED_REUSE",
+      "detected": true
+    },
+    {
+      "case_id": "N8",
+      "ac436_item": "AC-436: GOOD/DEGRADED truth drift (FR-529)",
+      "injection_summary": "one family member (ON x DEGRADED_V1) declares the truth hash recomputed from a minimally tampered realization (u(5) + 1e-3 m/s): hash changed=1; positive control = single-family audit",
+      "expected_gate_id": "GATE:MISSION_V3:FAMILY:TRUTH_DRIFT",
+      "observed_gate_id": "GATE:MISSION_V3:FAMILY:TRUTH_DRIFT",
+      "detected": true
+    },
+    {
+      "case_id": "N9",
+      "ac436_item": "AC-436: PILOT_ONLY mixed into the formal path (FR-500/504)",
+      "injection_summary": "FORMAL meta declaring fixture_kind=PILOT_ONLY on the stage_check face (hit=GATE:MISSION_V3:EXPORT:STAGE_ISOLATION) and on the export path, nothing written=1 (hit=GATE:MISSION_V3:EXPORT:STAGE_ISOLATION); positive control = FORMAL+NONE stage_check",
+      "expected_gate_id": "GATE:MISSION_V3:EXPORT:STAGE_ISOLATION",
+      "observed_gate_id": "GATE:MISSION_V3:EXPORT:STAGE_ISOLATION",
+      "detected": true
+    },
+    {
+      "case_id": "N10",
+      "ac436_item": "AC-436: FORBIDDEN/ORACLE sources into the view, per class (FR-527)",
+      "injection_summary": "GOOD_V1 issue with SourceClass overridden to each forbidden class in turn (FUTURE_TRUTH/ORACLE_STATE/SIMULATOR_LATENT_PRIVILEGED): all three rejected by the observability whitelist; positive control = default OBSERVED class issue",
+      "expected_gate_id": "GATE:MISSION_V3:FCST:SOURCE_CLASS",
+      "observed_gate_id": "GATE:MISSION_V3:FCST:SOURCE_CLASS;GATE:MISSION_V3:FCST:SOURCE_CLASS;GATE:MISSION_V3:FCST:SOURCE_CLASS",
+      "detected": true
+    }
+  ],
+  "detection_rate": 1,
+  "notes": "T-017 AC-436 negative injection suite on the real component chain (dag_sample -> env_realize -> plan_compose -> scenario_compile -> forecast_issue -> kf_snapshots -> eligibility / producer_export / family_expand); chain fixture: t017_negative_seed_01#0@F1, template ROUTINE_PATROL, regime NORMAL, plan horizon 4268 s, chain issue time 600 s; every injection was preceded by a same-chain positive control; ac436_item is a faithful ASCII transcription of the Chinese AC-436 clause in .specs/phase4-c-mission-v3/requirements.md (script discipline: ASCII-only source); N3/N5 are structural assertions (FR-560/FR-562) without a GATE error id by design"
+}

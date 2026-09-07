@@ -1,0 +1,134 @@
+{
+  "overall": true,
+  "generated_at": "2026-09-06T15:54:23+0800",
+  "validator": "scripts/+mission_v3/validate_registries.m",
+  "config_dir": "config/mission_v3",
+  "files": {
+    "mission_template_registry": {
+      "schema": "mission_v3_template_registry_v1",
+      "status": "PASSED",
+      "self_hash": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "enums",
+        "structure",
+        "self_hash"
+      ]
+    },
+    "conditional_dag_config": {
+      "schema": "mission_v3_conditional_dag_config_v1",
+      "status": "PASSED",
+      "self_hash": "297c1dc8e9968eb82c85335eaadfd07a1667685a25fc9b08b61ccaceccecd725",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "structure",
+        "cross_refs",
+        "self_hash"
+      ]
+    },
+    "environment_regime_params": {
+      "schema": "mission_v3_environment_regime_params_v1",
+      "status": "PASSED",
+      "self_hash": "345cfc25baa3c7b4b90dd9d993f21e43c791a2ca2a9886c790502bfd2e9c9c7a",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "enums",
+        "structure",
+        "self_hash"
+      ]
+    },
+    "id_support_bounds": {
+      "schema": "mission_v3_id_support_bounds_v1",
+      "status": "PASSED",
+      "self_hash": "ea66e186963fe078f0f7f800656e64e8269146c5d429f7fab1d252c9e71424d8",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "enums",
+        "support_bounds",
+        "self_hash"
+      ]
+    },
+    "forecast_quality_profiles": {
+      "schema": "mission_v3_forecast_quality_profiles_v1",
+      "status": "PASSED",
+      "self_hash": "caa77068d0093dbe48ef0b29a809407dc9123c6702cba21038b06a001b425b1f",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "structure",
+        "self_hash"
+      ]
+    },
+    "seed_tree_policy": {
+      "schema": "mission_v3_seed_tree_policy_v1",
+      "status": "PASSED",
+      "self_hash": "15ba30df31646285d5ec441a4e1ba79e66a6c954cdefec8c7335b2d25ff74b29",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "structure",
+        "self_hash"
+      ]
+    },
+    "scenario_stratum_registry": {
+      "schema": "mission_v3_scenario_stratum_registry_v1",
+      "status": "PASSED",
+      "self_hash": "8db52974bad2a72b53ea88c9096890cdc739f4bc6660052798f2eead4080adc1",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "status_enum",
+        "strata_cells",
+        "cross_refs",
+        "self_hash"
+      ]
+    },
+    "heldout_token_registry": {
+      "schema": "mission_v3_heldout_token_registry_v1",
+      "status": "PASSED",
+      "self_hash": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "predicate_whitelist",
+        "tokens",
+        "cross_refs",
+        "self_hash"
+      ]
+    },
+    "identifiability_contrast_registry": {
+      "schema": "mission_v3_identifiability_contrast_registry_v1",
+      "status": "PASSED",
+      "self_hash": "2274da4aeb7784f4026f51f03f5c0e020a5a192ffc59044f2970850c66f50c2b",
+      "checks": [
+        "number_literals",
+        "required_fields",
+        "header",
+        "schema_name",
+        "contrast_table",
+        "self_hash"
+      ]
+    }
+  },
+  "issues": []
+}

@@ -1,0 +1,110 @@
+{
+  "schema": "mission_v3_c3_feasibility_v1",
+  "task": "T-006 C-3 physical feasibility precheck (FR-545, DGN-11 C3)",
+  "generated_at": "2026-09-05T16:15:55",
+  "read_only": true,
+  "verdict": "C3_SUPPORTED_CANDIDATE",
+  "verdict_basis": "FR-545 三条件在冻结 rush 证据速度下成立：(a) rush 计划速度在 LOW_ID 带 H/T 下可达（4 点靶向 run speed_achieved 全真）；(b) 无 domain_warning 聚集（0 steps 全点）；(c) SOP 不饱和（battery_power_limited 0 steps）且无 safety trip",
+  "frozen_rush_speed_table": {
+    "HT_in_[1.5,2.0)": {
+      "speed_mps": 6.5,
+      "kn": 12.64
+    },
+    "HT_ge_2.0": {
+      "speed_mps": 7.0,
+      "kn": 13.61
+    },
+    "basis": "T-005 稳态前沿 W_max(HT)（U=0）：HT1.5→6.7928 / HT2.0→7.1609 m/s；冻结速度取 tier 下限的保守裕度；均落 G2 验证带 [12.5,15.5] kn",
+    "status": "FROZEN_CANDIDATE_T007"
+  },
+  "evidence_targeted_runs": {
+    "file": "c3_raw_points.json",
+    "sha256": "ff54612bdb687caad8bcfef8e3a399c41ee1d6c08436f4dc7a3674729159c36a",
+    "leg_duration_s": 900,
+    "n_points": 4,
+    "points": [
+      {
+        "key": "sog6.500_adverse_0.00_ht1.50",
+        "V_last120_mps": 6.500000000116207,
+        "speed_achieved": true,
+        "domain_warning_steps": 0,
+        "sop_sat_steps": 0,
+        "fault_latch_steps": 0
+      },
+      {
+        "key": "sog6.500_adverse_0.00_ht2.00",
+        "V_last120_mps": 6.500000000048141,
+        "speed_achieved": true,
+        "domain_warning_steps": 0,
+        "sop_sat_steps": 0,
+        "fault_latch_steps": 0
+      },
+      {
+        "key": "sog7.000_adverse_0.00_ht2.00",
+        "V_last120_mps": 7.000000000084243,
+        "speed_achieved": true,
+        "domain_warning_steps": 0,
+        "sop_sat_steps": 0,
+        "fault_latch_steps": 0
+      },
+      {
+        "key": "sog7.000_adverse_0.00_ht3.00",
+        "V_last120_mps": 7.000000000074655,
+        "speed_achieved": true,
+        "domain_warning_steps": 0,
+        "sop_sat_steps": 0,
+        "fault_latch_steps": 0
+      }
+    ]
+  },
+  "evidence_steady_sweep_corners": {
+    "file": "id_feasibility_sweep_steady.json",
+    "sha256": "86d37d8065313d531a493de6a9af1392e70c4bb60ac54998b9697dbe9da49843",
+    "sprint_row_U0": [
+      {
+        "ht_ratio": 1.2,
+        "V_steady_mps": 6.6943356161271135,
+        "dw": 0,
+        "sop": 0,
+        "trip": 0
+      },
+      {
+        "ht_ratio": 1.35,
+        "V_steady_mps": 6.769186362791865,
+        "dw": 0,
+        "sop": 0,
+        "trip": 0
+      },
+      {
+        "ht_ratio": 1.5,
+        "V_steady_mps": 6.792773606357806,
+        "dw": 0,
+        "sop": 0,
+        "trip": 0
+      },
+      {
+        "ht_ratio": 2,
+        "V_steady_mps": 7.1609417203897925,
+        "dw": 0,
+        "sop": 0,
+        "trip": 0
+      },
+      {
+        "ht_ratio": 3,
+        "V_steady_mps": 7.2491602214470765,
+        "dw": 0,
+        "sop": 0,
+        "trip": 0
+      }
+    ]
+  },
+  "evidence_deepwater_anchor": {
+    "file": "deepwater_anchor.json",
+    "sha256": "e38f43a3f259381bc2a5769b0df3edcc6a85ce20a6d61a408c41a3ecfb1a67fe",
+    "V_mps": 7.52069706848387,
+    "kn": 14.619031789601687,
+    "g2_e02_kn": 14.6202,
+    "deviation_pct": -0.008
+  },
+  "notes": "read-only；Model E 零改动；rush 速度为证据包线内冻结值（FR-510：计划高速区间从只读证据冻结，14.620 kn 为深水能力锚点非选定参数）；本件为候选态，T-007 快照引用"
+}

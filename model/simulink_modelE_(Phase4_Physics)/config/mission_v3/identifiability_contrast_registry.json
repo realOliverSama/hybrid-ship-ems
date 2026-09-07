@@ -1,0 +1,222 @@
+{
+  "schema": "mission_v3_identifiability_contrast_registry_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效（minimum_group_coverage=10 为候选，T-004 证据确认后由 T-007 冻结）",
+  "r9_adjudication": "R9 清理（design DGN-12）：SEG_HARBOR_VS_SHALLOW_CRUISE 与 SEG_BRIDGE_VS_SHALLOW_CRUISE 移出必需 Gate（段角色轴 × 深度/环境轴混轴对比），仅保留为 SECONDARY_DIAGNOSTIC；深度轴主对比由 DEPTH_LOW_ID_VS_NORMAL_ID 承担；必需对比六项 = FR-550 registry，T-429 PASS ⟺ registry 全部对比 PASS，覆盖不足的必需对比 fail-closed，禁静默删除",
+  "class_semantics_note": "class_A/class_B 机器值与生成侧 metadata 对齐：segment_role 轴 = segment_role_enum 实际值；direction 轴 = segment.direction metadata（upstream/downstream，FR-512 注记）；depth 轴 low_id/normal_id = voyage.ht_effective 相对 LOW_ID_BAND 的派生分类；mission_intensity 轴 class_A 机器值 = rush（语义标签 EMERGENCY_SPRINT 见 heldout_token_registry dgn11_label），class_B 机器值 = return（D6 宿主重绑定 2026-09-05：RETURN = 模板既有稳态返航段，cruise-like transit 语义）；traffic 轴 traffic_follow/free_cruise = 生成侧交通事件状态；shallow_cruise = 低 H/T 航次中的 cruise 段（混轴诊断标签）",
+  "cohort_predicate_note": "cohort_predicate 为结构化 AND 列表（{field, operator} / {field, operator, value}），引用字段受 heldout_token_registry.predicate_field_whitelist 约束（FR-550 混杂控制声明；operator: == 等值约束 / same 同层匹配 / same_when_feasible 可行时同层匹配 / same_when_possible 可能时同层匹配）；执行语义归 T-009/T-020 谓词引擎，本注册表只做声明与校验",
+  "contrasts": [
+    {
+      "contrast_id": "SEG_BRIDGE_VS_HARBOR",
+      "factor_axis": "segment_role",
+      "class_A": "bridge",
+      "class_B": "harbor",
+      "cohort_predicate": [
+        {
+          "field": "voyage.environment_regime",
+          "operator": "same"
+        },
+        {
+          "field": "segment.direction",
+          "operator": "same"
+        },
+        {
+          "field": "voyage.mission_template_id",
+          "operator": "same_when_feasible"
+        },
+        {
+          "field": "voyage.operator_profile",
+          "operator": "same_when_feasible"
+        }
+      ],
+      "nuisance_controls": "same regime AND same direction AND (when feasible) same template AND (when feasible) same operator profile",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "REQUIRED"
+    },
+    {
+      "contrast_id": "SEG_BERTH_VS_DEPARTURE",
+      "factor_axis": "segment_role",
+      "class_A": "berth",
+      "class_B": "departure",
+      "cohort_predicate": [
+        {
+          "field": "voyage.mission_template_id",
+          "operator": "same"
+        }
+      ],
+      "nuisance_controls": "same template",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "REQUIRED"
+    },
+    {
+      "contrast_id": "DIR_UPSTREAM_VS_DOWNSTREAM",
+      "factor_axis": "direction",
+      "class_A": "upstream",
+      "class_B": "downstream",
+      "cohort_predicate": [
+        {
+          "field": "voyage.mission_template_id",
+          "operator": "same"
+        },
+        {
+          "field": "voyage.environment_regime",
+          "operator": "same"
+        },
+        {
+          "field": "pairing",
+          "operator": "same_base_draw_directional_counterfactual"
+        }
+      ],
+      "nuisance_controls": "same regime x same reach",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": false,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "REQUIRED",
+      "sbd_role": "SECONDARY_DIAGNOSTIC_NOT_APPLICABLE_TO_LEVEL_SHIFT_FACTOR",
+      "paired_physical_effect_required": true,
+      "paired_effect_profile": {
+        "cohort_unit": "same base_draw / split_group directional pair",
+        "aggregation": "group-level matched pure slices first, then signed paired delta in mean P_load",
+        "sign_requirement": "upstream (adverse) mean P_load > return mean — required physical sign",
+        "ci_rule": "group bootstrap 95% CI must exclude zero",
+        "sign_test_alpha": 0.05,
+        "magnitude_threshold_policy": "no new delta-P magnitude threshold derived from development diagnostics (D1-A 83.8 kW is diagnostic only)"
+      },
+      "gate_profile": "PASS_DIR = PASS_paired_physical_effect AND PASS_probe (both required; DIR is not BA-only)",
+      "amendment_v2_note": "Day-3 Ruling section 1: SBD_required=false (NCC amplitude-invariance, D1-A R_paired=0.315 vs BA=0.944); paired physical effect + probe dual gate"
+    },
+    {
+      "contrast_id": "DEPTH_LOW_ID_VS_NORMAL_ID",
+      "factor_axis": "depth",
+      "class_A": "low_id",
+      "class_B": "normal_id",
+      "cohort_predicate": [
+        {
+          "field": "voyage.mission_template_id",
+          "operator": "==",
+          "value": "WORK_MISSION"
+        },
+        {
+          "field": "voyage.environment_regime",
+          "operator": "==",
+          "value": "DRY"
+        },
+        {
+          "field": "class",
+          "operator": "in_band",
+          "value": "depth_class"
+        }
+      ],
+      "nuisance_controls": "same template x same regime",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "REQUIRED",
+      "diagnostic_layer": "T429_IID_DIAGNOSTIC",
+      "normal_id_depth_band": {
+        "min": 2.2,
+        "min_inclusive": true,
+        "max": 2.6,
+        "max_inclusive": true,
+        "note": "NORMAL_ID_DEPTH_BAND frozen before generation (Day-3 Ruling section 2): within IID support, distinct from LOW_ID [1.5,2.0], shallow-water sensitive region"
+      },
+      "amendment_v2_note": "Day-3 Ruling section 2: token-safe WORK_MISSION x DRY host; 12+12 unique split groups; no OOD REQUIRE; population distribution unchanged"
+    },
+    {
+      "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
+      "factor_axis": "mission_intensity",
+      "class_A": "rush",
+      "class_B": "return",
+      "cohort_predicate": [
+        {
+          "field": "voyage.mission_template_id",
+          "operator": "==",
+          "value": "EMERGENCY_RESPONSE"
+        },
+        {
+          "field": "voyage.environment_regime",
+          "operator": "same"
+        },
+        {
+          "field": "voyage.operator_profile",
+          "operator": "same"
+        },
+        {
+          "field": "segment.reach",
+          "operator": "same_when_feasible"
+        }
+      ],
+      "nuisance_controls": "within EMERGENCY_RESPONSE AND same regime AND same operator profile AND (when feasible) same reach AND (where possible) same voyage/base-draw cohort; compatible route/environment context",
+      "d6_rebinding_note": "Day-1 Gate Ruling 2026-09-05 §D：原 SEG_EMERGENCY_SPRINT_VS_CRUISE（class_B=cruise）否决 mission 段宿主方案——mission 段携带 mission-load/hotel 语义，经 P_load_total 形成强混杂捷径；改为 registry 级宿主重绑定：class_B 宿主 = RETURN（模板既有稳态返航段，cruise-like transit），不改动 DGN-02 模板序列；非 spec amendment。标签保持生成侧 metadata（segment.role），禁由 realized 速度反推",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "REQUIRED"
+    },
+    {
+      "contrast_id": "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE",
+      "factor_axis": "traffic",
+      "class_A": "traffic_follow",
+      "class_B": "free_cruise",
+      "cohort_predicate": [],
+      "nuisance_controls": "same base draw / family traffic ON vs OFF physical counterfactual (preferred; not merely regime x reach matching)",
+      "preferred_mechanism": "same_base_draw_counterfactual",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "REQUIRED",
+      "host_definition": {
+        "class_A_host": "STEADY_FOLLOW_INTERVAL (generation-side explicit)",
+        "overlap_required": 1.0,
+        "min_host_duration_s": 180,
+        "invariant": "steady_follow_duration >= slice_duration + 2*edge_buffer = 180 s",
+        "d1b_basis": "HOST_CONTAMINATION_CONFIRMED: 100% of<1, follow platform max 113s < 120s window, L>=180 events 0/5"
+      },
+      "amendment_v2_note": "Day-3 Ruling section 3: class-A host = explicit STEADY_FOLLOW interval, overlap==1 asserted"
+    },
+    {
+      "contrast_id": "SEG_HARBOR_VS_SHALLOW_CRUISE",
+      "factor_axis": "mixed_segment_depth",
+      "class_A": "harbor",
+      "class_B": "shallow_cruise",
+      "cohort_predicate": [],
+      "nuisance_controls": "secondary diagnostic; no gate-bearing nuisance control declared (R9)",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "SECONDARY_DIAGNOSTIC",
+      "reason": "R9 移出必需 Gate：段角色轴 × 深度/环境轴混轴对比，不进必需 Gate；仅保留 SECONDARY_DIAGNOSTIC，深度轴主对比由 DEPTH_LOW_ID_VS_NORMAL_ID 承担"
+    },
+    {
+      "contrast_id": "SEG_BRIDGE_VS_SHALLOW_CRUISE",
+      "factor_axis": "mixed_segment_depth",
+      "class_A": "bridge",
+      "class_B": "shallow_cruise",
+      "cohort_predicate": [],
+      "nuisance_controls": "secondary diagnostic; no gate-bearing nuisance control declared (R9)",
+      "signal_view": "1 Hz P_load_total_kW slice-level summary statistics (H1-derived)",
+      "SBD_required": true,
+      "probe_required": true,
+      "minimum_group_coverage": 10,
+      "gate_role": "SECONDARY_DIAGNOSTIC",
+      "reason": "R9 移出必需 Gate：段角色轴 × 深度/环境轴混轴对比，不进必需 Gate；仅保留 SECONDARY_DIAGNOSTIC，深度轴主对比由 DEPTH_LOW_ID_VS_NORMAL_ID 承担"
+    }
+  ],
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "2274da4aeb7784f4026f51f03f5c0e020a5a192ffc59044f2970850c66f50c2b"
+  }
+}

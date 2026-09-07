@@ -1,0 +1,60 @@
+{
+  "schema": "mission_v3_template_registry_v1",
+  "version": "1.0.0-candidate",
+  "status": "CANDIDATE",
+  "value_basis": "候选态；数值冻结经 Phase 1 证据 + T-007 快照生效",
+  "segment_role_enum": ["departure", "harbor", "cruise", "bridge", "patrol", "return", "berth", "standby", "rush", "mission", "work"],
+  "reach_type_enum": ["OPEN_WATER", "BRIDGE", "HARBOR", "SHOAL"],
+  "operator_profile_enum": ["CALM", "STANDARD", "URGENT"],
+  "mission_templates": [
+    {
+      "mission_template_id": "ROUTINE_PATROL",
+      "description_zh": "例行巡航执法",
+      "segment_sequence": [
+        {"role": "departure", "nominal_distance_m": 700, "reach": "HARBOR"},
+        {"role": "harbor", "nominal_distance_m": 1200, "reach": "HARBOR"},
+        {"role": "cruise", "nominal_distance_m": 4000, "reach": "OPEN_WATER"},
+        {"role": "bridge", "nominal_distance_m": 1000, "reach": "BRIDGE"},
+        {"role": "patrol", "nominal_distance_m": 2500, "reach": "OPEN_WATER"},
+        {"role": "return", "nominal_distance_m": 9400, "reach": "OPEN_WATER"},
+        {"role": "berth", "nominal_distance_m": 500, "reach": "HARBOR"}
+      ],
+      "p_hotel_base_kW": 100,
+      "operator_prior": {"CALM": 0.3, "STANDARD": 0.6, "URGENT": 0.1},
+      "emergency_sprint_eligible": false
+    },
+    {
+      "mission_template_id": "EMERGENCY_RESPONSE",
+      "description_zh": "应急出动",
+      "segment_sequence": [
+        {"role": "standby", "nominal_distance_m": 0, "nominal_duration_s": 600, "reach": "HARBOR"},
+        {"role": "departure", "nominal_distance_m": 700, "reach": "HARBOR"},
+        {"role": "rush", "nominal_distance_m": 4000, "reach": "OPEN_WATER"},
+        {"role": "bridge", "nominal_distance_m": 1000, "reach": "BRIDGE", "presence": "CONDITIONAL"},
+        {"role": "mission", "nominal_distance_m": 2000, "reach": "OPEN_WATER"},
+        {"role": "return", "nominal_distance_m": 7700, "reach": "OPEN_WATER"}
+      ],
+      "p_hotel_base_kW": 200,
+      "operator_prior": {"CALM": 0.0, "STANDARD": 0.0, "URGENT": 1.0},
+      "emergency_sprint_eligible": true
+    },
+    {
+      "mission_template_id": "WORK_MISSION",
+      "description_zh": "作业任务（巡航→作业区低速作业+高 mission load→返航）",
+      "segment_sequence": [
+        {"role": "departure", "nominal_distance_m": 700, "reach": "HARBOR"},
+        {"role": "cruise", "nominal_distance_m": 4000, "reach": "OPEN_WATER"},
+        {"role": "work", "nominal_distance_m": 2000, "reach": "SHOAL"},
+        {"role": "return", "nominal_distance_m": 6700, "reach": "OPEN_WATER"}
+      ],
+      "p_hotel_base_kW": 160,
+      "operator_prior": {"CALM": 0.2, "STANDARD": 0.7, "URGENT": 0.1},
+      "emergency_sprint_eligible": false
+    }
+  ],
+  "nominal_note": "return 段名义距离 = 出航各段回程折返合计（不含泊位段）：ROUTINE_PATROL 9400 m = 700+1200+4000+1000+2500；EMERGENCY_RESPONSE 7700 m = 700+4000+1000+2000；WORK_MISSION 6700 m = 700+4000+2000。presence: CONDITIONAL 仅用于 EMERGENCY_RESPONSE 的 bridge 段：该段可条件出现（DAG/config 后续消费）；standby 段为原地待命（distance=0，duration=600 s）。T-007 Phase-1 修订（2026-09-05）：departure 500→700 m、bridge 400→1000 m（BRIDGE_OPERATION 场景宿主全长：Approach→Deceleration→Controlled transit→Exit→Acceleration；非物理桥孔/桥区几何/限速区长度），依据 T-004 段时长普查证据——原值在候选切片几何 120/30/60 的硬约束 slice+2×buffer=180 s 下不可行（bridge usable 91.4 s、departure 160 s）；修订后 bridge usable 228.6 s、departure 224 s（候选速度 3.5/2.5 m/s × 拉伸下界 0.8）",
+  "revision_t007": {"date": "2026-09-05", "basis": "T-004 segment_duration_census 证据 + 主 Agent 裁决（R3a 路线：保切片几何 120/30/60，修订模板候选值）+ Day-1 Gate Ruling 2026-09-05 §A3 语义边界确认", "changes": ["departure nominal_distance_m 500->700 (三模板)", "bridge nominal_distance_m 400->1000 (ROUTINE_PATROL/EMERGENCY_RESPONSE)", "return 级联 8600->9400 / 6900->7700 / 6500->6700"], "host_semantics": "bridge 1000 m = BRIDGE_OPERATION 场景宿主全长（Approach→Deceleration→Controlled transit→Exit→Acceleration），NOT 物理桥孔长度/桥区几何长度/限速区长度——L_bridge_operation ≠ L_bridge_zone，除非独立航线证据使两者相等；departure 700 m 同理为离泊操纵场景宿主全长（startup→低速操纵→驶入航道加速），非泊位几何长度。T-010 计划层据此在宿主内布置子阶段，禁把宿主全长静默 reinterpret 为物理航段长度", "revision_id": "phase1_freeze_amendment_d6 关联修订（hash 链见该修正案）"},
+  "dgn02_adjudication": "HEAVY_CURRENT 正交性裁决（design DGN-02 用户正式 APPROVED）：第三槽位重构为环境无关 WORK_MISSION；强流任务语义 = WORK_MISSION × FLOOD 组合表达；九格 strata 全 ACTIVE",
+  "fr512_sequence_note": "FR-512 路线§4 序列含 upstream/shallow：环境无关重构后 upstream 语义并入段方向 metadata（heading 派生），shallow 暴露 = L1 regime × reach 条件化（低 H/T 航次 × 段角色组合）。与 FR-512 字面序列的差异记录待 T-003 架构文档用户批准时一并确认",
+  "self_hash": {"algorithm": "sha256", "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')", "value": "f4079f91a5e38f852b7515fb32e0cbbc1725d8048ade116d1ebc4fbc90d03ff1"}
+}

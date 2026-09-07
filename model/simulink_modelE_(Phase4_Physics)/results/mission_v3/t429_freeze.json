@@ -1,0 +1,84 @@
+{
+  "schema": "mission_v3_t429_freeze_v1",
+  "task": "T-021 T429_FREEZE — immutable blind-freeze artifact, written BEFORE any SBD/probe/metric computation (FR-547/549/550, DGN-12, Tasks Gate R3)",
+  "generated_at": "2026-09-06T10:25:25",
+  "blind_discipline": {
+    "frozen_before_metric_evaluation": true,
+    "not_yet_computed": [
+      "SBD separation ratios",
+      "probe balanced accuracy",
+      "probe coefficients",
+      "pairwise outcome metrics",
+      "confidence bounds"
+    ],
+    "discipline_note": "本件在 T-429 任何结果度量计算/检视之前写入并 hash；T-022 执行前机器校验本件存在且引用对象零变更"
+  },
+  "slice_geometry": {
+    "slice_duration_s": 120,
+    "edge_buffer_s": 30,
+    "stride_s": 60,
+    "source": "T-004 segment_duration_census（模板修订后重跑）PASS + T-007 冻结 + Day-1 §A2",
+    "hard_constraint": "120 + 2×30 = 180 <= min usable segment duration（六必需对比全部宿主）"
+  },
+  "thresholds": {
+    "R_min": 1.5,
+    "R_min_source": "DGN-12 候选，盲冻结维持（无预资格期证据支持调整；调整须 amendment 且首跑后锁定）",
+    "A_min": 0.8,
+    "A_min_source": "DGN-12 候选，盲冻结维持",
+    "rule": "SBD: LCB95(R) >= R_min；probe: LCB95(BA) >= A_min；六必需对比逐一 PASS ∧ 才 overall=true（DGN-12 统一 LCB95 规则，弃用点估计双轨）",
+    "fail_closed": "证据不足 ⇒ INSUFFICIENT_IDENTIFIABILITY_EVIDENCE；任一必需对比失败 ⇒ Gate FAIL 升级（FR-551 红线：阈值冻结后不得因失败修改）"
+  },
+  "sbd_config": {
+    "signal": "1 Hz P_load_total_kW（D 包 SBD 引擎同源语义）",
+    "separation_ratio": "R = median(cross)/max(Q0.95 within_A, Q0.95 within_B)",
+    "bootstrap": {
+      "method": "group bootstrap",
+      "unit": "split_group_id",
+      "n_resamples": 1000,
+      "bootstrap_seed": 42901,
+      "ci": "LCB95 percentile"
+    }
+  },
+  "probe_config": {
+    "model": "logistic regression（固定配置：L2 C=1.0, class_weight balanced, solver lbfgs, max_iter 1000）",
+    "features": "切片级 H1 派生摘要统计（候选编码冻结：slice mean/std/min/max/p95/rms + 6 个暂态计数特征，共 12 维；实现以 T-022 实测为准，维度与类型于此冻结）",
+    "cv": {
+      "scheme": "grouped 5-fold by split_group_id",
+      "scaler": "train-only standard scaler"
+    },
+    "metric": "balanced accuracy, LCB95 over fold-BAs via group bootstrap (seed 42902, 1000 resamples)"
+  },
+  "contrast_registry_hash": "b980a457bf45930274fb13263b497e29d426bbec26777d969026a04118a766ad",
+  "required_contrasts": [
+    "SEG_BRIDGE_VS_HARBOR",
+    "SEG_BERTH_VS_DEPARTURE",
+    "DIR_UPSTREAM_VS_DOWNSTREAM",
+    "DEPTH_LOW_ID_VS_NORMAL_ID",
+    "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
+    "SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE"
+  ],
+  "nuisance_control_config_hash": "83d84d0c890079e55fe2159f0e61d08f888053dc5127a48d8419680dc8df1b25",
+  "prequal_corpus_manifest": {
+    "file": "results/mission_v3/prequal_manifest.json",
+    "sha256": "443bab3710ede42f72cdca413460cf5fcd967cab24f9e8242ca6b47362a0c32b",
+    "voyages": 108,
+    "amendment_ref": "PREQUAL-AMEND-01"
+  },
+  "qualified_generation_stack_hash": {
+    "composite": "db5da613061fe92ba156814b90a9d26c301010ae418fd4eca8f9a4dd0a12bd2f",
+    "file": "results/mission_v3/qualification_stack_identity.json",
+    "sha256": "a992317815da39e46c339b292da324a23c0fe0c9fca0df19aa392f1b0db5394e",
+    "binding": "T-022 执行时重采集 stack identity 并与本件记录比对；不一致 ⇒ Gate 结果无效"
+  },
+  "t429_implementation": {
+    "file": "scripts/+mission_v3/+audits/identifiability.m",
+    "status": "PENDING_T022_BUILD",
+    "note": "实现件于 T-022 建；其 sha256 于 T-022 报告首行回填本件引用副本（frozen_ref_hash 追加，不改动本件冻结区）"
+  },
+  "frozen_threshold_policy": "FR-551：本件冻结后阈值/几何/编码不得因 T-429 失败修改；工况重设计是唯一合法失败路径",
+  "self_hash": {
+    "algorithm": "sha256",
+    "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
+    "value": "f8152ffeffa228a4371c0a43d6aa987df523931ce23f91c24acfdfff3ac5a4cb"
+  }
+}
