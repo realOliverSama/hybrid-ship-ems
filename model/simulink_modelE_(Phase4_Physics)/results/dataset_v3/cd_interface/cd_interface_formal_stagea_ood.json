@@ -1,0 +1,110 @@
+{
+  "schema": "cd_interface_gate_result_v2",
+  "formality": "FORMAL",
+  "formality_note": "正式 C/D Interface Gate（EXT-CD-GATE）",
+  "generated_utc": "2026-09-08T12:21:25+00:00",
+  "n_voyages": 20,
+  "activation_provided": true,
+  "overall": true,
+  "checks": {
+    "c09_contract_validators": {
+      "pass": true,
+      "registry_errors": [],
+      "producer_schema_errors": []
+    },
+    "c01_schema_compliance": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c02_s_plan_causal_present": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c03_kf_snapshot_form": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c04_forecast_provenance_valid": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c05_oracle_physical_separation": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c06_metadata_complete": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c08_ood_config_surface": {
+      "pass": true,
+      "per_voyage": {}
+    },
+    "c07_voyage_qualification": {
+      "pass": true,
+      "min_duration_s": 1200,
+      "min_canonical_windows": 60,
+      "below_min": {},
+      "few_issue_rows": {}
+    },
+    "c10_modelE_baseline_integrity": {
+      "pass": true,
+      "verdict": "SNAPSHOT（骨架模式：记录当前 hash，正式版对照 activation 冻结值）",
+      "snapshot": "results/dataset_v3/cd_interface/baseline_integrity.json",
+      "snapshot_detail": {
+        "check": "10_modelE_baseline_integrity",
+        "pass": true,
+        "verdict": "SNAPSHOT（骨架模式：记录当前 hash，正式版对照 activation 冻结值）",
+        "files": [
+          {
+            "path": "model/HybridShip_ModelE.slx",
+            "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+          },
+          {
+            "path": "config/ModelE_Physics_Parameters.m",
+            "sha256": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264"
+          },
+          {
+            "path": "config/ModelE_Control_Parameters.m",
+            "sha256": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63"
+          },
+          {
+            "path": "config/gate_baseline_modele.json",
+            "sha256": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e"
+          },
+          {
+            "path": "config/gate_baseline_modele_control.json",
+            "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273"
+          }
+        ]
+      }
+    }
+  },
+  "baseline_integrity_matlab": {
+    "check": "10_modelE_baseline_integrity",
+    "pass": true,
+    "verdict": "SNAPSHOT（骨架模式：记录当前 hash，正式版对照 activation 冻结值）",
+    "files": [
+      {
+        "path": "model/HybridShip_ModelE.slx",
+        "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+      },
+      {
+        "path": "config/ModelE_Physics_Parameters.m",
+        "sha256": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264"
+      },
+      {
+        "path": "config/ModelE_Control_Parameters.m",
+        "sha256": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63"
+      },
+      {
+        "path": "config/gate_baseline_modele.json",
+        "sha256": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e"
+      },
+      {
+        "path": "config/gate_baseline_modele_control.json",
+        "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273"
+      }
+    ]
+  }
+}

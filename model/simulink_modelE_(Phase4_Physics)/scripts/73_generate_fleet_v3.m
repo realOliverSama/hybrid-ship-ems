@@ -98,7 +98,11 @@ switch FLEET_MODE
                 n_bad_iid = n_bad_iid + 1;
             end
         end
-        exp_members = double(plan.ood.members_per_family);
+        % AMENDMENT_02 requalification fix: the ood plan struct has no
+% members_per_family field (plan_load carries it on plan.iid only -
+% stage_a OOD = per-condition 1 family x members_per_family, so the
+% iid field IS the per-condition expectation; dac35051 stale path).
+exp_members = double(plan.iid.members_per_family);
         if strncmp(FLEET_MODE, 'stage_b', 7)
             exp_members = exp_members * ...
                 double(plan.ood.per_condition_families);

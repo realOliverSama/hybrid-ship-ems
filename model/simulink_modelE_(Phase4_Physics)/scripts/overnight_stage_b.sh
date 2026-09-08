@@ -73,7 +73,7 @@ run_pass () {  # $1=pass label  $2=mode  $3=expected count
         local elapsed=0 rc=0
         while kill -0 $mpid 2>/dev/null; do
             sleep 30; elapsed=$((elapsed+30))
-            if [ $elapsed -ge 14400 ]; then
+            if [ $elapsed -ge 18000 ]; then
                 echo "[$(date -u +%FT%TZ)] $label $mode attempt $attempt HUNG ${elapsed}s — killing"
                 pkill -9 -f "MATLAB -parallelserver" 2>/dev/null
                 kill -9 $mpid 2>/dev/null

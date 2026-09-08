@@ -238,14 +238,26 @@ function [d, rel] = local_art_dirs(ctx, is_ood)
 % [datasets_v3 <seg> <sub>] artifact layout:
 %   stage_a: datasets_v3/qualification/stage_a_iid | stage_a_ood
 %   smoke:   datasets_v3/qualification_smoke/iid       | ood
+%   stage_b: datasets_v3/formal/iid                    | ood
+%            (T-019; AMENDMENT_02 requalification fix - this helper
+%             previously had no stage_b branch, so formal Stage B
+%             artifacts fell through to the stage_a layout)
     seg = 'qualification';
     sub = 'stage_a_iid';
     if strcmp(char(ctx.plan.mode), 'smoke')
         seg = 'qualification_smoke';
         sub = 'iid';
+    elseif strcmp(char(ctx.plan.mode), 'stage_b_iid')
+        seg = 'formal';
+        sub = 'iid';
+    elseif strcmp(char(ctx.plan.mode), 'stage_b_ood')
+        seg = 'formal';
+        sub = 'ood';
     end
     if is_ood
         if strcmp(char(ctx.plan.mode), 'smoke')
+            sub = 'ood';
+        elseif strcmp(char(ctx.plan.mode), 'stage_b_ood')
             sub = 'ood';
         else
             sub = 'stage_a_ood';
