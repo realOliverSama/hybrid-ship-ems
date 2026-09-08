@@ -1,0 +1,177 @@
+{
+  "schema": "t432_activation_amendment_v1",
+  "amendment_id": "T432_ACTIVATION_AMENDMENT_02",
+  "frozen_at": "2026-09-08",
+  "approved_by": "user Final Ruling 2026-09-08 (Plan A APPROVED; Plan B rejected; no schema bypass in formal exporter)",
+  "original_activation_sha256": "3f0116fa205a1270723f02fc719060e0733e0a688eb146651ea3a920eed491cb",
+  "lineage_note": "original_activation_sha256 = amendment_01.post_activation_sha256 (activation record unchanged by this amendment; schema-layer correction)",
+  "classification": "frozen-contract correction restoring consistency with the already-approved FR-461/design semantics; does NOT reopen the D brainstorm/requirements/design scientific gates",
+  "trigger": {
+    "event": "Stage-B STOP 2026-09-08 (interrupted by main agent before any formal artifact committed)",
+    "discovery": "formal freeze dry-run on Stage-A corpus (run_formal_freeze, NON-FORMAL): 113/113 voyages rejected — stream missing 9 H2 columns (P_bat_actual_kW/SOC/V_dc_V/state_DG1/state_DG2/V_bat_V/I_bat_A/P_bat_dis_avail_kW/P_bat_chg_avail_kW) → zero valid windows",
+    "root_cause": "producer schema v1.0.0 truth_stream.fields omitted 9 of 10 registry INPUT_H2 columns (only P_gen_actual_kW present); ctx_build derives the formal export surface from schema required fields, while the pilot 70号 exporter derives from the registry full set — dual-fact-source defect masked during D0 pilot",
+    "schema_intent_evidence": "v1.0.0 P_gen_actual_kW entry shape_semantics verbatim: 'H2 族 truth（逐 registry INPUT_H2 全清单）' — original design intent was the full registry INPUT_H2 surface",
+    "stage_b_state_at_stop": "pass1 stage_b_iid ~15/144 slot-tasks; no STAGE_B_TWO_RUN_DONE / STAGE_B_FAILED marker; datasets_v3/formal/iid/ empty (0 mat); runtime logs cleaned under Final Ruling §7"
+  },
+  "changes": [
+    "producer schema version 1.0.0 -> 1.1.0",
+    "truth_stream.fields +9 required INPUT_H2 entries (inserted after P_gen_actual_kW, registry order)",
+    "fields total 15 -> 24; all other capability families untouched",
+    "ctx_build gains fail-closed H2-surface invariant (Final Ruling §3); exporter still derives columns from schema only"
+  ],
+  "producer_schema_hash_chain": {
+    "old_self_sha256": "7993e141e8a88875297694604552b266b4fecc757b042792aa502a8abed28b40",
+    "new_self_sha256": "1d0ba9166724b993be976163ec5f49767ba31689a2be0b9fcf55e9cce3b2a935"
+  },
+  "legal_basis": {
+    "FR-461": "H2 = extended-state, 保留进 Dataset 但非默认特征 — the 10-column list is a requirements-level Dataset retention obligation",
+    "design.md L116": "stream 表 = 全部 truth/H1/H2/ORACLE/METADATA 列",
+    "clarification_ruling": "H2 optional predictor view != optional Dataset columns; an E-model configuration may omit the H2 view, formal Dataset-v3 artifacts SHALL retain the complete frozen H2 surface"
+  },
+  "pilot_evidence": {
+    "claim": "all 10 H2 signals available from Model E logsout (producer-side feasibility)",
+    "artifact": "datasets_v3/pilot/M1_step.mat (70号 exporter, registry-derived surface)",
+    "verified": "stream contains all 10 INPUT_H2 columns incl. the 9 previously schema-missing"
+  },
+  "formal_dryrun_evidence": {
+    "claim": "v1.0.0 schema would reject formal voyages at the freeze gate",
+    "artifact": "run_formal_freeze dry-run on datasets_v3/qualification/stage_a_iid (113 voyages)",
+    "verified": "voyage_formal_gate FAIL 113/113 missing-column, zero windows — NON-FORMAL diagnostic run"
+  },
+  "added_field_semantics": [
+    {
+      "canonical_name": "P_gen_actual_kW",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:P_gen_actual_kW",
+      "unit": "kW",
+      "type": "float64[N]",
+      "aggregation": "time_mean",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "measured",
+      "deployment_rationale": "genset power metering (V/I computation), standard PMS measurement"
+    },
+    {
+      "canonical_name": "P_bat_actual_kW",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:P_bat_actual_kW",
+      "unit": "kW",
+      "type": "float64[N]",
+      "aggregation": "time_mean",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "measured",
+      "deployment_rationale": "battery terminal V×I metering; standard BMS measurement"
+    },
+    {
+      "canonical_name": "SOC",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:SOC",
+      "unit": "ratio",
+      "type": "float64[N]",
+      "aggregation": "interval_endpoint",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "estimator-derived",
+      "deployment_rationale": "BMS coulomb-counting + OCV-corrected estimate; Model E 1RC state; provided by BMS on deployment"
+    },
+    {
+      "canonical_name": "V_dc_V",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:V_dc_V",
+      "unit": "V",
+      "type": "float64[N]",
+      "aggregation": "time_mean",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "measured",
+      "deployment_rationale": "DC bus voltage sensing"
+    },
+    {
+      "canonical_name": "state_DG1",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:state_DG1",
+      "unit": "state",
+      "type": "float64[N]",
+      "aggregation": "last_mode",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "controller-state",
+      "deployment_rationale": "GensetUnitE state machine 0=OFF/1=STARTING/2=SYNCHRONIZING/3=ON/4=COOLDOWN; genset controller CAN status word",
+      "discrete_sampling_rule": "registry-frozen last_mode; arithmetic averaging FORBIDDEN"
+    },
+    {
+      "canonical_name": "state_DG2",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:state_DG2",
+      "unit": "state",
+      "type": "float64[N]",
+      "aggregation": "last_mode",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "controller-state",
+      "deployment_rationale": "same encoding as state_DG1",
+      "discrete_sampling_rule": "registry-frozen last_mode; arithmetic averaging FORBIDDEN"
+    },
+    {
+      "canonical_name": "V_bat_V",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:V_bat_V",
+      "unit": "V",
+      "type": "float64[N]",
+      "aggregation": "time_mean",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "measured",
+      "deployment_rationale": "battery terminal voltage sensing"
+    },
+    {
+      "canonical_name": "I_bat_A",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:I_bat_A",
+      "unit": "A",
+      "type": "float64[N]",
+      "aggregation": "time_mean",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "measured",
+      "deployment_rationale": "battery current sensing"
+    },
+    {
+      "canonical_name": "P_bat_dis_avail_kW",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:P_bat_dis_avail_kW",
+      "unit": "kW",
+      "type": "float64[N]",
+      "aggregation": "interval_endpoint",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "estimator-derived",
+      "deployment_rationale": "SOP 4-constraint min (bus-side) limit estimate from BMS/EMS"
+    },
+    {
+      "canonical_name": "P_bat_chg_avail_kW",
+      "storage_role": "INPUT_H2",
+      "source_mapping": "logsout:P_bat_chg_avail_kW",
+      "unit": "kW",
+      "type": "float64[N]",
+      "aggregation": "interval_endpoint",
+      "provenance_class": "realized_truth_stream",
+      "deployment_class": "estimator-derived",
+      "deployment_rationale": "SOP 4-constraint min (bus-side) limit estimate from BMS/EMS"
+    }
+  ],
+  "invariants_unchanged": {
+    "model_e_unchanged": true,
+    "physics_control_frozen_basis_unchanged": true,
+    "ood_definitions_unchanged": true,
+    "ood_definition_version": "DGN-11-v1 (+AMENDMENT_01 A2 retirement, untouched)",
+    "fleet_allocation_unchanged": true,
+    "fleet_allocation": "IID 576 + OOD 200 = 776 (frozen counts/seeds/retry/qualification rules)",
+    "split_window_target_semantics_unchanged": true,
+    "original_activation_evidence_preserved": true,
+    "amendment_01_untouched": true
+  },
+  "qualified_stack_consequence": {
+    "previous_qualified_stack": "INVALIDATED by producer-schema self-hash change (per Final Ruling §4)",
+    "requalification_sequence": "schema amendment (this file) → schema/registry validators → full .venv_tf + MATLAB regression → formal Stage-A rerun (92, two-pass determinism) → C/D FORMAL interface Gate rerun → new qualified-stack capture → strict identity verification → Stage-B restart",
+    "stage_a_rerun_plan": "frozen 92-voyage Stage-A plan, unchanged allocation/seeds"
+  },
+  "clarification_metadata_scope": {
+    "ruling": "user Final Ruling scope = the 9 missing H2 fields only. Stream-surface METADATA retention is an independent schema dimension: scenario_id/resistance_multiplier are schema-required (split/audit hard deps); HT_ratio/domain_warning (predictor_access=metadata_only) are pilot-stream-only by design, NOT schema drift",
+    "rationale": "schema is the D->C interface contract with the C package already implementation-complete; expanding it with METADATA columns would impose new interface requirements beyond this ruling; freeze/E-pipeline consumes no METADATA stream column (METADATA banned from model views, negative-tested)",
+    "formal_axis_b_evidence_carrier": "realized ht_effective rides in voyage meta (meta.propulsion_check.inputs) on the 73号 chain, empirically verified on B1 samples; OOD metadata fields per activation record ood_metadata_fields",
+    "validator_scope": "validate_h2_surface / h2_surface_assert compare H1+H2+TARGET dataset face vs schema truth_stream required; METADATA excluded on both sides (main-agent ruling 2026-09-08)"
+  }
+}

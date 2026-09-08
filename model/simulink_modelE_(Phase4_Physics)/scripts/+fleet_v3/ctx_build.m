@@ -56,6 +56,11 @@ function ctx = ctx_build(plan, varargin)
     sigreg = local_read_json(fullfile(ROOT, 'config'), ...
         'dataset_v3_signal_registry.json');
     ctx.stream_map = local_stream_map(schema, sigreg);
+    % T432_ACTIVATION_AMENDMENT_02 (Final Ruling section 3): fail-closed
+    % H2/Dataset export-surface invariant - the realized stream_map must
+    % equal the schema required Dataset face and carry every registry
+    % INPUT_H2 retention column, else generation aborts here.
+    fleet_v3.h2_surface_assert(ctx.stream_map, schema, sigreg);
 
     ctx.producer_sha = local_sha256_file( ...
         fullfile(ROOT, 'scripts', '+fleet_v3', 'member_exec.m'));

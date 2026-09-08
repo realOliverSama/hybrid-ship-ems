@@ -33,6 +33,18 @@ ra_stream.P_prop_demand_kW = zeros(ra_n, 1);
 ra_stream.v_ref_mps = zeros(ra_n, 1);
 ra_stream.manual_power_cmd_pct = zeros(ra_n, 1);
 ra_stream.P_gen_actual_kW = zeros(ra_n, 1);
+% full registry INPUT_H2 retention face (AMENDMENT_02: truth_stream
+% fields 15 -> 24; the 9 previously schema-missing H2 columns, registry
+% order, inserted after P_gen_actual_kW)
+ra_stream.P_bat_actual_kW = zeros(ra_n, 1);
+ra_stream.SOC = zeros(ra_n, 1);
+ra_stream.V_dc_V = zeros(ra_n, 1);
+ra_stream.state_DG1 = zeros(ra_n, 1);
+ra_stream.state_DG2 = zeros(ra_n, 1);
+ra_stream.V_bat_V = zeros(ra_n, 1);
+ra_stream.I_bat_A = zeros(ra_n, 1);
+ra_stream.P_bat_dis_avail_kW = zeros(ra_n, 1);
+ra_stream.P_bat_chg_avail_kW = zeros(ra_n, 1);
 ra_stream.resistance_multiplier = zeros(ra_n, 1);
 ra_stream.ctrl_mode = zeros(ra_n, 1);
 ra_stream.scenario_id = 'FLTO_TEST';

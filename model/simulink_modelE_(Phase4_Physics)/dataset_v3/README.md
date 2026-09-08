@@ -29,7 +29,10 @@ Phase 4-D（spec `.specs/phase4-d-dataset-v3`）Dataset v3 两段式管线的 Py
 | `manifest.py` | FR-488 十五项 manifest + deterministic payload hash（T-014；DGN-12 + R8 payload/run_metadata 分离） |
 | `run_pipeline.py` | pilot E2E 编排（T-015）：.mat 航次 → 聚合/窗口/target → split → 审计 → 归一化 → manifest → pilot_gate_result.json |
 | `cd_interface_gate.py` | C/D Interface Gate 十项独立机器键 c01~c10（T-016/D-15；DGN-16；result schema v2；`--formality FORMAL\|NON-FORMAL` 双域——FORMAL=EXT-CD-GATE（⑤ 载体双存/embedded self_hash 核对/⑥ fixture+producer_script_sha/⑦ embedded eligibility），⑩ 基线快照消费 fail-closed；NON-FORMAL 骨架自检不构成 T-432 解锁） |
-| `tests/` | 单元 + 负向 + 确定性测试（197 例，pytest，`.venv_tf` 环境；含 `test_cd_interface_gate.py`——Gate v2 十键独立/双域/⑤ 收紧/⑩ fail-closed 负向、`test_audit_ood.py`——T-018 activation 生效专项（轴 B 1.5 边界/[1.2,1.3) margin 不入 formal OOD/轴 C registry 驱动组合与独立文件读取对照/接口向后兼容） |
+| `run_formal_freeze.py` | T-020 formal freeze 主编排（pilot 链 FORMAL 化改写，底层函数全复用）：STAGE_B 标记门 → 航次 formal 门（fixture 反转：PILOT_ONLY 禁入/provenance stage=formal）→ 聚合/窗口/target → split 冻结（split_seed 自 activation record 消费，group=split_group_id）→ L1 零违规/L2 三分类+allocation 扣减/L3 require_train_stats → 两跑 payload hash 复验 → OOD 集成 → sealed manifest；`EMS_FORMAL_FREEZE_DRYRUN=1` 走 NON-FORMAL 干跑（stage=FORMAL_DRYRUN，产物不入 results/formal） |
+| `freeze_ood.py` | T-020 formal OOD 三轴正式证据（FR-485/486）：allocation 仅由 activation counts 派生（amendment 01 后 5×40=200，陈旧 total_voyages 字段从不读取）、realized 域指标出证、退役条件（A2）出现即拒收、STRESS_SET/UNCLASSIFIED 分流且 purity 从严 FAIL、FR-485 splitter 声明；域判定全复用 audit_ood |
+| `freeze_manifest.py` | T-020 sealed manifest（FR-487/488+DGN-12 强化）：FR-488 十五项必填全集派生自 manifest.py 常量、test_sealed/ood_sealed 严格布尔 True（禁默认置位）、stage=FORMAL 强制、OOD 定义/seed 与 activation record 交叉核对；assert_sealed 复核 payload hash 锚定与 run_metadata 分离性 |
+| `tests/` | 单元 + 负向 + 确定性测试（260 例，pytest，`.venv_tf` 环境；含 `test_cd_interface_gate.py`——Gate v2 十键独立/双域/⑤ 收紧/⑩ fail-closed 负向、`test_audit_ood.py`——T-018 activation 生效专项、`test_freeze_ood.py`——OOD 三轴证据合成语料单测（含真实 activation 5×40=200 冻结用例）、`test_freeze_manifest.py`——sealed manifest 29 例（缺键/sealed 非严格 True/stage 不符/篡改 hash/确定性）、`test_run_formal_freeze.py`——formal 门反转/两跑复验/dryrun 语义 16 例、`test_h2_surface.py`——H2 面 fail-closed 双向一致（AMENDMENT_02）6 例 |
 
 ## 使用
 

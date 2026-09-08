@@ -83,8 +83,12 @@ function out = gen_ood(plan, ctx)
         task_fn = @(pb, c, a_dir, db) local_task(pb, ctx, c, a_dir, ...
             db, seed);
     else
+        % stage_a/smoke serial face: one task per condition at draw_base.
+        % (AMENDMENT_02 requalification fix: dac35051 left `cid(...)` here -
+        % a function-call typo of the parallel branch's local char variable;
+        % this face was never executed between that commit and today.)
         for c = 1:numel(conds)
-            args_cell{c} = {plan, cid(char(conds{c})), art_dir, ...
+            args_cell{c} = {plan, char(conds{c}), art_dir, ...
                 draw_base};
         end
         task_fn = @(pb, c, a_dir, db) local_task(pb, ctx, c, a_dir, ...

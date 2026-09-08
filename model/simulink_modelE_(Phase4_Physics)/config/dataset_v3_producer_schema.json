@@ -1,8 +1,8 @@
 {
   "schema": "dataset_v3_producer_schema_v1",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "spec": "phase4-d-dataset-v3",
-  "description": "C-producer interface schema（FR-495/DGN-03）——Phase 4-C Mission v3 必须输出的字段清单与类型声明，D→C 接口契约的机器事实源。cd_interface_gate.py 消费本 schema 对 C 产物做机器校验（FR-496）。C 包开工输入 = 本文件 + docs/phase4/d_dataset_v3/c_producer_interface_contract.md（解释层）。",
+  "description": "C-producer interface schema（FR-495/DGN-03）——Phase 4-C Mission v3 必须输出的字段清单与类型声明，D→C 接口契约的机器事实源。cd_interface_gate.py 消费本 schema 对 C 产物做机器校验（FR-496）。C 包开工输入 = 本文件 + docs/phase4/d_dataset_v3/c_producer_interface_contract.md（解释层）。 2026-09-08 v1.1.0：truth_stream 补齐 9 个 INPUT_H2 列（T432_ACTIVATION_AMENDMENT_02：恢复 FR-461/design 冻结的全 H2 Dataset 保留面，离散 DG 状态采样=registry 冻结 last_mode；storage role/source/aggregation 语义一律以 signal registry 为唯一事实源）。",
   "capability_families": {
     "truth_stream": {
       "description": "voyage-level realization-time truth stream（native 0.01 s，单时间索引）",
@@ -93,6 +93,69 @@
         },
         {
           "name": "P_gen_actual_kW",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "P_bat_actual_kW",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "SOC",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "V_dc_V",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "state_DG1",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "state_DG2",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "V_bat_V",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "I_bat_A",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "P_bat_dis_avail_kW",
+          "type": "float64[N]",
+          "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
+          "required": true,
+          "causality_rule": "realized truth"
+        },
+        {
+          "name": "P_bat_chg_avail_kW",
           "type": "float64[N]",
           "shape_semantics": "H2 族 truth（逐 registry INPUT_H2 全清单）",
           "required": true,
@@ -432,6 +495,6 @@
   "self_hash": {
     "algorithm": "sha256",
     "canonicalization": "json.dumps(obj_minus_self_hash, sort_keys=True, separators=(',',':'), ensure_ascii=False).encode('utf-8')",
-    "value": "7993e141e8a88875297694604552b266b4fecc757b042792aa502a8abed28b40"
+    "value": "1d0ba9166724b993be976163ec5f49767ba31689a2be0b9fcf55e9cce3b2a935"
   }
 }

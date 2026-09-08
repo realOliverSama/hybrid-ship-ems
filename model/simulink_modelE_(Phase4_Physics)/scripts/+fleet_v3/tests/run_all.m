@@ -2,7 +2,7 @@ function overall = run_all(varargin)
 % fleet_v3.tests.run_all - T-018 Phase 4-D unit-test entry for the
 % +fleet_v3 package (Stage A / smoke generation kit).
 %
-%   run_all()            'run' mode (default): five suites
+%   run_all()            'run' mode (default): seven suites
 %   overall = run_all()  true iff everything passed
 %
 % Suites (each executed via run(...); suite scripts are never modified):
@@ -18,6 +18,9 @@ function overall = run_all(varargin)
 %                                round-trip + untouched exporter face
 %   test_ood_plan_face           amendment-01 OOD floor 1.3 + default
 %                                face unchanged + UKC clamp
+%   test_h2_surface              amendment-02 fail-closed H2/Dataset
+%                                export-surface invariant (real files +
+%                                schema/sm missing/extra negatives)
 %
 % Usage from the Model E workspace root (thin-entry convention):
 %   matlab -batch "run('scripts/+fleet_v3/tests/run_all.m')"
@@ -35,7 +38,7 @@ function overall = run_all(varargin)
 
     rr_suites = {'test_plan_load', 'test_predicate_eval', ...
         'test_ood_judge', 'test_propulsion_feasibility', ...
-        'test_export_ood', 'test_ood_plan_face'};
+        'test_export_ood', 'test_ood_plan_face', 'test_h2_surface'};
     % resolve the package parents: tests/ -> +fleet_v3 -> scripts (the
     % packages fleet_v3 / mission_v3 live under scripts/)
     addpath(fileparts(fileparts(fileparts(mfilename('fullpath')))));

@@ -174,7 +174,8 @@
     "status": "PASS (92/92 two-run payload-hash identity)"
   },
   "amendment_chain": [
-    "docs/phase4/d_dataset_v3/t432_activation_amendment_01.json"
+    "docs/phase4/d_dataset_v3/t432_activation_amendment_01.json",
+    "docs/phase4/d_dataset_v3/t432_activation_amendment_02.json"
   ],
   "amendments": {
     "T432_ACTIVATION_AMENDMENT_01": {
