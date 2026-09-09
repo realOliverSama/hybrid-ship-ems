@@ -2,7 +2,7 @@
   "schema": "cd_interface_gate_result_v2",
   "formality": "FORMAL",
   "formality_note": "正式 C/D Interface Gate（EXT-CD-GATE）",
-  "generated_utc": "2026-09-08T12:21:01+00:00",
+  "generated_utc": "2026-09-09T04:52:20+00:00",
   "n_voyages": 72,
   "activation_provided": true,
   "overall": true,

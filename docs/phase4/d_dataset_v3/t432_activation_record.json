@@ -160,19 +160,23 @@
         "config/gate_baseline_modele.json": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e",
         "config/gate_baseline_modele_control.json": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273"
       },
-      "stage_a_manifest_sha256": "e7e54278d99ff8423ed774d7b0216fc25b1407f8e5f54adfadcf988b90022546",
+      "stage_a_manifest_sha256": "ebeb2b30387a39719bd25d6307bdec774d62014ad90765b8f989e950d22282cd",
       "ood_def_version": "DGN-11-v1 + T432_ACTIVATION_AMENDMENT_01",
       "split_policy": "DGN-09 70/15/15 by split_group_id, split_seed=dataset-v3-formal-split-seed-v1",
       "checklist_sha256": "b0902b54fb2ebf4d5b3fa279259e8b3c1dbcf712eac5fa1616693737a0d568ef",
       "amendment_01_sha256": "0ca5363f12936e88538767f34058c6511aade10ab77e4298b3cf0408f1c1379c",
-      "amendment_02_sha256": "bd8e4d621bc68baeae1fd56f3fe4bce87955031707bd1ebf86ba93ec6efbe605",
-      "stage_a_two_run": "92/92 payload-hash identical (amended-schema rerun 2026-09-08, rerun_stage_a_amended.sh)"
+      "amendment_02_sha256": "5701df5fefba14df0f56df2864248a56502b1e0ebfeb1a741c527acd5ad148ae",
+      "amendment_03_sha256": "a51f98d13d6653c7da320cb27e253495c889059f7bb256ca89251fc20173426f",
+      "amendment_04_sha256": "a81c2d1048cf9eeb4999f7079a8a47ed7f5acf2fed6665a57438cfcafb042853",
+      "stage_a_two_run": "92/92 payload-hash identical (AMENDMENT_03 amended-allocator rerun 2026-09-09, serial mode)"
     },
     "status": "PASS (92/92 two-run payload-hash identity)"
   },
   "amendment_chain": [
     "docs/phase4/d_dataset_v3/t432_activation_amendment_01.json",
-    "docs/phase4/d_dataset_v3/t432_activation_amendment_02.json"
+    "docs/phase4/d_dataset_v3/t432_activation_amendment_02.json",
+    "docs/phase4/d_dataset_v3/t432_activation_amendment_03.json",
+    "docs/phase4/d_dataset_v3/t432_activation_amendment_04.json"
   ],
   "amendments": {
     "T432_ACTIVATION_AMENDMENT_01": {

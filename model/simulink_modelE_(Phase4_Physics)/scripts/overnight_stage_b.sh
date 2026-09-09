@@ -40,10 +40,10 @@ mem_wait () {  # warn-and-wait while free memory is critically low
     echo "[$(date -u +%FT%TZ)] memory still low — proceeding anyway (user directive: max speed)"
 }
 
-segment_done () {  # $1=key (iid|ood)  $2=expected voyage count
-    local ledger="$RES/pass1_$1_ledger.json"
+segment_done () {  # $1=pass label  $2=key (iid|ood)  $3=expected voyage count
+    local ledger="$RES/${1}_${2##stage_b_}_ledger.json"
     [ -f "$ledger" ] || return 1
-    python3 - "$ledger" "$2" <<'EOF'
+    python3 - "$ledger" "$3" <<'EOF'
 import json, sys
 try:
     d = json.load(open(sys.argv[1]))
@@ -55,13 +55,19 @@ EOF
 
 run_pass () {  # $1=pass label  $2=mode  $3=expected count
     local label="$1" mode="$2" expect="$3"
-    if [ "$label" = "pass1" ] && segment_done "$mode" "$expect"; then
-        echo "[$(date -u +%FT%TZ)] SKIP pass1 $mode (valid $expect-voyage ledger — resume)"
+    if segment_done "$label" "$mode" "$expect"; then
+        echo "[$(date -u +%FT%TZ)] SKIP $label $mode (valid $expect-voyage ledger — resume)"
         return 0
     fi
     local attempt=1
     while [ $attempt -le 3 ]; do
         mem_wait
+        # disk pre-check (2026-09-09: disk-full turned into rc=0 false success)
+        FREE_GB=$(df -g / | awk 'NR==2 {print $4}')
+        if [ "${FREE_GB:-0}" -lt 30 ]; then
+            echo "[$(date -u +%FT%TZ)] DISK LOW ${FREE_GB}GB - waiting 5min (cleanup needed)"
+            sleep 300
+        fi
         echo "[$(date -u +%FT%TZ)] START $label $mode (attempt $attempt/3, FLEET_WORKERS=3)"
         FLEET_MODE="$mode" FLEET_PARALLEL=on FLEET_WORKERS=3 "$MATLAB" -batch \
             "eval(fileread('scripts/73_generate_fleet_v3.m'))" \
@@ -70,8 +76,13 @@ run_pass () {  # $1=pass label  $2=mode  $3=expected count
         # hang watchdog: healthy segments finish well under 240 min at 3
         # workers; the nanomsg assertion (2026-09-08) can leave parpool
         # alive but dead-connected - kill and retry instead of hanging.
-        local elapsed=0 rc=0
-        while kill -0 $mpid 2>/dev/null; do
+        local elapsed=0 rc=""
+        sleep 10
+        if ! kill -0 $mpid 2>/dev/null; then
+            echo "[$(date -u +%FT%TZ)] MATLAB failed to start (disk/log redirect?)"
+            rc=125
+        fi
+        while [ -z "$rc" ] && kill -0 $mpid 2>/dev/null; do
             sleep 30; elapsed=$((elapsed+30))
             if [ $elapsed -ge 18000 ]; then
                 echo "[$(date -u +%FT%TZ)] $label $mode attempt $attempt HUNG ${elapsed}s — killing"
@@ -81,9 +92,10 @@ run_pass () {  # $1=pass label  $2=mode  $3=expected count
                 break
             fi
         done
-        kill -0 $mpid 2>/dev/null || true
-        wait $mpid 2>/dev/null || true
-        rc=${rc:-$?}
+        if [ -z "$rc" ]; then
+            wait $mpid 2>/dev/null
+            rc=$?
+        fi
         echo "[$(date -u +%FT%TZ)] END $label $mode exit=$rc"
         if [ $rc -eq 0 ]; then
             # archive the segment ledger (pass 2 overwrites in-place)

@@ -66,17 +66,39 @@ function out = gen_ood(plan, ctx)
         % [base+k*W, base+(k+1)*W), W = floor(seed_stride/families_formal)
         W = floor(double(plan.ood.seed_stride) / ...
             double(plan.ood.families_formal));
+        % AMENDMENT_03 two-phase workflow (Final Ruling 2026-09-09):
+        % Phase S freezes the canonical-order allocation plan; Phase R
+        % workers simulate only accepted draws (targeted rejection
+        % sampling; candidate rejection rate is proposal-efficiency
+        % diagnostic per AMENDMENT_04, never a population gate).
+        plan_file = fullfile(art_dir, ...
+            'formal_draw_allocation_plan_ood.json');
+        if exist(plan_file, 'file')
+            alloc = jsondecode(fileread(plan_file));
+            fprintf('[fleet_v3] OOD: consuming frozen allocation plan\n');
+        else
+            alloc = fleet_v3.allocate_draws(plan, ctx, 'ood', ...
+                'ArtDir', art_dir);
+            fprintf(['[fleet_v3] OOD: allocation plan frozen ', ...
+                '(%d consumed candidates, self_hash %.16s)\n'], ...
+                numel(alloc.consumed), alloc.self_hash);
+        end
         n_tasks = 0;
-        for c = 1:numel(conds)
-            cid = char(conds{c});
-            ci = c - 1;
-            for k = 0:(double(plan.ood.families_formal) - 1)
-                pb = plan;
-                pb.ood.max_attempts = double(W);
+        for c_i = 1:numel(alloc.ood.conditions)
+            sa = alloc.ood.conditions(c_i);
+            cid = char(sa.condition_id);
+            pb = plan;
+            pb.ood.max_attempts = 1;   % Phase R: one candidate per draw
+            slots_arr = sa.slots;
+            if iscell(slots_arr)
+                slots_arr = slots_arr(:);
+            end
+            for k = 1:numel(slots_arr)
+                e = slots_arr(k);
+                if isstruct(e), e = e(1); end
+                bdi = double(e.base_draw_index);
                 n_tasks = n_tasks + 1;
-                args_cell{n_tasks} = {pb, cid, art_dir, ...
-                    double(plan.ood.seed_base) + ci * ...
-                    double(plan.ood.seed_stride) + k * W};
+                args_cell{n_tasks} = {pb, cid, art_dir, bdi};
             end
         end
         args_cell = args_cell(1:n_tasks);

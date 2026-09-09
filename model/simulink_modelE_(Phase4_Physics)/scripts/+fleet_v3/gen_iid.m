@@ -71,23 +71,45 @@ function out = gen_iid(plan, ctx)
         % (W = floor(stride/k_formal); rejected attempts advance within
         % the window only).  stage_a/smoke keep the sequential-advance
         % semantics (audited serial path).
-        W = floor(double(plan.iid.draw_stride) / ...
-            double(plan.iid.k_formal));
+        % AMENDMENT_03 two-phase workflow (Final Ruling 2026-09-09,
+        % option A'): Phase S freezes a deterministic canonical-order
+        % allocation plan; Phase R workers simulate only the accepted
+        % base draws (no candidate search on workers; the same frozen
+        % plan drives pass1 and pass2).
+        plan_file = fullfile(art_dir, ...
+            'formal_draw_allocation_plan_iid.json');
+        if exist(plan_file, 'file')
+            alloc = jsondecode(fileread(plan_file));
+            fprintf('[fleet_v3] IID: consuming frozen allocation plan\n');
+        else
+            alloc = fleet_v3.allocate_draws(plan, ctx, 'iid', ...
+                'ArtDir', art_dir);
+            fprintf(['[fleet_v3] IID: allocation plan frozen ', ...
+                '(%d consumed candidates, self_hash %.16s)\n'], ...
+                numel(alloc.consumed), alloc.self_hash);
+        end
         n_tasks = 0;
-        for si_loop = 1:numel(strata_sel)
-            st = char(strata_sel{si_loop});
+        for s_i = 1:numel(alloc.iid.strata)
+            sa = alloc.iid.strata(s_i);
+            st = char(sa.stratum_id);
             si_plan = find(strcmp(plan.iid.strata, st), 1);
             if isempty(si_plan)
                 error('GATE:FLEETV3:IID:STRATUM', ...
                     'stratum %s not in the frozen plan list', st);
             end
-            i0 = si_plan - 1;
-            for k = 0:(double(plan.iid.k_formal) - 1)
-                pb = plan;
-                pb.iid.max_attempts = double(W);
+            pb = plan;
+            pb.iid.max_attempts = 1;   % Phase R: one candidate per draw
+            slots_arr = sa.slots;
+            if iscell(slots_arr)
+                slots_arr = slots_arr(:);
+            end
+            for k = 1:numel(slots_arr)
+                e = slots_arr(k);
+                if isstruct(e), e = e(1); end
+                bdi = double(e.base_draw_index);
                 n_tasks = n_tasks + 1;
                 args_cell{n_tasks} = {pb, ctx, st, si_plan, 1, ...
-                    i0 * plan.iid.draw_stride + k * W, seed, art_dir};
+                    bdi, seed, art_dir};
             end
         end
         args_cell = args_cell(1:n_tasks);
@@ -156,10 +178,15 @@ function out = gen_iid(plan, ctx)
         'rejection_rate', rate, 'verdict', verdict));
 
     if strcmp(verdict, 'FAIL')
+        % AMENDMENT_04: IID rejection gate retains its frozen 0.50
+        % thresholds, computed from the amended allocator's consumed
+        % ledger.  A failure here is a population-distribution quality
+        % failure - STOP per Final Ruling (escalate, do not widen).
         error('GATE:FLEETV3:IID:REJECTION', ...
-            ['IID rejection gate exceeded (overall %.4f, threshold ', ...
-             '%.2f; per-stratum gate %.2f); ledger recorded in the ', ...
-             'returned struct (controlled FAIL by design)'], ...
+            ['IID rejection gate FAIL (overall %.4f, threshold ', ...
+             '%.2f; per-stratum gate %.2f) under the amended ', ...
+             'allocator; ledger recorded in the returned struct ', ...
+             '(controlled FAIL by design)'], ...
             rate, plan.iid.thr_overall, plan.iid.thr_stratum);
     end
 end
