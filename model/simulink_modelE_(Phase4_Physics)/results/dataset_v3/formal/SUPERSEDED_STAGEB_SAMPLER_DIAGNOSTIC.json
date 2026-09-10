@@ -1,0 +1,19 @@
+{
+  "schema": "superseded_stageb_diagnostic_v1",
+  "classification": "SUPERSEDED_STAGEB_SAMPLER_DIAGNOSTIC",
+  "reason": "per-family window fragmentation (AMENDMENT_03); artifacts are diagnostic only, do not count toward formal fleet",
+  "artifacts": [
+    "pass1_stage_b_iid_a1.log",
+    "pass1_iid_ledger.json",
+    "pass1_stage_b_ood_a1.log",
+    "pass1_stage_b_ood_a2.log",
+    "pass1_stage_b_ood_a3.log",
+    "pass2_stage_b_ood_a1.log",
+    "STAGE_B_FAILED",
+    "../../../datasets_v3/formal/iid/*.mat (576 files)",
+    "../../../datasets_v3/formal/ood/FLTB_OOD_*.mat (196 files: A1 40, B1 40, C1 36, C2 40, C3 40)",
+    "../../../datasets_v3/formal/ood/_ood_stress_ledger_A1.json",
+    "../../../datasets_v3/formal/ood/_ood_stress_ledger_B1.json"
+  ],
+  "frozen_at": "2026-09-09"
+}
