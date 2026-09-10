@@ -66,7 +66,7 @@ run_pass () {  # $1=pass label
     while [ $attempt -le 3 ]; do
         mem_wait
         echo "[$(date -u +%FT%TZ)] START $label stage_a (attempt $attempt/3, FLEET_WORKERS=3)"
-        FLEET_MODE=stage_a FLEET_PARALLEL=off FLEET_WORKERS=3 "$MATLAB" -batch \
+        FLEET_MODE=stage_a FLEET_PARALLEL=on FLEET_WORKERS=2 "$MATLAB" -batch \
             "eval(fileread('scripts/73_generate_fleet_v3.m'))" \
             > "$RES/${label}_stage_a_a${attempt}.log" 2>&1 &
         local mpid=$!
@@ -100,7 +100,7 @@ run_pass () {  # $1=pass label
     exit 1
 }
 
-echo "[$(date -u +%FT%TZ)] STAGE-A AMENDED RERUN START (92 voyages x 2 passes, FLEET_WORKERS=3)"
+echo "[$(date -u +%FT%TZ)] STAGE-A AMENDED RERUN START (92 voyages x 2 passes, FLEET_WORKERS=2)"
 run_pass pass1
 cp "$RES/stage_a_manifest.json" "$RES/stage_a_manifest_pass1.json"
 run_pass pass2

@@ -366,9 +366,13 @@ function [slots, consumed, attempts_st] = local_consume_iid( ...
                     'disposition', 'ACCEPTED', 'reason', 'retry');
                 cursor = cursor + 1;
             else
+                fail_reason = local_first_disposition(samp2);
+                if isfield(samp2, 'err_id')
+                    fail_reason = samp2.err_id;
+                end
                 consumed{end + 1} = struct('bdi', double(cursor), ...
                     'disposition', 'FAILED_GENERATION', ...
-                    'reason', local_first_disposition(samp2)); %#ok<AGROW>
+                    'reason', fail_reason); %#ok<AGROW>
                 cursor = cursor + 1;
             end
             clear disp samp samp2 ok ok2
@@ -444,12 +448,15 @@ function [ok, samp] = local_try_sample(plan, seed, cursor, tpl, reg, st)
             samp.new_rows = s.ledger;
         end
     catch ME
-        if strcmp(local_err_id(ME), 'GATE:MISSION_V3:ENV:MAX_RETRY')
-            ok = false;
-            samp.new_rows = {{}};
-        else
-            rethrow(ME);
-        end
+        % AMENDMENT_03 hotfix: catch ALL env-layer exceptions (MAX_RETRY
+        % and any other) as FAILED_GENERATION with the identifier kept in
+        % reason - a hard rethrow here crashes the whole canonical
+        % allocation and stalls Stage B (observed 2026-09-10).  Contract
+        % errors remain visible in the consumed ledger for audit.
+        ok = false;
+        samp.new_rows = {{}};
+        samp.err_id = local_err_id(ME);
+        samp.err_msg = char(ME.message);
     end
 end
 

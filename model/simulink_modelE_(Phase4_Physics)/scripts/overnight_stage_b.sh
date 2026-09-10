@@ -14,7 +14,7 @@
 #     counts are treated as "segment complete" and skipped on driver restart,
 #     so a late crash costs only the remaining segments;
 #   - memory pre-check before each segment (warn-and-wait while low);
-#   - FLEET_WORKERS=3 (sanctioned by user 2026-09-08 unless repeated crashes).
+#   - FLEET_WORKERS=2 (sanctioned by user 2026-09-08 unless repeated crashes).
 #
 # Launch: nohup caffeinate -is bash overnight_stage_b.sh > overnight_stage_b.log 2>&1 &
 # The MATLAB batch processes are immune to agent-subscription switches.
@@ -68,8 +68,8 @@ run_pass () {  # $1=pass label  $2=mode  $3=expected count
             echo "[$(date -u +%FT%TZ)] DISK LOW ${FREE_GB}GB - waiting 5min (cleanup needed)"
             sleep 300
         fi
-        echo "[$(date -u +%FT%TZ)] START $label $mode (attempt $attempt/3, FLEET_WORKERS=3)"
-        FLEET_MODE="$mode" FLEET_PARALLEL=on FLEET_WORKERS=3 "$MATLAB" -batch \
+        echo "[$(date -u +%FT%TZ)] START $label $mode (attempt $attempt/3, FLEET_WORKERS=2)"
+        FLEET_MODE="$mode" FLEET_PARALLEL=on FLEET_WORKERS=2 "$MATLAB" -batch \
             "eval(fileread('scripts/73_generate_fleet_v3.m'))" \
             > "$RES/${1}_${2}_a${attempt}.log" 2>&1 &
         local mpid=$!
@@ -113,7 +113,7 @@ run_pass () {  # $1=pass label  $2=mode  $3=expected count
     exit 1
 }
 
-echo "[$(date -u +%FT%TZ)] STAGE B START (776 voyages, two passes, FLEET_WORKERS=3)"
+echo "[$(date -u +%FT%TZ)] STAGE B START (776 voyages, two passes, FLEET_WORKERS=2)"
 run_pass pass1 stage_b_iid 576
 run_pass pass1 stage_b_ood 200
 run_pass pass2 stage_b_iid 576
