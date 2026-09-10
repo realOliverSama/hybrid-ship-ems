@@ -90,11 +90,9 @@ function out = gen_ood(plan, ctx)
             pb = plan;
             pb.ood.max_attempts = 1;   % Phase R: one candidate per draw
             slots_arr = sa.slots;
-            if iscell(slots_arr)
-                slots_arr = slots_arr(:);
-            end
             for k = 1:numel(slots_arr)
                 e = slots_arr(k);
+                while iscell(e), e = e{1}; end
                 if isstruct(e), e = e(1); end
                 bdi = double(e.base_draw_index);
                 n_tasks = n_tasks + 1;
@@ -124,6 +122,8 @@ function out = gen_ood(plan, ctx)
     ood_retry_c = {};
     stress_rows = {};
     cond_audit = struct([]);
+    n_simulated_total = 0;   % AMENDMENT_03: sum of accepted_voyages across
+                             % conditions (consumed by the thin entry)
     for t = 1:numel(outs)
         o = outs{t};
         ca = struct();
@@ -138,6 +138,7 @@ function out = gen_ood(plan, ctx)
         ca.reject_no_target = o.reject_no_target;
         ca.stress_set_removed = o.stress_set_removed;
         ca.accepted_voyages = o.accepted_voyages;
+        n_simulated_total = n_simulated_total + double(o.accepted_voyages);
         ca.in_band_hit_rate = double(o.attempts_used == 1);
         ca.require_reachable = true;
         ca.sup_abs = o.sup_abs;
@@ -171,6 +172,7 @@ function out = gen_ood(plan, ctx)
     out.retry = ood_retry_c;
     out.stress_rows = stress_rows;
     out.n_stress_removed = double(numel(stress_rows));
+    out.n_simulated = double(n_simulated_total);   % thin-entry contract
     out.run_wall_s = toc(t_run);
 
     local_write_json(fullfile(art_dir, '_ood_ledger.json'), ...

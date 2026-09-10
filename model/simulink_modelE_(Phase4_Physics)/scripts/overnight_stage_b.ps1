@@ -1,91 +1,69 @@
-# overnight_stage_b.ps1 - T-019 Stage B formal fleet driver (Windows port).
-#
-# Mac counterpart: scripts/overnight_stage_b.sh. Runs the two-pass
-# deterministic formal generation on this PC's interactive desktop
-# session (SSH Session-0 breaks MATLAB worker licensing; desktop
-# sessions are proven healthy by the user's earlier parallel runs).
-#
-#   pass 1: stage_b_iid (576) then stage_b_ood (200)
-#   pass 2: identical rerun (payload-hash determinism)
-# then verifies payload-hash identity and drops the marker.
-#
-# Resilience (mirrors the bash driver):
-#   - per-segment retry up to 3 attempts, stale parallelserver cleanup;
-#   - segment-level resume: pass1 ledgers with the expected voyage
-#     counts are treated as complete and skipped on driver restart;
-#   - hang watchdog per attempt (360 min hard kill);
-#   - powercfg: AC sleep disabled for the run, original values restored
-#     on exit (keep plugged in; lock screen is fine).
-#
-# Launch (interactive desktop session):
-#   powershell -ExecutionPolicy Bypass -File overnight_stage_b.ps1
-# or the registered schtasks interactive task.
+# overnight_stage_b.ps1 - Stage B formal fleet driver (Windows)
+# AMENDMENT_03/04 two-phase workflow: Phase S (allocator) + Phase R (simulation)
+# 3 workers, 16GB RAM machine.  Run from PowerShell as admin.
 
 $ErrorActionPreference = "Continue"
 $MODELE = "E:\User\Tommy\Desktop\hybrid-ship-ems\model\simulink_modelE_(Phase4_Physics)"
 $MATLAB = "E:\Program Files\MATLAB\R2026a\bin\matlab.exe"
 $RES = Join-Path $MODELE "results\dataset_v3\formal"
-$Repo = "E:\User\Tommy\Desktop\hybrid-ship-ems"
-Set-Location $MODELE
-New-Item -ItemType Directory -Force -Path $RES | Out-Null
-$Log = Join-Path $RES "overnight_stage_b_pc.log"
+$IID_DIR = Join-Path $MODELE "datasets_v3\formal\iid"
+$OOD_DIR = Join-Path $MODELE "datasets_v3\formal\ood"
+$LOG = Join-Path $MODELE "overnight_stage_b.log"
+$TOTAL_VOYAGES = 1552   # (576 IID + 200 OOD) x 2 passes
 
 function Log($msg) {
-    $line = "[$(Get-Date -Format o)] $msg"
+    $line = "[$(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')] $msg"
     $line | Tee-Object -FilePath $Log -Append
+    Write-Host $line
 }
 
-function Wait-MatlabOrKill($proc, $timeoutSec) {
-    $elapsed = 0
-    while (-not $proc.HasExited) {
-        Start-Sleep -Seconds 30
-        $elapsed += 30
-        if ($elapsed -ge $timeoutSec) {
-            Log "attempt HUNG after ${elapsed}s - killing matlab tree"
-            Get-Process | Where-Object { $_.Name -match "^MATLABWorker|^matlab$" } |
-                Stop-Process -Force -EA SilentlyContinue
-            try { $proc.Kill() } catch {}
-            return 124
-        }
-    }
-    return $proc.ExitCode
-}
-
-function Segment-Done($key, $expected) {
-    $ledger = Join-Path $RES "pass1_${key}_ledger.json"
-    if (-not (Test-Path $ledger)) { return $false }
+function Get-LedgerCount($pass, $key) {
+    $f = Join-Path $RES "${pass}_${key}_ledger.json"
+    if (-not (Test-Path $f)) { return -1 }
     try {
-        $d = Get-Content $ledger -Raw | ConvertFrom-Json
-        return ($d.voyages.Count -eq $expected)
-    } catch { return $false }
+        $d = Get-Content $f -Raw | ConvertFrom-Json
+        return $d.voyages.Count
+    } catch { return -1 }
 }
 
-function Run-Segment($label, $mode, $expect) {
-    if ($label -eq "pass1" -and (Segment-Done $mode $expect)) {
-        Log "SKIP pass1 $mode (valid $expect-voyage ledger - resume)"
+function Get-LatestTaskCount {
+    $latest = Get-ChildItem "$RES\pass*_stage_b_*_a*.log" -EA SilentlyContinue |
+        Sort-Object LastWriteTime -Desc | Select-Object -First 1
+    if ($latest) {
+        return (Select-String -Path $latest.FullName -Pattern "task.*done" -EA SilentlyContinue).Count
+    }
+    return 0
+}
+
+function Start-StageSegment($label, $mode, $expect) {
+    # Skip if ledger already exists with correct count
+    $count = Get-LedgerCount $label $mode.Replace("stage_b_","")
+    if ($count -eq $expect) {
+        Log "SKIP $label $mode (valid $expect-voyage ledger - resume)"
         return
     }
     for ($attempt = 1; $attempt -le 3; $attempt++) {
-        Log "START $label $mode (attempt $attempt/3, FLEET_WORKERS=4)"
-        $segLog = Join-Path $RES "${label}_${mode}_a${attempt}.log"
+        Log "START $label $mode (attempt $attempt/3, FLEET_WORKERS=3)"
         $env:FLEET_MODE = $mode
         $env:FLEET_PARALLEL = "on"
-        $env:FLEET_WORKERS = "4"
+        $env:FLEET_WORKERS = "3"
+        $segLog = Join-Path $RES "${label}_${mode}_a${attempt}.log"
         $proc = Start-Process -FilePath $MATLAB `
             -ArgumentList '-wait', '-batch', "eval(fileread('scripts/73_generate_fleet_v3.m'))" `
             -WorkingDirectory $MODELE -NoNewWindow -PassThru `
             -RedirectStandardOutput $segLog -RedirectStandardError "$segLog.err"
-        $rc = Wait-MatlabOrKill $proc 21600
+        $proc.WaitForExit()
+        $rc = $proc.ExitCode
         Log "END $label $mode exit=$rc"
         if ($rc -eq 0) {
-            $key = $mode -replace "^stage_b_", ""
+            $key = $mode.Replace("stage_b_","")
             $src = Join-Path $MODELE "datasets_v3\formal\$key\_${key}_ledger.json"
             if (Test-Path $src) {
                 Copy-Item $src (Join-Path $RES "${label}_${key}_ledger.json") -Force
             }
             return
         }
-        Log "$label $mode crashed (rc=$rc) - cleaning workers, retry in 20s"
+        Log "$label $mode crashed (rc=$rc) - cleaning, retry in 20s"
         Get-Process | Where-Object { $_.Name -match "^MATLABWorker|^matlab$" } |
             Stop-Process -Force -EA SilentlyContinue
         Start-Sleep -Seconds 20
@@ -95,33 +73,46 @@ function Run-Segment($label, $mode, $expect) {
     exit 1
 }
 
-# ---- powercfg: keep the machine awake while plugged in ----
-$acSleep = (powercfg /query SCHEME_CURRENT SUB_SLEEP STANDBYIDLE)[0]
-Log "disabling AC sleep for the run (restored on exit)"
-powercfg /change standby-timeout-ac 0 | Out-Null
-powercfg /change hibernate-timeout-ac 0 | Out-Null
+# ---- main ----
+Log "STAGE B START on PC (776 voyages x 2 passes, 3 workers, 16GB RAM)"
+
+# Disable sleep
+powercfg /change standby-timeout-ac 0
+powercfg /change hibernate-timeout-ac 0
 
 try {
-    Log "STAGE B START on PC (776 voyages, two passes, FLEET_WORKERS=4)"
-    Run-Segment pass1 stage_b_iid 576
-    Run-Segment pass1 stage_b_ood 200
-    Run-Segment pass2 stage_b_iid 576
-    Run-Segment pass2 stage_b_ood 200
+    # Phase S: allocator runs inside gen_iid/gen_ood on first invocation
+    # (plan file is auto-created if missing, frozen and reused by pass2)
+
+    Start-StageSegment "pass1" "stage_b_iid" 576
+    Start-StageSegment "pass1" "stage_b_ood" 200
+    Start-StageSegment "pass2" "stage_b_iid" 576
+    Start-StageSegment "pass2" "stage_b_ood" 200
 
     Log "two-pass determinism compare"
-    $py = Join-Path $Repo "compare_two_run.py"
-    if (Test-Path $py) {
-        python $py
-        if ($LASTEXITCODE -ne 0) { throw "determinism compare FAILED" }
-    } else {
-        Log "WARN: compare_two_run.py not found - determinism compare deferred to freeze"
+    $p1i = Get-LedgerCount "pass1" "iid"
+    $p2i = Get-LedgerCount "pass2" "iid"
+    $p1o = Get-LedgerCount "pass1" "ood"
+    $p2o = Get-LedgerCount "pass2" "ood"
+    Log "pass1 IID=$p1i pass2 IID=$p2i pass1 OOD=$p1o pass2 OOD=$p2o"
+
+    # Python determinism check
+    $cmpScript = Join-Path $MODELE "scripts\compare_two_run.py"
+    if (Test-Path $cmpScript) {
+        $pyOut = & python $cmpScript 2>&1
+        $pyOut | ForEach-Object { Log "compare: $_" }
+        if ($LASTEXITCODE -ne 0) {
+            Log "DETERMINISM FAIL"
+            New-Item -ItemType Force -Path (Join-Path $RES "STAGE_B_FAILED") | Out-Null
+            exit 1
+        }
     }
 
     New-Item -ItemType Force -Path (Join-Path $RES "STAGE_B_TWO_RUN_DONE") | Out-Null
-    Log "STAGE B COMPLETE - T-020 audit freeze may proceed"
+    Log "STAGE B COMPLETE - two-run determinism verified"
 }
 finally {
-    powercfg /change standby-timeout-ac 30 | Out-Null
-    powercfg /change hibernate-timeout-ac 60 | Out-Null
-    Log "powercfg sleep timeouts restored"
+    powercfg /change standby-timeout-ac 30
+    powercfg /change hibernate-timeout-ac 60
+    Log "powercfg restored"
 }

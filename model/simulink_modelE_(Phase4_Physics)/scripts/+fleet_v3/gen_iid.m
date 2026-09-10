@@ -100,11 +100,9 @@ function out = gen_iid(plan, ctx)
             pb = plan;
             pb.iid.max_attempts = 1;   % Phase R: one candidate per draw
             slots_arr = sa.slots;
-            if iscell(slots_arr)
-                slots_arr = slots_arr(:);
-            end
             for k = 1:numel(slots_arr)
                 e = slots_arr(k);
+                while iscell(e), e = e{1}; end
                 if isstruct(e), e = e(1); end
                 bdi = double(e.base_draw_index);
                 n_tasks = n_tasks + 1;
