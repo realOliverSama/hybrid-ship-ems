@@ -54,6 +54,7 @@ IDENTITY_SEP = "#"
 L2_PROVENANCE_KEYS = ("generation_seed", "route_template_id")
 
 __all__ = ["run_l1", "run_l2", "run_l3", "window_content_hash",
+           "run_family_sibling_audit", "L2_CLASS_FAMILY_SIBLING",
            "L2_EPSILON_KW", "SBD_NPTS", "SBD_THRESHOLD_POLICY",
            "L2_PROVENANCE_KEYS", "IDENTITY_SEP"]
 
@@ -78,15 +79,32 @@ def window_content_hash(x_h, x_kf, y) -> str:
 
 
 def identity_of(record_key: str) -> str:
-    """恒等主键："<identity>#<sub>" → identity（无分隔符则整键即 identity）。"""
+    """恒等主键："<identity>#<sub>" → identity（无分隔符则整键即 identity）。
+
+    T-020 裁决 A（2026-09-12）：canonical split_group_id 自含 '#'（`SG#<hash>`），
+    故恒等键形如 `SG#<hash>#<sub>` / `SG#<hash>`。首段切分（split('#',1)[0]）会把
+    `SG#<hash>` 误降为 "SG" 使全部 group 折叠成同一身份——改为结构化解析：
+    以 `SG#` 为 group 身份前缀时恒等主键 = 前两段；其余键（如 voyage 级
+    `FLTA_..._M1#<win>`）恒等主键 = 首个 '#' 之前。canonical `split_group_id`
+    值本身不做任何改写。
+    """
+    if record_key.startswith("SG" + IDENTITY_SEP):
+        parts = record_key.split(IDENTITY_SEP)
+        return IDENTITY_SEP.join(parts[:2]) if len(parts) > 2 else record_key
     return record_key.split(IDENTITY_SEP, 1)[0]
 
 
-def run_l1(split_of: dict, artifact_hashes: dict, window_hashes: dict) -> dict:
+def run_l1(split_of: dict, artifact_hashes: dict, window_hashes: dict,
+           window_group_of: dict | None = None) -> dict:
     """L1 provenance/identity 泄漏审计（Hard FAIL 级）。
 
     split_of: 恒等记录键 → split；artifact_hashes: voyage_id → raw artifact SHA256；
     window_hashes: 窗口键 → 窗口 content hash（window_content_hash 计算）。
+    window_group_of（T-020 裁决 B/C 同源适配，2026-09-12）：{voyage_id:
+    split_group_id}。提供时，同 split_group 内的窗口 exact-duplicate 对（同
+    family 声明式 sibling 在稳态/停机窗口的物理重合）不判 L1-Hard，转入
+    family_sibling_window_duplicates 报告（交 family-sibling 一致性审计语义
+    承载）；跨 split_group 的窗口重复维持 L1-Hard。
     返回 {"overall_l1": bool, "violations": [...], ...}；overall_l1=false 即 Hard FAIL。
     """
     violations: list = []
@@ -122,16 +140,28 @@ def run_l1(split_of: dict, artifact_hashes: dict, window_hashes: dict) -> dict:
                 "type": "duplicate_artifact_sha256", "sha256": h, "voyage_ids": vids,
                 "message": f"raw voyage artifact SHA256 重复: {vids}（L1-Hard）"})
 
-    # ③ 窗口级 exact duplicate（content hash 相同的不同窗口）
+    # ③ 窗口级 exact duplicate（content hash 相同的不同窗口；同 split_group
+    #    内的对按裁决 B/C 转独立报告，不判 Hard——family sibling 的 truth
+    #    sharing 与稳态物理重合由 family-sibling 审计承载）
     windows_by_hash: dict = {}
     for wkey in sorted(window_hashes):
         windows_by_hash.setdefault(window_hashes[wkey], []).append(wkey)
+    family_window_duplicates: list = []
     for h in sorted(windows_by_hash):
         wins = windows_by_hash[h]
-        if len(wins) > 1:
-            violations.append({
-                "type": "duplicate_window_content", "sha256": h, "windows": wins,
-                "message": f"窗口级 exact duplicate（content hash {h[:16]}…）: {wins}（L1-Hard）"})
+        if len(wins) <= 1:
+            continue
+        same_group = window_group_of is not None and all(
+            window_group_of.get(identity_of(w)) is not None
+            and window_group_of.get(identity_of(w))
+            == window_group_of.get(identity_of(wins[0]))
+            for w in wins[1:])
+        if same_group:
+            family_window_duplicates.append({"sha256": h, "windows": wins})
+            continue
+        violations.append({
+            "type": "duplicate_window_content", "sha256": h, "windows": wins,
+            "message": f"窗口级 exact duplicate（content hash {h[:16]}…）: {wins}（L1-Hard）"})
 
     return {
         "level": "L1",
@@ -141,21 +171,33 @@ def run_l1(split_of: dict, artifact_hashes: dict, window_hashes: dict) -> dict:
         "n_identities": len(identity_splits),
         "n_voyage_artifacts": len(artifact_hashes),
         "n_windows": len(window_hashes),
+        "family_sibling_window_duplicates": family_window_duplicates,
+        "group_aware": window_group_of is not None,
     }
 
 
 # ---------------------------------------------------------------------------
 # L2
 # ---------------------------------------------------------------------------
-def run_l2(series: dict, provenance: dict) -> dict:
+L2_CLASS_FAMILY_SIBLING = "DECLARED_FAMILY_SIBLING"
+
+
+def run_l2(series: dict, provenance: dict, group_of: dict | None = None) -> dict:
     """L2 numerical near-exact duplication 审计（provenance-gated，报告-only）。
 
     series: {voyage_id: 1Hz time_mean P_load 序列}；provenance: {voyage_id: dict}，
     判定字段 = generation_seed + route_template_id（缺失 → UNRESOLVED）。
     只报告，绝不删除/修改数据（返回值之外零副作用）。
+
+    group_of（T-020 裁决 B，2026-09-12）：{voyage_id: split_group_id}。提供时，
+    同 split_group 内的 provenance 撞车对不再是 CONFIRMED_DUPLICATE（family
+    closure 内共享 seed/route/target 是 AMENDMENT_03 声明设计），改分类为
+    DECLARED_FAMILY_SIBLING 并交给 run_family_sibling_audit 做族内不变量审计；
+    仅跨独立 split group 的撞车维持 CONFIRMED_DUPLICATE（leakage FAIL 级）。
     """
     vids = sorted(series)
     candidates: list = []
+    family_sibling_pairs: list = []
     n_pairs = 0
     for i in range(len(vids)):
         for j in range(i + 1, len(vids)):
@@ -171,14 +213,25 @@ def run_l2(series: dict, provenance: dict) -> dict:
             pa = provenance.get(a) or {}
             pb = provenance.get(b) or {}
             missing = [k for k in L2_PROVENANCE_KEYS if k not in pa or k not in pb]
+            same_group = (group_of is not None
+                          and group_of.get(a) is not None
+                          and group_of.get(a) == group_of.get(b))
             if missing:
                 classification = "UNRESOLVED"
                 reason = f"provenance 缺失字段 {missing}（无法机械分类，人工处置）"
+            elif same_group:
+                classification = L2_CLASS_FAMILY_SIBLING
+                reason = ("同 split_group（frozen family closure）内 sibling 对："
+                          "seed/route/target 共享为 AMENDMENT_03 声明设计，不构成跨样本"
+                          "重复证据；转 run_family_sibling_audit 族内不变量审计"
+                          "（T-020 裁决 B）")
+                family_sibling_pairs.append((a, b))
             elif (pa["generation_seed"] == pb["generation_seed"]
                   and pa["route_template_id"] == pb["route_template_id"]):
                 classification = "CONFIRMED_DUPLICATE"
-                reason = ("同 generation_seed 且同 route_template_id（provenance 支持重复生成判断；"
-                          "formal 阶段须按预声明 retry/disposition policy 处置，禁静默删除）")
+                reason = ("跨独立 split_group 的同 generation_seed 且同 route_template_id"
+                          "（provenance 支持重复生成判断；须按预声明 retry/disposition "
+                          "policy 处置，禁静默删除）")
             else:
                 classification = "LEGITIMATE_NEAR_REPLICATE"
                 reason = "provenance 不同（合法近似复现，numerical 近同不构成重复证据）"
@@ -192,6 +245,7 @@ def run_l2(series: dict, provenance: dict) -> dict:
                                b: {k: pb.get(k) for k in L2_PROVENANCE_KEYS}},
             })
     counts = {"l2_candidate": len(candidates), "CONFIRMED_DUPLICATE": 0,
+              "DECLARED_FAMILY_SIBLING": 0,
               "LEGITIMATE_NEAR_REPLICATE": 0, "UNRESOLVED": 0}
     for c in candidates:
         counts[c["classification"]] += 1
@@ -201,11 +255,94 @@ def run_l2(series: dict, provenance: dict) -> dict:
         "epsilon_semantics": ("ε=1e-6 kW 仅为 numerical near-identical candidate 阈值，"
                               "不是物理相似阈值（DGN-10/R3 冻结表述）"),
         "report_only": True,
+        "group_aware": group_of is not None,
         "note": ("L2 禁自动剔除：CONFIRMED_DUPLICATE 在 formal Stage B 使对应 preregistered "
                  "slot 失效并按预声明 retry/disposition policy 处置；本函数零数据副作用"),
         "n_pairs_compared": n_pairs,
         "counts": counts,
         "candidates": candidates,
+        "family_sibling_pairs": [list(p) for p in family_sibling_pairs],
+    }
+
+
+def run_family_sibling_audit(sibling_pairs: list, series: dict,
+                             member_of: dict | None = None) -> dict:
+    """Family-sibling 一致性审计（T-020 裁决 B，2026-09-12）。
+
+    对 run_l2 归类为 DECLARED_FAMILY_SIBLING 的 pair（同 split_group 内的
+    member 对）验证 frozen intervention lineage 的族内不变量：
+
+    ① information-intervention truth sharing：同 family 各 member 的 target
+       序列须逐点一致（同 draw 的负载需求真值共享；max_abs_diff == 0）；
+    ② intervention lineage 可分：family 内 member_id 互异（member_of 提供
+       voyage_id → member_id；未提供时跳过并记 skipped）。
+
+    返回 {"overall": bool, "families": {...}, "violations": [...]}——仅审计，
+    零数据副作用；不做任何剔除。
+    """
+    violations: list = []
+    fam_members: dict = {}
+    for a, b in sibling_pairs:
+        fam_members.setdefault(a, set()).add(b)
+        fam_members.setdefault(b, set()).add(a)
+    # 连通分量 = family
+    families: dict = {}
+    for seed in sorted(fam_members):
+        if any(seed in f for f in families.values()):
+            continue
+        seen, stack = set(), [seed]
+        while stack:
+            cur = stack.pop()
+            if cur in seen:
+                continue
+            seen.add(cur)
+            stack.extend(fam_members.get(cur, ()))
+        fam_id = f"FAM#{sorted(seen)[0]}"
+        families[fam_id] = sorted(seen)
+
+    fam_report: dict = {}
+    for fam_id in sorted(families):
+        members = families[fam_id]
+        rep = members[0]
+        s_rep = np.asarray(series[rep], dtype=float).ravel()
+        entry: dict = {"members": members}
+        diffs = {}
+        for m in members[1:]:
+            s_m = np.asarray(series[m], dtype=float).ravel()
+            d = float(np.max(np.abs(s_rep - s_m))) if s_m.size == s_rep.size \
+                and s_m.size else float("inf")
+            diffs[m] = d
+        entry["truth_share_max_abs_diff"] = max(diffs.values(), default=0.0)
+        entry["truth_shared"] = all(d == 0.0 for d in diffs.values())
+        if not entry["truth_shared"]:
+            violations.append({
+                "family": fam_id, "type": "truth_sharing_violation",
+                "detail": {m: diffs[m] for m in diffs},
+                "message": f"family {fam_id} 成员 target 未逐点共享真值（L2 sibling 不变量①）"})
+        if member_of is not None:
+            mids = sorted(str(member_of.get(m)) for m in members)
+            entry["member_ids"] = mids
+            entry["lineage_distinct"] = len(set(mids)) == len(mids)
+            if not entry["lineage_distinct"]:
+                violations.append({
+                    "family": fam_id, "type": "lineage_not_distinct",
+                    "member_ids": mids,
+                    "message": f"family {fam_id} member_id 重复（intervention lineage 不可分）"})
+        else:
+            entry["lineage_distinct"] = None
+        fam_report[fam_id] = entry
+
+    checked = [f for f in fam_report.values() if f["lineage_distinct"] is not None]
+    return {
+        "audit": "family_sibling_consistency",
+        "overall": not violations,
+        "n_pairs": len(sibling_pairs),
+        "n_families": len(families),
+        "n_families_full_check": len(checked),
+        "families": fam_report,
+        "violations": violations,
+        "note": ("声明式 family sibling（同 split_group 成员）按 frozen intervention "
+                 "lineage 验证真值共享与 member 可分性；记录-only，零数据副作用"),
     }
 
 

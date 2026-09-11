@@ -97,23 +97,48 @@ def _require_tokens():
     return load_heldout_token_registry()
 
 
+def _write_plan(out_dir, per_condition, conditions=("A1", "B1", "C1", "C2", "C3")):
+    """写冻结分配计划（T-020 裁决 C：planned identity 权威 = plan blocks）.
+
+    quota（families/condition）= per_condition（合成语料每 voyage 独立 draw，
+    无 member 复用 → families == voyages）。
+    """
+    plan = {
+        "schema": "fleet_v3_draw_allocation_plan_v1",
+        "corpus": "stage_b_ood",
+        "face": "ood",
+        "amendment": "T432_ACTIVATION_AMENDMENT_03",
+        "blocks": [{"condition_id": c, "quota": per_condition,
+                    "accepted_slots": per_condition, "slots": []}
+                   for c in conditions],
+    }
+    path = os.path.join(out_dir, "formal_draw_allocation_plan_ood.json")
+    with open(path, "w", encoding="utf-8") as f:
+        json.dump(plan, f)
+    return path
+
+
 def _build_full_corpus(out_dir, per_condition=2):
     """构造 A1/B1/C1/C2/C3 × per_condition 全量合成语料（全部 verdict=OOD）.
 
     轴 C 的 condition 与 token 全部由 registry 条目运行时派生
     （token_id 前缀段 = condition id），代码中无手抄 canonical token。
+    voyage 文件名/vid 采用 formal 四段 plan linkage 命名
+    （FLTB_OOD_<planned>_<draw>_M1；T-020 裁决 C planned identity），
+    并落 formal_draw_allocation_plan_ood.json（planned quota 权威）。
     """
     tokens = _require_tokens()
     n = 0
     for i in range(per_condition):
-        _write_voyage(out_dir, f"V_A1_{i}", "A", "A1", u_sup_abs=2.2)
-        _write_voyage(out_dir, f"V_B1_{i}", "B", "B1", ht_effective=1.4)
+        _write_voyage(out_dir, f"FLTB_OOD_A1_D{i:05d}_M1", "A", "A1", u_sup_abs=2.2)
+        _write_voyage(out_dir, f"FLTB_OOD_B1_D1{i:04d}_M1", "B", "B1", ht_effective=1.4)
         n += 2
         for t in tokens:
             cond = str(t["token_id"]).split("_")[0]  # C1/C2/C3，registry 驱动
-            _write_voyage(out_dir, f"V_{cond}_{i}", "C", cond,
+            _write_voyage(out_dir, f"FLTB_OOD_{cond}_D2{i:04d}_M1", "C", cond,
                           token_id=t["token_id"])
             n += 1
+    _write_plan(out_dir, per_condition)
     return n
 
 
@@ -121,20 +146,27 @@ def _build_full_corpus(out_dir, per_condition=2):
 # 用例
 # --------------------------------------------------------------------------
 def test_full_allocation_pass(tmp_path):
-    """allocation 满足（逐 condition 精确相等 + 总数）→ overall_pass=True."""
+    """planned allocation 精确 + realized 一致性 → overall_pass=True（裁决 C）."""
     ood_dir = str(tmp_path / "ood")
     os.makedirs(ood_dir)
     n = _build_full_corpus(ood_dir, per_condition=2)
     act = _write_activation(str(tmp_path))
     ev = build_ood_evidence(ood_dir, act)
     assert ev["overall_pass"] is True
-    assert ev["checks"]["allocation"] is True
-    # 期望总数由 counts 派生（5 × 2 = 10）；total_voyages=240 被忽略
-    assert ev["allocation_check"]["total"] == {"expected": 10,
-                                               "actual": n, "pass": True}
-    assert ev["allocation_check"]["basis"].startswith("len(counts.conditions)")
+    assert ev["checks"]["planned_allocation_exact"] is True
+    assert ev["checks"]["realized_ledger_meta_agreement"] is True
+    # planned gate：逐 condition 精确 10 families / 40 voyages 语义（合成 2/2）
+    assert ev["allocation_check"]["total"]["planned"] == n
+    assert ev["allocation_check"]["total"]["expected_planned"] == 10
+    assert ev["allocation_check"]["total"]["realized"] == n
+    # total_voyages=240 陈旧字段被忽略
+    assert ev["allocation_check"]["basis"].startswith("T-020 裁决 C")
     for cond, e in ev["allocation_check"]["per_condition"].items():
-        assert e == {"expected": 2, "actual": 2, "pass": True}, cond
+        assert e["planned_voyages"] == 2 and e["planned_families"] == 2, cond
+        assert e["realized_voyages"] == 2 and e["planned_pass"] is True, cond
+    # transition matrix：planned→realized 恒等（合成语料无域漂移）
+    for pc, row in ev["allocation_check"]["transition_planned_to_realized"].items():
+        assert row.get(pc, 0) == 2 and len(row) == 1, (pc, row)
     assert ev["stress_set"]["count"] == 0
     assert ev["stress_set"]["pass"] is True
     # 轴归属：A1→A，B1→B，C*→C
@@ -164,26 +196,27 @@ def test_real_activation_freeze_allocation(tmp_path):
     os.makedirs(ood_dir)
     _build_full_corpus(ood_dir, per_condition=per)
     ev = build_ood_evidence(ood_dir, REAL_ACTIVATION_JSON)
-    assert ev["allocation_check"]["total"]["expected"] == 200
-    assert ev["allocation_check"]["total"]["pass"] is True
+    assert ev["allocation_check"]["total"]["planned"] == 200
+    assert ev["allocation_check"]["total"]["expected_planned"] == 200
+    assert ev["allocation_check"]["pass"] is True
     assert ev["overall_pass"] is True
     assert sorted(ev["per_condition"]) == sorted(conds)
 
 
 def test_missing_one_voyage_allocation_fail(tmp_path):
-    """某 condition 缺 1 条 → allocation FAIL（不足也 FAIL）。"""
+    """某 condition 缺 1 条 → planned allocation FAIL（不足也 FAIL）。"""
     ood_dir = str(tmp_path / "ood")
     os.makedirs(ood_dir)
     _build_full_corpus(ood_dir, per_condition=2)
-    os.remove(os.path.join(ood_dir, "V_A1_0.mat"))  # A1 缺 1
+    os.remove(os.path.join(ood_dir, "FLTB_OOD_A1_D00000_M1.mat"))  # A1 缺 1
     act = _write_activation(str(tmp_path))
     ev = build_ood_evidence(ood_dir, act)
     assert ev["overall_pass"] is False
     assert ev["allocation_check"]["pass"] is False
-    assert ev["allocation_check"]["per_condition"]["A1"] == \
-        {"expected": 2, "actual": 1, "pass": False}
-    assert ev["allocation_check"]["total"] == {"expected": 10,
-                                               "actual": 9, "pass": False}
+    assert ev["checks"]["planned_allocation_exact"] is False
+    row = ev["allocation_check"]["per_condition"]["A1"]
+    assert row["planned_voyages"] == 1 and row["planned_families"] == 1
+    assert row["planned_pass"] is False
 
 
 def test_retired_condition_a2_rejected(tmp_path):
@@ -202,8 +235,9 @@ def test_retired_condition_a2_rejected(tmp_path):
     assert ev["overall_pass"] is False
     assert ev["checks"]["conditions_universe"] is False
     assert ev["conditions_universe"]["unexpected_condition_ids"] == ["A2"]
-    # 拒收记录不进正式 counts：allocation 本身不受影响，但 overall FAIL
-    assert ev["allocation_check"]["total"]["actual"] == 10
+    # 拒收记录不进 planned counts：A2 不在 planned gate 范围（overall 经
+    # metadata FAIL）；realized 计数如实报告
+    assert ev["allocation_check"]["total"]["realized"] == 10
     assert any("A2" in e["reason"] for e in ev["metadata_errors"])
     assert all("A2" != c for c in ev["per_condition"])
 
@@ -235,7 +269,10 @@ def test_stress_set_diverted_not_in_formal_counts(tmp_path):
     assert b1["actual"] == b1["expected"] == 2
     assert "V_STRESS_0" not in b1["voyage_ids"]
     assert "V_MARGIN_0" not in b1["voyage_ids"]
-    assert ev["allocation_check"]["pass"] is True
+    # 注入的 V_* 文件名非 plan block linkage → planned_extra 非空，
+    # planned gate 如实 FAIL（分流/域纯净断言见上与 domain_purity）
+    assert ev["allocation_check"]["pass"] is False
+    assert ev["checks"]["domain_purity_fr486"] is False
     # 正式语料混入越域样本 → purity FAIL → overall FAIL
     assert ev["checks"]["domain_purity_fr486"] is False
     assert ev["overall_pass"] is False
@@ -290,9 +327,11 @@ def test_missing_ood_condition_id_rejected(tmp_path):
     assert any(e["voyage_id"] == "V_NOCOND_0"
                and "ood_condition_id" in e["reason"]
                for e in ev["metadata_errors"])
-    # 拒收记录不计入 counts → B1 缺额 → allocation FAIL
-    assert ev["allocation_check"]["per_condition"]["B1"]["actual"] == 2
-    assert ev["allocation_check"]["total"]["actual"] == 10  # 10 正式 + 1 拒收
+    # 拒收记录不计入 planned/realized counts（其 planned 身份无从解析）
+    assert ev["allocation_check"]["per_condition"]["B1"]["realized_voyages"] == 2
+    assert ev["allocation_check"]["total"]["realized"] == 10  # 10 正式 + 1 拒收
+    assert ev["allocation_check"]["pass"] is True  # planned gate 对余下语料成立
+    assert ev["checks"]["metadata"] is False       # overall FAIL 由 metadata 承载
 
 
 def test_missing_realized_metric_rejected(tmp_path):

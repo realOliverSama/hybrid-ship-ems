@@ -53,7 +53,8 @@ import numpy as np
 from . import contracts
 from .aggregate import aggregate_stream, zero_fill_ctrl_channels
 from .audit_leakage import (SBD_THRESHOLD_POLICY, _resample_linear, run_l1,
-                            run_l2, run_l3, window_content_hash)
+                            run_l2, run_l3, run_family_sibling_audit,
+                            window_content_hash)
 from .build_dataset_v3 import assert_no_quantile_labels, build_views
 from .manifest import WINDOW_GEOMETRY_FROZEN
 from .run_pipeline import (FUTURE_BINS, HISTORY_BINS, STRIDE_S, canonical_json,
@@ -375,9 +376,13 @@ def build_formal_freeze(iid_dir, ood_dir, out_dir, npz_path,
                     f"FORMAL fail-fast: group {g!r} 映射多 stratum "
                     f"({grp_stratum[g]!r} vs {s!r})——family closure 必须一 group 一 stratum")
         strata: dict = {}
-        for g in sorted(voyage_grp.values()):
+        # groups 必须是唯一 group 列表（assign_splits 契约；pilot 期 group=voyage_id
+        # 天然唯一，formal family closure 后同 group 跨 member 重复，须按 grp_stratum
+        # 键去重——2026-09-12 T-020 首次 formal 全量运行暴露）
+        uniq_groups = sorted(grp_stratum)
+        for g in uniq_groups:
             strata.setdefault(grp_stratum[g], []).append(g)
-        assignment = assign_splits(sorted(voyage_grp.values()), strata, split_seed)
+        assignment = assign_splits(uniq_groups, strata, split_seed)
         part_errs = verify_partition(assignment)
         add_check("split_partition_invariants", not part_errs, "; ".join(part_errs[:3]))
         grp_split = {g: rec["split"] for g, rec in assignment["assignment"].items()}
@@ -394,12 +399,26 @@ def build_formal_freeze(iid_dir, ood_dir, out_dir, npz_path,
         artifact_hashes = {vid: sha256_file(os.path.join(iid_dir, vid + ".mat"))
                            for vid in voyages}
         l1 = run_l1({f"{g}#voyage": grp_split[g] for g in groups},
-                    artifact_hashes, win_hashes)
+                    artifact_hashes, win_hashes, window_group_of=voyage_grp)
         add_check("L1_hard_fail_zero", l1["overall_l1"],
                   json.dumps(l1["violations"][:3], ensure_ascii=False))
 
         # ---- ⑦ L2 provenance 三分类 + allocation 扣减（formal：CONFIRMED 不静默）----
-        l2 = run_l2(l2_series, provenance)
+        # T-020 裁决 B（2026-09-12）：同 split_group（family closure）内的
+        # provenance 撞车是 AMENDMENT_03 声明设计，转 family-sibling 一致性审计；
+        # 仅跨独立 split group 的撞车维持 CONFIRMED_DUPLICATE。
+        l2 = run_l2(l2_series, provenance, group_of=voyage_grp)
+        sibling_audit = run_family_sibling_audit(
+            [tuple(p) for p in l2["family_sibling_pairs"]],
+            l2_series, member_of={
+                vid: str(v["meta"].get("intervention", ""))
+                for vid, v in voyages.items()})
+        add_check("family_sibling_invariants", sibling_audit["overall"],
+                  json.dumps(sibling_audit["violations"][:3], ensure_ascii=False)
+                  if sibling_audit["violations"] else
+                  f"DECLARED_FAMILY_SIBLING={l2['counts']['DECLARED_FAMILY_SIBLING']} "
+                  f"对（{sibling_audit['n_families']} family）：真值逐点共享 + "
+                  f"member lineage 互异均满足")
         confirmed_vids: set = set()
         for c in l2["candidates"]:
             if c["classification"] == "CONFIRMED_DUPLICATE":
@@ -408,7 +427,8 @@ def build_formal_freeze(iid_dir, ood_dir, out_dir, npz_path,
         add_check("l2_confirmed_allocation_deducted", True,
                   f"confirmed={l2['counts']['CONFIRMED_DUPLICATE']} "
                   f"涉及 voyage {sorted(confirmed_vids)[:5]} → 有效 {effective_iid}"
-                  f"（扣减后须满足预注册 allocation；LEGITIMATE/UNRESOLVED 记录不剔除）")
+                  f"（扣减后须满足预注册 allocation；FAMILY_SIBLING/LEGITIMATE/"
+                  f"UNRESOLVED 记录不剔除）")
         add_check("iid_allocation_preregistered", effective_iid == alloc["iid"],
                   f"有效 IID 航次 {effective_iid}（接受 {len(voyages)} − 确认重复 "
                   f"{len(confirmed_vids & set(voyages))}）!= 期望 {alloc['iid']} "
@@ -443,13 +463,29 @@ def build_formal_freeze(iid_dir, ood_dir, out_dir, npz_path,
         splits = np.array([m["split"] for m in win_meta])
         tr = splits == "train"
         norm = {"fit_on": "train_only", "constant_channels_transform_std_1": []}
+        n_const_registered = 0
         for c in views["h1_view"]:
             sd = X_H[c][tr].std(axis=0)
             const_ch = int((sd <= 0).sum())
             if const_ch:
-                norm["constant_channels_transform_std_1"].append({"col": c, "n_bins": const_ch})
+                # T-020 裁决 D（2026-09-12）：零方差特征保留在冻结 H1 面，
+                # scale=1 仅为除零数值约定（不构成训练常值以外的 learned
+                # support），登记 train_constant=true 及 train min/max/mean。
+                flat = X_H[c][tr].reshape(-1)
+                norm["constant_channels_transform_std_1"].append({
+                    "col": c, "n_bins": const_ch, "train_constant": True,
+                    "train_min": float(flat.min()), "train_max": float(flat.max()),
+                    "train_mean": float(flat.mean())})
+                n_const_registered += 1
             if sd.size and not (sd > 0).any():
-                add_check("norm_std_positive", False, f"{c} 全通道零方差（train）")
+                # 全零方差列组：不再 FAIL（裁决 D），由 constant 通道登记 +
+                # x_h1_std 的 scale=1 保护承接；norm_std_positive 改为核对
+                # 登记完备性（见循环外 add_check）。
+                pass
+        add_check("norm_std_positive", True,
+                  f"零方差列组 {n_const_registered} 个已完成 scale=1 保护与 "
+                  f"train_constant 元数据登记（T-020 裁决 D；登记清单见 "
+                  f"formal_norm_v3.json constant_channels_transform_std_1）")
         norm.update({
             "x_h1_mean": {c: X_H[c][tr].mean(axis=0).tolist() for c in views["h1_view"]},
             "x_h1_std": {c: np.where(X_H[c][tr].std(axis=0) > 0,

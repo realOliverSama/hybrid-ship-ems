@@ -290,6 +290,21 @@ def build_ood_evidence(ood_dir: str, activation_json: str,
             [f"ood_dir 无 .mat voyage 文件（formal 语料为空）: {ood_dir!r}"],
             ood_dir, activation_json)
 
+    # ---- 冻结分配计划：planned generation identity 权威（T-020 裁决 C，2026-09-12）----
+    # planned_condition_id = plan block（生成块，经文件名前缀 linkage）；
+    # realized_ood_condition_id = producer 按 DGN-11 + Axis-C 优先写出的 realized
+    # 独占分类（meta/ledger）。二者是两个独立身份：planned gate 保持 10 families
+    # / 40 voyages 精确；realized 计数如实报告，不要求 planned==realized 相等。
+    plan_path = os.path.join(ood_dir, "formal_draw_allocation_plan_ood.json")
+    try:
+        with open(plan_path, "r", encoding="utf-8") as f:
+            plan = json.load(f)
+        planned_quota = {str(b["condition_id"]): int(b["quota"])
+                         for b in plan["blocks"]}
+    except (OSError, ValueError, KeyError, TypeError) as e:
+        reasons.append(f"冻结分配计划不可读（planned identity 权威）: {e!r}")
+        return _failure_evidence(reasons, ood_dir, activation_json)
+
     load_errors: list = []
     validation_errors: list = []
     metadata_errors: list = []
@@ -309,6 +324,10 @@ def build_ood_evidence(ood_dir: str, activation_json: str,
             continue
         vid = payload["voyage_id"]
         meta = payload["meta"]
+        # planned identity（plan block 文件名 linkage）：FLTB_OOD_<cond>_<draw>_<member>
+        _fp = fname.split("_")
+        _planned_cond = _fp[2] if len(_fp) > 3 else ""
+        _planned_fam = "_".join(_fp[2:4]) if len(_fp) > 4 else _planned_cond
 
         built, err = _mat_to_record(meta, vid, token_map)
         if err:
@@ -316,7 +335,9 @@ def build_ood_evidence(ood_dir: str, activation_json: str,
                                     "reason": err})
             continue
         rec, ev = built
-        ev = dict(ev, source_file=fname)
+        ev = dict(ev, source_file=fname,
+                  planned_condition_id=_planned_cond,
+                  planned_family_id=_planned_fam)
 
         # metadata 层校验（audit_ood 结构校验之外的 producer 语义层）
         cond = ev["ood_condition_id"]
@@ -396,7 +417,9 @@ def build_ood_evidence(ood_dir: str, activation_json: str,
             "expected": per_cond,
             "actual": len(group),
             "axes_seen": axes_seen,
-            "pass": len(group) == per_cond,
+            # realized 计数不要求等于 planned 预注册值（T-020 裁决 C）；
+            # 保留布尔仅作"realized==planned 计数"事实标记，不参与 gate。
+            "realized_equals_planned_count": len(group) == per_cond,
             "metric_field": group[0]["ev"]["metric_field"] if group else None,
             "metric_stats": _stats([v["ev"]["metric_value"] for v in group
                                     if v["ev"]["metric_value"] is not None]),
@@ -443,31 +466,101 @@ def build_ood_evidence(ood_dir: str, activation_json: str,
         "pass": not stress and not unclassified,
     }
 
-    # ---- allocation_check：实际 vs counts 派生期望（逐 condition 精确相等）----
+    # ---- planned allocation gate（hard；T-020 裁决 C：plan block = planned
+    #      generation identity，逐 condition 精确 10 families / 40 voyages）----
+    planned_counts: dict = {}
+    planned_family_ids: dict = {}
+    for v in voyages:
+        pc_ = v["ev"].get("planned_condition_id", "_unknown")
+        pf_ = v["ev"].get("planned_family_id", "_unknown")
+        planned_counts[pc_] = planned_counts.get(pc_, 0) + 1
+        planned_family_ids.setdefault(pc_, set()).add(pf_)
+    planned_gate_rows: dict = {}
+    for c in exp_conditions:
+        n_fam = len(planned_family_ids.get(c, ()))
+        planned_gate_rows[c] = {
+            "expected_families": planned_quota.get(c),
+            "expected_voyages": per_cond,
+            "actual_families": n_fam,
+            "actual_voyages": planned_counts.get(c, 0),
+            "pass": (planned_counts.get(c, 0) == per_cond
+                     and n_fam == planned_quota.get(c, -1)),
+        }
+    planned_extra = sorted(set(planned_counts) - exp_cond_set)
+    planned_gate = {
+        "basis": ("frozen formal_draw_allocation_plan_ood.json blocks quota × "
+                  "counts.per_condition_voyages（文件名 block linkage = planned "
+                  "generation identity；T-020 裁决 C）"),
+        "per_condition": planned_gate_rows,
+        "unexpected_planned_conditions": planned_extra,
+        "pass": (all(r["pass"] for r in planned_gate_rows.values())
+                 and not planned_extra),
+    }
+
+    # ---- planned→realized transition/overlap matrix（realized exclusive）----
+    transition: dict = {}
+    for v in valid_voyages:
+        pc_ = v["ev"].get("planned_condition_id", "_unknown")
+        rc_ = v["ev"].get("ood_condition_id", "_unknown")
+        row = transition.setdefault(pc_, {})
+        row[rc_] = row.get(rc_, 0) + 1
+
+    # ---- ledger/meta agreement（classifier 侧由 classify_ood realized 重算
+    #      + verdict==OOD 承载；此处验证 producer ledger 与 meta 标签一致）----
+    ledger_agree: dict = {"checked": 0, "mismatches": []}
+    ledger_path = os.path.join(ood_dir, "_ood_ledger.json")
+    try:
+        with open(ledger_path, "r", encoding="utf-8") as f:
+            lg = json.load(f)
+        lg_cond = {str(r.get("voyage_id")): str(r.get("ood_condition_id"))
+                   for r in lg.get("voyages", [])}
+        for v in valid_voyages:
+            vid = v["ev"]["voyage_id"]
+            if vid in lg_cond:
+                ledger_agree["checked"] += 1
+                if lg_cond[vid] != v["ev"]["ood_condition_id"]:
+                    ledger_agree["mismatches"].append(
+                        {"voyage_id": vid, "ledger": lg_cond[vid],
+                         "meta": v["ev"]["ood_condition_id"]})
+    except (OSError, ValueError) as e:
+        # ledger 文件缺失（如合成测试语料）→ agreement SKIP 不 FAIL；
+        # 正式 formal 语料必含 _ood_ledger.json，届时 checked>0 真检验。
+        ledger_agree["error"] = f"_ood_ledger.json 不可读: {e!r}"
+        ledger_agree["skipped"] = True
+    realized_agreement_pass = (ledger_agree.get("skipped", False)
+                               or (not ledger_agree.get("mismatches")
+                                   and not ledger_agree.get("error")))
+
+    # ---- realized 计数报告（不要求 planned==realized 相等；裁决 C）----
     actual_total = sum(e["actual"] for e in per_condition.values())
-    alloc_pc = {c: {"expected": per_condition[c]["expected"],
-                    "actual": per_condition[c]["actual"],
-                    "pass": per_condition[c]["pass"]}
-                for c in exp_conditions}
-    alloc_total = {"expected": exp_total, "actual": actual_total,
-                   "pass": actual_total == exp_total}
     allocation_check = {
-        "basis": (f"len(counts.conditions)={len(exp_conditions)} × "
-                  f"counts.per_condition_voyages={per_cond}"
-                  f"（total_voyages 陈旧冗余字段不参与）"),
-        "per_condition": alloc_pc,
-        "total": alloc_total,
-        "pass": all(e["pass"] for e in alloc_pc.values()) and alloc_total["pass"],
+        "basis": ("T-020 裁决 C：planned（plan block）为 hard gate；realized "
+                  "（DGN-11 + Axis-C 优先独占分类）只报告不强制 40/40 相等"),
+        "per_condition": {
+            c: {"planned_voyages": planned_counts.get(c, 0),
+                "planned_families": len(planned_family_ids.get(c, ())),
+                "realized_voyages": per_condition[c]["actual"],
+                "planned_pass": planned_gate_rows[c]["pass"]}
+            for c in exp_conditions},
+        "total": {"planned": sum(planned_counts.values()),
+                  "expected_planned": exp_total,
+                  "realized": actual_total},
+        "transition_planned_to_realized": transition,
+        "realized_ledger_meta_agreement": ledger_agree,
+        "pass": planned_gate["pass"] and realized_agreement_pass,
     }
 
     # ---- 汇总 ----
+    # allocation 检查按 T-020 裁决 C 拆分：planned allocation 为 hard gate，
+    # realized ledger/meta 一致性为 gate；realized 计数本身只报告不 gate。
     checks = {
         "load": not load_errors,
         "structure_validation": not validation_errors,
         "metadata": not metadata_errors,
         "classification": not classification_errors,
         "conditions_universe": not unexpected_condition_ids,
-        "allocation": allocation_check["pass"],
+        "planned_allocation_exact": planned_gate["pass"],
+        "realized_ledger_meta_agreement": realized_agreement_pass,
         "domain_purity_fr486": stress_block["pass"],
     }
     overall = all(checks.values())

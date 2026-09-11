@@ -342,3 +342,78 @@ class TestOODLoader:
     def test_empty_composition_flagged(self):
         errs = validate_ood_records([_rec("C", composition=[])])
         assert errs
+
+    def test_sg_canonical_identity_preserved(self):
+        """T-020 裁决 A 回归：canonical `SG#<hash>` 身份在 L1 键解析后保持互异.
+
+        formal split_group_id 自含 '#'（SG#<hash>），窗口级恒等键形如
+        `SG#<hash>#voyage`。解析必须折叠同一 group 的多子记录、且不同 group
+        互不折叠；裸 `SG#<hash>` 键（无子记录）恒等为其自身。
+        """
+        assert al.identity_of("SG#661a002f4c6a667f#voyage") == "SG#661a002f4c6a667f"
+        assert al.identity_of("SG#3d237747a5b34afe#voyage") == "SG#3d237747a5b34afe"
+        assert al.identity_of("SG#661a002f4c6a667f") == "SG#661a002f4c6a667f"
+        # 不同 SG 身份不得折叠；voyage 级键不受影响
+        assert (al.identity_of("SG#661a002f4c6a667f")
+                != al.identity_of("SG#3d237747a5b34afe"))
+        assert al.identity_of("FLTA_S1_D00000_M1#186") == "FLTA_S1_D00000_M1"
+
+    def test_sg_distinct_identities_no_cross_split_violation(self):
+        """两个不同 SG#<hash> group 分属不同 split → 不产生 identity 违规."""
+        split_of = {
+            "SG#aaa#voyage": "train", "SG#bbb#voyage": "test",
+            "SG#aaa#win186": "train", "SG#bbb#win0": "test",
+        }
+        res = run_l1(split_of, {}, {})
+        cross = [v for v in res["violations"]
+                 if v["type"] == "identity_cross_split"]
+        assert cross == []
+
+    def test_sg_same_group_across_split_still_flagged(self):
+        """同一 SG#<hash> group 跨 split 仍须违规（解析修复不得放水）."""
+        split_of = {"SG#aaa#voyage": "train", "SG#aaa#win186": "test"}
+        res = run_l1(split_of, {}, {})
+        v = next(v for v in res["violations"]
+                 if v["type"] == "identity_cross_split")
+        assert v["identity"] == "SG#aaa"
+        assert v["splits"] == ["test", "train"]
+
+
+class TestL2FamilySibling:
+    """T-020 裁决 B：同 split_group 内 provenance 撞车 → DECLARED_FAMILY_SIBLING.
+
+    跨独立 split_group 的撞车维持 CONFIRMED_DUPLICATE；sibling 对交
+    run_family_sibling_audit 验证真值共享与 member lineage 互异。
+    """
+
+    def test_same_group_provenance_collision_is_sibling(self):
+        series = {"m1": [1.0, 2.0], "m2": [1.0, 2.0]}
+        prov = {v: {"generation_seed": "s", "route_template_id": "r"}
+                for v in series}
+        res = run_l2(series, prov, group_of={"m1": "SG#a", "m2": "SG#a"})
+        assert res["counts"]["DECLARED_FAMILY_SIBLING"] == 1
+        assert res["counts"]["CONFIRMED_DUPLICATE"] == 0
+        assert res["family_sibling_pairs"] == [["m1", "m2"]]
+
+    def test_cross_group_provenance_collision_still_confirmed(self):
+        series = {"m1": [1.0, 2.0], "m2": [1.0, 2.0]}
+        prov = {v: {"generation_seed": "s", "route_template_id": "r"}
+                for v in series}
+        res = run_l2(series, prov, group_of={"m1": "SG#a", "m2": "SG#b"})
+        assert res["counts"]["CONFIRMED_DUPLICATE"] == 1
+        assert res["counts"]["DECLARED_FAMILY_SIBLING"] == 0
+
+    def test_family_sibling_audit_invariants(self):
+        series = {"m1": [1.0, 2.0], "m2": [1.0, 2.0], "m3": [1.0, 9.0]}
+        pairs = [("m1", "m2"), ("m1", "m3")]
+        audit = al.run_family_sibling_audit(
+            pairs, series, member_of={"m1": "M1", "m2": "M2", "m3": "M1"})
+        assert audit["overall"] is False
+        types = [v["type"] for v in audit["violations"]]
+        assert "truth_sharing_violation" in types   # m3 与 m1 真值不一致
+        assert "lineage_not_distinct" in types      # m3 与 m1 member_id 撞车
+
+        ok = al.run_family_sibling_audit(
+            [("m1", "m2")], series,
+            member_of={"m1": "M1", "m2": "M2"})
+        assert ok["overall"] is True and ok["n_families"] == 1
