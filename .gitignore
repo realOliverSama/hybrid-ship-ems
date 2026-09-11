@@ -204,5 +204,15 @@ model/simulink_modelD_(EMS_NN_AECMS)/config/ecms_nn_weights_v2.mat
 
 # ==========================================================
 # Phase 4-D Dataset v3（2026-09-05，DGN-01：pilot 大数据本地不入库）
+# 2026-09-12 修订（用户指令）：Stage B formal 正式数据入库——T-432 原始
+# 数据（formal/{iid,ood} 的 .mat 与冻结分配计划）+ T-020 freeze 产物
+# （windows_v3_formal.npz）。mission_v3 pilot 大数据与 SUPERSEDED 隔离区
+# 维持本地不入库。
 # ==========================================================
-model/simulink_modelE_(Phase4_Physics)/datasets_v3/
+model/simulink_modelE_(Phase4_Physics)/datasets_v3/*
+!model/simulink_modelE_(Phase4_Physics)/datasets_v3/README.md
+!model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal
+model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/*
+!model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/
+!model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/ood/
+!model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/*.json

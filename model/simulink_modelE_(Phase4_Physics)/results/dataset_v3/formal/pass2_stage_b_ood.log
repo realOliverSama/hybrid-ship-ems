@@ -1,0 +1,184 @@
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD: consuming frozen allocation plan
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+保留 ID 为 5 的作业，因为它们包含崩溃转储文件。
+您可以使用 'delete(myCluster.Jobs)' 来删除使用配置文件 Processes 创建的所有作业。要创建 'myCluster'，请使用 'myCluster = parcluster('Processes')'。
+已连接到具有 2 个工作单元的并行池。
+[fleet_v3] OOD: parallel dispatch 50 tasks on <=2 workers
+[fleet_v3] OOD task 2/50 done
+[fleet_v3] OOD task 1/50 done
+[fleet_v3] OOD task 3/50 done
+[fleet_v3] OOD task 4/50 done
+[fleet_v3] OOD task 6/50 done
+[fleet_v3] OOD task 5/50 done
+[fleet_v3] OOD task 7/50 done
+[fleet_v3] OOD task 8/50 done
+[fleet_v3] OOD task 9/50 done
+[fleet_v3] OOD task 10/50 done
+[fleet_v3] OOD task 11/50 done
+[fleet_v3] OOD task 12/50 done
+[fleet_v3] OOD task 13/50 done
+[fleet_v3] OOD task 14/50 done
+[fleet_v3] OOD task 15/50 done
+[fleet_v3] OOD task 16/50 done
+[fleet_v3] OOD task 17/50 done
+[fleet_v3] OOD task 19/50 done
+[fleet_v3] OOD task 18/50 done
+[fleet_v3] OOD task 20/50 done
+[fleet_v3] OOD task 21/50 done
+[fleet_v3] OOD task 22/50 done
+[fleet_v3] OOD task 23/50 done
+[fleet_v3] OOD task 24/50 done
+[fleet_v3] OOD task 25/50 done
+[fleet_v3] OOD task 26/50 done
+[fleet_v3] OOD task 27/50 done
+[fleet_v3] OOD task 28/50 done
+[fleet_v3] OOD task 29/50 done
+[fleet_v3] OOD task 30/50 done
+[fleet_v3] OOD task 31/50 done
+[fleet_v3] OOD task 32/50 done
+[fleet_v3] OOD task 33/50 done
+[fleet_v3] OOD task 34/50 done
+[fleet_v3] OOD task 35/50 done
+[fleet_v3] OOD task 36/50 done
+[fleet_v3] OOD task 37/50 done
+[fleet_v3] OOD task 38/50 done
+[fleet_v3] OOD task 39/50 done
+[fleet_v3] OOD task 40/50 done
+[fleet_v3] OOD task 41/50 done
+[fleet_v3] OOD task 42/50 done
+[fleet_v3] OOD task 43/50 done
+[fleet_v3] OOD task 44/50 done
+[fleet_v3] OOD task 45/50 done
+[fleet_v3] OOD task 46/50 done
+[fleet_v3] OOD task 47/50 done
+[fleet_v3] OOD task 48/50 done
+[fleet_v3] OOD task 49/50 done
+[fleet_v3] OOD task 50/50 done
+FLEETV3_OOD_CONDITIONS=50 VOYAGES=200 ACCEPTED=200
+FLEETV3_OOD_STRESS_REMOVED=0
+FLEETV3_VERDICT=DONE
+
+--------------------------------------------------------------------------------
+          Segmentation violation detected at 2026-09-11 05:05:23 +0800
+--------------------------------------------------------------------------------
+
+Configuration:
+  Crash Decoding           : Disabled - No sandbox or build area path
+  Crash Mode               : continue (default)
+  Default Encoding         : UTF-8
+  Deployed                 : false
+  Graphics Driver          : Uninitialized hardware 
+  Java Version             : Java 1.8.0_402-b08 with Amazon.com Inc. OpenJDK 64-Bit Server VM mixed mode
+  MATLAB Architecture      : maca64
+  MATLAB Entitlement ID    : 13922697
+  MATLAB Root              : /Applications/MATLAB_R2026a.app
+  MATLAB Version           : 26.1.0.3312084 (R2026a) Update 4
+  OpenGL                   : hardware
+  Operating System         : Mac OS 版本27.0（版号26A5416b）
+  Process ID               : 30990
+  Processor ID             : ABI64 ARM ARM64E FIRESTORM_ICESTORM HG
+  Session Key              : 2s2e5f83qho4j0bk9r1horsj4
+  Window System            : Quartz
+
+Fault Count: 1
+
+
+Abnormal termination:
+Segmentation violation
+
+Current Thread: 'QT GuiThread' id 0x1f9fef540
+
+Register State (from fault):
+   X0 = 0000000000000000   X1 = 000000016bd97460
+   X2 = 000000016bd97468   X3 = 0000000000000248
+   X4 = 0000000000000010   X5 = 000000016bd96a88
+   X6 = 000000016bd96a84   X7 = 000000016bd96a78
+   X8 = 0000000000000000   X9 = 00000077648c9bf8
+  X10 = 00000074974f0ad6  X11 = 0000000000000007
+  X12 = 0000000000000007  X13 = 0000007764181450
+  X14 = 00000001fa019e70  X15 = 00000001fa019e70
+  X16 = 00000001944dd820  X17 = 00000001fbc295f0
+  X18 = 0000000000000000  X19 = 0000007764a6c780
+  X20 = 000000015f1ab000  X21 = 0000000000000000
+  X22 = 00000077444fe700  X23 = 000000775901c240
+  X24 = 000000016bd97720  X25 = 000000b111d99be9
+  X26 = 00000000211200d5  X27 = 0000000000000000
+  X28 = 0000000000003703
+
+   FP = 000000016bd974d0   LR = 000000015f1482e0
+   SP = 000000016bd97490   PC = 000000015f1482e0
+
+ CPSR = 60001000
+
+
+Stack Trace (from fault):
+[  0] 0x00000001042225f8 /Applications/MATLAB_R2026a.app/bin/maca64/libmwfl.dylib+00009720 _ZN10foundation4core4diag15stacktrace_base7captureERKNS1_14thread_contextEm+00000064
+[  1] 0x0000000104225850 /Applications/MATLAB_R2026a.app/bin/maca64/libmwfl.dylib+00022608 _ZN10foundation4core4test17terminate_handledERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE+00002216
+[  2] 0x0000000104224c8c /Applications/MATLAB_R2026a.app/bin/maca64/libmwfl.dylib+00019596 _ZN10foundation4core4diag13terminate_logEPKcPK17__darwin_ucontext+00000140
+[  3] 0x0000000117d96088 /Applications/MATLAB_R2026a.app/bin/maca64/libmwmcr.dylib+00565384 _Z19mnPrintErrorMessageRKNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE+00012072
+[  4] 0x0000000117d93ec4 /Applications/MATLAB_R2026a.app/bin/maca64/libmwmcr.dylib+00556740 _Z19mnPrintErrorMessageRKNSt3__112basic_stringIcNS_11char_traitsIcEENS_9allocatorIcEEEE+00003428
+[  5] 0x0000000117d9143c /Applications/MATLAB_R2026a.app/bin/maca64/libmwmcr.dylib+00545852 mnFatalSignalHandler+00000136
+[  6] 0x00000001944ec144           /usr/lib/system/libsystem_platform.dylib+00016708 _sigtramp+00000056
+[  7] 0x000000015f1482e0 /Library/Java/JavaVirtualMachines/amazon-corretto-8.jdk/Contents/Home/jre/lib/libawt_lwawt.dylib+00033504 -[AWTView dealloc]+00000104
+[  8] 0x000000019419b3fc             /usr/lib/system/libsystem_blocks.dylib+00005116 _call_dispose_helpers_excp+00000048
+[  9] 0x000000019419b1c0             /usr/lib/system/libsystem_blocks.dylib+00004544 _Block_release+00000236
+[ 10] 0x0000000195cbde1c /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation+00495132 __NSThreadPerformPerform+00000284
+[ 11] 0x00000001945a2830 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+00530480 __CFRUNLOOP_IS_CALLING_OUT_TO_A_SOURCE0_PERFORM_FUNCTION__+00000028
+[ 12] 0x00000001945a27c4 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+00530372 __CFRunLoopDoSource0+00000224
+[ 13] 0x00000001945a24fc /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+00529660 __CFRunLoopDoSources0+00000232
+[ 14] 0x00000001945a10cc /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+00524492 __CFRunLoopRun+00000832
+[ 15] 0x000000019467b644 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+01418820 _CFRunLoopRunSpecificWithOptions+00000536
+[ 16] 0x00000001a198d590 /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/HIToolbox+00767376 RunCurrentEventLoopInMode+00000320
+[ 17] 0x00000001a1990844 /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/HIToolbox+00780356 ReceiveNextEventCommon+00000276
+[ 18] 0x00000001a1b13380 /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/HIToolbox+02364288 _BlockUntilNextEventMatchingListInMode+00000048
+[ 19] 0x0000000198e92294 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+03654292 _DPSBlockUntilNextEventMatchingListInMode+00000292
+[ 20] 0x0000000198b4f4fc /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00234748 _DPSNextEvent+00000580
+[ 21] 0x00000001993c7748 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+09115464 -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]+00000780
+[ 22] 0x00000001993c726c /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+09114220 -[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:]+00000292
+[ 23] 0x0000000198b4290c /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00182540 -[NSApplication run]+00000396
+[ 24] 0x000000011c5579f4 /Applications/MATLAB_R2026a.app/bin/maca64/libmwuix.dylib+00162292 _Z20MacShowOrHideAppIconb+00002468
+[ 25] 0x0000000194597090 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+00483472 __CFNOTIFICATIONCENTER_IS_CALLING_OUT_TO_AN_OBSERVER__+00000148
+[ 26] 0x0000000194626208 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+01069576 ___CFXRegistrationPost_block_invoke+00000092
+[ 27] 0x000000019462614c /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+01069388 _CFXRegistrationPost+00000440
+[ 28] 0x0000000194563334 /System/Library/Frameworks/CoreFoundation.framework/Versions/A/CoreFoundation+00271156 _CFXNotificationPost+00000688
+[ 29] 0x0000000195c4e384 /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation+00037764 -[NSNotificationCenter postNotificationName:object:userInfo:]+00000088
+[ 30] 0x0000000198b57a14 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00268820 -[NSApplication _postDidFinishNotification]+00000312
+[ 31] 0x0000000198b577a8 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00268200 -[NSApplication _sendFinishLaunchingNotification]+00000176
+[ 32] 0x0000000198b55e80 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00261760 -[NSApplication(NSAppleEventHandling) _handleAEOpenEvent:]+00000488
+[ 33] 0x0000000198b55a94 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00260756 -[NSApplication(NSAppleEventHandling) _handleCoreEvent:withReplyEvent:]+00000488
+[ 34] 0x0000000195c771ec /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation+00205292 -[NSAppleEventManager dispatchRawAppleEvent:withRawReply:handlerRefCon:]+00000316
+[ 35] 0x0000000195c76fe4 /System/Library/Frameworks/Foundation.framework/Versions/C/Foundation+00204772 _NSAppleEventManagerGenericHandler+00000080
+[ 36] 0x000000019cd0953c /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE+00046396 _AppleEventsCheckInAppWithBlock+00013444
+[ 37] 0x000000019cd08f9c /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE+00044956 _AppleEventsCheckInAppWithBlock+00012004
+[ 38] 0x000000019cd02a0c /System/Library/Frameworks/CoreServices.framework/Versions/A/Frameworks/AE.framework/Versions/A/AE+00018956 aeProcessAppleEvent+00000484
+[ 39] 0x00000001a18e8454 /System/Library/Frameworks/Carbon.framework/Versions/A/Frameworks/HIToolbox.framework/Versions/A/HIToolbox+00091220 AEProcessAppleEvent+00000068
+[ 40] 0x0000000198b4f7c0 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00235456 _DPSNextEvent+00001288
+[ 41] 0x00000001993c7748 /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+09115464 -[NSApplication(NSEventRouting) _nextEventMatchingEventMask:untilDate:inMode:dequeue:]+00000780
+[ 42] 0x00000001993c726c /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+09114220 -[NSApplication(NSEventRouting) nextEventMatchingMask:untilDate:inMode:dequeue:]+00000292
+[ 43] 0x0000000198b4290c /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00182540 -[NSApplication run]+00000396
+[ 44] 0x0000000198b1ac4c /System/Library/Frameworks/AppKit.framework/Versions/C/AppKit+00019532 NSApplicationMain+00000880
+[ 45] 0x000000011c557f04 /Applications/MATLAB_R2026a.app/bin/maca64/libmwuix.dylib+00163588 _Z21MacRunApplicationMainb+00000088
+[ 46] 0x0000000117dabe44 /Applications/MATLAB_R2026a.app/bin/maca64/libmwmcr.dylib+00654916 _ZN3mcr7runtime9uix_proxy21MacRunApplicationMainEb+00000136
+[ 47] 0x0000000117d3b44c /Applications/MATLAB_R2026a.app/bin/maca64/libmwmcr.dylib+00193612 _ZN3mcr7runtime10MainThread7runMainERKN7mwboost9function0IiEEbb+00000308
+[ 48] 0x0000000117d3b174 /Applications/MATLAB_R2026a.app/bin/maca64/libmwmcr.dylib+00192884 _Z12mcr_run_mainRKN7mwboost9function0IiEEbb+00000108
+[ 49] 0x0000000117965438 /Applications/MATLAB_R2026a.app/bin/maca64/libmwMVMLocal.dylib+00234552 _ZN10mvm_server12terminateFcnEv+00015040
+[ 50] 0x0000000104f8b94c /Applications/MATLAB_R2026a.app/bin/maca64/libmwmvm.dylib+00915788 _ZN3mvm6detail11SessionImpl7runMainERKN7mwboost9function1IiRKNSt3__16vectorINS4_12basic_stringIDsNS4_11char_traitsIDsEENS4_9allocatorIDsEEEENS9_ISB_EEEEEESF_+00000188
+[ 51] 0x0000000104f8c0cc /Applications/MATLAB_R2026a.app/bin/maca64/libmwmvm.dylib+00917708 _ZN3mvm6detail11SessionImpl16runMatlabDesktopEv+00000664
+[ 52] 0x0000000104ef1668 /Applications/MATLAB_R2026a.app/bin/maca64/libmwmvm.dylib+00284264 _ZN3mvm14ProcessSession16runMatlabDesktopEv+00000148
+[ 53] 0x00000001040cf3e4 /Applications/MATLAB_R2026a.app/bin/maca64/libmwmatlab_main_lib.dylib+00062436 _ZN9MathWorks6matlab4mainENSt3__16vectorINS1_12basic_stringIcNS1_11char_traitsIcEENS1_9allocatorIcEEEENS6_IS8_EEEE+00002124
+[ 54] 0x0000000104067e30  /Applications/MATLAB_R2026a.app/bin/maca64/MATLAB+00015920 main+00000036
+[ 55] 0x000000019410be88                                      /usr/lib/dyld+00204424 start+00006688
+
+** This crash report has been saved to disk as /Users/oliverlyu/matlab_crash_dump.30990-1 **
+
+
+
+MATLAB is exiting because of fatal error
