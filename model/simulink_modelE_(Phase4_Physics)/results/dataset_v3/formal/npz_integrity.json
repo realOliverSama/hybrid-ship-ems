@@ -1,0 +1,45 @@
+{
+ "schema": "dataset_v3_npz_integrity_v1",
+ "artifact": {
+  "path": "datasets_v3/formal/windows_v3_formal.npz",
+  "artifact_name": "windows_v3_formal.npz",
+  "sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497",
+  "bytes": 135958081,
+  "n_windows": 197448,
+  "storage": "local-only（136MB > GitHub 单文件 100MB 限制；Phase 4-C/D Final Ruling 2026-09-12 认可本地留存不阻塞 implementation-complete）"
+ },
+ "generation": {
+  "command": "python -m dataset_v3.run_formal_freeze --iid-dir datasets_v3/formal/iid --ood-dir datasets_v3/formal/ood --out-dir results/dataset_v3/formal --npz datasets_v3/formal/windows_v3_formal.npz",
+  "pipeline": "dataset_v3.run_formal_freeze（确定性：两跑 payload-hash 776/776 一致实证；同一命令+冻结语料可确定性重建）",
+  "generated_utc": "2026-09-11T21:29:31+00:00",
+  "python": "3.12.7",
+  "numpy": "2.5.3",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "generation_script": {
+   "path": "dataset_v3/run_formal_freeze.py",
+   "sha256_at_generation": "e27828b916dcd7a17409ac427cf58c1e2f9dabf393bc3cd083819dc0005725c0"
+  }
+ },
+ "source_formal_manifest": {
+  "path": "results/dataset_v3/formal/dataset_v3_formal_manifest.json",
+  "scientific_payload_sha256": "ee285091027a5bda50652832dbf7ba780302feca8897b9195715570a1ea7d712",
+  "split_seed": "dataset-v3-formal-split-seed-v1",
+  "split_assignment_artifact_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+  "preprocessing_artifact_sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba",
+  "test_sealed": true,
+  "ood_sealed": true
+ },
+ "source_raw_corpus": {
+  "iid_dir": "datasets_v3/formal/iid（576 voyages，FLTA_*.mat）",
+  "ood_dir": "datasets_v3/formal/ood（200 voyages，FLTB_*.mat）",
+  "two_run_payload_determinism": "776/776 exact match（compare_two_run.py exit 0；ledger ×4 见 results/dataset_v3/formal/pass{1,2}_{iid,ood}_ledger.json）",
+  "raw_data_commit": "20751e4f",
+  "freeze_commit": "7ff29d68"
+ },
+ "references_verified": [
+  "sha256 computed 2026-09-12",
+  "manifest hash linkage",
+  "generation pipeline command",
+  "raw corpus identity via sealed ledgers"
+ ]
+}

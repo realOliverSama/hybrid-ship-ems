@@ -1,14 +1,14 @@
 # Phase 4-D 数据集 v3（T-430~T-435）Tasks
 
 Spec: `phase4-d-dataset-v3`  
-Status: implementation-in-progress（D0 complete 2026-09-05 + D-15/EXT-CD-GATE 2026-09-07；roadmap amendment v1 (c′) APPROVED；**T-432 READY 2026-09-07**（activation record FROZEN，checklist ALL_GREEN）——T-018/T-019 可施工；仍不得升 implementation-complete〔T-020 审计冻结未完〕）  
+Status: implementation-complete（2026-09-12 用户 Final Ruling；D0 complete 2026-09-05 + D-15/EXT-CD-GATE 2026-09-07；T-432 Stage A 2026-09-10 / Stage B + T-020 formal freeze 2026-09-12——closure 证据见任务 18/19/20 与修订记录末行。本状态仅覆盖 **Phase 4-D 实施完成**，不代表下游 Phase 4-E/F 完成；Phase 4-C 同日裁定 CLOSED_WITH_SCIENTIFIC_NEGATIVE_RESULT〔T-429 FINAL_FAIL / AC-437 NOT_MET 保留原判，不改 PASS〕）  
 Created: 2026-09-04  
 Approved: 2026-09-04（CONDITIONAL PASS + R1~R7 修正闭合）  
 Brainstorm: `./brainstorm.md`（D-D1~D-D9 批准）  
 Requirements: `./requirements.md`（requirements-approved + R1~R5 闭合 + FR-485 最小修订）  
 Design: `./design.md`（design-approved，DGN-01~DGN-17 + R1~R8 闭合）
 
-> 任务编号 T-001~T-021 为本 spec 局部编号；每项标注路线文档 T-4xx 映射与 FR/DGN 追溯。
+> 任务编号 T-001~T-020 为本 spec 局部编号；每项标注路线文档 T-4xx 映射与 FR/DGN 追溯。
 > 顶层任务所有权保持路线文档 T-430~T-435（本文件不另立顶层编号）。
 > **执行 session 开工前必须研读**：brainstorm.md、requirements.md、design.md、
 > `docs/phase4/d_dataset_v3_HANDOFF.md`、Model E 工作区 README_Model.md、
@@ -156,7 +156,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Validation: pytest 全过；负向：FORBIDDEN/H3 列入 view 必须被拒
   - Completion evidence: pytest 输出 + 文档 diff
 
-## T-435 — Split / Leakage / OOD 审计（D0 = pilot qualification；formal 见 T-021）
+## T-435 — Split / Leakage / OOD 审计（D0 = pilot qualification；formal 见 T-020）
 
 - [x] 11. deterministic group-aware split
   - ID: T-011
@@ -244,7 +244,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 > 解锁须 Unblock Checklist 八项全绿（FR-498）+ C/D Interface Gate overall=true（FR-496）。
 > tasks.md 批准本身不构成解锁。activation-time 值（fleet 规模/strata/seeds/OOD 轴 A 数值/OOD counts/formal 航次合格判据数值）只能在 activation record 预注册后消费，本文件不预填。
 
-- [ ] 18. T-432 Stage A — generation qualification（UNBLOCKED 2026-09-07：checklist ALL_GREEN + activation record FROZEN）
+- [x] 18. T-432 Stage A — generation qualification（UNBLOCKED 2026-09-07：checklist ALL_GREEN + activation record FROZEN）
   - ID: T-018
   - Requirement(s): FR-497；Design: DGN-17
   - blocked_by: T-432 Unblock Checklist（FR-498 全绿）
@@ -252,9 +252,9 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Scope: ≈100 条 qualification 航次（engineering nominal）；验证生成稳定性/导出完整性/schema 一致/吞吐/failed-voyage 处理（记录后继续）/审计管线
   - Non-scope: 科学结论；formal 目录写入
   - Validation: qualification gate PASS + 审计管线全绿
-  - Completion evidence: qualification 报告
+  - Completion evidence: qualification 报告——**达成（2026-09-10）**：Stage-A 92/92 全 ACCEPT + qualification 双 Gate（iid/ood am03）PASS + qualified-stack 八项 hash 冻结（`STAGE_A_RERUN_DONE`）；commit `37f6db39`；证据目录 `results/dataset_v3/qualification/`
 
-- [ ] 19. T-432 Stage B — formal fleet（UNBLOCKED 2026-09-07：依赖 T-018；activation record 已预注册 FROZEN）
+- [x] 19. T-432 Stage B — formal fleet（UNBLOCKED 2026-09-07：依赖 T-018；activation record 已预注册 FROZEN）
   - ID: T-019
   - Requirement(s): FR-497；Design: DGN-17 + R8
   - depends_on: T-018；blocked_by: 同 T-018 + activation record 预注册完成
@@ -262,11 +262,11 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Scope: 按 activation record 预注册 exact count/strata/seeds/OOD 定义生成 formal fleet；failed slot 按预声明 retry policy（同 config/seed，禁换新 seed）；allocation 未满足 ⇒ Gate FAIL
   - Non-scope: 任何 activation 值的事后调整
   - Validation: schema/契约校验全过 + allocation 满足 + 基线完整性 PASS
-  - Completion evidence: formal fleet manifest + allocation 核对记录
+  - Completion evidence: formal fleet manifest + allocation 核对记录——**达成（2026-09-12）**：本机四段生成 IID 576×2 + OOD 200×2 = 776 voyages 全 ACCEPT（FLEETV3_VERDICT=PASS/DONE）；两跑确定性 compare_two_run.py 776/776 payload-hash exact、exit 0；`STAGE_B_TWO_RUN_DONE` 落标；raw commit `20751e4f`；ledger ×4 于 `results/dataset_v3/formal/pass{1,2}_{iid,ood}_ledger.json`
 
 ## T-435-formal — 正式审计与冻结（BLOCKED）
 
-- [ ] 20. T-435-formal split/leakage/OOD 证据 + Dataset-v3 freeze（BLOCKED）
+- [x] 20. T-435-formal split/leakage/OOD 证据 + Dataset-v3 freeze（2026-09-12 完成；T-020 审计语义修正 A–D 见 design.md 偏差 D-16~D-19）
   - ID: T-020
   - Requirement(s): FR-484~489, AC-431, AC-432；Design: DGN-10/11/12
   - depends_on: T-019；blocked_by: T-432 完成
@@ -274,7 +274,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
   - Scope: formal split assignment 冻结 + L1 零违规/L2 处置记录/L3 SBD（阈值数值由 formal train 按预冻结 policy 计算）+ OOD 三轴正式证据 + manifest 全字段（test_sealed/ood_sealed=true）+ scientific_payload hash 冻结；**pilot 统计不得用于满足本任务**
   - Non-scope: 模型训练/评估（E 包）
   - Validation: 全部审计机器可读结果 PASS
-  - Completion evidence: formal manifest + 审计报告；spec 方可申请 implementation-complete
+  - Completion evidence: formal manifest + 审计报告——**达成（2026-09-12）**：`run_formal_freeze` stage=FORMAL overall=True（17/17 check PASS）；split 冻结 dataset-v3-formal-split-seed-v1（396/108/72）；L1 零违规 + L2 DECLARED_FAMILY_SIBLING 族内不变量满足 + L3 SBD train 统计 + OOD 三轴（planned 10f/40v hard gate + realized 36/44/40/40/40 + planned→realized transition 矩阵）；manifest 封存 test_sealed=true/ood_sealed=true、scientific_payload_sha256=ee285091…；`windows_v3_formal.npz`（197448 窗口，136MB 本地留存，integrity 证据 `npz_integrity.json`）；freeze commit `7ff29d68`
 
 ## Verification Checklist
 
@@ -303,7 +303,7 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 ## Execution Notes
 
 - 保持 `Status: tasks-draft` 直至用户书面批准 tasks 门；批准后改 `tasks-approved` 并跑 implementation-readiness 校验再施工；
-- 施工开始改 `implementation-in-progress`；**D0 完成（T-001~T-017 全勾）后保持 implementation-in-progress 并显式标注 D0 complete / T-432 BLOCKED——不得升 implementation-complete**（T-018~T-020 未完成）；
+- 施工开始改 `implementation-in-progress`；D0 完成后保持 implementation-in-progress 的禁令**已于 2026-09-12 随 T-018~T-020 闭合解除**，spec 升 `implementation-complete`（见修订记录末行；该状态仅覆盖 Phase 4-D 实施，不代表下游 Phase 4-E/F）；
 - 依赖允许时任务可并行（T-001/T-005/T-006 首批并行；契约层先行于管线层）；单写者纪律：同一文件同一时间一个写者；
 - 每任务 validation 通过后立即 `spec_task_check`；
 - 施工期偏差先登记 design.md 偏差区再实施；
@@ -313,4 +313,5 @@ Formal（C 包就绪后，需 T-432 Unblock Checklist 全绿）:
 
 | 日期 | 修订 | 来源 |
 |---|---|---|
+| 2026-09-12 | **T-018/019/020 闭合 → implementation-complete**：T-018 Stage A（92/92，qualified-stack 冻结，37f6db39）；T-019 Stage B（formal fleet 576 IID + 200 OOD = 776，两跑确定性 776/776 exact，activation amendments 01–04 全链，raw commit 20751e4f）；T-020 formal freeze（审计修正 A–D：L1 identity parser / L2 independent-family duplicate vs declared family-sibling / planned-vs-realized OOD 双身份〔Axis-C token 优先为先前冻结语义〕/ zero-variance scale=1 norm；manifest test_sealed/ood_sealed=true，freeze commit 7ff29d68；npz 136MB 本地留存 + npz_integrity.json 证据链）→ **implementation-complete（用户 Phase 4-C/D Final Ruling 2026-09-12）**；Phase 4-C 同日 CLOSED_WITH_SCIENTIFIC_NEGATIVE_RESULT（T-429 FINAL_FAIL 保留） | 用户 Final Ruling（T-432 Stage B OOD/IID + T-020 审计裁决 A–D + closure ruling） |
 | 2026-09-04 | tasks 批准（CONDITIONAL PASS + R1~R7 闭合）：R1 局部编号勘正 T-001~T-020；R2 T-005 DG 稳态语义修正（relevant/dispatching 稳态 ON，非双机同开；消费现有状态机编码，禁新造枚举）；R3 T-006 修改过 entrypoint 全量回归（40/42/43/44/E10 各自证据）；R4 T-007 完整 producer schema 必填集硬要求 + h_chart/P_hotel_plan fixture 语义；R5 执行约束顶部转录 DGN-01/R8 path roots；R6 T-011 partition completeness 不变量 + small-stratum 用例 + 严格实现 DGN-09 冻结算法；R7 T-018/019 qualified-stack freeze（Stage A PASS 后冻结八项 hash，变更即失效重跑）+ T-020 OOD evidence 限定 Dataset 层 | 用户 tasks gate 评审 |
