@@ -375,9 +375,18 @@ def main(argv=None) -> int:
         train = _load_split_data("train")
         val = _load_split_data("val")
         budget = __import__("predictor_v3.train", fromlist=["load_budget"]).load_budget()
+        trial_reg = reg.TrialRegistry(args.arch)
+        done_ids = {r["trial_id"] for r in trial_reg.rows()
+                    if r["status"] == "COMPLETED_ELIGIBLE"}
+        skipped = 0
         for trial in trial_list["trials"]:
+            if trial["trial_id"] in done_ids:
+                skipped += 1
+                continue
             run_trial(trial, train, val, arch_id=args.arch,
                       env_manifest_sha256=env_manifest_sha, budget=budget)
+        print(f"[hpo] {args.arch}: {skipped} already-eligible trials skipped "
+              f"(resume-safe)")
         return 0
     sel = select_config(args.arch, s0=_s0(), env_manifest_sha256=env_manifest_sha)
     return 0
