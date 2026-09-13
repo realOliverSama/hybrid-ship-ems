@@ -316,6 +316,33 @@ OOD 裁决。**不无限扫模型；暂不考虑 N6。**
 
 ---
 
+## 6b. 计划登记 — Phase 4-E-additional（2026-09-13 登记，未立项，待 E 收官后裁决）
+
+> **定位**：additional baselines 扩展实验——**不进 winner pool、不改 T-444 winner
+> 身份、不触发重选**；复用 Phase 4-E 全部冻结资产（windows_v3_formal.npz /
+> split / formal_norm_v3 + predictor_norm_ext_v1 / harness 指标栈 / bootstrap /
+> 访问门），边际成本 ≈ 每模型半天 GPU。
+> **裁决点**：E 收官（T-019）后用户二选一——先 E-additional 再进 F 包，或直接进 F。
+> 立项时需立小 spec（建议 slug `.specs/phase4-e-additional-baselines/`），
+> 治理等级 = 轻量（固定合理超参 + 小型搜索；test/OOD 访问纪律沿袭 FR-606/608）。
+
+**候选名单（2026-09-13 评估，按价值排序）**：
+1. **DLinear/NLinear**（AAAI 2023）——线性+分解 sanity 基线，防"复杂模型虚高"
+   质疑的诚实性附表；需小扩展以消费 K/F 外生未来量；
+2. **TSMixer**（全 MLP 时间/通道 mixing）——MLP vs Attention 的未来编码对照，
+   全 MLP 对未来 N6 量化部署叙事友好；
+3. **TimeXer**（NeurIPS 2024）——与 REAT-T 结构最同构的 SOTA 对照
+   （endogenous 历史 + exogenous 未来双分支 + patch 交叉注意力），
+   直接回应"与带外生未来的 SOTA 比如何"的审稿问题。
+
+**排除记录**：Informer/Autoformer/FEDformer/Pyraformer/Reformer（长 horizon
+效率动机在本任务 30×10s horizon 下不存在）；MAMBA（单船 136k 窗过拟合风险 +
+CUDA kernel 与 N6 部署叙事冲突）；CycleNet（周期项需远超 300s 的历史窗）；
+BiLSTM/BiGRU（双向读取引入部署审查点，边际价值低）。
+**同源的更贴合替代**：复活 T-442 原文的 **future-route-only（K-only）消融臂**
+（E-Q4/Q9-2 当时未批准默认不建）比加新模型更贴合"信息价值"论文故事，
+可在同一裁决点一并裁决。
+
 ## 7. 工作包 F：预测式先进 EMS
 
 > 纪律沿袭"先证明收益上限再施工"。全部 Mac 本机执行。
