@@ -1,0 +1,80 @@
+{
+  "artifact_sha256": "82f0797f6c7aeb0fe03c7c1a788b3cea5294d4505a0c2fb305a2aff3580dbb6d",
+  "checks": [
+    {
+      "detail": "",
+      "name": "macos:base lock_exists",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "macos:macOS lock_exists",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "macos:manifest",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "macos:compat_smoke",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "macos:cpu_probe",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "cuda:cuda_lock_exists",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "cuda:manifest",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "cuda:compat_smoke",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "cuda:repro_probe",
+      "pass": true
+    },
+    {
+      "detail": "pytest 14/14（负向三形态 + 六核验正反）",
+      "name": "access_gate:negative_tests",
+      "pass": true
+    },
+    {
+      "detail": "payload 6383a27b…",
+      "name": "ood:determinism_two_run",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "ood:integrity_chain",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "norm_ext:self_hash",
+      "pass": true
+    },
+    {
+      "detail": "T-005 全绿 45/45（test_train_smoke 2 + 43）",
+      "name": "harness:pytest_45",
+      "pass": true
+    }
+  ],
+  "note": "AC-450 双侧逐项核对；E0 就绪判定。CUDA lock 由 T-007 拥有冻结（非本地冒充，R4）。",
+  "overall": true,
+  "schema": "predictor_v3_e0_gate_check_v1",
+  "task": "E0/AC-450",
+  "utc": "2026-09-13T10:28:31.366025+00:00"
+}
