@@ -1,46 +1,65 @@
 {
-  "schema": "predictor_v3_training_budget_v1",
-  "task": "T-005",
-  "governance": "DGN-E-09 冻结数值 + DGN-E-08 HPO 预算；观察正式结果后禁改（FR-597）",
-  "max_epochs": 100,
-  "early_stopping": {
-    "monitor": "val_sgmacro_pinball",
-    "monitor_semantics": "validation split_group_macro pinball（与主 HPO 目标同口径，FR-595；禁 window-pooled）",
-    "patience": 10,
-    "mode": "min",
-    "restore_best_weights": true
-  },
-  "reduce_lr_on_plateau": {"factor": 0.5, "patience": 5, "min_lr": 1e-5, "mode": "min"},
-  "optimizer": "Adam",
-  "grad_clip_norm": 1.0,
-  "precision": "float32_full_no_mixed",
   "data_pipeline": {
     "form": "tf.data.from_tensor_slices -> shuffle(buffer=50000, per-run derived seed) -> batch -> prefetch",
     "shuffle_buffer": 50000,
     "shuffle_seed": "per-run derived seed（seeds.derive_seed）"
   },
-  "loss": {
-    "name": "pinball_kW_domain",
-    "taus": [0.1, 0.5, 0.9],
-    "weighting": "30 bins × 3 quantiles 等权（v1 默认，Q2-②）",
-    "target_domain": "raw kW（target 不做归一化；输入侧归一化照常）"
+  "early_stopping": {
+    "mode": "min",
+    "monitor": "val_sgmacro_pinball",
+    "monitor_semantics": "validation split_group_macro pinball（与主 HPO 目标同口径，FR-595；禁 window-pooled）",
+    "patience": 10,
+    "restore_best_weights": true
   },
+  "governance": "DGN-E-09 冻结数值 + DGN-E-08 HPO 预算；观察正式结果后禁改（FR-597）",
+  "grad_clip_norm": 1.0,
   "hpo": {
-    "budget_caps": {"mlpq": 5, "tcnq": 20, "transformer": 20, "tft": 20, "reatt": 20},
+    "budget_caps": {
+      "mlpq": 5,
+      "reatt": 20,
+      "tcnq": 20,
+      "tft": 20,
+      "transformer": 20
+    },
     "budget_semantics": "已开始 result-bearing 训练的 trial 即使 OOM/NaN/失败也耗预算位；纯基础设施中断同 trial_id 重跑 + incident（R5/DGN-E-08）",
-    "seed_index": 0,
     "data": "train/val only（fail-closed；test/OOD sealed）",
     "objective": "val split_group_macro pinball（checkpoint/early-stopping 同口径）",
+    "seed_index": 0,
     "trial_list": "DGN-E-08 七步生成算法；HPO 启动前冻结 <arch>_trial_list.json"
   },
-  "seeds": {
-    "seed_root": "phase4e-predictor-v3-seed-v1",
-    "derivation": "seed_int = int.from_bytes(SHA256(seed_root|model_id|config_hash|seed_index)[:8], 'big') % 2^31",
-    "confirmation_seed_indices": [0, 1, 2],
-    "dev_seed_index": 0
+  "loss": {
+    "name": "pinball_kW_domain",
+    "target_domain": "raw kW（target 不做归一化；输入侧归一化照常）",
+    "taus": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "weighting": "30 bins × 3 quantiles 等权（v1 默认，Q2-②）"
   },
+  "max_epochs": 100,
+  "optimizer": "Adam",
   "platform_separation": {
     "canonical_result_bearing": "AutoDL Linux + NVIDIA 4090D CUDA（FR-591）",
     "local_macos": "开发/单测/smoke/CPU 探针专用，禁出 result-bearing 证据"
-  }
+  },
+  "precision": "float32_full_no_mixed",
+  "reduce_lr_on_plateau": {
+    "factor": 0.5,
+    "min_lr": 1e-05,
+    "mode": "min",
+    "patience": 5
+  },
+  "schema": "predictor_v3_training_budget_v1",
+  "seeds": {
+    "confirmation_seed_indices": [
+      0,
+      1,
+      2
+    ],
+    "derivation": "seed_int = int.from_bytes(SHA256(seed_root|model_id|config_hash|seed_index)[:8], 'big') % 2^31",
+    "dev_seed_index": 0,
+    "seed_root": "phase4e-predictor-v3-seed-v1"
+  },
+  "task": "T-005"
 }

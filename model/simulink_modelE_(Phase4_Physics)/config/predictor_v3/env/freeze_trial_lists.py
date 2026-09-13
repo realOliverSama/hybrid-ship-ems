@@ -29,8 +29,12 @@ def main() -> int:
     s0 = load_s0()
     print(f"[trial_lists] s0={s0} caps={caps}", flush=True)
     summary = {}
-    for arch in ("mlpq", "tcnq", "transformer", "tft"):
-        doc, audit = hpo.generate_trial_list(arch, caps[arch], s0)
+    from predictor_v3.models import reat_t
+    jobs = [("mlpq", None), ("tcnq", None), ("transformer", None),
+            ("tft", None), ("reatt", reat_t.ANCHOR)]
+    for arch, anchor_cfg in jobs:
+        doc, audit = hpo.generate_trial_list(arch, caps[arch], s0,
+                                             anchor_cfg=anchor_cfg)
         summary[arch] = {
             "enumerated": audit["n_enumerated"],
             "capacity_valid": audit["n_capacity_valid"],

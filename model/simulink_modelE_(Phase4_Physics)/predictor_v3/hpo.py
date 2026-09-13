@@ -131,7 +131,6 @@ def generate_trial_list(arch_id: str, budget_cap: int, s0: float,
                     "（numpy default_rng，sorted canonical key 序）",
         "trials": trials,
         "subsampled_out": [{"config": c, "param_count": n} for c, n in subsampled],
-        "utc": datetime.now(timezone.utc).isoformat(),
         "s0": s0,
     }
     doc["artifact_sha256"] = hashlib.sha256(
