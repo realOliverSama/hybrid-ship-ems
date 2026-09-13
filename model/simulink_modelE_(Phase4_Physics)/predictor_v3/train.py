@@ -47,7 +47,11 @@ def make_dataset(hist: np.ndarray, kf: np.ndarray | None, y: np.ndarray,
     ds = ds.shuffle(buffer_size=SHUFFLE_BUFFER,
                     seed=shuffle_seed & 0x7FFFFFFF,
                     reshuffle_each_iteration=True)
-    ds = ds.batch(batch_size).prefetch(PREFETCH)
+    ds = ds.batch(batch_size)
+    opts = tf.data.Options()
+    opts.threading.private_threadpool_size = 8   # 调度参数（非科学语义）
+    ds = ds.with_options(opts)
+    ds = ds.prefetch(tf.data.AUTOTUNE)           # 深度未冻结（DGN-E-09 仅冻结形态）
     return ds
 
 
@@ -81,7 +85,7 @@ def build_callbacks(val_data: dict, split_group_of: dict,
             inputs = {"hist_input": self._hist}
             if self._kf is not None:
                 inputs["kf_input"] = self._kf
-            pred = self.model.predict(inputs, verbose=0)
+            pred = self.model.predict(inputs, verbose=0, batch_size=1024)
             # per-group pinball（组内窗口均值）→ 组均值 = sg_macro
             from predictor_v3.quantile import pinball_numpy
             pb = pinball_numpy(self._y, np.asarray(pred, dtype=np.float64))
