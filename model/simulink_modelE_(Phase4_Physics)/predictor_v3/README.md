@@ -29,6 +29,7 @@ FREEZE→TEST/OOD UNSEAL→FINAL（禁回流）。
 | `seeds.py` | ★ T-005 种子派生（DGN-E-10）：`SHA256(seed_root\|model_id\|config_hash\|seed_index)[:8] % 2^31`；HPO 种子 `SHA256(seed_root\|hpo\|arch)`；全局 RNG 固定点（PYTHONHASHSEED 记录/keras/np/random/determinism） |
 | `train.py` | ★ T-005 训练治理（DGN-E-09）：Adam+global_clipnorm=1.0；EarlyStopping/ReduceLR 监控 `val_sgmacro_pinball`（与主 HPO 目标同口径）；tf.data shuffle(50000,per-run seed)→batch→prefetch；float32 全精度；模型由 E1/E2 注入 |
 | `registry.py` | ★ T-005 config 自哈希 + trial registry：append-only jsonl（DGN-E-16(2) schema）；预算记账（COMPLETED_ELIGIBLE/FAILED 耗位；INFRA_INTERRUPTED 不耗）；eligible 过滤 |
+| `env_tools.py` | ★ T-006 确定性探针（DGN-E-10）：固定小配置（合成数据+小 MLP，非正式候选）两独立 CPU 进程同种子双跑（deterministic ops + GPU 显式隐藏）→ 比较预测/指标/权重 hash；CPU 探针 PASS_BITWISE；CUDA 探针（T-007 canonical）复用同一 `--once` 协议 |
 | `tests/` | pytest 单测（本地 `.venv_tf` 全绿为 E0 前置；T-005 共 45 例） |
 | `tests/test_data_access.py` | T-002 单测 14 例：负向三形态 + 六项核验正反 + 生命周期 + 日志分片 + DatasetView 切片 |
 | `tests/test_ood_materialize.py` | T-003 单测 4 例：合成航次双跑 payload hash 一致 + schema 平行 + 缺映射 FAIL + integrity 白名单字段 |
