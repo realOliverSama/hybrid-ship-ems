@@ -1,0 +1,146 @@
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 1/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 2/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 3/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 4/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 5/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 6/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 7/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 8/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID task 9/9 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD task 1/5 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD task 2/5 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD task 3/5 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD task 4/5 done (serial)
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD task 5/5 done (serial)
+FLEETV3_MODE=stage_a
+FLEETV3_IID_VERDICT=PASS
+FLEETV3_IID_VOYAGES=72 ACCEPTED=72
+FLEETV3_OOD_CONDITIONS=5 VOYAGES=20 ACCEPTED=20
+FLEETV3_OOD_STRESS_REMOVED=3
+FLEETV3_OOD_A1 axis=A attempts=16 accept=1 guard_reject=0 target_reject=12 stress=3
+FLEETV3_OOD_B1 axis=B attempts=2 accept=1 guard_reject=0 target_reject=1 stress=0
+FLEETV3_OOD_C1 axis=C attempts=56 accept=1 guard_reject=18 target_reject=37 stress=0
+FLEETV3_OOD_C2 axis=C attempts=4 accept=1 guard_reject=0 target_reject=3 stress=0
+FLEETV3_OOD_C3 axis=C attempts=4 accept=1 guard_reject=0 target_reject=3 stress=0
+FLEETV3_MANIFEST=/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/dataset_v3/qualification/stage_a_manifest.json
+FLEETV3_VERDICT=PASS

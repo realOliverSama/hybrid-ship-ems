@@ -1,0 +1,12 @@
+[72] model/HybridShip_ModelE.slx                    190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9
+[72] config/ModelE_Physics_Parameters.m             9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264
+[72] config/ModelE_Control_Parameters.m             a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63
+[72] config/gate_baseline_modele.json               3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e
+[72] config/gate_baseline_modele_control.json       1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273
+[72] running: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink/.venv_tf/bin/python -m dataset_v3.cd_interface_gate --formality FORMAL ...
+[cd-gate] formality=FORMAL
+[cd-gate] overall=True（正式 C/D Gate EXT-CD-GATE，n_voyages=20）
+
+[72] result 已并入 ⑩ 基线快照: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/dataset_v3/cd_interface/cd_interface_formal_stagea_ood.json
+[72] ===== C/D GATE 完成（formality=FORMAL）=====
+[72] 正式 EXT-CD-GATE：overall=true 方构成 T-432 解锁证据之一（FR-498）

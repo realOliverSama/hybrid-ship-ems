@@ -1,0 +1,142 @@
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] OOD: consuming frozen allocation plan
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+保留 ID 为 5 的作业，因为它们包含崩溃转储文件。
+您可以使用 'delete(myCluster.Jobs)' 来删除使用配置文件 Processes 创建的所有作业。要创建 'myCluster'，请使用 'myCluster = parcluster('Processes')'。
+已连接到具有 2 个工作单元的并行池。
+[fleet_v3] OOD: parallel dispatch 50 tasks on <=2 workers
+[fleet_v3] OOD task 2/50 done
+[fleet_v3] OOD task 1/50 done
+[fleet_v3] OOD task 3/50 done
+[fleet_v3] OOD task 4/50 done
+[fleet_v3] OOD task 6/50 done
+[fleet_v3] OOD task 5/50 done
+[fleet_v3] OOD task 7/50 done
+[fleet_v3] OOD task 8/50 done
+[fleet_v3] OOD task 9/50 done
+[fleet_v3] OOD task 10/50 done
+[fleet_v3] OOD task 11/50 done
+[fleet_v3] OOD task 12/50 done
+[fleet_v3] OOD task 13/50 done
+[fleet_v3] OOD task 14/50 done
+[fleet_v3] OOD task 15/50 done
+[fleet_v3] OOD task 16/50 done
+[fleet_v3] OOD task 17/50 done
+[fleet_v3] OOD task 19/50 done
+[fleet_v3] OOD task 18/50 done
+[fleet_v3] OOD task 20/50 done
+[fleet_v3] OOD task 21/50 done
+[fleet_v3] OOD task 22/50 done
+[fleet_v3] OOD task 23/50 done
+[fleet_v3] OOD task 24/50 done
+[fleet_v3] OOD task 25/50 done
+[fleet_v3] OOD task 26/50 done
+[fleet_v3] OOD task 27/50 done
+[fleet_v3] OOD task 28/50 done
+[fleet_v3] OOD task 29/50 done
+[fleet_v3] OOD task 30/50 done
+[fleet_v3] OOD task 31/50 done
+[fleet_v3] OOD task 32/50 done
+[fleet_v3] OOD task 33/50 done
+[fleet_v3] OOD task 34/50 done
+[fleet_v3] OOD task 35/50 done
+使用 'Processes' 配置文件的并行池正在关闭。
+[fleet_v3] OOD task 36/50 FAILED
+[fleet_v3] OOD task 37/50 FAILED
+[fleet_v3] OOD task 38/50 FAILED
+[fleet_v3] OOD task 39/50 FAILED
+[fleet_v3] OOD task 40/50 FAILED
+[fleet_v3] OOD task 41/50 FAILED
+[fleet_v3] OOD task 42/50 FAILED
+[fleet_v3] OOD task 43/50 FAILED
+[fleet_v3] OOD task 44/50 FAILED
+[fleet_v3] OOD task 45/50 FAILED
+[fleet_v3] OOD task 46/50 FAILED
+[fleet_v3] OOD task 47/50 FAILED
+[fleet_v3] OOD task 48/50 FAILED
+[fleet_v3] OOD task 49/50 FAILED
+[fleet_v3] OOD task 50/50 FAILED
+{错误使用 fleet_v3.run_tasks (第 88 行)
+15 of 50 OOD task(s) failed: task 36: UNKNOWN: 一个或多个 future 出现错误。 | task
+37: UNKNOWN: 一个或多个 future 出现错误。 | task 38: UNKNOWN: 一个或多个 future 出现
+错误。 | task 39: UNKNOWN: 一个或多个 future 出现错误。 | task 40: UNKNOWN: 一个或多
+个 future 出现错误。 | task 41: UNKNOWN: 一个或多个 future 出现错误。 | task 42:
+UNKNOWN: 一个或多个 future 出现错误。 | task 43: UNKNOWN: 一个或多个 future 出现错误。
+| task 44: UNKNOWN: 一个或多个 future 出现错误。 | task 45: UNKNOWN: 一个或多个
+future 出现错误。 | task 46: UNKNOWN: 一个或多个 future 出现错误。 | task 47:
+UNKNOWN: 一个或多个 future 出现错误。 | task 48: UNKNOWN: 一个或多个 future 出现错误。
+| task 49: UNKNOWN: 一个或多个 future 出现错误。 | task 50: UNKNOWN: 一个或多个
+future 出现错误。
+
+出错 fleet_v3.gen_ood (第 118 行)
+    outs = fleet_v3.run_tasks(task_fn, args_cell, ...
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+} 
+
+------------------------------------------------------------------------
+             Bus error detected at Thu Sep 10 23:17:25 2026
+------------------------------------------------------------------------
+Architecture     : maca64
+Processor ID     : ABI64 ARM ARM64E FIRESTORM_ICESTORM HG
+Host Name        : Oliver-MacBook-Air
+Locale           : zh_CN
+
+
+Abnormal termination:
+Bus error
+
+Current Thread: 'FTP_1_13' id 0x16d607000
+
+Register State (from fault):
+   X0 = 0000007b884b9cc0   X1 = 0000007b81400000
+   X2 = fffffffffc77ee60   X3 = 0000007b84c38b40
+   X4 = 0000007b84c82f80   X5 = 0000000000000020
+   X6 = 0000000000000001   X7 = ffffffffb00007ff
+   X8 = 0000007b8144a578   X9 = 0000000000000000
+  X10 = 0000000000000000  X11 = 0000000000000000
+  X12 = 02cb800000405bac  X13 = 00000000000001c2
+  X14 = 368abba69527ea5c  X15 = 368abba69527ea5c
+  X16 = 00000001944ebd60  X17 = 00000001053ded80
+  X18 = 0000000000000000  X19 = 0000007b884b9cc0
+  X20 = 0000007b84c831f0  X21 = 0000007b81970328
+  X22 = 0000007b84c830b8  X23 = 0000007b84c82f80
+  X24 = 0000000000000000  X25 = aaaaaaaaaaaaaaab
+  X26 = 0000000000000000  X27 = 0000000000000000
+  X28 = 000000016d606e78
+
+   FP = 000000016d606440   LR = 0000000118a49000
+   SP = 000000016d6063b0   PC = 00000001944ebf80
+
+ CPSR = a0001000
+
+
+Stack Trace (from fault):
+[  0] 0x000000010304d304 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwfl.dylib+00004868 _ZN10foundation4core4diag15stacktrace_base7captureERKNS1_14thread_contextEm+00000048
+[  1] 0x00000001030504e0 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwfl.dylib+00017632 _ZN10foundation4core4test17terminate_handledERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE+00002240
+[  2] 0x000000010304f92c /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwfl.dylib+00014636 _ZN10foundation4core4diag13terminate_logEPKcPK17__darwin_ucontext+00000140
+[  3] 0x0000000102ec3fe8 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentutils.dylib+00294888 _ZNK5agent5utils12CrashContext16writeCrashReportERNSt3__113basic_ostreamIcNS2_11char_traitsIcEEEE+00000716
+[  4] 0x0000000102ec3cac /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentutils.dylib+00294060 _ZNK5agent5utils12CrashContext20writeCrashReportFileERKNSt3__112basic_stringIcNS2_11char_traitsIcEENS2_9allocatorIcEEEE+00000168
+[  5] 0x0000000102ec483c /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentutils.dylib+00297020 _ZNK5agent5utils12CrashContext6reportEv+00000032
+[  6] 0x0000000102ec2020 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentutils.dylib+00286752 _ZN5agent5utils5posix20installCrashHandlersEv+00000660
+[  7] 0x00000001944ec144           /usr/lib/system/libsystem_platform.dylib+00016708 _sigtramp+00000056
+[  8] 0x0000000118a49000 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/microservices/mwhome/homeservice/mwhomeservice.dylib+00282624 _ZNSt3__116__variant_detail12__visitation6__base12__dispatcherIJLm1EEE10__dispatchB8ne200100IOZNS0_6__ctorINS0_8__traitsIJN6mwhome4core13QueryResponseENS9_13ErrorResponseEEEEE19__generic_constructB8ne200100IRKNS0_18__copy_constructorISC_LNS0_6_TraitE1EEEEEvRSD_OT_EUlSM_E_JRKNS0_6__baseILSG_1EJSA_SB_EEEEEEDcSL_DpT0_+00001824
+[  9] 0x0000000118a45218 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/microservices/mwhome/homeservice/mwhomeservice.dylib+00266776 _ZN6mwhome11homeservice23RecentArtifactsProvider24addDirectoriesOfInterestERKNSt3__16vectorINS2_12basic_stringIDsNS2_11char_traitsIDsEENS2_9allocatorIDsEEEENS7_IS9_EEEE+00000068
+[ 10] 0x0000000117ca2fdc /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/spf/serviceproviders/mwhome/homeservicespfplugin/libmwhomehomeservicespfplugin.dylib+00077788 _ZNSt3__116__variant_detail12__visitation6__base12__dispatcherIJLm1EEE10__dispatchB8ne200100IOZNS0_6__ctorINS0_8__traitsIJN6mwhome4core14DeleteResponseENS9_13ErrorResponseEEEEE19__generic_constructB8ne200100IRKNS0_18__copy_constructorISC_LNS0_6_TraitE1EEEEEvRSD_OT_EUlSM_E_JRKNS0_6__baseILSG_1EJSA_SB_EEEEEEDcSL_DpT0_+00015920
+[ 11] 0x0000000105466bd8 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentspfcore.dylib+00043992 _ZNK5agent3spf4core16ExportedFunctionclEN10foundation10concurrent10threadpool10stop_tokenEONS1_14GenericPayloadE+00000316
+[ 12] 0x00000001108926fc /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentspflegacyservicewrapper.dylib+00124668 _ZNSt3__116__variant_detail12__visitation6__base12__dispatcherIJLm1EEE10__dispatchB8ne200100IONS1_9__variant15__value_visitorIZN5agent3spf13serialisation4sizeERKNS_7variantIJNSA_14ByteBufferViewENSA_10ByteBufferEEEEEUlRKT_E_EEJRKNS0_6__baseILNS0_6_TraitE1EJSC_SD_EEEEEEDcSH_DpT0_+00073328
+[ 13] 0x000000010f42d900 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwagentnanomsgtransport.dylib+00022784 _ZN5agent16nanomsgtransport7Invoker4callERKN7mwboost5uuids4uuidENSt3__110shared_ptrINS7_8functionIFNS_4core9transport7MessageENSB_11MessageViewEEEEEEOSC_NS9_IFbvEEE+00002296
+[ 14] 0x00000001031d4608 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwfoundation_threadpool.dylib+00050696 _ZN10foundation10concurrent10threadpool6Thread7runTaskENSt3__110shared_ptrINS2_5StateEEEPNS1_11SharedQueueENS3_4pairINS9_INS3_8functionIFvvEEENS3_8optionalINS1_11stop_sourceEEEEEN7mwboost13intrusive_ptrINS1_11ClientQueueEEEEE+00000660
+[ 15] 0x00000001031d3a84 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwfoundation_threadpool.dylib+00047748 _ZN10foundation10concurrent10threadpool6Thread16workerThreadProcEPS2_NSt3__110shared_ptrINS2_5StateEEENS5_INS1_11SharedQueueEEENS4_6chrono8durationIxNS4_5ratioILl1ELl1000EEEEE+00001688
+[ 16] 0x00000001031e26b4 /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/v2026.9.0.2/MathWorksServiceHost.app/Contents/Frameworks/bin/maca64/libmwfoundation_threadpool.dylib+00108212 _ZNK10foundation10concurrent10threadpool14TaskHookHandlecvbEv+00023580
+[ 17] 0x00000001944e1d04            /usr/lib/system/libsystem_pthread.dylib+00027908 _pthread_start+00000136
+[ 18] 0x00000001944dccec            /usr/lib/system/libsystem_pthread.dylib+00007404 thread_start+00000008
+
+
+** This crash report has been written to /Users/oliverlyu/Library/Application Support/MathWorks/ServiceHost/logs/MathWorksServiceHost_crash_9215.log **
