@@ -1,0 +1,85 @@
+{
+  "artifact_sha256": "c7c8794fe3032f12609d09ad3d2a3021db0fe6a3f9251889c02237285b788bb4",
+  "feature_semantics": {
+    "channel_registry": "dataset_v3_signal_registry.json（D 冻结）",
+    "h1_role": "历史 300s@1Hz 观测（formal_norm_v3 transform 后）",
+    "kf_role": "issue 时刻合法 K/F 计划/预报（predictor_norm_ext_v1 transform 后）",
+    "metadata_excluded": "scenario/mission 等 METADATA 禁入（FR-579）"
+  },
+  "identity": {
+    "arch": "mlpq",
+    "config_sha256": "f9f68f210bdf2d177c9faae3c8055481f0e6a1810d87521b982f126d50903771",
+    "contract_version": "v1",
+    "formal_norm_v3_sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba",
+    "manifest_scientific_payload_sha256": "ee285091027a5bda50652832dbf7ba780302feca8897b9195715570a1ea7d712",
+    "model_config_sha256": "68791782e7d299499ab74d1219d7115611c50e4505516c6a1e001b88b5d96d6f",
+    "model_id": "mlpq",
+    "predictor_norm_ext_v1_sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c",
+    "split_assignment_canonical_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+    "windows_v3_formal_npz_sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497"
+  },
+  "input_tensors": [
+    {
+      "batch_semantics": "window-aware（每样本一个完整历史窗，window-uniform）",
+      "channel_order": [
+        "P_load_total_kW",
+        "v_ship_mps",
+        "acceleration_mps2",
+        "n_prop_rpm",
+        "P_hotel_kW",
+        "v_current_mps",
+        "water_depth_m",
+        "P_prop_demand_kW",
+        "ctrl_mode",
+        "v_ref_mps",
+        "manual_power_cmd_pct"
+      ],
+      "dtype": "float32",
+      "name": "hist_input",
+      "shape": [
+        300,
+        11
+      ]
+    }
+  ],
+  "output": {
+    "e300": "派生值 E300_hat = Σ q50_k·(10/3600)，非模型输出（FR-574）",
+    "quantile_order": [
+      "q10",
+      "q50",
+      "q90"
+    ],
+    "shape": [
+      30,
+      3
+    ],
+    "taus": [
+      0.1,
+      0.5,
+      0.9
+    ],
+    "unit": "kW"
+  },
+  "preprocessing": {
+    "constant_channels": {
+      "fields": [
+        "ctrl_mode",
+        "manual_power_cmd_pct"
+      ],
+      "policy": "scale=1 保留；支持外取值 OUT_OF_TRAIN_CONSTANT_SUPPORT 诊断（count/fraction/deviation），不 clamp 不拒样本（FR-581）"
+    },
+    "h1_normalization": "formal_norm_v3.json（D 冻结；per-channel per-bin mean/std）",
+    "kf_normalization": "predictor_norm_ext_v1.json（E 冻结；per-(channel,lead) mean/scale）",
+    "mask": null,
+    "nan_inf_policy": "装载即 fail（dataset_v3 管线已保证无 NaN/Inf 窗口）",
+    "zero_fill": "ctrl_mode=0（AUTO）时 manual_power_cmd_pct 置 0（DGN-06，数据侧已实施）"
+  },
+  "schema": "predictor_v3_input_contract_v1",
+  "temporal_semantics": {
+    "history": "300 s @ 1 Hz（bin 右端点时间基，行 0 最老）",
+    "horizon": "300 s = 30 bins × 10 s",
+    "kf_issue_semantics": "issue_time_s == anchor t0（vintage 对齐，容差 1e-9）",
+    "order": "时间升序；KF lead 升序 k=1..30 对应 (t0+10k) bin",
+    "stride": "10 s（anchor 网格；显式不变量 stride ≠ predictor_runtime_period_s，FR-578）"
+  }
+}

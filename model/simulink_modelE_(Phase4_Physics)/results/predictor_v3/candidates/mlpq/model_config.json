@@ -1,0 +1,22 @@
+{
+  "arch": "mlpq",
+  "artifact_sha256": "72923d230948bb228983fd7c42b379d2ca1a1b1cecb974b19d29ed97f9cd80ce",
+  "config": {
+    "batch": 256,
+    "hidden1": 64,
+    "hidden2": 32,
+    "lr": 0.001
+  },
+  "config_sha256": "68791782e7d299499ab74d1219d7115611c50e4505516c6a1e001b88b5d96d6f",
+  "feature_surface": "H1",
+  "model_id": "mlpq",
+  "param_count": 216314,
+  "schema": "predictor_v3_model_config_v1",
+  "source": {
+    "checkpoint": "experiments/predictor_v3/hpo/mlpq/mlpq-t001/model.keras",
+    "checkpoint_sha256": "4adccc28964a1a919d06ff3a8e366d4a9c324c0f5a2194d772cf467cf958f7fb",
+    "config_sha256": "f9f68f210bdf2d177c9faae3c8055481f0e6a1810d87521b982f126d50903771",
+    "selected_config_sha256": "0d949d02048b6a617cc65e1c5b313d12416148375ce4fc8ae4967d861a59f10f",
+    "selected_trial_id": "mlpq-t001"
+  }
+}
