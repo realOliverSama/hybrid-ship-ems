@@ -357,6 +357,9 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--arch", required=True)
     ap.add_argument("--phase", required=True, choices=["run", "select"])
+    ap.add_argument("--filter", default="all", choices=["all", "even", "odd"],
+                    help="trial_id 尾号奇偶分半（多卡并行用；清单不变，"
+                         "registry/预算语义不变）")
     args = ap.parse_args(argv)
     if args.phase == "run":
         # 用户裁定 2026-09-13（选项 A）：小架构（实测 GPU<30%）允许 2 路并发——
@@ -382,6 +385,11 @@ def main(argv=None) -> int:
         for trial in trial_list["trials"]:
             if trial["trial_id"] in done_ids:
                 skipped += 1
+                continue
+            tail = int(trial["trial_id"].rsplit("t", 1)[1])
+            if args.filter == "even" and tail % 2 != 0:
+                continue
+            if args.filter == "odd" and tail % 2 != 1:
                 continue
             run_trial(trial, train, val, arch_id=args.arch,
                       env_manifest_sha256=env_manifest_sha, budget=budget)
