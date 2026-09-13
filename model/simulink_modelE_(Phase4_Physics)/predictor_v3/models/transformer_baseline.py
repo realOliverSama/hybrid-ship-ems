@@ -70,11 +70,11 @@ def build(cfg: dict, s0: float):
     kf = tf.keras.Input(shape=(30, 6), name="kf_input")
 
     past = layers.Dense(d, name="past_proj")(hist)
-    past = past + _learned_pos(300, d, "past_pos")
+    past = _learned_pos(past, 300, d, "past_pos")
     for i in range(cfg["N_e"]):
         past = _preln_encoder_block(past, d, drop, f"enc{i}")
     fut = layers.Dense(d, name="fut_proj")(kf)
-    fut = fut + _learned_pos(30, d, "lead_pos")
+    fut = _learned_pos(fut, 30, d, "lead_pos")
     for i in range(cfg["N_d"]):
         fut = _preln_decoder_block(fut, past, d, drop, f"dec{i}")
 
@@ -86,10 +86,11 @@ def build(cfg: dict, s0: float):
     return tf.keras.Model([hist, kf], out, name="transformer_baseline")
 
 
-def _learned_pos(n: int, d: int, name: str):
-    """learned positional embedding：[n, d]（与 [B,n,d] 相加广播）。"""
+def _learned_pos(x, n: int, d: int, name: str):
+    """learned 位置编码（可序列化层；禁 Lambda——Keras 3 拒绝其反序列化）。"""
     from tensorflow.keras import layers
-    return layers.Embedding(n, d, name=name)(tf.range(n))
+    from predictor_v3.models.common import LearnedPositionalEncoding
+    return LearnedPositionalEncoding(n, d, name=name)(x)
 
 
 def _sp_inv(s: float) -> float:

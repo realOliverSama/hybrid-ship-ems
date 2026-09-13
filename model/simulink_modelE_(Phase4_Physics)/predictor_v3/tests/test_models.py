@@ -4,6 +4,7 @@
 Dispatch precondition（E1 裁定）：local unit/shape smoke PASS + capacity-envelope
 PASS + common quantile-contract PASS + K/F full-horizon visibility PASS。
 """
+import json
 import os
 import sys
 
@@ -104,3 +105,47 @@ def test_registry_inputs_match_surface():
 def test_s0_source_recorded():
     """s₀ 来源 = eval_config 冻结记录值（DGN-E-06；数值 + 来源 hash 双记录）。"""
     assert abs(S0 - 179.444619749777) < 1e-9
+
+
+@pytest.mark.parametrize("arch", ["mlpq", "tcnq", "transformer", "tft"])
+def test_full_model_serialize_roundtrip(arch, tmp_path):
+    """全架构 .keras save → 新进程 load_model → 输出 bitwise 一致。
+
+    无人值守防线（T-007 序列化事故推广）：四架构全部自定义层
+    （MonotonicQuantileTransform/GLU/GRN/InterpretableMHA/LearnedQueryAttentionPooling）
+    必须可跨进程反序列化，拦截 canonical 跑批的系统性失败。
+    """
+    import subprocess
+    import sys
+    import tensorflow as tf
+    from predictor_v3.hpo import _custom_objects
+    spec = ARCH_BUILDERS[arch]
+    cfg = {k: v[0] for k, v in spec["search_space"].items()}
+    model = spec["build"](cfg, S0)
+    x = _dummy_inputs(spec["feature_surface"], n=3)
+    ref = np.asarray(model(x, training=False))
+    p = tmp_path / f"{arch}.keras"
+    model.save(p)
+    lines = [
+        "import json, sys, numpy as np, tensorflow as tf",
+        f"sys.path.insert(0, r'{MODELE_ROOT}')",
+        "from predictor_v3.hpo import _custom_objects",
+        f"m = tf.keras.models.load_model(r'{p}', compile=False, custom_objects=_custom_objects())",
+        "x = {}",
+    ]
+    for k in x:
+        lines.append(f"x[{k!r}] = np.load(r'{tmp_path / (k + '.npy')}')")
+    lines.append("out = m(x, training=False).numpy()")
+    lines.append(f"ref = np.load(r'{tmp_path / 'ref.npy'}')")
+    lines.append("print(json.dumps({'bitwise': out.tobytes() == ref.tobytes()}))")
+    code = "\n".join(lines)
+    np.save(tmp_path / "ref.npy", ref)
+    for k, v in x.items():
+        np.save(tmp_path / f"{k}.npy", v)
+    env = dict(os.environ, PYTHONPATH=MODELE_ROOT)
+    res = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                         text=True, env=env)
+    assert res.returncode == 0, f"{arch}: {res.stderr[-600:]}"
+    assert json.loads(res.stdout.strip().splitlines()[-1])["bitwise"] is True, \
+        f"{arch}: reload 输出非 bitwise"
+    tf.keras.backend.clear_session()

@@ -14,6 +14,7 @@ import os
 import numpy as np
 import tensorflow as tf
 from tensorflow.keras import layers
+import keras
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODELE_ROOT = os.path.dirname(os.path.dirname(HERE))
@@ -47,6 +48,7 @@ def raw_bias_init(s0: float, n_lead: int = 30) -> np.ndarray:
     return np.tile(quantile_bias_init(s0), n_lead)
 
 
+@keras.saving.register_keras_serializable(package="predictor_v3")
 class LearnedQueryAttentionPooling(layers.Layer):
     """learned query 注意力池化（DGN-E-07(b)/(e)）：score = x·q
     （Dense(1, use_bias=False)）→ softmax over 时间位 → 加权和 [B, d]。"""
@@ -64,6 +66,7 @@ class LearnedQueryAttentionPooling(layers.Layer):
         return super().get_config()
 
 
+@keras.saving.register_keras_serializable(package="predictor_v3")
 class GLU(layers.Layer):
     """Gated Linear Unit：sigmoid(Dense(a)) ⊙ Dense(b)（TFT/AWD 标准）。"""
 
@@ -82,6 +85,7 @@ class GLU(layers.Layer):
         return cfg
 
 
+@keras.saving.register_keras_serializable(package="predictor_v3")
 class GRN(layers.Layer):
     """Gated Residual Network（TFT 论文标准；DGN-E-07(d) 组件）。
 
@@ -111,6 +115,7 @@ class GRN(layers.Layer):
         return cfg
 
 
+@keras.saving.register_keras_serializable(package="predictor_v3")
 class InterpretableMHA(layers.Layer):
     """TFT 可解释多头注意力（DGN-E-07(d)；未来位间不加因果掩码）。
 
@@ -146,4 +151,57 @@ class InterpretableMHA(layers.Layer):
     def get_config(self):
         cfg = super().get_config()
         cfg.update({"units": self.units, "num_heads": self.num_heads})
+        return cfg
+
+
+@keras.saving.register_keras_serializable(package="predictor_v3")
+class LearnedPositionalEncoding(layers.Layer):
+    """learned 位置编码（n 个离散位）：x + emb[0..n)（可序列化，无 Lambda）。"""
+
+    def __init__(self, n, d, **kwargs):
+        super().__init__(**kwargs)
+        self.n = n
+        self.d = d
+        self.emb = layers.Embedding(n, d)
+
+    def call(self, x):
+        return x + self.emb(tf.range(self.n))[None, :, :]
+
+    def get_config(self):
+        cfg = super().get_config()
+        cfg.update({"n": self.n, "d": self.d})
+        return cfg
+
+
+@keras.saving.register_keras_serializable(package="predictor_v3")
+class ChannelSlice(layers.Layer):
+    """取最后一维第 i 通道并保留末维（[B,T,m] → [B,T,1]；无 Lambda）。"""
+
+    def __init__(self, index, **kwargs):
+        super().__init__(**kwargs)
+        self.index = index
+
+    def call(self, x):
+        return x[..., self.index:self.index + 1]
+
+    def get_config(self):
+        cfg = super().get_config()
+        cfg["index"] = self.index
+        return cfg
+
+
+@keras.saving.register_keras_serializable(package="predictor_v3")
+class TakeFuture(layers.Layer):
+    """时间维切片取未来段（[B, T_past+T_fut, d] → [B, T_fut, d]；无 Lambda）。"""
+
+    def __init__(self, offset, **kwargs):
+        super().__init__(**kwargs)
+        self.offset = offset
+
+    def call(self, x):
+        return x[:, self.offset:, :]
+
+    def get_config(self):
+        cfg = super().get_config()
+        cfg["offset"] = self.offset
         return cfg

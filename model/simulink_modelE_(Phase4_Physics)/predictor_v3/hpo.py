@@ -270,10 +270,14 @@ def _s0() -> float:
 
 def _custom_objects() -> dict:
     from predictor_v3.models.common import (GLU, GRN, InterpretableMHA,
-                                            LearnedQueryAttentionPooling)
+                                            LearnedPositionalEncoding,
+                                            LearnedQueryAttentionPooling,
+                                            ChannelSlice, TakeFuture)
     from predictor_v3.quantile import MonotonicQuantileTransform
     return {"GLU": GLU, "GRN": GRN, "InterpretableMHA": InterpretableMHA,
             "LearnedQueryAttentionPooling": LearnedQueryAttentionPooling,
+            "LearnedPositionalEncoding": LearnedPositionalEncoding,
+            "ChannelSlice": ChannelSlice, "TakeFuture": TakeFuture,
             "MonotonicQuantileTransform": MonotonicQuantileTransform}
 
 

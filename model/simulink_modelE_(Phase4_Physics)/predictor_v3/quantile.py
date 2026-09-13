@@ -23,6 +23,7 @@ from __future__ import annotations
 
 import numpy as np
 import tensorflow as tf
+import keras
 
 TAUS = (0.1, 0.5, 0.9)
 Q_ORDER = ("q10", "q50", "q90")
@@ -59,6 +60,7 @@ def build_monotonic_quantile_transform():
     return MonotonicQuantileTransform()
 
 
+@keras.saving.register_keras_serializable(package="predictor_v3")
 class MonotonicQuantileTransform(tf.keras.layers.Layer):
     """共用单调 quantile 变换（无参数；禁二次投影；全体五候选同一实现）。
 

@@ -78,10 +78,9 @@ def build(cfg: dict, s0: float):
     kf = tf.keras.Input(shape=(30, 6), name="kf_input")
 
     # VSN（split 最后一维为通道）
-    hist_ch = [tf.keras.layers.Lambda(lambda t, i=i: t[..., i:i + 1],
-                                      name=f"hsplit{i}")(hist) for i in range(11)]
-    kf_ch = [tf.keras.layers.Lambda(lambda t, i=i: t[..., i:i + 1],
-                                    name=f"ksplit{i}")(kf) for i in range(6)]
+    from predictor_v3.models.common import ChannelSlice
+    hist_ch = [ChannelSlice(i, name=f"hsplit{i}")(hist) for i in range(11)]
+    kf_ch = [ChannelSlice(i, name=f"ksplit{i}")(kf) for i in range(6)]
     past = _variable_selection(hist_ch, d, drop, "vsn_past")   # [B,300,d]
     fut = _variable_selection(kf_ch, d, drop, "vsn_fut")       # [B,30,d]
 
@@ -100,7 +99,8 @@ def build(cfg: dict, s0: float):
         layers.Add(name="post_att_add")([seq, GLU(d, name="glu_att")(att)]))
     seq = GRN(d, dropout=drop, name="pos_grn")(seq)
 
-    fut_seq = seq[:, 300:, :]                                  # 取未来 30 位
+    from predictor_v3.models.common import TakeFuture
+    fut_seq = TakeFuture(300, name="take_future")(seq)         # 取未来 30 位
     raw = layers.Dense(
         3, bias_initializer=tf.keras.initializers.Constant(
             np.array([0.0, _sp_inv(s0), _sp_inv(s0)])),
