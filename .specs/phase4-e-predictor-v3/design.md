@@ -343,7 +343,11 @@ E0（T-001~T-007）→ E1（T-008~T-011）→ E2（T-012 设计冻结 → T-013 
 
 ## 偏差登记
 
-（暂无；施工期偏差逐项登记于此。）
+| 日期 | 偏差 | 来源/理由 | 处置 |
+|---|---|---|---|
+| 2026-09-13 | DGV-E-01（T-003 实施期）：OOD npz 在 DGN-E-03 窗口标签清单（voyage_id / anchor_t0_s / window_index_in_voyage / ood_condition）之外**附加 `split_group_id` 元数据列**。 | FR-577 per-condition split_group 计数（A1=36v/9g…）与 FR-602/DGN-E-12 two-sample cluster bootstrap（重采样单位 = split_group）的必需元数据；不写 splits 列的禁令不受影响（split_group 是聚类身份，非 IID train/val/test 分割语义）；非科学分布值，不泄露窗口内容。 | 已实施（`predictor_v3/ood_materialize.py`；integrity JSON 的 per_condition.split_groups 计数消费该列）；integrity/scientific payload hash 已覆盖该列。 |
+
+（施工期偏差逐项登记于此；实质架构/设计语义变更不在此列，须升级用户。）
 
 ## 修订记录
 
