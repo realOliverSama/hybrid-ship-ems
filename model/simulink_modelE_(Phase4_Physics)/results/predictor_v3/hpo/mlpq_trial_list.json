@@ -1,0 +1,62 @@
+{
+  "arch": "mlpq",
+  "artifact_sha256": "02d1df6e6598164104482e3beb182f5c0b8eeb4147d95d0c7c5604588877081e",
+  "budget_cap": 5,
+  "hpo_seed": 111497487,
+  "n_trials": 4,
+  "s0": 179.444619749777,
+  "sampling": "uniform without replacement over capacity-valid configs（numpy default_rng，sorted canonical key 序）",
+  "schema": "predictor_v3_hpo_trial_list_v1",
+  "subsampled_out": [],
+  "trials": [
+    {
+      "arch": "mlpq",
+      "config": {
+        "batch": 256,
+        "hidden1": 64,
+        "hidden2": 32,
+        "lr": 0.0005
+      },
+      "config_sha256": "ca8ef632fd1981fac62be052f7ac8948ffb96a57c88d94a80ee1bede842a9bc4",
+      "param_count": 216314,
+      "trial_id": "mlpq-t000"
+    },
+    {
+      "arch": "mlpq",
+      "config": {
+        "batch": 256,
+        "hidden1": 64,
+        "hidden2": 32,
+        "lr": 0.001
+      },
+      "config_sha256": "f9f68f210bdf2d177c9faae3c8055481f0e6a1810d87521b982f126d50903771",
+      "param_count": 216314,
+      "trial_id": "mlpq-t001"
+    },
+    {
+      "arch": "mlpq",
+      "config": {
+        "batch": 512,
+        "hidden1": 64,
+        "hidden2": 32,
+        "lr": 0.0005
+      },
+      "config_sha256": "fd236b09be42821ef0e21a9b8ef8adc01dc80a2ecdf61cadeac5d02a125a95fa",
+      "param_count": 216314,
+      "trial_id": "mlpq-t002"
+    },
+    {
+      "arch": "mlpq",
+      "config": {
+        "batch": 512,
+        "hidden1": 64,
+        "hidden2": 32,
+        "lr": 0.001
+      },
+      "config_sha256": "a045754b203f96118dd0906894ce38b010d2ade6af10bdc335f056b121d8ab88",
+      "param_count": 216314,
+      "trial_id": "mlpq-t003"
+    }
+  ],
+  "utc": "2026-09-13T10:52:34.034040+00:00"
+}

@@ -1,0 +1,315 @@
+{
+  "arch": "tcnq",
+  "artifact_sha256": "77c2cb2c59a9b369eb748be99e4e1501d9ac517ccf81b638b0a3e860ef1187ce",
+  "budget_cap": 20,
+  "hpo_seed": 959964163,
+  "n_trials": 20,
+  "s0": 179.444619749777,
+  "sampling": "uniform without replacement over capacity-valid configs（numpy default_rng，sorted canonical key 序）",
+  "schema": "predictor_v3_hpo_trial_list_v1",
+  "subsampled_out": [
+    {
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 59194
+    },
+    {
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 62362
+    },
+    {
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 144346
+    },
+    {
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 269338
+    }
+  ],
+  "trials": [
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "df73ad654f7e2da96608c17b5de31de74d64c9fc17267edc74defd985dca1c47",
+      "param_count": 59194,
+      "trial_id": "tcnq-t000"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "config_sha256": "a2227cac3addd536ffe3cbd718a243df86e935b9f84a1cea422eaeffe3f3106c",
+      "param_count": 59194,
+      "trial_id": "tcnq-t001"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "5ceeb599f54f4cc6c0e5232617e20064b8a632b4d4c0b0b172255c48103db02d",
+      "param_count": 59194,
+      "trial_id": "tcnq-t002"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "3213726796a2af4fb8b08d850f9dce3d3c88da41b0311822ebd6228727eef9a6",
+      "param_count": 62362,
+      "trial_id": "tcnq-t003"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "dea061d5648265da30cf186f1ef8826ef230bf7783ae06505f34fa7f254cbaf1",
+      "param_count": 62362,
+      "trial_id": "tcnq-t004"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 32,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "67958c3606ae4ca3fc5fbfefa9545fa9f4c7c010f57409af851af8de7def3ede",
+      "param_count": 62362,
+      "trial_id": "tcnq-t005"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "03baa0fbcbea5f4a18012afaffa0331de0ee3b7fc5d53f128fd92764730ff8d6",
+      "param_count": 131866,
+      "trial_id": "tcnq-t006"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "config_sha256": "17165dfe8fe2187b020940a836b5f21567feb910ff8d3a74e67426b9b13b6e97",
+      "param_count": 131866,
+      "trial_id": "tcnq-t007"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "e124f78ffd424aaf00cd1fee8dd325bd34f56a25cb49ae9a5a41b4061d082e00",
+      "param_count": 131866,
+      "trial_id": "tcnq-t008"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "2145b88ca90cc49a650d620236111d57e823f2b6338b90da4578f7704d08d40c",
+      "param_count": 131866,
+      "trial_id": "tcnq-t009"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "04000e7b7bc88ee3782f779aa84c01955933eec4c149e25222022f551b9cd58d",
+      "param_count": 144346,
+      "trial_id": "tcnq-t010"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "config_sha256": "b2c054847eefecddb87bbf51cb175be6aa9e5e5c998032fa6bbe6826e264a895",
+      "param_count": 144346,
+      "trial_id": "tcnq-t011"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 64,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "2e12cdacefea7500ec7cc99b2b3e966300b766cb536ce995e1284e774cd85e4f",
+      "param_count": 144346,
+      "trial_id": "tcnq-t012"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "b889e76cd0f196edcea2bfe9099c4c5358df626e8a6985b2d89ef41f53cd8563",
+      "param_count": 241402,
+      "trial_id": "tcnq-t013"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "config_sha256": "d804b89816bd7874b08743efba9742cc5796eafcb4101011d19624e02c84cf0e",
+      "param_count": 241402,
+      "trial_id": "tcnq-t014"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "16344e74db3888ea63d5e6520c7a608ffcd6f7671ade33e9efed9b0e6911619a",
+      "param_count": 241402,
+      "trial_id": "tcnq-t015"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "6b",
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "37cf2b5260bd983ddab974356c217f0f7d957c2257057767eca82eb9d55f3e78",
+      "param_count": 241402,
+      "trial_id": "tcnq-t016"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "config_sha256": "7521fe1ebe8086f41c5a76f2d495b2e4e209ecc071f773a8912d4c0c01f79626",
+      "param_count": 269338,
+      "trial_id": "tcnq-t017"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "a35c2dc98e309b4e0c09de72309cf35d2af82b5028cb91d17e9aba6ddc120c77",
+      "param_count": 269338,
+      "trial_id": "tcnq-t018"
+    },
+    {
+      "arch": "tcnq",
+      "config": {
+        "C": 96,
+        "batch": 256,
+        "dilations": "7b",
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "1f91633b4337d83246caf6d97393dcc50521f81cd47af3719bfba0b45bce574c",
+      "param_count": 269338,
+      "trial_id": "tcnq-t019"
+    }
+  ],
+  "utc": "2026-09-13T10:52:39.477384+00:00"
+}

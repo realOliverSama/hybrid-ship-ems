@@ -1,0 +1,248 @@
+{
+  "arch": "tft",
+  "artifact_sha256": "ad1bd72bdaab1c854386114dbcc5a0bc37928fbec788c7f934b9dedc5e4d27c9",
+  "budget_cap": 20,
+  "hpo_seed": 2132015081,
+  "n_trials": 18,
+  "s0": 179.444619749777,
+  "sampling": "uniform without replacement over capacity-valid configs（numpy default_rng，sorted canonical key 序）",
+  "schema": "predictor_v3_hpo_trial_list_v1",
+  "subsampled_out": [],
+  "trials": [
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "n_lstm": 1
+      },
+      "config_sha256": "f19562d8dbec010589ef7f3397b7d1b5d6e19c2383e8f17da6704566d26de34f",
+      "param_count": 1320468,
+      "trial_id": "tft-t000"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0003,
+        "n_lstm": 1
+      },
+      "config_sha256": "8b205b0e5937eeba593d9e3805954955f284952f419be76c31a33c54b38456c7",
+      "param_count": 1320468,
+      "trial_id": "tft-t001"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.001,
+        "n_lstm": 1
+      },
+      "config_sha256": "aa6bf2d0254d534a81c4b289ffa9244b446a648fff4a57354373346460d880cc",
+      "param_count": 1320468,
+      "trial_id": "tft-t002"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0001,
+        "n_lstm": 1
+      },
+      "config_sha256": "39e8a649761547a9905f168367f2e6dfd8fc30ba25c263b1cb1d70c128179738",
+      "param_count": 1320468,
+      "trial_id": "tft-t003"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0003,
+        "n_lstm": 1
+      },
+      "config_sha256": "1b724327959917ebee15e38b488746061e79ac42a1bfd025931f12fddce26036",
+      "param_count": 1320468,
+      "trial_id": "tft-t004"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.001,
+        "n_lstm": 1
+      },
+      "config_sha256": "efd52b3bd1f7cf1ef41303ef41213c4b2da00e192b069c066a17e48093fe944e",
+      "param_count": 1320468,
+      "trial_id": "tft-t005"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "n_lstm": 1
+      },
+      "config_sha256": "6408591189a0a7f3654b50ab9e53eb429956af2cddec1a500bcad1c20360a679",
+      "param_count": 339732,
+      "trial_id": "tft-t006"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "n_lstm": 2
+      },
+      "config_sha256": "7b42bc7d45c373fd66af5c14921309d74d1f335ee05ee9c282b56cf107dd1420",
+      "param_count": 405780,
+      "trial_id": "tft-t007"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0003,
+        "n_lstm": 1
+      },
+      "config_sha256": "18490ecd8833f345a54108bdd899f5fa67444c450d6d3ef93514e4cf746dcda8",
+      "param_count": 339732,
+      "trial_id": "tft-t008"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0003,
+        "n_lstm": 2
+      },
+      "config_sha256": "68eb393636c2716ea7fe44f57330291c0a3ebec857180da71cb64bd1484246ca",
+      "param_count": 405780,
+      "trial_id": "tft-t009"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.001,
+        "n_lstm": 1
+      },
+      "config_sha256": "bea67d817d912187765d21751d30ce39e25800755968e4b37cd7f5d03e7b04c2",
+      "param_count": 339732,
+      "trial_id": "tft-t010"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.001,
+        "n_lstm": 2
+      },
+      "config_sha256": "b62f040e3fe16215646923e885a7e25b476147a9490ee5d716d132ccc07ef06c",
+      "param_count": 405780,
+      "trial_id": "tft-t011"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0001,
+        "n_lstm": 1
+      },
+      "config_sha256": "94a7991bce0828622f1397f7603c866eedbb2e8b5117f5683685f9475c9dea2d",
+      "param_count": 339732,
+      "trial_id": "tft-t012"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0001,
+        "n_lstm": 2
+      },
+      "config_sha256": "03da85ef621897e4d98c84aeabe789da10a7da2dd5369286e88c34d4b2d27836",
+      "param_count": 405780,
+      "trial_id": "tft-t013"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0003,
+        "n_lstm": 1
+      },
+      "config_sha256": "7828f80e19641bd8a7d261f9a9d569fc35b66d2dcc6b0dc0fd0cec887e59f30c",
+      "param_count": 339732,
+      "trial_id": "tft-t014"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0003,
+        "n_lstm": 2
+      },
+      "config_sha256": "127e15447bdda3f166c936831792ea3d870f89827ef7b2edf30d20c5e6ddd154",
+      "param_count": 405780,
+      "trial_id": "tft-t015"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.001,
+        "n_lstm": 1
+      },
+      "config_sha256": "b01ca93271c850705a023d4e553b96566a74f23a2758f4aa607cc2cd4bf9204f",
+      "param_count": 339732,
+      "trial_id": "tft-t016"
+    },
+    {
+      "arch": "tft",
+      "config": {
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.001,
+        "n_lstm": 2
+      },
+      "config_sha256": "40ff72e88dfa6721159bd48243e4efa71208f6a3710290eb479e0f170ec415a2",
+      "param_count": 405780,
+      "trial_id": "tft-t017"
+    }
+  ],
+  "utc": "2026-09-13T10:53:45.130784+00:00"
+}

@@ -1,0 +1,78 @@
+{
+  "arch": "tft",
+  "budget_cap": 20,
+  "hpo_seed": 2132015081,
+  "n_capacity_valid": 18,
+  "n_enumerated": 24,
+  "n_rejected": 6,
+  "n_subsampled_out": 0,
+  "rejected": [
+    {
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0001,
+        "n_lstm": 2
+      },
+      "param_count": 1583636,
+      "reason": "count_params 1583636 ∉ [0, 1500000]"
+    },
+    {
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0003,
+        "n_lstm": 2
+      },
+      "param_count": 1583636,
+      "reason": "count_params 1583636 ∉ [0, 1500000]"
+    },
+    {
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.001,
+        "n_lstm": 2
+      },
+      "param_count": 1583636,
+      "reason": "count_params 1583636 ∉ [0, 1500000]"
+    },
+    {
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0001,
+        "n_lstm": 2
+      },
+      "param_count": 1583636,
+      "reason": "count_params 1583636 ∉ [0, 1500000]"
+    },
+    {
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0003,
+        "n_lstm": 2
+      },
+      "param_count": 1583636,
+      "reason": "count_params 1583636 ∉ [0, 1500000]"
+    },
+    {
+      "config": {
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.001,
+        "n_lstm": 2
+      },
+      "param_count": 1583636,
+      "reason": "count_params 1583636 ∉ [0, 1500000]"
+    }
+  ],
+  "schema": "predictor_v3_trial_generation_audit_v1"
+}
