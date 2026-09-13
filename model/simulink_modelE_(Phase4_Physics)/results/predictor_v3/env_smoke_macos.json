@@ -1,0 +1,361 @@
+{
+  "fallback_chain": [
+    {
+      "result": "FAIL",
+      "symptom": "libmetal_plugin.dylib dlopen NotFoundError: _pywrap_tensorflow_internal.so rpath miss",
+      "tensorflow-metal": "1.2.0",
+      "tf": "2.21.0"
+    },
+    {
+      "result": "FAIL",
+      "symptom": "同上 dlopen NotFoundError",
+      "tensorflow-metal": "1.2.0",
+      "tf": "2.20.0"
+    },
+    {
+      "result": "PASS",
+      "symptom": "import OK, CPU+GPU(Metal) 设备注册成功",
+      "tensorflow-metal": "1.2.0",
+      "tf": "2.19.1"
+    }
+  ],
+  "fallback_note": "首选 TF 2.21.0 组合 smoke 失败（T-001 Gate 预案证据驱动降钉）；2.20.0 仍失败后按 FR-591/592 证据驱动 fallback 落锁 2.19.1（tensorflow-metal 1.2.0 官方支持矩阵内最高 TF 版本；numpy 2.x 保持）。",
+  "git_commit": "ef36e046be29545ac84f519845078ee0f86bf6db",
+  "gpu_probe": {
+    "device": "GPU:0",
+    "informational": true,
+    "matmul_ok": true
+  },
+  "keras": "3.15.1",
+  "machine": "arm64",
+  "mlp_smoke": {
+    "device": "CPU:0",
+    "finite": true,
+    "loss_final": 14.163209915161133,
+    "loss_first": 14.163209915161133,
+    "pass": true,
+    "steps": 1
+  },
+  "npz_smoke": {
+    "arrays": [
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "Y",
+        "shape": [
+          197448,
+          30
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "E300",
+        "shape": [
+          197448
+        ]
+      },
+      {
+        "dtype": "<U5",
+        "fortran_order": false,
+        "name": "splits",
+        "shape": [
+          197448
+        ]
+      },
+      {
+        "dtype": "<U17",
+        "fortran_order": false,
+        "name": "voyage_id",
+        "shape": [
+          197448
+        ]
+      },
+      {
+        "dtype": "float64",
+        "fortran_order": false,
+        "name": "anchor_t0_s",
+        "shape": [
+          197448
+        ]
+      },
+      {
+        "dtype": "int32",
+        "fortran_order": false,
+        "name": "window_index_in_voyage",
+        "shape": [
+          197448
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::P_load_total_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::v_ship_mps",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::acceleration_mps2",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::n_prop_rpm",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::P_hotel_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::v_current_mps",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::water_depth_m",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::P_prop_demand_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::ctrl_mode",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::v_ref_mps",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H1::manual_power_cmd_pct",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::P_gen_actual_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::P_bat_actual_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::SOC",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::V_dc_V",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::state_DG1",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::state_DG2",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::V_bat_V",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::I_bat_A",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::P_bat_dis_avail_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_H2::P_bat_chg_avail_kW",
+        "shape": [
+          197448,
+          300
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_KF::v_plan_mps",
+        "shape": [
+          197448,
+          30
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_KF::s_plan_m",
+        "shape": [
+          197448,
+          30
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_KF::h_chart_m",
+        "shape": [
+          197448,
+          30
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_KF::P_hotel_plan_kW",
+        "shape": [
+          197448,
+          30
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_KF::u_fcst_mps",
+        "shape": [
+          197448,
+          30
+        ]
+      },
+      {
+        "dtype": "float32",
+        "fortran_order": false,
+        "name": "X_KF::wl_fcst_m",
+        "shape": [
+          197448,
+          30
+        ]
+      }
+    ],
+    "n_arrays": 33,
+    "pass": true,
+    "path": "simulink_modelE_(Phase4_Physics)/datasets_v3/formal/windows_v3_formal.npz",
+    "sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497",
+    "sha256_match_freeze": true,
+    "size_bytes": 135958081
+  },
+  "numpy": "2.1.3",
+  "os": "Darwin 27.0.0",
+  "physical_devices": [
+    {
+      "name": "/physical_device:CPU:0",
+      "type": "CPU"
+    },
+    {
+      "name": "/physical_device:GPU:0",
+      "type": "GPU"
+    }
+  ],
+  "platform": "macos_local",
+  "python": "3.12.7",
+  "schema": "predictor_v3_env_smoke_v1",
+  "scipy": "1.18.1",
+  "task": "T-001",
+  "tensorflow": "2.19.1",
+  "utc": "2026-09-13T07:16:04.119709+00:00",
+  "verdict": "PASS"
+}

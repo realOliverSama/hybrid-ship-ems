@@ -304,6 +304,16 @@ unseen current / unseen water depth / unseen mission composition。
 候选最多 MLP-Q / TCN-Q / TFT / REAT-T，按 prediction + probabilistic calibration +
 OOD 裁决。**不无限扫模型；暂不考虑 N6。**
 
+> 澄清注记（2026-09-13，Phase 4-E spec FR-609/DGN-E-18 落账，不改路线结构）：
+> 本条 "prediction + probabilistic calibration + OOD 裁决" 解释为——**validation 预测与
+> 概率证据决定 Winner；OOD 证据进入 T-444 最终科学证据包；OOD 不参与 Winner 选择**
+>（单向证据流 TRAIN→VAL HPO→CONFIG FREEZE→3-SEED CONFIRM→VAL-ONLY WINNER→
+> PRETERMINAL FREEZE→TEST/OOD UNSEAL→FINAL）。正式候选集以 Phase 4-E spec
+>（`.specs/phase4-e-predictor-v3/`）冻结五候选为准：MLP-Q-v3 / TCN-Q / TFT /
+> Transformer / REAT-T（winner_pool 五候选，训练前协议澄清）；T-444 实际执行拆分为
+> T-444a（PRETERMINAL WINNER SELECTION）→ T-443（TERMINAL TEST/OOD EVALUATION）
+> → T-444b（FINAL WINNER EVIDENCE FREEZE）。
+
 ---
 
 ## 7. 工作包 F：预测式先进 EMS

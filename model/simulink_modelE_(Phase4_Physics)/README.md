@@ -1,4 +1,4 @@
-# simulink_modelE_(Phase4_Physics)/ — Model E 工作区（Phase 4-A2 + 4-B）
+# simulink_modelE_(Phase4_Physics)/ — Model E 工作区（Phase 4-A2 + 4-B + 4-E predictor_v3）
 
 > **入库策略**: 入库（`slprj*/`、`*.slxc`、codegen 等生成产物不入库）。
 
@@ -16,6 +16,14 @@ Plant 物理与 EMS 七变体零改动（NFR-412/A2 FR-426 契约延续）；Mod
 **500 t representative hull 口径**（`target_vessel_confirmed=false`，未确认工作假定）：
 K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.188 m/C_B=0.60（Rhine86 相似缩尺推导）。
 **Model D 与 Model E 绝对结果不可比是设计意图**（Q3/Q4 裁决），只允许方向性/守恒性对照。
+
+**Phase 4-E predictor_v3**（spec `.specs/phase4-e-predictor-v3/`，2026-09-13 起）：在冻结
+Dataset v3 上训练/评估 NN 负荷预测器（五候选 + REAT-T 消融 + 三轴 OOD 诊断 + Winner
+Freeze；T-436~T-444）。`dataset_v3/` 与 `datasets_v3/` 冻结资产零字节改动只读消费；
+E 新增 `predictor_v3/` 包（T-002 起建）、`config/predictor_v3/` 配置、
+`results/predictor_v3/` 证据（精选入库）与 `artifacts/predictor_v3/` 本地产物（不入库）。
+本地 `.venv_tf`（仓库根）仅开发/smoke/CPU 探针；result-bearing 训练 canonical =
+AutoDL 4090D CUDA（FR-591 平台分离）。
 
 ## 目录结构
 
@@ -64,6 +72,10 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `model/HybridShip_ModelE.slx` | builder 生成（脚本驱动，禁 GUI 修改；B 包顶层 16 块含 07_PMS_v2/16_Safety_Interlock） |
 | `results/` | `gate_result.json`（T-412 against candidate overall=true）、`gate_control_result.json`（43+44：overall + C1~C7 + 三臂指标 + negative_control）、`config_manifest.json`（4 config sha256+有效值快照） |
 | `docs/` | 证据文档指向仓库级 `docs/phase4/b_pms_safety/`（field-level diff / 三臂对比 / 裁决链） |
+| `config/predictor_v3/` | ★ **E 包 predictor-v3 配置**（Phase 4-E T-001 起建：`env/requirements_tf_base.txt` 手钉最小集——首选 TF 2.21.0 + metal 1.2.0 smoke FAIL，证据驱动降钉 TF 2.19.1 落锁；`env/requirements_tf_macos_lock.txt` pip freeze 全量 + 关键 wheel sha256；`env/env_smoke_macos.py` 兼容 smoke——1-epoch MLP 前向反向 + 设备清单 + npz schema 冒烟（不触数据字节）；后续按 tasks 增补 T-004 `predictor_norm_ext_v1.json` / T-005 三 config / T-012 `reat_t_arch.json`。**预测模型：无（配置与锁文件，非模型）**） |
+| `results/predictor_v3/` | **E 包 predictor-v3 机器可读证据（精选入库）**（T-001 起：`env_manifest_macos.json` 本地开发环境 manifest（FR-591 开发/smoke/CPU 探针专用，非 result-bearing；自哈希 DGN-E-16 配方）+ `env_smoke_macos.json` 兼容 smoke PASS 证据；后续 HPO/confirm/ablation/winner/terminal 证据按 tasks 增补） |
+| `artifacts/predictor_v3/` | **E-owned 本地产物命名空间（不入库，.gitignore Design Gate R1 授权）**（T-003 OOD 窗口 npz、训练 checkpoint 等派生产物；`datasets_v3/` 冻结资产零字节改动） |
+| `predictor_v3/` | ★ **E 包 predictor-v3 Python 包**（Phase 4-E T-002 起建：`data_access.py` sealed 数据访问层与访问门——`load_split` fail-closed 只开放 train/val、`load_terminal` 六项核验、DatasetView 懒加载 raw 窗口、per-run 访问日志分片；`tests/` pytest 单测；详见该目录 README.md。**预测模型：施工作业中，截至 T-002 无已训练模型工件**） |
 | `reports/parameter_audit.csv` | builder 生成的参数审计（ParamMeta，40 项） |
 
 ## Legacy / Superseded（FR-492/493：不删不搬不改行为，仅 README 标记）

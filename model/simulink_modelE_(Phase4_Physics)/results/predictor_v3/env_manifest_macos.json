@@ -1,0 +1,83 @@
+{
+  "artifact_sha256": "7ec6ae1b80b6f01d8983dd19410d922d0e53da88cd335c1adf40ecc06a1ae5a7",
+  "backend": {
+    "cuda": null,
+    "cudnn": null,
+    "nvidia_driver": "N/A",
+    "plugin": "tensorflow-metal==1.2.0",
+    "type": "Metal"
+  },
+  "cpu_identity": "Apple M1",
+  "dataset_v3_identity": {
+    "formal_norm_v3_sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba",
+    "manifest_scientific_payload_sha256": "ee285091027a5bda50652832dbf7ba780302feca8897b9195715570a1ea7d712",
+    "ood_sealed": true,
+    "split_assignment_canonical_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+    "test_sealed": true,
+    "windows_v3_formal_npz_sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497"
+  },
+  "device_list": [
+    {
+      "name": "/physical_device:CPU:0",
+      "type": "CPU"
+    },
+    {
+      "name": "/physical_device:GPU:0",
+      "type": "GPU"
+    }
+  ],
+  "git_commit": "ef36e046be29545ac84f519845078ee0f86bf6db",
+  "gpu_identity": "Apple M1 (Metal via tensorflow-metal 1.2.0, 8.00 GB systemMemory)",
+  "keras": "3.15.1",
+  "locks": {
+    "requirements_tf_base": {
+      "path": "config/predictor_v3/env/requirements_tf_base.txt",
+      "sha256": "d2d9fea25b339aa6bfeb77255e57fbf5943b6a93278d138efe64965005598543"
+    },
+    "requirements_tf_macos_lock": {
+      "path": "config/predictor_v3/env/requirements_tf_macos_lock.txt",
+      "sha256": "0b641bf712605a14720303707b46b04720e9656e3e7f08dc1835e8fdc1d59882"
+    }
+  },
+  "machine": "arm64",
+  "notes": [
+    "canonical result-bearing 环境 = AutoDL 4090D CUDA（T-007，另发 manifest）；",
+    "本 manifest 仅覆盖本地开发/单测/smoke/CPU 探针用途（FR-591 平台分离）；",
+    "文件系统路径不是科学环境身份（FR-592）。"
+  ],
+  "numpy": "2.1.3",
+  "os": "Darwin 27.0.0",
+  "platform": "macos_local",
+  "python": "3.12.7",
+  "role": "development_only_not_result_bearing",
+  "schema": "predictor_v3_env_manifest_v1",
+  "scipy": "1.18.1",
+  "smoke": {
+    "evidence": "results/predictor_v3/env_smoke_macos.json",
+    "evidence_sha256": "38f89d612804e1d6d102682de6b6e899bc26fa0681f142d4d3c77a73cf75ac00",
+    "fallback_chain": [
+      {
+        "result": "FAIL",
+        "symptom": "libmetal_plugin.dylib dlopen NotFoundError: _pywrap_tensorflow_internal.so rpath miss",
+        "tensorflow-metal": "1.2.0",
+        "tf": "2.21.0"
+      },
+      {
+        "result": "FAIL",
+        "symptom": "同上 dlopen NotFoundError",
+        "tensorflow-metal": "1.2.0",
+        "tf": "2.20.0"
+      },
+      {
+        "result": "PASS",
+        "symptom": "import OK, CPU+GPU(Metal) 设备注册成功",
+        "tensorflow-metal": "1.2.0",
+        "tf": "2.19.1"
+      }
+    ],
+    "verdict": "PASS"
+  },
+  "task": "T-001",
+  "tensorflow": "2.19.1",
+  "utc": "2026-09-13T07:17:53.263101+00:00"
+}
