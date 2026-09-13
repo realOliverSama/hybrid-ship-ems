@@ -1,0 +1,87 @@
+{
+  "artifact_sha256": "31aac9f057a6cb0a8a25b665c8e79ea0e75fde41e26bcf5883bdb9c84922f0bf",
+  "counts": {
+    "expected_per_condition_voyages_groups": {
+      "A1": {
+        "split_groups": 9,
+        "voyages": 36
+      },
+      "B1": {
+        "split_groups": 10,
+        "voyages": 40
+      },
+      "C1": {
+        "split_groups": 11,
+        "voyages": 44
+      },
+      "C2": {
+        "split_groups": 10,
+        "voyages": 40
+      },
+      "C3": {
+        "split_groups": 10,
+        "voyages": 40
+      }
+    },
+    "n_voyages": 200,
+    "n_windows": 72304,
+    "per_condition": {
+      "A1": {
+        "split_groups": 9,
+        "voyages": 36,
+        "windows": 14136
+      },
+      "B1": {
+        "split_groups": 10,
+        "voyages": 40,
+        "windows": 13720
+      },
+      "C1": {
+        "split_groups": 11,
+        "voyages": 44,
+        "windows": 16992
+      },
+      "C2": {
+        "split_groups": 10,
+        "voyages": 40,
+        "windows": 14924
+      },
+      "C3": {
+        "split_groups": 10,
+        "voyages": 40,
+        "windows": 12532
+      }
+    }
+  },
+  "determinism": {
+    "n_runs": 2,
+    "note": "确定性门 = canonical payload hash 一致；文件 sha256 逐位一致另报不作为门（zip 时间戳差异不构成科学不确定性）",
+    "payload_hash_equal": true,
+    "run2_scientific_payload_sha256": "6383a27bcd69b619db89ce1ce4d57d7240a92c8f6685f6c1d5b26cf40454a2b7"
+  },
+  "discipline": "SEALED_PREPROCESS_ONLY",
+  "npz": {
+    "file_sha256": "fea3f8421b7e602b6c75224d09a25588a302492eb2cdc99b4fbcf5356c328186",
+    "path": "artifacts/predictor_v3/data/ood_windows_v3_formal.npz",
+    "scientific_payload_sha256": "6383a27bcd69b619db89ce1ce4d57d7240a92c8f6685f6c1d5b26cf40454a2b7",
+    "size_bytes": 50510256
+  },
+  "numpy": "2.5.3",
+  "platform": "macOS-27.0-arm64-arm-64bit",
+  "provenance": {
+    "command": "python -m predictor_v3.ood_materialize --ood-dir datasets_v3/formal/ood --out-npz artifacts/predictor_v3/data/ood_windows_v3_formal.npz",
+    "dataset_v3_code_hash": "cbb815e81c68130e5495b49418647796d54f03e54e8f1ddb0b9461c086f74e7a",
+    "driver": "predictor_v3/ood_materialize.py",
+    "driver_sha256": "8426b0a629f12257f5a7bd36ffc58b244d8357f374ac3ff74890ec41c3016aa3",
+    "freeze_result_sha256": "2d426a925abe080d88ee0db846e52b821b6be9f35487fd3b0a6d51f81b5ae877",
+    "frozen_pipeline": "dataset_v3（只读调用，零改动）",
+    "ood_corpus_manifest_sha256": "07e072e28dc7bf1552304593ea64d8752eae934e023fe8315096da246e83001a",
+    "ood_corpus_n_files": 200,
+    "realized_mapping_sha256": "6072838d9d18b96c4828e41e6b4cd75a3fb4958198e5090d51bbe8fbeb7aa955"
+  },
+  "python": "3.12.7",
+  "schema": "predictor_v3_ood_windows_integrity_v1",
+  "sealed_note": "产物保持 sealed；T-018 campaign 授权前禁止科学性访问（预测器推理/评估/分布诊断/指标/绘图/样本值查看）。",
+  "task": "T-003",
+  "utc": "2026-09-13T07:58:11.027771+00:00"
+}

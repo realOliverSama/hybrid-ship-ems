@@ -1,5 +1,5 @@
 {
-  "artifact_sha256": "7ec6ae1b80b6f01d8983dd19410d922d0e53da88cd335c1adf40ecc06a1ae5a7",
+  "artifact_sha256": "14ce9cd9cf47d1e3eaf280c27c38e54ce42d0754e7418fe3e66da45314d93f6f",
   "backend": {
     "cuda": null,
     "cudnn": null,
@@ -26,7 +26,7 @@
       "type": "GPU"
     }
   ],
-  "git_commit": "ef36e046be29545ac84f519845078ee0f86bf6db",
+  "git_commit": "b43424dea01c19cdf1301c8ea83b57448170ef7d",
   "gpu_identity": "Apple M1 (Metal via tensorflow-metal 1.2.0, 8.00 GB systemMemory)",
   "keras": "3.15.1",
   "locks": {
@@ -54,7 +54,7 @@
   "scipy": "1.18.1",
   "smoke": {
     "evidence": "results/predictor_v3/env_smoke_macos.json",
-    "evidence_sha256": "38f89d612804e1d6d102682de6b6e899bc26fa0681f142d4d3c77a73cf75ac00",
+    "evidence_sha256": "57e58555ea023267ac120689ba65a84c11d4286346870e116918241fc68e0503",
     "fallback_chain": [
       {
         "result": "FAIL",
@@ -79,5 +79,5 @@
   },
   "task": "T-001",
   "tensorflow": "2.19.1",
-  "utc": "2026-09-13T07:17:53.263101+00:00"
+  "utc": "2026-09-13T07:47:35.855573+00:00"
 }

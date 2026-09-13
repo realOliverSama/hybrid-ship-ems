@@ -1,0 +1,25 @@
+{
+  "artifact_sha256": "35615b48187486d27d01b65d457f5317de7d87e2bfbea917bb85999376b7559d",
+  "configs": {
+    "diagnostics_config.json": {
+      "file_sha256": "c6961889f6c589079e9bc17811a97412ebcfc7388d46e8a1054a5240946ce831",
+      "self_hash_field": "a59a4a3805895dae0862e1f478527f03b8d28f5f07135c4036c49ea25063e57b"
+    },
+    "eval_config.json": {
+      "file_sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a",
+      "self_hash_field": null
+    },
+    "predictor_norm_ext_v1.json": {
+      "file_sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c",
+      "self_hash_field": "18824e087cef4ca9f93362a82a3a515e072340954b79d31060bf2ea76f96b353"
+    },
+    "training_budget.json": {
+      "file_sha256": "5e2de1a4acfa759603688b73c7f14be463eacef4eb5ac6c0c440063f06a8fdc5",
+      "self_hash_field": null
+    }
+  },
+  "note": "三 config（training_budget/eval_config/diagnostics_config）+ norm_ext 工件 冻结落盘记录；config 自哈希配方 = canonical JSON 排除 artifact_sha256（DGN-E-16）",
+  "schema": "predictor_v3_config_hashes_t005_v1",
+  "task": "T-005",
+  "utc": "2026-09-13T08:15:19.480512+00:00"
+}

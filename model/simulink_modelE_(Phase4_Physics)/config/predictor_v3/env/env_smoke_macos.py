@@ -46,16 +46,23 @@ def git_commit():
 
 def npz_schema(path):
     """schema 级 npz 检查：zip namelist + npy header（不读数据字节）。"""
+    import io
+
     import numpy as np
     arrays = []
     with zipfile.ZipFile(path, "r") as zf:
         for name in zf.namelist():
             if not name.endswith(".npy"):
                 continue
-            with zf.open(name) as fh:
-                version = np.lib.format.read_magic(fh)
-                shape, fortran, dtype = np.lib.format._read_array_header(
-                    fh, version)
+            raw = zf.read(name)  # 解压后 .npy 原始字节（header+data）
+            fh = io.BytesIO(raw)
+            ver = np.lib.format.read_magic(fh)
+            if ver == (1, 0):
+                shape, fortran, dtype = np.lib.format.read_array_header_1_0(fh)
+            elif ver == (2, 0):
+                shape, fortran, dtype = np.lib.format.read_array_header_2_0(fh)
+            else:
+                raise ValueError(f"未知 npy 版本 {ver}: {name}")
             arrays.append({
                 "name": name[: -len(".npy")],
                 "dtype": str(dtype),

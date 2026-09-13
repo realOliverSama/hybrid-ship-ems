@@ -20,7 +20,7 @@
     }
   ],
   "fallback_note": "首选 TF 2.21.0 组合 smoke 失败（T-001 Gate 预案证据驱动降钉）；2.20.0 仍失败后按 FR-591/592 证据驱动 fallback 落锁 2.19.1（tensorflow-metal 1.2.0 官方支持矩阵内最高 TF 版本；numpy 2.x 保持）。",
-  "git_commit": "ef36e046be29545ac84f519845078ee0f86bf6db",
+  "git_commit": "b43424dea01c19cdf1301c8ea83b57448170ef7d",
   "gpu_probe": {
     "device": "GPU:0",
     "informational": true,
@@ -356,6 +356,6 @@
   "scipy": "1.18.1",
   "task": "T-001",
   "tensorflow": "2.19.1",
-  "utc": "2026-09-13T07:16:04.119709+00:00",
+  "utc": "2026-09-13T07:46:59.177382+00:00",
   "verdict": "PASS"
 }
