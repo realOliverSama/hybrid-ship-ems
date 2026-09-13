@@ -99,7 +99,7 @@ def test_registry_inputs_match_surface():
     """输入命名/形状契约 = DGN-E-05 INPUT_SPECS（train.py 管道一致性）。"""
     for arch, spec in ARCH_BUILDERS.items():
         assert spec["feature_surface"] in INPUT_SPECS
-        assert spec["model_id"] in ("mlpq", "tcnq", "transformer", "tft")
+        assert spec["model_id"] in ("mlpq", "tcnq", "transformer", "tft", "reatt")
 
 
 def test_s0_source_recorded():

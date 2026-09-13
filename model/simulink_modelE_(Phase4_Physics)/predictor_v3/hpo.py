@@ -273,11 +273,13 @@ def _custom_objects() -> dict:
                                             LearnedPositionalEncoding,
                                             LearnedQueryAttentionPooling,
                                             ChannelSlice, TakeFuture)
+    from predictor_v3.models.reat_t import TilePast
     from predictor_v3.quantile import MonotonicQuantileTransform
     return {"GLU": GLU, "GRN": GRN, "InterpretableMHA": InterpretableMHA,
             "LearnedQueryAttentionPooling": LearnedQueryAttentionPooling,
             "LearnedPositionalEncoding": LearnedPositionalEncoding,
             "ChannelSlice": ChannelSlice, "TakeFuture": TakeFuture,
+            "TilePast": TilePast,
             "MonotonicQuantileTransform": MonotonicQuantileTransform}
 
 
