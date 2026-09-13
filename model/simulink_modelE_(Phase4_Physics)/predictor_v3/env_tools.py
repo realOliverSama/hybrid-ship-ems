@@ -108,6 +108,8 @@ def run_probe_once(out_json: str, device: str = "cpu") -> dict:
         "numpy": np.__version__,
         "tensorflow": tf.__version__,
         "platform": platform.platform(),
+        "git_commit": os.environ.get(
+            "EMS_PINNED_GIT_COMMIT", "UNPINNED"),
     }
     os.makedirs(os.path.dirname(out_json) or ".", exist_ok=True)
     with open(out_json, "w", encoding="utf-8") as fh:

@@ -31,6 +31,9 @@ S0_INIT = 42
 
 
 def git_commit():
+    pinned = os.environ.get("EMS_PINNED_GIT_COMMIT")
+    if pinned:
+        return pinned  # archive 钉版树无 .git：以传输时 commit 为准（autodl_protocol §3）
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT,
