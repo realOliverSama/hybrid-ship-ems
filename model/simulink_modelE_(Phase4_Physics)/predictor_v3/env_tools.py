@@ -36,14 +36,19 @@ def _sha256_bytes(b: bytes) -> str:
     return hashlib.sha256(b).hexdigest()
 
 
-def run_probe_once(out_json: str) -> dict:
+def run_probe_once(out_json: str, device: str = "cpu") -> dict:
     """单进程探针 run：固定小 MLP（raw 投影 + 共用 MonotonicQuantileTransform）
-    合成数据训练 PROBE_EPOCHS → 记录预测 hash/指标/权重 hash。显式 CPU-only。"""
+    合成数据训练 PROBE_EPOCHS → 记录预测 hash/指标/权重 hash。
+
+    device="cpu"：显式隐藏全部 GPU（本地 macOS/Linux CPU）；device="cuda"：
+    不隐藏 GPU（canonical 环境探针，记录可见 GPU 身份）。
+    """
     os.environ.setdefault("PYTHONHASHSEED", str(PROBE_SEED))
     import tensorflow as tf
 
-    # 显式 CPU-only：隐藏全部 GPU（含 Metal pluggable device）
-    tf.config.set_visible_devices([], "GPU")
+    gpu_list = tf.config.list_physical_devices("GPU")
+    if device == "cpu":
+        tf.config.set_visible_devices([], "GPU")
     try:
         tf.config.experimental.enable_op_determinism()
         det = True
@@ -86,7 +91,9 @@ def run_probe_once(out_json: str) -> dict:
     weights_blob = b"".join(
         np.asarray(w).tobytes() for w in model.get_weights())
     result = {
-        "device_policy": "CPU_ONLY (all GPU devices hidden)",
+        "device_policy": ("CPU_ONLY (all GPU devices hidden)" if device == "cpu"
+                          else f"CUDA ({len(gpu_list)} GPU visible)"),
+        "devices": [{"name": d.name, "type": d.device_type} for d in gpu_list],
         "op_determinism_enabled": bool(det),
         "seed": PROBE_SEED,
         "epochs": PROBE_EPOCHS,
@@ -108,7 +115,7 @@ def run_probe_once(out_json: str) -> dict:
     return result
 
 
-def run_probe_pair(out_dir: str | None = None) -> dict:
+def run_probe_pair(out_dir: str | None = None, device: str = "cpu") -> dict:
     """两独立子进程双跑 + 比较（bitwise/容差如实落盘）。"""
     import tempfile
     out_dir = out_dir or os.path.join(
@@ -118,7 +125,7 @@ def run_probe_pair(out_dir: str | None = None) -> dict:
     for i in (1, 2):
         p = os.path.join(out_dir, f"probe_run{i}.json")
         cmd = [sys.executable, "-m", "predictor_v3.env_tools",
-               "--once", "--out", p]
+               "--once", "--device", device, "--out", p]
         subprocess.run(cmd, cwd=MODELE_ROOT, check=True,
                        capture_output=True, text=True)
         with open(p, encoding="utf-8") as fh:
@@ -135,8 +142,8 @@ def run_probe_pair(out_dir: str | None = None) -> dict:
     }
     doc = {
         "schema": "predictor_v3_determinism_probe_v1",
-        "task": "T-006",
-        "platform": "cpu_local",
+        "task": "T-006" if device == "cpu" else "T-007",
+        "platform": "cpu_local" if device == "cpu" else "cuda_canonical",
         "utc": datetime.now(timezone.utc).isoformat(),
         "protocol": "DGN-E-10：固定小配置（合成数据+小 MLP，非正式候选）两独立进程"
                     "同种子双跑；deterministic ops 启用；GPU 显式隐藏",
@@ -154,7 +161,7 @@ def run_probe_pair(out_dir: str | None = None) -> dict:
         sort_keys=True, separators=(",", ":"),
         ensure_ascii=False).encode()).hexdigest()
     out = os.path.join(MODELE_ROOT, "results", "predictor_v3",
-                       "determinism_probe_cpu.json")
+                       f"determinism_probe_{device}.json")
     with open(out, "w", encoding="utf-8") as fh:
         json.dump(doc, fh, ensure_ascii=False, indent=2, sort_keys=True)
         fh.write("\n")
@@ -168,13 +175,15 @@ def run_probe_pair(out_dir: str | None = None) -> dict:
 def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="T-006 CPU 确定性探针")
     ap.add_argument("--once", action="store_true", help="单进程 run（子进程调用）")
+    ap.add_argument("--device", default="cpu", choices=["cpu", "cuda"])
     ap.add_argument("--out", default=None)
     args = ap.parse_args(argv)
     if args.once:
         run_probe_once(args.out or os.path.join(
-            MODELE_ROOT, "artifacts", "predictor_v3", "probe_tmp", "run.json"))
+            MODELE_ROOT, "artifacts", "predictor_v3", "probe_tmp", "run.json"),
+            device=args.device)
         return 0
-    doc = run_probe_pair()
+    doc = run_probe_pair(device=args.device)
     return 0 if doc["verdict"].startswith("PASS") else 1
 
 
