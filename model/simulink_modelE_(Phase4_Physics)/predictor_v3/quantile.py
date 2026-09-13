@@ -22,6 +22,7 @@
 from __future__ import annotations
 
 import numpy as np
+import tensorflow as tf
 
 TAUS = (0.1, 0.5, 0.9)
 Q_ORDER = ("q10", "q50", "q90")
@@ -50,30 +51,30 @@ def quantile_bias_init(s0: float) -> np.ndarray:
 
 
 def build_monotonic_quantile_transform():
-    """构造共用 MonotonicQuantileTransform（Keras Layer；全体五候选同一实例化点）。
+    """构造共用 MonotonicQuantileTransform 实例。
 
-    入口 raw [B,30,3]=(m,a,b) → 输出 [B,30,3] 末维 [q10,q50,q90]。
+    实现为模块级真实类（下方）——闭包工厂类无法跨进程 .keras 反序列化
+    （T-007 事故 DGV 记录：custom_objects 必须拿类本身）。
     """
-    import tensorflow as tf
-
-    class _MonotonicQuantileTransform(tf.keras.layers.Layer):
-        """共用单调 quantile 变换（无参数；禁二次投影）。"""
-
-        def call(self, raw):
-            raw = tf.convert_to_tensor(raw)
-            m, a, b = raw[..., 0], raw[..., 1], raw[..., 2]
-            q10 = m - tf.nn.softplus(a)
-            q90 = m + tf.nn.softplus(b)
-            return tf.stack([q10, m, q90], axis=-1)
-
-        def get_config(self):
-            return super().get_config()
-
-    _MonotonicQuantileTransform.__name__ = "MonotonicQuantileTransform"
-    return _MonotonicQuantileTransform()
+    return MonotonicQuantileTransform()
 
 
-MonotonicQuantileTransform = build_monotonic_quantile_transform
+class MonotonicQuantileTransform(tf.keras.layers.Layer):
+    """共用单调 quantile 变换（无参数；禁二次投影；全体五候选同一实现）。
+
+    raw [B,30,3]=(m,a,b) → [B,30,3] 末维 [q10,q50,q90]。
+    """
+
+    def call(self, raw):
+        raw = tf.convert_to_tensor(raw)
+        m, a, b = raw[..., 0], raw[..., 1], raw[..., 2]
+        q10 = m - tf.nn.softplus(a)
+        q90 = m + tf.nn.softplus(b)
+        return tf.stack([q10, m, q90], axis=-1)
+
+    def get_config(self):
+        return super().get_config()
+
 
 
 def pinball_loss(y_true, y_pred):

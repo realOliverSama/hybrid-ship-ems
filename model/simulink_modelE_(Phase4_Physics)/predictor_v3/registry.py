@@ -73,11 +73,15 @@ class TrialRegistry:
             return [json.loads(line) for line in fh if line.strip()]
 
     def budget_consumed(self) -> int:
-        """已消耗预算位：COMPLETED_* / FAILED 各占 1；INFRA_INTERRUPTED 不占
-        （同一 trial_id 重跑不产生新配置机会，DGN-E-08 R5）。"""
-        return sum(1 for r in self.rows()
-                   if r["status"] in ("COMPLETED_ELIGIBLE",
-                                      "COMPLETED_INELIGIBLE", "FAILED"))
+        """已消耗预算位（按唯一 trial_id）：COMPLETED_* / FAILED 耗位；
+        INFRA_INTERRUPTED 不占；同一 trial_id 的重跑行不重复计数
+        （DGN-E-08 R5：纯基础设施中断同 trial_id 重跑不产生新配置机会）。"""
+        consumed = set()
+        for r in self.rows():
+            if r["status"] in ("COMPLETED_ELIGIBLE", "COMPLETED_INELIGIBLE",
+                               "FAILED"):
+                consumed.add(r["trial_id"])
+        return len(consumed)
 
     def eligible_trials(self) -> list:
         """COMPLETED_ELIGIBLE = 有效有限 val 证据 + 有效冻结 checkpoint 的 trial

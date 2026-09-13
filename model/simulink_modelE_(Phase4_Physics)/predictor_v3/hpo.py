@@ -271,10 +271,10 @@ def _s0() -> float:
 def _custom_objects() -> dict:
     from predictor_v3.models.common import (GLU, GRN, InterpretableMHA,
                                             LearnedQueryAttentionPooling)
-    from predictor_v3.quantile import build_monotonic_quantile_transform
+    from predictor_v3.quantile import MonotonicQuantileTransform
     return {"GLU": GLU, "GRN": GRN, "InterpretableMHA": InterpretableMHA,
             "LearnedQueryAttentionPooling": LearnedQueryAttentionPooling,
-            "MonotonicQuantileTransform": build_monotonic_quantile_transform}
+            "MonotonicQuantileTransform": MonotonicQuantileTransform}
 
 
 # ------------------------------------------------------------ selected_config

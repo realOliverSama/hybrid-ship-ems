@@ -81,3 +81,42 @@ def test_crossing_rate_zero_for_monotonic():
     q = np.stack([np.ones((4, 30)), np.zeros((4, 30)), np.full((4, 30), -1.0)],
                  axis=-1)
     assert qt.crossing_rate(q) == 1.0
+
+
+def test_keras_serialize_roundtrip(tmp_path):
+    """序列化回归（T-007 事故）：保存 → 新进程语义 load_model → 输出一致。
+
+    custom_objects 必须传类本身（工厂函数会被 Keras 3 拒绝）。
+    """
+    import json
+    import subprocess
+    import sys
+    import numpy as np
+
+    raw = np.random.default_rng(1).normal(size=(3, 30, 3)).astype("float32") * 5
+    tf = pytest.importorskip("tensorflow")
+    from predictor_v3.quantile import (MonotonicQuantileTransform,
+                                       build_monotonic_quantile_transform)
+    m = tf.keras.Sequential([tf.keras.layers.Input(shape=(30, 3)),
+                             build_monotonic_quantile_transform()])
+    ref = m(raw).numpy()
+    p = tmp_path / "m.keras"
+    m.save(p)
+    # 新进程 load（custom_objects = 类）+ 输出 bitwise 对拍
+    code = (
+        "import sys, json, numpy as np, tensorflow as tf\n"
+        f"m = tf.keras.models.load_model(r'{p}', compile=False,\n"
+        "    custom_objects={'MonotonicQuantileTransform': "
+        "__import__('predictor_v3.quantile', fromlist=['MonotonicQuantileTransform']).MonotonicQuantileTransform})\n"
+        f"raw = np.load(r'{tmp_path / 'raw.npy'}')\n"
+        "out = m(raw).numpy()\n"
+        "print(json.dumps({'bitwise': out.tobytes() == np.load(r'"
+        + str(tmp_path / "ref.npy") + "').tobytes()}))\n"
+    )
+    np.save(tmp_path / "raw.npy", raw)
+    np.save(tmp_path / "ref.npy", ref)
+    env = dict(os.environ, PYTHONPATH=MODELE_ROOT)
+    res = subprocess.run([sys.executable, "-c", code], capture_output=True,
+                         text=True, env=env)
+    assert res.returncode == 0, res.stderr[-500:]
+    assert json.loads(res.stdout.strip().splitlines()[-1])["bitwise"] is True
