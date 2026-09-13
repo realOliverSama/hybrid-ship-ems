@@ -1,0 +1,161 @@
+{
+  "schema": "t432_activation_amendment_v1",
+  "amendment_id": "T432_ACTIVATION_AMENDMENT_03",
+  "frozen_at": "2026-09-09",
+  "approved_by": "user Final Ruling 2026-09-09 (option A' selected; B and C rejected)",
+  "original_activation_sha256": "fd185552b5c3ed5410f5e3c8672b8c6ae46014a2f69a1b815d4ae0f5f79e9d28",
+  "lineage_note": "original_activation_sha256 = shasum -a 256 of t432_activation_record.json at amendment time; this equals the record state carried forward from the T432_ACTIVATION_AMENDMENT_02 lineage head (amendment_02.original_activation_sha256 = amendment_01.post_activation_sha256 = the then-current record file SHA; the record's scientific sections are unchanged by this amendment, only amendment_chain is appended)",
+  "post_registration_record_sha256": "4c67b8cfd5406523e84b5e8262f4f7dc97e2a924704e869b1013d4283c43db08",
+  "classification": "formal-fleet allocation-law correction (scheduling layer). Retires per-family contiguous candidate-window ownership; adopts canonical ascending per-stratum/condition candidate consumption plus a two-phase deterministic allocation workflow. Does NOT touch any scientific predicate, support bound, token rule, physical guard, seed root, block definition, quota, or total.",
+  "trigger": {
+    "condition": "C1",
+    "family": "family k=6 (dispatched as OOD task 27 of 50)",
+    "gate_error": "GATE:FLEETV3:OOD:UNREACHABLE",
+    "attempts": 100,
+    "reject_breakdown": {
+      "guard_band_rejects": 25,
+      "no_target_rejects": 75,
+      "stress_set_removals": 0
+    },
+    "deterministic_reproduction": "three Stage-B batch attempts reproduced the failure identically (task 27 FAILED in each 50-task dispatch; 49/50 tasks done in each): results/dataset_v3/formal/pass1_stage_b_ood_a1.log, pass1_stage_b_ood_a2.log, pass1_stage_b_ood_a3.log; plus two single-task probes with identical outcome (100 attempts: 25 guard-band rejects + 75 no-target rejects + 0 STRESS_SET removals)",
+    "evidence_log_sha256": {
+      "results/dataset_v3/formal/pass1_stage_b_ood_a1.log": "c9810bd6aea5bcfcbfa09b529f4344d965a43a8de69afc6f97b0a064b1e61a11",
+      "results/dataset_v3/formal/pass1_stage_b_ood_a2.log": "91d3a466373c13ce60a53f985cd295dc6cadb1a15ea58e38aa85a1fb177ecdbe",
+      "results/dataset_v3/formal/pass1_stage_b_ood_a3.log": "c8717a7b31aed263fd1b45b4dcb3ba29ebb4eb87932f40702c485f3bf8826da3"
+    }
+  },
+  "iid_rejection_gate_coincident_evidence": {
+    "artifact": "results/dataset_v3/formal/pass1_iid_ledger.json",
+    "sha256": "617f0bb88c37ea7641df643a633e8c2516870fc74e68d488371414b2df89e560",
+    "observed": "verdict=FAIL; overall rejection_rate=0.1724 (<0.50) yet the per-stratum gate fired via candidate-window exhaustion; all 576/576 ACCEPT voyages are present and data-complete (ledger voyages: 576 entries, all ACCEPT)",
+    "interpretation": "per-family window fragmentation artificially inflates per-stratum rejection accounting: the same disease as C1 k=6. IID support was never scientifically exhausted; only the private per-family windows were."
+  },
+  "old_window_rule": {
+    "status": "RETIRED_BY_THIS_AMENDMENT",
+    "rule": "each (condition, family k) owned a private contiguous candidate window [base + k*W, base + (k+1)*W) of the frozen 1000-index block; W = floor(1000/16) = 62 (IID) / floor(1000/10) = 100 (OOD)",
+    "advance_rule": "\"rejected attempts advance within the window only\": a rejected candidate advanced the family cursor strictly inside its own private window; the window boundary was never crossed",
+    "exhaustion_rule": "window exhausted => slot_fails => UNREACHABLE for that family slot (same-seed retries confined to the same window)",
+    "defect": "scheduling-level local barrenness: candidate indices outside a family's private window were unreachable even though the same frozen 1000-index block still contained untried draws. UNREACHABLE verdicts produced by window exhaustion therefore did NOT imply scientific unreachability of the block."
+  },
+  "new_allocation_rule": {
+    "status": "ADOPTED_BY_THIS_AMENDMENT",
+    "rule": "per-family contiguous candidate-window ownership is RETIRED. For each stratum/condition, candidates are consumed in canonical ascending order starting from the frozen block head (base_draw_index ascending) until the preregistered quota is filled.",
+    "per_candidate_semantics": [
+      "derive seed/lineage from base_draw_index (derivation unchanged)",
+      "generate the candidate realization",
+      "apply ALL frozen support / token REQUIRE / physical-domain / eligibility rules unchanged",
+      "record every rejection/disposition in the consumption ledger",
+      "FAILED_* disposition retried only per the existing same-seed retry policy",
+      "REJECTED_* disposition advances the cursor to the next candidate index",
+      "accept fills the family slot; once the quota is full, stop consuming",
+      "UNREACHABLE only when the ENTIRE 1000-index block is exhausted with the quota still unfilled (true block unreachability)"
+    ],
+    "reclassification": "C1 k=6 failure is reclassified as ARTIFICIAL_SUPPORT_FRAGMENTATION_BY_PER_FAMILY_DRAW_WINDOW: a scheduling-level local-barrenness artifact of the retired window rule, NOT scientific unreachability of the C1 support"
+  },
+  "two_phase_workflow": {
+    "phase_s": {
+      "name": "Phase S: deterministic allocation before simulation",
+      "output": "formal_draw_allocation_plan.json plus its self_hash",
+      "required_min_fields": [
+        "corpus and seed root",
+        "stratum/condition",
+        "family slot",
+        "accepted base_draw_index",
+        "lineage identifiers",
+        "consumed candidate range",
+        "rejection/disposition ledger reference",
+        "attempt counts",
+        "self_hash"
+      ],
+      "property": "selection semantics are independent of worker count and of completion order"
+    },
+    "phase_r": {
+      "name": "Phase R: simulation",
+      "rule": "workers simulate ONLY the accepted base draws listed in the plan; workers are FORBIDDEN from searching, resampling, or allocating on their own"
+    },
+    "plan_reuse": "the same plan drives pass1 and pass2 of the two-run determinism check"
+  },
+  "invariants_unchanged": {
+    "seed_roots": "UNCHANGED (same formal seed roots for IID and OOD)",
+    "block_definition": "UNCHANGED (frozen 1000-index blocks per stratum/condition)",
+    "lineage_derivation": "UNCHANGED (seed/lineage derived from base_draw_index)",
+    "iid_scientific_predicates": "UNCHANGED",
+    "ood_scientific_predicates": "UNCHANGED (axis A/B/C membership on realized values)",
+    "support_bounds": "UNCHANGED",
+    "token_require_rules": "UNCHANGED (heldout_token_registry canonical tokens; hand-coded copies forbidden)",
+    "physical_domain_guards": "UNCHANGED (700 kW propulsion capacity at 11 kn adverse; hard bounds |U|<=2.8, ht>=1.3; guard bands)",
+    "rejection_thresholds": "UNCHANGED in value (per_stratum_max=0.50, overall_max=0.50); recompute basis CHANGES to the new ascending-consumption ledger",
+    "retry_policy": "UNCHANGED (slot_failed_retry_max=2, same-slot config seed, rejected never occupies a slot)",
+    "formal_family_quotas": "UNCHANGED (IID 16 families/stratum, OOD 10 families/condition)",
+    "formal_fleet_total": "UNCHANGED (IID 576 + OOD 200 = 776)"
+  },
+  "crash_classification": {
+    "event": "R2026a lxe serialization / fatal-signal worker crashes during Stage-B batch attempts (e.g. MathWorks ServiceHost crash report terminating results/dataset_v3/formal/pass1_stage_b_iid_a1.log)",
+    "classification": "secondary manifestation of worker-side exhaustion exceptions under the retired window rule",
+    "amendment_basis": "the per-family window fragmentation defect itself; the lxe crash is NOT a basis for this amendment and implies no change to Model E, solver, sample times, or physics"
+  },
+  "qualification_consequence": {
+    "qualified_stack": "INVALIDATED: the 73#-chain implementation changes under this amendment void the currently qualified stack",
+    "requalification_sequence": [
+      "T432_ACTIVATION_AMENDMENT_03 (this file)",
+      "allocator implementation (ascending consumption + two-phase plan producer)",
+      "allocator unit / negative regression",
+      "Stage A 92x2 two-run determinism rerun",
+      "C/D FORMAL interface Gate rerun",
+      "new qualified-stack capture",
+      "strict identity verification",
+      "Stage B 776x2 restart",
+      "T-020 freeze"
+    ],
+    "mixing_ban": "No old Stage-B voyage may be mixed into the amended formal corpus"
+  },
+  "superseded_artifacts": {
+    "classification": "SUPERSEDED_STAGEB_SAMPLER_DIAGNOSTIC",
+    "status": "diagnostic only; NOT part of the formal fleet; registered in place (no move/delete) via results/dataset_v3/formal/SUPERSEDED_STAGEB_SAMPLER_DIAGNOSTIC.json",
+    "artifacts": [
+      "results/dataset_v3/formal/pass1_stage_b_iid_a1.log",
+      "results/dataset_v3/formal/pass1_iid_ledger.json",
+      "results/dataset_v3/formal/pass1_stage_b_ood_a1.log",
+      "results/dataset_v3/formal/pass1_stage_b_ood_a2.log",
+      "results/dataset_v3/formal/pass1_stage_b_ood_a3.log",
+      "results/dataset_v3/formal/pass2_stage_b_ood_a1.log",
+      "results/dataset_v3/formal/STAGE_B_FAILED",
+      "datasets_v3/formal/iid/*.mat (576 files)",
+      "datasets_v3/formal/ood/FLTB_OOD_*.mat (196 files: A1 40, B1 40, C1 36, C2 40, C3 40; C1 short by the deterministically failed family k=6)",
+      "datasets_v3/formal/ood/_ood_stress_ledger_A1.json",
+      "datasets_v3/formal/ood/_ood_stress_ledger_B1.json"
+    ],
+    "counting_rule": "none of the above counts toward the amended formal corpus (776); all will be regenerated under the amended allocator and a new allocation plan"
+  },
+  "required_regression_invariants": [
+    {
+      "name": "worker_count_invariance",
+      "semantics": "the allocation plan (accepted draws, consumed ranges, ledger) is bit-identical regardless of worker count and completion order"
+    },
+    {
+      "name": "poor_local_window_recovery",
+      "semantics": "a locally barren region no longer strands a family quota: ascending consumption crosses the retired window boundaries until the quota is filled"
+    },
+    {
+      "name": "true_block_unreachable",
+      "semantics": "UNREACHABLE is emitted only when the full 1000-index block is consumed with the quota still unfilled; never from a private-window exhaustion"
+    },
+    {
+      "name": "unique_candidate_identity",
+      "semantics": "every candidate/accepted draw has a unique seed/lineage identity derived from base_draw_index; no duplicate identity across slots or strata"
+    },
+    {
+      "name": "candidate_accounting_closure",
+      "semantics": "every candidate index in the consumed range carries exactly one final ledger disposition (ACCEPT / REJECTED_* / FAILED_*), and the ledger closes against the consumed range"
+    }
+  ],
+  "unaffected": [
+    "Model E model, solver, sample times, physics",
+    "IID/OOD scientific predicates, support bounds, token registry, physical guards",
+    "seed roots and 1000-index block definitions",
+    "formal family quotas (IID 16/stratum, OOD 10/condition) and total 776",
+    "rejection gate threshold values (0.50/0.50)",
+    "retry policy",
+    "T432_ACTIVATION_AMENDMENT_01 and _02 content"
+  ]
+}

@@ -274,7 +274,7 @@ bin (a,b] 含 native 样本 {t : a < t ≤ b}。逐列规则（写进 registry `
 
 ## 偏差登记
 
-（D0 施工期偏差逐项登记如下；均为非语义实现变化/笔误修正/审查闭合，D-D1~D-D9 科学契约不变。）
+（D0 施工期偏差逐项登记如下；D-1~D-15 均为非语义实现变化/笔误修正/审查闭合，科学契约不变。D-16~D-19 为 T-020 formal freeze 施工期审计语义修正〔2026-09-12 用户 Final Ruling 裁决项 D-D10~D-D13〕：属实现/审计语义澄清与修正，不是对 Dataset-v3 科学假设的事后变更——其中 D-18 实现的是先前已冻结的 Axis-C token 优先语义，不是观察 T-020 结果后新造的 OOD 规则。）
 
 | # | DGN | 偏差 | 原因 | 影响 | 状态 |
 |---|---|---|---|---|---|
@@ -293,6 +293,11 @@ bin (a,b] 含 native 样本 {t : a < t ≤ b}。逐列规则（写进 registry `
 | D-13 | DGN-13 | pilot 航次表移除 S09_emergency_sprint（19 航次）；S31~S36 航程 3000→5000 m（<600 s 零窗）；<600 s 航次（M1/M2）零快照合法导出 | S09 与 S01 实现轨迹逐位相同（v_ref 同为常数表、accel_ramp 不约束常数剖面）→ L1③ exact-duplicate 检出（机制正确性实证）；浅水层需真实窗口；FR-472 边界 | L1 冻结规则零改动；应急坡道语义属 C 包 Mission v3 | 已实施 |
 | D-14 | DGN-15 | reset_bench_nominal 的 PMS_SOURCE_MODE 恢复为 0（BASELINE_POLICY），与 Control 参数文件默认 1（nominal source）不同 | law=0 下 Source_Selector 双源共享同一 Baseline 链（功能同源）——40 号 golden Gate 接线前后逐位一致实证（G2 六档 R 与 B 包基线逐位相等）；0 与 pilot meta/43 号 P2 臂"src=0 确定性需求源"约定一致 | 无（经验证据等价）；C 包 formal harness 不得继承此歧义，须显式设定 src | 已实施 |
 | D-15 | DGN-16 | C/D Gate 骨架的十项检查折叠为 5 个机器键（c01/c02/c07/c09/c10），③④⑤⑥⑧ 以违规消息前缀归因；⑤ oracle 分离为列名 marker 扫描；⑩ 独立运行 python 时缺省 pass（经 72 号路径 fail-closed） | NON-FORMAL 骨架自检粒度；正式版（C 就绪后）须逐项独立键并收紧 ⑤⑩ | 正式 C/D Gate 前必改（见 D0_COMPLETE_HANDOFF） | **已闭合（2026-09-07）**：result schema v2 十键独立（c01~c10 各自 pass+详情）；⑤ 收紧为闭世界白名单 + 受限角色命名空间隔离 + "actual_future" 子串防御 + FORMAL 域 ORACLE 真值载体双存断言（载体 = schema truth_stream causality_rule 标注列，即 v_current_mps/water_depth_m）；⑩ 两域统一 fail-closed（缺快照即 FAIL，路径锚 MODELE_ROOT）；新增 `--formality {FORMAL,NON-FORMAL}`（缺省 NON-FORMAL 骨架语义不变）；72 号 env 参数化（EMS_CD_VOYAGE_DIR/EMS_CD_FORMALITY/EMS_CD_RESULT）。验证：pytest 178 全绿 + NON-FORMAL pilot 回归 overall=true + formal Gate 对 prequal(108)/t429conf_v2(144) overall=true（EXT-CD-GATE 达成，结果 `results/dataset_v3/cd_interface_formal_*.json`） |
+
+| D-16 | DGN-09 | L1 恒等键解析修正：canonical `split_group_id=SG#<hash>` 自含 `#`（与 L1 键分隔符 `#` 冲突），identity_of 改结构化解析（`SG#` 前缀键取前两段），附 SG 互异/同 group 跨 split 仍放水等 3 个回归 fixture | pilot 期 group=voyage_id 无自含 `#`，formal family closure 首次全量运行暴露 | 审计工具缺陷修正；split 冻结算法（DGN-09）与数据零改动 | 已实施（Final Ruling 裁决 A/D-D10，2026-09-12） |
+| D-17 | DGN-10 | L2 duplicate Gate 语义限定**跨独立 split_group**：同 group 内 seed/route/target 撞车（AMENDMENT_03 family 声明设计）分类 DECLARED_FAMILY_SIBLING 并转 `run_family_sibling_audit` 族内不变量审计（真值逐点共享 + intervention lineage 互异）；L1 窗口级 exact-duplicate 同步 group 感知（同 family 稳态窗口物理重合转报告） | pilot L2 判据（同 seed+同 route ⇒ CONFIRMED）针对"同航次意外重复生成"事故；formal family 结构下 576 全被误判重、有效 0 | 跨 group 泄漏 Hard Gate 不变；声明 sibling 不再误伤，336 对/276 族不变量全满足 | 已实施（Final Ruling 裁决 B/D-D11，2026-09-12） |
+| D-18 | DGN-11 | OOD planned/realized 双身份：`planned_condition_id`（frozen allocation plan block，10 families/40 voyages 逐 condition **hard gate**）与 `realized_ood_condition_id`（DGN-11 + Axis-C token 优先独占分类，如实报告 36/44/40/40/40）分离 + planned→realized transition 矩阵 + ledger/meta/classifier agreement；禁止事后重采样/增补修计数 | 冻结的 Axis-C 优先规则下，A1_D10022 family realized 流速在 A1 带内但 token 组合属 C1（流速带与 token 组合在 (2.0,2.4] 重叠）→ planned→realized 漂移（A1→C1 ×1 family） | 实现先前冻结语义（非新规则）；planned gate 保持精确，realized 如实出证 | 已实施（Final Ruling 裁决 C/D-D12，2026-09-12） |
+| D-19 | DGN-06/FR-483 | 零方差训练特征（ctrl_mode、manual_power_cmd_pct）归一化 scale=1 保护 + `train_constant=true` + train min/max/mean 登记，特征保留于冻结 H1 面不删 | formal 全程 AUTO ⇒ 训练集该两通道恒零方差 | 数值约定（scale=1 不构成常值外 learned support）；E/OOD 对常值支持外取值须显式诊断 | 已实施（Final Ruling 裁决 D/D-D13，2026-09-12） |
 
 ## 修订记录
 

@@ -2,25 +2,57 @@
   "schema": "t432_unblock_checklist_v1",
   "spec": "phase4-d-dataset-v3",
   "requirement": "FR-498：八项全绿才允许 T-432=READY；tasks.md 批准不构成解锁；C 包 PR 合并不自动启动 formal fleet",
-  "status": "PARTIAL_GREEN",
-  "note": "D0 交付模板（全 false）。② 已于 2026-09-07 D-15 闭合 + EXT-CD-GATE 执行后置 true；①③④⑦⑧ 证据存在于 C 侧 readiness/审计链（Phase4 分支），activation session 填写；⑤⑥ 为 activation-time 用户批准项。全 true 后方可施工 73 号。",
+  "status": "ALL_GREEN",
+  "note": "2026-09-07 activation 全绿 + T432_ACTIVATION_AMENDMENT_01（A2 退役，OOD 6→5 条件、formal fleet 816→776、Stage A 96→92；physics-qualification-driven）。T-432 READY，T-018 施工中。",
   "items": [
-    {"id": 1, "name": "C_Mission_v3_complete", "pass": false,
-     "evidence": "_FILL_: C 包 Mission v3 完成证据（spec/PR/验收记录）"},
-    {"id": 2, "name": "cd_interface_gate_overall_true_FORMAL", "pass": true,
-     "evidence": "D-15 闭合后 formal C/D Gate（EXT-CD-GATE，2026-09-07）：results/dataset_v3/cd_interface_formal_prequal.json（formality=FORMAL, overall=true, n=108）与 results/dataset_v3/cd_interface_formal_t429conf_v2.json（formality=FORMAL, overall=true, n=144），result schema v2 十键独立全 pass（c07=VERIFIED_AGAINST_EMBEDDED_ELIGIBILITY）；⑩ 基线快照消费 fail-closed，快照经 72 号刷新（五文件 hash 与 D0 逐字节一致）"},
-    {"id": 3, "name": "producer_schema_version_hash_accepted", "pass": false,
-     "evidence": "_FILL_: producer schema version/hash 双方确认记录"},
-    {"id": 4, "name": "d0_pilot_pipeline_qualification_pass", "pass": false,
-     "evidence": "_FILL_: pilot_gate_result.json overall=true（D0 已交付；activation 时复核）"},
-    {"id": 5, "name": "formal_fleet_generation_plan_preregistered", "pass": false,
-     "evidence": "_FILL_: t432_activation_record.md 全部 _FILL_ 已填写并经用户批准"},
-    {"id": 6, "name": "ood_definition_preregistered", "pass": false,
-     "evidence": "_FILL_: OOD definition version + 轴 A 数值 ranges + counts/seeds 已冻结"},
-    {"id": 7, "name": "modelE_physics_baseline_integrity_pass", "pass": false,
-     "evidence": "_FILL_: 72 号 baseline_integrity.json hash 与 D0 快照一致"},
-    {"id": 8, "name": "control_baseline_integrity_pass", "pass": false,
-     "evidence": "_FILL_: gate_baseline_modele_control.json v1.0 hash 一致"}
+    {
+      "id": 1,
+      "name": "C_Mission_v3_complete",
+      "pass": true,
+      "evidence": "PR #22 merged（feat/phase4-c-mission-v3 → Phase4，2026-09-06，T-001~T-024 收口）；就绪包 results/mission_v3/cd_gate_readiness.json（self_hash 8d55e989…）；AC-437 终态 NOT_MET（T429 FINAL FAIL 终判 eb389ae8…）经 Scientific Roadmap Amendment v1（路线 c′，2026-09-07 用户批准）提供下游解锁依据"
+    },
+    {
+      "id": 2,
+      "name": "cd_interface_gate_overall_true_FORMAL",
+      "pass": true,
+      "evidence": "D-15 闭合后 formal C/D Gate（EXT-CD-GATE，2026-09-07）：results/dataset_v3/cd_interface_formal_prequal.json（formality=FORMAL, overall=true, n=108）与 results/dataset_v3/cd_interface_formal_t429conf_v2.json（formality=FORMAL, overall=true, n=144），result schema v2 十键独立全 pass（c07=VERIFIED_AGAINST_EMBEDDED_ELIGIBILITY）；⑩ 基线快照消费 fail-closed，快照经 72 号刷新（五文件 hash 与 D0 逐字节一致）"
+    },
+    {
+      "id": 3,
+      "name": "producer_schema_version_hash_accepted",
+      "pass": true,
+      "evidence": "producer schema self_hash 7993e141…：C 侧 validate_contracts --producer-schema PASS exit 0（cd_gate_readiness producer_schema_conformance）+ D 侧 formal C/D Gate c01 embedded schema/registry self_hash 与 D 侧 config 逐字节一致（双语料 252 航次机器双向确认）"
+    },
+    {
+      "id": 4,
+      "name": "d0_pilot_pipeline_qualification_pass",
+      "pass": true,
+      "evidence": "results/dataset_v3/pilot/pilot_gate_result.json overall=true（D0 交付：19 航次 1050 窗，train 896/val 92/test 62，能量交叉 1.4e-12，L1 零违规，manifest validator PASS）"
+    },
+    {
+      "id": 5,
+      "name": "formal_fleet_generation_plan_preregistered",
+      "pass": true,
+      "evidence": "t432_activation_record.md FROZEN（D1~D5 Final Ruling）+ T432_ACTIVATION_AMENDMENT_01 FROZEN（A2 退役 RETIRED_AFTER_QUALIFICATION_SMOKE；IID 576 不变 + OOD 200 = 776；Stage A 92）；机器副本 t432_activation_record.json（amendment_chain fail-closed 校验，post_activation_sha256 绑定）"
+    },
+    {
+      "id": 6,
+      "name": "ood_definition_preregistered",
+      "pass": true,
+      "evidence": "activation record §2 + amendment 01：DGN-11-v1 + 轴 A 单条件 A1 (2.0,2.4]（A2 (2.4,2.8] 退役为 stress/domain-boundary investigation band，700 kW 守卫实证边界 |U|≈2.5）+ 方向特定 guard band 不变量 + 轴 B [1.3,1.5)（train support 1.5）+ 轴 C canonical token C1~C3 + counts 200（condition-count-driven）+ seeds 分段 + D5 生成管线（OODMode 面落地）"
+    },
+    {
+      "id": 7,
+      "name": "modelE_physics_baseline_integrity_pass",
+      "pass": true,
+      "evidence": "results/dataset_v3/cd_interface/baseline_integrity.json 五文件 hash（HybridShip_ModelE.slx 190de549…/ModelE_Physics_Parameters.m 9a518c0a…/gate_baseline_modele.json 3e9f80b0… 等）与 D0 快照逐字节一致（72 号 2026-09-07 刷新，git 无 diff）"
+    },
+    {
+      "id": 8,
+      "name": "control_baseline_integrity_pass",
+      "pass": true,
+      "evidence": "gate_baseline_modele_control.json hash 1c459123…（v1.0）与 D0 快照一致（72 号 baseline_integrity.json 2026-09-07 刷新复核）"
+    }
   ],
   "all_green_rule": "all(items.pass) == true"
 }

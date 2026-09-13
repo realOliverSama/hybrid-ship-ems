@@ -12,6 +12,9 @@
   python -m dataset_v3.validate_contracts --producer-schema
   python -m dataset_v3.validate_contracts --registry --write-hash     # 重算并写回 self_hash
   python -m dataset_v3.validate_contracts --forecast-provenance <json> --stage pilot|formal
+  python -m dataset_v3.validate_contracts --registry --producer-schema --h2-surface
+                                                                      # H2/Dataset 导出面不变量
+                                                                      # （T432_ACTIVATION_AMENDMENT_02）
 
 校验 FAIL 时打印全部违规并 exit 1（fail-fast，契约错误不降级为警告——design Error Handling）。
 """
@@ -45,6 +48,15 @@ ROLE_ACCESS_BINDING = {
     "METADATA": "metadata_only", "FORBIDDEN": "forbidden",
 }
 SOURCE_PREFIXES = ("logsout:", "scenario:", "fixture:")
+
+# ---- T432_ACTIVATION_AMENDMENT_02 H2/Dataset 导出面不变量参数 ----
+# AMENDMENT_02 clarification：Dataset 保留面 scope = INPUT_H1+INPUT_H2+TARGET。
+# METADATA（predictor_access=metadata_only）属"非 Dataset 元数据字段"，剔除出双向
+# 校验面：HT_ratio/domain_warning 为设计内 pilot-only stream 列（非漂移；schema 是
+# D→C 接口契约而 C 包已完结，OOD 轴 B 证据由 meta.propulsion_check 承载）。
+DATASET_RETENTION_ROLES = ("INPUT_H1", "INPUT_H2", "TARGET")
+DATASET_RETENTION_SOURCES = ("logsout:", "scenario:")
+TIME_BASE_FIELD = "time_s"
 
 # ---- FR-461 冻结清单（requirements 唯一事实源；validator 为其忠实性锚点） ----
 FR461_H1_NAMES = frozenset({
@@ -244,6 +256,81 @@ def validate_producer_schema(schema: dict) -> list:
     return errs
 
 
+def validate_h2_surface(registry: dict, schema: dict) -> list:
+    """H2/Dataset 导出面不变量（T432_ACTIVATION_AMENDMENT_02，Final Ruling §3）.
+
+    消除双事实源缺陷：formal 导出面按 producer schema required 派生、pilot 导出面
+    按 registry 全集派生——本不变量把两个事实源钉死（fail-closed）：
+
+      1) registry INPUT_H2 全集 ⊆ schema truth_stream required 集（缺一列即违规；
+         FR-461 "H2 = extended-state, 保留进 Dataset" 的 Dataset 保留义务，
+         formal 导出面按 schema 派生，schema 缺列即 formal 数据缺失）；
+      2) schema required Dataset 面（truth_stream required 减 time_s 时间基，减
+         registry 判定为非 Dataset 保留角色的字段，若有）与 registry 的 dataset
+         保留角色集（INPUT_H1+INPUT_H2+TARGET 中 source 为 logsout:/scenario:
+         的列）双向一致；漂移逐列列出。AMENDMENT_02 clarification：METADATA
+         （metadata_only）剔除出双向校验面——HT_ratio/domain_warning 为设计内
+         pilot-only stream 列，不构成导出面漂移。
+
+    返回违规清单（空 = PASS）。
+    """
+    errs: list = []
+
+    signals = registry.get("signals") or []
+    role_of: dict = {}
+    retention: set = set()
+    h2_reg: set = set()
+    for s in signals:
+        if not isinstance(s, dict) or not isinstance(s.get("name"), str):
+            continue
+        name, role = s["name"], s.get("role")
+        role_of.setdefault(name, role)
+        if role == "INPUT_H2":
+            h2_reg.add(name)
+        src = s.get("source_signal")
+        if (role in DATASET_RETENTION_ROLES
+                and isinstance(src, str)
+                and src.startswith(DATASET_RETENTION_SOURCES)):
+            retention.add(name)
+
+    ts = (schema.get("capability_families") or {}).get("truth_stream") or {}
+    fields = ts.get("fields") or []
+    required_set = {f.get("name") for f in fields
+                    if isinstance(f, dict) and f.get("required") is True
+                    and isinstance(f.get("name"), str)}
+
+    # 1) registry INPUT_H2 保留义务 → schema truth_stream required
+    miss_h2 = sorted(h2_reg - required_set)
+    if miss_h2:
+        errs.append(
+            "H2 Dataset 保留面破坏（AMENDMENT_02）: registry INPUT_H2 共 "
+            f"{len(h2_reg)} 列，schema truth_stream required 缺 {len(miss_h2)} 列: "
+            f"{miss_h2}（formal 导出面按 schema 派生，缺列即数据缺失）"
+        )
+
+    # 2) schema required Dataset 面 ↔ registry dataset 保留角色集（双向）
+    face = set(required_set)
+    face -= {TIME_BASE_FIELD}                       # time_s：时间基，非 Dataset 数据列
+    for n in sorted(face):
+        role = role_of.get(n)
+        if role is not None and role not in DATASET_RETENTION_ROLES:
+            face.discard(n)                         # 非 Dataset 保留角色（K/F/ORACLE/FORBIDDEN）
+    only_schema = sorted(face - retention)
+    only_registry = sorted(retention - face)
+    if only_schema:
+        errs.append(
+            "导出面漂移（AMENDMENT_02）: schema required Dataset 面多出 registry "
+            f"未声明 Dataset 保留的列: {only_schema}"
+        )
+    if only_registry:
+        errs.append(
+            "导出面漂移（AMENDMENT_02）: registry 声明 Dataset 保留"
+            f"（role∈{DATASET_RETENTION_ROLES} 且 source 为 logsout:/scenario:）"
+            f"但 schema truth_stream required 缺失的列: {only_registry}"
+        )
+    return errs
+
+
 def validate_forecast_provenance(rec: dict, stage: str) -> list:
     """单条 forecast provenance 记录校验（design R6）。
 
@@ -296,13 +383,16 @@ def main(argv=None) -> int:
     ap = argparse.ArgumentParser(description="Dataset v3 机器契约校验器（fail-fast）")
     ap.add_argument("--registry", action="store_true", help="校验 signal/role registry")
     ap.add_argument("--producer-schema", action="store_true", help="校验 C-producer interface schema")
+    ap.add_argument("--h2-surface", action="store_true",
+                    help="校验 H2/Dataset 导出面不变量（AMENDMENT_02；需 --registry/--producer-schema 文件）")
     ap.add_argument("--forecast-provenance", metavar="JSON", help="校验单条 forecast provenance 记录")
     ap.add_argument("--stage", choices=("pilot", "formal"), default="pilot")
     ap.add_argument("--write-hash", action="store_true",
                     help="重算 registry self_hash 并写回（其余校验先行，全过才写）")
     args = ap.parse_args(argv)
-    if not (args.registry or args.producer_schema or args.forecast_provenance):
-        ap.error("至少指定 --registry / --producer-schema / --forecast-provenance 之一")
+    if not (args.registry or args.producer_schema or args.forecast_provenance
+            or args.h2_surface):
+        ap.error("至少指定 --registry / --producer-schema / --forecast-provenance / --h2-surface 之一")
 
     failed = False
     if args.registry:
@@ -359,6 +449,19 @@ def main(argv=None) -> int:
                 print(f"  - {e}")
         else:
             print("[producer-schema] PASS")
+    if args.h2_surface:
+        reg = _load_json(REGISTRY_PATH)
+        schema = _load_json(PRODUCER_SCHEMA_PATH)
+        errs = validate_h2_surface(reg, schema)
+        if errs:
+            failed = True
+            print("[h2-surface] FAIL（AMENDMENT_02 导出面不变量违反）:")
+            for e in errs:
+                print(f"  - {e}")
+        else:
+            h2 = {s["name"] for s in reg["signals"] if s.get("role") == "INPUT_H2"}
+            print(f"[h2-surface] PASS（registry INPUT_H2 {len(h2)} 列 == "
+                  f"schema truth_stream required Dataset 面，双向一致）")
     if args.forecast_provenance:
         rec = _load_json(args.forecast_provenance)
         errs = validate_forecast_provenance(rec, args.stage)

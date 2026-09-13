@@ -1,0 +1,806 @@
+{
+  "artifact_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+  "assignment": {
+    "SG#00864d170c95cad7": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#01e26a0d8ed84b28": {
+      "split": "test",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#054c6c23f6147766": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#0877af60295de774": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#0a4008b672540eb8": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#0b9ac0d90fc4a843": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#0c01ac154ea0f38d": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#0d5bfe04f7c2326c": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#0fe21d4411bc5e17": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#126bcbc3e5bc71bd": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#1450c15bece7f74f": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#1ac30c2c9fd157aa": {
+      "split": "test",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#1b624f14c86d40e7": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#1b67fcb2ba5a3343": {
+      "split": "test",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#1d1e75f11afd40c2": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#1f8671282049d997": {
+      "split": "test",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#1f89411fc94fb66b": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#201921082117101a": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#21059c93848c059e": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#22805502d362f478": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#22e20e26e9b9196b": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#254b31981fee9c6c": {
+      "split": "test",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#25967a3b6baf31cf": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#27032e37f63accc4": {
+      "split": "test",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#28a03a7357d011e3": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#297ebb9c24e32933": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#2ae3d507b6d07c20": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#2d3ac62f999d3420": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#2d5d715a0fc3480a": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#2f0a6a1744f7a50b": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#300ce8746bb82889": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#30ab14ffb1a08292": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#316949a6059bef9e": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#3227b94e32113ddd": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#380dc6bab9066696": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#3af703c00b29b4f7": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#3c92aa85fdd84718": {
+      "split": "test",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#3d237747a5b34afe": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#3fdd3ba178c92f70": {
+      "split": "test",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#41a3bacddc1b91b6": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#43e3661fe3ac9dcf": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#4432268e43335442": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#498b5fd8d36df50d": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#4bfc3225bda3836c": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#4c2de8231b1a43b5": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#4d1726dfe8996f02": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#4dcb5719d7a00ccf": {
+      "split": "test",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#4fec47f0469e398e": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#4fef32ee659cbd33": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#501b6936674a0b23": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#530c4212be157952": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#53fdf6ebf5dee8b7": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#54989302b29e1804": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#575018fc40867b5a": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#578d79609013598e": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#5c1f53b46463d015": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#5c2471fa4d0b03c0": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#5e3c91db9427c6e0": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#5ece55078d4712e5": {
+      "split": "test",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#620d4e6ef642bef8": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#6252d0cb8f045d27": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#63d93b1763838115": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#661a002f4c6a667f": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#6628e08c72c8161e": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#68436a60bf6a858f": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#6d19413109c644a2": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#6dff004d317b47c5": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#6e998c0ea65ee635": {
+      "split": "test",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#6f61bdf22f18dce5": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#6fece1df101024df": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#70490b4c3fbd91c6": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#74331953f88c114a": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#7492874e45ef30f0": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#74e28fa5230aa572": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#782b99fe85ddfdec": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#7946d88296f6f14e": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#7a69de4b5e6dd4ea": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#7ab699a742330ca4": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#7b1b57638a053e06": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#7b7e6a79d8de0d44": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#7bfa8bcaeeb68205": {
+      "split": "test",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#7d6d8930fd7a907c": {
+      "split": "test",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#7d8b49964f5f0bb3": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#804506a45543ea93": {
+      "split": "test",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#80c6d914db5c503d": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#831c5d7c4195b646": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#84e97ab54d335e70": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#86953d38f15bb1e3": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#8d590c1b639723ac": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#8fbc8fcf373aee96": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#918b288a734f9f65": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#942fd8bb271dd388": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#95ab26745e67b295": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#977f14e1bb408f5c": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#9809ed52f4456f54": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#986ac8006a6e9e76": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#9c524c5d01dab778": {
+      "split": "test",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#9e22c42dfd5f35f0": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#a25917907f8526c2": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#a33d734ea439b60b": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#a81d9a2b09911255": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#a85c3d314bc11b10": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#ac10b219634a1a43": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#adbf2ec90801363c": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#aea372408a6567e0": {
+      "split": "val",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#b7f8885bb19355fd": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#b925f455d6983860": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#b969cd07e05bb89b": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#b9d10364b3fa72b8": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    },
+    "SG#ba577a305b2578d0": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#bb242ef3daff5a0c": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#bbaf864823707270": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#bd61a4f6fda18bbf": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#beb3147bcf9b6992": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#bf9a7ce09e9bdda0": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#bfb96a453852c962": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#bfc4aa32370480f6": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#c3bbe3b2b6765b05": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#c6100b12f0327f99": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#c8518ad7e1fbe0af": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#c97f49fd946946c5": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#cc6810af1b804d7b": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#d085a1415bf85c33": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#d5ae8809e70899e0": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__DRY"
+    },
+    "SG#d719ce6e75e0b4f9": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#e0e2b969af1354c3": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#e211d3bb7908e3f8": {
+      "split": "val",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#e5d13528000f6cb9": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#e61361ad2b484074": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#e84f341e6e898bcd": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#edf5a0ce4c542da8": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__FLOOD"
+    },
+    "SG#effef2eef57b4541": {
+      "split": "test",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#f036cb80847956c9": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__FLOOD"
+    },
+    "SG#f2e66596e8c43d8b": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#f4f58cb5eaf965b3": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#f584097e4572d609": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL"
+    },
+    "SG#f68cb1f21d951cb9": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#f6da62a104dffa38": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#f87aa695ef15f360": {
+      "split": "val",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#f9cc2050b764309d": {
+      "split": "test",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__DRY"
+    },
+    "SG#fa9831631be52141": {
+      "split": "test",
+      "stratum": "STRAT_WORK_MISSION__NORMAL"
+    },
+    "SG#fc829061faf60d51": {
+      "split": "train",
+      "stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD"
+    },
+    "SG#fd6d09c984a1a0ab": {
+      "split": "train",
+      "stratum": "STRAT_WORK_MISSION__DRY"
+    },
+    "SG#ff2c15108978038e": {
+      "split": "train",
+      "stratum": "STRAT_ROUTINE_PATROL__NORMAL"
+    }
+  },
+  "counts": {
+    "test": 18,
+    "train": 99,
+    "val": 27
+  },
+  "schema": "split_assignment_v3",
+  "split_seed": "dataset-v3-formal-split-seed-v1",
+  "strata": {
+    "STRAT_EMERGENCY_RESPONSE__DRY": {
+      "test": [
+        "SG#3c92aa85fdd84718",
+        "SG#f9cc2050b764309d"
+      ],
+      "train": [
+        "SG#0b9ac0d90fc4a843",
+        "SG#1d1e75f11afd40c2",
+        "SG#21059c93848c059e",
+        "SG#316949a6059bef9e",
+        "SG#43e3661fe3ac9dcf",
+        "SG#70490b4c3fbd91c6",
+        "SG#7d8b49964f5f0bb3",
+        "SG#86953d38f15bb1e3",
+        "SG#adbf2ec90801363c",
+        "SG#bd61a4f6fda18bbf",
+        "SG#f68cb1f21d951cb9"
+      ],
+      "val": [
+        "SG#0fe21d4411bc5e17",
+        "SG#a33d734ea439b60b",
+        "SG#f2e66596e8c43d8b"
+      ]
+    },
+    "STRAT_EMERGENCY_RESPONSE__FLOOD": {
+      "test": [
+        "SG#1ac30c2c9fd157aa",
+        "SG#7bfa8bcaeeb68205"
+      ],
+      "train": [
+        "SG#5e3c91db9427c6e0",
+        "SG#782b99fe85ddfdec",
+        "SG#7b1b57638a053e06",
+        "SG#8d590c1b639723ac",
+        "SG#918b288a734f9f65",
+        "SG#977f14e1bb408f5c",
+        "SG#a81d9a2b09911255",
+        "SG#bfc4aa32370480f6",
+        "SG#e61361ad2b484074",
+        "SG#f4f58cb5eaf965b3",
+        "SG#fc829061faf60d51"
+      ],
+      "val": [
+        "SG#380dc6bab9066696",
+        "SG#95ab26745e67b295",
+        "SG#f87aa695ef15f360"
+      ]
+    },
+    "STRAT_EMERGENCY_RESPONSE__NORMAL": {
+      "test": [
+        "SG#1b67fcb2ba5a3343",
+        "SG#effef2eef57b4541"
+      ],
+      "train": [
+        "SG#297ebb9c24e32933",
+        "SG#4fec47f0469e398e",
+        "SG#53fdf6ebf5dee8b7",
+        "SG#575018fc40867b5a",
+        "SG#63d93b1763838115",
+        "SG#6d19413109c644a2",
+        "SG#7492874e45ef30f0",
+        "SG#80c6d914db5c503d",
+        "SG#942fd8bb271dd388",
+        "SG#9e22c42dfd5f35f0",
+        "SG#b925f455d6983860"
+      ],
+      "val": [
+        "SG#0d5bfe04f7c2326c",
+        "SG#1b624f14c86d40e7",
+        "SG#f584097e4572d609"
+      ]
+    },
+    "STRAT_ROUTINE_PATROL__DRY": {
+      "test": [
+        "SG#254b31981fee9c6c",
+        "SG#27032e37f63accc4"
+      ],
+      "train": [
+        "SG#00864d170c95cad7",
+        "SG#201921082117101a",
+        "SG#25967a3b6baf31cf",
+        "SG#4c2de8231b1a43b5",
+        "SG#6628e08c72c8161e",
+        "SG#6f61bdf22f18dce5",
+        "SG#7a69de4b5e6dd4ea",
+        "SG#831c5d7c4195b646",
+        "SG#bf9a7ce09e9bdda0",
+        "SG#c97f49fd946946c5",
+        "SG#d5ae8809e70899e0"
+      ],
+      "val": [
+        "SG#2d5d715a0fc3480a",
+        "SG#4bfc3225bda3836c",
+        "SG#7946d88296f6f14e"
+      ]
+    },
+    "STRAT_ROUTINE_PATROL__FLOOD": {
+      "test": [
+        "SG#4dcb5719d7a00ccf",
+        "SG#804506a45543ea93"
+      ],
+      "train": [
+        "SG#3227b94e32113ddd",
+        "SG#54989302b29e1804",
+        "SG#6252d0cb8f045d27",
+        "SG#7b7e6a79d8de0d44",
+        "SG#a25917907f8526c2",
+        "SG#ac10b219634a1a43",
+        "SG#ba577a305b2578d0",
+        "SG#bbaf864823707270",
+        "SG#c3bbe3b2b6765b05",
+        "SG#e5d13528000f6cb9",
+        "SG#edf5a0ce4c542da8"
+      ],
+      "val": [
+        "SG#578d79609013598e",
+        "SG#b7f8885bb19355fd",
+        "SG#e211d3bb7908e3f8"
+      ]
+    },
+    "STRAT_ROUTINE_PATROL__NORMAL": {
+      "test": [
+        "SG#5ece55078d4712e5",
+        "SG#9c524c5d01dab778"
+      ],
+      "train": [
+        "SG#1450c15bece7f74f",
+        "SG#1f89411fc94fb66b",
+        "SG#3d237747a5b34afe",
+        "SG#41a3bacddc1b91b6",
+        "SG#661a002f4c6a667f",
+        "SG#68436a60bf6a858f",
+        "SG#6fece1df101024df",
+        "SG#74331953f88c114a",
+        "SG#84e97ab54d335e70",
+        "SG#b9d10364b3fa72b8",
+        "SG#ff2c15108978038e"
+      ],
+      "val": [
+        "SG#0c01ac154ea0f38d",
+        "SG#9809ed52f4456f54",
+        "SG#986ac8006a6e9e76"
+      ]
+    },
+    "STRAT_WORK_MISSION__DRY": {
+      "test": [
+        "SG#01e26a0d8ed84b28",
+        "SG#6e998c0ea65ee635"
+      ],
+      "train": [
+        "SG#28a03a7357d011e3",
+        "SG#4432268e43335442",
+        "SG#4fef32ee659cbd33",
+        "SG#5c2471fa4d0b03c0",
+        "SG#74e28fa5230aa572",
+        "SG#beb3147bcf9b6992",
+        "SG#bfb96a453852c962",
+        "SG#c6100b12f0327f99",
+        "SG#d085a1415bf85c33",
+        "SG#d719ce6e75e0b4f9",
+        "SG#fd6d09c984a1a0ab"
+      ],
+      "val": [
+        "SG#22805502d362f478",
+        "SG#3af703c00b29b4f7",
+        "SG#aea372408a6567e0"
+      ]
+    },
+    "STRAT_WORK_MISSION__FLOOD": {
+      "test": [
+        "SG#3fdd3ba178c92f70",
+        "SG#7d6d8930fd7a907c"
+      ],
+      "train": [
+        "SG#054c6c23f6147766",
+        "SG#0a4008b672540eb8",
+        "SG#22e20e26e9b9196b",
+        "SG#2ae3d507b6d07c20",
+        "SG#2d3ac62f999d3420",
+        "SG#5c1f53b46463d015",
+        "SG#620d4e6ef642bef8",
+        "SG#6dff004d317b47c5",
+        "SG#8fbc8fcf373aee96",
+        "SG#cc6810af1b804d7b",
+        "SG#f036cb80847956c9"
+      ],
+      "val": [
+        "SG#0877af60295de774",
+        "SG#7ab699a742330ca4",
+        "SG#a85c3d314bc11b10"
+      ]
+    },
+    "STRAT_WORK_MISSION__NORMAL": {
+      "test": [
+        "SG#1f8671282049d997",
+        "SG#fa9831631be52141"
+      ],
+      "train": [
+        "SG#2f0a6a1744f7a50b",
+        "SG#300ce8746bb82889",
+        "SG#4d1726dfe8996f02",
+        "SG#501b6936674a0b23",
+        "SG#530c4212be157952",
+        "SG#b969cd07e05bb89b",
+        "SG#bb242ef3daff5a0c",
+        "SG#c8518ad7e1fbe0af",
+        "SG#e0e2b969af1354c3",
+        "SG#e84f341e6e898bcd",
+        "SG#f6da62a104dffa38"
+      ],
+      "val": [
+        "SG#126bcbc3e5bc71bd",
+        "SG#30ab14ffb1a08292",
+        "SG#498b5fd8d36df50d"
+      ]
+    }
+  }
+}

@@ -169,12 +169,17 @@ try
     ok = ok && (numel(sg_b.sub_phases) == 5) ...
         && max(abs(fr - [0.15, 0.10, 0.55, 0.05, 0.15])) <= 1e-12;
     idx_b = (tg >= sg_b.t_start_s) & (tg < sg_b.t_end_s);
+    % T429-AMEND-V2 traffic durations U[225,320]: a follow plateau may
+    % legitimately dominate a realized window's mode, so the segment
+    % semantic under test is evaluated OUTSIDE traffic-event samples
+    idx_b = local_mask_traffic(idx_b, tg, rl_routine.traffic);
     [mode_b, share_b] = local_mode_value(vp(idx_b));
     ok = ok && abs(mode_b - 0.7 * v_host_b) <= 1e-9 && (share_b > 0.4);
 
     % harbor: constant v_host, no sub-phases
     ok = ok && isempty(sg_h.sub_phases);
     idx_h = (tg >= sg_h.t_start_s) & (tg < sg_h.t_end_s);
+    idx_h = local_mask_traffic(idx_h, tg, rl_routine.traffic);
     [mode_h, share_h] = local_mode_value(vp(idx_h));
     ok = ok && abs(mode_h - v_host_h) <= 1e-9 && (share_h > 0.4);
 
@@ -749,6 +754,17 @@ function v = local_rush_tier_value(rt, which)
         end
     end
     error('GATE:test_plan_compose', 'rush tier key missing: %s', which);
+end
+
+function idx = local_mask_traffic(idx, tg, traffic)
+% Exclude traffic-event samples (T429-AMEND-V2 durations U[225,320])
+% from modal-value windows: the segment semantic under test is the
+% segment's own plan value, traffic interventions are P5's face.
+    for i = 1:numel(traffic)
+        ev = traffic(i);
+        idx(double(tg) >= (ev.t_start_abs_s - 1e-9) & ...
+            double(tg) <= (ev.t_start_abs_s + ev.duration_s + 1e-9)) = false;
+    end
 end
 
 function v = local_tier_for_ht(ht, tier_in, tier_ge)

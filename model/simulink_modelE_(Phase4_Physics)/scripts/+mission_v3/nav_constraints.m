@@ -69,7 +69,21 @@ function out = nav_constraints(mode, varargin)
                 error('GATE:MISSION_V3:NAV:ARG', ...
                     '''zones'' expects: realization');
             end
-            out = local_zones(varargin{1});
+            % T432_ACTIVATION_AMENDMENT_01 OOD face (see plan_compose):
+            % 'OODMode', true lowers the zones HT floor to the activation
+            % hard floor 1.3 and clamps the UKC factor at its HT=1.5 value
+            % over [1.3, 1.5) - no extrapolation of the FD3 formula below
+            % its validated support.  Default face unchanged.
+            ood_mode = false;
+            for pv = 2:2:numel(varargin) - 1
+                if strcmpi(varargin{pv}, 'OODMode')
+                    ood_mode = logical(varargin{pv + 1});
+                else
+                    error('GATE:MISSION_V3:NAV:ARG', ...
+                        'unknown option: %s', char(varargin{pv}));
+                end
+            end
+            out = local_zones(varargin{1}, ood_mode);
         case 'phases'
             % Maneuver phase tables (departure/berth) shared with
             % plan_compose: single source of truth for the fixed-decision-6
@@ -124,18 +138,28 @@ end
 
 %% ========================== zones builder ==========================
 
-function zones = local_zones(rl)
+function zones = local_zones(rl, ood_mode)
+    if nargin < 2
+        ood_mode = false;
+    end
     rl = local_check_realization(rl);
     ht = rl.water.ht_effective;
     if ~isnumeric(ht) || ~isscalar(ht) || ~isfinite(ht)
         error('GATE:MISSION_V3:NAV:ARG', ...
             'water.ht_effective must be a finite scalar');
     end
-    if ht < NAV_CONST_UKC_HT_LOW()
+    if ood_mode
+        ht_low = NAV_CONST_UKC_HT_OOD_MIN();
+        floor_note = '1.3 activation OOD floor (amendment 01)';
+    else
+        ht_low = NAV_CONST_UKC_HT_LOW();
+        floor_note = ['1.5 IID support floor; such realizations are ', ...
+            'rejected by T-009 and cannot reach the plan layer ', ...
+            '(fixed decision 3)'];
+    end
+    if ht < ht_low
         error('GATE:MISSION_V3:NAV:HT_BELOW_SUPPORT', ...
-            ['ht_effective %.6f below the 1.5 IID support floor; such ', ...
-             'realizations are rejected by T-009 and cannot reach the ', ...
-             'plan layer (fixed decision 3)'], ht);
+            'ht_effective %.6f below the %s', ht, floor_note);
     end
 
     nseg = numel(rl.segments);
@@ -151,10 +175,16 @@ function zones = local_zones(rl)
             continue;
         end
         v_host = local_host_speed(sg);
-        if (ht >= NAV_CONST_UKC_HT_LOW()) && (ht < NAV_CONST_UKC_HT_HIGH())
-            frac = NAV_CONST_UKC_FACTOR_AT_LOW() + ...
-                NAV_CONST_UKC_FACTOR_AT_LOW() * (ht - NAV_CONST_UKC_HT_LOW()) ...
-                / (NAV_CONST_UKC_HT_HIGH() - NAV_CONST_UKC_HT_LOW());
+        if (ht >= ht_low) && (ht < NAV_CONST_UKC_HT_HIGH())
+            % OOD band [1.3, 1.5): clamp at the HT=1.5 factor (0.5) - the
+            % FD3 formula is not extrapolated below its validated support
+            if ood_mode && (ht < NAV_CONST_UKC_HT_LOW())
+                frac = NAV_CONST_UKC_FACTOR_AT_LOW();
+            else
+                frac = NAV_CONST_UKC_FACTOR_AT_LOW() + ...
+                    NAV_CONST_UKC_FACTOR_AT_LOW() * (ht - NAV_CONST_UKC_HT_LOW()) ...
+                    / (NAV_CONST_UKC_HT_HIGH() - NAV_CONST_UKC_HT_LOW());
+            end
             v_limit = v_host * frac;
             if v_host > v_limit   % no redundant zone when host already slower
                 row = blank_slz;
@@ -423,6 +453,12 @@ end
 function c = NAV_CONST_UKC_HT_HIGH()
 % FD3: UKC limit band upper bound (exclusive); ht >= 2.0 is unlimited.
     c = 2.0;
+end
+
+function c = NAV_CONST_UKC_HT_OOD_MIN()
+% T432_ACTIVATION_AMENDMENT_01 OOD face floor: activation record axis_b
+% hard_floor 1.3 (axis B [1.3,1.5) OOD; DGN-11 validated domain).
+    c = 1.3;
 end
 
 function c = NAV_CONST_UKC_FACTOR_AT_LOW()

@@ -268,9 +268,11 @@ class TestOODAxisA:
 
 class TestOODAxisB:
     def test_paths(self):
+        # T-018 重构：训练支持下界 = 1.5（T-432 activation record 生效）
         assert classify_ood(_rec("B", ht_ratio=2.5))["verdict"] == "NONE"           # 支持域
-        assert classify_ood(_rec("B", ht_ratio=2.0))["verdict"] == "NONE"           # ≥2.0 支持域
-        assert classify_ood(_rec("B", ht_ratio=1.9))["verdict"] == "OOD"
+        assert classify_ood(_rec("B", ht_ratio=2.0))["verdict"] == "NONE"           # ≥1.5 支持域
+        assert classify_ood(_rec("B", ht_ratio=1.5))["verdict"] == "NONE"           # 1.5 含于支持域（OOD 带上开端）
+        assert classify_ood(_rec("B", ht_ratio=1.4999))["verdict"] == "OOD"
         assert classify_ood(_rec("B", ht_ratio=1.3))["verdict"] == "OOD"            # 含下端点
         assert classify_ood(_rec("B", ht_ratio=1.25))["verdict"] == "UNCLASSIFIED"  # 1.2~1.3 margin 带
         assert classify_ood(_rec("B", ht_ratio=1.2))["verdict"] == "UNCLASSIFIED"
@@ -280,20 +282,24 @@ class TestOODAxisB:
 
 
 class TestOODAxisC:
+    """轴 C 词表 = registry factor 名（T-018 重构：canonical token registry
+    驱动，D4；词表见 heldout_token_registry.json factor_a/factor_b）。"""
+
     def test_held_out_combo_hit(self):
-        rec = _rec("C", composition=["bridge_zone", "strong_counter_current"])
+        rec = _rec("C", composition=["BRIDGE_PASSAGE",
+                                     "HIGH_ID_ADVERSE_CURRENT"])
         assert classify_ood(rec)["verdict"] == "OOD"
 
     def test_combo_with_extra_factors_still_hits(self):
-        rec = _rec("C", composition=["port_area", "shallow_water", "fog"])
+        rec = _rec("C", composition=["HARBOR", "LOW_ID_HT", "FOG"])
         assert classify_ood(rec)["verdict"] == "OOD"
 
     def test_single_factors_only_none(self):
-        rec = _rec("C", composition=["bridge_zone", "shallow_water"])  # 均为单因子，无 held-out 组合
+        rec = _rec("C", composition=["BRIDGE_PASSAGE", "HARBOR"])  # 均为单因子，无 held-out 组合
         assert classify_ood(rec)["verdict"] == "NONE"
 
-    def test_all_three_preregistered_combos(self):
-        for combo in ood.AXIS_C_HELD_OUT_COMBINATIONS:
+    def test_all_registry_combos(self):
+        for combo in ood.held_out_combinations():
             rec = _rec("C", composition=sorted(combo))
             assert classify_ood(rec)["verdict"] == "OOD"
 
@@ -303,7 +309,7 @@ class TestOODLoader:
         records = [
             _rec("A", voyage_id="a1", u_abs_mps=2.4),
             _rec("B", voyage_id="b1", ht_ratio=1.5),
-            _rec("C", voyage_id="c1", composition=["bridge_zone"]),
+            _rec("C", voyage_id="c1", composition=["HARBOR"]),
         ]
         assert validate_ood_records(records) == []
 
@@ -336,3 +342,78 @@ class TestOODLoader:
     def test_empty_composition_flagged(self):
         errs = validate_ood_records([_rec("C", composition=[])])
         assert errs
+
+    def test_sg_canonical_identity_preserved(self):
+        """T-020 裁决 A 回归：canonical `SG#<hash>` 身份在 L1 键解析后保持互异.
+
+        formal split_group_id 自含 '#'（SG#<hash>），窗口级恒等键形如
+        `SG#<hash>#voyage`。解析必须折叠同一 group 的多子记录、且不同 group
+        互不折叠；裸 `SG#<hash>` 键（无子记录）恒等为其自身。
+        """
+        assert al.identity_of("SG#661a002f4c6a667f#voyage") == "SG#661a002f4c6a667f"
+        assert al.identity_of("SG#3d237747a5b34afe#voyage") == "SG#3d237747a5b34afe"
+        assert al.identity_of("SG#661a002f4c6a667f") == "SG#661a002f4c6a667f"
+        # 不同 SG 身份不得折叠；voyage 级键不受影响
+        assert (al.identity_of("SG#661a002f4c6a667f")
+                != al.identity_of("SG#3d237747a5b34afe"))
+        assert al.identity_of("FLTA_S1_D00000_M1#186") == "FLTA_S1_D00000_M1"
+
+    def test_sg_distinct_identities_no_cross_split_violation(self):
+        """两个不同 SG#<hash> group 分属不同 split → 不产生 identity 违规."""
+        split_of = {
+            "SG#aaa#voyage": "train", "SG#bbb#voyage": "test",
+            "SG#aaa#win186": "train", "SG#bbb#win0": "test",
+        }
+        res = run_l1(split_of, {}, {})
+        cross = [v for v in res["violations"]
+                 if v["type"] == "identity_cross_split"]
+        assert cross == []
+
+    def test_sg_same_group_across_split_still_flagged(self):
+        """同一 SG#<hash> group 跨 split 仍须违规（解析修复不得放水）."""
+        split_of = {"SG#aaa#voyage": "train", "SG#aaa#win186": "test"}
+        res = run_l1(split_of, {}, {})
+        v = next(v for v in res["violations"]
+                 if v["type"] == "identity_cross_split")
+        assert v["identity"] == "SG#aaa"
+        assert v["splits"] == ["test", "train"]
+
+
+class TestL2FamilySibling:
+    """T-020 裁决 B：同 split_group 内 provenance 撞车 → DECLARED_FAMILY_SIBLING.
+
+    跨独立 split_group 的撞车维持 CONFIRMED_DUPLICATE；sibling 对交
+    run_family_sibling_audit 验证真值共享与 member lineage 互异。
+    """
+
+    def test_same_group_provenance_collision_is_sibling(self):
+        series = {"m1": [1.0, 2.0], "m2": [1.0, 2.0]}
+        prov = {v: {"generation_seed": "s", "route_template_id": "r"}
+                for v in series}
+        res = run_l2(series, prov, group_of={"m1": "SG#a", "m2": "SG#a"})
+        assert res["counts"]["DECLARED_FAMILY_SIBLING"] == 1
+        assert res["counts"]["CONFIRMED_DUPLICATE"] == 0
+        assert res["family_sibling_pairs"] == [["m1", "m2"]]
+
+    def test_cross_group_provenance_collision_still_confirmed(self):
+        series = {"m1": [1.0, 2.0], "m2": [1.0, 2.0]}
+        prov = {v: {"generation_seed": "s", "route_template_id": "r"}
+                for v in series}
+        res = run_l2(series, prov, group_of={"m1": "SG#a", "m2": "SG#b"})
+        assert res["counts"]["CONFIRMED_DUPLICATE"] == 1
+        assert res["counts"]["DECLARED_FAMILY_SIBLING"] == 0
+
+    def test_family_sibling_audit_invariants(self):
+        series = {"m1": [1.0, 2.0], "m2": [1.0, 2.0], "m3": [1.0, 9.0]}
+        pairs = [("m1", "m2"), ("m1", "m3")]
+        audit = al.run_family_sibling_audit(
+            pairs, series, member_of={"m1": "M1", "m2": "M2", "m3": "M1"})
+        assert audit["overall"] is False
+        types = [v["type"] for v in audit["violations"]]
+        assert "truth_sharing_violation" in types   # m3 与 m1 真值不一致
+        assert "lineage_not_distinct" in types      # m3 与 m1 member_id 撞车
+
+        ok = al.run_family_sibling_audit(
+            [("m1", "m2")], series,
+            member_of={"m1": "M1", "m2": "M2"})
+        assert ok["overall"] is True and ok["n_families"] == 1

@@ -89,7 +89,21 @@ function plan = plan_compose(mode, varargin)
                 error('GATE:MISSION_V3:PLAN:ARG', ...
                     '''compose'' expects: realization');
             end
-            plan = local_compose(varargin{1});
+            % T432_ACTIVATION_AMENDMENT_01 OOD face: 'OODMode', true
+            % lowers the plan-layer HT floor from the IID support 1.5 to
+            % the activation hard floor 1.3 (axis B [1.3,1.5) is outside
+            % IID support but inside the validated Model E domain).  The
+            % default face is unchanged (IID discipline, FD3).
+            ood_mode = false;
+            for pv = 2:2:numel(varargin) - 1
+                if strcmpi(varargin{pv}, 'OODMode')
+                    ood_mode = logical(varargin{pv + 1});
+                else
+                    error('GATE:MISSION_V3:PLAN:ARG', ...
+                        'unknown option: %s', char(varargin{pv}));
+                end
+            end
+            plan = local_compose(varargin{1}, ood_mode);
         otherwise
             error('GATE:MISSION_V3:PLAN:ARG', ...
                 'unknown mode: %s (plan_compose implements ''compose'' only)', ...
@@ -99,7 +113,10 @@ end
 
 %% =========================== composer ===============================
 
-function plan = local_compose(rl)
+function plan = local_compose(rl, ood_mode)
+    if nargin < 2
+        ood_mode = false;
+    end
     rl = local_check_realization(rl);
 
     ROOT = fileparts(fileparts(fileparts(mfilename('fullpath'))));
@@ -117,12 +134,21 @@ function plan = local_compose(rl)
     op_speed = OPERATOR_SPEED_SCALE(op);
     op_ramp = OPERATOR_RAMP_SCALE(op);
 
-    % ---- voyage HT guard (FD3: ht < 1.5 cannot reach the plan layer) ----
+    % ---- voyage HT guard (FD3 IID face: ht < 1.5 cannot reach the plan
+    %      layer; T432_ACTIVATION_AMENDMENT_01 OOD face: the floor is the
+    %      activation hard floor 1.3, axis B [1.3,1.5)) ----
     ht = rl.water.ht_effective;
+    if ood_mode
+        ht_floor = PLAN_CONST_HT_SUPPORT_MIN_OOD();
+        floor_note = '1.3 activation OOD floor (amendment 01)';
+    else
+        ht_floor = PLAN_CONST_HT_SUPPORT_MIN();
+        floor_note = '1.5 IID support floor';
+    end
     if ~isnumeric(ht) || ~isscalar(ht) || ~isfinite(ht) ...
-            || (ht < PLAN_CONST_HT_SUPPORT_MIN())
+            || (ht < ht_floor)
         error('GATE:MISSION_V3:PLAN:HT_BELOW_SUPPORT', ...
-            'ht_effective %.6f below the 1.5 IID support floor', ht);
+            'ht_effective %.6f below the %s', ht, floor_note);
     end
 
     % ---- plan grid (FD9: 1 s, t >= 0 only) ----
@@ -142,7 +168,8 @@ function plan = local_compose(rl)
     n_grid = numel(t_grid);
 
     % ---- navigation constraint zones (single source of truth) ----
-    zones = mission_v3.nav_constraints('zones', rl);
+    zones = mission_v3.nav_constraints('zones', rl, ...
+        'OODMode', ood_mode);
 
     % ---- host speed cross-check against the frozen plan speed table ----
     local_check_host_speeds(rl, frz, ht);
@@ -683,6 +710,13 @@ end
 function c = PLAN_CONST_GRID_S()
 % FD9: plan table on the frozen 1 s injection grid.
     c = 1.0;
+end
+
+function c = PLAN_CONST_HT_SUPPORT_MIN_OOD()
+% T432_ACTIVATION_AMENDMENT_01 OOD face floor: activation record axis_b
+% hard_floor 1.3 (axis B [1.3,1.5) is outside IID support by design and
+% inside the validated Model E domain; DGN-11).
+    c = 1.3;
 end
 
 function c = PLAN_CONST_HT_SUPPORT_MIN()

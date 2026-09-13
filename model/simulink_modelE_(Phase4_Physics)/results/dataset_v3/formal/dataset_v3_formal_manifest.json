@@ -1,0 +1,51 @@
+{
+  "schema": "dataset_v3_manifest_v1",
+  "payload": {
+    "split_policy_version": "dgn09-v1",
+    "split_seed": "dataset-v3-formal-split-seed-v1",
+    "split_group_key": "split_group_id（family closure）",
+    "split_assignment_artifact_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+    "train_val_test_voyage_counts": {
+      "train": 396,
+      "val": 108,
+      "test": 72
+    },
+    "normalization_source": "train_only",
+    "preprocessing_artifact_sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba",
+    "ood_definition_version": "DGN-11-v1",
+    "ood_generation_seed": "condition c (0-based, order A1/A2/B1/C1/C2/C3) uses base_draw_index in [10000+c*1000, 10000+(c+1)*1000), k=0..9; same formal seed root",
+    "provenance_duplicate_count": 0,
+    "exact_duplicate_count": 0,
+    "sbd_threshold_policy": "T_SBD = Q0.01(train-vs-train NN SBD distance distribution)",
+    "sbd_suspect_count_disposition": "0:unresolved",
+    "test_sealed": true,
+    "ood_sealed": true,
+    "dataset_anchor_stride_s": 10,
+    "predictor_runtime_period_s": "UNDEFINED_IN_D",
+    "window_geometry": {
+      "L_H": 300,
+      "H_F": 300,
+      "K": 30,
+      "delta_F": 10,
+      "stride": 10
+    },
+    "registry_sha256": "9ab11deac62390f23ec0b31b047465617d4389359becf99928ecc4c9ca1688e1",
+    "producer_schema_sha256": "1d0ba9166724b993be976163ec5f49767ba31689a2be0b9fcf55e9cce3b2a935",
+    "aggregation_table_version": "dgn05-r1",
+    "target_definition": "y_k=E_k/10 kW（native trapezoidal 能量差分）；E300=ΣE_k/3600 kWh",
+    "stage": "FORMAL",
+    "fixture_policy": "PILOT_ONLY 禁入 formal（FR-500）"
+  },
+  "run_metadata": {
+    "build_utc": "2026-09-11T21:29:31+00:00",
+    "python": "3.12.7",
+    "numpy": "2.5.3",
+    "platform": "macOS-27.0-arm64-arm-64bit",
+    "pipeline": "dataset_v3.run_formal_freeze",
+    "generation_script_path": "dataset_v3/run_formal_freeze.py",
+    "generation_script_sha256": "e27828b916dcd7a17409ac427cf58c1e2f9dabf393bc3cd083819dc0005725c0",
+    "matlab_version": "R2026a（70 号 producer 侧记录）",
+    "python_version": "3.12.7"
+  },
+  "scientific_payload_sha256": "ee285091027a5bda50652832dbf7ba780302feca8897b9195715570a1ea7d712"
+}

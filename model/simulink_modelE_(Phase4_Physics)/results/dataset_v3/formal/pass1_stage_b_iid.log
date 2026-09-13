@@ -1,0 +1,161 @@
+[ModelE_Physics_Parameters] Model E 参数事实源已载入（独立成套，无 legacy 依赖）
+  500 t hull: Lpp=53.45 B=7.13 T=2.188 C_B=0.60 | K_R=890 | Ship_Mass=5.0e+05 kg
+  螺旋桨重标定(w_deep=0.10): K_Fw=128.11 K_Fv=1099.0 K_Qw=37.41 K_Qv=160.5
+  双机组 2×500 kW (P_min=125 P_opt=375 ramp=20 τ=5 C_start=0.60 kg) | BSFC PCHIP 5 节点
+  电池 1RC: Q_nom=1860 Ah, OCV[0.1~0.9]=[541.1~600.5] V, R_0=[6.32~8.66] mΩ, η_coul=0.98
+  参数已加载：40 项 ParamMeta（含 target_vessel_confirmed=false 声明）
+[ModelE_Control_Parameters] PMS v2 控制参数已加载（FR-451；canonical 域=genset-side DD-1；阈值 425/350 kW）
+[ModelE_TestScenarios] 已定义 36 个工况（S01~S10 + S20 复合航次 + S31~S36 浅水六档），默认 SCN = S01_still_water
+[fleet_v3] IID: consuming frozen allocation plan
+正在使用 'Processes' 配置文件启动并行池(parpool)...
+保留 ID 为 5 的作业，因为它们包含崩溃转储文件。
+您可以使用 'delete(myCluster.Jobs)' 来删除使用配置文件 Processes 创建的所有作业。要创建 'myCluster'，请使用 'myCluster = parcluster('Processes')'。
+已连接到具有 2 个工作单元的并行池。
+[fleet_v3] IID: parallel dispatch 144 tasks on <=2 workers
+[fleet_v3] IID task 1/144 done
+[fleet_v3] IID task 2/144 done
+[fleet_v3] IID task 3/144 done
+[fleet_v3] IID task 4/144 done
+[fleet_v3] IID task 6/144 done
+[fleet_v3] IID task 5/144 done
+[fleet_v3] IID task 8/144 done
+[fleet_v3] IID task 7/144 done
+[fleet_v3] IID task 9/144 done
+[fleet_v3] IID task 10/144 done
+[fleet_v3] IID task 11/144 done
+[fleet_v3] IID task 12/144 done
+[fleet_v3] IID task 13/144 done
+[fleet_v3] IID task 14/144 done
+[fleet_v3] IID task 15/144 done
+[fleet_v3] IID task 16/144 done
+[fleet_v3] IID task 17/144 done
+[fleet_v3] IID task 18/144 done
+[fleet_v3] IID task 19/144 done
+[fleet_v3] IID task 20/144 done
+[fleet_v3] IID task 21/144 done
+[fleet_v3] IID task 22/144 done
+[fleet_v3] IID task 23/144 done
+[fleet_v3] IID task 24/144 done
+[fleet_v3] IID task 25/144 done
+[fleet_v3] IID task 26/144 done
+[fleet_v3] IID task 27/144 done
+[fleet_v3] IID task 28/144 done
+[fleet_v3] IID task 29/144 done
+[fleet_v3] IID task 30/144 done
+[fleet_v3] IID task 31/144 done
+[fleet_v3] IID task 32/144 done
+[fleet_v3] IID task 33/144 done
+[fleet_v3] IID task 34/144 done
+[fleet_v3] IID task 35/144 done
+[fleet_v3] IID task 36/144 done
+[fleet_v3] IID task 37/144 done
+[fleet_v3] IID task 39/144 done
+[fleet_v3] IID task 38/144 done
+[fleet_v3] IID task 40/144 done
+[fleet_v3] IID task 41/144 done
+[fleet_v3] IID task 42/144 done
+[fleet_v3] IID task 43/144 done
+[fleet_v3] IID task 44/144 done
+[fleet_v3] IID task 45/144 done
+[fleet_v3] IID task 46/144 done
+[fleet_v3] IID task 47/144 done
+[fleet_v3] IID task 48/144 done
+[fleet_v3] IID task 49/144 done
+[fleet_v3] IID task 51/144 done
+[fleet_v3] IID task 50/144 done
+[fleet_v3] IID task 52/144 done
+[fleet_v3] IID task 53/144 done
+[fleet_v3] IID task 54/144 done
+[fleet_v3] IID task 55/144 done
+[fleet_v3] IID task 56/144 done
+[fleet_v3] IID task 57/144 done
+[fleet_v3] IID task 58/144 done
+[fleet_v3] IID task 59/144 done
+[fleet_v3] IID task 60/144 done
+[fleet_v3] IID task 61/144 done
+[fleet_v3] IID task 62/144 done
+[fleet_v3] IID task 63/144 done
+[fleet_v3] IID task 64/144 done
+[fleet_v3] IID task 65/144 done
+[fleet_v3] IID task 66/144 done
+[fleet_v3] IID task 67/144 done
+[fleet_v3] IID task 68/144 done
+[fleet_v3] IID task 69/144 done
+[fleet_v3] IID task 70/144 done
+[fleet_v3] IID task 71/144 done
+[fleet_v3] IID task 72/144 done
+[fleet_v3] IID task 73/144 done
+[fleet_v3] IID task 75/144 done
+[fleet_v3] IID task 74/144 done
+[fleet_v3] IID task 76/144 done
+[fleet_v3] IID task 77/144 done
+[fleet_v3] IID task 78/144 done
+[fleet_v3] IID task 79/144 done
+[fleet_v3] IID task 80/144 done
+[fleet_v3] IID task 81/144 done
+[fleet_v3] IID task 82/144 done
+[fleet_v3] IID task 83/144 done
+[fleet_v3] IID task 84/144 done
+[fleet_v3] IID task 85/144 done
+[fleet_v3] IID task 86/144 done
+[fleet_v3] IID task 87/144 done
+[fleet_v3] IID task 88/144 done
+[fleet_v3] IID task 89/144 done
+[fleet_v3] IID task 90/144 done
+[fleet_v3] IID task 91/144 done
+[fleet_v3] IID task 92/144 done
+[fleet_v3] IID task 93/144 done
+[fleet_v3] IID task 94/144 done
+[fleet_v3] IID task 95/144 done
+[fleet_v3] IID task 96/144 done
+[fleet_v3] IID task 98/144 done
+[fleet_v3] IID task 97/144 done
+[fleet_v3] IID task 100/144 done
+[fleet_v3] IID task 99/144 done
+[fleet_v3] IID task 101/144 done
+[fleet_v3] IID task 102/144 done
+[fleet_v3] IID task 103/144 done
+[fleet_v3] IID task 104/144 done
+[fleet_v3] IID task 105/144 done
+[fleet_v3] IID task 106/144 done
+[fleet_v3] IID task 107/144 done
+[fleet_v3] IID task 109/144 done
+[fleet_v3] IID task 108/144 done
+[fleet_v3] IID task 110/144 done
+[fleet_v3] IID task 111/144 done
+[fleet_v3] IID task 112/144 done
+[fleet_v3] IID task 113/144 done
+[fleet_v3] IID task 114/144 done
+[fleet_v3] IID task 115/144 done
+[fleet_v3] IID task 117/144 done
+[fleet_v3] IID task 116/144 done
+[fleet_v3] IID task 118/144 done
+[fleet_v3] IID task 119/144 done
+[fleet_v3] IID task 121/144 done
+[fleet_v3] IID task 120/144 done
+[fleet_v3] IID task 122/144 done
+[fleet_v3] IID task 123/144 done
+[fleet_v3] IID task 125/144 done
+[fleet_v3] IID task 124/144 done
+[fleet_v3] IID task 126/144 done
+[fleet_v3] IID task 127/144 done
+[fleet_v3] IID task 128/144 done
+[fleet_v3] IID task 129/144 done
+[fleet_v3] IID task 130/144 done
+[fleet_v3] IID task 131/144 done
+[fleet_v3] IID task 132/144 done
+[fleet_v3] IID task 133/144 done
+[fleet_v3] IID task 135/144 done
+[fleet_v3] IID task 134/144 done
+[fleet_v3] IID task 136/144 done
+[fleet_v3] IID task 137/144 done
+[fleet_v3] IID task 138/144 done
+[fleet_v3] IID task 139/144 done
+[fleet_v3] IID task 140/144 done
+[fleet_v3] IID task 141/144 done
+[fleet_v3] IID task 142/144 done
+[fleet_v3] IID task 143/144 done
+[fleet_v3] IID task 144/144 done
+FLEETV3_VERDICT=PASS
+FLEETV3_IID_VOYAGES=576 ACCEPTED=576
+FLEETV3_VERDICT=DONE
