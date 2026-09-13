@@ -353,6 +353,12 @@ def main(argv=None) -> int:
     ap.add_argument("--arch", required=True)
     ap.add_argument("--phase", required=True, choices=["run", "select"])
     args = ap.parse_args(argv)
+    if args.phase == "run":
+        # 用户裁定 2026-09-13（选项 A）：小架构（实测 GPU<30%）允许 2 路并发——
+        # 显存按需增长（默认 TF 预分配全卡会堵死并发）；大架构并发前须实测 util。
+        import tensorflow as tf
+        for _gpu in tf.config.list_physical_devices("GPU"):
+            tf.config.experimental.set_memory_growth(_gpu, True)
 
     manifest_path = os.path.join(MODELE_ROOT, "results", "predictor_v3",
                                  "env_manifest_cuda.json")
