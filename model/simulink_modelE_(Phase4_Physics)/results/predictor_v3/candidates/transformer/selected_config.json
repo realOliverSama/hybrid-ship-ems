@@ -1,0 +1,59 @@
+{
+  "arch": "transformer",
+  "artifact_sha256": "cfee1d2b5dc435c5e62740ed06799fb810ebff8d2d4096703403ad7aa5c68027",
+  "budget_cap": 20,
+  "budget_consumed": 7,
+  "config": {
+    "N_d": 1,
+    "N_e": 2,
+    "batch": 128,
+    "d": 64,
+    "dropout": 0.0,
+    "lr": 0.0003
+  },
+  "config_sha256": "2a74779b980b621de9d88af60f82da581e8a685195cd9a199e56b7b63e88b6cb",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "feature_surface": "H1+K+F",
+  "git_commit": "84ee1367a8f8b7bf8a7bbc2276e114cdc6cec7ab",
+  "model_id": "transformer",
+  "n_eligible": 7,
+  "param_count": 118595,
+  "schema": "predictor_v3_selected_config_v1",
+  "search_space": {
+    "N_d": [
+      1,
+      2
+    ],
+    "N_e": [
+      2,
+      3
+    ],
+    "batch": [
+      128
+    ],
+    "d": [
+      64,
+      128
+    ],
+    "dropout": [
+      0.0,
+      0.1
+    ],
+    "lr": [
+      0.0001,
+      0.0003,
+      0.001
+    ]
+  },
+  "seed0_val_evidence": {
+    "checkpoint": "experiments/predictor_v3/hpo/transformer/transformer-t003/model.keras",
+    "duration_s": 1945.4,
+    "per_group_ref": "transformer-t003/val_per_group.json",
+    "pinball_sgmacro": 4.2372115490867195
+  },
+  "selected_trial_id": "transformer-t003",
+  "selected_utc": "2026-09-13T15:55:28.711619+00:00",
+  "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
+  "trial_list_sha256": "4ad1678bbcf97075ecde5ef1b66c485c49e9e0c076756382096497f18742364d",
+  "trial_registry_sha256": "d789d6caa8fe2eef4a3d3db32bb0e149a02e20ab23d80c4229102d4c2809b5a1"
+}
