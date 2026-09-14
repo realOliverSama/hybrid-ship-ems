@@ -152,6 +152,7 @@ def evaluate_model_on_view(model, view, *, norm_ext: dict,
         inputs["kf_input"] = feats["kf"]
     pred = model.predict(inputs, verbose=0, batch_size=batch_size)
     pred = np.asarray(pred, dtype=np.float64)
+    voyage_ids = view.voyage_ids
 
     gmap = json.load(open(os.path.join(
         MODELE_ROOT, "results", "predictor_v3", "iid_voyage_group_map.json")))
