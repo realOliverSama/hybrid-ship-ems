@@ -85,6 +85,9 @@ def file_sha256(path: str) -> str:
 
 
 def current_git_commit() -> str:
+    pinned = os.environ.get("EMS_PINNED_GIT_COMMIT")
+    if pinned and pinned != "UNPINNED":
+        return pinned  # archive 部署树无 .git：以传输钉版为准（autodl_protocol §3）
     try:
         return subprocess.check_output(
             ["git", "rev-parse", "HEAD"], cwd=REPO_ROOT,
