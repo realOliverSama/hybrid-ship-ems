@@ -55,11 +55,21 @@ def normalized_w1(sample: np.ndarray, ref: np.ndarray, ref_std: float,
     return {"w1_normalized": w / ref_std, "w1_raw": w, "ref_std": ref_std}
 
 
-def percentile_out_of_support(sample: np.ndarray, p01: float, p99: float) -> dict:
-    s = np.asarray(sample, dtype=np.float64).ravel()
-    return {"frac_below_p01": float((s < p01).mean()),
-            "frac_above_p99": float((s > p99).mean()),
-            "p95_abs_z": None, "p99_abs_z": None, "max_abs_z": None}
+def percentile_out_of_support(sample: np.ndarray, p01, p99: float) -> dict:
+    """p01/p99 可为标量（池化）或 [30] 向量（per-lead/per-bin）。
+
+    向量时逐 lead 计算落出率再求均值（DGN-E-14 池化摘要语义）。
+    """
+    s = np.asarray(sample, dtype=np.float64)
+    p01 = np.asarray(p01, dtype=np.float64)
+    p99 = np.asarray(p99, dtype=np.float64)
+    if p01.ndim == 0:
+        below = float((s < float(p01)).mean())
+        above = float((s > float(p99)).mean())
+    else:
+        below = float((s < p01[None, :]).mean())
+        above = float((s > p99[None, :]).mean())
+    return {"frac_below_p01": below, "frac_above_p99": above}
 
 
 def z_stats(sample: np.ndarray, mean: float, std: float) -> dict:
@@ -159,17 +169,18 @@ def axis2_target_drift(*, ood_view, iid_view, train_ref: dict) -> dict:
 
 # ------------------------------------------------------------ 轴③ 预测退化
 
-def axis3_degradation(*, per_group_ood: dict, per_group_iid: dict,
+def axis3_degradation(*, per_group_ood: dict, per_group_iid,
                       metric: str = "pinball", b: int = 10000,
                       rng: np.random.Generator | None = None) -> dict:
     """轴③ per 模型×条件：two-sample cluster bootstrap → R_deg + 正交字段。
 
-    per_group_ood/iid: {condition: [G 组值]}（同 DGN-E-12 冻结指标口径）。
+    per_group_ood: {condition: [G 组值]}；per_group_iid: [G 组值]（IID-test
+    seed-median 后的组值序列，两参数都会在内部做 bootstrap）。
     """
     rng = rng or np.random.default_rng()
     out = {}
     for cond, vals_o in per_group_ood.items():
-        vals_i = per_group_iid[cond]
+        vals_i = per_group_iid
         r = two_sample_bootstrap_ratio(np.asarray(vals_o), np.asarray(vals_i),
                                        b=b, rng=rng)
         fields = degradation_fields(r)
