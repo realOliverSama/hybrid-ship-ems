@@ -131,7 +131,8 @@ def _set_status(campaign_id: str, status: str, campaign_dir: str | None) -> None
 # ------------------------------------------------------------ 评估核心
 
 def evaluate_model_on_view(model, view, *, norm_ext: dict,
-                           formal_norm: dict, batch_size: int = 1024) -> dict:
+                           formal_norm: dict, batch_size: int = 1024,
+                           ood_cond_of: np.ndarray | None = None) -> dict:
     """单模型 × 单 DatasetView 全指标（复用 metrics.full_report——NFR-444）。
 
     返回 metrics_result 主体（views/segments/crossing/e300/normalized）。
@@ -155,41 +156,29 @@ def evaluate_model_on_view(model, view, *, norm_ext: dict,
     gmap = json.load(open(os.path.join(
         MODELE_ROOT, "results", "predictor_v3", "iid_voyage_group_map.json")))
     group_map = gmap["mapping"]
-    voyage_ids = view.voyage_ids
     if view.kind == "ood":
-        groups = np.array([
-            f"{c}|{g}" for c, g in zip(
-                view.ood_conditions,
-                [group_map.get(v, f"__{v}") for v in voyage_ids])])
-    else:
-        groups = np.array([group_map.get(v, f"__{v}") for v in voyage_ids])
+        ood_cond_of = view.ood_conditions
 
     from predictor_v3.metrics import full_report
-    report = full_report(
-        raw["y_raw"], pred, voyage_ids,
-        {},  # split_group_of 不再需要——full_report 需要 voyage→group，见下
-        e300_true=raw["e300_raw"],
-        y_std_per_lead=json.load(open(
-            os.path.join(MODELE_ROOT, "results", "dataset_v3", "formal",
-                         "formal_norm_v3.json")))["y_std"],
-        y_std_global=json.load(open(data_access.EVAL_CONFIG_PATH))[
-            "normalization_denominators"]["global"]["value"])
-    # split_group 映射： voyage → group（OOD 视图 group 前缀条件名）
+    # split_group 映射：voyage → group（IID 用冻结映射；OOD 前缀条件名）
     sg_map = {}
     for v in np.unique(voyage_ids):
-        sg_map[str(v)] = group_map.get(str(v), f"__{v}")
-    if view.kind == "ood":
-        cond_of = dict(zip(voyage_ids.tolist(),
-                           view.ood_conditions.tolist()))
-        sg_map = {v: f"{cond_of[v]}|{sg_map[v]}" for v in sg_map}
+        v = str(v)
+        g = group_map.get(v)
+        if view.kind == "ood":
+            cond = str(ood_cond_of[int(np.flatnonzero(voyage_ids == v)[0])])
+            g = f"{cond}|{g}" if g else f"{cond}|__{v}"
+        sg_map[v] = g or f"__{v}"
+    y_std_per_lead = json.load(open(
+        os.path.join(MODELE_ROOT, "results", "dataset_v3", "formal",
+                     "formal_norm_v3.json")))["y_std"]
+    y_std_global = json.load(open(data_access.EVAL_CONFIG_PATH))[
+        "normalization_denominators"]["global"]["value"]
     report_full = full_report(
         raw["y_raw"], pred, voyage_ids, sg_map,
         e300_true=raw["e300_raw"],
-        y_std_per_lead=json.load(open(
-            os.path.join(MODELE_ROOT, "results", "dataset_v3", "formal",
-                         "formal_norm_v3.json")))["y_std"],
-        y_std_global=json.load(open(data_access.EVAL_CONFIG_PATH))[
-            "normalization_denominators"]["global"]["value"])
+        y_std_per_lead=y_std_per_lead,
+        y_std_global=y_std_global)
     report_full["crossing_rate"] = crossing_rate(pred)
     report_full["n_windows"] = int(view.n_windows)
     return report_full
