@@ -284,7 +284,8 @@ def _check_preterminal_artifact(campaign: dict,
 
 def _check_timestamp_order(campaign: dict, manifest: dict) -> None:
     """核验④：Winner 选择时间戳严格早于终评授权时间戳（tasks R6）。"""
-    selected = manifest.get("winner_selected_utc")
+    selected = (manifest.get("winner_selected_utc")
+                or manifest.get("selected_utc"))  # DGN-E-16(5) 字段名 selected_utc
     authorized = campaign.get("authorized_utc")
     if not selected or not authorized:
         raise SealedAccessError("[核验④] 缺 winner_selected_utc / authorized_utc")
