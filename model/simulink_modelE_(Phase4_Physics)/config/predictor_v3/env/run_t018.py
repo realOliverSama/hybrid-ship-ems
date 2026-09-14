@@ -78,8 +78,9 @@ def main():
     for cond in ("A1", "B1", "C1", "C2", "C3"):
         v = data_access.load_terminal("ood", CAMP, ood=True,
                                       campaign_dir=f"{RES}/terminal_campaigns")
-        # load_terminal 返回全量 OOD 视图；按条件过滤视图索引
-        v._index = keep  # DatasetView 内部索引直接按条件过滤
+        # load_terminal 返回全量 OOD 视图；按条件过滤视图内部索引
+        keep = np.flatnonzero(v.ood_conditions == cond)
+        v._index = keep
         ood_views[cond] = v
     print(f"[t018] lane{args.lane} views ready: test={test_view.n_windows} "
           f"ood={ {c: v.n_windows for c, v in ood_views.items()} }", flush=True)
