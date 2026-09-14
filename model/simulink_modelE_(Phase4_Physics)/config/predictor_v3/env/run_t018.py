@@ -29,7 +29,7 @@ from predictor_v3.ood_diagnostics import (axis1_input_drift,
 from predictor_v3.quantile import pinball_numpy
 
 RES = os.path.join(MODELE, "results/predictor_v3")
-CAMP = "t443-terminal-20260915"
+CAMP = "t443-terminal-20260915-r2"
 ARCH_OF = {"mlpq": "mlpq", "tcnq": "tcnq", "transformer": "transformer",
            "tft": "tft", "reatt": "reatt",
            "reatt_abl_h1": "reatt", "reatt_abl_h1k": "reatt",
