@@ -15,7 +15,7 @@ from datetime import datetime, timezone
 import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MODELE_ROOT = os.path.dirname(HERE)
+MODELE_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))  # env→predictor_v3→config→ModelE
 if MODELE_ROOT not in sys.path:
     sys.path.insert(0, MODELE_ROOT)
 
