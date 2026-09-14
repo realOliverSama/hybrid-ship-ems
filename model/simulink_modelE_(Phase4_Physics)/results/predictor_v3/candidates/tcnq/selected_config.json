@@ -1,22 +1,22 @@
 {
   "arch": "tcnq",
-  "artifact_sha256": "f2118d1a5a39a832c7adb0f3d27fc3b233e6038ec1d0d640c02938dde7a6392e",
+  "artifact_sha256": "8e7f3ed298ffceba0e85c68f5606906763779142c82f37e28cbbed470b2b26fd",
   "budget_cap": 20,
-  "budget_consumed": 17,
+  "budget_consumed": 20,
   "config": {
-    "C": 64,
+    "C": 96,
     "batch": 256,
     "dilations": "7b",
     "dropout": 0.0,
     "lr": 0.001
   },
-  "config_sha256": "b2c054847eefecddb87bbf51cb175be6aa9e5e5c998032fa6bbe6826e264a895",
+  "config_sha256": "7521fe1ebe8086f41c5a76f2d495b2e4e209ecc071f773a8912d4c0c01f79626",
   "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
   "feature_surface": "H1",
-  "git_commit": "84ee1367a8f8b7bf8a7bbc2276e114cdc6cec7ab",
+  "git_commit": "17458d06",
   "model_id": "tcnq",
-  "n_eligible": 17,
-  "param_count": 144346,
+  "n_eligible": 20,
+  "param_count": 269338,
   "schema": "predictor_v3_selected_config_v1",
   "search_space": {
     "C": [
@@ -41,14 +41,14 @@
     ]
   },
   "seed0_val_evidence": {
-    "checkpoint": "experiments/predictor_v3/hpo/tcnq/tcnq-t011/model.keras",
-    "duration_s": 427.4,
-    "per_group_ref": "tcnq-t011/val_per_group.json",
-    "pinball_sgmacro": 16.702982031439905
+    "checkpoint": "experiments/predictor_v3/hpo/tcnq/tcnq-t017/model.keras",
+    "duration_s": 374.9,
+    "per_group_ref": "tcnq-t017/val_per_group.json",
+    "pinball_sgmacro": 16.29557049489711
   },
-  "selected_trial_id": "tcnq-t011",
-  "selected_utc": "2026-09-13T15:55:26.099012+00:00",
+  "selected_trial_id": "tcnq-t017",
+  "selected_utc": "2026-09-14T09:37:45.668325+00:00",
   "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
   "trial_list_sha256": "5f3eb0f67bfe93d0bc825ebac15c409959759ec371097a90d57baaf8bc280fdf",
-  "trial_registry_sha256": "76a1ac7e94c96dd3f23632d0c9cbc534745c160ab52508f97fdf7d649f58231b"
+  "trial_registry_sha256": "3de533f44b88abc9ce2dd5cc43f1fd55dd9d38b5f846cf0ab28c09558cc3f324"
 }

@@ -1,23 +1,23 @@
 {
   "arch": "transformer",
-  "artifact_sha256": "cfee1d2b5dc435c5e62740ed06799fb810ebff8d2d4096703403ad7aa5c68027",
+  "artifact_sha256": "4e109705792896f980e802f3394f3ba11caa2aa71ee1958cd41c2f961b1317cb",
   "budget_cap": 20,
-  "budget_consumed": 7,
+  "budget_consumed": 20,
   "config": {
-    "N_d": 1,
-    "N_e": 2,
+    "N_d": 2,
+    "N_e": 3,
     "batch": 128,
     "d": 64,
     "dropout": 0.0,
     "lr": 0.0003
   },
-  "config_sha256": "2a74779b980b621de9d88af60f82da581e8a685195cd9a199e56b7b63e88b6cb",
+  "config_sha256": "d324730ae2e63ff55ac52cf49d29fbf153e51a6d4d10b53fa959b088d445c33e",
   "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
   "feature_surface": "H1+K+F",
-  "git_commit": "84ee1367a8f8b7bf8a7bbc2276e114cdc6cec7ab",
+  "git_commit": "17458d06",
   "model_id": "transformer",
-  "n_eligible": 7,
-  "param_count": 118595,
+  "n_eligible": 20,
+  "param_count": 202307,
   "schema": "predictor_v3_selected_config_v1",
   "search_space": {
     "N_d": [
@@ -46,14 +46,14 @@
     ]
   },
   "seed0_val_evidence": {
-    "checkpoint": "experiments/predictor_v3/hpo/transformer/transformer-t003/model.keras",
-    "duration_s": 1945.4,
-    "per_group_ref": "transformer-t003/val_per_group.json",
-    "pinball_sgmacro": 4.2372115490867195
+    "checkpoint": "experiments/predictor_v3/hpo/transformer/transformer-t019/model.keras",
+    "duration_s": 2184.8,
+    "per_group_ref": "transformer-t019/val_per_group.json",
+    "pinball_sgmacro": 4.0339912606122255
   },
-  "selected_trial_id": "transformer-t003",
-  "selected_utc": "2026-09-13T15:55:28.711619+00:00",
+  "selected_trial_id": "transformer-t019",
+  "selected_utc": "2026-09-14T09:37:42.011050+00:00",
   "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
   "trial_list_sha256": "4ad1678bbcf97075ecde5ef1b66c485c49e9e0c076756382096497f18742364d",
-  "trial_registry_sha256": "d789d6caa8fe2eef4a3d3db32bb0e149a02e20ab23d80c4229102d4c2809b5a1"
+  "trial_registry_sha256": "4ae9f972bd7d46a0d68a9a02cd4d10b6f42be28c94f2b4d4b014c9dc45616f83"
 }

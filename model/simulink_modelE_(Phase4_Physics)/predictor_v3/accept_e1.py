@@ -25,7 +25,7 @@ HPO_DIR = os.path.join(MODELE_ROOT, "results", "predictor_v3", "hpo")
 CAND_DIR = os.path.join(MODELE_ROOT, "results", "predictor_v3", "candidates")
 DATA_ACCESS = os.path.join(MODELE_ROOT, "results", "predictor_v3", "data_access")
 
-CAPS = {"mlpq": 4, "tcnq": 20, "transformer": 20, "tft": 18}
+CAPS = {"mlpq": 4, "tcnq": 20, "transformer": 20, "tft": 18, "reatt": 20}
 
 
 def canonical_json(obj) -> bytes:
@@ -87,7 +87,10 @@ def audit_arch(arch: str) -> dict:
                 rows.append(json.loads(line))
     executed = {r["trial_id"] for r in rows}
     unknown = executed - frozen_ids
-    ok("executed_subset_of_frozen_list", not unknown, f"unknown={sorted(unknown)[:5]}")
+    unknown_non_trial = {t for t in unknown if t.endswith("-boot")}
+    unknown_real = unknown - unknown_non_trial
+    ok("executed_subset_of_frozen_list", not unknown_real,
+       f"unknown={sorted(unknown_real)[:5]} boot_rows={sorted(unknown_non_trial)}")
 
     consumed_ids = {r["trial_id"] for r in rows
                     if r["status"] in ("COMPLETED_ELIGIBLE",

@@ -1,0 +1,54 @@
+{
+  "arch": "tft",
+  "artifact_sha256": "05649772f1b62a6a50cf42de688888aff8b8706bbfb9965a9ae5fa1fe714ad9b",
+  "budget_cap": 20,
+  "budget_consumed": 18,
+  "config": {
+    "batch": 128,
+    "d": 64,
+    "dropout": 0.0,
+    "lr": 0.0003,
+    "n_lstm": 2
+  },
+  "config_sha256": "68eb393636c2716ea7fe44f57330291c0a3ebec857180da71cb64bd1484246ca",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "feature_surface": "H1+K+F",
+  "git_commit": "17458d06",
+  "model_id": "tft",
+  "n_eligible": 2,
+  "param_count": 405780,
+  "schema": "predictor_v3_selected_config_v1",
+  "search_space": {
+    "batch": [
+      128
+    ],
+    "d": [
+      64,
+      128
+    ],
+    "dropout": [
+      0.0,
+      0.1
+    ],
+    "lr": [
+      0.0001,
+      0.0003,
+      0.001
+    ],
+    "n_lstm": [
+      1,
+      2
+    ]
+  },
+  "seed0_val_evidence": {
+    "checkpoint": "experiments/predictor_v3/hpo/tft/tft-t009/model.keras",
+    "duration_s": 4871.8,
+    "per_group_ref": "tft-t009/val_per_group.json",
+    "pinball_sgmacro": 4.137480834268868
+  },
+  "selected_trial_id": "tft-t009",
+  "selected_utc": "2026-09-14T09:37:43.876739+00:00",
+  "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
+  "trial_list_sha256": "3f515399af80c83551a709f027275305e4fd5a2731a799374bcc081c1029b3be",
+  "trial_registry_sha256": "0d23d172001622717ec46a4232ee386ee64fb19aa3e0cb898c03170ad8409af2"
+}
