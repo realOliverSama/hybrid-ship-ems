@@ -79,9 +79,7 @@ def main():
         v = data_access.load_terminal("ood", CAMP, ood=True,
                                       campaign_dir=f"{RES}/terminal_campaigns")
         # load_terminal 返回全量 OOD 视图；按条件过滤视图索引
-        keep = np.flatnonzero(v.ood_conditions == cond)
-        v.index = keep
-        v._index = keep
+        v._index = keep  # DatasetView 内部索引直接按条件过滤
         ood_views[cond] = v
     print(f"[t018] lane{args.lane} views ready: test={test_view.n_windows} "
           f"ood={ {c: v.n_windows for c, v in ood_views.items()} }", flush=True)
@@ -96,7 +94,8 @@ def main():
             model, ev = load_model_for(key, seed)
             for set_name, view, raw, groups in [
                     ("test", test_view, test_raw, test_groups)] + [
-                    (f"ood_{c}", v, None, None) for c, v in ood_views.items()]:
+                    (f"ood_{c}", v, v.raw_arrays(), None)
+                    for c, v in ood_views.items()]:
                 t0 = time.time()
                 try:
                     hist_by_ch = {ch: raw["hist_raw"][:, :, i]
