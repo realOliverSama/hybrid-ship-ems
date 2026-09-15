@@ -1,0 +1,1260 @@
+{
+  "arch": "reatt",
+  "budget_cap": 20,
+  "hpo_seed": 1797648864,
+  "n_capacity_valid": 120,
+  "n_enumerated": 216,
+  "n_rejected": 96,
+  "n_subsampled_out": 100,
+  "rejected": [
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 190915,
+      "reason": "count_params 190915 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 190915,
+      "reason": "count_params 190915 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 190915,
+      "reason": "count_params 190915 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 190915,
+      "reason": "count_params 190915 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 190915,
+      "reason": "count_params 190915 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 190915,
+      "reason": "count_params 190915 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 195267,
+      "reason": "count_params 195267 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 195267,
+      "reason": "count_params 195267 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 195267,
+      "reason": "count_params 195267 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 195267,
+      "reason": "count_params 195267 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 195267,
+      "reason": "count_params 195267 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 195267,
+      "reason": "count_params 195267 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 240899,
+      "reason": "count_params 240899 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 240899,
+      "reason": "count_params 240899 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 240899,
+      "reason": "count_params 240899 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 240899,
+      "reason": "count_params 240899 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 240899,
+      "reason": "count_params 240899 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 240899,
+      "reason": "count_params 240899 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 245251,
+      "reason": "count_params 245251 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 245251,
+      "reason": "count_params 245251 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 245251,
+      "reason": "count_params 245251 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 245251,
+      "reason": "count_params 245251 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 245251,
+      "reason": "count_params 245251 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 245251,
+      "reason": "count_params 245251 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 290883,
+      "reason": "count_params 290883 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 290883,
+      "reason": "count_params 290883 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 290883,
+      "reason": "count_params 290883 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 290883,
+      "reason": "count_params 290883 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 290883,
+      "reason": "count_params 290883 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 290883,
+      "reason": "count_params 290883 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 295235,
+      "reason": "count_params 295235 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 295235,
+      "reason": "count_params 295235 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 295235,
+      "reason": "count_params 295235 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 295235,
+      "reason": "count_params 295235 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 295235,
+      "reason": "count_params 295235 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 295235,
+      "reason": "count_params 295235 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 286179,
+      "reason": "count_params 286179 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 286179,
+      "reason": "count_params 286179 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 286179,
+      "reason": "count_params 286179 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 286179,
+      "reason": "count_params 286179 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 286179,
+      "reason": "count_params 286179 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 286179,
+      "reason": "count_params 286179 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 290531,
+      "reason": "count_params 290531 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 290531,
+      "reason": "count_params 290531 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 290531,
+      "reason": "count_params 290531 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 290531,
+      "reason": "count_params 290531 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 290531,
+      "reason": "count_params 290531 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 290531,
+      "reason": "count_params 290531 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 336163,
+      "reason": "count_params 336163 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 336163,
+      "reason": "count_params 336163 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 336163,
+      "reason": "count_params 336163 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 336163,
+      "reason": "count_params 336163 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 336163,
+      "reason": "count_params 336163 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 336163,
+      "reason": "count_params 336163 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 340515,
+      "reason": "count_params 340515 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 340515,
+      "reason": "count_params 340515 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 340515,
+      "reason": "count_params 340515 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 340515,
+      "reason": "count_params 340515 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 340515,
+      "reason": "count_params 340515 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 340515,
+      "reason": "count_params 340515 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 386147,
+      "reason": "count_params 386147 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 386147,
+      "reason": "count_params 386147 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 386147,
+      "reason": "count_params 386147 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 386147,
+      "reason": "count_params 386147 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 386147,
+      "reason": "count_params 386147 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 386147,
+      "reason": "count_params 386147 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 390499,
+      "reason": "count_params 390499 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 390499,
+      "reason": "count_params 390499 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 390499,
+      "reason": "count_params 390499 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 390499,
+      "reason": "count_params 390499 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 390499,
+      "reason": "count_params 390499 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 390499,
+      "reason": "count_params 390499 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 418307,
+      "reason": "count_params 418307 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 418307,
+      "reason": "count_params 418307 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 418307,
+      "reason": "count_params 418307 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 418307,
+      "reason": "count_params 418307 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 418307,
+      "reason": "count_params 418307 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 418307,
+      "reason": "count_params 418307 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 422659,
+      "reason": "count_params 422659 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 422659,
+      "reason": "count_params 422659 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 422659,
+      "reason": "count_params 422659 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 422659,
+      "reason": "count_params 422659 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 422659,
+      "reason": "count_params 422659 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 422659,
+      "reason": "count_params 422659 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 468291,
+      "reason": "count_params 468291 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 468291,
+      "reason": "count_params 468291 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 468291,
+      "reason": "count_params 468291 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 468291,
+      "reason": "count_params 468291 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 468291,
+      "reason": "count_params 468291 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 468291,
+      "reason": "count_params 468291 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 472643,
+      "reason": "count_params 472643 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 472643,
+      "reason": "count_params 472643 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 472643,
+      "reason": "count_params 472643 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 472643,
+      "reason": "count_params 472643 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 472643,
+      "reason": "count_params 472643 ∉ [500000, 3000000]"
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 472643,
+      "reason": "count_params 472643 ∉ [500000, 3000000]"
+    }
+  ],
+  "schema": "predictor_v3_trial_generation_audit_v1"
+}

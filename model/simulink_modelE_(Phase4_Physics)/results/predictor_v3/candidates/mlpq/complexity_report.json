@@ -1,0 +1,17 @@
+{
+  "arch": "mlpq",
+  "artifact_sha256": "8d5e9c4998ebd97e8ecfd28462b270143a9e1b037e4b7f163ac2ae98c24c00b8",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "063490a284277e5839af867fa4327369cbb87351",
+  "informational_only": "不左右 winner 选择（FR-588/Q7-①）",
+  "macs": {
+    "status": "UNAVAILABLE: RuntimeError"
+  },
+  "model_id": "mlpq",
+  "peak_mem_bytes": null,
+  "peak_mem_note": "TF memory growth 模式未记录峰值（可得时于 T-015 增补）；显存分配见 env_manifest_cuda.json",
+  "schema": "predictor_v3_complexity_report_v1",
+  "serialized_fp32_bytes": 2632470,
+  "train_wall_clock_s": 770.8,
+  "trainable_params": 216314
+}

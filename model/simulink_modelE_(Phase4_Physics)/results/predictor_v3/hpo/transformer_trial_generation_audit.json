@@ -1,0 +1,11 @@
+{
+  "arch": "transformer",
+  "budget_cap": 20,
+  "hpo_seed": 1519921250,
+  "n_capacity_valid": 48,
+  "n_enumerated": 48,
+  "n_rejected": 0,
+  "n_subsampled_out": 28,
+  "rejected": [],
+  "schema": "predictor_v3_trial_generation_audit_v1"
+}

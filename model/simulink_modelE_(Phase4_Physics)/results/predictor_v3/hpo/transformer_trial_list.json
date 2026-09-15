@@ -1,0 +1,603 @@
+{
+  "arch": "transformer",
+  "artifact_sha256": "4fbac50fcfecb824370ae696e2a8403815ff027b710b8f9b13f1ba2fbe9c71fd",
+  "budget_cap": 20,
+  "hpo_seed": 1519921250,
+  "n_trials": 20,
+  "s0": 179.444619749777,
+  "sampling": "uniform without replacement over capacity-valid configs（numpy default_rng，sorted canonical key 序）",
+  "schema": "predictor_v3_hpo_trial_list_v1",
+  "subsampled_out": [
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 466563
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 466563
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 466563
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 118595
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 118595
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 599043
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 599043
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 599043
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 599043
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 152067
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 152067
+    },
+    {
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 152067
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 665347
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 665347
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 665347
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 665347
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 168835
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 168835
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 168835
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 797827
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 797827
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 797827
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 797827
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 797827
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 202307
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 202307
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 202307
+    },
+    {
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 202307
+    }
+  ],
+  "trials": [
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "1c05a2e1ec7279744a12544ddc1c8324dfa1a58bb3d41d23e67ba308e8e38c3d",
+      "param_count": 466563,
+      "trial_id": "transformer-t000"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "9c98cd2cbe17ccd167beed6f6326d8e2413f15256cf21b1646a74694f8ea4f19",
+      "param_count": 466563,
+      "trial_id": "transformer-t001"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "d94b21e2d5944a723f522567526654fc1b7e725dcb2294505a7bfe554d57be26",
+      "param_count": 466563,
+      "trial_id": "transformer-t002"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "2a74779b980b621de9d88af60f82da581e8a685195cd9a199e56b7b63e88b6cb",
+      "param_count": 118595,
+      "trial_id": "transformer-t003"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "1754ca2687a07bdc98eef04c8dd664e9866fd2eca5db222f3459db85ddeb8eda",
+      "param_count": 118595,
+      "trial_id": "transformer-t004"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "721883dc1766b0f671808061a9a83d95075668341b02c9e59e1fbc91207e5d10",
+      "param_count": 118595,
+      "trial_id": "transformer-t005"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "0c084edc12532da34877e2283cd37526506e24b237b92fb67938dfa1bbee0b1a",
+      "param_count": 118595,
+      "trial_id": "transformer-t006"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "3db77d7b7d1a98ce0e54a5b398209ff59489bcfc0a9a9eb7da43e938436b0ae3",
+      "param_count": 599043,
+      "trial_id": "transformer-t007"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "f3275240a809243a2947d227441ef68750436b36effaf11fd6204e2ac4a67042",
+      "param_count": 599043,
+      "trial_id": "transformer-t008"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "c998adc1b966ac4604bbb7db4eef339134033eca783d5bb93441443738ec1220",
+      "param_count": 152067,
+      "trial_id": "transformer-t009"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "cffa888416a6350390bcd9e3eedbfe7f137ca4fac020d349003f21798df9ebca",
+      "param_count": 152067,
+      "trial_id": "transformer-t010"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 1,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "9fd2ce4412d73ab81e3d9e2d7b87d2436a356c5b09aefd622f23f729b1ee2cf5",
+      "param_count": 152067,
+      "trial_id": "transformer-t011"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "2e15fb2c3340b1a5c89286a87bbbc582ebaae6be57dd3f911acd0ffb025e7584",
+      "param_count": 665347,
+      "trial_id": "transformer-t012"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "e8fa04414ff5410694e78b8dc0d0411e5341a75ada7a63bef1de9109a7175671",
+      "param_count": 665347,
+      "trial_id": "transformer-t013"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "8050bb6cb3f939b2b5d8ea1dbc69074dba4a07ab148857a53394d0ac16b90400",
+      "param_count": 168835,
+      "trial_id": "transformer-t014"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "e2ca4bef879b508c59a21f1c949349aed694ac681ff68be5073068381b764479",
+      "param_count": 168835,
+      "trial_id": "transformer-t015"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 2,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "f58592f363bde6eaddd62213aa9c7f1b6bc09b23c009016f388b96db7296605f",
+      "param_count": 168835,
+      "trial_id": "transformer-t016"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "6e061e6215aeb3df881ec7c97fc63e86fe75745b219ec3ec1b37a9d5aeea278e",
+      "param_count": 797827,
+      "trial_id": "transformer-t017"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "17fbbbb8f23c436ff6e19f4f1479f27e3890055fc18de5e562b9c05d55e9dc6e",
+      "param_count": 202307,
+      "trial_id": "transformer-t018"
+    },
+    {
+      "arch": "transformer",
+      "config": {
+        "N_d": 2,
+        "N_e": 3,
+        "batch": 128,
+        "d": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "d324730ae2e63ff55ac52cf49d29fbf153e51a6d4d10b53fa959b088d445c33e",
+      "param_count": 202307,
+      "trial_id": "transformer-t019"
+    }
+  ],
+  "utc": "2026-09-13T10:53:01.223472+00:00"
+}

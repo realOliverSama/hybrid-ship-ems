@@ -1,0 +1,203 @@
+{
+  "ablation_arms": {
+    "faces": {
+      "reatt_abl_h1": {
+        "zero_channels": "全部 6 个 KF 通道"
+      },
+      "reatt_abl_h1k": {
+        "zero_channels": "2 个 F 通道（u_fcst_mps/wl_fcst_m 之外的 K 通道保留——K=计划量 v_plan/s_plan/h_chart/P_hotel_plan；F=预报量 u_fcst/wl_fcst）"
+      },
+      "reatt_abl_h1kf": {
+        "reuse": "复用正式 REAT-T 候选运行，不重复训练"
+      }
+    },
+    "mask_recording": "消融 config/contract 记录 active-information-channel mask；禁止新增运行时 mask 张量",
+    "mechanism": "R2 架构保持的归一化零通道替换（同拓扑同参数量）；零 = transform 后 0 值（train 均值语义）",
+    "winner_pool": "消融臂不进 winner pool（E-Q9-2）"
+  },
+  "anchor": {
+    "Cp": 96,
+    "Nf": 3,
+    "batch": 128,
+    "d_dec": 128,
+    "df": 128,
+    "dropout": 0.1,
+    "estimated_params_note": "设计估计 ≈0.78M（TCN ≈333K + future ≈394K + fusion/decoder ≈45K）；以 count_params 机器证据为准",
+    "h": 4,
+    "lr": 0.0003,
+    "note": "DGN-E-08 ⑤ 注入义务仅在 Cp/df/Nf/d_dec 四维；dropout/lr 取搜索空间代表值（dropout=0.1、lr=3e-4）作完整可执行配置，在此冻结"
+  },
+  "artifact_sha256": "8150c36db4c2f2082162b61884e7cd06f71d654cb377e82b7e25bd5070b24e63",
+  "capacity_envelope": {
+    "obligation": "搜索空间须含 ≥1 个 ≤1.5M 有效配置（FR-587）；超界配置在 trial list 生成期过滤（DGN-E-08 ③）",
+    "param_range": [
+      500000,
+      3000000
+    ],
+    "unit": "model.count_params()（机器证据）"
+  },
+  "decoder": {
+    "out": "[B,30,3] 末维 [q10,q50,q90]",
+    "per_lead_shared": true,
+    "quantile_output": {
+      "module_constraint": "模块内禁二次投影（R4）；全体候选共用同一实现",
+      "parameterization": "共用 MonotonicQuantileTransform（DGN-E-06；q50=m、q10=m−softplus(a)、q90=m+softplus(b)）",
+      "raw_bias_init": "a/b 位 = softplus_inv(s0)，m 位 = 0；s0 = train 全局 y_std（eval_config 冻结值）"
+    },
+    "steps": [
+      "Dense(d_dec, GELU)",
+      "Dropout(p)",
+      "Dense(3) → (m,a,b)"
+    ]
+  },
+  "design_source": "design.md DGN-E-07(e)（R1~R9 修正后；本文件为操作化转录，非第二设计门）",
+  "fusion": {
+    "out": "fused [B,30,df]",
+    "steps": [
+      "h_past [B,Cp] → broadcast/tile 至 [B,30,Cp]",
+      "concat(fut_seq, h_past_tiled) → [B,30,Cp+df]",
+      "LayerNorm",
+      "Dense(df, GELU)",
+      "Dropout(p)"
+    ]
+  },
+  "future_branch": {
+    "encoder_blocks": {
+      "count": "Nf",
+      "ffn_width": "4*df（与 Transformer baseline 的 2d 不同——DGN-E-07(e) 原文）",
+      "per_block": [
+        "LayerNorm",
+        "self-MHA(h heads, 全 30 位互见，无因果掩码)",
+        "Dropout(p)",
+        "Add",
+        "LayerNorm",
+        "FFN 4df(GELU→Linear)",
+        "Dropout(p)",
+        "Add"
+      ],
+      "preln": true
+    },
+    "input_proj": {
+      "layer": "Dense",
+      "out": "[B,30,df]",
+      "units": "df"
+    },
+    "lead_positional_encoding": {
+      "d": "df",
+      "layer": "LearnedPositionalEncoding",
+      "n": 30,
+      "out": "[B,30,df]（输入投影 + pos）"
+    },
+    "out": "fut_seq [B,30,df]",
+    "type": "Transformer"
+  },
+  "norm_residual_dropout_policy": {
+    "dropout": "统一标量 p（搜索空间维度）；past blocks / future MHA+FFN / fusion / decoder 各 Dropout(p)",
+    "norm": "LayerNorm（past blocks / future encoder PreLN / fusion / decoder 前无）",
+    "residual": "past blocks Add(skip)（输入投影后）；future encoder Add×2/block；fusion/decoder 无 skip（维度不符）"
+  },
+  "past_branch": {
+    "attention_pooling": {
+      "definition": "score=Dense(1,use_bias=False)→softmax(时间位)→加权和",
+      "layer": "LearnedQueryAttentionPooling",
+      "out": "h_past [B,Cp]"
+    },
+    "input": "hist_input [B,300,11]",
+    "input_proj": {
+      "filters": "Cp",
+      "kernel": 1,
+      "layer": "Conv1D",
+      "out": "[B,300,Cp]",
+      "padding": "same"
+    },
+    "residual_blocks": {
+      "count": 6,
+      "dilations": [
+        1,
+        2,
+        4,
+        8,
+        16,
+        32
+      ],
+      "note": "causal padding = TCN 标准时间因果语义（历史序列内部）；与 future 分支的 K/F 可见域无关（R3 只约束 30 位未来）",
+      "per_block": [
+        "Conv1D(Cp, k=3, padding=causal, dilation=d)",
+        "LayerNorm",
+        "GELU",
+        "Dropout(p)",
+        "Add(skip)"
+      ]
+    },
+    "type": "TCN"
+  },
+  "schema": "predictor_v3_reat_t_arch_v1",
+  "search_space": {
+    "Cp": [
+      64,
+      96,
+      128
+    ],
+    "Nf": [
+      2,
+      3,
+      4
+    ],
+    "batch": [
+      128
+    ],
+    "budget_cap": 20,
+    "d_dec": [
+      64,
+      128
+    ],
+    "df": [
+      64,
+      128
+    ],
+    "dropout": [
+      0.0,
+      0.1
+    ],
+    "generation": "DGN-E-08 七步算法（枚举→canonicalize→容量过滤→audit→锚点注入→HPO 种子无放回抽样→冻结）",
+    "h": [
+      4
+    ],
+    "lr": [
+      0.0001,
+      0.0003,
+      0.001
+    ]
+  },
+  "task": "T-012",
+  "tensor_interface": {
+    "inputs": {
+      "hist_input": {
+        "dtype": "float32",
+        "semantics": "H1 历史 300s@1Hz（formal_norm_v3 transform 后）",
+        "shape": [
+          300,
+          11
+        ]
+      },
+      "kf_input": {
+        "dtype": "float32",
+        "semantics": "KF issue 时刻合法计划/预报（predictor_norm_ext_v1 transform 后；lead 升序 k=1..30）",
+        "shape": [
+          30,
+          6
+        ]
+      }
+    },
+    "kf_visibility": "R3：future 分支 30 位合法 K/F 全互见（无因果掩码）；padding mask 允许；future realized target/ORACLE 禁止",
+    "output": {
+      "dtype": "float32",
+      "semantics": "末维 [q10,q50,q90]，kW；E300 派生非输出（FR-574）",
+      "shape": [
+        30,
+        3
+      ]
+    }
+  },
+  "utc": "2026-09-13T13:38:45.604241+00:00"
+}

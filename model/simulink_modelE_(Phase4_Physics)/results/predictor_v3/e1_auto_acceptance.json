@@ -1,0 +1,294 @@
+{
+  "access_log_audit": {
+    "count": 0,
+    "unsealed_or_suspicious": []
+  },
+  "archs": {
+    "mlpq": {
+      "arch": "mlpq",
+      "checks": [
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/mlpq_trial_list.json",
+          "name": "trial_list_exists",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/mlpq_trials.jsonl",
+          "name": "registry_exists",
+          "pass": true
+        },
+        {
+          "detail": "unknown=[] boot_rows=[]",
+          "name": "executed_subset_of_frozen_list",
+          "pass": true
+        },
+        {
+          "detail": "consumed=4 cap=4",
+          "name": "budget_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "eligible=4",
+          "name": "eligible_ge_1",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/mlpq/selected_config.json",
+          "name": "selected_config_exists",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "selected_config_self_hash",
+          "pass": true
+        },
+        {
+          "detail": "selected=mlpq-t001 best=mlpq-t001",
+          "name": "selected_is_frozen_objective_best",
+          "pass": true
+        },
+        {
+          "detail": "consumed=4",
+          "name": "selected_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "trial_list_hash_recorded",
+          "pass": true
+        }
+      ],
+      "overall": true
+    },
+    "reatt": {
+      "arch": "reatt",
+      "checks": [
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/reatt_trial_list.json",
+          "name": "trial_list_exists",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/reatt_trials.jsonl",
+          "name": "registry_exists",
+          "pass": true
+        },
+        {
+          "detail": "unknown=[] boot_rows=['reatt-boot']",
+          "name": "executed_subset_of_frozen_list",
+          "pass": true
+        },
+        {
+          "detail": "consumed=20 cap=20",
+          "name": "budget_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "eligible=20",
+          "name": "eligible_ge_1",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/reatt/selected_config.json",
+          "name": "selected_config_exists",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "selected_config_self_hash",
+          "pass": true
+        },
+        {
+          "detail": "selected=reatt-t018 best=reatt-t018",
+          "name": "selected_is_frozen_objective_best",
+          "pass": true
+        },
+        {
+          "detail": "consumed=20",
+          "name": "selected_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "trial_list_hash_recorded",
+          "pass": true
+        }
+      ],
+      "overall": true
+    },
+    "tcnq": {
+      "arch": "tcnq",
+      "checks": [
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/tcnq_trial_list.json",
+          "name": "trial_list_exists",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/tcnq_trials.jsonl",
+          "name": "registry_exists",
+          "pass": true
+        },
+        {
+          "detail": "unknown=[] boot_rows=[]",
+          "name": "executed_subset_of_frozen_list",
+          "pass": true
+        },
+        {
+          "detail": "consumed=20 cap=20",
+          "name": "budget_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "eligible=20",
+          "name": "eligible_ge_1",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/tcnq/selected_config.json",
+          "name": "selected_config_exists",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "selected_config_self_hash",
+          "pass": true
+        },
+        {
+          "detail": "selected=tcnq-t017 best=tcnq-t017",
+          "name": "selected_is_frozen_objective_best",
+          "pass": true
+        },
+        {
+          "detail": "consumed=20",
+          "name": "selected_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "trial_list_hash_recorded",
+          "pass": true
+        }
+      ],
+      "overall": true
+    },
+    "tft": {
+      "arch": "tft",
+      "checks": [
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/tft_trial_list.json",
+          "name": "trial_list_exists",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/tft_trials.jsonl",
+          "name": "registry_exists",
+          "pass": true
+        },
+        {
+          "detail": "unknown=[] boot_rows=[]",
+          "name": "executed_subset_of_frozen_list",
+          "pass": true
+        },
+        {
+          "detail": "consumed=18 cap=18",
+          "name": "budget_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "eligible=2",
+          "name": "eligible_ge_1",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/tft/selected_config.json",
+          "name": "selected_config_exists",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "selected_config_self_hash",
+          "pass": true
+        },
+        {
+          "detail": "selected=tft-t009 best=tft-t009",
+          "name": "selected_is_frozen_objective_best",
+          "pass": true
+        },
+        {
+          "detail": "consumed=18",
+          "name": "selected_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "trial_list_hash_recorded",
+          "pass": true
+        }
+      ],
+      "overall": true
+    },
+    "transformer": {
+      "arch": "transformer",
+      "checks": [
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/transformer_trial_list.json",
+          "name": "trial_list_exists",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/hpo/transformer_trials.jsonl",
+          "name": "registry_exists",
+          "pass": true
+        },
+        {
+          "detail": "unknown=[] boot_rows=[]",
+          "name": "executed_subset_of_frozen_list",
+          "pass": true
+        },
+        {
+          "detail": "consumed=20 cap=20",
+          "name": "budget_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "eligible=20",
+          "name": "eligible_ge_1",
+          "pass": true
+        },
+        {
+          "detail": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/transformer/selected_config.json",
+          "name": "selected_config_exists",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "selected_config_self_hash",
+          "pass": true
+        },
+        {
+          "detail": "selected=transformer-t019 best=transformer-t019",
+          "name": "selected_is_frozen_objective_best",
+          "pass": true
+        },
+        {
+          "detail": "consumed=20",
+          "name": "selected_within_cap",
+          "pass": true
+        },
+        {
+          "detail": "",
+          "name": "trial_list_hash_recorded",
+          "pass": true
+        }
+      ],
+      "overall": true
+    }
+  },
+  "artifact_sha256": "dd205481a497c7758587d5517546223699c30af4a0569726e959a45edd15412e",
+  "git_commit": "17458d06",
+  "note": "机器核对层；最终裁定（spec_task_check/STOP 处置）属主 Agent。",
+  "overall": true,
+  "schema": "predictor_v3_e1_auto_acceptance_v1",
+  "utc": "2026-09-14T09:38:42.743609+00:00"
+}

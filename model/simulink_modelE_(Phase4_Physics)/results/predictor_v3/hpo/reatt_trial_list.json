@@ -1,0 +1,1514 @@
+{
+  "arch": "reatt",
+  "artifact_sha256": "688e0210fdaf66c8f9bb0cd5a2006fdf8267319f71c6f1eb1da3108412f5b835",
+  "budget_cap": 20,
+  "hpo_seed": 1797648864,
+  "n_trials": 20,
+  "s0": 179.444619749777,
+  "sampling": "uniform without replacement over capacity-valid configs（numpy default_rng，sorted canonical key 序）",
+  "schema": "predictor_v3_hpo_trial_list_v1",
+  "subsampled_out": [
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 750467
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 750467
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 750467
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 750467
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 750467
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 742019
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 742019
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 742019
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 742019
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 742019
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 948739
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 948739
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 948739
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 948739
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 948739
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 948739
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 940291
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 940291
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 940291
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 940291
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 940291
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 940291
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 1147011
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 1147011
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 1147011
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 1147011
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 522627
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 522627
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 522627
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 522627
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 522627
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 1138563
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 1138563
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 1138563
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 1138563
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 1138563
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 1138563
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 518275
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 518275
+    },
+    {
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 518275
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 518979
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 518979
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 518979
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 518979
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 518979
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 518979
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 510531
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 510531
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 510531
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 510531
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 510531
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 510531
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 717251
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 717251
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 717251
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 717251
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 717251
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 708803
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 708803
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 708803
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 915523
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 915523
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 915523
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 915523
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 915523
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 907075
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 907075
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 907075
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 907075
+    },
+    {
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 907075
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 616291
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 616291
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 616291
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 616291
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 616291
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 607843
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 607843
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 607843
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 607843
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 607843
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 607843
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 814563
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 814563
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 814563
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 814563
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 814563
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 806115
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 806115
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 806115
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 806115
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 806115
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 1012835
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "param_count": 1012835
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 1012835
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 1012835
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "param_count": 1004387
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "param_count": 1004387
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "param_count": 1004387
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "param_count": 1004387
+    },
+    {
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "param_count": 1004387
+    }
+  ],
+  "trials": [
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "cba92be242091b156e17bed904211daa97408aac4376942ae10eb390fbc45871",
+      "param_count": 750467,
+      "trial_id": "reatt-t000"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "71baa4fcf3892d0497ce63e2a0ddfd3cd1c6d135f784a3c2f0651ae6af2c5d13",
+      "param_count": 742019,
+      "trial_id": "reatt-t001"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "61ae84de9b50d1b988c7eeb450f5c454b50684ced91f683896f498a605ea45ca",
+      "param_count": 1147011,
+      "trial_id": "reatt-t002"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "a2f8c0871057007de047434d8bf7e0869acbe4357d0ba98a64760e0cd4eb280f",
+      "param_count": 1147011,
+      "trial_id": "reatt-t003"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "c3e56633e0a38230ab9329a66b67ba74d20216aa9e23aec824241f0eea2fdfa6",
+      "param_count": 522627,
+      "trial_id": "reatt-t004"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "37a6f1e654ce54008609d6a170cea55f409d94aaf1a3ab25092f27c7983e66b7",
+      "param_count": 518275,
+      "trial_id": "reatt-t005"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "0469b9c0a9224b2a50f2b2d7b21a4fb25a45d3e14fddac95a8c006af19178d35",
+      "param_count": 518275,
+      "trial_id": "reatt-t006"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 128,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 64,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "67b54985019d6bd798c7bc4a3ddf411906602898022d89710ddef7d3d6ee73e8",
+      "param_count": 518275,
+      "trial_id": "reatt-t007"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "706491b0d0b3c0e6405625d39f7d6dab302ded1c1406228aa9679f659a3ee717",
+      "param_count": 717251,
+      "trial_id": "reatt-t008"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "dda404c8180c99a61417fd5affe2d452fe1d86ea3a720b087de4363d01e1120a",
+      "param_count": 708803,
+      "trial_id": "reatt-t009"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "29e03d2a0a49ff13393dfababdb32648979542ea288d9fcd3b64c0479329e17e",
+      "param_count": 708803,
+      "trial_id": "reatt-t010"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 64,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.001
+      },
+      "config_sha256": "457ee38773ea6c0025861c20eda2040322278c2bc0a84319ce153e701b71b894",
+      "param_count": 708803,
+      "trial_id": "reatt-t011"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "448c217ca8e976b92c58ea899962f0eaf5121cc3deba81103ac04fe788c6e5ab",
+      "param_count": 915523,
+      "trial_id": "reatt-t012"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 64,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0003
+      },
+      "config_sha256": "d35e63f6b2e3b02504618f5f3db35fbd9d9500595aaebdb4e8eb600b62b663a1",
+      "param_count": 907075,
+      "trial_id": "reatt-t013"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 96,
+        "Nf": 2,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0003
+      },
+      "config_sha256": "3d7c91ea812f5101a660b423b6a578ca35b31886bb1664b747dc61d0ee7a3827",
+      "param_count": 616291,
+      "trial_id": "reatt-t014"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "a47c6e0059d06c11a4122b859d1970ff39bb67221e13338aa99b4cf42c1f524f",
+      "param_count": 814563,
+      "trial_id": "reatt-t015"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 96,
+        "Nf": 3,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "db8627892fbb4a803ae9d14905b3ee175c394f32d4e1cb0395688cfa4388840c",
+      "param_count": 806115,
+      "trial_id": "reatt-t016"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.0001
+      },
+      "config_sha256": "873011390e2adb8f335d85349a447bbad7d3cecb0c4e23382fa0bf65cf8440b3",
+      "param_count": 1012835,
+      "trial_id": "reatt-t017"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 128,
+        "df": 128,
+        "dropout": 0.0,
+        "lr": 0.001
+      },
+      "config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+      "param_count": 1012835,
+      "trial_id": "reatt-t018"
+    },
+    {
+      "arch": "reatt",
+      "config": {
+        "Cp": 96,
+        "Nf": 4,
+        "batch": 128,
+        "d_dec": 64,
+        "df": 128,
+        "dropout": 0.1,
+        "lr": 0.0001
+      },
+      "config_sha256": "a1ef188f717db88c1f885b01850cfbff7d8c9ef777500899ff86f625d61f7d7e",
+      "param_count": 1004387,
+      "trial_id": "reatt-t019"
+    }
+  ]
+}

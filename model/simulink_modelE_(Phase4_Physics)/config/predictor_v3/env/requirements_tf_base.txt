@@ -1,0 +1,20 @@
+# Phase 4-E predictor-v3 训练环境最小集（手钉；落锁以兼容 smoke 证据为准）
+# DGN-E-15 / FR-592 / FR-591；本文件由 tasks T-001 拥有。
+#
+# 落锁记录（2026-09-13，T-001 Gate 预案证据驱动降钉链）：
+#   首选 tensorflow 2.21.0 + tensorflow-metal 1.2.0 → import FAIL
+#   （tensorflow-plugins/libmetal_plugin.dylib dlopen NotFoundError：
+#     _pywrap_tensorflow_internal.so rpath miss，metal 1.2.0 与 TF 2.21 ABI 不兼容）
+#   降钉 tensorflow 2.20.0 + tensorflow-metal 1.2.0 → import FAIL（同症状）
+#   降钉 tensorflow 2.19.1 + tensorflow-metal 1.2.0 → import PASS，
+#   macOS 兼容 smoke PASS（env_smoke_macos.json）→ 落锁本文件。
+#   tensorflow-metal 1.2.0 为 pip 可用最新（官方支持矩阵内最高 TF = 2.19.x）；
+#   numpy 约束保持 2.x（TF 2.19.1 解析为 2.1.3）。
+# 注意：正式 result-bearing 训练的 canonical 环境为 AutoDL 4090D CUDA（T-007
+# 拥有 requirements_tf_cuda_lock.txt）；两平台尽量同 TF/Keras 核心版本，
+# 不一致时 canonical CUDA 对正式工件权威（FR-591）。
+tensorflow==2.19.1
+tensorflow-metal==1.2.0
+numpy>=2.0,<3
+scipy
+pytest

@@ -1,0 +1,12 @@
+{
+  "artifact_sha256": "78c553056db5d9d0ceeb39dcf13296dba4dc1df200a88ef9e37d74696f939356",
+  "crossing_rate": 0.0,
+  "model_path": "experiments/predictor_v3/confirm/reatt/reatt_s0.keras",
+  "n_split_groups": 27,
+  "n_windows": 36160,
+  "pass": true,
+  "schema": "predictor_v3_val_rehearsal_v1",
+  "sgmacro_pinball": 4.005251217842873,
+  "utc": "2026-09-14T18:15:01.655365+00:00",
+  "winner_arch": "reatt"
+}

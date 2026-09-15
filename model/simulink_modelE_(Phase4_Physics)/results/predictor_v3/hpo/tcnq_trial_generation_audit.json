@@ -1,0 +1,11 @@
+{
+  "arch": "tcnq",
+  "budget_cap": 20,
+  "hpo_seed": 959964163,
+  "n_capacity_valid": 24,
+  "n_enumerated": 24,
+  "n_rejected": 0,
+  "n_subsampled_out": 4,
+  "rejected": [],
+  "schema": "predictor_v3_trial_generation_audit_v1"
+}

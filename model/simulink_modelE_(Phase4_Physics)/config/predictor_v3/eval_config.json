@@ -1,0 +1,65 @@
+{
+  "schema": "predictor_v3_eval_config_v1",
+  "task": "T-005",
+  "primary_hpo_objective": "validation split_group_macro pinball（FR-595）",
+  "primary_point_prediction": "q50（条件中位数，如实表述；非均值）",
+  "primary_metric": "MAE(q50)",
+  "secondary_metric": "RMSE(q50)",
+  "output_contract": {
+    "shape": [30, 3],
+    "quantile_order": ["q10", "q50", "q90"],
+    "taus": [0.1, 0.5, 0.9],
+    "unit": "kW",
+    "e300": "派生值 E300_hat = Σ q50_k·(10/3600)；不授权独立 E300 head（FR-574）"
+  },
+  "segments": {
+    "short": {"bins": [1, 6], "seconds": "10-60"},
+    "mid": {"bins": [7, 18], "seconds": "70-180"},
+    "long": {"bins": [19, 30], "seconds": "190-300"}
+  },
+  "statistical_hierarchy": {
+    "levels": "window -> voyage -> split_group",
+    "primary_inference_unit": "split_group",
+    "views": {
+      "split_group_macro": "主推断视图（组均值再均）",
+      "voyage_macro": "次要描述",
+      "window_pooled": "次要运行视图；禁用于制造窄 CI"
+    },
+    "forbidden": ["mean-of-RMSE（窗口级）", "平均 R²", "窗口当独立观测", "同族航次当独立单元"],
+    "bootstrap": {
+      "B": 10000,
+      "unit": "split_group",
+      "val_paired": "δ_rel* = (M_c* − M_b*)/M_b*（分母为重采样后参照指标；非正/未定义 ⇒ UNDEFINED fail-safe）",
+      "ood_two_sample": "two-sample cluster bootstrap（双侧独立重采样；ratio 仅 pinball/MAE/RMSE）",
+      "multi_seed_aggregation": "per-split_group seed median（{0,1,2}）→ 跨组聚合/配对 bootstrap；种子非独立重复单元；禁 best-seed（FR-604/DGN-E-12）"
+    }
+  },
+  "winner_selection": {
+    "algorithm": "dgn-e-13-v1",
+    "levels": ["val sg_macro pinball", "预注册等价带内 val MAE(q50)", "|CE80| 更小", "trainable 参数量更小", "model_id 字典序（行政平局）"],
+    "equivalence_band_rel": [-0.01, 0.01],
+    "val_only": true,
+    "canonical_delivery_seed_index": 0,
+    "canonical_delivery_note": "tasks gate R5 预注册：canonical 交付工件 = 固定 seed_index=0 正式 .keras；科学 Winner 身份 = model_id+config_hash；科学证据 = 全部 {0,1,2} 种子按冻结聚合规则；禁按 val 表现选种子"
+  },
+  "coverage": {
+    "picp_level": 0.8,
+    "coverage_error_80": "|PICP80 − 0.80|",
+    "interpretation": "PICP 不得解释为越高越好（与 MPIW/pinball 联合判读）"
+  },
+  "normalization_denominators": {
+    "per_lead": "frozen formal_norm_v3 y_std[k]",
+    "global": {
+      "value": 179.444619749777,
+      "unit": "kW",
+      "definition": "train 全部窗口 y 值的池化 std（windows_v3_formal.npz splits=='train'，136052 窗 × 30 bins 直接池化）",
+      "crosscheck": "由 formal_norm_v3 y_mean/y_std 代数派生值 179.44461969246356 相对差 3.2e-10 一致",
+      "formal_norm_v3_sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba",
+      "train_npz_sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497"
+    },
+    "forbidden": "禁用 OOD 派生方差归一化 OOD 误差（FR-598）"
+  },
+  "small_n": {"threshold": 20, "flag": "SMALL_N_CAUTION（split_group_count < 20，全部 OOD 条件命中）"},
+  "r2_policy": "population/subset 统计一次计算（禁平均 per-window/per-voyage R²）；目标方差 < 1e-12 → R2_UNDEFINED 如实报告",
+  "constant_channel_policy": "OUT_OF_TRAIN_CONSTANT_SUPPORT 诊断（count/fraction/deviation），不 clamp 不拒样本（FR-581）"
+}

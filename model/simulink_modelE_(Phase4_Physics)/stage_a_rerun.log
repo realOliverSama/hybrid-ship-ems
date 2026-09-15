@@ -1,0 +1,16 @@
+zsh:3: command not found: setsid
+[2026-09-09T01:30:41Z] STAGE-A AMENDED RERUN START (92 voyages x 2 passes, FLEET_WORKERS=3)
+[2026-09-09T01:30:41Z] memory free 44% — OK
+[2026-09-09T01:30:41Z] START pass1 stage_a (attempt 1/3, FLEET_WORKERS=3)
+[2026-09-09T03:02:14Z] END pass1 stage_a exit=0
+[2026-09-09T03:02:14Z] memory free 43% — OK
+[2026-09-09T03:02:14Z] START pass2 stage_a (attempt 1/3, FLEET_WORKERS=3)
+[2026-09-09T04:36:47Z] END pass2 stage_a exit=0
+[2026-09-09T04:36:47Z] two-pass determinism compare (92/92 payload hash)
+stage_a: 92 voyages, payload-hash identical 92/92
+DETERMINISM PASS: payload hashes identical across passes
+[2026-09-09T04:36:47Z] STAGE-A AMENDED RERUN COMPLETE — C/D FORMAL Gate next
+[2026-09-10T12:52:51Z] STAGE-A AMENDED RERUN START (92 voyages x 2 passes, FLEET_WORKERS=2)
+[2026-09-10T12:52:51Z] SKIP pass1 (valid 92-voyage archive exists — resume)
+[2026-09-10T12:52:51Z] memory free 55% — OK
+[2026-09-10T12:52:51Z] START pass2 stage_a (attempt 1/3, FLEET_WORKERS=3)

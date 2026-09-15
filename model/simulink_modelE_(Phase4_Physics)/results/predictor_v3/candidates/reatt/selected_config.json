@@ -1,0 +1,66 @@
+{
+  "arch": "reatt",
+  "artifact_sha256": "d01bca733cc0ad618d8be0abae5a1e4ec8fc9277adafb3388dd5f132e497c4fd",
+  "budget_cap": 20,
+  "budget_consumed": 20,
+  "config": {
+    "Cp": 96,
+    "Nf": 4,
+    "batch": 128,
+    "d_dec": 128,
+    "df": 128,
+    "dropout": 0.0,
+    "lr": 0.001
+  },
+  "config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "feature_surface": "H1+K+F",
+  "git_commit": "17458d06",
+  "model_id": "reatt",
+  "n_eligible": 20,
+  "param_count": 1012835,
+  "schema": "predictor_v3_selected_config_v1",
+  "search_space": {
+    "Cp": [
+      64,
+      96,
+      128
+    ],
+    "Nf": [
+      2,
+      3,
+      4
+    ],
+    "batch": [
+      128
+    ],
+    "d_dec": [
+      64,
+      128
+    ],
+    "df": [
+      64,
+      128
+    ],
+    "dropout": [
+      0.0,
+      0.1
+    ],
+    "lr": [
+      0.0001,
+      0.0003,
+      0.001
+    ]
+  },
+  "seed0_val_evidence": {
+    "checkpoint": "experiments/predictor_v3/hpo/reatt/reatt-t018/model.keras",
+    "duration_s": 1162.8,
+    "per_group_ref": "reatt-t018/val_per_group.json",
+    "pinball_sgmacro": 4.004722026122369
+  },
+  "selected_trial_id": "reatt-t018",
+  "selected_utc": "2026-09-14T09:37:39.454865+00:00",
+  "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
+  "trial_list_sha256": "5b0544cfc966a6da98f783d8a8d90339af17a5d5584ad132b36e19bd4827c5e3",
+  "trial_registry_sha256": "f081814a44d777fbc9de0ca2035697432cc1b7597c36d88f04f6bc6a7bca29d7"
+}

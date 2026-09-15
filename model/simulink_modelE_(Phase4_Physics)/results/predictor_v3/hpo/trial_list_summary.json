@@ -1,0 +1,31 @@
+{
+  "archs": {
+    "mlpq": {
+      "budget_cap": 5,
+      "frozen": 4,
+      "trial_list_sha256": "f9221f74145bb3e966f9778c603e7e8a31f0b6e18c09c411dd15dff0784c3d0d"
+    },
+    "reatt": {
+      "budget_cap": 20,
+      "frozen": 20,
+      "trial_list_sha256": "5b0544cfc966a6da98f783d8a8d90339af17a5d5584ad132b36e19bd4827c5e3"
+    },
+    "tcnq": {
+      "budget_cap": 20,
+      "frozen": 20,
+      "trial_list_sha256": "5f3eb0f67bfe93d0bc825ebac15c409959759ec371097a90d57baaf8bc280fdf"
+    },
+    "tft": {
+      "budget_cap": 20,
+      "frozen": 18,
+      "trial_list_sha256": "3f515399af80c83551a709f027275305e4fd5a2731a799374bcc081c1029b3be"
+    },
+    "transformer": {
+      "budget_cap": 20,
+      "frozen": 20,
+      "trial_list_sha256": "4ad1678bbcf97075ecde5ef1b66c485c49e9e0c076756382096497f18742364d"
+    }
+  },
+  "artifact_sha256": "3a99423a2fed381fd0fa9c998ead0cf60527b432d4f14fc8e2d4a0a15d3773d1",
+  "schema": "predictor_v3_e1_trial_list_summary_v1"
+}

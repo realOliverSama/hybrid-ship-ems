@@ -1,0 +1,15 @@
+[2026-09-10T15:16:05Z] STAGE B START (776 voyages, two passes, FLEET_WORKERS=2)
+[2026-09-10T15:16:05Z] memory free 51% — OK
+[2026-09-10T15:16:05Z] START pass1 stage_b_iid (attempt 1/3, FLEET_WORKERS=2)
+[2026-09-10T15:18:59Z] STAGE B START (776 voyages, two passes, FLEET_WORKERS=2)
+[2026-09-10T15:18:59Z] memory free 40% — OK
+[2026-09-10T15:18:59Z] START pass1 stage_b_iid (attempt 1/3, FLEET_WORKERS=2)
+[2026-09-10T15:20:48Z] STAGE B START (776 voyages, two passes, FLEET_WORKERS=2)
+[2026-09-10T15:20:48Z] memory free 60% — OK
+[2026-09-10T15:20:48Z] START pass1 stage_b_iid (attempt 1/3, FLEET_WORKERS=2)
+[2026-09-10T15:22:34Z] STAGE B START (776 voyages, two passes, FLEET_WORKERS=2)
+[2026-09-10T15:22:34Z] memory free 54% — OK
+[2026-09-10T15:22:34Z] START pass1 stage_b_iid (attempt 1/3, FLEET_WORKERS=2)
+[2026-09-10T15:25:17Z] STAGE B START (776 voyages, two passes, FLEET_WORKERS=2)
+[2026-09-10T15:25:17Z] memory free 30% — OK
+[2026-09-10T15:25:17Z] START pass1 stage_b_iid (attempt 1/3, FLEET_WORKERS=2)

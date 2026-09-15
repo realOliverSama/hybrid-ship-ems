@@ -1,0 +1,8 @@
+[09-10 21:35:40] OOD-ONLY START (200 voyages x 2 passes, FLEET_WORKERS=2)
+[09-10 21:35:40] OOD-ONLY START (200 voyages x 2 passes, FLEET_WORKERS=2)
+[09-10 21:35:40] START pass1 stage_b_ood
+[09-10 21:35:40] START pass1 stage_b_ood
+[09-10 23:16:25] END pass1 stage_b_ood exit=1
+[09-10 23:16:25] END pass1 stage_b_ood exit=1
+[09-10 23:16:25] FAIL pass1 stage_b_ood
+[09-10 23:16:25] FAIL pass1 stage_b_ood

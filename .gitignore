@@ -216,3 +216,12 @@ model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/*
 !model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/
 !model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/ood/
 !model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/*.json
+
+# ==========================================================
+# Phase 4-E predictor-v3（2026-09-13，Design Gate R1 授权，T-001 登记）
+# E-owned 本地产物命名空间不入库：E 派生数据/训练中间产物本地留存，
+# 机器可读证据精选入 results/predictor_v3/（入库）。
+# ==========================================================
+.venv_tf/
+model/simulink_modelE_(Phase4_Physics)/artifacts/
+model/simulink_modelE_(Phase4_Physics)/experiments/

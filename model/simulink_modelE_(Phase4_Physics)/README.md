@@ -1,4 +1,4 @@
-# simulink_modelE_(Phase4_Physics)/ — Model E 工作区（Phase 4-A2 + 4-B）
+# simulink_modelE_(Phase4_Physics)/ — Model E 工作区（Phase 4-A2 + 4-B + 4-E predictor_v3）
 
 > **入库策略**: 入库（`slprj*/`、`*.slxc`、codegen 等生成产物不入库）。
 
@@ -16,6 +16,14 @@ Plant 物理与 EMS 七变体零改动（NFR-412/A2 FR-426 契约延续）；Mod
 **500 t representative hull 口径**（`target_vessel_confirmed=false`，未确认工作假定）：
 K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.188 m/C_B=0.60（Rhine86 相似缩尺推导）。
 **Model D 与 Model E 绝对结果不可比是设计意图**（Q3/Q4 裁决），只允许方向性/守恒性对照。
+
+**Phase 4-E predictor_v3**（spec `.specs/phase4-e-predictor-v3/`，2026-09-13 起）：在冻结
+Dataset v3 上训练/评估 NN 负荷预测器（五候选 + REAT-T 消融 + 三轴 OOD 诊断 + Winner
+Freeze；T-436~T-444）。`dataset_v3/` 与 `datasets_v3/` 冻结资产零字节改动只读消费；
+E 新增 `predictor_v3/` 包（T-002 起建）、`config/predictor_v3/` 配置、
+`results/predictor_v3/` 证据（精选入库）与 `artifacts/predictor_v3/` 本地产物（不入库）。
+本地 `.venv_tf`（仓库根）仅开发/smoke/CPU 探针；result-bearing 训练 canonical =
+AutoDL 4090D CUDA（FR-591 平台分离）。
 
 ## 目录结构
 
@@ -60,10 +68,14 @@ K_R=890 N/(m/s)²（线性 Δ 缩放，Q4 用户裁决）、几何 53.45/7.13/2.
 | `scripts/80_run_mission_v3_prequal.m` | ★ **T-020 预资格执行薄入口**（T020_MODE=pilot|run|tworun；108 航次全链生成+两跑确定性+拒绝率冻结门） |
 | `results/mission_v3/` | C 包精选证据（T-001 validator 记录、T-005 可行性扫描三件、T-004 普查、T-017 `negative_detection_report.json`、T-018 `regression_report.json`、T-019 `qualification_stack_identity.json`、T-020 prequal 四件（strata_audit/manifest/reconciliation/amendment_01）、T-021 `t429_freeze.json`（盲冻结 f8152ffe…）、T-022 `identifiability_gate_result.json` + `identifiability_report.md`（**Gate FAIL_INSUFFICIENT_EVIDENCE 已落盘，处置待裁决**）） |
 | `dataset_v3/` | ★ **D 包 Python 构建与审计包**（T-008~T-016：聚合/窗口/target/split/L1-L3 审计/OOD/manifest/E2E 编排/契约校验 + pytest；详见该目录 README.md） |
-| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / **cd_interface_formal_prequal / cd_interface_formal_t429conf_v2**（EXT-CD-GATE formal 语料结果，D-15）/ split_assignment 等 JSON；大数据 `datasets_v3/` 不入库） |
+| `results/dataset_v3/` | D 包精选证据（pilot_export_manifest / pilot_gate_result / cd_interface_gate_result / **cd_interface_formal_prequal / cd_interface_formal_t429conf_v2**（EXT-CD-GATE formal 语料结果，D-15）/ split_assignment 等 JSON；大数据 `datasets_v3/` 不入库）。T-432 证据（2026-09-10/12 补录）：`qualification/` Stage-A 双 Gate 日志（gate_iid/ood_am03、pass1/2_stage_a_a1、STAGE_A_RERUN_DONE）+ `_amendment03_prerun_quarantine/`（AM03 前隔离账本）+ `_old_logs/`；`formal/` 失败尝试日志（pass1_stage_b_iid_a1 / pass1_stage_b_ood_{mac,pc}——09-10 宿主 crash 诊断证据，正式四段日志/ledger 另见 formal/ 入库件） |
 | `model/HybridShip_ModelE.slx` | builder 生成（脚本驱动，禁 GUI 修改；B 包顶层 16 块含 07_PMS_v2/16_Safety_Interlock） |
 | `results/` | `gate_result.json`（T-412 against candidate overall=true）、`gate_control_result.json`（43+44：overall + C1~C7 + 三臂指标 + negative_control）、`config_manifest.json`（4 config sha256+有效值快照） |
 | `docs/` | 证据文档指向仓库级 `docs/phase4/b_pms_safety/`（field-level diff / 三臂对比 / 裁决链） |
+| `config/predictor_v3/` | ★ **E 包 predictor-v3 配置**（T-001 `env/`（base/macOS lock + smoke 脚本，TF 2.19.1 证据驱动落锁）+ T-007 `env/requirements_tf_cuda_lock.txt`（canonical CUDA lock：pip freeze 全量含 nvidia-* + 关键 wheel sha256）+ `env/env_smoke_generic.py`（平台参数化 smoke）+ T-004 `predictor_norm_ext_v1.json`（K/F train-only 归一化扩展，自哈希）+ T-005 三 config（`training_budget.json` DGN-E-09 冻结数值/HPO 预算、`eval_config.json` 指标栈+等价带+canonical_delivery_seed_index=0 预注册、`diagnostics_config.json` T-443 三轴参数+train 参照统计冻结）；`env/build_diagnostics_config.py` 生成器；hash 记录 `results/predictor_v3/config_hashes_t005.json`；T-012 `reat_t_arch.json` 待建。**预测模型：无（配置，非模型）**） |
+| `results/predictor_v3/` | **E 包 predictor-v3 机器可读证据（精选入库）**（`env_manifest_macos.json`+`env_smoke_macos.json` T-001；`env_manifest_cuda.json`+`env_smoke_cuda.json`+`determinism_probe_cuda.json` T-007 canonical 资格化（4090D/TF 2.19.1/双平台同版本；探针 PASS_BITWISE；钉版 537268d0）；`ood_windows_integrity.json` T-003 双 hash+双跑确定性（200 航次→72304 窗，payload 6383a27b…）；`config_hashes_t005.json` 三 config 自哈希记录；`determinism_probe_cpu.json` T-006 CPU 探针 PASS_BITWISE；`data_access/` 访问日志分片；后续 HPO/confirm/ablation/winner/terminal 证据按 tasks 增补） |
+| `artifacts/predictor_v3/` | **E-owned 本地产物命名空间（不入库，.gitignore Design Gate R1 授权）**（T-003 OOD 窗口 npz、训练 checkpoint 等派生产物；`datasets_v3/` 冻结资产零字节改动） |
+| `predictor_v3/` | ★ **E 包 predictor-v3 Python 包**（T-002 `data_access.py` sealed 访问门；T-003 `ood_materialize.py` OOD 窗口物化薄驱动；T-004 `norm_ext.py`；T-005 `features/quantile/metrics/inference_stats/seeds/train/registry.py` 统一 harness；`tests/` 45 例全绿；详见该目录 README.md。**预测模型：施工作业中，截至 T-005 无已训练模型工件**） |
 | `reports/parameter_audit.csv` | builder 生成的参数审计（ParamMeta，40 项） |
 
 ## Legacy / Superseded（FR-492/493：不删不搬不改行为，仅 README 标记）

@@ -1,0 +1,47 @@
+{
+  "arch": "mlpq",
+  "artifact_sha256": "0d949d02048b6a617cc65e1c5b313d12416148375ce4fc8ae4967d861a59f10f",
+  "budget_cap": 5,
+  "budget_consumed": 4,
+  "config": {
+    "batch": 256,
+    "hidden1": 64,
+    "hidden2": 32,
+    "lr": 0.001
+  },
+  "config_sha256": "f9f68f210bdf2d177c9faae3c8055481f0e6a1810d87521b982f126d50903771",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "feature_surface": "H1",
+  "git_commit": "063490a284277e5839af867fa4327369cbb87351",
+  "model_id": "mlpq",
+  "n_eligible": 4,
+  "param_count": 216314,
+  "schema": "predictor_v3_selected_config_v1",
+  "search_space": {
+    "batch": [
+      256,
+      512
+    ],
+    "hidden1": [
+      64
+    ],
+    "hidden2": [
+      32
+    ],
+    "lr": [
+      0.0005,
+      0.001
+    ]
+  },
+  "seed0_val_evidence": {
+    "checkpoint": "experiments/predictor_v3/hpo/mlpq/mlpq-t001/model.keras",
+    "duration_s": 770.8,
+    "per_group_ref": "mlpq-t001/val_per_group.json",
+    "pinball_sgmacro": 17.266063462058394
+  },
+  "selected_trial_id": "mlpq-t001",
+  "selected_utc": "2026-09-13T12:27:43.126940+00:00",
+  "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
+  "trial_list_sha256": "f9221f74145bb3e966f9778c603e7e8a31f0b6e18c09c411dd15dff0784c3d0d",
+  "trial_registry_sha256": "21cb06fca6d10031acbfd28dc6e7a2c6852b103188a11d98b5730f0a17eaf5d2"
+}

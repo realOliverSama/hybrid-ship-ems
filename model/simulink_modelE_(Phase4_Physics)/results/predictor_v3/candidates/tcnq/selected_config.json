@@ -1,0 +1,54 @@
+{
+  "arch": "tcnq",
+  "artifact_sha256": "8e7f3ed298ffceba0e85c68f5606906763779142c82f37e28cbbed470b2b26fd",
+  "budget_cap": 20,
+  "budget_consumed": 20,
+  "config": {
+    "C": 96,
+    "batch": 256,
+    "dilations": "7b",
+    "dropout": 0.0,
+    "lr": 0.001
+  },
+  "config_sha256": "7521fe1ebe8086f41c5a76f2d495b2e4e209ecc071f773a8912d4c0c01f79626",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "feature_surface": "H1",
+  "git_commit": "17458d06",
+  "model_id": "tcnq",
+  "n_eligible": 20,
+  "param_count": 269338,
+  "schema": "predictor_v3_selected_config_v1",
+  "search_space": {
+    "C": [
+      32,
+      64,
+      96
+    ],
+    "batch": [
+      256
+    ],
+    "dilations": [
+      "6b",
+      "7b"
+    ],
+    "dropout": [
+      0.0,
+      0.1
+    ],
+    "lr": [
+      0.0003,
+      0.001
+    ]
+  },
+  "seed0_val_evidence": {
+    "checkpoint": "experiments/predictor_v3/hpo/tcnq/tcnq-t017/model.keras",
+    "duration_s": 374.9,
+    "per_group_ref": "tcnq-t017/val_per_group.json",
+    "pinball_sgmacro": 16.29557049489711
+  },
+  "selected_trial_id": "tcnq-t017",
+  "selected_utc": "2026-09-14T09:37:45.668325+00:00",
+  "selection_rule": "argmin val split_group_macro pinball over COMPLETED_ELIGIBLE（R3）",
+  "trial_list_sha256": "5f3eb0f67bfe93d0bc825ebac15c409959759ec371097a90d57baaf8bc280fdf",
+  "trial_registry_sha256": "3de533f44b88abc9ce2dd5cc43f1fd55dd9d38b5f846cf0ab28c09558cc3f324"
+}

@@ -1,0 +1,11 @@
+{
+  "arch": "mlpq",
+  "budget_cap": 5,
+  "hpo_seed": 111497487,
+  "n_capacity_valid": 4,
+  "n_enumerated": 4,
+  "n_rejected": 0,
+  "n_subsampled_out": 0,
+  "rejected": [],
+  "schema": "predictor_v3_trial_generation_audit_v1"
+}
