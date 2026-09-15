@@ -66,6 +66,8 @@ dlam1 = zeros(size(t0s));
 info_windows = zeros(numel(t0s), 2);
 ds = [];
 n_retry = 0;
+N = 1;
+gen = [];
 
 for i = 1:numel(t0s)
     t0 = t0s(i);
@@ -74,7 +76,8 @@ for i = 1:numel(t0s)
     assert(~isempty(iw), 'T445:B2:WIN', 'no window at t0=%g', t0);
     Pbar = W.Pbar{iw};
     sol = t445.b2_window_dp(Pbar, SOC, cfg, tbl, 't0', t0, ...
-        'horizon_s', numel(Pbar) * dt, 'SOC_target', SCN.initial_SOC);
+        'horizon_s', numel(Pbar) * dt, 'SOC_target', SCN.initial_SOC, ...
+        'N0', N, 'gen0', gen);
     oob = oob + sol.oob_query_count;
     fallback_n = fallback_n + sol.infeasible_fallback_n;
     d1 = sol.dlambda(1);
@@ -110,6 +113,7 @@ for i = 1:numel(t0s)
     op = out.xFinal;
     dseg = model.extract_logsout(out);
     SOC = dseg.SOC(end);
+    [gen, N] = t445.gen0_from_ds(dseg, t_stop, 'last');
     ds = local_append(ds, dseg, t0);
     if ~isempty(opt.CheckpointDir)
         ck = fullfile(opt.CheckpointDir, sprintf('ckpt_%s_t%.0f.mat', vid, t_stop));

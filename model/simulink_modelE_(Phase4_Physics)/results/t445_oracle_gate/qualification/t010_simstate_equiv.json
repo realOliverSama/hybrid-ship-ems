@@ -1,0 +1,19 @@
+{
+  "schema": "t445_t010_simstate_equiv_v1",
+  "task": "T-010",
+  "purpose": "QUALIFICATION",
+  "fixture_id": "SIMSTATE-REF-S20",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "stop_time_s": 5520,
+  "n_segments": 552,
+  "max_rel": {
+    "SOC": 0,
+    "P_gen_actual_kW": 0,
+    "P_bat_actual_kW": 0,
+    "v_ship_mps": 0
+  },
+  "n_signals_compared": 4,
+  "slx_unchanged": true,
+  "pass": true,
+  "utc": "2026-09-15T12:12:48Z"
+}

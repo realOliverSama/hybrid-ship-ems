@@ -37,6 +37,9 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `qualification/t010_b2_optimizer_qual_amd_d.json` | Amendment D 后 Q1–Q6 重跑（Q4/Q6 仍 FAIL） |
 | `qualification/t010_amendment_d_fixtures.json` | D5 夹具冻结（settled + 冷启动） |
 | `qualification/t010_e0_fuel_audit.json` | Amendment E0 10 s 非线性燃油表示诊断（非 PASS 门；不改 Q4/Q6） |
+| `qualification/t010_b2_optimizer_qual_amd_e.json` | Amendment E 机组实现代理后 Q1–Q6（不覆盖原 FAIL / D / E0） |
+| `qualification/t010_amendment_e_stop.json` | Amendment E 后 T-010 收口：B2_OPTIMIZER_QUALIFICATION_FAILED（非正式 Gate） |
+| `qualification/t010_simstate_equiv.json` | T-010 SimState 连续 vs 分段 S20（nseg=552，PASS；与 Q4/Q6 独立） |
 | `t009_unit_test_result.json` | T-009 B2 分段 toy smoke + checkpoint/resume（rel=0，.slx 未改） |
 | `amendment_c_rebind.json` | Amendment C 后 T-002/003/005 配置身份重绑记录（语料 identity SHA 不变） |
 | `qualification/t007_keq_charge_restoration.json` | T-007 原 0.58→0.62 vs 0.9687 **FAIL 保留件**（禁改标 PASS） |
