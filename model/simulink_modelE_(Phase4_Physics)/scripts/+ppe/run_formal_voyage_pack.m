@@ -98,7 +98,7 @@ if all(isfield(wu, {'C0', 'C1', 'C2'}))
     end
 end
 pack.utc = char(datetime('now', 'TimeZone', 'UTC', 'Format', ...
-    'yyyy-MM-dd''T''HH:mm:ss''Z''));
+    'yyyy-MM-dd''T''HH:mm:ss''Z'));
 vdir = fullfile(opt.OutDir, char(voyage_id));
 if ~exist(vdir, 'dir'), mkdir(vdir); end
 fid = fopen(fullfile(vdir, 'warmup_parity.json'), 'w');
