@@ -1,4 +1,7 @@
-# Architecture sketch (draft, not approved)
+# Architecture sketch
+
+Status: **brainstorm-approved** (Gate R1–R10)  
+Not a substitute for Design.
 
 ```text
                     ┌─────────────────────────────────────┐
@@ -7,43 +10,55 @@
                     └──────────────▲──────────────────────┘
                                    │ Δλ_k every 10 s
                     ┌──────────────┴──────────────────────┐
-                    │  Shared predictive supervisory C*    │
-                    │  receding-horizon Δλ DP (T-445 B2    │
-                    │  code, renamed: not an oracle bound) │
-                    │  same action / objective / FEC /     │
-                    │  realize_bin cost / terminal         │
+                    │  Shared practical supervisor C*      │
+                    │  receding-horizon Δλ DP              │
+                    │  SOC grid 0.005 (algorithm freeze)   │
+                    │  k_eq=0.5457  w_term=1.17e5          │
+                    │  realize_bin cost; terminal frozen   │
                     └──────────────▲──────────────────────┘
-                                   │ 30 × 10 s Pbar forecast
+                                   │ ForecastWindow
+                                   │ 30 × 10 s Pbar [kW]
           ┌────────────────────────┼────────────────────────┐
           │                        │                        │
-     C0 no-future             C1 perfect               C2 Predictor-v3
-     (persistence /           Dataset-v3               frozen REAT-T
-      repeated current        30-bin truth             q50 trajectory
-      — Brainstorm Q2)        same cadence             same cadence
-                                                       no retune
+          C0                       C1                       C2
+   persistence of last      exact legal 30×10 s      frozen REAT-T
+   completed 10 s mean      bus-load truth           t018/seed0 q50
+   (t0<10 s: P_load(t0))    PERFECT_INFORMATION      de-norm → window
+                            CONTROLLER_REFERENCE
+                            (not an upper bound)
 
-P0  law=5 SOC-Adaptive ECMS
-    conventional external baseline
-    not required to share C* internals
+P0  law=5 SOC-Adaptive ECMS — contextual only (architecture differs)
 ```
 
-## Arm roles
+## ForecastWindow (R4)
 
-| Arm | Future information | Controller | Role |
-|---|---|---|---|
-| P0 | none (native law=5) | frozen SOC-Adaptive ECMS | external conventional context |
-| C0 | no learned/perfect trajectory | C* | architecture without future info |
-| C1 | perfect 30×10 s Pbar | C* | `PERFECT_INFORMATION_CONTROLLER_REFERENCE` |
-| C2 | Predictor-v3 q50 30-bin | C* | learned-prediction realization |
+After source-specific assembly / de-normalization, C0, C1, and C2 SHALL
+present the same object to C*:
 
-## Primary contrasts (if Brainstorm adopts this)
+- `t0` [s]
+- `Pbar[1:30]` [kW] bus-side 10 s means (trailing unused bins empty at
+  shrinking horizon, duration-weighted last bin)
+- `K_remain` / horizon metadata
+- `source_id` ∈ {C0_PERSISTENCE, C1_TRUTH, C2_REATT_Q50}
+- provenance hashes
 
-- C1 − C0: practical value of perfect trajectory **inside C\***
-- C2 − C0: realized practical value of learned prediction
-- C1 − C2: prediction-realization gap
-- P0 vs C*: context only unless later approved as primary
+C* SHALL NOT branch on `source_id` for control law.
+
+## Primary estimands (R5)
+
+Measured on Model-E logs, J_FEC:
+
+```text
+B_perfect    = 100*(J_C0 − J_C1)/J_C0
+B_predicted  = 100*(J_C0 − J_C2)/J_C0
+L_prediction = 100*(J_C2 − J_C1)/J_C0
+```
+
+P0 is not in the primary decomposition.
 
 ## Non-claims
 
-C1 is **not**: theoretical upper bound, global optimum, trajectory-information upper bound.
-Final fuel/SOC/feasibility are **Model-E plant logs**, not surrogate J.
+C1 is not a theoretical upper bound, global optimum, trajectory oracle upper
+bound, or maximum trajectory-information value.
+
+Final fuel/SOC/feasibility are Model-E plant logs, not surrogate J.

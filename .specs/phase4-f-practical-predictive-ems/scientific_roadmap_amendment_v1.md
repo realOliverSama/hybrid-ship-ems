@@ -1,41 +1,43 @@
-# Phase 4-F scientific roadmap amendment v1 (draft)
+# Phase 4-F scientific roadmap amendment v1
 
-Status: **draft — not approved**  
+Status: **brainstorm-approved** (Gate R1–R10 applied; Requirements draft next)  
 Date: 2026-09-15  
 Depends: T-445 CLOSED `GATE_VALIDITY_FAIL` (`f36cdcbc` / `final_gate_pointer.json`)
 
 ## What is closed
 
-T-445 Trajectory Oracle Gate is closed as a **methodological validity failure**.
-The original F-package claim “prove a trajectory-oracle upper bound, then build
-predictive EMS” **stops**. T-446 as previously defined is blocked.
+T-445 is a **methodological validity failure**. The original F-package claim
+“prove a trajectory-oracle upper bound, then build predictive EMS” **stops**.
+T-446 as previously defined remains blocked.
 
-## New working question
+## Working question (frozen)
 
-Under **one fixed** predictive supervisory-controller architecture, how much
+Under **one fixed practical** predictive supervisory controller C*, how much
 practical Model-E control benefit is obtained from:
 
-1. no future information,
-2. perfect 30-bin future trajectory information,
-3. Predictor-v3 trajectory information?
+1. no future information (C0 persistence),
+2. exact legal 30-bin future trajectory truth (C1),
+3. frozen Predictor-v3 q50 (C2)?
 
-## Proposed roadmap insertion (after T-445)
+C1 name: `PERFECT_INFORMATION_CONTROLLER_REFERENCE` only.
 
-Replace the blocked T-446→T-450 “oracle then AI” sequence with a new local spec
-`phase4-f-practical-predictive-ems` (umbrella number **T-456** suggested).
+## Formal corpus (R6)
 
-Do not reuse T-445 task IDs.
+12 split_groups / 48 voyages = previous T-445 initial 9 + reserve 3.
+One fixed formal evaluation set. **No sequential expansion.**
 
-Suggested later (only after Brainstorm/Requirements/Design Gates):
+## Suggested later tasks (after Requirements/Design Gates; local IDs)
 
-- T-456a — freeze C* / C0 forecast / C1 truth / C2 contract
-- T-456b — nonformal interface smoke (synthetic only)
-- T-456c — practical-controller qualification (not 1% oracle replica)
-- T-456d — val corpus C0/C1/C2/P0 (after freeze; no result-driven retune)
-- T-456e — effect-size report + CI (no inherited 2% GO unless later approved)
-- T-456f — optional N6 profile **after** Model-E scientific comparison
+Umbrella **T-456**. Do not reuse T-445 task IDs.
 
-IID test remains sealed. OOD remains separate.
+- T-456a — freeze C* / ForecastWindow / C0 / C1 / C2 contracts
+- T-456b — nonformal interface + causality smoke (synthetic / nonformal only)
+- T-456c — practical-controller qualification (R7; **not** 1% oracle replica)
+- T-456d — 48-voyage P0/C0/C1/C2 after pre-execution freeze
+- T-456e — effect-size report (B_perfect / B_predicted / L_prediction + CI)
+- T-456f — optional N6 profile **after** Model-E comparison
+
+IID test remains sealed. OOD remains separate. No result-driven retune.
 
 ## Explicitly not in this amendment
 
@@ -43,4 +45,5 @@ IID test remains sealed. OOD remains separate.
 - Changing Model E `.slx`
 - Accessing IID test / OOD for controller selection
 - Calling C1 an upper bound
-- Starting formal C0/C1/C2 runs before Gates
+- Starting formal C0/C1/C2 runs before Requirements/Design/Tasks Gates
+- Touching `st_edge_ai_upload/`

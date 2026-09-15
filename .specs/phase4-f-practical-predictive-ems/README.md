@@ -2,17 +2,19 @@
 
 > **入库策略**: 入库（spec）。
 
-Phase 4-F **修订路线**：在固定预测式监督控制器架构下，比较无未来信息 / 完美 30-bin 轨迹 / Predictor-v3 轨迹的 **实用 Model-E 控制收益**。
+Phase 4-F **修订路线**：在固定实用预测式监督控制器 C* 下，比较 C0 持续预测 /
+C1 合法 30×10 s 真值 / C2 冻结 REAT-T q50 的 **实用 Model-E 控制收益**。
 
-**不是** T-445 的复活。禁止把控制器称为轨迹-oracle 理论上限、全局最优、或轨迹信息上界。
+C1 仅称 `PERFECT_INFORMATION_CONTROLLER_REFERENCE`。禁止理论上限措辞。
 
 | 条目 | 说明 |
 |---|---|
-| `brainstorm.md` | Brainstorm **draft**（Q1–Q10 推荐答案，**未批准**） |
-| `reuse_audit.md` | T-445 / Phase-E 组件复用矩阵 |
-| `architecture.md` | P0/C0/C1/C2 架构草图 |
-| `scientific_roadmap_amendment_v1.md` | 路线图修订草案（未批准） |
+| `brainstorm.md` | **brainstorm-approved**（Gate APPROVED WITH REQUIRED REVISIONS，R1–R10 已落地） |
+| `requirements.md` | **requirements-draft**（Requirements Gate 待审） |
+| `reuse_audit.md` | 复用矩阵（含 `st_edge_ai_upload/` OUT_OF_SCOPE_…_DO_NOT_TOUCH） |
+| `architecture.md` | P0/C0/C1/C2 + ForecastWindow 草图 |
+| `scientific_roadmap_amendment_v1.md` | 路线图修订（brainstorm-approved） |
 
-前置：T-445 **CLOSED `GATE_VALIDITY_FAIL`**（`results/t445_oracle_gate/final_gate_pointer.json`）。
+前置：T-445 **CLOSED `GATE_VALIDITY_FAIL`**。
 
-本目录 **无** `requirements.md` / `design.md` / `tasks.md` 批准件。Brainstorm Gate 通过前不得当作已批准需求施工。
+无 `design.md` / `tasks.md`。Requirements Gate 通过前不得施工、不得跑正式 C0/C1/C2。

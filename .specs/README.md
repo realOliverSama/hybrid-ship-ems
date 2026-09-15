@@ -24,7 +24,7 @@
 | `ems01-chil-v3-closedloop/` | 目录 | EMS01 CHIL v3 — soft-HIL 真闭环实验（models-research 分支）：开环回放升级为真闭环（主机被控对象每拍推进 + 板载 P_gen 回馈功率平衡）；4 臂对照（板载 NPU / 板载 REF / ModelD 原生 law=7 / law=5）× S20+voyage_002；被控对象子集 codegen→C 推进器（P3 主案，受阻回退 P1）；lock-step 固件零改动。状态：brainstorm ✅ / requirements ✅（2026-09-08 用户批准）/ design ✅（2026-09-08 用户批准，含 §5 阈值与 OQ-1~5 定案，spec_validate 12/12）/ tasks 待起草。后继：v3 完成后立即编译期换型（FR-511 流程换入 phase25 同签名候选，design §11 登记） |
 | `multistep-predictive-ems/` | 目录 | 面向参数不确定性的多步负荷预测增强型 EMS |
 | `phase4-f-trajectory-oracle-gate/` | 目录 | Phase 4 工作包 F 首道 Gate：**T-445 CLOSED — `GATE_VALIDITY_FAIL`（2026-09-15）**。B2 代理未通过冻结 1% 资格化，未执行正式 36 航次语料，未出具轨迹信息价值 GO/NO-GO。方法学有效性失败，不是“轨迹预测无价值”。T-446 原定义阻断。后继路线见 `phase4-f-practical-predictive-ems/` |
-| `phase4-f-practical-predictive-ems/` | 目录 | Phase 4-F **修订路线（brainstorm-draft，未批准）**：固定预测式监督控制器下比较 P0/C0/C1/C2 实用 Model-E 控制收益。禁止复活 oracle-upper-bound 声明。`brainstorm.md` 待 Brainstorm Gate |
+| `phase4-f-practical-predictive-ems/` | 目录 | Phase 4-F **修订路线**：固定实用控制器 C* 下 C0/C1/C2 效果估计。Brainstorm **APPROVED WITH REQUIRED REVISIONS**（R1–R10）。`requirements.md` 为 **requirements-draft**，待 Requirements Gate。禁止复活 oracle-upper-bound。 |
 | `timed-feedforward-ems/` | 目录 | Model C 定时前馈 EMS（Peak + Time-to-Peak 预测调度） |
 | `model-b-dc-bus/` | 目录 | Model B 直流母线电气层 + 安全/节能指标卡 + S10 工况 |
 
