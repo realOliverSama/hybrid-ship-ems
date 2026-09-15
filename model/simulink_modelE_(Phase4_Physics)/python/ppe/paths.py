@@ -5,7 +5,8 @@ import os
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODELE_ROOT = os.path.dirname(os.path.dirname(HERE))  # python/ppe -> python -> ModelE
-REPO_ROOT = os.path.dirname(MODELE_ROOT)
+REPO_ROOT = os.path.dirname(MODELE_ROOT)              # model/ (T-445 rel() base)
+PROJECT_ROOT = os.path.dirname(REPO_ROOT)             # git repo root
 CONFIG_DIR = os.path.join(MODELE_ROOT, "config")
 RESULTS_DIR = os.path.join(MODELE_ROOT, "results", "ppe_practical")
 QUAL_DIR = os.path.join(RESULTS_DIR, "qualification")
@@ -26,7 +27,7 @@ CORPUS_MANIFEST = os.path.join(
     MODELE_ROOT, "results", "t445_oracle_gate", "corpus_manifest.json")
 ACCESS_LEDGER = os.path.join(RESULTS_DIR, "access_ledger.jsonl")
 
-SPEC_DIR = os.path.join(REPO_ROOT, ".specs", "phase4-f-practical-predictive-ems")
+SPEC_DIR = os.path.join(PROJECT_ROOT, ".specs", "phase4-f-practical-predictive-ems")
 
 # FR-836 canonical C2 predictor identities (Requirements, frozen)
 KERAS_S0 = os.path.join(

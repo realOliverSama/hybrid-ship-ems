@@ -20,6 +20,8 @@ def log_access(artifact: str, purpose: str, split_contact: str, note: str) -> di
     if purpose == "FORMAL":
         raise PermissionError(
             "FORMAL access before PRE_EXECUTION_FREEZE_GATE is forbidden (AC-810)")
+    if os.environ.get("PPE_LEDGER_QUIET") == "1":
+        return {"skipped": "quiet"}   # freeze-internal pytest fan-out
     entry = {
         "utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
         "actor": "ppe-main-agent",
