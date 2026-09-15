@@ -14,3 +14,4 @@
 {"purpose":"SYNTHETIC_SMOKE","task":"T-008","artifact":"t008_unit_test_result.json","utc":"2026-09-15T10:02:39Z"}
 {"purpose":"SYNTHETIC_SMOKE","task":"T-009","artifact":"t009_unit_test_result.json","utc":"2026-09-15T10:08:18Z"}
 {"purpose":"SYNTHETIC_SMOKE","task":"T-008","artifact":"t008_unit_test_result.json","utc":"2026-09-15T10:42:37Z"}
+{"purpose":"QUALIFICATION","task":"T-010-E0","artifact":"qualification/t010_e0_fuel_audit.json","utc":"2026-09-15T11:23:05Z"}
