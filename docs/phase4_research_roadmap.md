@@ -359,6 +359,17 @@ E_300 scalar 理论上多省多少？**上限不存在则停止。**
 
 Canonical：`model/simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/final_gate_pointer.json`
 
+### T-456 — Practical predictive-EMS evaluation（路线修订，brainstorm-draft）
+
+T-445 关闭后的 **新** F 包科学问题（spec
+`.specs/phase4-f-practical-predictive-ems/`，**未批准**）：
+
+在 **一个固定** 预测式监督控制器架构下，无未来信息 / 完美 30-bin 轨迹 /
+Predictor-v3 轨迹分别带来多少 **实用 Model-E 控制收益**。
+
+C1 仅称 `PERFECT_INFORMATION_CONTROLLER_REFERENCE`，禁止称为理论上限。
+Brainstorm Gate 前不得跑 val 语料 C0/C1/C2。
+
 ### T-446 — Predictive EMS architecture brainstorm（只设计） — **BLOCKED**
 Prediction trajectory → Upper predictive layer → SOC_ref / P_gen target / λ schedule
 → Existing ECMS。需裁决优化对象是 SOC_ref trajectory / P_gen trajectory /
