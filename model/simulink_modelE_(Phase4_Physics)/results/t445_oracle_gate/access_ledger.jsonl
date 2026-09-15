@@ -4,3 +4,4 @@
 {"artifact": "corpus_manifest.json", "iid_test_loaded": 0, "ood_loaded": 0, "purpose": "QUALIFICATION", "task": "T-005", "utc": "2026-09-15T08:37:22Z", "val_voyages_scored": 108}
 {"artifact": "t006_unit_test_result.json", "purpose": "SYNTHETIC_SMOKE", "task": "T-006", "utc": "2026-09-15T09:10:47Z"}
 {"artifact": "t006_unit_test_result.json", "purpose": "SYNTHETIC_SMOKE", "task": "T-006", "utc": "2026-09-15T09:11:34Z"}
+{"purpose":"QUALIFICATION","task":"T-007","artifact":"qualification/t007_keq_charge_restoration.json","utc":"2026-09-15T09:15:03Z"}
