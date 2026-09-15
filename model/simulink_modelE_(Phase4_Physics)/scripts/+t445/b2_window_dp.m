@@ -7,6 +7,9 @@ p.addParameter('t0', 0, @isnumeric);
 p.addParameter('horizon_s', 300, @isnumeric);
 p.addParameter('SOC_target', [], @(x) isempty(x) || isnumeric(x));
 p.addParameter('use_vterm', true, @islogical);
+p.addParameter('soc_step', [], @(x) isempty(x) || isnumeric(x));
+p.addParameter('dlam_step', [], @(x) isempty(x) || isnumeric(x));
+p.addParameter('freeze_dlambda', [], @(x) isempty(x) || isnumeric(x));
 p.parse(varargin{:});
 opt = p.Results;
 if nargin < 3 || isempty(cfg)
@@ -19,10 +22,21 @@ Pbar = Pbar(:);
 K = numel(Pbar);
 assert(K >= 1 && K <= cfg.b2_dp.K, 'T445:B2:K', 'K=%d', K);
 soc_col = cfg.b2_dp.soc_colon;
-soc_grid = soc_col(1):soc_col(2):soc_col(3);
-assert(numel(soc_grid) == cfg.b2_dp.n_soc, 'T445:B2:NSOC');
-dlam = cfg.delta_lambda.min_kg_per_kWh:cfg.delta_lambda.step:cfg.delta_lambda.max_kg_per_kWh;
-assert(numel(dlam) == cfg.delta_lambda.n_levels, 'T445:B2:NDLAM');
+sst = soc_col(2);
+if ~isempty(opt.soc_step), sst = opt.soc_step; end
+soc_grid = soc_col(1):sst:soc_col(3);
+if isempty(opt.soc_step)
+    assert(numel(soc_grid) == cfg.b2_dp.n_soc, 'T445:B2:NSOC');
+end
+dst = cfg.delta_lambda.step;
+if ~isempty(opt.dlam_step), dst = opt.dlam_step; end
+dlam = cfg.delta_lambda.min_kg_per_kWh:dst:cfg.delta_lambda.max_kg_per_kWh;
+if isempty(opt.dlam_step)
+    assert(numel(dlam) == cfg.delta_lambda.n_levels, 'T445:B2:NDLAM');
+end
+if ~isempty(opt.freeze_dlambda)
+    dlam = opt.freeze_dlambda;
+end
 nS = numel(soc_grid);
 nD = numel(dlam);
 BIG = cfg.b2_dp.big_M;
