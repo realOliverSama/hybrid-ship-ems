@@ -1,4 +1,9 @@
 {
+  "amendment": {
+    "id": "a_prime_dgn_f03_2026-09-15",
+    "note": "Removed design-only 0.80 cap; native law=6 envelope; policy table lambda from frozen primitives.",
+    "superseded_config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33"
+  },
   "audit_capability_matrix": [
     {
       "hard": true,
@@ -109,16 +114,27 @@
     "window_budget_s": 2.0
   },
   "b2_policy_table": {
-    "design_text_n_lambda": 76,
+    "K_soc": 30.0,
+    "SOC_DP_max": 0.95,
+    "SOC_DP_min": 0.1,
+    "SOC_ref": 0.6,
+    "delta_lambda_max": 0.1,
+    "derivation": "lambda_table_max = lambda0 + K_soc*(SOC_ref-SOC_DP_min) + dlambda_max",
+    "lambda0": 0.425,
     "lambda_colon": [
       0.43,
       0.005,
-      0.8
+      15.525
     ],
-    "n_lambda_derived": 75,
-    "n_lambda_note": "DGN-F-09 colon 0.43:0.005:0.80 yields 75 points; design prose says 76. Implementation freezes the colon grid as the 🔒 spec; n_lambda_derived is diagnostic.",
+    "lambda_floor": 0.43,
+    "lambda_table_max": 15.525,
+    "lambda_table_min": 0.43,
+    "lambda_table_step": 0.005,
+    "n_lambda": 3020,
     "n_pbar": 66,
     "n_soc_regions": 3,
+    "no_upper_clip_or_extrapolation": true,
+    "oob_query_count_required": 0,
     "pbar_colon_kW": [
       0,
       20,
@@ -172,7 +188,7 @@
     "initial_groups_per_tier": 3,
     "unit": "split_group_cluster"
   },
-  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
   "corpus_policy": {
     "iid_test_access_forbidden": true,
     "initial_groups": 9,
@@ -288,11 +304,21 @@
     "K_S_B2_den": 30,
     "K_S_B2_num": 1,
     "K_soc": 30.0,
+    "SOC_ref": 0.6,
     "b0_has_floor": false,
-    "cap": 0.8,
+    "diagnostics": [
+      "lambda_floor_activation_fraction",
+      "lambda_eff_min",
+      "lambda_eff_max"
+    ],
+    "envelope": "lambda_eff = max(lambda_raw, 0.43)",
     "floor": 0.43,
     "floor_applies_when": "law6_KS_nonzero",
-    "lambda0": 0.425
+    "lambda0": 0.425,
+    "removed_diagnostics": [
+      "lambda_upper_cap_activation_fraction"
+    ],
+    "upper_cap": null
   },
   "oracle_window": {
     "K": 30,

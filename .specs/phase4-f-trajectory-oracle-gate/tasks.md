@@ -49,7 +49,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Requirement(s): FR-740~745, FR-780~782；NFR-710/711/712/713/715/716；Design: DGN-F-03/04/05/06/07/11 + design.md §16（组件与目录）；AC-614
   - depends_on: 无（首批）
   - Files/areas: `config/phase4f_t445_config.m`（新建）、`config/phase4f_t445_config.json`（导出）、`results/t445_oracle_gate/`（新建）、`results/t445_oracle_gate/qualification_fixture_manifest.json`（新建，R2）、`results/t445_oracle_gate/env_manifest_t445.json`（新建，R8/NFR-712）、`artifacts/t445/`（本地）、Model E 工作区 README/README_Model.md 与 `.gitignore`（§20 登记）
-  - Scope: 将 design 全部 🔒 冻结参数实体化为单一 config 事实源（k_eq^E=0.5296 及其推导字段、E_ref=27.781415/E_scale=13.671476+provenance hash、Δλ∈[−0.10,0.10]×0.005、λ_eff∈[0.43,0.80]、V_term(δ=0.01,w=1.13e5)、|ΔSOC_end|≤0.005、X=2.0/Y=0、种子两枚、ε_num=0.5%、bootstrap B=10000、网格参数、硬可行性判据表）——**例外：k_eq^E 在 config 中标记 `PROVISIONAL_PENDING_QUALIFICATION`，直至 T-007 PASS 转 `CANONICAL` 并冻结 config hash（R1）**；导出 JSON + config_sha256；基线完整性：复核 `gate_baseline_modele.json`/`gate_baseline_modele_control.json` hash 与 HybridShip_ModelE.slx sha256 登记（不动模型）；**qualification_fixture_manifest（R2）**：在任何资格化执行前，以机器可读 manifest 冻结全部非正式 fixture 身份——B0 回归航次、SimState 等价参考航次、B2 Q2/Q3/Q4/Q6 fixture 窗、B3 parity fixtures、合成 fixture 配置、Q1 确定性 1000 点样本身份/种子；每 fixture 记录 fixture_id/来源类型/voyage_id/segment_t0（如适用）/工件 SHA256/config 或生成器 hash/确定性种子或 hash 规则/资格化目的/`formal_val_overlap=false`/`iid_test_overlap=false`/`ood_overlap=false`；fixture 不得按资格化结果选择或替换；**环境守卫（R8/NFR-712）**：env_manifest_t445.json 记录 Mac 本机身份（platform/host 类别）、MATLAB R2026a 版本、无 AutoDL/云端 result-bearing 路径的机器断言；**E 段只读守卫（R8/NFR-713）**：E 段工件目录（results/predictor_v3/、candidates/、winner 工件）hash 快照基线 + T-445 harness 代码静态扫描断言零 .keras/winner 模型加载、零 E-additional 训练调用
+  - Scope: 将 design 全部 🔒 冻结参数实体化为单一 config 事实源（k_eq^E=0.5296 及其推导字段、E_ref=27.781415/E_scale=13.671476+provenance hash、Δλ∈[−0.10,0.10]×0.005、**λ_eff=max(λ_raw,0.43) 无人为上限**、策略表 λ 原语+派生 `lambda_table=0.43:0.005:15.525` n=3020 及从原语复算 max 的机器断言、`policy_table_oob_query_count` 要求=0、V_term(δ=0.01,w=1.13e5)、|ΔSOC_end|≤0.005、X=2.0/Y=0、种子两枚、ε_num=0.5%、bootstrap B=10000、网格参数、硬可行性判据表；**Amendment a′ 2026-09-15：旧 config_sha256 保留溯源并被新 hash 取代**）——**例外：k_eq^E 在 config 中标记 `PROVISIONAL_PENDING_QUALIFICATION`，直至 T-007 PASS 转 `CANONICAL` 并冻结 config hash（R1）**；导出 JSON + config_sha256；基线完整性：复核 `gate_baseline_modele.json`/`gate_baseline_modele_control.json` hash 与 HybridShip_ModelE.slx sha256 登记（不动模型）；**qualification_fixture_manifest（R2）**：在任何资格化执行前，以机器可读 manifest 冻结全部非正式 fixture 身份——B0 回归航次、SimState 等价参考航次、B2 Q2/Q3/Q4/Q6 fixture 窗、B3 parity fixtures、合成 fixture 配置、Q1 确定性 1000 点样本身份/种子；每 fixture 记录 fixture_id/来源类型/voyage_id/segment_t0（如适用）/工件 SHA256/config 或生成器 hash/确定性种子或 hash 规则/资格化目的/`formal_val_overlap=false`/`iid_test_overlap=false`/`ood_overlap=false`；fixture 不得按资格化结果选择或替换；**环境守卫（R8/NFR-712）**：env_manifest_t445.json 记录 Mac 本机身份（platform/host 类别）、MATLAB R2026a 版本、无 AutoDL/云端 result-bearing 路径的机器断言；**E 段只读守卫（R8/NFR-713）**：E 段工件目录（results/predictor_v3/、candidates/、winner 工件）hash 快照基线 + T-445 harness 代码静态扫描断言零 .keras/winner 模型加载、零 E-additional 训练调用
   - Non-scope: 不写任何 harness/优化器代码；不运行任何航次；不触碰 dataset v3
   - Outputs: config .m + .json + config_sha256 记录
   - Validation: config 单测（全部冻结字段存在且数值=design 值；k_eq^E 状态字段=`PROVISIONAL_PENDING_QUALIFICATION`）；绝对路径扫描零命中；README 登记完整；fixture manifest schema 校验 + 三 overlap 标志全 false 断言；env_manifest 断言（macOS 本机 + MATLAB R2026a + 无云端 result-bearing 路径，NFR-712）；E 段只读守卫基线快照 + 静态扫描零命中（NFR-713）
@@ -73,12 +73,12 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Requirement(s): FR-720/721/728；Design: DGN-F-01/02/13；AC-618
   - depends_on: T-001, T-002
   - Files/areas: `scripts/+t445/run_arm_b0b1.m`、`scripts/+t445/verify_lambda_envelope.m`、`python/t445/compute_b1_norm.py`、`scripts/+t445/tests/`
-  - Scope: B0/B1 单次全程 runner（`model.run_scenario_sim` 链路 + per-run ECMS_EHat_Data/ECMS_K_S/ZOH 覆盖注入）；B0 在 qualification_fixture_manifest 登记的 3 个固定参考航次对冻结基线全信号逐样本一致（容差 0）；B1 核心回归（`+ecms2/test_ecms_law` 单测 9 逐位 + K_S 通道恒等式 |K_soc·K_S·ê−Δλ|<1e-12）；`compute_b1_norm.py` 从冻结 train 语料复现 E_ref/E_scale=27.781415/13.671476 与 provenance hash b9dcf268…（逐位一致断言）；既有基线 Gate 不受影响确认（10b smoke + 控制 Gate 快链）；**R4 λ_eff 真实执行路径包络验证**：由回归航次 logsout（SOC, ê, t）用逐位复制品离线重建 λ_eff 序列，机器验证 (i) floor=0.43 语义在真实路径生效（K_S≠0 时）；(ii) 上限 cap=0.80 是否存在于真实路径——若冻结 law=6 实现无法经批准的 run-local 机制（SimulationInput 块参数覆盖 / per-run 内存态参数）实现 0.80 上限钳，**STOP 并升级 Design 评审**（不得继续"优化器戴帽 0.80 而真实控制器无帽"的不一致状态）；(iii) 回归航次上 floor/cap 激活比例记录；B2 优化器策略表 λ 轴必须与验证后的真实包络一致（不一致则 T-008 前回到 Design）；全部回归 run 写入访问台账 purpose=REGRESSION（R5）；fixture 仅限 manifest 登记项（R2）
+  - Scope: B0/B1 单次全程 runner（`model.run_scenario_sim` 链路 + per-run ECMS_EHat_Data/ECMS_K_S/ZOH 覆盖注入）；B0 在 qualification_fixture_manifest 登记的 3 个固定参考航次对冻结基线全信号逐样本一致（容差 0）；B1 核心回归（`+ecms2/test_ecms_law` 单测 9 逐位 + K_S 通道恒等式 |K_soc·K_S·ê−Δλ|<1e-12）；`compute_b1_norm.py` 从冻结 train 语料复现 E_ref/E_scale=27.781415/13.671476 与 provenance hash b9dcf268…（逐位一致断言）；既有基线 Gate 不受影响确认（10b smoke + 控制 Gate 快链）；**R4 λ_eff 原生包络验证（Amendment a′）**：验证冻结 law=6 原生执行语义而非不存在的 cap——(i) 下限 floor=0.43（K_S≠0）；(ii) 无隐藏上限钳；(iii) fixture `λ_raw>0.80` 经 law=6 处理后仍 >0.80；(iv) B1 与 B2 共用同一 law=6 核心路径；(v) `.slx` checksum 相对 T-001 基线不变。成功证据标记 `LAW6_NATIVE_ENVELOPE_CONFIRMED`。既有 `R4_CAP_NOT_LEGALLY_IMPLEMENTABLE` 工件保留为 incident/修订溯源，**禁删**。诊断报告 `lambda_floor_activation_fraction`、`lambda_eff_min`、`lambda_eff_max`（无 cap 激活比例）。B2 策略表 λ 轴必须覆盖从冻结原语导出的全域；全部回归 run 写入访问台账 purpose=REGRESSION（R5）；fixture 仅限 manifest 登记项（R2）
   - Non-scope: 不跑 val 语料；不跑 B2；不产生任何 headroom 证据
   - Outputs: runner 模块 + 回归证据 JSON + 归一化复现证据 + λ_eff 包络验证 JSON + 台账条目
-  - Validation: AC-618 全项；归一化常数逐位复现；基线 Gate 绿；λ_eff 包络验证 PASS（floor/cap 双侧）
-  - Gate/STOP: B0 回归不一致 → 停，升级用户；归一化复现失败 → 停（实现 bug 或契约错误，禁改冻结值）；**R4 cap 不可合法实现 → 停，升级 Design 评审**
-  - Completion evidence: 回归 PASS JSON + 复现 PASS + 基线 Gate 绿记录 + λ_eff 包络验证 JSON PASS
+  - Validation: AC-618 全项；归一化常数逐位复现；基线 Gate 绿；λ_eff 原生包络 JSON 为 `LAW6_NATIVE_ENVELOPE_CONFIRMED`
+  - Gate/STOP: B0 回归不一致 → 停，升级用户；归一化复现失败 → 停（实现 bug 或契约错误，禁改冻结值）；隐藏 cap 或 `.slx` checksum 变化 → 停
+  - Completion evidence: 回归 PASS JSON + 复现 PASS + 基线 Gate 绿记录 + `LAW6_NATIVE_ENVELOPE_CONFIRMED` JSON（旧 R4 STOP 工件仍在）
 
 - [ ] 4. FEC/审计/可行性指标机器 + 单测
   - ID: T-004
@@ -133,7 +133,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Requirement(s): FR-723/724/730~735；Design: DGN-F-03/04/09；AC-611/612/613
   - depends_on: T-001, T-002, T-004, **T-007 PASS（R1：k_eq^E 依赖——V_term 线性项与窗内目标使用 k_eq^E，必须在 canonical config hash 下施工与留证）**
   - Files/areas: `scripts/+t445/b2_window_dp.m`、`scripts/+t445/build_policy_table.m`、`scripts/+t445/b2_objective.m`、`scripts/+t445/tests/`
-  - Scope: 策略表构建（λ 76×P̄ 66×SOC 3 区域，ecms_law 逐位复制品穷举）；窗内 DP（K=30×10s，SOC 网格 0.01，Δλ 41 级，无速率限制，λ 包络 [0.43,0.80]，方向效率对）；V_term 目标（DGN-F-04）；不可行回退 Δλ≡0 + 计数；**作用边界结构断言**（优化器仅输出 Δλ，无任何 P_gen/P_bat/commitment 通道——AC-611）；**信息合法性审计钩子**（每窗记录输入窗区间 [t0,t0+300]，供运行期断言——AC-612）；**反套利有效性测试**（AC-613 修订语义：诱惑 fixture (a)(b)(c) 条款）；toy DP 收敛单测
+  - Scope: 策略表构建（λ `0.43:0.005:15.525` 3020×P̄ 66×SOC 3 区域，ecms_law 逐位复制品穷举；λ 轴由冻结原语导出并机器复算 max）；窗内 DP（K=30×10s，SOC 网格 0.01，Δλ 41 级，无速率限制，λ_eff=max(λ_raw,0.43) 无上限，方向效率对）；**禁止越域查询/外推**（`policy_table_oob_query_count=0`）；V_term 目标（DGN-F-04）；不可行回退 Δλ≡0 + 计数；**作用边界结构断言**（优化器仅输出 Δλ，无任何 P_gen/P_bat/commitment 通道——AC-611）；**信息合法性审计钩子**（每窗记录输入窗区间 [t0,t0+300]，供运行期断言——AC-612）；**反套利有效性测试**（AC-613 修订语义：诱惑 fixture (a)(b)(c) 条款）；toy DP 收敛单测
   - Non-scope: 不执行 Q1~Q6 正式资格化（归 T-010）；不跑正式语料
   - Outputs: 模块 + 单测证据
   - Validation: toy 测试 + AC-611/612/613 语义测试 PASS
@@ -159,7 +159,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Requirement(s): FR-730, FR-781；Design: DGN-F-09 §9.1 / DGN-F-10；AC-612
   - depends_on: T-003, T-008, T-009
   - Files/areas: `scripts/+t445/qual_simstate_equiv.m`、`scripts/+t445/qual_b2_optimizer.m`、`results/t445_oracle_gate/qualification/`
-  - Scope: (1) **SimState 等价 Gate**：1 个非正式参考航次，B1 连续跑 vs 分段跑（每 10s save/restore）全信号逐样本相对差 ≤ 1e-10；(2) **B2_OPTIMIZER_QUALIFICATION**：Q1 策略表 parity（节点容差 0 + 1000 随机点 ≤20kW）、Q2 SOC 网格收敛（0.01 vs 0.005，≤0.5%）、Q3 Δλ 网格收敛（0.005 vs 0.0025，≤0.5%）、Q4 300s fixture 代理-vs-真机（fuel ≤1.0%、|ΔSOC|≤0.002）、Q5 确定性首动作（逐位）、Q6 Δλ≡0 sanity（≤1.0%）
+  - Scope: (1) **SimState 等价 Gate**：1 个非正式参考航次，B1 连续跑 vs 分段跑（每 10s save/restore）全信号逐样本相对差 ≤ 1e-10；(2) **B2_OPTIMIZER_QUALIFICATION**：Q1 策略表 parity 覆盖修订全 λ 域 `0.43:0.005:15.525`（节点容差 0 + 1000 随机点覆盖该域而非 [0.43,0.80]，≤20kW）+ `LAMBDA_DOMAIN_COVERAGE` + `policy_table_oob_query_count=0`、Q2 SOC 网格收敛（0.01 vs 0.005，≤0.5%）、Q3 Δλ 网格收敛（0.005 vs 0.0025，≤0.5%）、Q4 300s fixture 代理-vs-真机（fuel ≤1.0%、|ΔSOC|≤0.002）、Q5 确定性首动作（逐位）、Q6 Δλ≡0 sanity（≤1.0%）
   - Non-scope: 不跑正式语料；不产出 headroom 证据
   - Outputs: 两项 qualification JSON（机器可读 PASS/FAIL + 明细）
   - Validation: 冻结容差逐项过
@@ -197,7 +197,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Requirement(s): FR-720~728, FR-744, FR-746~750, FR-770, FR-777, FR-781；Design: DGN-F-01/02/03/10/12/15；AC-610/611/612/619
   - depends_on: T-012
   - Files/areas: `scripts/+t445/run_formal_corpus.m`、`results/t445_oracle_gate/runs/`（逐 run JSON）、`artifacts/t445/`（checkpoint 本地）、`results/t445_oracle_gate/incidents.jsonl`
-  - Scope: 按冻结 manifest 执行 36 航次 × B0/B1/B2 三臂（B3 仅在 QUALIFIED_PASS 下按资格化语义执行）；每 run 产出：raw 六联（fuel_raw/SOC0/SOC_end/ΔSOC/修正量/J_FEC）+ 硬可行性逐项 + 干预审计 + 负担代理 + **λ_eff 离线重建的 floor/cap 激活比例（R4 诊断）** + B2 信息合法性日志（每窗区间断言记录）；B1/B2 完全配对；incident 政策执行（机械失败同身份重跑+记录；持续不可行禁成对删除）；**执行终止状态机（R6）**：本任务 SHALL 至少产出两种机器终态之一——`COMPLETE_FORMAL_CORPUS` / `ABORTED_GATE_VALIDITY_FAIL`；持续控制器/物理不可行发生时：(1) 保全肇事证据；(2) 停止后续 result-bearing 航次执行；(3) 写机器可读 abort/status 工件；(4) 不成对删除；(5) 放行 T-014 进入 validity-only 路径；正式 run 写访问台账 purpose=FORMAL
+  - Scope: 按冻结 manifest 执行 36 航次 × B0/B1/B2 三臂（B3 仅在 QUALIFIED_PASS 下按资格化语义执行）；每 run 产出：raw 六联（fuel_raw/SOC0/SOC_end/ΔSOC/修正量/J_FEC）+ 硬可行性逐项 + 干预审计 + 负担代理 + **λ_eff 离线重建诊断（`lambda_floor_activation_fraction`、`lambda_eff_min`、`lambda_eff_max`；无 cap 激活比例）** + B2 信息合法性日志（每窗区间断言记录）+ **`policy_table_oob_query_count`（B2，须=0）**；B1/B2 完全配对；incident 政策执行（机械失败同身份重跑+记录；持续不可行禁成对删除）；**执行终止状态机（R6）**：本任务 SHALL 至少产出两种机器终态之一——`COMPLETE_FORMAL_CORPUS` / `ABORTED_GATE_VALIDITY_FAIL`；持续控制器/物理不可行发生时：(1) 保全肇事证据；(2) 停止后续 result-bearing 航次执行；(3) 写机器可读 abort/status 工件；(4) 不成对删除；(5) 放行 T-014 进入 validity-only 路径；正式 run 写访问台账 purpose=FORMAL
   - Non-scope: 不执行预留集（T-015 专属）；不修改任何冻结参数；不看 test/OOD
   - Outputs: 36×3（+36 B3）逐 run JSON + incidents.jsonl + 实际 wall time 记录（NFR-714）
   - Validation: 每 run 硬可行性+审计矩阵齐全（AC-619）；run 级完整性校验（信号齐全、时长一致、hash 自洽）

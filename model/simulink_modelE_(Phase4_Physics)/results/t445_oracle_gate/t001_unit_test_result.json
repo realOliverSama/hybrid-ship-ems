@@ -5,11 +5,11 @@
     "pass": true
   },
   "cloud_result_bearing_path_present": false,
-  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
   "e_guard_pass": true,
-  "env_manifest_sha256": "19c170305a550020faf5e3f65a49b594031efcf0b245a1b4ab1cea97e55c77bb",
-  "fixture_manifest_sha256": "bc4deedc6a4f6b63e26cd755aa78972b3851334363e271adfc5948f29bfd4808",
-  "git_commit": "09e6efb1f88ff5c9874a94685dd3dc4e46143e81",
+  "env_manifest_sha256": "b63e639371ec432f4b008150503fb0abea14fad2d3c9c685a34232a8ea63fab4",
+  "fixture_manifest_sha256": "485320eb3a084067cc48a7e73bdaf157ad049c79fcd0871ca8c7e160cf5ce0e1",
+  "git_commit": "77ecc4972f22509c74c42bf131ff498e0077f23e",
   "host_category_macos_local": true,
   "k_eq_status": "PROVISIONAL_PENDING_QUALIFICATION",
   "matlab": {
@@ -23,5 +23,5 @@
   "overlap_all_false": true,
   "schema": "t445_t001_evidence_v1",
   "task": "T-001",
-  "utc": "2026-09-15T07:09:31Z"
+  "utc": "2026-09-15T07:37:35Z"
 }

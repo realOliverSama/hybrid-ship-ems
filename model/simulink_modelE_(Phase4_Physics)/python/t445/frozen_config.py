@@ -14,10 +14,46 @@ SPLIT_ASSIGNMENT_SHA256 = (
 )
 
 # colon n = floor((end-start)/step)+1
-N_LAMBDA_COLON = int(round((0.80 - 0.43) / 0.005)) + 1  # 75
 N_PBAR_COLON = int(round(1300 / 20)) + 1  # 66
 N_DLAMBDA = int(round(0.20 / 0.005)) + 1  # 41
 N_SOC_B2 = int(round((0.95 - 0.10) / 0.01)) + 1  # 86
+
+# DGN-F-03/F-09 Amendment a′: native law=6 domain from frozen primitives
+LAMBDA0 = 0.425
+K_SOC = 30.0
+SOC_REF = 0.60
+SOC_DP_MIN = 0.10
+SOC_DP_MAX = 0.95
+DLAMBDA_MAX = 0.10
+LAMBDA_FLOOR = 0.43
+LAMBDA_TABLE_STEP = 0.005
+SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME = (
+    "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33"
+)
+
+
+def derive_lambda_table() -> dict:
+    """Recompute strategy-table lambda domain from frozen primitives."""
+    table_max = LAMBDA0 + K_SOC * (SOC_REF - SOC_DP_MIN) + DLAMBDA_MAX
+    table_min = LAMBDA_FLOOR
+    n_lambda = int(round((table_max - table_min) / LAMBDA_TABLE_STEP)) + 1
+    return {
+        "lambda0": LAMBDA0,
+        "K_soc": K_SOC,
+        "SOC_ref": SOC_REF,
+        "SOC_DP_min": SOC_DP_MIN,
+        "SOC_DP_max": SOC_DP_MAX,
+        "delta_lambda_max": DLAMBDA_MAX,
+        "lambda_floor": LAMBDA_FLOOR,
+        "lambda_table_step": LAMBDA_TABLE_STEP,
+        "lambda_table_min": table_min,
+        "lambda_table_max": table_max,
+        "lambda_colon": [table_min, LAMBDA_TABLE_STEP, table_max],
+        "n_lambda": n_lambda,
+        "derivation": (
+            "lambda_table_max = lambda0 + K_soc*(SOC_ref-SOC_DP_min) + dlambda_max"
+        ),
+    }
 
 
 def build_frozen_config() -> dict:
@@ -25,6 +61,14 @@ def build_frozen_config() -> dict:
         "schema": "phase4f_t445_config_v1",
         "spec": "phase4-f-trajectory-oracle-gate",
         "task_created": "T-001",
+        "amendment": {
+            "id": "a_prime_dgn_f03_2026-09-15",
+            "superseded_config_sha256": SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME,
+            "note": (
+                "Removed design-only 0.80 cap; native law=6 envelope; "
+                "policy table lambda from frozen primitives."
+            ),
+        },
         "k_eq": {
             "value_kg_per_kWh": 0.5296,
             "status": "PROVISIONAL_PENDING_QUALIFICATION",
@@ -57,15 +101,23 @@ def build_frozen_config() -> dict:
             "per_voyage_refit_forbidden": True,
         },
         "lambda_law": {
-            "lambda0": 0.425,
-            "K_soc": 30.0,
+            "lambda0": LAMBDA0,
+            "K_soc": K_SOC,
+            "SOC_ref": SOC_REF,
             "K_S_B1": 0.01,
             "K_S_B2_num": 1,
             "K_S_B2_den": 30,
-            "floor": 0.43,
-            "cap": 0.80,
+            "floor": LAMBDA_FLOOR,
+            "upper_cap": None,
+            "envelope": "lambda_eff = max(lambda_raw, 0.43)",
             "floor_applies_when": "law6_KS_nonzero",
             "b0_has_floor": False,
+            "diagnostics": [
+                "lambda_floor_activation_fraction",
+                "lambda_eff_min",
+                "lambda_eff_max",
+            ],
+            "removed_diagnostics": ["lambda_upper_cap_activation_fraction"],
         },
         "delta_lambda": {
             "min_kg_per_kWh": -0.10,
@@ -115,18 +167,13 @@ def build_frozen_config() -> dict:
             "sample_and_hold": True,
         },
         "b2_policy_table": {
-            "lambda_colon": [0.43, 0.005, 0.80],
-            "n_lambda_derived": N_LAMBDA_COLON,
-            "design_text_n_lambda": 76,
-            "n_lambda_note": (
-                "DGN-F-09 colon 0.43:0.005:0.80 yields 75 points; "
-                "design prose says 76. Implementation freezes the colon "
-                "grid as the 🔒 spec; n_lambda_derived is diagnostic."
-            ),
+            **derive_lambda_table(),
             "pbar_colon_kW": [0, 20, 1300],
             "n_pbar": N_PBAR_COLON,
             "n_soc_regions": 3,
             "soc_regions": ["normal", "no_discharge_le_0.105", "no_charge_ge_0.945"],
+            "oob_query_count_required": 0,
+            "no_upper_clip_or_extrapolation": True,
         },
         "b2_dp": {
             "K": 30,

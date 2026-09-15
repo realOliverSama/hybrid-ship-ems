@@ -20,10 +20,10 @@ from datetime import datetime, timezone
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from t445 import hashutil, paths  # type: ignore
-    from t445.frozen_config import build_frozen_config  # type: ignore
+    from t445.frozen_config import build_frozen_config, derive_lambda_table  # type: ignore
 else:
     from . import hashutil, paths
-    from .frozen_config import build_frozen_config
+    from .frozen_config import build_frozen_config, derive_lambda_table
 
 # Actual consumption (load/train), not policy mentions or this scanner's pattern table.
 E_GUARD_FORBIDDEN = [
@@ -271,10 +271,14 @@ def build_fixture_manifest(config_sha: str) -> dict:
         segment_t0=None,
         artifact_sha256=None,
         generator_or_config_hash=config_sha,
-        seed_or_hash_rule="sha256(phase4f-t445-q1-policy-table-v1|i) i=0..999",
+        seed_or_hash_rule=(
+            "sha256(phase4f-t445-q1-policy-table-v1|i) i=0..999 "
+            "over native lambda domain 0.43:0.005:15.525 (Amendment a-prime)"
+        ),
         purpose="B2_OPTIMIZER_Q1",
         n_points=1000,
         seed="phase4f-t445-q1-policy-table-v1",
+        lambda_domain="0.43:0.005:15.525",
     )
     add(
         fixture_id="B2-Q2-SOC-GRID-WINDOW",
@@ -493,6 +497,21 @@ def ensure_dirs() -> None:
 def main() -> int:
     ensure_dirs()
     cfg = build_frozen_config()
+    derived = derive_lambda_table()
+    pt = cfg["b2_policy_table"]
+    recomputed_max = (
+        pt["lambda0"]
+        + pt["K_soc"] * (pt["SOC_ref"] - pt["SOC_DP_min"])
+        + pt["delta_lambda_max"]
+    )
+    if abs(recomputed_max - pt["lambda_table_max"]) > 1e-12:
+        raise SystemExit("lambda_table_max does not match primitive derivation")
+    if abs(pt["lambda_table_max"] - derived["lambda_table_max"]) > 1e-12:
+        raise SystemExit("lambda_table_max drift vs derive_lambda_table")
+    if pt["n_lambda"] != 3020 or abs(pt["lambda_table_max"] - 15.525) > 1e-12:
+        raise SystemExit(f"unexpected n_lambda/max: {pt['n_lambda']} {pt['lambda_table_max']}")
+    if cfg["lambda_law"]["upper_cap"] is not None:
+        raise SystemExit("upper_cap must be null after amendment a-prime")
     slx = os.path.join(paths.MODELE_ROOT, "model", "HybridShip_ModelE.slx")
     builder = os.path.join(paths.SCRIPTS_DIR, "+model", "build_model_e.m")
     g_phys = os.path.join(paths.CONFIG_DIR, "gate_baseline_modele.json")

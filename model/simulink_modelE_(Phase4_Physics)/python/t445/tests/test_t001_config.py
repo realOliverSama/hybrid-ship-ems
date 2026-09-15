@@ -17,11 +17,12 @@ if PYROOT not in sys.path:
 from t445 import hashutil, paths  # noqa: E402
 from t445.frozen_config import (  # noqa: E402
     N_DLAMBDA,
-    N_LAMBDA_COLON,
     N_PBAR_COLON,
     N_SOC_B2,
     PROVENANCE_B1_NORM,
+    SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME,
     build_frozen_config,
+    derive_lambda_table,
 )
 
 
@@ -61,16 +62,36 @@ def test_b1_norm_literals(cfg):
 def test_lambda_and_delta(cfg):
     assert cfg["lambda_law"]["lambda0"] == 0.425
     assert cfg["lambda_law"]["K_soc"] == 30.0
+    assert cfg["lambda_law"]["SOC_ref"] == 0.60
     assert cfg["lambda_law"]["K_S_B1"] == 0.01
     assert cfg["lambda_law"]["K_S_B2_num"] == 1
     assert cfg["lambda_law"]["K_S_B2_den"] == 30
     assert cfg["lambda_law"]["floor"] == 0.43
-    assert cfg["lambda_law"]["cap"] == 0.80
+    assert cfg["lambda_law"]["upper_cap"] is None
+    assert "max(lambda_raw, 0.43)" in cfg["lambda_law"]["envelope"]
+    assert "lambda_upper_cap_activation_fraction" in cfg["lambda_law"]["removed_diagnostics"]
     assert cfg["delta_lambda"]["min_kg_per_kWh"] == -0.10
     assert cfg["delta_lambda"]["max_kg_per_kWh"] == 0.10
     assert cfg["delta_lambda"]["step"] == 0.005
     assert cfg["delta_lambda"]["n_levels"] == N_DLAMBDA == 41
     assert cfg["delta_lambda"]["rate_limit"] is False
+
+
+def test_lambda_table_derived_from_primitives(cfg):
+    d = derive_lambda_table()
+    pt = cfg["b2_policy_table"]
+    recomputed = (
+        pt["lambda0"]
+        + pt["K_soc"] * (pt["SOC_ref"] - pt["SOC_DP_min"])
+        + pt["delta_lambda_max"]
+    )
+    assert abs(recomputed - 15.525) < 1e-12
+    assert abs(pt["lambda_table_max"] - recomputed) < 1e-12
+    assert pt["lambda_table_min"] == 0.43
+    assert pt["n_lambda"] == 3020 == d["n_lambda"]
+    assert pt["lambda_colon"] == [0.43, 0.005, 15.525]
+    assert pt["oob_query_count_required"] == 0
+    assert cfg["amendment"]["superseded_config_sha256"] == SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME
 
 
 def test_v_term_and_terminal(cfg):
@@ -87,8 +108,6 @@ def test_v_term_and_terminal(cfg):
 
 
 def test_grids(cfg):
-    assert cfg["b2_policy_table"]["lambda_colon"] == [0.43, 0.005, 0.80]
-    assert cfg["b2_policy_table"]["n_lambda_derived"] == N_LAMBDA_COLON == 75
     assert cfg["b2_policy_table"]["n_pbar"] == N_PBAR_COLON == 66
     assert cfg["b2_policy_table"]["n_soc_regions"] == 3
     assert cfg["b2_dp"]["n_soc"] == N_SOC_B2 == 86
@@ -135,9 +154,11 @@ def test_matlab_config_asserts_literals():
         "b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045",
         "PROVISIONAL_PENDING_QUALIFICATION",
         "1.13e5", "phase4f-t445-corpus-v1", "phase4f-t445-bootstrap-v1",
-        "mfilename('fullpath')",
+        "mfilename('fullpath')", "15.525", "3020",
     ):
         assert needle in text, needle
+    assert "T445:cap" not in text
+    assert "lambda_eff in [0.43, 0.80]" not in text
     assert re.search(r"/Users/|/home/|[A-Za-z]:[\\/]", text) is None
 
 

@@ -9,6 +9,8 @@ Brainstorm: `./brainstorm.md`（Q1~Q4 CLOSED）
 
 本文件把 requirements 翻译为可施工设计，并**逐条闭合 OQ-F1~F9**。所有数值冻结项在对应 DGN 条目中标注 🔒。Design Gate R1~R9 修订已在对应条目内标注（R#）。
 
+**Amendment 2026-09-15（T-003 R4 Design Escalation，APPROVED option a′）**：去掉设计层 0.80 上限，恢复冻结 law=6 原生包络 `λ_eff = max(λ_raw, 0.43)`；B2 策略表 λ 轴由冻结状态/作用空间导出为 `0.43:0.005:15.525`（n=3020）。不改 `.slx`、不改 law=6 核心、不给优化器单方面戴帽。既有 `R4_CAP_NOT_LEGALLY_IMPLEMENTABLE` 工件保留为修订溯源。本修订为预结果设计校正，不污染正式 Gate。
+
 ## 1. 架构总览
 
 ```text
@@ -82,8 +84,8 @@ law=6 核心：λ(t) = λ₀ + K_soc·(SOC_ref + K_S·ê(t) − SOC(t))，λ_eff
 
 - **决策变量**：Δλ_k ∈ ℝ，k = 1..K_rem（K=30 对应 300 s 窗），每 10 s bin 分段常值。
 - **容许集合**：Δλ_k ∈ [−0.10, +0.10] kg/kWh，离散网格步长 0.005（41 levels）🔒。**不设 Δλ 速率限制**（R3：非物理执行机构约束、非已批准 requirements 所要求、收窄 oracle 监督策略空间、且跨重解正确实现需扩展前动作状态——予以移除）。
-- **λ_eff 包络处处一致**：0.43 ≤ λ_eff ≤ 0.80，同时适用于真实执行（law=6 家族 floor + 上限硬钳）与 B2 优化器/策略表内模型（λ 网格 [0.43, 0.80]）🔒。
-- **诊断**：floor（0.43）与 cap（0.80）激活比例逐 run 报告（执行侧与优化器侧分别计数）。
+- **λ_eff 原生包络（Amendment a′，2026-09-15）**：`λ_eff = max(λ_raw, 0.43)` 🔒。**无人为上限**。B1 与 B2 SHALL 共用同一冻结 law=6 执行核心。λ_raw 可达域由冻结原语导出（见 DGN-F-09 策略表），不是任意区间如 [0.43, 2.0]。
+- **诊断（逐 run，执行侧与优化器侧分别计数）**：`lambda_floor_activation_fraction`、`lambda_eff_min`、`lambda_eff_max`。**删除** `lambda_upper_cap_activation_fraction`（无 cap 可激活）。
 - **执行链冻结**：B2 只写 Δλ_traj 通道；ECMS 瞬时 argmin（{0}∪[0:20:1000] kW 网格 + SOC 硬约束 0.105/0.945 + 怠速项）→ 07_PMS_v2 → 16_Safety_Interlock → Plant 全部不改（FR-723/724）。
 - **浮点说明**：B2 经 K_S=1/30 通道，AC-618 夹具回归验证 λ 合成与直接加法差 < 1e-12。
 
@@ -209,7 +211,15 @@ B3 = 离线全航程直接功率 DP（复用 `+ecms/dp_problem`/`dp_solve` 机�
 - **求解器类**：窗内确定性 DP（后向归纳 + V 线性插值 + 前向重建，复用 dp_solve 数值模式，big-M=1e4）。B2 不称严格数学上界（网格离散 + 代理简化未证明全局最优）。
 - **决策步**：10 s（K=30 步/窗），bin 均负荷 P̄_k；
 - **状态**：(SOC, P_g_prev)，SOC 网格 0.10:0.01:0.95（86 点），P_g_prev 网格 0:20:1000；
-- **转移内模型**：给定 λ_k = clamp(λ₀ + K_soc(SOC_ref−SOC_k) + Δλ_k, 0.43, 0.80)，P_g* = **预计算 ECMS 策略表**查值（λ ∈ [0.43:0.005:0.80] 76 点 × P̄ ∈ [0:20:1300] 66 点 × SOC 区域 {正常/≤0.105 禁放/≥0.945 禁充}，表 = `ecms2.ecms_law` 离线逐位复制品穷举，λ 轴最近邻索引）；SOC 转移用 `ecms.bat_energy_delta_kWh` + **方向效率对**（η_chg=0.9687/η_dis=0.9686，η_dcdc=0.97）；
+- **转移内模型**：给定 `λ_raw,k = λ₀ + K_soc(SOC_ref−SOC_k) + Δλ_k`，`λ_k = max(λ_raw,k, 0.43)`（与真实 law=6 同一 floor，**无上限钳**）。P_g* = **预计算 ECMS 策略表**查值。策略表 λ 轴由冻结原语导出（禁止只硬编码派生值）🔒：
+  - 原语：λ₀=0.425、K_soc=30、SOC_ref=0.60、SOC_DP∈[0.10,0.95]、Δλ∈[−0.10,+0.10]、Lambda_Floor=0.43、step=0.005；
+  - `lambda_table_max = λ₀ + K_soc·(SOC_ref−SOC_DP_min) + Δλ_max = 0.425 + 30·(0.60−0.10) + 0.10 = 15.525`；
+  - `lambda_table_min = 0.43`；
+  - `lambda_table = 0.43:0.005:15.525`，`n_lambda = 3020`；
+  - 配置必须同时保存原语与派生最大值，并带机器断言从原语复算 max；
+  - P̄ ∈ [0:20:1300] 66 点 × SOC 区域 {正常/≤0.105 禁放/≥0.945 禁充}；表 = `ecms2.ecms_law` 离线逐位复制品穷举，λ 轴最近邻索引；
+  - **禁止越域查询/外推**：正式优化器 SHALL NOT 依赖上限裁剪或外推；诊断 `policy_table_oob_query_count`，资格化与正式执行要求 `= 0`。低于 floor 的 raw λ 仅由真实 law=6 floor 映射到 0.43。
+  SOC 转移用 `ecms.bat_energy_delta_kWh` + **方向效率对**（η_chg=0.9687/η_dis=0.9686，η_dcdc=0.97）；
 - **代理简化登记（R8 措辞）**：机组爬坡/惯性/PMS 分配滞后在窗内模型中忽略——**代理简化可能降低可提取余量；正式 Gate 有效性因此依赖优化器资格化（§9.1）**。B2 最终燃油始终在真实冻结 Model-E/PMS/Safety plant 上测量；
 - **首段执行**：仅 Δλ_1 注入下一 10 s 段（真 ZOH），下一 t0 重解（FR-730）；
 - **不可行回退**：单窗无解 → 本段 Δλ≡0（退化 law=5）+ incident 计数；单航次不可行窗占比 > 5% → persistent-infeasibility 候选走 FR-777 🔒。
@@ -220,7 +230,7 @@ B3 = 离线全航程直接功率 DP（复用 `+ecms/dp_problem`/`dp_solve` 机�
 
 | # | 检查 | 冻结容差 |
 |---|---|---|
-| Q1 | 策略表 vs `ecms2.ecms_law` 逐位 parity（全部表节点 + 1000 随机 λ/P̄ 点） | 节点容差 0；随机点 P_g* 差 ≤ 1 个 P 网格步（20 kW） |
+| Q1 | 策略表 vs `ecms2.ecms_law` 逐位 parity（**修订后全 λ 域**全部表节点 + 1000 随机 λ/P̄ 点，随机点覆盖 `0.43:0.005:15.525` 而非 [0.43,0.80]）+ `LAMBDA_DOMAIN_COVERAGE`（每个合法 B2 `(SOC, Δλ)` 查询均落在表域内） | 节点容差 0；随机点 P_g* 差 ≤ 1 个 P 网格步（20 kW）；OOB 计数 = 0 |
 | Q2 | SOC 网格收敛：0.01 vs 0.005 重解固定非正式 fixture 窗 | 窗最优成本相对差 ≤ 0.5% |
 | Q3 | Δλ 网格收敛：0.005 vs 0.0025 重解固定非正式 fixture 窗 | 窗最优成本相对差 ≤ 0.5% |
 | Q4 | 固定非正式 300 s fixture：代理预测 vs Model E 实测的窗燃油/SOC | raw fuel rel err ≤ 1.0%；\|ΔSOC err\| ≤ 0.002 |
@@ -375,7 +385,7 @@ Model E `.slx` **零修改**（DGN-F-01）；Model E 基线 Gate（10b smoke / G
 2. **策略表 λ 最近邻索引**（0.005 网格）引入窗内模型舍入；Q1/Q4 资格化覆盖；
 3. **SimState 兼容性**（Stateflow/persistent/From Workspace/ode3）由 DGN-F-10 前置 Gate 验证，失败升级主 Agent；
 4. **小样本**（9 簇）CI 宽 → INCONCLUSIVE 概率非平凡；一次性扩样政策已预注册；
-5. **law=6 floor（0.43）> λ₀（0.425）** 构成 B2 下行权限的冻结族作用空间限制（不声称已证明的单调保守效应，R3）；floor/cap 激活比例纳入诊断；
+5. **law=6 floor（0.43）> λ₀（0.425）** 构成 B2 下行权限的冻结族作用空间限制（不声称已证明的单调保守效应，R3）；诊断为 `lambda_floor_activation_fraction` 与 `lambda_eff_min/max`（Amendment a′：无 cap 诊断）。策略表 n_lambda=3020 增大查表体积，资格化 Q1 覆盖全域；运行时不得以外推/戴帽换速度。
 6. **小概率 P_load 实现漂移**：B2 调度改变母线压力时，08 降额可能改变 realized P_load vs 冻结真值——硬可行性集（欠供=0）+ parity 断言双重拦截。
 
 ## 20. OQ 闭合清单

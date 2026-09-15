@@ -10,7 +10,8 @@ function cfg = phase4f_t445_config()
 %   E_ref = 27.781415 kWh ; E_scale = 13.671476 kWh
 %   provenance_sha256 = b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045
 %   Delta-lambda in [-0.10, +0.10] step 0.005 (41 levels); no rate limit
-%   lambda_eff in [0.43, 0.80]
+%   lambda_eff = max(lambda_raw, 0.43); no artificial upper cap (Amendment a')
+%   lambda_table = 0.43:0.005:15.525 (n=3020; max derived from primitives)
 %   V_term: delta_term=0.01, w_term=1.13e5 kg/SOC^2, SOC_target=SOC0_voyage
 %   TERMINAL_SOC_ADMISSIBILITY |dSOC_end|<=0.005
 %   X=2.0%% / Y=0%%
@@ -53,7 +54,15 @@ assert(abs(cfg.delta_lambda.step - 0.005) < 1e-12, 'T445:dlam_step');
 assert(cfg.delta_lambda.n_levels == 41, 'T445:dlam_n');
 assert(cfg.delta_lambda.rate_limit == false, 'T445:dlam_rate');
 assert(abs(cfg.lambda_law.floor - 0.43) < 1e-12, 'T445:floor');
-assert(abs(cfg.lambda_law.cap - 0.80) < 1e-12, 'T445:cap');
+assert(isempty(cfg.lambda_law.upper_cap), 'T445:no_cap');
+assert(contains(string(cfg.lambda_law.envelope), "max(lambda_raw, 0.43)"), 'T445:env');
+remax = cfg.lambda_law.lambda0 + cfg.lambda_law.K_soc * ...
+    (cfg.lambda_law.SOC_ref - cfg.b2_policy_table.SOC_DP_min) + ...
+    cfg.delta_lambda.max_kg_per_kWh;
+assert(abs(remax - cfg.b2_policy_table.lambda_table_max) < 1e-12, 'T445:lamax');
+assert(abs(cfg.b2_policy_table.lambda_table_max - 15.525) < 1e-12, 'T445:15p525');
+assert(cfg.b2_policy_table.n_lambda == 3020, 'T445:nlam');
+assert(cfg.b2_policy_table.oob_query_count_required == 0, 'T445:oob');
 assert(abs(cfg.v_term.delta_term - 0.01) < 1e-12, 'T445:dterm');
 assert(abs(cfg.v_term.w_term - 1.13e5) < 1e-6, 'T445:wterm');
 assert(abs(cfg.terminal_soc_admissibility.abs_dsoc_max - 0.005) < 1e-12, 'T445:termSOC');

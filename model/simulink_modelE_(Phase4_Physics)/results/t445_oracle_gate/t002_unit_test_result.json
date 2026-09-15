@@ -1,19 +1,23 @@
 {
-  "schema": "t445_t002_evidence_v1",
-  "task": "T-002",
-  "overall": true,
   "cases": [
     {
+      "detail": "n_t0_const=100 shrinking_t0=[0 10 20] max_rel=0",
       "name": "assemble_window",
-      "pass": true,
-      "detail": "n_t0_const=100 shrinking_t0=[0 10 20] max_rel=0"
+      "pass": true
     },
     {
+      "detail": "neigh_maxdiff=0.999 dInt_off=0 dInt_on=0.00999",
       "name": "zoh_machine",
-      "pass": true,
-      "detail": "neigh_maxdiff=0.999 dInt_off=0 dInt_on=0.00999"
+      "pass": true
     }
   ],
-  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
-  "utc": "2026-09-15T07:16:59Z"
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "overall": true,
+  "rebind_note": "ZOH/window scientific evidence not rerun. Evidence rebound to post-a-prime config identity. Old SHA retained for provenance.",
+  "schema": "t445_t002_evidence_v1",
+  "superseded_config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "t002_science": "UNAFFECTED_BY_DGN_F03_AMENDMENT",
+  "task": "T-002",
+  "utc": "2026-09-15T07:16:59Z",
+  "zoh_implementation_unchanged": true
 }
