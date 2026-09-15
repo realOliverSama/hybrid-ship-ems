@@ -10,6 +10,8 @@
 # ==========================================================
 
 **/slprj/
+# 改名后的 slprj 缓存（如 slprj_v1_stale/）仍是生成缓存，同样永不入库
+**/slprj*/
 **/sccprj/
 **/*.slxc
 **/*.asv
@@ -51,6 +53,10 @@
 # 质量门运行时裁决（每次运行重新生成；基线 config/gate_baseline_smoke.json 入库）
 model/simulink/results/gate_result.json
 firmware/gate/fw_gate_result.json
+
+# EMS01 CHIL 会话生成输出（2026-09-15 用户裁决：KEEP LOCAL + 仅此精确路径；
+# 禁止泛化为 **/fault_out/，以免遮蔽未来其他位置的故障注入科学证据）
+/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/
 
 # ==========================================================
 # Temporary files
