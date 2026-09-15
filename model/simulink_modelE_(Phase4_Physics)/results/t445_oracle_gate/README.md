@@ -5,8 +5,9 @@
 
 ## 用途
 
-Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 B1/B2 结果仅在
-`freeze_record.json overall=true`（T-012）之后进入 `runs/`。
+Phase 4-F T-445 的证据落盘根。**CLOSED 2026-09-15：`GATE_VALIDITY_FAIL`。**
+T-001 写入冻结身份与守卫。正式 36 航次从未执行（`runs/` 空）。Canonical 终态见
+`final_gate_pointer.json` → `gate_result.json`。历史 FAIL 工件禁覆盖、禁改标 PASS。
 
 **预测模型**：无（oracle 真值轨迹，非 NN）。
 
@@ -40,6 +41,11 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `qualification/t010_b2_optimizer_qual_amd_e.json` | Amendment E 机组实现代理后 Q1–Q6（不覆盖原 FAIL / D / E0） |
 | `qualification/t010_amendment_e_stop.json` | Amendment E 后 T-010 收口：B2_OPTIMIZER_QUALIFICATION_FAILED（非正式 Gate） |
 | `qualification/t010_simstate_equiv.json` | T-010 SimState 连续 vs 分段 S20（nseg=552，PASS；与 Q4/Q6 独立） |
+| `gate_result.json` | ★ Canonical validity-only Gate：`GATE_VALIDITY_FAIL` |
+| `final_gate_pointer.json` | ★ T-016 canonical 指针（来源=validity-fail） |
+| `evidence_index.json` | ★ 证据 hash 链 |
+| `final_report.md` | ★ T-445 最终报告 |
+| `skipped/` | T-011..T-015 `SKIPPED_DUE_GATE_VALIDITY_FAILURE` |
 | `t009_unit_test_result.json` | T-009 B2 分段 toy smoke + checkpoint/resume（rel=0，.slx 未改） |
 | `amendment_c_rebind.json` | Amendment C 后 T-002/003/005 配置身份重绑记录（语料 identity SHA 不变） |
 | `qualification/t007_keq_charge_restoration.json` | T-007 原 0.58→0.62 vs 0.9687 **FAIL 保留件**（禁改标 PASS） |

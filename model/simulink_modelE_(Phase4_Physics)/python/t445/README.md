@@ -9,6 +9,9 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 冻结 config 导出、B1 归一化复现、语料选择、cluster bootstrap、Gate 裁决。
 不消费 E 段 winner 模型，不访问 IID test / OOD。
 
+**T-445 CLOSED `GATE_VALIDITY_FAIL`（2026-09-15）**：`close_t445_validity.py` 出具 validity-only
+`gate_result.json`。未计算正式 h_v/bootstrap。
+
 **预测模型**：无（本包不训练、不加载 NN）。
 
 ## 目录结构
@@ -28,6 +31,7 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 | `tests/test_corpus_select.py` | T-005 合成单测（shape_cv、shrinking 窗、分层、族闭包、种子复现） |
 | `stats_pairing.py` / `bootstrap_cluster.py` / `gate_verdict.py` | ★ T-006 h_v→h_g→median_g、分层 cluster bootstrap、确定性 Gate 裁决 |
 | `gate_schema.json` | T-006 Gate JSON schema（t445_oracle_gate_v1） |
+| `close_t445_validity.py` | ★ T-445 validity-only 收口（无正式语料、无 bootstrap） |
 | `tests/test_t006_gate.py` | T-006 合成边界单测（GO/NO-GO/INCONCLUSIVE/VALIDITY/B3 正交/种子复现） |
 
 MATLAB 对侧（`scripts/+t445/`，非本目录）：T-002 窗/ZOH；T-008 策略表 + 窗内 DP；T-010 PMS 感知燃油代理（动作仍仅为 Δλ）。

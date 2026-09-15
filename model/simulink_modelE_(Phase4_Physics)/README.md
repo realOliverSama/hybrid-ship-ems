@@ -25,9 +25,10 @@ E 新增 `predictor_v3/` 包（T-002 起建）、`config/predictor_v3/` 配置�
 本地 `.venv_tf`（仓库根）仅开发/smoke/CPU 探针；result-bearing 训练 canonical =
 AutoDL 4090D CUDA（FR-591 平台分离）。
 
-**Phase 4-F T-445 Trajectory Oracle Gate**（spec `.specs/phase4-f-trajectory-oracle-gate/`，
-2026-09-15 起）：在 Model E 上用完美 30-bin 轨迹 oracle vs 完美 E300 标量 oracle 量化
-开发期燃油余量（B0/B1/B2，B3 为 context）。**不消费 E 段 winner 模型、不改 `.slx`、
+**Phase 4-F T-445 Trajectory Oracle Gate**（spec `.specs/phase4-f-trajectory-oracle-gate/`）
+**CLOSED `GATE_VALIDITY_FAIL`（2026-09-15）**：B2 代理未通过冻结 1% 资格化，正式语料未执行，
+不得对 300 s 轨迹信息价值作 GO/NO-GO。Canonical：`results/t445_oracle_gate/final_gate_pointer.json`。
+（B0/B1/B2，B3 为 context）。**不消费 E 段 winner 模型、不改 `.slx`、
 不触 dataset v3 字节**。新增 `config/phase4f_t445_config.{m,json}`、`python/t445/`、
 `results/t445_oracle_gate/`（精选入库）、`artifacts/t445/`（本地不入库）。
 

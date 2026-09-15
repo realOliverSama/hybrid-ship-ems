@@ -1,0 +1,20 @@
+{
+  "b3_context_reason": "NOT_EXECUTED_DUE_MAIN_GATE_VALIDITY_FAILURE",
+  "b3_context_status": "UNQUALIFIED_CONTEXT",
+  "canonical_source": "validity-fail",
+  "code_commit_at_write": "b5cdf80989c46172c2e47f8b5efde37e5d2c34a6",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "decision_required": true,
+  "evidence_index": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/evidence_index.json",
+  "evidence_index_sha256": "a719fe41e0b13f81be485a81fabdd21be89e84f58d4c31c9b7913b46c68a1aed",
+  "expansion_used": false,
+  "failure_code": "B2_OPTIMIZER_QUALIFICATION_FAILED",
+  "formal_corpus_observed": false,
+  "reserve_used": false,
+  "schema": "t445_final_gate_pointer_v1",
+  "source_artifact": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/gate_result.json",
+  "source_artifact_sha256": "f6a71fdd86dc0d05e89bdb8ba0ebcb2b59a2d9923ad3d6126cb6d64beef1b9b6",
+  "trajectory_gate_verdict": "GATE_VALIDITY_FAIL",
+  "utc": "2026-09-15T12:33:31Z"
+}

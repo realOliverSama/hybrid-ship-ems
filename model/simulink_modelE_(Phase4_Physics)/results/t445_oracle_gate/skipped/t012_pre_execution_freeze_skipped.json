@@ -1,0 +1,10 @@
+{
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "failure_code": "B2_OPTIMIZER_QUALIFICATION_FAILED",
+  "formal_corpus_observed": false,
+  "reason": "SKIPPED_DUE_GATE_VALIDITY_FAILURE",
+  "reserve_used": false,
+  "schema": "t445_task_skip_v1",
+  "task": "T-012",
+  "utc": "2026-09-15T12:33:31Z"
+}

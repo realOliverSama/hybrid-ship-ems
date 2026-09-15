@@ -1,7 +1,7 @@
 # Phase 4-F T-445 Trajectory Oracle Gate Tasks
 
 Spec: `phase4-f-trajectory-oracle-gate`  
-Status: implementation-in-progress（T-001 起，2026-09-15）  
+Status: implementation-complete — CLOSED GATE_VALIDITY_FAIL（2026-09-15）  
 Created: 2026-09-15  
 Approved: 2026-09-15（APPROVED WITH 8 REQUIRED CORRECTIONS——R1~R8 全部按令闭合；Implementation 仍需单独显式授权）  
 Brainstorm: `./brainstorm.md`（Q1~Q4 批准）  
@@ -154,7 +154,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
 
 ## B — 预结果资格化 Gate（全部通过才解锁 C）
 
-- [ ] 10. SimState 等价 Gate + B2_OPTIMIZER_QUALIFICATION（Q1~Q6）
+- [x] 10. SimState 等价 Gate + B2_OPTIMIZER_QUALIFICATION（Q1~Q6） **FAIL 收口**（Q2/Q4/Q6 FAIL；SimState PASS；正式链阻断）
   - ID: T-010
   - Requirement(s): FR-730, FR-781；Design: DGN-F-09 §9.1 / DGN-F-10；AC-612
   - depends_on: T-003, T-008, T-009
@@ -166,7 +166,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: **SimState 不等价 → B2 正式执行阻断，停，升级用户；Q1~Q6 任一 FAIL → 正式轨迹 Gate 执行阻断，且不得出具 NO_GO_TRAJECTORY_VALUE（R8）**
   - Completion evidence: 两个 qualification JSON 全 PASS
 
-- [ ] 11. B3 适配（Model E 双机聚合 DP）+ B3 parity 资格化
+- [x] 11. B3 适配（Model E 双机聚合 DP）+ B3 parity 资格化 — **SKIPPED_DUE_GATE_VALIDITY_FAILURE**
   - ID: T-011
   - Requirement(s): FR-734, FR-749, FR-778；Design: DGN-F-08；AC-614（共享 k_eq^E）
   - depends_on: T-001, T-004, **T-007 PASS（R1：B3 记账/J_FEC 依赖 k_eq^E canonical）**
@@ -178,7 +178,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: **本任务必须完成，但 QUALIFIED_PASS / UNQUALIFIED_CONTEXT 均为合法终态（R3）**；UNQUALIFIED_CONTEXT 不阻断 T-012 与 B1-vs-B2 主链，仅禁用 H_arch/H_residual 与 B3 dominance 解释；run 写访问台账 purpose=QUALIFICATION（R5）
   - Completion evidence: qualification JSON（PASS 或 UNQUALIFIED_CONTEXT + 失败明细）
 
-- [ ] 12. 正式前冻结总检（Pre-Execution Freeze Gate）
+- [x] 12. 正式前冻结总检（Pre-Execution Freeze Gate） — **SKIPPED_DUE_GATE_VALIDITY_FAILURE**
   - ID: T-012
   - Requirement(s): FR-760~764, FR-782；Design: DGN-F-05/07/12；AC-614/615/619
   - depends_on: T-005, T-006, T-007, T-010, T-011
@@ -192,7 +192,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
 
 ## C — 正式初始语料（36 航次 = 9 split_group）
 
-- [ ] 13. 正式执行：36 航次 × B0/B1/B2（+B3 若 QUALIFIED）
+- [x] 13. 正式执行：36 航次 × B0/B1/B2（+B3 若 QUALIFIED） — **SKIPPED_DUE_GATE_VALIDITY_FAILURE**
   - ID: T-013
   - Requirement(s): FR-720~728, FR-744, FR-746~750, FR-770, FR-777, FR-781；Design: DGN-F-01/02/03/10/12/15；AC-610/611/612/619
   - depends_on: T-012
@@ -206,7 +206,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
 
 ## D — 初始 Gate 裁决
 
-- [ ] 14. 初始统计 + 机器裁决
+- [x] 14. 初始统计 + 机器裁决 — 普通 h_v/bootstrap **SKIPPED**；validity-only `gate_result.json` = `GATE_VALIDITY_FAIL`
   - ID: T-014
   - Requirement(s): FR-770~780；Design: DGN-F-11/14；AC-616/617（真实数据实例化）
   - depends_on: T-013
@@ -220,7 +220,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
 
 ## E — 条件扩样（仅初始 INCONCLUSIVE 解锁）
 
-- [ ] 15. 预留集执行 + 48 航次全量重算
+- [x] 15. 预留集执行 + 48 航次全量重算 — **SKIPPED_DUE_GATE_VALIDITY_FAILURE**
   - ID: T-015
   - Requirement(s): FR-776；Design: DGN-F-11；AC-617
   - depends_on: T-014 且 verdict=INCONCLUSIVE（唯一解锁条件；GO/NO-GO 时本任务显式 SKIP 并记录理由）
@@ -234,7 +234,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
 
 ## F — 收官
 
-- [ ] 16. 最终报告 + 证据索引 + Gate 封印
+- [x] 16. 最终报告 + 证据索引 + Gate 封印 — validity-only `final_report.md` / `evidence_index.json` / `final_gate_pointer.json`
   - ID: T-016
   - Requirement(s): FR-779~782, FR-745；Design: DGN-F-06/08/11；AC-614/620
   - depends_on: T-014（GO/NO-GO）或 T-015（扩样后终判）
