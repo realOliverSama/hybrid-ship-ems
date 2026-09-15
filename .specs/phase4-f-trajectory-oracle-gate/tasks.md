@@ -128,7 +128,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: **身份 PASS → k_eq^E=0.5457 转 canonical（与 w_term 同时）；记账失败或仍有未解释 ~0.72 损耗 → STOP 并升级用户（R1；禁吸入 k_eq）**；T-008/T-011 等全部 k_eq 依赖证据必须在本任务 PASS 后的 canonical config hash 下产出，旧 hash 下的过期证据一律作废重生成（R1）
   - Completion evidence: identity qualification JSON overall=true + 保留 FAIL 工件 +（若 PASS）config canonical 标记
 
-- [ ] 8. B2 窗内优化器实现（窗内 DP + 策略表 + V_term）+ 单元/toy 测试
+- [x] 8. B2 窗内优化器实现（窗内 DP + 策略表 + V_term）+ 单元/toy 测试
   - ID: T-008
   - Requirement(s): FR-723/724/730~735；Design: DGN-F-03/04/09；AC-611/612/613
   - depends_on: T-001, T-002, T-004, **T-007 PASS（R1：k_eq^E 依赖——V_term 线性项与窗内目标使用 k_eq^E，必须在 canonical config hash 下施工与留证）**

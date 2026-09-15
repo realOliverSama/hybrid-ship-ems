@@ -30,4 +30,4 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 | `gate_schema.json` | T-006 Gate JSON schema（t445_oracle_gate_v1） |
 | `tests/test_t006_gate.py` | T-006 合成边界单测（GO/NO-GO/INCONCLUSIVE/VALIDITY/B3 正交/种子复现） |
 
-MATLAB 对侧（`scripts/+t445/`，非本目录）：T-002 起窗装配 / 真 ZOH 适配器。
+MATLAB 对侧（`scripts/+t445/`，非本目录）：T-002 窗/ZOH；T-008 策略表 + 窗内 DP + V_term（AC-611/612/613）。
