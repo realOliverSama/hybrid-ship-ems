@@ -140,7 +140,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: 反套利测试失败 → 停，检查 V_term 实现（不得改冻结参数）
   - Completion evidence: 单测 PASS + 反套利证据 JSON
 
-- [ ] 9. B2 分段 runner 实现（SimState 交替 + checkpoint/resume + incident）
+- [x] 9. B2 分段 runner 实现（SimState 交替 + checkpoint/resume + incident）
   - ID: T-009
   - Requirement(s): FR-730/731/732, FR-777, FR-781；Design: DGN-F-10/15；NFR-714
   - depends_on: T-001, T-002, T-008

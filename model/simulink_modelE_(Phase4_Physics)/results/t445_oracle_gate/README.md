@@ -32,6 +32,7 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `corpus_manifest.json` | ★ T-005 冻结语料（val 27 组；initial 9×4；reserve 3×4；test_sealed 元数据） |
 | `t006_unit_test_result.json` | T-006 合成统计/裁决单测证据（非正式 gate_result） |
 | `t008_unit_test_result.json` | T-008 策略表/窗内 DP/V_term 单测 + AC-611/612/613 |
+| `t009_unit_test_result.json` | T-009 B2 分段 toy smoke + checkpoint/resume（rel=0，.slx 未改） |
 | `amendment_c_rebind.json` | Amendment C 后 T-002/003/005 配置身份重绑记录（语料 identity SHA 不变） |
 | `qualification/t007_keq_charge_restoration.json` | T-007 原 0.58→0.62 vs 0.9687 **FAIL 保留件**（禁改标 PASS） |
 | `qualification/t007_energy_ladder.json` | T-007 能量边界阶梯审计（记账 PASS；0.72 为口径错位非未解释损耗） |
