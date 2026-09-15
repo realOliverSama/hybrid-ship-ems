@@ -1,0 +1,23 @@
+{
+  "E300_max_kWh": 75.04130072137946,
+  "E300_min_kWh": 0.23605496016154012,
+  "E_ref_kWh": 27.781415008975053,
+  "E_scale_kWh": 13.671476250652878,
+  "expected": {
+    "E_ref_kWh": 27.781415,
+    "E_scale_kWh": 13.671476,
+    "n_t0": 159472,
+    "provenance_sha256": "b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045"
+  },
+  "match_n": true,
+  "match_prov": false,
+  "match_ref": true,
+  "match_scale": true,
+  "n_t0": 159472,
+  "n_train_voyages": 396,
+  "pass": false,
+  "provenance_sha256": "b49b9cd7c54f2518e744c34b9cbe9f3942bb0db98d8f930fd56e7d579e9f37f6",
+  "record_sha256": "682fbd0e0b7941ca44d7dbb5ce7186ae1602d35091c66bf8cbf8459d8f83183b",
+  "schema": "t445_b1_norm_repro_v1",
+  "task": "T-003"
+}

@@ -20,7 +20,9 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `baseline_integrity_t001.json` | Model E 基线 / `.slx` / builder sha256 登记（模型零修改） |
 | `t001_unit_test_result.json` | T-001 导出摘要 |
 | `t002_unit_test_result.json` | T-002 窗装配 + ZOH 机器测试证据 |
-| `lambda_envelope_r4.json` | T-003 R4 λ_eff 包络静态核查（floor 在、cap 不在 → STOP） |
+| `lambda_envelope_r4.json` | T-003 原 R4 STOP（`R4_CAP_NOT_LEGALLY_IMPLEMENTABLE`）溯源，禁删 |
+| `lambda_envelope_r4_native.json` | Amendment a′ 后 R4：`LAW6_NATIVE_ENVELOPE_CONFIRMED` |
+| `b1_norm_repro.json` | T-003 B1 归一化复现（E_ref/E_scale/n_t0） |
 | `incidents.jsonl` | 事故账本（禁删，FR-777） |
 | `access_ledger.jsonl` | 访问台账（purpose ∈ QUALIFICATION/REGRESSION/SYNTHETIC_SMOKE/FORMAL） |
 | `qualification/` | B 阶段资格化 JSON（T-007/T-010/T-011） |

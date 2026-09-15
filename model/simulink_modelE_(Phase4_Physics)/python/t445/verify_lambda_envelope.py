@@ -1,152 +1,125 @@
 #!/usr/bin/env python3
-"""T-003 R4: inspect frozen law=6 for floor 0.43 and cap 0.80.
+"""T-003 R4: native law=6 envelope (Amendment a′).
 
-Does not modify .slx or law=6 source. Writes machine-readable envelope JSON.
+Success → LAW6_NATIVE_ENVELOPE_CONFIRMED.
+The prior R4_CAP_NOT_LEGALLY_IMPLEMENTABLE JSON is provenance and is not deleted.
 """
 from __future__ import annotations
 
 import os
-import re
 import sys
 from datetime import datetime, timezone
 
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from t445 import hashutil, paths  # type: ignore
+    from t445.frozen_config import derive_lambda_table  # type: ignore
 else:
     from . import hashutil, paths
+    from .frozen_config import derive_lambda_table
 
 
-def _read(rel_under_modele: str) -> str:
-    p = os.path.join(paths.MODELE_ROOT, rel_under_modele)
-    with open(p, encoding="utf-8") as fh:
+def _read(rel: str) -> str:
+    with open(os.path.join(paths.MODELE_ROOT, rel), encoding="utf-8") as fh:
         return fh.read()
+
+
+def law6_lambda_eff(lambda0, k_soc, soc_ref, k_s, soc, e_hat, floor=0.43):
+    """Bit-replica of frozen law=6 lambda processing (floor only, no cap)."""
+    soc_ref_eff = soc_ref + k_s * e_hat
+    lam = lambda0 + k_soc * (soc_ref_eff - soc)
+    if k_s != 0:
+        lam = max(lam, floor)
+    return lam
 
 
 def main() -> int:
     oracle = _read(os.path.join("scripts", "+model", "build_model_e.m"))
     law = _read(os.path.join("scripts", "+ecms2", "ecms_law.m"))
+    derived = derive_lambda_table()
 
     floor_oracle = "lam = max(lam, Lambda_Floor)" in oracle
     floor_law = "lambda = max(lambda, params.lambda_floor)" in law
-    cap_min_oracle = bool(re.search(r"min\(\s*lam\s*,\s*0\.80", oracle))
-    cap_min_law = bool(re.search(r"min\(\s*lambda\s*,\s*0\.80", law))
-    cap_ident = bool(re.search(r"Lambda_Cap|lambda_cap|ECMS_Lambda_Cap", oracle + "\n" + law))
-
-    # Constant blocks on law=6 variant: Lambda_Floor exists, no Cap
     has_floor_const = "'Value', 'ECMS_Lambda_Floor'" in oracle
-    has_cap_const = "ECMS_Lambda_Cap" in oracle
+    cap_ident = any(
+        s in oracle + "\n" + law
+        for s in ("Lambda_Cap", "lambda_cap", "ECMS_Lambda_Cap", "min(lam, 0.80)", "min(lambda, 0.80)")
+    )
+    hidden_cap = cap_ident or ("'Value', 'ECMS_Lambda_Cap'" in oracle)
 
-    # Saturation on P_gen only
-    sat_is_pgen = (
-        "[ch '/clamp']" in oracle
-        and "'UpperLimit', 'Gen_P_max'" in oracle
+    # Fixture: maximum raw lambda in the B2 legal domain.
+    lam_raw = derived["lambda_table_max"]  # 15.525
+    lam_eff = law6_lambda_eff(
+        derived["lambda0"], derived["K_soc"], derived["SOC_ref"],
+        1.0 / 30.0, derived["SOC_DP_min"], derived["delta_lambda_max"],
+        derived["lambda_floor"],
+    )
+    # B2: e_hat := Delta_lambda, K_S=1/30 → K_soc*K_S*e_hat = Delta_lambda
+    # lambda_raw = lambda0 + K_soc*(SOC_ref-SOC) + Delta_lambda
+    same = abs(lam_eff - lam_raw) < 1e-12
+    stays_above = lam_eff > 0.80
+
+    slx = os.path.join(paths.MODELE_ROOT, "model", "HybridShip_ModelE.slx")
+    slx_sha = hashutil.sha256_file(slx)
+    base_path = os.path.join(paths.RESULTS_DIR, "baseline_integrity_t001.json")
+    with open(base_path, encoding="utf-8") as fh:
+        import json as _json
+        base = _json.load(fh)
+    slx_base = base["files"]["HybridShip_ModelE.slx"]["sha256"]
+    slx_unchanged = slx_sha == slx_base
+
+    same_core = (
+        "buildOracleECMSVariant" in oracle
+        and oracle.count("function c = CODE_ECMS_ORACLE()") == 1
+        and "EMS_Oracle_ECMS" in oracle
     )
 
-    cap_in_impl = cap_min_oracle or cap_min_law or cap_ident or has_cap_const
-    floor_in_impl = floor_oracle and floor_law and has_floor_const
+    old_stop = os.path.join(paths.RESULTS_DIR, "lambda_envelope_r4.json")
+    old_present = os.path.isfile(old_stop)
 
-    # Approved run-local mechanisms cannot add a missing min() in MATLAB Function
-    run_local = {
-        "SimulationInput_setBlockParameter": {
-            "can_override_Interpolate": True,
-            "can_override_ECMS_Lambda_Floor_constant": True,
-            "can_add_lambda_cap_min": False,
-            "reason": (
-                "setBlockParameter can only change existing block parameters. "
-                "law=6 MATLAB Function has no Lambda_Cap input; the P clamp "
-                "Saturation is on P_gen_ref not lambda."
-            ),
-        },
-        "per_run_set_param_memory": {
-            "can_add_lambda_cap_min": False,
-            "reason": (
-                "No existing cap parameter to set. Rewriting MATLAB Function "
-                "script would modify law=6 core control logic (FR-721 forbidden)."
-            ),
-        },
-        "assignin_workspace": {
-            "can_add_lambda_cap_min": False,
-            "reason": "ECMS_Lambda_Floor is a floor only; no cap workspace variable is consumed.",
-        },
+    checks = {
+        "floor_0p43_in_CODE_ECMS_ORACLE": floor_oracle,
+        "floor_0p43_in_ecms_law": floor_law,
+        "floor_constant_block": has_floor_const,
+        "no_hidden_upper_cap": not hidden_cap,
+        "fixture_lambda_raw_gt_0p80": lam_raw > 0.80,
+        "fixture_lambda_eff_stays_gt_0p80": stays_above and same,
+        "b1_b2_same_law6_core": same_core,
+        "slx_checksum_unchanged": slx_unchanged,
+        "prior_r4_stop_artifact_retained": old_present,
     }
-
-    cap_legal = False
-    stop = (not cap_in_impl) and (not cap_legal)
-
+    overall = all(checks.values())
     rec = {
-        "schema": "t445_lambda_envelope_r4_v1",
+        "schema": "t445_lambda_envelope_r4_native_v1",
         "task": "T-003",
+        "amendment": "a_prime_dgn_f03_2026-09-15",
         "utc": datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
-        "floor": {
-            "declared": 0.43,
-            "present_in_CODE_ECMS_ORACLE": floor_oracle,
-            "present_in_ecms_law": floor_law,
-            "constant_block_ECMS_Lambda_Floor": has_floor_const,
-            "applies_when": "K_S ~= 0",
-            "pass": floor_in_impl,
+        "status": "LAW6_NATIVE_ENVELOPE_CONFIRMED" if overall else "R4_NATIVE_ENVELOPE_FAIL",
+        "envelope": "lambda_eff = max(lambda_raw, 0.43)",
+        "upper_cap": None,
+        "fixture": {
+            "lambda_raw": lam_raw,
+            "lambda_eff": lam_eff,
+            "SOC": derived["SOC_DP_min"],
+            "Delta_lambda": derived["delta_lambda_max"],
+            "K_S": 1.0 / 30.0,
         },
-        "cap": {
-            "declared_dgn_f_03": 0.80,
-            "present_in_CODE_ECMS_ORACLE": cap_min_oracle,
-            "present_in_ecms_law": cap_min_law,
-            "constant_block_ECMS_Lambda_Cap": has_cap_const,
-            "identifier_hit": cap_ident,
-            "pass": cap_in_impl,
-        },
-        "p_gen_saturation_not_lambda": sat_is_pgen,
-        "run_local_mechanisms": run_local,
-        "cap_implementable_via_approved_run_local": cap_legal,
-        "logsout_reconstruction": {
-            "ran": False,
-            "reason": "Structural STOP fires before regression voyages: cap absent and not legally injectable.",
-        },
-        "stop": stop,
-        "stop_code": "R4_CAP_NOT_LEGALLY_IMPLEMENTABLE" if stop else None,
-        "decision_required": True,
-        "candidates": [
-            {
-                "id": "a",
-                "summary": (
-                    "Revise DGN-F-03: drop the 0.80 upper-cap claim; extend the "
-                    "B2 policy-table lambda axis to the reachable domain "
-                    "(e.g. [0.43, 2.0])."
-                ),
-            },
-            {
-                "id": "b",
-                "summary": "Other user-approved form (explicit Design revision).",
-            },
-        ],
-        "do_not": [
-            "Do not add a cap by editing law=6 MATLAB Function (core logic).",
-            "Do not persist .slx structure (DGN-F-01).",
-            "Do not let the optimizer wear a 0.80 hat while the live controller has none.",
-            "Do not continue T-004+ until Design review.",
-        ],
+        "slx_sha256": slx_sha,
+        "slx_sha256_t001_baseline": slx_base,
+        "prior_stop_artifact": "lambda_envelope_r4.json",
+        "checks": checks,
+        "overall": overall,
     }
     rec["record_sha256"] = hashutil.sha256_canonical(
         {k: v for k, v in rec.items() if k != "record_sha256"}
     )
-
     os.makedirs(paths.RESULTS_DIR, exist_ok=True)
-    out = os.path.join(paths.RESULTS_DIR, "lambda_envelope_r4.json")
+    out = os.path.join(paths.RESULTS_DIR, "lambda_envelope_r4_native.json")
     hashutil.dump_json(out, rec)
-
-    inc = {
-        "utc": rec["utc"],
-        "task": "T-003",
-        "class": "DESIGN_STOP",
-        "code": rec["stop_code"],
-        "artifact": "lambda_envelope_r4.json",
-        "record_sha256": rec["record_sha256"],
-    }
-    with open(paths.INCIDENTS, "a", encoding="utf-8") as fh:
-        fh.write(hashutil.canonical_json_bytes(inc).decode("utf-8") + "\n")
-
-    print(f"stop={stop} floor_pass={floor_in_impl} cap_pass={cap_in_impl}")
+    print(f"status={rec['status']} overall={overall}")
+    print(f"lambda_raw={lam_raw} lambda_eff={lam_eff} slx_unchanged={slx_unchanged}")
     print(f"wrote {paths.rel(out)}")
-    return 2 if stop else 0
+    return 0 if overall else 1
 
 
 if __name__ == "__main__":
