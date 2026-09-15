@@ -1,0 +1,103 @@
+{
+  "access_ledger_sha256": "e8c51d5c058fabef6cec5df44eae964ba9d1ac91fe27ac0603b176bced0ad5a0",
+  "access_ledger_state": {
+    "by_purpose": {
+      "FORMAL": 0,
+      "FREEZE_PREP": 133,
+      "QUALIFICATION": 106,
+      "SYNTHETIC_SMOKE": 0
+    },
+    "n_entries": 239,
+    "split_contact": {
+      "ood": 0,
+      "test": 0
+    }
+  },
+  "bindings": {
+    "assembler_file_sha256": {
+      "python/ppe/c1_index.py": "3107e755d6e96c26e3f8c9480ad8a97e9d2326db3464fb27bfd41fcb6c9ccce3",
+      "python/ppe/c2_inference.py": "494fd394ad598f4fe1c9774bb0a4cccafe0cfb8bbb2e98e579013720428c0078",
+      "python/ppe/c2_server.py": "3ccd4f90ff2d87e9e5fecc6e696f7b11ba94c2a1eded8c9217fb858a675d74db",
+      "python/ppe/forecast_window.py": "893939fb9a7eeadaee3f439aa35bf571896514a43fc8d6ae73cf27e981d6521f",
+      "python/ppe/formal_windows.py": "82d47ee2b5562031e5d45fc2ada30e741f38ffd88b38a15aa7d791c1f22e010a",
+      "python/ppe/h1_assembly.py": "86e96c76247141610833d8fe59f9d16ee23bda025c773ef721223de6b4cc0f6d"
+    },
+    "bootstrap_seed": "phase4f-t445-bootstrap-v1",
+    "c1_coverage_index_sha256": "927eec72b504dc3b7579d55c1a67028a8fe87a2cd6b9d8635c4d289c5b45f3fb",
+    "c1_target_store_sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497",
+    "causality_ledger_sha256": "09930db3e5aa00c9f5c5ac2acae3d46ecc3950a6c39ff4f40ae5c7fa9bb8681a",
+    "code_commit_sha": "87639f5f3bf65be6f3991b3a369e2dfbff45fbbe",
+    "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+    "corpus_manifest_file_sha256": "ec29bc90539e2263eac0d6fe665f100f24d7b57d7c6617ad0df45b7cacdc1222",
+    "cstar_implementation_sha256": "ae53ea08e594bc1a5a629c58da58c9a66947e729903310363ad536edf9d4fb3a",
+    "formal_execution_manifest_sha256": "42a03d6ead9cb4f8ec04aed448619b40082de61e496b84c7a86c53e7653c2dba",
+    "hard_feasibility_file_sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10",
+    "hard_feasibility_object_sha256": "fcef573d06e414bef8b64f10864def24ad769195d32362b1f57d0b312aac9def",
+    "modele_slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+    "predictor": {
+      "architecture_config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+      "eval_config": {
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/eval_config.json",
+        "sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a"
+      },
+      "formal_norm_v3": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/dataset_v3/formal/formal_norm_v3.json",
+        "sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba"
+      },
+      "keras": {
+        "path": "simulink_modelE_(Phase4_Physics)/experiments/predictor_v3/confirm/reatt/reatt_s0.keras",
+        "sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894"
+      },
+      "predictor_norm_ext_v1": {
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/predictor_norm_ext_v1.json",
+        "sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c"
+      },
+      "reat_t_arch": {
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/reat_t_arch.json",
+        "sha256": "ad5f1bdfbedfee74a739ebe30177d4efddae0df017c6aaa6c08faa92593a7ff0"
+      },
+      "s0_evidence": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/confirm/reatt/s0_evidence.json",
+        "sha256": "d8e3c82ddcdc36ced41459fe4b90d685176f297c0f72558e0cf80fdc1f07ab1b"
+      },
+      "seed_index": 0,
+      "seed_int": 1115655093,
+      "selected_config": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/reatt/selected_config.json",
+        "sha256": "fea67b7ff0ce10af619037eade22c678425986af86c405024ebb9a341f163ae4"
+      },
+      "trial_id": "reatt-t018",
+      "winner_identity_sha256": "832720b0b0f39592fdeaa25957c1a61d0f0a1381d7220881e0b9af345eb37aa7",
+      "winner_json": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/winner/WINNER_SELECTED_PRETERMINAL.json",
+        "sha256": "3a46c848092f35d6da66f8e1dc931653b580547bc3716366f11110679c5c0ebc"
+      }
+    },
+    "runner_checkpoint_file_sha256": {
+      "scripts/+ppe/c2_bridge.m": "7ef8bdbecd5cbf749181c42037ce4d28b027e5d79a5edc2286204851e37e9aa0",
+      "scripts/+ppe/checkpoint_mgr.m": "94a178a06280a2f36e1bf6afeecec7c3b4ceb82b2f75ca3f1626409b7fd995ea",
+      "scripts/+ppe/cstar_impl_files.m": "b8e97cfa25af29219ca74fb5bcf9f8bd1f2c2dda731758da23c59c057ae30425",
+      "scripts/+ppe/cstar_impl_sha.m": "e0fc1fdc49640baf5175bf0fcf08f158d9af674b42300e094860c7b566d30d35",
+      "scripts/+ppe/run_cstar.m": "84ae12cec1a068906f884725bc6d38ef7669d9d510f3febb4c0f6e308dfed018",
+      "scripts/+ppe/winfun_plan.m": "9d6f9daf4912d2702379a2f4371c934d2b4cdd848e94990d65bc8a5ec67645e8"
+    },
+    "spec_brainstorm_sha256": "8ed4cb178d7da2b98b77eea4e33a9643688840365755d6e924fb0d15a80ff3f5",
+    "spec_design_sha256": "ea77e97079f2dd17b7605f0c87397ca8d8f198d17951159b7e97a842a36484a5",
+    "spec_requirements_sha256": "63bc993180f1616de321dc4129710dccb3b6bcfea5ba88a6cdbdc22449ba864e",
+    "spec_tasks_approval_commit": "1c822062",
+    "spec_tasks_approved_sha256": "2693f92584d08efb45a484c243774c163ded875297a5d718b3e162b4e8994c8c",
+    "spec_tasks_current_sha256": "6ec69399cf31ccfbe9c7ddebf2a4531d969c55b6d4190c5e7e3c175266e98985",
+    "stats_bootstrap_file_sha256": {
+      "python/ppe/fec.py": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+      "python/ppe/stats.py": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba",
+      "python/t445/bootstrap_cluster.py": "a78dc4cf721771fad59a2cb3e416a33a9ab056ae62287f078d31905d2fa584b7"
+    },
+    "study_config_sha256": "0e82a37523e8fa2519496cb30264f28b249d92858386bde911b862845d7d5842",
+    "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e"
+  },
+  "epoch_policy": "TG2 FORMAL_EPOCH: any identity change after freeze invalidates the epoch; QUARANTINED_INVALIDATED_EPOCH; never mix epochs",
+  "formal_epoch": 1,
+  "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+  "schema": "ppe_pre_execution_freeze_v1",
+  "study": "phase4f-practical-predictive-ems"
+}
