@@ -41,6 +41,7 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `config/ModelE_TestScenarios.m` | ★ 测试工况（S01~S10 + S20 复合航次 + **浅水 H/T 六档 S31~S36** + VOYAGE_* 编译期变量 + **B 包 MANUAL 工况 M1/M2/M3 与 VOYAGE_MANUAL_CMD_TS/EMS_HEALTH_TS 注入通道** + GEN_CMD_STOP_TS/ADAPTER_FORCE_*） |
 | `config/phase4f_t445_config.m` | ★ **F 包 T-445 冻结参数 MATLAB 入口**（jsondecode 同目录 JSON + design 标量 fail-closed 断言；Amendment C：k_eq^E=0.5457 标称 SOC FEC，`PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION` 至 T-007 identity PASS）。**预测模型：无** |
 | `config/phase4f_t445_config.json` | ★ T-445 冻结参数机器可读导出（config_sha256 自哈希；DGN-F-01~F-15 🔒） |
+| `config/phase4f_ppe_hard_feasibility.json` | ★ Phase 4-F practical-EMS 研究本地硬可行性表（T-445 `hard_feasibility` 逐字段拷贝 + TERMINAL_SOC_ADMISSIBILITY；禁按结局改阈值） |
 | `config/ModelE_Sensitivity_Profile.m` | 敏感性档位选择器（nominal 零改动；Q1 冻结档位登记不扫掠） |
 | `config/gate_baseline_modele.json` | A2 冻结物理基线 v1.0（**永久保留不回写**，DD-9） |
 | `config/gate_baseline_modele_candidate_v1_1.json` | ★ B 包 candidate 基线 v1.1（DD-9 Step B 机器检查 4/4 过；**promotion 需 T-014 用户书面批准**） |

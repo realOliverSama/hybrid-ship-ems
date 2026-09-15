@@ -368,8 +368,8 @@ T-445 关闭后的 **新** F 包科学问题（spec
 C2 冻结 REAT-T q50 分别带来多少 **实用 Model-E 控制收益**。
 
 C1 仅称 `PERFECT_INFORMATION_CONTROLLER_REFERENCE`，禁止称为理论上限。
-Brainstorm：**APPROVED WITH REQUIRED REVISIONS**（R1–R10）。Requirements：**draft**，
-待 Requirements Gate。Gate 前不得跑正式 48 航次 C0/C1/C2。
+Brainstorm：**CLOSED/APPROVED**。Requirements：**APPROVED**（RG1–RG9）。
+Design：**draft**，待 Design Gate。Gate 前不得跑正式 48 航次 C0/C1/C2。
 
 ### T-446 — Predictive EMS architecture brainstorm（只设计） — **BLOCKED**
 Prediction trajectory → Upper predictive layer → SOC_ref / P_gen target / λ schedule

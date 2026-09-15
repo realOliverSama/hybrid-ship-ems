@@ -1,0 +1,57 @@
+{
+  "TERMINAL_SOC_ADMISSIBILITY": {
+    "hard": true,
+    "predicate": "abs(SOC_end - SOC0) <= 0.005",
+    "source_field": "terminal_soc.abs_dsoc_max"
+  },
+  "canonical_hard_feasibility_object_sha256": "fcef573d06e414bef8b64f10864def24ad769195d32362b1f57d0b312aac9def",
+  "canonical_t445_config_file_sha256": "34b68c41a56db23394f32632fdbc04a540cdc1d3181d09ea52c44551a026f820",
+  "canonical_t445_source_path": "model/simulink_modelE_(Phase4_Physics)/config/phase4f_t445_config.json",
+  "hard_feasibility": {
+    "battery_sop_v_i": {
+      "duration_tol_s": 1e-06,
+      "i_abs_max_A": 1823.0,
+      "p_over_avail_duration_s": 0.0,
+      "v_max_V": 657.0,
+      "v_min_V": 360.0
+    },
+    "energy_closure_c5": {
+      "rel_residual_max": 0.001,
+      "source": "gate_ctrl.check_c5"
+    },
+    "genset_limits": {
+      "c2_source": "gate_baseline_modele_control.json_v1.0",
+      "on_out_of_band_duration_s": 0.0,
+      "p_max_kW": 500.0,
+      "p_min_kW": 125.0,
+      "ramp_kW_per_s": 20.0,
+      "ramp_tol_kW_per_s": 1e-06
+    },
+    "load_shortfall": {
+      "bus_shortfall_energy_kWh": 0.0,
+      "derate08_duration_s": 0.0,
+      "p_residual_neg_thresh_kW": -1.0
+    },
+    "safety_hard_events": {
+      "s1a_unexpected_loss_count": 0,
+      "s1b_start_fail_count": 0,
+      "s2_realized_deficit_count": 0,
+      "source": "C6_gate_baseline_modele_control.json_v1.0"
+    },
+    "soc_hard_bounds": {
+      "soc_max": 0.95,
+      "soc_min": 0.1,
+      "violation_duration_s": 0.0
+    },
+    "task_complete": {
+      "abs_t_end_tol_s": 1.0,
+      "pass_rule": "Voyage_Stop_Logic_normal_and_abs_Tend_minus_Tfrozen_le_1s"
+    },
+    "terminal_soc": {
+      "abs_dsoc_max": 0.005
+    }
+  },
+  "retune_from_outcomes_forbidden": true,
+  "schema": "phase4f_ppe_hard_feasibility_v1",
+  "study": "phase4-f-practical-predictive-ems"
+}
