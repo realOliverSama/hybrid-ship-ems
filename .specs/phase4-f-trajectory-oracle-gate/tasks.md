@@ -80,7 +80,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: B0 回归不一致 → 停，升级用户；归一化复现失败 → 停（实现 bug 或契约错误，禁改冻结值）；隐藏 cap 或 `.slx` checksum 变化 → 停
   - Completion evidence: 回归 PASS JSON + 复现 PASS + 基线 Gate 绿记录 + `LAW6_NATIVE_ENVELOPE_CONFIRMED` JSON（旧 R4 STOP 工件仍在）
 
-- [ ] 4. FEC/审计/可行性指标机器 + 单测
+- [x] 4. FEC/审计/可行性指标机器 + 单测
   - ID: T-004
   - Requirement(s): FR-740~748, FR-750；Design: DGN-F-06/12；AC-619
   - depends_on: T-001
