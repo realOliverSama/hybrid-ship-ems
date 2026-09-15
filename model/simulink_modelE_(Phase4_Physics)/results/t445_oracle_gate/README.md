@@ -23,6 +23,8 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `lambda_envelope_r4.json` | T-003 原 R4 STOP（`R4_CAP_NOT_LEGALLY_IMPLEMENTABLE`）溯源，禁删 |
 | `lambda_envelope_r4_native.json` | Amendment a′ 后 R4：`LAW6_NATIVE_ENVELOPE_CONFIRMED` |
 | `b1_norm_repro.json` | T-003 B1 归一化复现（E_ref/E_scale/n_t0） |
+| `t003_10b_smoke.json` | T-003 10b smoke 不受影响 |
+| `t003_b1_core.json` | T-003 B1 核心：K_S 恒等式 + Model E 块 vs 离线容差 0 |
 | `incidents.jsonl` | 事故账本（禁删，FR-777） |
 | `access_ledger.jsonl` | 访问台账（purpose ∈ QUALIFICATION/REGRESSION/SYNTHETIC_SMOKE/FORMAL） |
 | `qualification/` | B 阶段资格化 JSON（T-007/T-010/T-011） |

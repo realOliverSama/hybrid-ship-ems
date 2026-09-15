@@ -1,0 +1,18 @@
+{
+  "ecms_law_offline_T1_T8": "PASS (T5/T7/T9 skipped: Model D Model_Parameters.m missing)",
+  "ks_channel_max_residual": 0,
+  "modele_block_vs_offline": {
+    "law4": 0,
+    "law5": 0,
+    "law6": 0,
+    "n_samples": 371,
+    "pass": true
+  },
+  "overall": true,
+  "purpose": "REGRESSION",
+  "schema": "t445_t003_b1_core_v1",
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "slx_unchanged": true,
+  "task": "T-003",
+  "utc": "2026-09-15T07:51:22Z"
+}

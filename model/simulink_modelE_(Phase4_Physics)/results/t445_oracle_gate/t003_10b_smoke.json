@@ -1,0 +1,9 @@
+{
+  "note": "10b smoke PASS after amendment a-prime; slx sha unchanged vs T-001 baseline",
+  "overall": true,
+  "purpose": "REGRESSION",
+  "schema": "t445_t003_10b_v1",
+  "slx_unchanged": true,
+  "task": "T-003",
+  "utc": "2026-09-15T07:48:18Z"
+}
