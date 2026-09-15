@@ -23,6 +23,7 @@
 | `ems01-chil-ecms-v1/` | 目录 | EMS01_CHIL_ECMS 固件 v1（Phase 3 CHIL 控制器侧，models-research 分支）：M1 = CMake 骨架 + STEdgeAI + MLP-Q int8 板上验证（兼关闭 phase25 T-311）✅；M2 = ECMS+G2 移植 + 本地激励验证 ✅（T-508 层① 100% exact / 层② ≥99% PASS / FR-508 四场景 PASS，报告 `m2_port_report.md`）；workclf 口径修订 v1.1 已实施并板上复验（层① 100% 保持、层③ 98.4%+、板载分类器对设计真值 75.8%；层② S20 98.877% 边际 FAIL 用户裁决 (a) 接受并记录）；热切换→v2、CHIL 通信→v3 |
 | `ems01-chil-v3-closedloop/` | 目录 | EMS01 CHIL v3 — soft-HIL 真闭环实验（models-research 分支）：开环回放升级为真闭环（主机被控对象每拍推进 + 板载 P_gen 回馈功率平衡）；4 臂对照（板载 NPU / 板载 REF / ModelD 原生 law=7 / law=5）× S20+voyage_002；被控对象子集 codegen→C 推进器（P3 主案，受阻回退 P1）；lock-step 固件零改动。状态：brainstorm ✅ / requirements ✅（2026-09-08 用户批准）/ design ✅（2026-09-08 用户批准，含 §5 阈值与 OQ-1~5 定案，spec_validate 12/12）/ tasks 待起草。后继：v3 完成后立即编译期换型（FR-511 流程换入 phase25 同签名候选，design §11 登记） |
 | `multistep-predictive-ems/` | 目录 | 面向参数不确定性的多步负荷预测增强型 EMS |
+| `phase4-f-trajectory-oracle-gate/` | 目录 | Phase 4 工作包 F 首道 Gate：T-445 Trajectory Oracle Gate（feat/phase4-f 分支）——Model E 上量化完美 30-bin 轨迹 vs 完美 E_300 scalar 在冻结 ECMS 族内的开发期 oracle 燃油余量（B0=law=5 / B1=law=6 scalar oracle / B2=Route B′ Δλ 滚动窗 oracle / B3=离线全航程参照后审）；val 语料 36 航次/9 split_group + 12 预留；J_FEC 主口径 + k_eq^E 重算；分层配对 cluster bootstrap B=10000，X=2.0%/Y=0%；GO/NO-GO/INCONCLUSIVE 机器裁决，上限不存在则停止预测式 EMS 方向。**brainstorm Q1~Q4 已批准（2026-09-15）**，requirements 起草中 |
 | `timed-feedforward-ems/` | 目录 | Model C 定时前馈 EMS（Peak + Time-to-Peak 预测调度） |
 | `model-b-dc-bus/` | 目录 | Model B 直流母线电气层 + 安全/节能指标卡 + S10 工况 |
 
