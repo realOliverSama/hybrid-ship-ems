@@ -33,6 +33,7 @@ p.addParameter('InitialDLam', [], @(x) isempty(x) || isnumeric(x));
 p.addParameter('CheckpointDir', '', @ischar);
 p.addParameter('Seed', 'phase4f-ppe-toy-v1', @ischar);
 p.addParameter('P0Load', [], @(x) isempty(x) || isnumeric(x));
+p.addParameter('SkipInject', false, @islogical);   % caller pre-injected voyage
 p.parse(varargin{:});
 opt = p.Results;
 
@@ -50,7 +51,9 @@ MDL = 'HybridShip_ModelE';
 if ~bdIsLoaded(MDL)
     load_system(fullfile(ROOT, 'model', [MDL '.slx']));
 end
-t445.inject_scenario(MDL, SCN, 6, T_eval);
+if ~opt.SkipInject
+    t445.inject_scenario(MDL, SCN, 6, T_eval);
+end
 assignin('base', 'ECMS_K_S', cfg.lambda_law.K_S_B2_num / cfg.lambda_law.K_S_B2_den);
 
 dt = 10;
@@ -93,6 +96,7 @@ win_sha = cell(numel(t0s), 1);
 oob = 0;
 fallback_n = 0;
 ds = [];
+warmup_state = [];
 
 for i = 1:numel(t0s)
     t0 = t0s(i);
@@ -150,6 +154,16 @@ for i = 1:numel(t0s)
     ds = local_append(ds, dseg, t0);
     last_dlam = d1;
     dlam_seq(i) = d1;
+    if abs(t_stop - 300) < 1e-9
+        % D3 warm-up boundary snapshot for COMMON_WARMUP_PARITY
+        warmup_state = struct('SOC', SOC, ...
+            'fuel_total_kg', dseg.fuel_total_kg(end), ...
+            'P_gen_actual_kW', dseg.P_gen_actual_kW(end), ...
+            'P_bat_actual_kW', dseg.P_bat_actual_kW(end), ...
+            'P_load_total_kW', dseg.P_load_total_kW(end), ...
+            'state_DG1', dseg.state_DG1(end), 'state_DG2', dseg.state_DG2(end), ...
+            'N_on', N, 'last_dlam', d1, 't', t_stop);
+    end
     if ~isempty(opt.CheckpointDir)
         ck = fullfile(opt.CheckpointDir, sprintf('ckpt_%s_%s_seg%04d.mat', ...
             char(arm), char(ctxid.voyage_id), id.segment_index));
@@ -175,6 +189,7 @@ meta.oob_query_count = oob;
 meta.infeasible_fallback_n = fallback_n;
 meta.KS = cfg.lambda_law.K_S_B2_num / cfg.lambda_law.K_S_B2_den;
 meta.soc_grid_step = 0.005;
+meta.warmup_state = warmup_state;
 meta.hard_feasibility = t445.hard_feasibility(ds, cfg, 'T_frozen_s', T_eval);
 meta.fec = t445.metrics_fec(ds, cfg);
 meta.slx_saved = false;

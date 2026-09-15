@@ -32,6 +32,18 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 不触 dataset v3 字节**。新增 `config/phase4f_t445_config.{m,json}`、`python/t445/`、
 `results/t445_oracle_gate/`（精选入库）、`artifacts/t445/`（本地不入库）。
 
+**Phase 4-F Practical Predictive EMS（PPE）**（spec
+`.specs/phase4-f-practical-predictive-ems/`，2026-09-15 起）：冻结 law=5 基线 P0 与实用控制器
+C*（只读复用 T-445 B2 冻结核心）在 48 个冻结 Dataset-v3 formal 航次上的四臂正式对照
+（P0/C0/C1/C2 = 192 run 身份；TG2 FORMAL_EPOCH 纪律；冻结包
+`results/ppe_practical/freeze/`，freeze_sha256 `b4920a29…`，formal_epoch=1；预执行
+runner 修正案 `post_freeze_runner_amendment.json` 为唯一冻结文件字节漂移，epoch 连续）。
+新增 `scripts/+ppe/`、`python/ppe/`、`results/ppe_practical/`（freeze / qualification /
+formal 证据，精选入库）、`artifacts/ppe_formal*/ppe_bridge/ppe_toy_ckpt`（本地不入库）。
+**预测模型：C2 = 冻结 REAT-T `reatt_s0`（seed0，keras `d8da6af4…`）q50 经文件桥推理；
+C0 = 严格因果持续性；C1 = PERFECT_INFORMATION_CONTROLLER_REFERENCE（冻结存储真值查表，
+非理论上界）；P0 = 无预测（contextual 基线）**。
+
 ## 目录结构
 
 | 条目 | 说明 |
@@ -72,6 +84,7 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `scripts/+mission_v3/producer_prequal.m` | ★ **T-020 预资格主循环**（ctx/run/member/compare 四模式：hotel 逐航次守卫/traffic OFF 剥离/DEGRADED arm/白名单注入/1 Hz 网格化/payload hash 记账/NORMAL 复用机器验证/PREQUAL-AMEND-01 引用/T429 写前自检） |
 | `scripts/+mission_v3/` | ★ **C 包 Mission v3 生成器 MATLAB 包**（T-001 起建：`validate_registries.m` 注册表 validator——canonical JSON + SHA256 跨语言复算；**`seed_tree.m` T-008 科学 seed 树——SHA256 branch-path 血统/uint32 引擎映射/碰撞 fail-closed/干预不变量**；**`dag_sample.m`+`env_realize.m` T-009 环境真值生成——L0~L3+BASE DRAW 条件抽取（八分支血统子流）/河流坐标 OU（prehistory −1800 s 起）/R1 往返共享/reject-resample+六类 disposition 台账**；**`nav_constraints.m`+`plan_compose.m` T-010 工况语义计划层——BRIDGE_OPERATION 五子阶段/UKC 限速/traffic min 合成/泊离非镜像/rush 平台=min(档位, 前沿钳位) fail-closed**；**`stack_identity.m` T-016 十项组件复合 hash（generator 域=顶层包函数，tests/+audits/ 排除——FD2 裁决 manifest 字段登记；PENDING 通道容忍 T-012 在途）**；**`forecast_issue.m` T-012 因果预报器——GOOD_V1 OU 条件均值解析式/DEGRADED_V1 滞后+航次偏置+AR(1)、t≤t₀ 截断接口 fail-closed（FUTURE_INPUT/NO_PREHISTORY）、observability 白名单、provenance 六字段+self_hash**；**`scenario_compile.m` T-011 场景编译器——28 字段 SCN 对齐既有集（时间模速度表/带符号流场 R1/hotel 与水深恒等式/VOYAGE_* 注入白名单 fail-closed/random_seed=current_truth 引擎种子）**；**`kf_snapshots.m` T-013 K/F issue-major 快照——s_plan 计划前向积分（bin 右端点，同 export_pilot 布局）/lead 严格 10:10:300/缺快照 FAILED_CONTRACT/因果 API 边界（签名无 realization 形参）**；**`family_expand.m` T-014 干预层与 grouping——2×2 factorial family 展开PHYSICAL/INFORMATION 分型/truth hash/未声明复用三重 fail-closed/并查集 split_group 闭包**；**`eligibility.m`+`producer_export.m` T-015 合格判据与 producer 导出——窗算术 N(D)=⌊(D−600)/10⌋+1（D 契约推导）/三条件 AND/六类 disposition+retry 记录/{stream,kf,meta}.mat -v7 对齐 export_pilot/FR-500 阶段隔离**；**`+audits/feasibility_sweep.m` T-005 联合可行性扫描 + `+audits/segment_duration_census.m` T-004 段时长普查**；后续 T-011~T-015 生成链函数按 DGN-01 布局增补） |
 | `scripts/+mission_v3/tests/` | C 包单测/负向 harness（`test_validate_registries.m` 九件 validator 正/负向 9/9、`test_seed_tree.m` seed 树 8/8、`test_env_realize.m` 环境真值 8/8、`test_plan_compose.m` 计划层 9/9、`test_stack_identity.m` stack identity 7/7、`test_forecast_issue.m` 预报器 8/8（解析式 vs 数值积分/因果门负向/衰减形状/AR(1) 时间相关/白名单/provenance/确定性/wl 通道）、`test_scenario_compile.m` 编译器 8/8（字段完备/hotel+水深恒等式/R1 符号映射/白名单/确定性）、`test_kf_snapshots.m` 快照 7/7（布局/R7 因果不变量+BAD_ARG/积分/缺快照/zones/网格门/确定性）、`test_family_expand.m` 干预层 8/8、`test_producer_export.m` 导出判据 8/8、`test_negative.m` **AC-436 十项注入集成负向套件 10/10**（future-truth/realized future/realized 约束/网格与 vintage/禁填补/latent 源/未声明复用/truth drift/PILOT_ONLY/越权源——全链真实组装+阳性对照+检出报告 JSON）、**`producer_prequal` 主循环、`run_all.m` 十套件集成入口（run/tworun：全链四级确定性 hash 两跑+stack_identity Strict 零改动快照入回归记录 regression_report.json）**；注入参数/tempdir 运行不触真文件） |
+| `scripts/+ppe/` | ★ **Phase 4-F PPE 包**（T-001~T-010）：`run_cstar.m`（C* 分段 SimState runner；SkipInject 调用方预注入 + D3 t=300 暖机快照——预执行 runner 修正案范围）、`checkpoint_mgr.m`（D8 身份 checkpoint，错配拒载）、`winfun_plan.m`（计划绑定窗口提供器：warmup_c0/anchor/tail；C1 存储查表 fail-closed）、`c2_bridge.m`（C2 文件桥 MATLAB 侧）、`ppe_config/ppe_root/cstar_impl_*.m`（配置断言 + 复合实现身份）、`inject_voyage/rebuild_voyage.m`（mission_v3 航次确定性重建+注入，replay_parity 按位认证）、`run_formal_voyage.m`（T-010 单 arm-voyage 执行器，冻结/修正案/资产 SHA 全 fail-closed）、`run_formal_voyage_pack.m`（4 臂编排 + COMMON_WARMUP_PARITY 闸）、`run_formal_manifest.m`（TG3 顺序驱动器）、`qual_t005/qual_t005b_bridge/qual_replay_parity/qual_runner_amendment.m`（资格认证） |
 | `scripts/+fleet_v3/` | ★ **T-018 Phase 4-D D 侧 Fleet 生成包**（`plan_load.m` activation 机器副本解析——带区间字符串机械解码/proposal 采样器参数/override 键路径/seed-draw 段/provenance 三 hash（activation 文件 SHA + OOD 配置序列化 SHA + registry self_hash）；`predicate_eval.m` canonical token 谓词求值（heldout_token_registry 三字段白名单 fail-closed，D4）；`propulsion_feasibility_check.m` 700 kW 推进容量保守解析 guard（11 kn 恒速逆水 + K_R/浅水链/sea margin/η 全 Model E 冻结系数，D5 段④）；`ood_judge.m` OOD 验收判定——域 guard(\|U\|≤2.8, H/T≥1.3)/guard band 拒(FR-519)/REQUIRE 谓词/数值带/token 优先于数值轴；`ctx_build.m`+`member_exec.m` 与 C 链同构的 plan 驱动成员执行（compile→hotel guard→注入→仿真→1 Hz→forecast→K/F→eligibility 1200/60/0 注入→producer_export）；`export_ood.m` FORMAL 过桥 + load-append OOD meta 重写（producer_export 面零改动，D5 OOD provenance）；`gen_iid.m` IID 段生成（env_realize IID 判定面 + 拒绝率门）；`gen_ood.m` D5 六段定向管线（reject-resample + STRESS_SET 剔除台账 + UNREACHABLE fail-closed）；`manifest_stage_a.m` Stage A 汇总 manifest（per-corpus 计数/OOD 命中统计/C3 FR-545 证据/provenance hashes/吞吐 + T429 黑名单自检）；`h2_surface_assert.m` fail-closed H2/Dataset 导出面不变量（AMENDMENT_02：registry INPUT_H2 ⊆ schema required ⊆ stream_map 且导出面精确一致，Final Ruling §3；ctx_build 接线）；`tests/` 七套件 run_all（含 test_ood_plan_face/test_h2_surface）） |
 | `scripts/75_run_mission_v3_feasibility_sweep.m` | ★ **T-005 ID 联合可行性扫描薄入口**（SOG×沿迹流×H/T 网格只读 Model E 扫描；600 s 腿全格 + 3000 s 稳态精化） |
 | `scripts/76_run_mission_v3_segment_census.m` | ★ **T-004 段时长普查薄入口**（注册表算术普查：usable duration 分布 + 切片几何硬约束判定 + 冻结提案） |
@@ -101,7 +114,7 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `scripts/05_export_dataset.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D 时代导出脚本；Dataset v3 导出 = `70/71` 号 + `dataset_v3/`（两段式），schema/特征/目标假设不继承 |
 | `scripts/30_export_load_profiles.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D 时代负荷剖面导出 |
 | `scripts/60_generate_voyages_v2.m` `scripts/61_generate_fleet_profiles_v2.m` `scripts/63_integrate_gate_v2.m` `scripts/64_run_matrix_v2.m` `scripts/66_export_fw_reference.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D Phase 2/2.5 fleet/固件参考链；formal fleet 生成 = T-432 `73_generate_fleet_v3.m`（BLOCKED，activation 后施工） |
-| `python/` | Phase 2.5 训练链 **SUPERSEDED**；**`python/t445/` 为 F 包 T-445 新链**（冻结 config/语料/统计/Gate，详见该目录 README.md）。**预测模型：T-445 无 NN** |
+| `python/` | Phase 2.5 训练链 **SUPERSEDED**；**`python/t445/` 为 F 包 T-445 新链**（冻结 config/语料/统计/Gate，详见该目录 README.md）；**`python/ppe/` 为 Phase 4-F PPE 链**（freeze.py 冻结包构建、ledger.py 访问台账、teval.py、c1_index.py C1 目标索引、c2_inference/c2_server.py C2 桥推理服务、formal_windows.py + export_formal_assets.py 正式资产导出、fec.py/stats.py 统计、verify_formal_bindings.py 绑定校验、qual_suite.py 资格认证套件）。**T-445 预测模型：无 NN** |
 | `datasets/` | **SUPERSEDED FOR MODELE DATASET V3（历史产物只读）** | Phase 2/2.5 窗口化 npz/norm JSON；不作为 Model E 研究数据 |
 | `legacy_reference/` | **LEGACY（历史模型只读副本）** | 分叉继承件，仅证据对照 |
 

@@ -1,0 +1,40 @@
+{
+  "schema": "ppe_t005_runner_qual_v1",
+  "task": "T-005",
+  "purpose": "QUALIFICATION",
+  "fixture_id": "TOY-S01-40S-CONST400",
+  "soc_grid_n171": true,
+  "determinism_bitwise": true,
+  "simstate_continuous_vs_segmented_max_rel": {
+    "SOC": 0,
+    "P_gen_actual_kW": 0,
+    "P_bat_actual_kW": 0,
+    "v_ship_mps": 0
+  },
+  "simstate_ok": true,
+  "checkpoint_mismatch_refuse_arm": true,
+  "checkpoint_mismatch_refuse_teval": true,
+  "resume_max_rel": 0,
+  "resume_ok": true,
+  "fuel_total_kg": 0.67210046721648464,
+  "hard_feasibility_pass": false,
+  "hf_detail": {
+    "T_end": 40,
+    "T_frozen": 40,
+    "derate08_s": 0,
+    "shortfall_kWh": 0.611916526620603,
+    "soc_hard_s": 0,
+    "dSOC": 0.0075992698868260211,
+    "p_over_s": 0,
+    "v_out_s": 0,
+    "i_over_s": 0,
+    "genset_band_s": 10,
+    "ramp_s": 0,
+    "c5_ratio": 0,
+    "safety_hard_count": 0
+  },
+  "oob_query_count": 0,
+  "slx_unchanged": true,
+  "pass": true,
+  "utc": "2026-09-15T17:30:09Z"
+}
