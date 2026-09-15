@@ -1,7 +1,7 @@
 # Phase 4-E 预测器 v3（T-436~T-444）Tasks
 
 Spec: `phase4-e-predictor-v3`  
-Status: tasks-approved  
+Status: implementation-complete  
 Created: 2026-09-13  
 Approved: 2026-09-13（APPROVED WITH 8 REQUIRED CORRECTIONS，R1~R8 闭合）  
 Brainstorm: `./brainstorm.md`（E-Q1~E-Q9 批准）  
@@ -309,3 +309,4 @@ T-444b: T-019(最终报告 + FINAL 包 + 审计 + 收官申请)
 |---|---|---|
 | 2026-09-13 | tasks 草案（T-001~T-019；按批准的 E-Q9 任务地图 + R1~R9 后设计语义） | 主 Agent 起草 |
 | 2026-09-13 | **tasks 批准（APPROVED WITH 8 REQUIRED CORRECTIONS，R1~R8 闭合）**：R1 sealed 机械预处理 vs 科学访问区分（T-003 = SEALED_PREPROCESS_ONLY 唯一例外；T-007 解封前 OOD 传输限不透明字节复制）；R2 环境锁冻结路径 `config/predictor_v3/env/`；R3 HPO 合格性/记账/证据（COMPLETED_ELIGIBLE、eligible=0 ⇒ FAIL/STOP、复杂度证据 config freeze 即齐套）；R4 T-015 15/15 有效 run 硬门 + T-016 9 arm-seed 条目/完成依赖 T-015 REAT-T 工件 + T-017 depends_on=T-015,T-016；R5 21 个唯一正式工件冻结 + `canonical_delivery_seed_index=0` 预注册 + 禁按 val 选种子；R6 T-017 只校验已存在事实、时间戳序校验移 T-018 六核验；R7 T-018 canonical 多种子聚合（per-group seed median→two-sample bootstrap）+ 按工件 hash 去重；R8 FR/NFR 具体任务级覆盖（FR-574/578/579、NFR-441/445 落入具体 Requirement(s) 字段） | 用户 tasks gate Final Ruling |
+| 2026-09-15 | **implementation-complete（E 段收官）**：T-001~T-019 全部完成（详见上表各行证据；五架构 selected_config、reatt WINNER 4.0047 全局最低、终评 90/90、FINAL 包 96 成员封印、winner 身份校验 True） | 主 Agent 执行 |

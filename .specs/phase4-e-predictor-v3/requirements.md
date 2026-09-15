@@ -1,7 +1,7 @@
 # Phase 4-E 预测器 v3（NN 负荷预测器训练/评估） Requirements
 
 Spec: `phase4-e-predictor-v3`  
-Status: requirements-approved  
+Status: requirements-approved（实现完成，见 tasks implementation-complete）  
 Created: 2026-09-13  
 Approved: 2026-09-13（APPROVED WITH 5 REQUIRED CORRECTIONS，R1~R5 闭合 + 建议项采纳）  
 Brainstorm: `./brainstorm.md`（E-Q1~E-Q9 全部 CLOSED/APPROVED，2026-09-13；Q4/Q5 经补充裁决闭合）
