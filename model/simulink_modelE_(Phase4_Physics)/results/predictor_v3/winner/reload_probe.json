@@ -1,0 +1,15 @@
+{
+  "bitwise": true,
+  "finite": true,
+  "git_commit": "200b692f",
+  "max_abs_delta": 0.0,
+  "method": "two independent loads in one fresh process (mirrors unit-test round-trip path)",
+  "model_path": "experiments/predictor_v3/confirm/reatt/reatt_s0.keras",
+  "probe_input_note": "val \u524d 64 \u7a97\uff08\u5408\u6cd5\u6765\u6e90\u975e test/OOD\uff09",
+  "quantile_order_ok": true,
+  "schema": "predictor_v3_reload_probe_v1",
+  "shape_exact": true,
+  "tolerance": 1e-05,
+  "utc": "2026-09-14T20:27:49.718282+00:00",
+  "verdict": "PASS"
+}

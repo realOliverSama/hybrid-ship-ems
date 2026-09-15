@@ -1,0 +1,30 @@
+{
+  "ablation_face": null,
+  "active_info_channels": [
+    "v_plan_mps",
+    "s_plan_m",
+    "h_chart_m",
+    "P_hotel_plan_kW",
+    "u_fcst_mps",
+    "wl_fcst_m"
+  ],
+  "arch": "transformer",
+  "artifact": "experiments/predictor_v3/confirm/transformer/transformer_s2.keras",
+  "artifact_sha256": "903b978ba549e088e1f2357b06fcc49a64446c1fb97a60df84425a2c85c2ceeb",
+  "config_sha256": "d324730ae2e63ff55ac52cf49d29fbf153e51a6d4d10b53fa959b088d445c33e",
+  "duration_s": 2190.2,
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_id": "transformer",
+  "model_key": "transformer",
+  "param_count": 223427,
+  "schema": "predictor_v3_confirm_run_v1",
+  "seed_index": 2,
+  "seed_int": 414173223,
+  "utc": "2026-09-14T13:36:16.031260+00:00",
+  "val": {
+    "per_group_ref": "transformer/s2_per_group.json",
+    "pinball_sgmacro": 4.020871675425456
+  },
+  "zero_kf_channels": []
+}

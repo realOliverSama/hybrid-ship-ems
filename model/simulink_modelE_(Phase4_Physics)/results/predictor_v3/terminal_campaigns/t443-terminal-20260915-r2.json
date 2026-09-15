@@ -1,0 +1,43 @@
+{
+  "artifact_sha256": "e7a84700f83e73f015f8a04248ccdf59b715a7a443cff1f0e3cf893f24c1a7b0",
+  "authorized_utc": "2026-09-14T18:31:58.599460+00:00",
+  "campaign_id": "t443-terminal-20260915-r2",
+  "code_git_commit": "200b692f",
+  "code_git_commit_note": "pinned value corrected: register ran outside a git tree (git unavailable on remote archive deployment); actual deploy pin = 200b692f",
+  "eval_config_sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a",
+  "intent": "TERMINAL_EVAL_T443",
+  "preterminal_winner_artifact_sha256": "3a46c848092f35d6da66f8e1dc931653b580547bc3716366f11110679c5c0ebc",
+  "preterminal_winner_manifest_path": "results/predictor_v3/winner/WINNER_SELECTED_PRETERMINAL.json",
+  "registered_utc": "2026-09-14T18:31:58.598997+00:00",
+  "schema": "predictor_v3_terminal_campaign_v1",
+  "scope": {
+    "ablation_arms": [
+      "reatt_abl_h1",
+      "reatt_abl_h1k",
+      "reatt_abl_h1kf"
+    ],
+    "candidates": [
+      "mlpq",
+      "tcnq",
+      "transformer",
+      "tft",
+      "reatt"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "sets": [
+      "iid_test",
+      "ood_A1",
+      "ood_B1",
+      "ood_C1",
+      "ood_C2",
+      "ood_C3"
+    ]
+  },
+  "status": "COMPLETE",
+  "val_rehearsal_evidence_sha256": "5d97a2c03f95284b8b6c3eab646790f368c6001bdf9179ac832aaf3089f8d490",
+  "winner_identity_sha256": "832720b0b0f39592fdeaa25957c1a61d0f0a1381d7220881e0b9af345eb37aa7"
+}

@@ -1,0 +1,39 @@
+{
+  "aggregate": {
+    "max": 4.005163473482131,
+    "mean": 3.975304305349312,
+    "median": 3.9680775558455585,
+    "min": 3.9526718867202466,
+    "std": 0.022030450161653066
+  },
+  "artifact_sha256": "a6cb62eed771ba29723bf7da6fd5d4068fad7d3eb709e17915cfc9931bfb9057",
+  "artifacts": [
+    {
+      "artifact_sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894",
+      "seed_index": 0
+    },
+    {
+      "artifact_sha256": "d61ab29b08b25f1b620f956db826370168664bfa97a9a09be34d4abf2d7814a9",
+      "seed_index": 1
+    },
+    {
+      "artifact_sha256": "ba62348025c5b5364fc464ba2eeda0203ae768dd8a670183ef7f38f6ef55e2bd",
+      "seed_index": 2
+    }
+  ],
+  "config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_key": "reatt",
+  "per_seed_pinball_sgmacro": {
+    "0": 4.005163473482131,
+    "1": 3.9680775558455585,
+    "2": 3.9526718867202466
+  },
+  "schema": "predictor_v3_confirm_summary_v1",
+  "seed_indices": [
+    0,
+    1,
+    2
+  ]
+}

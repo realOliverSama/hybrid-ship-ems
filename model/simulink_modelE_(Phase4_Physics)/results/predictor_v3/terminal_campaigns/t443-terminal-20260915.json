@@ -1,0 +1,44 @@
+{
+  "artifact_sha256": "d5f3e0e31c1a686546a9eaf535e1c77ba9388ba4b42ed3d0938f2bd151d12900",
+  "authorized_utc": "2026-09-14T18:15:35.864131+00:00",
+  "campaign_id": "t443-terminal-20260915",
+  "code_git_commit": "UNPINNED",
+  "eval_config_sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a",
+  "intent": "TERMINAL_EVAL_T443",
+  "interrupt_reason": "check5 code-commit changed after registration (check4 field fix + terminal.py fixes); superseded by new campaign",
+  "preterminal_winner_artifact_sha256": "3a46c848092f35d6da66f8e1dc931653b580547bc3716366f11110679c5c0ebc",
+  "preterminal_winner_manifest_path": "results/predictor_v3/winner/WINNER_SELECTED_PRETERMINAL.json",
+  "registered_utc": "2026-09-14T18:09:35.130947+00:00",
+  "schema": "predictor_v3_terminal_campaign_v1",
+  "scope": {
+    "ablation_arms": [
+      "reatt_abl_h1",
+      "reatt_abl_h1k",
+      "reatt_abl_h1kf"
+    ],
+    "candidates": [
+      "mlpq",
+      "tcnq",
+      "transformer",
+      "tft",
+      "reatt"
+    ],
+    "seeds": [
+      0,
+      1,
+      2
+    ],
+    "sets": [
+      "iid_test",
+      "ood_A1",
+      "ood_B1",
+      "ood_C1",
+      "ood_C2",
+      "ood_C3"
+    ]
+  },
+  "status": "INTERRUPTED",
+  "val_rehearsal_evidence_sha256": "5d97a2c03f95284b8b6c3eab646790f368c6001bdf9179ac832aaf3089f8d490",
+  "winner_identity_sha256": "832720b0b0f39592fdeaa25957c1a61d0f0a1381d7220881e0b9af345eb37aa7",
+  "winner_selected_utc": "2026-09-14T18:08:25.409551+00:00"
+}

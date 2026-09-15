@@ -1,0 +1,31 @@
+{
+  "ablation_face": "reatt_abl_h1k",
+  "active_info_channels": [
+    "v_plan_mps",
+    "s_plan_m",
+    "h_chart_m",
+    "P_hotel_plan_kW"
+  ],
+  "arch": "reatt",
+  "artifact": "experiments/predictor_v3/confirm/reatt_abl_h1k/reatt_abl_h1k_s2.keras",
+  "artifact_sha256": "e9b53032a829c625fe43fe429fe2c268d6d3dc08329e59dff6a4838b08dbb49e",
+  "config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+  "duration_s": 1034.1,
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_id": "reatt_abl_h1k",
+  "model_key": "reatt_abl_h1k",
+  "param_count": 1012835,
+  "schema": "predictor_v3_confirm_run_v1",
+  "seed_index": 2,
+  "seed_int": 599276386,
+  "utc": "2026-09-14T17:09:34.905602+00:00",
+  "val": {
+    "per_group_ref": "reatt_abl_h1k/s2_per_group.json",
+    "pinball_sgmacro": 3.828771745045484
+  },
+  "zero_kf_channels": [
+    "u_fcst_mps",
+    "wl_fcst_m"
+  ]
+}
