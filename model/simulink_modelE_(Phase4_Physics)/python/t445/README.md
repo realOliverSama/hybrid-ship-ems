@@ -19,6 +19,7 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 | `freeze_t001.py` | ★ T-001 导出驱动（config JSON / fixture·env·E-guard manifest） |
 | `paths.py` / `hashutil.py` | 相对路径与 SHA256 工具 |
 | `tests/test_t001_config.py` | T-001 单测（冻结字段 / overlap 三 false / env / E 守卫） |
-| 后续 T-003+ | `compute_b1_norm.py` / `corpus_select.py` / bootstrap / Gate（尚未施工） |
+| `verify_lambda_envelope.py` | T-003 R4 静态核查（law=6 floor 在、0.80 cap 不在且无法经批准 run-local 注入） |
+| 后续 T-003+ | `compute_b1_norm.py` / `corpus_select.py` / bootstrap / Gate（T-003 因 R4 STOP 未完成） |
 
 MATLAB 对侧（`scripts/+t445/`，非本目录）：T-002 起窗装配 / 真 ZOH 适配器。
