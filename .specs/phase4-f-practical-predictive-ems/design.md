@@ -1,296 +1,345 @@
 # Phase 4-F Practical Predictive EMS — Design
 
 Spec: `phase4-f-practical-predictive-ems`  
-Status: **design-draft** — **NOT APPROVED** (Design Gate pending)  
+Status: **design-approved**  
 Created: 2026-09-15  
-Requirements: `./requirements.md`（**requirements-approved**, RG1–RG9）  
+Approved: 2026-09-15（Design Gate **APPROVED WITH REQUIRED CORRECTIONS** D1–D8 applied; no second Design Gate）  
+Requirements: `./requirements.md`（CLOSED / APPROVED, RG1–RG9）  
 Brainstorm: `./brainstorm.md`（CLOSED / APPROVED; not reopened）
 
-This Design resolves the Requirements Gate design obligations **without**
-observing formal P0/C0/C1/C2 outcomes. It is **not** an implementation license.
+This Design is **not** an implementation license. Tasks Gate is next.
 
-Decision IDs: **DGN-PPE-01 … DGN-PPE-11**.
+Decision IDs: **DGN-PPE-01 … DGN-PPE-12**.
+
+No listed STOP condition was triggered: C1 canonical target is bound; C2 300 s
+history uses a common causal warm-up; K/F channels are defended from frozen
+Dataset-v3 contracts; T_eval is arm-independent.
 
 ---
 
-## DGN-PPE-01 — C1 arm-independent truth channel
+## D1–D8 closure mapping
 
-**Decision.** C1 `ForecastWindow.Pbar` SHALL be the frozen Dataset-v3 target
-`y_k = E_k/10` [kW] for `(voyage_id, t0)` from the **dataset-generation
-native stream**, not from the live C* closed-loop `P_load_total`.
-
-**Provenance.**
-
-| Item | Identity |
+| ID | Decision |
 |---|---|
-| Target definition | `dataset_v3/targets.py` (`y_trajectory`; FR-476) |
-| Native channel | `P_load_total_kW` on the **frozen voyage stream** used to build Dataset-v3 |
-| Window store | `datasets_v3/formal/windows_v3_formal.npz` SHA256 `203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497` |
-| Manifest payload | `ee285091027a5bda50652832dbf7ba780302feca8897b9195715570a1ea7d712` |
-| Pipeline invariant | “targets.py 只消费 native stream”；禁从 1 Hz 降采样反算 |
-
-**Why live closed-loop P_load is illegal.** Model-E
-`P_load_total = max(P_prop_actual,0)+P_hotel`. `P_prop_actual` can change if
-EMS/PMS/Safety fail to hold speed. Using the arm’s own future realization as
-C1 truth would be `C1 action → future load → C1 ForecastWindow`.
-
-**Proof of arm-independence (to be machine-tested, AC-802).** For a fixed
-`(voyage_id, t0)`, C1 Pbar is a lookup/recompute from the frozen stream /
-npz window. It does not read the live plant’s future. Two C1 assemblies that
-are given different fake live future loads MUST emit identical Pbar; only
-`K_remain` / `bin_duration_s` shrinking metadata MAY differ.
-
-If the npz window is missing for an exact t0, recompute `y_trajectory` from
-the same frozen native `(t, P_load_total_kW)` series. Do not fall back to
-live logs.
-
-**STOP condition (Requirements).** If this frozen channel cannot be bound at
-pre-execution freeze (missing npz **and** missing native stream), Design
-implementation SHALL stop and escalate. At this Design draft, the channel is
-identified and is structurally arm-independent.
+| D1 | C1 = perfect knowledge of **frozen Dataset-v3 reference-target** `y_k`, not own future closed-loop `P_load_total`. Same target semantics as C2. |
+| D2 | Formal C1 = **stored** npz lookup only. Missing key → fail-closed. Reconstruction only in QUALIFICATION parity. |
+| D3 | **Option B**: common C0-persistence warm-up on `[0, 300)` for all C* arms; forecast-source differentiation at `t0 ≥ 300 s`. No zero-pad / no future-as-history. |
+| D4 | `T_eval(voyage)` = frozen Dataset-v3 native-stream `t_end`. Same t_start/T_eval/IC/mission for all arms. |
+| D5 | Study-level identity only on **COMMON_TRIPLET_DECOMPOSITION** mask. |
+| D6 | Conditional hat = equal-stratum mean of tier means; bootstrap 1/3 per tier. |
+| D7 | K/F defended: F = formal **GOOD_V1** causal issue-time generator (u_obs(t0), source_cutoff=t0), dual-stored vs ORACLE, `ORACLE_DERIVED` forbidden. Ledger: `config/phase4f_ppe_causality_ledger.json`. |
+| D8 | Segmented checkpoint identity binds arm, voyage, t0, hashes listed below; mismatch refused. |
 
 ---
 
-## DGN-PPE-02 — ForecastWindow assembly and timing
+## DGN-PPE-01 / D1 — C1 information scope
 
-Canonical object after source-specific work (FR-820):
+Canonical name: `PERFECT_INFORMATION_CONTROLLER_REFERENCE`.
 
-```text
-ForecastWindow
-  t0_s              : 10 s grid, t0 ∈ {0,10,20,…} ∩ [0, T_end)
-  Pbar_kW[1:K]      : bus-side kW, K ≤ 30
-  bin_duration_s[k] : 10, except possibly last bin < 10 (duration-weighted)
-  K_remain, T_end_s
-  source_id         : C0_PERSISTENCE | C1_TRUTH | C2_REATT_Q50
-  provenance        : hashes of stream/model/norm
-```
+C1 knows the **frozen Dataset-v3 reference load target** `y_k = E_k/10` [kW]
+for `(voyage_id, t0)` — the same prediction-target semantics C2 is trained to
+emit (q50 of that target).
 
-**C0 (FR-821).** t0 ≥ 10 s: mean of **this arm’s** realized bus
-`P_load_total` on completed **[t0−10, t0)** (causal past, not future truth).
-t0 = 0: `P_load_total(0)`. Repeat scalar onto all remaining bins. Samples
-with t ≥ t0 SHALL NOT enter the mean.
+C1 does **not** know its own counterfactual future closed-loop realized
+`P_load_total`. Live Model-E `P_load_total` may be controller-dependent
+(speed tracking / shortfall).
 
-**C1.** Lookup DGN-PPE-01. Truncate to shrinking horizon.
-
-**C2.** DGN-PPE-04 q50, de-normalized kW, truncate to shrinking horizon.
-
-C* SHALL NOT branch on `source_id`.
-
-**Boundary.** Control update at time t0 uses information with timestamps
-`< t0` for C0 completed-bin means, `= t0` only for the t0 < 10 s current
-sample case, and C1/C2 future bins that are **forecast/truth inputs** (C1 from
-frozen dataset, C2 from predictor). Plant integration of Δλ_k holds over
-`[t0, t0+10)`.
+**C1−C2** = effect of replacing perfect Dataset-v3 **target information** with
+REAT-T prediction **inside the same C\***.
 
 ---
 
-## DGN-PPE-03 — C* algorithm (Requirements freeze)
+## DGN-PPE-01b / D2 — Formal C1 stored target only
 
-Reuse T-445 B2 + Amendment E `realize_bin` as C*.
+Formal C1 SHALL read precomputed target bytes from
 
-| Item | Frozen value |
+`datasets_v3/formal/windows_v3_formal.npz`
+
+keyed by `(voyage_id, t0)` (anchor grid). SHA256
+`203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497`.
+
+**No runtime reconstruction** of formal C1 targets.
+
+Missing required `(voyage_id, t0)` → **FAIL CLOSED** before/at that step.
+
+`targets.py` reconstruction from the frozen native stream is **QUALIFICATION
+only**, to prove stored vs recomputed parity (relative error bound to be
+machine-tested, target `<1e-9` as Dataset-v3 crosscheck).
+
+Formal evidence records target-store SHA and per-window identity.
+
+---
+
+## DGN-PPE-02 / D3 — 300 s C2 history (Option B)
+
+Dataset-v3 anchors: `t0 ∈ {t_start+300, …, ≤ t_end−300}` (`windowing.py`).
+There is **no** genuine pre-voyage ≥300 s history before mission `t=0`.
+
+**Frozen policy (Option B).**
+
+All C* arms (C0, C1, C2) use the **same** causal warm-up on **[0, 300) s**:
+
+- controller = C*;
+- ForecastWindow = **C0 persistence** (FR-821);
+- plant/history semantics identical.
+
+At `t0 ≥ 300 s`, forecast-source differentiation begins (C0 persistence /
+C1 stored target / C2 REAT-T q50).
+
+H1 at the first differentiated update is 300 s of **arm-local** observed
+history accumulated under the common warm-up (deterministic ⇒ common plant
+state at t=300).
+
+**Forbidden:** zero-pad; repeat future samples backward; post-t0 samples as
+history; Dataset-v3 generation-run history masquerading as this arm’s H1.
+
+**Interpretation.** Forecast-source treatment is identified **after** the
+common 300 s warm-up. Whole-voyage J_FEC still includes the warm-up; that
+segment is common across C0/C1/C2 under determinism.
+
+C* Δλ updates that consume C1/C2 windows are exactly the Dataset-v3 anchors
+`{t_start+300, t_start+310, …, T_fcst}` where `T_fcst` = the voyage's **last
+anchor** (`≤ T_eval − 300`; equality when `(T_eval − t_start − 600)` is a
+multiple of 10 s). After `T_fcst` until `T_eval`, hold last Δλ (ZOH). No
+unregistered future target time.
+
+---
+
+## DGN-PPE-02b / D4 — Canonical T_eval
+
+For each formal `voyage_id`:
+
+| Symbol | Definition |
 |---|---|
-| law | 6 |
-| Δλ | [−0.10, +0.10] × 0.005, n=41 |
-| decision / horizon | 10 s / 300 s / K=30 |
-| SOC grid | **0.10:0.005:0.95**, n=171 |
-| k_eq_E | 0.5457 kg/kWh |
-| w_term | 1.17e5 kg/SOC² |
-| λ_eff | max(λ_raw, 0.43), no upper cap |
-| K_S | 1/30 |
-| surrogate | `realize_bin` dt_internal=1 s |
-| diagnostic grid | 0.0025 only, nonformal |
+| `t_start` | 0 (mission start of the frozen fixture) |
+| `T_eval` | frozen Dataset-v3 native-stream `t_end` (last 1 Hz right endpoint) |
+| `T_warm` | 300 s |
+| `T_fcst` | last Dataset-v3 anchor of the voyage (`≤ T_eval − 300`) |
 
-T-445 Q2 (rel=0.0153 on 0.01 vs 0.005) is a **limitation**, not a Gate.
-Q4/Q6 1% replica failures are limitations. Outcomes = Model-E logs.
+All arms share t_start, T_eval, ICs, mission reference. `K_remain` / partial
+bins derive from **canonical T_eval**, not arm-specific completion time.
+
+Sim `StopTime = T_eval`. Do not extend C1/C2 past stored anchors. Do not
+silently shorten T_eval if an arm finishes early.
+
+If Voyage_Stop_Logic stops before `T_eval` by more than
+`task_complete.abs_t_end_tol_s` (1 s), **HARD_INFEASIBLE** (task_complete).
+If the ship reaches distance exactly at T_eval, that is the frozen mission
+end. Holding last Δλ on `(T_fcst, T_eval]` is the already-frozen terminal
+control behavior (ZOH), not a new action.
+
+A freeze-time table `T_eval(voyage_id)` SHALL be hashed (Tasks T-001).
 
 ---
 
-## DGN-PPE-04 — C2 online inference and causality
+## DGN-PPE-03 — C* algorithm
 
-**Weights.** Canonical delivery file:
+Unchanged from Requirements FR-810–815. SOC grid **0.005**. Outcomes = Model-E
+logs. Q2/Q4/Q6 remain documented limitations.
 
-`experiments/predictor_v3/confirm/reatt/reatt_s0.keras`  
-SHA256 `d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894`  
-`seed_index=0`, `seed_int=1115655093`  
-HPO trial id `reatt-t018` is selection identity; **delivery = confirm s0**.
+---
 
-Full hash table: Requirements FR-836.
+## DGN-PPE-04 / D7 — C2 inference and K/F causality
 
-**Pipeline at t0 (no dropout):**
+Weights and hashes: Requirements FR-836. Delivery file
+`experiments/predictor_v3/confirm/reatt/reatt_s0.keras`
+SHA256 `d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894`.
 
-1. H1 `[300,11]`: last 300 s @ 1 Hz of **this arm’s** observed history
-   (causal), `formal_norm_v3` transform.
-2. KF `[30,6]` from **frozen Dataset-v3** issue-time tensors for that
-   voyage/t0, `predictor_norm_ext_v1` transform. Channels (confirm s0):
-   K-plan `v_plan_mps, s_plan_m, h_chart_m, P_hotel_plan_kW`;
-   F-forecast `u_fcst_mps, wl_fcst_m`.
-3. Forward REAT-T; take q50; inverse-norm to kW → ForecastWindow.
+**Pipeline at t0 ≥ 300 s:** H1 from **this arm’s** last 300 s @ 1 Hz
+(`formal_norm_v3`); KF from frozen Dataset-v3 `kf_snapshots` row
+`issue_time_s == t0` (`predictor_norm_ext_v1`); q50 → ForecastWindow.
 
-**Causality classification (prospective; freeze fills the table):**
+**Causality verdict: DEFENDED (no STOP).**
 
-| Feature class | Channels | Class |
+Evidence (frozen contracts, not controller outcomes):
+
+| Channel | Class | Evidence |
 |---|---|---|
-| H1 history | P_load_total, v_ship, accel, n_prop, P_hotel, v_current, water_depth, P_prop_demand, ctrl_mode, v_ref, manual_power | `observed_history` / current measurable (t ≤ t0) |
-| K | v_plan, s_plan, h_chart, P_hotel_plan | `legitimately_known_future_exogenous_plan` **iff** Dataset-v3 issue-time KF contract (mission plan available at t0). Assumption **documented**. |
-| F | u_fcst, wl_fcst | same: issue-time exogenous forecast in Dataset-v3 KF; **documented** as available to the controller at t0 (charted current / water-level forecast). |
-| Live future P_load | — | `prohibited_future_information` |
+| H1 × 11 | `observed_history` | registry INPUT_H1; arm-local logs t≤t0 |
+| `v_plan_mps` | known-future plan | registry INPUT_K `fixture:planned_alongtrack_sog`; producer “计划语义”; 禁 realized v_ref |
+| `s_plan_m` | known-future plan | 前向积分；禁 s_actual,future |
+| `h_chart_m` | chart/static | 海图已知量 |
+| `P_hotel_plan_kW` | planned hotel | 仅 planned component |
+| `u_fcst_mps` | issue-time forecast | formal generator **GOOD_V1** (pass1/pass2 formal ledgers `arms_forecast=GOOD_V1`): `u_fcst(t0+h\|t0)=u_reach+(u_obs(t0)−u_reach)·exp(−h/900)`, `u_obs` OBSERVED-class at `source_cutoff=t0` (`scripts/+mission_v3/forecast_issue.m`; `config/mission_v3/forecast_quality_profiles.json`); pilot pure-persistence fixture is lineage only; `F_{t0}=g(I_{<=t0})`; **ORACLE counterpart** `u_actual_future_mps` dual-stored `oracle_only`; formal class **CAUSAL_GENERATOR only**; `ORACLE_DERIVED` **forbidden** |
+| `wl_fcst_m` | issue-time forecast | GOOD_V1: voyage-constant `ΔWL` causal estimate (persistence-degenerate in v1); same dual-storage pattern vs `wl_actual_future_m` |
 
-If freeze cannot defend K/F availability at t0, those channels SHALL be
-zeroed as in the H1 ablation **only after an approved Design amendment**.
-Default: use frozen KF as Dataset-v3 legal issue-time inputs.
+Ledger (channel-level, Design artifact):
+`config/phase4f_ppe_causality_ledger.json`
 
-Never read `st_edge_ai_upload/`.
+Qualification SHALL re-check generator provenance records
+`source_cutoff_time_s ≤ issue_time_s` on formal voyage KF metadata.
+
+Do not silently zero. Do not replace/retrain REAT-T.
 
 ---
 
-## DGN-PPE-05 — Study-local hard-feasibility config
+## DGN-PPE-05 — Hard-feasibility config
 
-**Created at Design draft** (config freeze, not controller code):
-
-Path: `model/simulink_modelE_(Phase4_Physics)/config/phase4f_ppe_hard_feasibility.json`
-
-| Record | Value |
-|---|---|
-| T-445 source | `config/phase4f_t445_config.json` |
-| T-445 file SHA256 | `34b68c41a56db23394f32632fdbc04a540cdc1d3181d09ea52c44551a026f820` |
-| T-445 `hard_feasibility` object SHA256 | `fcef573d06e414bef8b64f10864def24ad769195d32362b1f57d0b312aac9def` |
-| Copied object SHA256 | `fcef573d06e414bef8b64f10864def24ad769195d32362b1f57d0b312aac9def` (equal) |
-| Copied file SHA256 | `c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10` |
-
-`TERMINAL_SOC_ADMISSIBILITY` = `abs(SOC_end-SOC0)<=0.005` =
-`terminal_soc.abs_dsoc_max`. HARD. Separate from `[0.10,0.95]` bounds.
-
-No retune from outcomes.
+Unchanged: `config/phase4f_ppe_hard_feasibility.json`, object SHA
+`fcef573d06e414bef8b64f10864def24ad769195d32362b1f57d0b312aac9def`.
+TERMINAL_SOC_ADMISSIBILITY `|ΔSOC|≤0.005` HARD.
 
 ---
 
 ## DGN-PPE-06 — fuel_raw
 
-Canonical: Model-E `logsout.fuel_total_kg(end)` from `10_Fuel_Consumption`.
-
-Components: ∫ FuelModelE(P_DG1,state1)+FuelModelE(P_DG2,state2) dt,
-including **0.6 kg/start** (`DG_C_start_kg`) during STARTING+SYNC.
-OFF/COOLDOWN = 0.
-
-All arms use this path. Surrogate fuel is internal to C* only.
-
-J_FEC = `fuel_raw_kg + (SOC0-SOC_end)*1071.36*0.5457`.
+Model-E `fuel_total_kg(end)` including **0.6 kg/start**. All arms same path.
 
 ---
 
-## DGN-PPE-07 — Formal runner (single architecture)
+## DGN-PPE-07 / D8 — Runner and checkpoint identity
 
-**C0/C1/C2:** **segmented SimState**, 10 s segments, same runner.
+C0/C1/C2: **one** segmented SimState runner, 10 s, resumable.
 
-Rationale: C* must apply a new Δλ at each t0 from current plant state
-(FR-871.7). T-010 SimState continuous-vs-segmented already **PASS** (nseg=552)
-on Model E. Qualification SHALL re-run SimState identity on the C* runner
-before formal corpus.
+Checkpoint identity SHALL bind:
 
-Resumable checkpoints: `simstate_mgr` identity includes arm, voyage_id, t0,
-config hash, ForecastWindow provenance. Resume SHALL NOT change scientific
-identity.
+- arm; voyage_id; t0 / segment index;
+- study config SHA; code commit SHA; Model-E `.slx` SHA; C* implementation SHA;
+- ForecastWindow provenance/hash;
+- hard-feasibility config SHA; corpus identity SHA;
+- canonical T_eval identity;
+- Predictor-v3 model/config/norm SHAs for **C2**, or explicit `N/A` for C0/C1.
 
-**P0:** single continuous law=5 run (architecture differs; contextual). Same
-Model-E plant, same voyage IC, same feasibility/FEC accounting.
+Resume **refuses** any mismatch. Resumed run scientifically indistinguishable
+from uninterrupted.
 
-Do not mix surrogate J into any arm’s reported J_FEC.
+P0: continuous law=5 (contextual). StopTime = same T_eval.
+
+Qualification: SimState equivalence on the C* runner (T-010 S20 PASS is
+lineage, not a substitute).
 
 ---
 
-## DGN-PPE-08 — Stratified bootstrap
+## DGN-PPE-08 / D5–D6 — Statistics
 
-**Seed (inherited, not renamed):** `phase4f-t445-bootstrap-v1`  
-Provenance: T-445 DGN-F-14; **no formal T-445 effect result was observed**.
-Keep the string.
+**Seed:** `phase4f-t445-bootstrap-v1` (inherited; no T-445 effect observed).
+RNG as `bootstrap_cluster.rng_from_seed`. B=10000. Percentile 2.5/97.5
+`method="linear"`.
 
-**RNG:** SHA256(seed)[:16] little-endian → `numpy.random.SeedSequence` →
-Generator (same as `python/t445/bootstrap_cluster.py` `rng_from_seed`).
+**Pairwise voyage estimands** keep FR-854 feasibility (defined iff required
+arms feasible).
 
-**Corpus:** 12 groups = 4 LOW + 4 MID + 4 HIGH (T-445 initial 9 + reserve 3).
-Identity `245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115`.
+**COMMON_TRIPLET_DECOMPOSITION** (explicit analysis identity): the set of
+voyages where **C0 and C1 and C2** are all feasible, all J_FEC finite, and
+`J_C0 > 0` (FR-854 denominator guard). Study-level
 
-**Group effect:** mean of defined voyage-level B_* (or ΔJ_*) in that group.
-Record `n_defined` / 4.
+`B_perfect_hat`, `B_predicted_hat`, `L_prediction_hat`
 
-**Study-level hat (primary):** mean of the 12 group effects when
-`FULL_COHORT_ESTIMATE`; mean of **defined** group effects when
-`CONDITIONAL_FEASIBLE_ESTIMATE`.
+and `R_diagnostic`, and the claim
+`B_perfect_hat = B_predicted_hat + L_prediction_hat`,
+SHALL be computed **only on this common mask** (then aggregated by D6).
 
-**Coverage (FR-866):** each stratum needs ≥3 of 4 groups defined, else
-`WITHHELD_INSUFFICIENT_FEASIBILITY` (no CI, no hat claim).
+Pair-specific conditional estimates (e.g. C0 vs C1 on a larger set) MAY be
+reported separately and SHALL NOT be algebraically combined across different
+masks.
 
-**Bootstrap (only if not withheld):**
+**FULL_COHORT_ESTIMATE:** common-triplet defined on all 48 voyages. Hat =
+mean of 12 group effects (= equal-stratum because 4/4/4).
 
-- FULL_COHORT: independently, for each tier, draw **4** groups **with
-  replacement** from that tier’s 4 groups; compute mean of the 12 drawn
-  group effects; repeat B=10000.
-- CONDITIONAL: for each tier, let n_t = number of defined groups in that
-  tier (3 or 4); draw **n_t** with replacement from the defined pool;
-  mean of drawn effects; B=10000.
+**CONDITIONAL_FEASIBLE_ESTIMATE:** common-triplet missing some voyages, but
+each LOW/MID/HIGH has ≥3 of 4 groups with a defined group-level effect
+(group effect = mean of that group’s defined voyages; report `n_defined`).
 
-**CI:** 2.5 and 97.5 percentiles, NumPy `percentile(..., method="linear")`.
+Hat:
 
-**Secondary:** median of defined group effects (point only).
+`theta_hat = (mean_LOW + mean_MID + mean_HIGH) / 3`
 
-**Identity residual (percentage points):**
-`abs(B_perfect - B_predicted - L_prediction) <= 1e-10 + 1e-9*max(|Bp|,|Bpred|,|L|)`
-on each finite voyage triplet and on the hats when all three hats exist.
+each tier mean over **defined** group effects in that tier. **Do not**
+down-weight a tier because it has 3 vs 4 defined groups.
 
-**R_diagnostic** = `B_predicted_hat / B_perfect_hat` at study level only
+Bootstrap (conditional): independently resample defined groups with
+replacement **within each tier** (draw size = number of defined groups in
+that tier); compute three tier means; average with equal 1/3; repeat B=10000.
+
+If any tier has <3 defined groups: `WITHHELD_INSUFFICIENT_FEASIBILITY` — no
+overall hat/CI.
+
+Always print per-arm feasibility counts/identities first.
+
+Zero-safe voyage-triplet identity remains FR-842.
+
+`R_diagnostic = B_predicted_hat / B_perfect_hat` on COMMON_TRIPLET hats only
 (FR-880–881).
 
 ---
 
-## DGN-PPE-09 — Qualification plan (pre-formal)
+## DGN-PPE-09 — Qualification (additions)
 
-Nonformal / synthetic only. No val-corpus C* outcomes.
+Previous items retained. Add non-result-bearing tests:
 
-1. Deterministic two-run C* toy.
-2. C0 leakage: future samples do not change persistence.
-3. C1 arm-independence (AC-802).
-4. ForecastWindow schema + C* config dump parity (except source_id/Pbar).
-5. Δλ bounds; SOC grid n=171.
-6. Receding init from plant.
-7. SimState equivalence on C* runner.
-8. FEC identity on logs; fuel_raw path shared.
-9. HF config object SHA equality (AC-813); TERMINAL_SOC_ADMISSIBILITY.
-10. C2 keras SHA256 match; causality table filled; no `st_edge_ai_upload`.
-11. Access ledger: FORMAL=0, test/OOD scientific=0.
-12. Estimand identity and R_UNDEFINED unit tests (AC-806/809).
-
-Document T-445 Q2/Q4/Q6 as limitations in the freeze record.
+1. stored C1 target vs `targets.py` reconstruction parity;
+2. C1 formal lookup fail-closed on missing key;
+3. C2 warm-up causality (no future-as-H1; no zero-pad);
+4. T_eval equality across arms;
+5. pairwise-mask vs COMMON_TRIPLET statistics;
+6. equal-tier conditional estimator/bootstrap;
+7. channel-level K/F ledger vs registry/producer/provenance;
+8. checkpoint identity mismatch refusal.
 
 ---
 
-## DGN-PPE-10 — Estimand status and reporting order
+## DGN-PPE-10 — Reporting label
 
-Always print per-arm feasibility counts and voyage_ids first.
-
-Then estimand status ∈ {FULL_COHORT_ESTIMATE, CONDITIONAL_FEASIBLE_ESTIMATE,
-WITHHELD_INSUFFICIENT_FEASIBILITY}.
-
-Conditional text SHALL say the effect is **conditional on feasible voyages**,
-not the unconditional 48-voyage effect.
-
-Label: `DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE`.
+`DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE`.
 
 ---
 
 ## DGN-PPE-11 — Sealing
 
-IID test sealed. OOD not for selection. Dataset-v3 bytes unchanged.
-`.slx` unchanged. `st_edge_ai_upload/` OUT_OF_SCOPE_USER_OWNED_UNTRACKED_DO_NOT_TOUCH.
+IID sealed. OOD not for selection. `.slx` unchanged.
+`st_edge_ai_upload/` OUT_OF_SCOPE_USER_OWNED_UNTRACKED_DO_NOT_TOUCH.
 
 ---
 
-## Open Design items (non-scientific)
+## DGN-PPE-12 — ForecastWindow after D1–D4
 
-1. Keras weights are local (`experiments/`); freeze fails closed if missing.
-2. If Dataset-v3 KF issue-time availability for F-channels is rejected at
-   freeze audit, **escalate** (do not silently zero).
-3. P0 runner is continuous; C* is segmented — documented architecture
-   difference, not a C0/C1/C2 parity break.
+Unchanged schema (FR-820). C0 persistence uses **this arm’s** completed-bin
+mean (causal). C1 uses **stored Dataset-v3 y_k**. C2 uses REAT-T q50 of the
+**same y_k semantics**. C* does not branch on `source_id`.
 
-No remaining obligation that requires observing formal C0/C1/C2 outcomes.
+---
+
+## Requirements Traceability
+
+| Design decision | Gate correction | Requirements / AC |
+|---|---|---|
+| DGN-PPE-01 (C1 scope) | D1 | FR-803, FR-822, AC-802 |
+| DGN-PPE-01b (stored target only) | D2 | FR-822, AC-802; npz SHA `203dc92d…` |
+| DGN-PPE-02 (Option-B warm-up) | D3 | FR-820–825, AC-801; `windowing.py` anchor contract |
+| DGN-PPE-02b (canonical T_eval) | D4 | FR-850 `task_complete`; freeze table T-001 |
+| DGN-PPE-03 (C* freeze) | — | FR-810–815, AC-804 |
+| DGN-PPE-04 (K/F causality) | D7 | FR-830–836, AC-811; ledger `phase4f_ppe_causality_ledger.json` |
+| DGN-PPE-05 (HF config) | — | FR-850–857, AC-813/814; object SHA `fcef573d…` |
+| DGN-PPE-06 (fuel_raw) | — | FR-840/840a, AC-805 |
+| DGN-PPE-07 (runner/checkpoint) | D8 | FR-871.8, FR-872 |
+| DGN-PPE-08 (statistics) | D5, D6 | FR-842–844, FR-854, FR-860–866, FR-880–881, AC-806/809 |
+| DGN-PPE-09 (qualification additions) | §12 ruling | FR-871, AC-800–814 |
+| DGN-PPE-10/11 (label/sealing) | — | FR-890–891, NFR-800–805 |
+| DGN-PPE-12 (ForecastWindow) | D1–D4 | FR-820–825, AC-803 |
+
+---
+
+## Testing Strategy
+
+Non-result-bearing qualification **before** any formal run (FR-871 +
+DGN-PPE-09 items 1–8): determinism; C0 leakage; C1 stored-target parity and
+fail-closed; C2 warm-up causality; T_eval arm-equality; pairwise-mask vs
+COMMON_TRIPLET statistics on synthetic tables; equal-tier bootstrap; K/F
+ledger vs registry/producer/provenance; checkpoint identity mismatch refusal;
+SimState equivalence; FEC reconstruction; HF instrumentation; predictor
+checksums; access-ledger sealing; estimand identity; R_UNDEFINED.
+
+Execution order (tasks.md DAG): T-001…T-008 qualification → T-009
+pre-execution freeze (`overall=true`) → T-010 formal 48-voyage P0/C0/C1/C2 →
+T-011 effect estimation → T-012 sealing. **No formal controller outcome may
+be observed before T-009 PASS.**
+
+---
+
+## Open (operational, not STOP)
+
+1. Keras file is local `experiments/`; freeze fail-closed if missing/mismatch.
+2. Freeze-time extract of `T_eval(voyage_id)` table from Dataset-v3 streams
+   (Tasks T-001). Geometry is frozen here.
+
+No remaining D1–D8 STOP condition.

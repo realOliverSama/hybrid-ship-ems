@@ -11,11 +11,12 @@ C1 仅称 `PERFECT_INFORMATION_CONTROLLER_REFERENCE`。禁止理论上限措辞�
 |---|---|
 | `brainstorm.md` | **brainstorm-approved / CLOSED**（R1–R10） |
 | `requirements.md` | **requirements-approved**（Gate APPROVED WITH REQUIRED CORRECTIONS，RG1–RG9） |
-| `design.md` | **design-draft**（Design Gate 待审） |
+| `design.md` | **design-approved**（Design Gate APPROVED WITH REQUIRED CORRECTIONS，D1–D8 已应用） |
+| `tasks.md` | **tasks-draft**（Tasks Gate 待批；含依赖 DAG 与 T-010 正式前置条件） |
 | `reuse_audit.md` | 复用矩阵（含 `st_edge_ai_upload/` OUT_OF_SCOPE_…_DO_NOT_TOUCH） |
 | `architecture.md` | P0/C0/C1/C2 + ForecastWindow 草图 |
 | `scientific_roadmap_amendment_v1.md` | 路线图修订（brainstorm-approved） |
 
 前置：T-445 **CLOSED `GATE_VALIDITY_FAIL`**。
 
-无 `tasks.md`。Design Gate 通过前不得施工、不得跑正式 C0/C1/C2。
+`tasks.md` 获批前不得施工、不得跑正式 C0/C1/C2。
