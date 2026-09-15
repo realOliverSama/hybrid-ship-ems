@@ -95,10 +95,15 @@ def main(argv: list[str] | None = None) -> int:
     file_bindings.update(b.get("assembler_file_sha256", {}))
     file_bindings.update(b.get("runner_checkpoint_file_sha256", {}))
     file_bindings.update(b.get("stats_bootstrap_file_sha256", {}))
+    overrides = {}
+    if amend:
+        overrides = dict(amend.get("amended_file_overrides") or {})
+        overrides.setdefault("scripts/+ppe/run_cstar.m",
+                             amend["run_cstar_file_sha256"]["amended"])
     drift = {}
     for rel, want in sorted(file_bindings.items()):
-        if amend and rel == "scripts/+ppe/run_cstar.m":
-            want = amend["run_cstar_file_sha256"]["amended"]
+        if amend and rel in overrides:
+            want = overrides[rel]
         got = hashutil.sha256_file(os.path.join(paths.MODELE_ROOT, rel))
         if got != want:
             drift[rel] = {"frozen": want, "current": got}

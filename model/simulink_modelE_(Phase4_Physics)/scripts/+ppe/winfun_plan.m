@@ -20,7 +20,14 @@ function winfun = winfun_plan(plan_file, arm, opts)
 %
 % Returned handle: [Pbar, prov, use_previous] = winfun(t0, ds, p0)
 if nargin < 3, opts = struct(); end
-plan = jsondecode(fileread(plan_file));
+doc = jsondecode(fileread(plan_file));
+% accept both the exported wrapper document (schema/plan_sha256/plan) and a
+% bare plan array; the update-plan array is what carries t0/action
+if isstruct(doc) && isfield(doc, 'plan')
+    plan = doc.plan;
+else
+    plan = doc;
+end
 T_eval = opts.T_eval;
 K0 = 30;
 
