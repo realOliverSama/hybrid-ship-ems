@@ -104,7 +104,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: val 组数 ≠ 27 或航次数 ≠ 108（split 结构变化）→ 停，升级用户
   - Completion evidence: manifest 落盘 + 单测 PASS + test_sealed 复核记录
 
-- [ ] 6. 统计推断 + Gate 裁决代码 + 单测
+- [x] 6. 统计推断 + Gate 裁决代码 + 单测
   - ID: T-006
   - Requirement(s): FR-770~780；Design: DGN-F-11/14；AC-616/617
   - depends_on: T-001
