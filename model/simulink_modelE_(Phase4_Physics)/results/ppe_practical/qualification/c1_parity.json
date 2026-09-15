@@ -1,0 +1,11 @@
+{
+  "float64_space_max_rel_err": 5.504105019222562e-08,
+  "float64_space_note": "npz float32 storage quantization only; float32 eps ~ 1.2e-7",
+  "n_anchors_checked": 378,
+  "n_exact_float32": 378,
+  "parity_split": "train (non-corpus)",
+  "parity_voyage": "FLTA_S1_D00000_M1",
+  "schema": "ppe_c1_parity_qualification_v1",
+  "storage_dtype": "float32",
+  "verdict": "PASS"
+}

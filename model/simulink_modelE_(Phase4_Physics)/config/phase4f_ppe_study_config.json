@@ -1,0 +1,115 @@
+{
+  "access_policy": {
+    "formal_before_freeze": "FORBIDDEN",
+    "iid_test": "SEALED",
+    "ood": "NOT_FOR_SELECTION"
+  },
+  "artifacts": {
+    "causality_ledger": {
+      "file_sha256": "09930db3e5aa00c9f5c5ac2acae3d46ecc3950a6c39ff4f40ae5c7fa9bb8681a",
+      "path": "simulink_modelE_(Phase4_Physics)/config/phase4f_ppe_causality_ledger.json"
+    },
+    "corpus_manifest": {
+      "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+      "file_sha256": "ec29bc90539e2263eac0d6fe665f100f24d7b57d7c6617ad0df45b7cacdc1222",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/corpus_manifest.json"
+    },
+    "hard_feasibility": {
+      "file_sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10",
+      "object_sha256": "fcef573d06e414bef8b64f10864def24ad769195d32362b1f57d0b312aac9def",
+      "path": "simulink_modelE_(Phase4_Physics)/config/phase4f_ppe_hard_feasibility.json"
+    },
+    "modele_slx": {
+      "path": "simulink_modelE_(Phase4_Physics)/model/HybridShip_ModelE.slx",
+      "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+    },
+    "predictor": {
+      "architecture_config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+      "eval_config": {
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/eval_config.json",
+        "sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a"
+      },
+      "formal_norm_v3": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/dataset_v3/formal/formal_norm_v3.json",
+        "sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba"
+      },
+      "keras": {
+        "path": "simulink_modelE_(Phase4_Physics)/experiments/predictor_v3/confirm/reatt/reatt_s0.keras",
+        "sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894"
+      },
+      "predictor_norm_ext_v1": {
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/predictor_norm_ext_v1.json",
+        "sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c"
+      },
+      "reat_t_arch": {
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/reat_t_arch.json",
+        "sha256": "ad5f1bdfbedfee74a739ebe30177d4efddae0df017c6aaa6c08faa92593a7ff0"
+      },
+      "s0_evidence": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/confirm/reatt/s0_evidence.json",
+        "sha256": "d8e3c82ddcdc36ced41459fe4b90d685176f297c0f72558e0cf80fdc1f07ab1b"
+      },
+      "seed_index": 0,
+      "seed_int": 1115655093,
+      "selected_config": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/reatt/selected_config.json",
+        "sha256": "fea67b7ff0ce10af619037eade22c678425986af86c405024ebb9a341f163ae4"
+      },
+      "trial_id": "reatt-t018",
+      "winner_identity_sha256": "832720b0b0f39592fdeaa25957c1a61d0f0a1381d7220881e0b9af345eb37aa7",
+      "winner_json": {
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/winner/WINNER_SELECTED_PRETERMINAL.json",
+        "sha256": "3a46c848092f35d6da66f8e1dc931653b580547bc3716366f11110679c5c0ebc"
+      }
+    },
+    "t445_config": {
+      "file_sha256": "34b68c41a56db23394f32632fdbc04a540cdc1d3181d09ea52c44551a026f820",
+      "path": "simulink_modelE_(Phase4_Physics)/config/phase4f_t445_config.json"
+    },
+    "teval_table": {
+      "path": "simulink_modelE_(Phase4_Physics)/config/phase4f_ppe_teval_table.json",
+      "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e"
+    },
+    "windows_npz": {
+      "path": "simulink_modelE_(Phase4_Physics)/datasets_v3/formal/windows_v3_formal.npz",
+      "sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497"
+    }
+  },
+  "bootstrap": {
+    "B": 10000,
+    "ci": [
+      2.5,
+      97.5
+    ],
+    "percentile_method": "linear",
+    "seed": "phase4f-t445-bootstrap-v1"
+  },
+  "config_sha256": "0e82a37523e8fa2519496cb30264f28b249d92858386bde911b862845d7d5842",
+  "cstar": {
+    "K_S": 0.03333333333333333,
+    "bat_cap_kwh": 1071.36,
+    "decision_interval_s": 10.0,
+    "delta_lambda_max": 0.1,
+    "delta_lambda_min": -0.1,
+    "delta_lambda_step": 0.005,
+    "dg_c_start_kg": 0.6,
+    "horizon_bins": 30,
+    "horizon_s": 300.0,
+    "k_eq_E_kg_per_kwh": 0.5457,
+    "lambda_eff_cap": null,
+    "lambda_eff_floor": 0.43,
+    "law": 6,
+    "n_delta_lambda": 41,
+    "n_soc": 171,
+    "realize_bin_dt_internal_s": 1.0,
+    "soc_grid_max": 0.95,
+    "soc_grid_min": 0.1,
+    "soc_grid_step": 0.005,
+    "terminal_delta": 0.01,
+    "terminal_soc_abs_dsoc_max": 0.005,
+    "w_term_kg": 117000.0
+  },
+  "schema": "phase4f_ppe_study_config_v1",
+  "study": "phase4-f-practical-predictive-ems",
+  "terminal_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE"
+}

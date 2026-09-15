@@ -1,0 +1,154 @@
+{
+  "checks": [
+    {
+      "detail": "K_F_CAUSALITY_DEFENDED_FROM_FROZEN_CONTRACTS",
+      "name": "ledger_verdict",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "ledger_stop_triggered_false",
+      "pass": true
+    },
+    {
+      "detail": "['v_ship_mps', 'acceleration_mps2', 'n_prop_rpm', 'P_hotel_kW', 'v_current_mps', 'water_depth_m', 'P_prop_demand_kW', 'ctrl_mode', 'v_ref_mps', 'manual_power_cmd_pct', 'P_load_total_kW']",
+      "name": "H1_set_matches_registry",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "K_set",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "F_set",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "TARGET_present",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "ledger_vs_registry_fields",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "u_fcst_mps_class",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "u_fcst_mps_oracle_forbidden",
+      "pass": true
+    },
+    {
+      "detail": "u_actual_future_mps predictor_access=oracle_only",
+      "name": "u_fcst_mps_oracle_counterpart",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "u_fcst_mps_formal_class",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "wl_fcst_m_class",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "wl_fcst_m_oracle_forbidden",
+      "pass": true
+    },
+    {
+      "detail": "wl_actual_future_m predictor_access=oracle_only",
+      "name": "wl_fcst_m_oracle_counterpart",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "wl_fcst_m_formal_class",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "validate_contracts_forbids_oracle_derived",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "validate_contracts_cutoff_invariant",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "producer_schema_cutoff_field",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "producer_schema_cutoff_invariant",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "GOOD_V1_u_obs_observed",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "GOOD_V1_cutoff_lag_zero",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "DEGRADED_V1_lag_1800",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "profiles_formal_class",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "profiles_oracle_forbidden_listed",
+      "pass": true
+    },
+    {
+      "detail": "48/48",
+      "name": "corpus_kf_provenance_48",
+      "pass": true
+    },
+    {
+      "detail": "{'GOOD_V1': 24, 'DEGRADED_V1': 24}",
+      "name": "corpus_profile_mixture_24_24",
+      "pass": true
+    },
+    {
+      "detail": "{'313b4a330516f61bc14bdb86df3eccc3651208a4e09888588321d82f72f1e92f'}",
+      "name": "generator_hash_single_identity",
+      "pass": true
+    },
+    {
+      "detail": "file=313b4a330516f61bc14bdb86df3eccc3651208a4e09888588321d82f72f1e92f seen={'313b4a330516f61bc14bdb86df3eccc3651208a4e09888588321d82f72f1e92f'}",
+      "name": "generator_hash_matches_file",
+      "pass": true
+    }
+  ],
+  "corpus_forecast_profile_distribution": {
+    "DEGRADED_V1": 24,
+    "GOOD_V1": 24
+  },
+  "forecast_issue_m_sha256": "313b4a330516f61bc14bdb86df3eccc3651208a4e09888588321d82f72f1e92f",
+  "ledger_sha256": "09930db3e5aa00c9f5c5ac2acae3d46ecc3950a6c39ff4f40ae5c7fa9bb8681a",
+  "overall": true,
+  "schema": "ppe_c2_causality_verification_v1",
+  "task": "T-003",
+  "verdict": "PASS"
+}

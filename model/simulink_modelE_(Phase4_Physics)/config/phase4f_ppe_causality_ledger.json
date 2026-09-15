@@ -323,7 +323,7 @@
       "channel": "u_fcst_mps",
       "formal_provenance_class_required": "CAUSAL_GENERATOR",
       "generated_or_known_when": "issue_snapshot at t0; source_cutoff_time_s<=issue_time_s",
-      "generator_rule": "formal generator GOOD_V1 (pass1/pass2 formal ledgers arms_forecast=GOOD_V1): u_fcst(t0+h|t0) = u_reach + (u_obs(t0) - u_reach) * exp(-h/900); u_obs is OBSERVED-class at source_cutoff = t0 (scripts/+mission_v3/forecast_issue.m; config/mission_v3/forecast_quality_profiles.json); pilot pure-persistence fixture U_fcst(t0+k|t0)=U_actual(t0) is lineage only, not the formal generator",
+      "generator_rule": "formal corpus mixes GOOD_V1 (24 voyages) / DEGRADED_V1 (24) (pass2 ledger arms_forecast): GOOD_V1 u_fcst(t0+h|t0)=u_reach+(u_obs(t0)-u_reach)*exp(-h/900) with OBSERVED u_obs at source_cutoff=t0; DEGRADED_V1 u_obs(t0)=U(t0-1800)+b_voyage+eta(t0) with source_cutoff=t0-1800; both consume only <=t0 information, both CAUSAL_GENERATOR; generator identity hash = forecast_issue.m SHA256 embedded per voyage; pilot pure-persistence fixture is lineage only, not the formal generator",
       "issue_time_semantics": "issue_snapshot",
       "not_future_realized_truth": true,
       "oracle_counterpart": "u_actual_future_mps",
@@ -333,9 +333,9 @@
         "config/dataset_v3_signal_registry.json",
         "config/dataset_v3_producer_schema.json",
         "dataset_v3/validate_contracts.py PROVENANCE_CLASS_FORBIDDEN includes ORACLE_DERIVED",
-        "config/mission_v3/forecast_quality_profiles.json (formal profile GOOD_V1; provenance_class_formal=CAUSAL_GENERATOR)",
-        "scripts/+mission_v3/forecast_issue.m (GOOD_V1 AR(1) mean-reversion; enforces source_cutoff_s <= issue_time_s)",
-        "results/dataset_v3/formal/pass1_iid_ledger.json / pass2_iid_ledger.json (arms_forecast=GOOD_V1 on accepted formal voyages)"
+        "config/mission_v3/forecast_quality_profiles.json (GOOD_V1/DEGRADED_V1; provenance_class_formal=CAUSAL_GENERATOR)",
+        "scripts/+mission_v3/forecast_issue.m (per-voyage generator hash == file SHA256)",
+        "results/dataset_v3/formal/pass2_iid_ledger.json (corpus arms_forecast = 24 GOOD_V1 + 24 DEGRADED_V1)"
       ],
       "registry_note": "pilot fixture（DGN-13）：U_fcst(t0+k|t0)=U_actual(t0) persistence，仅消费 t0 及以前信息，满足 F_{t0}=g(I_{<=t0})；registry note 描述 pilot fixture 谱系，formal 实际生成器见 generator_rule",
       "role": "INPUT_F",
@@ -352,7 +352,7 @@
       "channel": "wl_fcst_m",
       "formal_provenance_class_required": "CAUSAL_GENERATOR",
       "generated_or_known_when": "issue_snapshot at t0; source_cutoff_time_s<=issue_time_s",
-      "generator_rule": "formal generator GOOD_V1: wl_fcst = voyage-constant delta_wl causal estimate (persistence-degenerate in v1; config/mission_v3/forecast_quality_profiles.json); pilot pure-persistence fixture is lineage only, not the formal generator",
+      "generator_rule": "formal: GOOD_V1 voyage-constant delta_wl causal estimate (persistence-degenerate) / DEGRADED_V1 same plus voyage bias; both <=t0 causal; pilot pure-persistence fixture is lineage only, not the formal generator",
       "issue_time_semantics": "issue_snapshot",
       "not_future_realized_truth": true,
       "oracle_counterpart": "wl_actual_future_m",
@@ -362,9 +362,9 @@
         "config/dataset_v3_signal_registry.json",
         "config/dataset_v3_producer_schema.json",
         "dataset_v3/validate_contracts.py PROVENANCE_CLASS_FORBIDDEN includes ORACLE_DERIVED",
-        "config/mission_v3/forecast_quality_profiles.json (formal profile GOOD_V1; provenance_class_formal=CAUSAL_GENERATOR)",
-        "scripts/+mission_v3/forecast_issue.m (GOOD_V1 AR(1) mean-reversion; enforces source_cutoff_s <= issue_time_s)",
-        "results/dataset_v3/formal/pass1_iid_ledger.json / pass2_iid_ledger.json (arms_forecast=GOOD_V1 on accepted formal voyages)"
+        "config/mission_v3/forecast_quality_profiles.json (GOOD_V1/DEGRADED_V1; provenance_class_formal=CAUSAL_GENERATOR)",
+        "scripts/+mission_v3/forecast_issue.m (per-voyage generator hash == file SHA256)",
+        "results/dataset_v3/formal/pass2_iid_ledger.json (corpus arms_forecast = 24 GOOD_V1 + 24 DEGRADED_V1)"
       ],
       "registry_note": "pilot fixture：WL persistence，同 u_fcst_mps 因果语义；registry note 描述 pilot fixture 谱系，formal 实际生成器见 generator_rule",
       "role": "INPUT_F",
@@ -395,7 +395,7 @@
       "unit": "kW"
     }
   ],
-  "note": "Ledger is contract evidence, not a result-bearing controller run. Qualification SHALL re-verify against generator hashes at freeze. F-channel formal generator = GOOD_V1 (AR(1) mean-reversion from u_obs(t0), source_cutoff=t0); pilot persistence fixture is lineage only. 2026-09-15 repair: corrected F-channel generator_rule wording (was pilot-persistence text) and added missing INPUT_H1 entry for P_load_total_kW.",
+  "note": "Ledger is contract evidence, not a result-bearing controller run. Qualification SHALL re-verify against generator hashes at freeze. Formal F-channel generators: GOOD_V1 (24 corpus voyages) and DEGRADED_V1 (24), both CAUSAL_GENERATOR with source_cutoff<=issue_time (GOOD: t0; DEGRADED: t0-1800 s). 2026-09-15 repairs: F-channel generator_rule corrected (was pilot-persistence text); INPUT_H1 P_load_total_kW entry added; oracle_derived_forbidden key typo fixed; GOOD/DEGRADED mixture recorded.",
   "schema": "phase4f_ppe_kf_causality_ledger_v1",
   "stop_triggered": false,
   "study": "phase4-f-practical-predictive-ems",

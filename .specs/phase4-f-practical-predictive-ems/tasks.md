@@ -121,7 +121,7 @@ Gate authorization. No result-bearing skip of qualification.
 
 ## A — Freeze and interfaces (nonformal)
 
-- [ ] 1. Canonical identities / T_eval table / study preparation
+- [x] 1. Canonical identities / T_eval table / study preparation
   - ID: T-001
   - Requirement(s): FR-810–815, FR-836, FR-857, FR-860, DGN-PPE-02b/D4, TG6
   - depends_on: none
@@ -148,7 +148,7 @@ Gate authorization. No result-bearing skip of qualification.
   - Gate/STOP: cannot bind T_eval for a formal voyage → STOP
   - Completion evidence: hashed freeze-prep JSON + T_eval table JSON
 
-- [ ] 2. C1 canonical target index / 100% coverage / parity
+- [x] 2. C1 canonical target index / 100% coverage / parity
   - ID: T-002
   - Requirement(s): FR-822, AC-802, DGN-PPE-01b/D2, TG5
   - depends_on: T-001
@@ -170,7 +170,7 @@ Gate authorization. No result-bearing skip of qualification.
   - Completion evidence: `c1_target_index.json` + coverage JSON +
     QUALIFICATION JSON
 
-- [ ] 3. C2 K/F + H1 causality verification
+- [x] 3. C2 K/F + H1 causality verification
   - ID: T-003
   - Requirement(s): FR-830–836, DGN-PPE-04/D7
   - depends_on: T-001
@@ -182,7 +182,7 @@ Gate authorization. No result-bearing skip of qualification.
   - Gate/STOP: any required K/F channel undefendable → STOP escalate
   - Completion evidence: verification JSON `verdict=PASS`
 
-- [ ] 4. ForecastWindow / C0 persistence / common warm-up tests
+- [x] 4. ForecastWindow / C0 persistence / common warm-up tests
   - ID: T-004
   - Requirement(s): FR-820–825, DGN-PPE-02/D3, AC-801, AC-803
   - depends_on: T-001
@@ -200,7 +200,7 @@ Gate authorization. No result-bearing skip of qualification.
 
 ## B — Controller/runner/metrics (nonformal)
 
-- [ ] 5. C* frozen grid / segmented SimState runner / D8 checkpoint identity
+- [x] 5. C* frozen grid / segmented SimState runner / D8 checkpoint identity
   - ID: T-005
   - Requirement(s): FR-810–815, FR-871, DGN-PPE-07/D8, AC-804
   - depends_on: T-001, T-004
@@ -219,7 +219,7 @@ Gate authorization. No result-bearing skip of qualification.
   - Gate/STOP: SimState equivalence fail on runner → STOP
   - Completion evidence: runner QUALIFICATION JSON
 
-- [ ] 6. Model-E FEC / raw-fuel / hard-feasibility machine
+- [x] 6. Model-E FEC / raw-fuel / hard-feasibility machine
   - ID: T-006
   - Requirement(s): FR-840–857, AC-805/807/813/814
   - depends_on: T-001
@@ -231,7 +231,7 @@ Gate authorization. No result-bearing skip of qualification.
   - Validation: AC-805/807/813/814
   - Completion evidence: metrics QUALIFICATION JSON
 
-- [ ] 7. Pairwise/common-triplet estimands + equal-tier bootstrap (synthetic)
+- [x] 7. Pairwise/common-triplet estimands + equal-tier bootstrap (synthetic)
   - ID: T-007
   - Requirement(s): FR-860–866, FR-880–881, DGN-PPE-08/D5/D6, AC-806/809
   - depends_on: T-006
@@ -251,7 +251,7 @@ Gate authorization. No result-bearing skip of qualification.
 
 ## C — Qualification + freeze (entry ticket)
 
-- [ ] 8. Complete NONFORMAL qualification suite
+- [x] 8. Complete NONFORMAL qualification suite
   - ID: T-008
   - Requirement(s): FR-871, DGN-PPE-09 (items 1–8 plus prior), AC-800–814
   - depends_on: T-002, T-003, T-004, T-005, T-006, T-007

@@ -27,7 +27,7 @@ Dataset-v3 contracts; T_eval is arm-independent.
 | D4 | `T_eval(voyage)` = frozen Dataset-v3 native-stream `t_end`. Same t_start/T_eval/IC/mission for all arms. |
 | D5 | Study-level identity only on **COMMON_TRIPLET_DECOMPOSITION** mask. |
 | D6 | Conditional hat = equal-stratum mean of tier means; bootstrap 1/3 per tier. |
-| D7 | K/F defended: F = formal **GOOD_V1** causal issue-time generator (u_obs(t0), source_cutoff=t0), dual-stored vs ORACLE, `ORACLE_DERIVED` forbidden. Ledger: `config/phase4f_ppe_causality_ledger.json`. |
+| D7 | K/F defended: F = causal issue-time generator per voyage — formal corpus mixes **GOOD_V1 (24) / DEGRADED_V1 (24)**, both `CAUSAL_GENERATOR` with `source_cutoff ≤ issue_time` (GOOD: =t0; DEGRADED: =t0−1800 s); dual-stored vs ORACLE, `ORACLE_DERIVED` forbidden. Ledger: `config/phase4f_ppe_causality_ledger.json`. |
 | D8 | Segmented checkpoint identity binds arm, voyage, t0, hashes listed below; mismatch refused. |
 
 ---
@@ -100,8 +100,9 @@ segment is common across C0/C1/C2 under determinism.
 C* Δλ updates that consume C1/C2 windows are exactly the Dataset-v3 anchors
 `{t_start+300, t_start+310, …, T_fcst}` where `T_fcst` = the voyage's **last
 anchor** (`≤ T_eval − 300`; equality when `(T_eval − t_start − 600)` is a
-multiple of 10 s). After `T_fcst` until `T_eval`, hold last Δλ (ZOH). No
-unregistered future target time.
+multiple of 10 s). After `T_fcst` until `T_eval`, C1/C2 hold last Δλ (ZOH)
+— no unregistered future target time. **C0 keeps updating** every 10 s in the
+tail (FR-821 persistence is always causal-legal); only C1/C2 hold.
 
 ---
 
@@ -160,8 +161,8 @@ Evidence (frozen contracts, not controller outcomes):
 | `s_plan_m` | known-future plan | 前向积分；禁 s_actual,future |
 | `h_chart_m` | chart/static | 海图已知量 |
 | `P_hotel_plan_kW` | planned hotel | 仅 planned component |
-| `u_fcst_mps` | issue-time forecast | formal generator **GOOD_V1** (pass1/pass2 formal ledgers `arms_forecast=GOOD_V1`): `u_fcst(t0+h\|t0)=u_reach+(u_obs(t0)−u_reach)·exp(−h/900)`, `u_obs` OBSERVED-class at `source_cutoff=t0` (`scripts/+mission_v3/forecast_issue.m`; `config/mission_v3/forecast_quality_profiles.json`); pilot pure-persistence fixture is lineage only; `F_{t0}=g(I_{<=t0})`; **ORACLE counterpart** `u_actual_future_mps` dual-stored `oracle_only`; formal class **CAUSAL_GENERATOR only**; `ORACLE_DERIVED` **forbidden** |
-| `wl_fcst_m` | issue-time forecast | GOOD_V1: voyage-constant `ΔWL` causal estimate (persistence-degenerate in v1); same dual-storage pattern vs `wl_actual_future_m` |
+| `u_fcst_mps` | issue-time forecast | formal corpus mixes **GOOD_V1 (24 voyages)** / **DEGRADED_V1 (24)** (pass2 ledger `arms_forecast`): GOOD_V1 `u_fcst(t0+h\|t0)=u_reach+(u_obs(t0)−u_reach)·exp(−h/900)`, `u_obs` OBSERVED-class at `source_cutoff=t0`; DEGRADED_V1 `u_obs(t0)=U(t0−1800)+b_voyage+η(t0)` with `source_cutoff=t0−1800` — both consume only ≤t0 information, both `CAUSAL_GENERATOR` (`forecast_issue.m` SHA256 embedded in every voyage provenance, machine-matched); pilot pure-persistence fixture is lineage only; `F_{t0}=g(I_{<=t0})`; **ORACLE counterpart** `u_actual_future_mps` dual-stored `oracle_only`; `ORACLE_DERIVED` **forbidden** |
+| `wl_fcst_m` | issue-time forecast | GOOD_V1: voyage-constant `ΔWL` causal estimate (persistence-degenerate); DEGRADED_V1: same + voyage bias — both ≤t0; same dual-storage pattern vs `wl_actual_future_m` |
 
 Ledger (channel-level, Design artifact):
 `config/phase4f_ppe_causality_ledger.json`

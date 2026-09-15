@@ -1,0 +1,51 @@
+{
+  "access_ledger": {
+    "by_purpose": {
+      "FORMAL": 0,
+      "FREEZE_PREP": 105,
+      "QUALIFICATION": 51,
+      "SYNTHETIC_SMOKE": 0
+    },
+    "n_entries": 156,
+    "split_contact": {
+      "ood": 0,
+      "test": 0
+    }
+  },
+  "n_differentiated_updates_range": [
+    274,
+    391
+  ],
+  "n_voyages": 48,
+  "npz_anchor_consistency": "NPZ_ANCHOR_GRID_CONSISTENT",
+  "overall": true,
+  "schema": "ppe_t001_freeze_prep_v1",
+  "soc0_all_0p60": true,
+  "study_config_sha256": "0e82a37523e8fa2519496cb30264f28b249d92858386bde911b862845d7d5842",
+  "t_eval_range_s": [
+    3335.0,
+    4508.0
+  ],
+  "task": "T-001",
+  "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
+  "tiers": {
+    "HIGH": [
+      "SG#1b624f14c86d40e7",
+      "SG#2d5d715a0fc3480a",
+      "SG#e211d3bb7908e3f8",
+      "SG#f87aa695ef15f360"
+    ],
+    "LOW": [
+      "SG#0877af60295de774",
+      "SG#30ab14ffb1a08292",
+      "SG#498b5fd8d36df50d",
+      "SG#f2e66596e8c43d8b"
+    ],
+    "MID": [
+      "SG#0fe21d4411bc5e17",
+      "SG#95ab26745e67b295",
+      "SG#a33d734ea439b60b",
+      "SG#b7f8885bb19355fd"
+    ]
+  }
+}
