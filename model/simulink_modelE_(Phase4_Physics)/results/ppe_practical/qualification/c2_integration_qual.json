@@ -1,0 +1,12 @@
+{
+  "schema": "ppe_c2_integration_qual_v1",
+  "purpose": "QUALIFICATION",
+  "token": "qual-c2-integration",
+  "n_request": 1,
+  "Pbar_n": 30,
+  "Pbar_all_finite": true,
+  "Pbar_head": 86.3093032836914,
+  "request_wall_s": 20.040271416666666,
+  "pass": true,
+  "utc": "2026-09-15T20:54:25Z"
+}
