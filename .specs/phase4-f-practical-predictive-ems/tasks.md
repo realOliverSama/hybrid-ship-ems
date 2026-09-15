@@ -266,7 +266,7 @@ Gate authorization. No result-bearing skip of qualification.
   - Gate/STOP: any mandatory item FAIL → no T-009
   - Completion evidence: `qualification/ppe_qual_suite.json`
 
-- [ ] 9. PRE_EXECUTION_FREEZE_GATE
+- [x] 9. PRE_EXECUTION_FREEZE_GATE
   - ID: T-009
   - Requirement(s): FR-872–875, AC-810, TG2, TG3, TG7, TG8, TG9
   - depends_on: T-008 PASS
