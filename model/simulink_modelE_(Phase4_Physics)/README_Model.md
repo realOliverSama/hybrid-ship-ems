@@ -136,7 +136,8 @@ EMS 复用同一 Commitment/Dispatch/Safety 共享链）。
 
 **Phase 4-F T-445（施工中）**：不接入任何 NN 预测器。B0=law=5，B1=law=6 完美 E300
 标量 oracle，B2=同一 law=6 + Δλ 轨迹监督；oracle 真值来自冻结航次 P_load 流。E 段
-winner（REAT-T）只读不消费。预测模型清单不变。
+winner（REAT-T）只读不消费。预测模型清单不变。Amendment C：J_FEC 的 k_eq^E=0.5457 kg/kWh
+按标称 SOC kWh（1071.36·ΔSOC）折算，OCV 效率 0.9687 仅诊断；w_term=1.17e5 与 k_eq 同时冻结。
 
 ## 5. 验证状态
 

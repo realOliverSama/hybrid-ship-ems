@@ -38,7 +38,7 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `config/ModelE_Control_Parameters.m` | ★ **B 包控制侧参数事实源**（FR-451：PMS Demand/Commitment/Safety/Manual/Selector 全量参数 + DERIVED 阈值/tick 换算 + 逐参数 provenance + 敏感性注册表；在物理参数之后加载，乱序 assert 兜底） |
 | `config/ModelE_Physics_Parameters.m` | ★ **Model E 完整独立参数事实源**（OQ-8，单独 run 即定义全部参数；provenance 逐参数标记 + 文献 [1]~[17]；冻结敏感性档位登记；**零改动**——DD-9 机器检查项） |
 | `config/ModelE_TestScenarios.m` | ★ 测试工况（S01~S10 + S20 复合航次 + **浅水 H/T 六档 S31~S36** + VOYAGE_* 编译期变量 + **B 包 MANUAL 工况 M1/M2/M3 与 VOYAGE_MANUAL_CMD_TS/EMS_HEALTH_TS 注入通道** + GEN_CMD_STOP_TS/ADAPTER_FORCE_*） |
-| `config/phase4f_t445_config.m` | ★ **F 包 T-445 冻结参数 MATLAB 入口**（jsondecode 同目录 JSON + design 标量 fail-closed 断言；k_eq^E 初始 `PROVISIONAL_PENDING_QUALIFICATION` 至 T-007）。**预测模型：无** |
+| `config/phase4f_t445_config.m` | ★ **F 包 T-445 冻结参数 MATLAB 入口**（jsondecode 同目录 JSON + design 标量 fail-closed 断言；Amendment C：k_eq^E=0.5457 标称 SOC FEC，`PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION` 至 T-007 identity PASS）。**预测模型：无** |
 | `config/phase4f_t445_config.json` | ★ T-445 冻结参数机器可读导出（config_sha256 自哈希；DGN-F-01~F-15 🔒） |
 | `config/ModelE_Sensitivity_Profile.m` | 敏感性档位选择器（nominal 零改动；Q1 冻结档位登记不扫掠） |
 | `config/gate_baseline_modele.json` | A2 冻结物理基线 v1.0（**永久保留不回写**，DD-9） |
@@ -83,8 +83,8 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `config/predictor_v3/` | ★ **E 包 predictor-v3 配置**（T-001 `env/`（base/macOS lock + smoke 脚本，TF 2.19.1 证据驱动落锁）+ T-007 `env/requirements_tf_cuda_lock.txt`（canonical CUDA lock：pip freeze 全量含 nvidia-* + 关键 wheel sha256）+ `env/env_smoke_generic.py`（平台参数化 smoke）+ T-004 `predictor_norm_ext_v1.json`（K/F train-only 归一化扩展，自哈希）+ T-005 三 config（`training_budget.json` DGN-E-09 冻结数值/HPO 预算、`eval_config.json` 指标栈+等价带+canonical_delivery_seed_index=0 预注册、`diagnostics_config.json` T-443 三轴参数+train 参照统计冻结）；`env/build_diagnostics_config.py` 生成器；hash 记录 `results/predictor_v3/config_hashes_t005.json`；T-012 `reat_t_arch.json` 待建。**预测模型：无（配置，非模型）**） |
 | `results/predictor_v3/` | **E 包 predictor-v3 机器可读证据（精选入库）**（`env_manifest_macos.json`+`env_smoke_macos.json` T-001；`env_manifest_cuda.json`+`env_smoke_cuda.json`+`determinism_probe_cuda.json` T-007 canonical 资格化（4090D/TF 2.19.1/双平台同版本；探针 PASS_BITWISE；钉版 537268d0）；`ood_windows_integrity.json` T-003 双 hash+双跑确定性（200 航次→72304 窗，payload 6383a27b…）；`config_hashes_t005.json` 三 config 自哈希记录；`determinism_probe_cpu.json` T-006 CPU 探针 PASS_BITWISE；`data_access/` 访问日志分片；后续 HPO/confirm/ablation/winner/terminal 证据按 tasks 增补） |
 | `artifacts/predictor_v3/` | **E-owned 本地产物命名空间（不入库，.gitignore Design Gate R1 授权）**（T-003 OOD 窗口 npz、训练 checkpoint 等派生产物；`datasets_v3/` 冻结资产零字节改动） |
-| `scripts/+t445/` | ★ **F 包 T-445 MATLAB 包**（T-002：`assemble_oracle_window` / `prep_ehat_zoh` / `make_simin_zoh`；后续 B0/B1/B2 runner）。**预测模型：无** |
-| `python/t445/` | ★ **F 包 T-445 Python 包**（`frozen_config`/`freeze_t001`；后续 B1 归一化复现/语料/bootstrap/Gate）。**预测模型：无** |
+| `scripts/+t445/` | ★ **F 包 T-445 MATLAB 包**（T-002 窗/ZOH；T-004 FEC；T-007 `energy_ladder_audit` + 保留 FAIL 的 `fixture_charge_restoration`）。**预测模型：无** |
+| `python/t445/` | ★ **F 包 T-445 Python 包**（`frozen_config`/`freeze_t001`；T-007 `qualify_t007_identity`；语料/bootstrap/Gate）。**预测模型：无** |
 | `results/t445_oracle_gate/` | ★ **F 包 T-445 机器可读证据**（fixture/env/E-guard manifest 精选入库；正式 run 待 T-012 入场券；详见该目录 README.md） |
 | `artifacts/t445/` | **F-owned 本地产物**（SimState checkpoint / 段日志，不入库；父目录 `artifacts/` 已 gitignore） |
 | `predictor_v3/` | ★ **E 包 predictor-v3 Python 包**（T-002 `data_access.py` sealed 访问门；T-003 `ood_materialize.py` OOD 窗口物化薄驱动；T-004 `norm_ext.py`；T-005 `features/quantile/metrics/inference_stats/seeds/train/registry.py` 统一 harness；`tests/` 45 例全绿；详见该目录 README.md。**预测模型：施工作业中，截至 T-005 无已训练模型工件**） |

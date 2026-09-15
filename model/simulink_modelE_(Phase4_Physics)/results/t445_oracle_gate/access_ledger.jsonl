@@ -5,3 +5,8 @@
 {"artifact": "t006_unit_test_result.json", "purpose": "SYNTHETIC_SMOKE", "task": "T-006", "utc": "2026-09-15T09:10:47Z"}
 {"artifact": "t006_unit_test_result.json", "purpose": "SYNTHETIC_SMOKE", "task": "T-006", "utc": "2026-09-15T09:11:34Z"}
 {"purpose":"QUALIFICATION","task":"T-007","artifact":"qualification/t007_keq_charge_restoration.json","utc":"2026-09-15T09:15:03Z"}
+{"artifact": "t006_unit_test_result.json", "purpose": "SYNTHETIC_SMOKE", "task": "T-006", "utc": "2026-09-15T09:44:00Z"}
+{"artifact": "qualification/t007_identity_qualification.json", "overall": true, "purpose": "QUALIFICATION", "task": "T-007", "utc": "2026-09-15T09:44:00Z"}
+{"artifact": "t006_unit_test_result.json", "purpose": "SYNTHETIC_SMOKE", "task": "T-006", "utc": "2026-09-15T09:45:58Z"}
+{"artifact": "qualification/t007_identity_qualification.json", "overall": true, "purpose": "QUALIFICATION", "task": "T-007", "utc": "2026-09-15T09:45:58Z"}
+{"artifact": "qualification/t007_identity_qualification.json", "overall": true, "purpose": "QUALIFICATION", "task": "T-007", "utc": "2026-09-15T09:47:26Z"}

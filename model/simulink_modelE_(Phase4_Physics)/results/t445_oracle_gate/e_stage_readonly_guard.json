@@ -1,6 +1,6 @@
 {
-  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
-  "git_commit": "77ecc4972f22509c74c42bf131ff498e0077f23e",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "git_commit": "66ab7420a3d77b781aae1cf11fb7eaed7be88fd6",
   "pass": true,
   "schema": "t445_e_stage_readonly_guard_v1",
   "snapshot": {

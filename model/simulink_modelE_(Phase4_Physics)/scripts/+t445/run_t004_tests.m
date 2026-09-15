@@ -6,7 +6,9 @@ cfg = phase4f_t445_config();
 ds = local_synth(cfg);
 
 fec = t445.metrics_fec(ds, cfg);
-expect_corr = (0.60 - 0.598) * 1071.36 * 0.5296;
+keq = cfg.k_eq.value_kg_per_kWh;
+assert(abs(keq - 0.5457) < 1e-12, 'keq_amend_c');
+expect_corr = (0.60 - 0.598) * 1071.36 * keq;
 expect_J = 10 + expect_corr;
 assert(abs(fec.fuel_raw_kg - 10) < 1e-12, 'fuel');
 assert(abs(fec.SOC0 - 0.60) < 1e-12, 'soc0');

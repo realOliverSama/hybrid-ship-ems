@@ -16,12 +16,17 @@ if PYROOT not in sys.path:
 
 from t445 import hashutil, paths  # noqa: E402
 from t445.frozen_config import (  # noqa: E402
+    K_EQ_E_KG_PER_KWH,
+    K_EQ_STATUS_PROVISIONAL,
     N_DLAMBDA,
     N_PBAR_COLON,
     N_SOC_B2,
     PROVENANCE_B1_NORM,
     SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME,
+    SUPERSEDED_CONFIG_SHA256_PRE_AMENDMENT_C,
+    W_TERM,
     build_frozen_config,
+    derive_keq_fec,
     derive_lambda_table,
 )
 
@@ -39,17 +44,39 @@ def cfg():
 
 def test_schema_and_k_eq_provisional(cfg):
     assert cfg["schema"] == "phase4f_t445_config_v1"
-    assert cfg["k_eq"]["value_kg_per_kWh"] == 0.5296
-    assert cfg["k_eq"]["status"] == "PROVISIONAL_PENDING_QUALIFICATION"
+    assert cfg["k_eq"]["value_kg_per_kWh"] == K_EQ_E_KG_PER_KWH == 0.5457
+    assert cfg["k_eq"]["status"] in (
+        K_EQ_STATUS_PROVISIONAL, "CANONICAL")
     assert cfg["k_eq"]["bat_cap_kWh"] == 1071.36
     assert cfg["k_eq"]["bsfc_ref_E_g_per_kWh"] == 482.749
-    assert cfg["k_eq"]["eta_chg_ref"] == 0.9687
+    assert cfg["k_eq"]["eta_chg_FEC_ref"] == 0.9403
+    assert cfg["k_eq"]["eta_chg_ocv_diagnostic"] == 0.9687
+    assert "eta_chg_ref" not in cfg["k_eq"]
     assert cfg["k_eq"]["eta_dis_ref"] == 0.9686
-    assert cfg["k_eq"]["eta_path_E"] == 0.9111
-    assert cfg["k_eq"]["robustness_0p8x"] == 0.4237
-    assert cfg["k_eq"]["robustness_1p2x"] == 0.6355
+    assert cfg["k_eq"]["eta_path_E"] == 0.8847
+    assert cfg["k_eq"]["eta_path_FEC_E"] == 0.8847
+    assert cfg["k_eq"]["fec_energy_basis"] == "nominal_SOC_kWh"
+    assert cfg["k_eq"]["robustness_0p8x"] == 0.4366
+    assert cfg["k_eq"]["robustness_1p2x"] == 0.6548
     assert cfg["k_eq"]["no_double_counting_of_energy_loss"] is True
     assert cfg["k_eq"]["model_d_k_eq_0p499_revoked"] is True
+    assert cfg["k_eq"]["do_not_use_eta_chg_measured_0p7201"] is True
+
+
+def test_keq_fec_derivation_nominal_soc():
+    d = derive_keq_fec()
+    eta = 0.98 * 576.0 / 600.33
+    assert abs(d["eta_chg_FEC_ref_raw"] - eta) < 1e-12
+    assert abs(d["eta_chg_FEC_ref"] - 0.9403) < 1e-12
+    assert abs(d["eta_chg_FEC_ref_raw"] - 0.9403) < 5e-5
+    path = 0.97 * 0.97 * 0.9403
+    assert abs(path - 0.8847) < 5e-5
+    keq = 0.482749 / 0.8847
+    assert abs(keq - 0.5457) < 5e-5
+    w = 2.0 * 0.5457 * 1071.36 / 0.01
+    assert abs(w - 1.17e5) < 500.0
+    # Must not absorb the mismatched-boundary 0.7201 measurement.
+    assert abs(0.482749 / 0.7201 - 0.5457) > 0.05
 
 
 def test_b1_norm_literals(cfg):
@@ -91,12 +118,16 @@ def test_lambda_table_derived_from_primitives(cfg):
     assert pt["n_lambda"] == 3020 == d["n_lambda"]
     assert pt["lambda_colon"] == [0.43, 0.005, 15.525]
     assert pt["oob_query_count_required"] == 0
-    assert cfg["amendment"]["superseded_config_sha256"] == SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME
+    assert cfg["amendment"]["superseded_config_sha256"] == SUPERSEDED_CONFIG_SHA256_PRE_AMENDMENT_C
+    assert cfg["amendment"]["prior_a_prime_sha256"] == SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME
+    assert cfg["amendment"]["id"] == "C_fec_nominal_soc_2026-09-15"
+    assert cfg["k_eq"]["status"] == "CANONICAL"
 
 
 def test_v_term_and_terminal(cfg):
     assert cfg["v_term"]["delta_term"] == 0.01
-    assert cfg["v_term"]["w_term"] == 1.13e5
+    assert cfg["v_term"]["w_term"] == W_TERM == 1.17e5
+    assert cfg["v_term"]["amended_with_k_eq"] is True
     assert cfg["v_term"]["soc_target_policy"] == "SOC0_voyage"
     assert cfg["terminal_soc_admissibility"]["abs_dsoc_max"] == 0.005
     assert cfg["gate_thresholds"]["X_pct"] == 2.0
@@ -150,10 +181,10 @@ def test_python_frozen_matches_json(cfg):
 def test_matlab_config_asserts_literals():
     text = open(paths.CONFIG_M, encoding="utf-8").read()
     for needle in (
-        "0.5296", "27.781415", "13.671476",
+        "0.5457", "27.781415", "13.671476",
         "b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045",
-        "PROVISIONAL_PENDING_QUALIFICATION",
-        "1.13e5", "phase4f-t445-corpus-v1", "phase4f-t445-bootstrap-v1",
+        "PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION",
+        "1.17e5", "phase4f-t445-corpus-v1", "phase4f-t445-bootstrap-v1",
         "mfilename('fullpath')", "15.525", "3020",
     ):
         assert needle in text, needle
@@ -172,6 +203,7 @@ def test_fixture_manifest_schema_and_overlap():
         "B0_REGRESSION", "SIMSTATE_EQUIVALENCE", "B2_OPTIMIZER_Q1",
         "B2_OPTIMIZER_Q2", "B2_OPTIMIZER_Q3", "B2_OPTIMIZER_Q4",
         "B2_OPTIMIZER_Q5", "B2_OPTIMIZER_Q6", "K_EQ_CHARGE_RESTORATION",
+        "K_EQ_ENERGY_LADDER", "K_EQ_IDENTITY_QUALIFICATION",
         "B3_PARITY", "ZOH_MACHINE_TEST",
     ):
         assert req in purposes, req
@@ -188,6 +220,11 @@ def test_fixture_manifest_schema_and_overlap():
             assert f.get(k) not in (None, ""), k
     b0 = [f for f in man["fixtures"] if f["purpose"] == "B0_REGRESSION"]
     assert len(b0) == 3
+    keq_fail = [f for f in man["fixtures"] if f["purpose"] == "K_EQ_CHARGE_RESTORATION"]
+    assert len(keq_fail) == 1
+    assert keq_fail[0]["status"] == "PRESERVED_FAIL_AMENDMENT_C"
+    ident = [f for f in man["fixtures"] if f["purpose"] == "K_EQ_IDENTITY_QUALIFICATION"]
+    assert len(ident) == 1
 
 
 def test_env_manifest_macos_local_no_cloud():

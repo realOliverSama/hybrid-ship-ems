@@ -25,6 +25,38 @@ else:
     from . import hashutil, paths
 
 SEED = "phase4f-t445-corpus-v1"
+
+
+def corpus_identity_payload(manifest: dict) -> dict:
+    """Config-independent corpus selection identity (groups/roles/voyages)."""
+    return {
+        "initial_group_ids": manifest["initial_group_ids"],
+        "reserve_group_ids": manifest["reserve_group_ids"],
+        "initial_voyage_ids": manifest["initial_voyage_ids"],
+        "reserve_voyage_ids": manifest["reserve_voyage_ids"],
+        "groups": [
+            {
+                "split_group_id": g["split_group_id"],
+                "tier": g["tier"],
+                "role": g["role"],
+                "score_g": g["score_g"],
+                "members": [
+                    {
+                        "voyage_id": m["voyage_id"],
+                        "artifact_sha256": m["artifact_sha256"],
+                    }
+                    for m in g["members"]
+                ],
+            }
+            for g in manifest["groups"]
+        ],
+    }
+
+
+def corpus_identity_sha256(manifest: dict) -> str:
+    return hashutil.sha256_canonical(corpus_identity_payload(manifest))
+
+
 P_EPS = 1.0
 REFRESH = 10.0
 HORIZON = 300.0

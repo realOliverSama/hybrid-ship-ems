@@ -1,7 +1,16 @@
 function r = fixture_charge_restoration()
 % t445.fixture_charge_restoration — T-007 k_eq^E 参考充电/回补（DGN-F-06 §6.4）
-% SOC 0.58→0.62 + 静置；η_chg_measured vs 0.9687，绝对容差 0.005。
+% SUPERSEDED as T-007 pass criterion (Amendment C 2026-09-15).
+% The 0.58→0.62 vs 0.9687 FAIL artifact is preserved and must not be overwritten.
+% T-007 now qualifies energy-boundary identity (qualify_t007_identity).
 ROOT = t445.modele_root();
+failPath = fullfile(ROOT, 'results', 't445_oracle_gate', 'qualification', ...
+    't007_keq_charge_restoration.json');
+if exist(failPath, 'file')
+    error('T445:T007:PRESERVED_FAIL', ...
+        ['Charge-restoration FAIL artifact is preserved (Amendment C). ', ...
+         'Do not rerun. Use t445 identity qualification.']);
+end
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 evalin('base', sprintf("run('%s')", fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m')));
 evalin('base', sprintf("run('%s')", fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m')));

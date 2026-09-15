@@ -33,7 +33,7 @@ A 基础:  T-001(冻结config[含 qualification_fixture_manifest]+基线完整+e
          → T-004(指标+审计机器) → T-005(语料选择+manifest) → T-006(统计+Gate裁决代码)
          → T-008(B2优化器实现，depends T-007 PASS)
          → T-009(B2分段runner实现)
-B 资格化（强制）: T-007(k_eq回补fixture→CANONICAL) → T-010(SimState等价Gate + B2_OPTIMIZER_QUALIFICATION Q1~Q6)
+B 资格化（强制）: T-007(能量边界身份资格化→CANONICAL；保留 0.58→0.62 FAIL 工件) → T-010(SimState等价Gate + B2_OPTIMIZER_QUALIFICATION Q1~Q6)
 B 资格化（上下文）: T-011(B3适配+parity资格化)——必须完成，QUALIFIED_PASS / UNQUALIFIED_CONTEXT 均合法，不阻断主链
 B 入场券: T-012(正式前冻结总检，含正式访问台账零计数验证)
 C 正式:  T-013(初始语料36航次×B0/B1/B2 [+B3若QUALIFIED]；COMPLETE_FORMAL_CORPUS / ABORTED_GATE_VALIDITY_FAIL)
@@ -49,10 +49,10 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Requirement(s): FR-740~745, FR-780~782；NFR-710/711/712/713/715/716；Design: DGN-F-03/04/05/06/07/11 + design.md §16（组件与目录）；AC-614
   - depends_on: 无（首批）
   - Files/areas: `config/phase4f_t445_config.m`（新建）、`config/phase4f_t445_config.json`（导出）、`results/t445_oracle_gate/`（新建）、`results/t445_oracle_gate/qualification_fixture_manifest.json`（新建，R2）、`results/t445_oracle_gate/env_manifest_t445.json`（新建，R8/NFR-712）、`artifacts/t445/`（本地）、Model E 工作区 README/README_Model.md 与 `.gitignore`（§20 登记）
-  - Scope: 将 design 全部 🔒 冻结参数实体化为单一 config 事实源（k_eq^E=0.5296 及其推导字段、E_ref=27.781415/E_scale=13.671476+provenance hash、Δλ∈[−0.10,0.10]×0.005、**λ_eff=max(λ_raw,0.43) 无人为上限**、策略表 λ 原语+派生 `lambda_table=0.43:0.005:15.525` n=3020 及从原语复算 max 的机器断言、`policy_table_oob_query_count` 要求=0、V_term(δ=0.01,w=1.13e5)、|ΔSOC_end|≤0.005、X=2.0/Y=0、种子两枚、ε_num=0.5%、bootstrap B=10000、网格参数、硬可行性判据表；**Amendment a′ 2026-09-15：旧 config_sha256 保留溯源并被新 hash 取代**）——**例外：k_eq^E 在 config 中标记 `PROVISIONAL_PENDING_QUALIFICATION`，直至 T-007 PASS 转 `CANONICAL` 并冻结 config hash（R1）**；导出 JSON + config_sha256；基线完整性：复核 `gate_baseline_modele.json`/`gate_baseline_modele_control.json` hash 与 HybridShip_ModelE.slx sha256 登记（不动模型）；**qualification_fixture_manifest（R2）**：在任何资格化执行前，以机器可读 manifest 冻结全部非正式 fixture 身份——B0 回归航次、SimState 等价参考航次、B2 Q2/Q3/Q4/Q6 fixture 窗、B3 parity fixtures、合成 fixture 配置、Q1 确定性 1000 点样本身份/种子；每 fixture 记录 fixture_id/来源类型/voyage_id/segment_t0（如适用）/工件 SHA256/config 或生成器 hash/确定性种子或 hash 规则/资格化目的/`formal_val_overlap=false`/`iid_test_overlap=false`/`ood_overlap=false`；fixture 不得按资格化结果选择或替换；**环境守卫（R8/NFR-712）**：env_manifest_t445.json 记录 Mac 本机身份（platform/host 类别）、MATLAB R2026a 版本、无 AutoDL/云端 result-bearing 路径的机器断言；**E 段只读守卫（R8/NFR-713）**：E 段工件目录（results/predictor_v3/、candidates/、winner 工件）hash 快照基线 + T-445 harness 代码静态扫描断言零 .keras/winner 模型加载、零 E-additional 训练调用
+  - Scope: 将 design 全部 🔒 冻结参数实体化为单一 config 事实源（k_eq^E=0.5457 及其标称 SOC FEC 推导字段、E_ref=27.781415/E_scale=13.671476+provenance hash、Δλ∈[−0.10,0.10]×0.005、**λ_eff=max(λ_raw,0.43) 无人为上限**、策略表 λ 原语+派生 `lambda_table=0.43:0.005:15.525` n=3020 及从原语复算 max 的机器断言、`policy_table_oob_query_count` 要求=0、V_term(δ=0.01,w=1.17e5；与 k_eq 同时修订)、|ΔSOC_end|≤0.005、X=2.0/Y=0、种子两枚、ε_num=0.5%、bootstrap B=10000、网格参数、硬可行性判据表；**Amendment a′ 2026-09-15：旧 config_sha256 保留溯源并被新 hash 取代**；**Amendment C 2026-09-15：pre-C SHA `6d25ce39…` 保留溯源，k_eq 按标称 SOC kWh 重定，OCV 0.9687 仅诊断**）——**例外：k_eq^E 在 config 中标记 `PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION`，直至 T-007 identity PASS 转 `CANONICAL` 并冻结 config hash（R1）**；导出 JSON + config_sha256；基线完整性：复核 `gate_baseline_modele.json`/`gate_baseline_modele_control.json` hash 与 HybridShip_ModelE.slx sha256 登记（不动模型）；**qualification_fixture_manifest（R2）**：在任何资格化执行前，以机器可读 manifest 冻结全部非正式 fixture 身份——B0 回归航次、SimState 等价参考航次、B2 Q2/Q3/Q4/Q6 fixture 窗、B3 parity fixtures、合成 fixture 配置、Q1 确定性 1000 点样本身份/种子；每 fixture 记录 fixture_id/来源类型/voyage_id/segment_t0（如适用）/工件 SHA256/config 或生成器 hash/确定性种子或 hash 规则/资格化目的/`formal_val_overlap=false`/`iid_test_overlap=false`/`ood_overlap=false`；fixture 不得按资格化结果选择或替换；**环境守卫（R8/NFR-712）**：env_manifest_t445.json 记录 Mac 本机身份（platform/host 类别）、MATLAB R2026a 版本、无 AutoDL/云端 result-bearing 路径的机器断言；**E 段只读守卫（R8/NFR-713）**：E 段工件目录（results/predictor_v3/、candidates/、winner 工件）hash 快照基线 + T-445 harness 代码静态扫描断言零 .keras/winner 模型加载、零 E-additional 训练调用
   - Non-scope: 不写任何 harness/优化器代码；不运行任何航次；不触碰 dataset v3
   - Outputs: config .m + .json + config_sha256 记录
-  - Validation: config 单测（全部冻结字段存在且数值=design 值；k_eq^E 状态字段=`PROVISIONAL_PENDING_QUALIFICATION`）；绝对路径扫描零命中；README 登记完整；fixture manifest schema 校验 + 三 overlap 标志全 false 断言；env_manifest 断言（macOS 本机 + MATLAB R2026a + 无云端 result-bearing 路径，NFR-712）；E 段只读守卫基线快照 + 静态扫描零命中（NFR-713）
+  - Validation: config 单测（全部冻结字段存在且数值=design 值；k_eq^E 状态字段=`PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION` 或 `CANONICAL`）；绝对路径扫描零命中；README 登记完整；fixture manifest schema 校验 + 三 overlap 标志全 false 断言；env_manifest 断言（macOS 本机 + MATLAB R2026a + 无云端 result-bearing 路径，NFR-712）；E 段只读守卫基线快照 + 静态扫描零命中（NFR-713）
   - Gate/STOP: 任何冻结值与 design 不一致 → 停，修正 config（design 为事实源）；fixture manifest 缺项/overlap 违例 → 停
   - Completion evidence: config_sha256 落盘 + 单测 PASS + fixture manifest + env manifest + E 守卫基线 + README diff
 
@@ -116,17 +116,17 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: 单测任一分支失败 → 修复后重测；不得降低分支覆盖要求
   - Completion evidence: 单测 PASS JSON + schema 定稿
 
-- [ ] 7. 【B 阶段·资格化】k_eq^E 参考充电/回补 fixture
+- [x] 7. 【B 阶段·资格化】k_eq^E 能量边界身份资格化（Amendment C）
   - ID: T-007
   - Requirement(s): FR-741/742；Design: DGN-F-06 §6.4；AC-614
   - depends_on: T-001, T-003（runner 复用）
-  - Files/areas: `scripts/+t445/fixture_charge_restoration.m`、`results/t445_oracle_gate/qualification/`
-  - Scope: 非正式 Model E fixture（固定功率充电段 SOC 0.58→0.62 + 静置，fixture 身份限于 qualification_fixture_manifest 登记项），独立测量母线侧投入能量与储能增量；η_chg_measured vs η_chg_ref=0.9687，容差 ±0.005（绝对）；**PASS → k_eq^E 转 `CANONICAL` 并冻结 config hash（R1）**；run 写访问台账 purpose=QUALIFICATION（R5）
+  - Files/areas: `scripts/+t445/energy_ladder_audit.m`、`python/t445/qualify_t007_identity.py`、`scripts/+t445/fixture_charge_restoration.m`（保留 FAIL，禁覆写）、`results/t445_oracle_gate/qualification/`
+  - Scope: **不再**要求动态 0.58→0.62 充电迹线等于单点 0.25C OCV 参考效率 ±0.005。T-007 SHALL 资格化：(1) 信号/能量边界恒等式；(2) SOC/库仑记账；(3) DC/DC 记账；(4) 聚合 pack 拓扑；(5) 标称 SOC FEC 参考构造与冻结 Model E 参数一致。`η_chg_FEC_ref≈0.9403` 是 canonical 参考系数，不是每条动态迹线的经验效率。既有 `t007_keq_charge_restoration.json` FAIL（η=0.7201 vs 0.9687）**必须保留、不得改标 PASS**。禁止用 0.7201 吸入 k_eq。记账门：端子 vs V·I 相对误差 ≤0.1%；库仑 |ε|≤1e-4 SOC；DC/DC vs 0.97 |ε|≤0.005。失败则 STOP 不改 k_eq。身份 PASS 后 k_eq^E=0.5457 与 w_term=1.17e5 转 `CANONICAL` 并冻结 config hash（R1）；run 写访问台账 purpose=QUALIFICATION（R5）
   - Non-scope: 非正式 fixture，不属于正式语料；不产出 headroom 证据；**实现代码不得发明替代 η_path/k_eq 规则——任何替代值需显式预结果批准的设计/config 修订，且全部依赖证据须在新 config hash 下重新生成（R1）**
-  - Outputs: qualification JSON（PASS/FAIL + 测量明细）+ config canonical 标记 + 台账条目
-  - Validation: 见 Scope 容差
-  - Gate/STOP: **PASS → k_eq^E=0.5296 转 canonical；FAIL → STOP 并升级用户（R1；禁自行重算继续）**；T-008/T-011 等全部 k_eq 依赖证据必须在本任务 PASS 后的 canonical config hash 下产出，旧 hash 下的过期证据一律作废重生成（R1）
-  - Completion evidence: qualification JSON +（若 PASS）config canonical 标记
+  - Outputs: energy-ladder JSON + identity qualification JSON + 保留的 FAIL 工件 +（若 PASS）config canonical 标记 + 台账条目
+  - Validation: 记账三门 + pack 拓扑 + FEC 构造一致性；FAIL 工件 pass=false
+  - Gate/STOP: **身份 PASS → k_eq^E=0.5457 转 canonical（与 w_term 同时）；记账失败或仍有未解释 ~0.72 损耗 → STOP 并升级用户（R1；禁吸入 k_eq）**；T-008/T-011 等全部 k_eq 依赖证据必须在本任务 PASS 后的 canonical config hash 下产出，旧 hash 下的过期证据一律作废重生成（R1）
+  - Completion evidence: identity qualification JSON overall=true + 保留 FAIL 工件 +（若 PASS）config canonical 标记
 
 - [ ] 8. B2 窗内优化器实现（窗内 DP + 策略表 + V_term）+ 单元/toy 测试
   - ID: T-008

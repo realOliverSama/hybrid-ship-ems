@@ -20,10 +20,24 @@ from datetime import datetime, timezone
 if __name__ == "__main__" and __package__ is None:
     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
     from t445 import hashutil, paths  # type: ignore
-    from t445.frozen_config import build_frozen_config, derive_lambda_table  # type: ignore
+    from t445.frozen_config import (  # type: ignore
+        K_EQ_E_KG_PER_KWH,
+        K_EQ_STATUS_PROVISIONAL,
+        W_TERM,
+        build_frozen_config,
+        derive_keq_fec,
+        derive_lambda_table,
+    )
 else:
     from . import hashutil, paths
-    from .frozen_config import build_frozen_config, derive_lambda_table
+    from .frozen_config import (
+        K_EQ_E_KG_PER_KWH,
+        K_EQ_STATUS_PROVISIONAL,
+        W_TERM,
+        build_frozen_config,
+        derive_keq_fec,
+        derive_lambda_table,
+    )
 
 # Actual consumption (load/train), not policy mentions or this scanner's pattern table.
 E_GUARD_FORBIDDEN = [
@@ -354,6 +368,38 @@ def build_fixture_manifest(config_sha: str) -> dict:
         soc_start=0.58,
         soc_end=0.62,
         then="rest",
+        status="PRESERVED_FAIL_AMENDMENT_C",
+        note=(
+            "Mismatch-boundary FAIL vs OCV eta 0.9687 is preserved. "
+            "T-007 pass criterion is identity qualification, not this trace."
+        ),
+    )
+    add(
+        fixture_id="KEQ-ENERGY-LADDER",
+        source_type="SYNTHETIC_GENERATOR",
+        voyage_id=None,
+        segment_t0=None,
+        artifact_sha256=None,
+        generator_or_config_hash=config_sha,
+        seed_or_hash_rule="phase4f-t445-keq-fixture-v1 (same charge trace, energy-boundary audit)",
+        purpose="K_EQ_ENERGY_LADDER",
+        seed="phase4f-t445-keq-fixture-v1",
+        status="ACCOUNTING_PASS_PRE_AMENDMENT_C",
+    )
+    add(
+        fixture_id="KEQ-IDENTITY-QUALIFICATION",
+        source_type="SYNTHETIC_GENERATOR",
+        voyage_id=None,
+        segment_t0=None,
+        artifact_sha256=None,
+        generator_or_config_hash=config_sha,
+        seed_or_hash_rule="phase4f-t445-keq-identity-v1",
+        purpose="K_EQ_IDENTITY_QUALIFICATION",
+        seed="phase4f-t445-keq-identity-v1",
+        note=(
+            "T-007 Amendment C: signal/energy identities, coulomb, DC/DC, "
+            "pack topology, nominal-SOC FEC construction. Not 0.58->0.62 vs 0.9687."
+        ),
     )
     add(
         fixture_id="ZOH-SYNTHETIC-STAIR",
@@ -512,6 +558,23 @@ def main() -> int:
         raise SystemExit(f"unexpected n_lambda/max: {pt['n_lambda']} {pt['lambda_table_max']}")
     if cfg["lambda_law"]["upper_cap"] is not None:
         raise SystemExit("upper_cap must be null after amendment a-prime")
+    keq_d = derive_keq_fec()
+    if cfg["k_eq"]["value_kg_per_kWh"] != K_EQ_E_KG_PER_KWH:
+        raise SystemExit("k_eq rounded literal drift")
+    if cfg["v_term"]["w_term"] != W_TERM:
+        raise SystemExit("w_term must be amended together with k_eq")
+    if abs(keq_d["eta_chg_FEC_ref_raw"] - cfg["k_eq"]["eta_chg_FEC_ref"]) > 5e-5:
+        raise SystemExit("eta_chg_FEC_ref rounding drift vs eta_coul*V_nom/V_t")
+    if abs(keq_d["value_kg_per_kWh_raw"] - K_EQ_E_KG_PER_KWH) > 5e-5:
+        raise SystemExit("k_eq rounding drift vs (BSFC/1000)/eta_path_FEC")
+    if abs(keq_d["w_term_raw"] - W_TERM) > 500.0:
+        raise SystemExit("w_term rounding drift vs 2*k_eq*Cap/(d_cal-delta_term)")
+    if cfg["k_eq"]["status"] not in (K_EQ_STATUS_PROVISIONAL, "CANONICAL"):
+        raise SystemExit(f"unexpected k_eq status {cfg['k_eq']['status']}")
+    if cfg["k_eq"].get("eta_chg_ref") == cfg["k_eq"]["eta_chg_FEC_ref"]:
+        raise SystemExit("OCV diagnostic must not be aliased as FEC eta")
+    if abs(cfg["k_eq"]["eta_chg_ocv_diagnostic"] - 0.9687) > 1e-12:
+        raise SystemExit("OCV diagnostic 0.9687 missing")
     slx = os.path.join(paths.MODELE_ROOT, "model", "HybridShip_ModelE.slx")
     builder = os.path.join(paths.SCRIPTS_DIR, "+model", "build_model_e.m")
     g_phys = os.path.join(paths.CONFIG_DIR, "gate_baseline_modele.json")

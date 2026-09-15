@@ -31,6 +31,10 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `t004_unit_test_result.json` | T-004 合成 fixture FEC/审计/硬可行性 |
 | `corpus_manifest.json` | ★ T-005 冻结语料（val 27 组；initial 9×4；reserve 3×4；test_sealed 元数据） |
 | `t006_unit_test_result.json` | T-006 合成统计/裁决单测证据（非正式 gate_result） |
+| `amendment_c_rebind.json` | Amendment C 后 T-002/003/005 配置身份重绑记录（语料 identity SHA 不变） |
+| `qualification/t007_keq_charge_restoration.json` | T-007 原 0.58→0.62 vs 0.9687 **FAIL 保留件**（禁改标 PASS） |
+| `qualification/t007_energy_ladder.json` | T-007 能量边界阶梯审计（记账 PASS；0.72 为口径错位非未解释损耗） |
+| `qualification/t007_identity_qualification.json` | T-007 Amendment C 身份资格化（标称 SOC FEC 构造） |
 | `incidents.jsonl` | 事故账本（禁删，FR-777） |
 | `access_ledger.jsonl` | 访问台账（purpose ∈ QUALIFICATION/REGRESSION/SYNTHETIC_SMOKE/FORMAL） |
 | `qualification/` | B 阶段资格化 JSON（T-007/T-010/T-011） |

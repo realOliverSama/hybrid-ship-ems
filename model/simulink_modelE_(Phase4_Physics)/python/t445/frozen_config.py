@@ -30,6 +30,69 @@ LAMBDA_TABLE_STEP = 0.005
 SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME = (
     "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33"
 )
+SUPERSEDED_CONFIG_SHA256_PRE_AMENDMENT_C = (
+    "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3"
+)
+
+# Amendment C: FEC k_eq on nominal-SOC kWh, not OCV chemical kWh
+V_NOM_V = 576.0
+V_TERMINAL_CHG_V = 600.33
+ETA_COUL = 0.98
+ETA_RECT = 0.97
+ETA_DCDC = 0.97
+BSFC_REF_E_G_PER_KWH = 482.749
+BAT_CAP_KWH = 1071.36
+DELTA_TERM = 0.01
+D_CAL = 0.02
+
+
+# Design-frozen rounded literals (Amendment C). Raw recomputes are audit-only.
+ETA_CHG_FEC_REF = 0.9403
+ETA_PATH_FEC_E = 0.8847
+K_EQ_E_KG_PER_KWH = 0.5457
+W_TERM = 1.17e5
+ETA_CHG_OCV_DIAGNOSTIC = 0.9687
+K_EQ_STATUS_PROVISIONAL = "PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION"
+K_EQ_STATUS_CANONICAL = "CANONICAL"
+# T-007 identity PASS (Amendment C): stamp canonical after boundary qualification.
+K_EQ_STATUS = K_EQ_STATUS_CANONICAL
+INTERMEDIATE_PROVISIONAL_SHA256_AMENDMENT_C = (
+    "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1"
+)
+
+
+def derive_keq_fec() -> dict:
+    """Nominal-SOC FEC k_eq from frozen primitives (Amendment C).
+
+    Frozen JSON stores the rounded design literals. Raw values are returned
+    for audit only and are not part of the hashed config body.
+    """
+    eta_chg_fec = ETA_COUL * V_NOM_V / V_TERMINAL_CHG_V
+    eta_path = ETA_RECT * ETA_DCDC * ETA_CHG_FEC_REF
+    keq_from_rounded_path = (BSFC_REF_E_G_PER_KWH / 1000.0) / ETA_PATH_FEC_E
+    w_from_rounded_keq = 2.0 * K_EQ_E_KG_PER_KWH * BAT_CAP_KWH / (D_CAL - DELTA_TERM)
+    return {
+        "V_nom_V": V_NOM_V,
+        "V_terminal_chg_V": V_TERMINAL_CHG_V,
+        "eta_coul": ETA_COUL,
+        "eta_rect": ETA_RECT,
+        "eta_dcdc": ETA_DCDC,
+        "eta_chg_FEC_ref": ETA_CHG_FEC_REF,
+        "eta_path_FEC_E": ETA_PATH_FEC_E,
+        "value_kg_per_kWh": K_EQ_E_KG_PER_KWH,
+        "w_term": W_TERM,
+        "eta_chg_FEC_ref_raw": eta_chg_fec,
+        "eta_path_FEC_E_raw": eta_path,
+        "value_kg_per_kWh_raw": keq_from_rounded_path,
+        "w_term_raw": w_from_rounded_keq,
+        "derivation": (
+            "eta_chg_FEC_ref = eta_coul*V_nom/V_terminal_chg; "
+            "eta_path_FEC_E = eta_rect*eta_dcdc*eta_chg_FEC_ref; "
+            "k_eq = (BSFC_ref_E/1000)/eta_path_FEC_E; "
+            "w_term = 2*k_eq*Cap/(d_cal-delta_term); "
+            "FEC basis = Bat_Cap_kWh*DeltaSOC (nominal-SOC kWh), not OCV chemical kWh"
+        ),
+    }
 
 
 def derive_lambda_table() -> dict:
@@ -57,35 +120,47 @@ def derive_lambda_table() -> dict:
 
 
 def build_frozen_config() -> dict:
+    keq = derive_keq_fec()
     return {
         "schema": "phase4f_t445_config_v1",
         "spec": "phase4-f-trajectory-oracle-gate",
         "task_created": "T-001",
         "amendment": {
-            "id": "a_prime_dgn_f03_2026-09-15",
-            "superseded_config_sha256": SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME,
+            "id": "C_fec_nominal_soc_2026-09-15",
+            "superseded_config_sha256": SUPERSEDED_CONFIG_SHA256_PRE_AMENDMENT_C,
+            "prior_a_prime_sha256": SUPERSEDED_CONFIG_SHA256_PRE_A_PRIME,
+            "intermediate_provisional_sha256": INTERMEDIATE_PROVISIONAL_SHA256_AMENDMENT_C,
             "note": (
-                "Removed design-only 0.80 cap; native law=6 envelope; "
-                "policy table lambda from frozen primitives."
+                "FEC k_eq on nominal-SOC kWh (eta_coul*V_nom/V_t); "
+                "OCV eta 0.9687 is diagnostic only. T-007 identity PASS; "
+                "k_eq status CANONICAL. Intermediate provisional SHA retained."
             ),
         },
         "k_eq": {
-            "value_kg_per_kWh": 0.5296,
-            "status": "PROVISIONAL_PENDING_QUALIFICATION",
+            "V_nom_V": keq["V_nom_V"],
+            "V_terminal_chg_V": keq["V_terminal_chg_V"],
+            "eta_coul": keq["eta_coul"],
+            "eta_rect": keq["eta_rect"],
+            "eta_dcdc": keq["eta_dcdc"],
+            "eta_chg_FEC_ref": keq["eta_chg_FEC_ref"],
+            "eta_path_FEC_E": keq["eta_path_FEC_E"],
+            "eta_path_E": keq["eta_path_FEC_E"],
+            "value_kg_per_kWh": keq["value_kg_per_kWh"],
+            "status": K_EQ_STATUS,
             "canonical_after_task": "T-007",
-            "bsfc_ref_E_g_per_kWh": 482.749,
-            "eta_rect": 0.97,
-            "eta_dcdc": 0.97,
-            "eta_chg_ref": 0.9687,
+            "bsfc_ref_E_g_per_kWh": BSFC_REF_E_G_PER_KWH,
+            "eta_chg_ocv_diagnostic": ETA_CHG_OCV_DIAGNOSTIC,
             "eta_dis_ref": 0.9686,
-            "eta_path_E": 0.9111,
-            "robustness_0p8x": 0.4237,
-            "robustness_1p2x": 0.6355,
-            "bat_cap_kWh": 1071.36,
+            "robustness_0p8x": 0.4366,
+            "robustness_1p2x": 0.6548,
+            "bat_cap_kWh": BAT_CAP_KWH,
+            "fec_energy_basis": "nominal_SOC_kWh",
             "no_double_counting_of_energy_loss": True,
             "battery_aggregation_basis_check": True,
             "assumed_bat_eff_excluded_from_eta_path": True,
             "model_d_k_eq_0p499_revoked": True,
+            "do_not_use_eta_chg_measured_0p7201": True,
+            "derivation": keq["derivation"],
         },
         "b1_norm": {
             "transform": "affine_global_single",
@@ -127,12 +202,13 @@ def build_frozen_config() -> dict:
             "rate_limit": False,
         },
         "v_term": {
-            "delta_term": 0.01,
-            "w_term": 1.13e5,
+            "delta_term": DELTA_TERM,
+            "w_term": keq["w_term"],
+            "d_cal": D_CAL,
             "w_term_unit": "kg/SOC^2",
             "soc_target_policy": "SOC0_voyage",
-            "d_cal": 0.02,
             "corpus_soc0_machine_assert": 0.60,
+            "amended_with_k_eq": True,
         },
         "terminal_soc_admissibility": {
             "abs_dsoc_max": 0.005,

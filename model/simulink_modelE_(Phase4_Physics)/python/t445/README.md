@@ -15,10 +15,13 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 
 | 条目 | 说明 |
 |---|---|
-| `frozen_config.py` | ★ T-001 冻结参数表（design 🔒 数值，k_eq^E 初始 PROVISIONAL） |
+| `frozen_config.py` | ★ T-001 冻结参数表（Amendment C：k_eq^E=0.5457 标称 SOC FEC + w_term=1.17e5；状态 PROVISIONAL 至 T-007 identity） |
 | `freeze_t001.py` | ★ T-001 导出驱动（config JSON / fixture·env·E-guard manifest） |
+| `qualify_t007_identity.py` | ★ T-007 能量边界身份资格化（记账/库仑/DC-DC/pack/FEC 构造；保留 FAIL 工件） |
+| `rebind_config_identity.py` | Amendment C 后 T-002/003/005 证据 SHA 重绑（不改科学语义；语料 identity 断言） |
 | `paths.py` / `hashutil.py` | 相对路径与 SHA256 工具 |
 | `tests/test_t001_config.py` | T-001 单测（冻结字段 / overlap 三 false / env / E 守卫） |
+| `tests/test_t007_identity.py` | T-007 身份资格化单测（保留 FAIL、ladder 记账、FEC 构造） |
 | `verify_lambda_envelope.py` | T-003 R4 原生包络（Amendment a′：`LAW6_NATIVE_ENVELOPE_CONFIRMED`；旧 STOP JSON 保留） |
 | `compute_b1_norm.py` | T-003 从 train 语料复现 E_ref/E_scale |
 | `corpus_select.py` | ★ T-005 val-only 形状评分/三分层/SHA 排序，写 `corpus_manifest.json` |

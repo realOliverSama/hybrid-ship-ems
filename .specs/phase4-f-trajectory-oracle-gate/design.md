@@ -11,6 +11,8 @@ Brainstorm: `./brainstorm.md`（Q1~Q4 CLOSED）
 
 **Amendment 2026-09-15（T-003 R4 Design Escalation，APPROVED option a′）**：去掉设计层 0.80 上限，恢复冻结 law=6 原生包络 `λ_eff = max(λ_raw, 0.43)`；B2 策略表 λ 轴由冻结状态/作用空间导出为 `0.43:0.005:15.525`（n=3020）。不改 `.slx`、不改 law=6 核心、不给优化器单方面戴帽。既有 `R4_CAP_NOT_LEGALLY_IMPLEMENTABLE` 工件保留为修订溯源。本修订为预结果设计校正，不污染正式 Gate。
 
+**Amendment C 2026-09-15（T-007 energy-boundary，APPROVED WITH PRE-RESULT）**：FEC `k_eq^E` 按 **标称 SOC kWh**（`Bat_Cap_kWh·ΔSOC`，`Bat_Cap=576 V·1860 Ah=1071.36 kWh`）定义，不得用 OCV 化学能口径或母线 `P_bat` 积分去标定该系数。`η_chg_FEC_ref = η_coul·V_nom/V_terminal_chg = 0.98·576/600.33 = 0.9403`；`η_path_FEC^E = 0.97·0.97·0.9403 = 0.8847`；**`k_eq^E = 0.5457 kg/kWh`** 与 **`w_term = 1.17e5 kg/SOC²` 必须同时修订**。OCV 效率 `η_coul·OCV/V_t ≈ 0.9687` 仅作诊断，禁止用作 `1071.36·ΔSOC` 的 FEC 折算。T-007 不再要求动态 0.58→0.62 充电迹线在 ±0.005 内等于单点 0.25C 参考效率。0.7201 测量结果不是有效经验替代效率，禁止吸入 `k_eq^E`。既有 FAIL 工件保留、不得改标 PASS。本修订为预结果设计校正，不污染正式 Gate。
+
 ## 1. 架构总览
 
 ```text
@@ -108,10 +110,11 @@ V_term(SOC_H) = −k_eq^E · Cap · (SOC_H − SOC_target)
 - **线性项**把终端储能按 k_eq^E 定价（与 FEC 指标同一折算率，DGN-F-06）→ 窗末放空电池的"收益"被等值扣回，机制上消除跨视界 SOC 欠账套利（FR-735）。
 - **w_term 标定推导（R4 修订，显式记录）**：
   - 标定偏离点 d_cal = **0.02**（严格在死区 δ_term=0.01 之外；二次罚在 |Δ|=δ_term 处恰为零，属软死区设计语义）；
-  - 越带超出部分（d_cal − δ_term = 0.01 SOC）的线性能量信用 = k_eq^E·Cap·0.01 = 0.5296×1071.36×0.01 = **5.674 kg**；
-  - 期望关系：d_cal 处罚值 = 2× 越带信用 = 11.348 kg（罚显著压过信用）；
-  - w_term·(0.01)² = 11.348 → **w_term = 1.13e5 kg/SOC²** 🔒（单位：kg/SOC²）；
-  - δ_term = 0.01 🔒；Cap = 1071.36 kWh。
+  - 越带超出部分（d_cal − δ_term = 0.01 SOC）的线性能量信用 = k_eq^E·Cap·0.01 = 0.5457×1071.36×0.01 = **5.846 kg**（Amendment C；与 k_eq^E 同时修订）；
+  - 期望关系：d_cal 处罚值 = 2× 越带信用 = 11.692 kg（罚显著压过信用）；
+  - w_term·(0.01)² = 11.692 → **w_term = 1.17e5 kg/SOC²** 🔒（单位：kg/SOC²）；
+  - δ_term = 0.01 🔒；Cap = 1071.36 kWh；
+  - **k_eq^E 与 w_term SHALL 同时修订，禁止只改其一。**
 - **机制性质声明（R4）**：软罚 + 死区 = **反套利有效性**机制，不声称 SOC_H 永不越带的硬保证；AC-613 按有效性测试（见 requirements AC-613 修订文）。
 
 ## 5. OQ-F4 —— TERMINAL_SOC_ADMISSIBILITY（DGN-F-05）🔒
@@ -142,21 +145,27 @@ V_term(SOC_H) = −k_eq^E · Cap · (SOC_H − SOC_target)
 |---|---|---|---|
 | 机组 AC→母线 | η_rect = 0.97（功率平衡显式） | ✅ | 补给链必经，SOC 记账未含 |
 | 母线↔电池端子 | η_dcdc = 0.97（14 号 SOP/换算显式） | ✅ | 同上 |
-| 端子→储能 | 1RC ECM：R_0/R_1 I²R 物理损耗 + η_coul=0.98 仅进 SOC 计量（Q5 红线：不乘端口功率） | ✅ 以 ECM 推导参考效率计入一次 | SOC 记账是"已发生事实"，FEC 修正是"补给所需燃料"，环节不同不双计 |
+| 端子→储能 | 1RC ECM：R_0/R_1 I²R 物理损耗 + η_coul=0.98 仅进 SOC 计量（Q5 红线：不乘端口功率） | ✅ 以 **标称电压** FEC 参考效率 `η_coul·V_nom/V_t` 计入一次（Amendment C） | FEC 修正的是 `1071.36 kWh·ΔSOC` 的补给燃料，不是 OCV 化学能；OCV/V_t 诊断不得代入该折算 |
 | ASSUMED_Bat_Eff_* (0.95/0.95) | 仅 ECMS 控制器内部 mbe 口径 | ❌ | 与度量折算无关 |
 
 ### 6.3 冻结数值 🔒
 
 - BSFC_ref^E = **482.749 g/kWh**（五节点 PCHIP 在 [125,500] kW 的均匀能量加权 ∫P·BSFC/∫P；非算术均值 494.8——算术均值向高 BSFC 低载区偏置）；
-- 充电方向参考效率（SOC=0.60、I_ref=465 A）：V_t_chg = OCV+I(R_0+R_1) = 593.42+465×0.01487 = 600.33 V → η_chg_ref = η_coul·OCV/V_t_chg = **0.9687**；
-- 放电方向参考效率（同参考点）：V_t_dis = OCV−I(R_0+R_1) = 586.51 V → η_dis_ref = η_coul·V_t_dis/OCV = **0.9686**（方向效率成对使用，不以单个对称均值默默替代——R7）；
-- η_path^E = 0.97 × 0.97 × 0.9687 = 0.9111；
-- **k_eq^E = (482.749/1000)/0.9111 = 0.5296 kg/kWh** 🔒（Model D 旧值 0.499 废止）；
-- 稳健性报告点：0.8× = 0.4237 / 1.2× = 0.6355；break-even 按 FR-745。
+- 充电方向 **OCV/化学能诊断**（SOC=0.60、I_ref=465 A）：V_t_chg = OCV+I(R_0+R_1) = 593.42+465×0.01487 = 600.33 V → `η_chg_ocv_diagnostic = η_coul·OCV/V_t_chg = **0.9687**`（仅诊断；**不得**用于 `1071.36 kWh·ΔSOC` 的 FEC 折算）；
+- 充电方向 **FEC 标称 SOC 参考**（同一冻结点）：`η_chg_FEC_ref = η_coul·V_nom/V_t_chg = 0.98·576/600.33 = **0.9403**` 🔒；
+- 放电方向参考效率（同参考点）：V_t_dis = OCV−I(R_0+R_1) = 586.51 V → η_dis_ref = η_coul·V_t_dis/OCV = **0.9686**（B2 DP 方向效率成对使用，不以单个对称均值默默替代——R7）；
+- `η_path_FEC^E = 0.97 × 0.97 × 0.9403 = 0.8847`；
+- **k_eq^E = (482.749/1000)/0.8847 = 0.5457 kg/kWh** 🔒（Amendment C；旧 0.5296 与 Model D 0.499 均废止；**禁止**用测量 0.7201 吸入 k_eq）；
+- 稳健性报告点：0.8× = 0.4366 / 1.2× = 0.6548；break-even 按 FR-745。
 
-### 6.4 预结果资格化（R5）：参考充电/回补 fixture
+### 6.4 预结果资格化（R5，经 Amendment C 修订）：能量边界身份，而非动态迹线效率
 
-在任何正式 B1/B2 结果观察**之前**：非正式 Model E fixture（固定功率充电段 SOC 0.58→0.62 + 静置），独立测量母线侧投入能量与储能增量，验证有效回补边界：η_chg_measured = ΔE_stored/∫P_term dt 与 η_chg_ref=0.9687 偏差 ≤ **0.005（绝对）** 🔒。通过 → 0.5296 转 canonical；失败 → 在任何正式结果观察前重算 η_path^E 与 k_eq^E（预结果资格化，非事后调参）。
+在任何正式 B1/B2 结果观察**之前**：
+
+1. **保留**既有非正式 fixture 的 FAIL 证据（固定功率充电段 SOC 0.58→0.62，`η_chg_measured=0.7201` vs OCV 诊断 0.9687）。该工件不得删除、不得改标 PASS。0.7201 是口径错位（标称 SOC 能 vs 母线充电能的净 ΔSOC 比），不是未解释损耗，也不是 k_eq 的经验替代。
+2. **能量阶梯审计**（同一非正式 fixture）分别计算 `E_SOC_nom`、`E_OCV`、`E_terminal=∫V|I|dt`、`E_bus_converter_input`、`E_generator_electric`（充电输入能量取正）。记账门：端子功率积分 vs `V·I` 相对误差 ≤ 0.1%；SOC 库仑平衡绝对误差 ≤ 1e-4 SOC；DC/DC 端子/输入效率 vs 冻结 0.97 绝对误差 ≤ 0.005。失败则 STOP，不改 k_eq。
+3. T-007 **不再**要求动态 0.58→0.62 迹线在 ±0.005 内等于单点 0.25C 参考效率。T-007 SHALL 资格化：(i) 信号/能量边界恒等式；(ii) SOC/库仑记账；(iii) DC/DC 记账；(iv) 聚合 pack 拓扑；(v) 标称 SOC FEC 参考构造与冻结 Model E 参数一致。`η_chg_FEC_ref≈0.9403` 是 canonical **参考系数**，不是“每条动态充电迹线的经验效率”。
+4. 身份资格化通过后，`k_eq^E=0.5457` 与 `w_term=1.17e5` 在 T-007 收口时转 `CANONICAL`；此前状态为 `PROVISIONAL_CANDIDATE_PENDING_T007_REQUALIFICATION`。
 
 ## 7. OQ-F6 —— 形状波动评分与语料选择（DGN-F-07，经 R6 修订）🔒
 
@@ -396,7 +405,7 @@ Model E `.slx` **零修改**（DGN-F-01）；Model E 基线 Gate（10b smoke / G
 | OQ-F2 Δλ 容许集（R3） | ✅ 闭合 | DGN-F-03 |
 | OQ-F3 终端机制（R4） | ✅ 闭合 | DGN-F-04 |
 | OQ-F4 SOC 容许带 | ✅ 闭合 | DGN-F-05 |
-| OQ-F5 k_eq^E（R5） | ✅ 闭合（数值 0.5296 + 聚合基线检查 + 回补 fixture） | DGN-F-06 |
+| OQ-F5 k_eq^E（R5） | ✅ 闭合（Amendment C：数值 0.5457 标称 SOC FEC + 聚合基线检查 + 能量边界身份资格化；OCV 0.9687 仅诊断） | DGN-F-06 |
 | OQ-F6 波动评分（R6 形状评分） | ✅ 闭合 | DGN-F-07 |
 | OQ-F7 B3 资格化（R7） | ✅ 闭合 | DGN-F-08 |
 | OQ-F8 求解器（R8 资格化 Gate） | ✅ 闭合 | DGN-F-09 |
