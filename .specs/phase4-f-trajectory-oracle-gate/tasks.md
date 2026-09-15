@@ -1,7 +1,7 @@
 # Phase 4-F T-445 Trajectory Oracle Gate Tasks
 
 Spec: `phase4-f-trajectory-oracle-gate`  
-Status: tasks-approved（R1~R8 闭合，2026-09-15）  
+Status: implementation-in-progress（T-001 起，2026-09-15）  
 Created: 2026-09-15  
 Approved: 2026-09-15（APPROVED WITH 8 REQUIRED CORRECTIONS——R1~R8 全部按令闭合；Implementation 仍需单独显式授权）  
 Brainstorm: `./brainstorm.md`（Q1~Q4 批准）  
@@ -44,7 +44,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
 
 ## A — 基础 / 冻结契约实现（非结果承载）
 
-- [ ] 1. 冻结 config 实体化 + 基线完整性 + 目录/README 登记
+- [x] 1. 冻结 config 实体化 + 基线完整性 + 目录/README 登记
   - ID: T-001
   - Requirement(s): FR-740~745, FR-780~782；NFR-710/711/712/713/715/716；Design: DGN-F-03/04/05/06/07/11 + design.md §16（组件与目录）；AC-614
   - depends_on: 无（首批）

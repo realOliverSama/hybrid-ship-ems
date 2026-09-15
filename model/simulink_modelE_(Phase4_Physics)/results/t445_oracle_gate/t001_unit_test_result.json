@@ -1,0 +1,27 @@
+{
+  "abs_path_scan": {
+    "hits": [],
+    "n_hits": 0,
+    "pass": true
+  },
+  "cloud_result_bearing_path_present": false,
+  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "e_guard_pass": true,
+  "env_manifest_sha256": "19c170305a550020faf5e3f65a49b594031efcf0b245a1b4ab1cea97e55c77bb",
+  "fixture_manifest_sha256": "bc4deedc6a4f6b63e26cd755aa78972b3851334363e271adfc5948f29bfd4808",
+  "git_commit": "09e6efb1f88ff5c9874a94685dd3dc4e46143e81",
+  "host_category_macos_local": true,
+  "k_eq_status": "PROVISIONAL_PENDING_QUALIFICATION",
+  "matlab": {
+    "available": true,
+    "on_path": false,
+    "release": "2026a",
+    "version": "26.1.0.3312084 (R2026a) Update 4"
+  },
+  "matlab_r2026a_assert": true,
+  "n_fixtures": 28,
+  "overlap_all_false": true,
+  "schema": "t445_t001_evidence_v1",
+  "task": "T-001",
+  "utc": "2026-09-15T07:09:31Z"
+}

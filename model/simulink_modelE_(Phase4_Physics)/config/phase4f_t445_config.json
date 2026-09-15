@@ -1,0 +1,361 @@
+{
+  "audit_capability_matrix": [
+    {
+      "hard": true,
+      "signal": "task_complete_duration",
+      "source": "stream+Voyage_Stop_Logic",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": false,
+      "signal": "speed_tracking_rms_max",
+      "source": "stream_v_ref_v_ship",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "load_shortfall_propulsion_gap",
+      "source": "09_bus_residual+08_derate",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "soc_hard_bound_time",
+      "source": "stream_SOC",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "battery_sop_v_i",
+      "source": "stream_P_bat_avail_V_I+ECM_flags",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "genset_pmin_pmax_ramp",
+      "source": "stream_state_DG_P_gen_actual",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "terminal_soc_admissibility",
+      "source": "stream_SOC",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "bus_energy_closure",
+      "source": "gate_ctrl.check_c5",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": true,
+      "signal": "safety_s1_s5_count_duration",
+      "source": "logsout_safety_flags",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": false,
+      "signal": "pms_override_count_duration",
+      "source": "logsout_nine_tuple",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": false,
+      "signal": "startstop_tv_pgen_ramp_activation",
+      "source": "stream_derived",
+      "status": "AVAILABLE_AND_CHECKED"
+    },
+    {
+      "hard": false,
+      "signal": "e_bat_throughput_efc_proxy",
+      "source": "stream_P_bat_actual",
+      "status": "AVAILABLE_AND_CHECKED"
+    }
+  ],
+  "b1_norm": {
+    "E300_max_kWh": 75.041,
+    "E300_min_kWh": 0.236,
+    "E_ref_kWh": 27.781415,
+    "E_scale_kWh": 13.671476,
+    "n_t0": 159472,
+    "per_voyage_refit_forbidden": true,
+    "provenance_sha256": "b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045",
+    "source_split": "train",
+    "split_assignment_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+    "transform": "affine_global_single",
+    "unit": "kWh"
+  },
+  "b2_dp": {
+    "K": 30,
+    "big_M": 10000.0,
+    "dt_s": 10,
+    "eta_chg": 0.9687,
+    "eta_dcdc": 0.97,
+    "eta_dis": 0.9686,
+    "infeasible_fallback": "delta_lambda_zero",
+    "n_soc": 86,
+    "p_g_prev_colon_kW": [
+      0,
+      20,
+      1000
+    ],
+    "persistent_infeas_share": 0.05,
+    "soc_colon": [
+      0.1,
+      0.01,
+      0.95
+    ],
+    "window_budget_s": 2.0
+  },
+  "b2_policy_table": {
+    "design_text_n_lambda": 76,
+    "lambda_colon": [
+      0.43,
+      0.005,
+      0.8
+    ],
+    "n_lambda_derived": 75,
+    "n_lambda_note": "DGN-F-09 colon 0.43:0.005:0.80 yields 75 points; design prose says 76. Implementation freezes the colon grid as the 🔒 spec; n_lambda_derived is diagnostic.",
+    "n_pbar": 66,
+    "n_soc_regions": 3,
+    "pbar_colon_kW": [
+      0,
+      20,
+      1300
+    ],
+    "soc_regions": [
+      "normal",
+      "no_discharge_le_0.105",
+      "no_charge_ge_0.945"
+    ]
+  },
+  "b3": {
+    "c_start_kg": 0.6,
+    "dt_s": 1,
+    "epsilon_num_rel": 0.005,
+    "p_grid": "union_0_and_125_20_1000",
+    "ramp_kW_per_s_per_on": 20.0,
+    "soc_colon": [
+      0.1,
+      0.005,
+      0.95
+    ],
+    "terminal_band": 0.005
+  },
+  "baseline_integrity": {
+    "HybridShip_ModelE.slx": {
+      "path": "simulink_modelE_(Phase4_Physics)/model/HybridShip_ModelE.slx",
+      "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+      "size_bytes": 1058111
+    },
+    "build_model_e.m": {
+      "path": "simulink_modelE_(Phase4_Physics)/scripts/+model/build_model_e.m",
+      "sha256": "7516500e2133f90bc500e7095f8f83d75ac41d0febe950ff28834d3df941ee94",
+      "size_bytes": 132469
+    },
+    "gate_baseline_modele.json": {
+      "path": "simulink_modelE_(Phase4_Physics)/config/gate_baseline_modele.json",
+      "sha256": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e",
+      "size_bytes": 8260
+    },
+    "gate_baseline_modele_control.json": {
+      "path": "simulink_modelE_(Phase4_Physics)/config/gate_baseline_modele_control.json",
+      "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273",
+      "size_bytes": 1776
+    }
+  },
+  "bootstrap": {
+    "B": 10000,
+    "ci": "percentile_95_two_sided",
+    "expanded_groups_per_tier": 4,
+    "initial_groups_per_tier": 3,
+    "unit": "split_group_cluster"
+  },
+  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "corpus_policy": {
+    "iid_test_access_forbidden": true,
+    "initial_groups": 9,
+    "initial_voyages": 36,
+    "n_val_split_groups_expected": 27,
+    "n_val_voyages_expected": 108,
+    "ood_access_forbidden": true,
+    "reserve_groups": 3,
+    "reserve_voyages": 12,
+    "shape_score": {
+      "group_agg": "mean_of_four_members",
+      "groups_per_tier": 9,
+      "name": "shape_cv",
+      "p_epsilon_kW": 1.0,
+      "tiers": [
+        "HIGH",
+        "MID",
+        "LOW"
+      ],
+      "windows": "full_horizon_300s_only"
+    },
+    "split": "validation",
+    "test_sealed_required": true
+  },
+  "delta_lambda": {
+    "max_kg_per_kWh": 0.1,
+    "min_kg_per_kWh": -0.1,
+    "n_levels": 41,
+    "rate_limit": false,
+    "step": 0.005
+  },
+  "environment_policy": {
+    "autodl_result_bearing_forbidden": true,
+    "cloud_result_bearing_forbidden": true,
+    "e_additional_retrain_forbidden": true,
+    "e_stage_readonly": true,
+    "matlab_required": "R2026a",
+    "platform_required": "macos_local",
+    "winner_model_load_forbidden": true
+  },
+  "epsilon_num": {
+    "rel_of_j_fec_b2": 0.005
+  },
+  "evidence_grade": "DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE",
+  "gate_thresholds": {
+    "X_pct": 2.0,
+    "Y_pct": 0.0
+  },
+  "hard_feasibility": {
+    "battery_sop_v_i": {
+      "duration_tol_s": 1e-06,
+      "i_abs_max_A": 1823.0,
+      "p_over_avail_duration_s": 0.0,
+      "v_max_V": 657.0,
+      "v_min_V": 360.0
+    },
+    "energy_closure_c5": {
+      "rel_residual_max": 0.001,
+      "source": "gate_ctrl.check_c5"
+    },
+    "genset_limits": {
+      "c2_source": "gate_baseline_modele_control.json_v1.0",
+      "on_out_of_band_duration_s": 0.0,
+      "p_max_kW": 500.0,
+      "p_min_kW": 125.0,
+      "ramp_kW_per_s": 20.0,
+      "ramp_tol_kW_per_s": 1e-06
+    },
+    "load_shortfall": {
+      "bus_shortfall_energy_kWh": 0.0,
+      "derate08_duration_s": 0.0,
+      "p_residual_neg_thresh_kW": -1.0
+    },
+    "safety_hard_events": {
+      "s1a_unexpected_loss_count": 0,
+      "s1b_start_fail_count": 0,
+      "s2_realized_deficit_count": 0,
+      "source": "C6_gate_baseline_modele_control.json_v1.0"
+    },
+    "soc_hard_bounds": {
+      "soc_max": 0.95,
+      "soc_min": 0.1,
+      "violation_duration_s": 0.0
+    },
+    "task_complete": {
+      "abs_t_end_tol_s": 1.0,
+      "pass_rule": "Voyage_Stop_Logic_normal_and_abs_Tend_minus_Tfrozen_le_1s"
+    },
+    "terminal_soc": {
+      "abs_dsoc_max": 0.005
+    }
+  },
+  "k_eq": {
+    "assumed_bat_eff_excluded_from_eta_path": true,
+    "bat_cap_kWh": 1071.36,
+    "battery_aggregation_basis_check": true,
+    "bsfc_ref_E_g_per_kWh": 482.749,
+    "canonical_after_task": "T-007",
+    "eta_chg_ref": 0.9687,
+    "eta_dcdc": 0.97,
+    "eta_dis_ref": 0.9686,
+    "eta_path_E": 0.9111,
+    "eta_rect": 0.97,
+    "model_d_k_eq_0p499_revoked": true,
+    "no_double_counting_of_energy_loss": true,
+    "robustness_0p8x": 0.4237,
+    "robustness_1p2x": 0.6355,
+    "status": "PROVISIONAL_PENDING_QUALIFICATION",
+    "value_kg_per_kWh": 0.5296
+  },
+  "lambda_law": {
+    "K_S_B1": 0.01,
+    "K_S_B2_den": 30,
+    "K_S_B2_num": 1,
+    "K_soc": 30.0,
+    "b0_has_floor": false,
+    "cap": 0.8,
+    "floor": 0.43,
+    "floor_applies_when": "law6_KS_nonzero",
+    "lambda0": 0.425
+  },
+  "oracle_window": {
+    "K": 30,
+    "horizon_s": 300,
+    "partial_bin": "duration_weighted",
+    "refresh_s": 10,
+    "sample_and_hold": true,
+    "shrinking_horizon": true,
+    "zero_fill_forbidden": true
+  },
+  "schema": "phase4f_t445_config_v1",
+  "seeds": {
+    "bootstrap": "phase4f-t445-bootstrap-v1",
+    "corpus": "phase4f-t445-corpus-v1"
+  },
+  "simstate": {
+    "equiv_rel_tol": 1e-10,
+    "identity": [
+      "voyage_id",
+      "arm",
+      "config_hash",
+      "seed",
+      "frozen_stream_sha256",
+      "model_checksum",
+      "segment_t0"
+    ],
+    "segment_s": 10
+  },
+  "small_n_gate_caution": true,
+  "spec": "phase4-f-trajectory-oracle-gate",
+  "task_created": "T-001",
+  "terminal_soc_admissibility": {
+    "abs_dsoc_max": 0.005,
+    "infeasible_label": "INFEASIBLE_OR_NONCOMPARABLE",
+    "rule_id": "TERMINAL_SOC_ADMISSIBILITY"
+  },
+  "v_term": {
+    "corpus_soc0_machine_assert": 0.6,
+    "d_cal": 0.02,
+    "delta_term": 0.01,
+    "soc_target_policy": "SOC0_voyage",
+    "w_term": 113000.0,
+    "w_term_unit": "kg/SOC^2"
+  },
+  "verdicts": {
+    "b3_context_status": [
+      "UNQUALIFIED_CONTEXT",
+      "QUALIFIED_PASS",
+      "B3_DOMINANCE_AUDIT_FAIL"
+    ],
+    "priority": "GATE_VALIDITY_FAIL_first",
+    "trajectory_gate_verdict": [
+      "GO_TRAJECTORY_VALUE",
+      "NO_GO_TRAJECTORY_VALUE",
+      "INCONCLUSIVE",
+      "FINAL_INCONCLUSIVE",
+      "GATE_VALIDITY_FAIL"
+    ]
+  },
+  "zoh": {
+    "fallback": "in_memory_set_param_restore",
+    "interpolate": "off",
+    "mechanism": "SimulationInput.setBlockParameter_oracle_src",
+    "persist_slx_forbidden": true
+  }
+}

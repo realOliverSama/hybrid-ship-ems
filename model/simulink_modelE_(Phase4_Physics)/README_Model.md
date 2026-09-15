@@ -134,6 +134,10 @@ EMS 复用同一 Commitment/Dispatch/Safety 共享链）。
 一致性已证）；Model E 的角色是**物理可信被控对象 + 真实控制 baseline（P2 臂）**，为 F 包
 预测式 EMS 提供 "environment → physics → load" 因果链基座。
 
+**Phase 4-F T-445（施工中）**：不接入任何 NN 预测器。B0=law=5，B1=law=6 完美 E300
+标量 oracle，B2=同一 law=6 + Δλ 轨迹监督；oracle 真值来自冻结航次 P_load 流。E 段
+winner（REAT-T）只读不消费。预测模型清单不变。
+
 ## 5. 验证状态
 
 - **T-412 整体物理 Gate against candidate：overall=true**（2026-09-04，B 包 T-012 重跑，

@@ -25,6 +25,12 @@ E 新增 `predictor_v3/` 包（T-002 起建）、`config/predictor_v3/` 配置�
 本地 `.venv_tf`（仓库根）仅开发/smoke/CPU 探针；result-bearing 训练 canonical =
 AutoDL 4090D CUDA（FR-591 平台分离）。
 
+**Phase 4-F T-445 Trajectory Oracle Gate**（spec `.specs/phase4-f-trajectory-oracle-gate/`，
+2026-09-15 起）：在 Model E 上用完美 30-bin 轨迹 oracle vs 完美 E300 标量 oracle 量化
+开发期燃油余量（B0/B1/B2，B3 为 context）。**不消费 E 段 winner 模型、不改 `.slx`、
+不触 dataset v3 字节**。新增 `config/phase4f_t445_config.{m,json}`、`python/t445/`、
+`results/t445_oracle_gate/`（精选入库）、`artifacts/t445/`（本地不入库）。
+
 ## 目录结构
 
 | 条目 | 说明 |
@@ -32,6 +38,8 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `config/ModelE_Control_Parameters.m` | ★ **B 包控制侧参数事实源**（FR-451：PMS Demand/Commitment/Safety/Manual/Selector 全量参数 + DERIVED 阈值/tick 换算 + 逐参数 provenance + 敏感性注册表；在物理参数之后加载，乱序 assert 兜底） |
 | `config/ModelE_Physics_Parameters.m` | ★ **Model E 完整独立参数事实源**（OQ-8，单独 run 即定义全部参数；provenance 逐参数标记 + 文献 [1]~[17]；冻结敏感性档位登记；**零改动**——DD-9 机器检查项） |
 | `config/ModelE_TestScenarios.m` | ★ 测试工况（S01~S10 + S20 复合航次 + **浅水 H/T 六档 S31~S36** + VOYAGE_* 编译期变量 + **B 包 MANUAL 工况 M1/M2/M3 与 VOYAGE_MANUAL_CMD_TS/EMS_HEALTH_TS 注入通道** + GEN_CMD_STOP_TS/ADAPTER_FORCE_*） |
+| `config/phase4f_t445_config.m` | ★ **F 包 T-445 冻结参数 MATLAB 入口**（jsondecode 同目录 JSON + design 标量 fail-closed 断言；k_eq^E 初始 `PROVISIONAL_PENDING_QUALIFICATION` 至 T-007）。**预测模型：无** |
+| `config/phase4f_t445_config.json` | ★ T-445 冻结参数机器可读导出（config_sha256 自哈希；DGN-F-01~F-15 🔒） |
 | `config/ModelE_Sensitivity_Profile.m` | 敏感性档位选择器（nominal 零改动；Q1 冻结档位登记不扫掠） |
 | `config/gate_baseline_modele.json` | A2 冻结物理基线 v1.0（**永久保留不回写**，DD-9） |
 | `config/gate_baseline_modele_candidate_v1_1.json` | ★ B 包 candidate 基线 v1.1（DD-9 Step B 机器检查 4/4 过；**promotion 需 T-014 用户书面批准**） |
@@ -39,7 +47,7 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `scripts/+model/` | ★ builder 与子系统源码：`build_model_e.m`（顶层构建器）、`code_hull_e/wake_ht_e/propeller_e`（船体浅水/w(H/T)/螺旋桨 block 源码）、`code_genset_unit_e/fuel_e`（双机组/燃油）、`battery_sop_limits/code_battery_ecm_e`（SOP/1RC ECM）、**`code_pms_demand_e/code_dispatch_e/code_safety_interlock_e/build_commitment_chart_e/build_pms_v2_e/build_safety_interlock_e`（B 包 PMS v2 四层/Stateflow chart/Safety 层）**、`write_config_manifest`/`sha256_file`/`export_structure_fingerprint`/`run_scenario_sim` |
 | `scripts/+gate_e/` | ★ T-412 物理 Gate：`check_g1~g6` 六类判据 + 测试台 runner + `gate_assign_bench_inputs`（确定性指令注入） |
 | `scripts/+gate_ctrl/` | ★ **B 包 43 号控制层 Gate**：`run_gate`（编排）、`get_ds/metrics_of/audit_rows_of/saturation_events`（数据与指标后处理）、`check_c1~c7` 七类判据、`injection_scenarios`（S1~S5 注入定义）、`make_candidate_v1_1`/`diff_baseline_v1_1`（DD-9 基线纪律）、`run_negative`（44 号主体）、`write_result` |
-| `scripts/tests/` | 单元/集成测试 harness（纯 MATLAB）+ 三链集成规格 notes + **T-002/003/004/005 单测 + t008 变体编译矩阵 + build_commitment_harness** |
+| `scripts/tests/` | 单元/集成测试 harness（纯 MATLAB）+ 三链集成规格 notes + **T-002/003/004/005 单测 + t008 变体编译矩阵 + build_commitment_harness** + **F 包 `test_t445_config.m`（T-001）** |
 | `scripts/40_run_modelE_gate.m` | ★ **T-412 整体物理 Gate**（可选 GATE40_BASELINE_PATH candidate 记录模式，DD-9 Step C；E01b 前恢复 bench 注入 nominal——D-B19） |
 | `scripts/41_run_prop_sensitivity.m` | 螺旋桨参数族 ±20% OAT 敏感性扫掠（15 cases） |
 | `scripts/42_run_modelE_gate_negative.m` | 物理 Gate 负向验证 |
@@ -75,6 +83,9 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `config/predictor_v3/` | ★ **E 包 predictor-v3 配置**（T-001 `env/`（base/macOS lock + smoke 脚本，TF 2.19.1 证据驱动落锁）+ T-007 `env/requirements_tf_cuda_lock.txt`（canonical CUDA lock：pip freeze 全量含 nvidia-* + 关键 wheel sha256）+ `env/env_smoke_generic.py`（平台参数化 smoke）+ T-004 `predictor_norm_ext_v1.json`（K/F train-only 归一化扩展，自哈希）+ T-005 三 config（`training_budget.json` DGN-E-09 冻结数值/HPO 预算、`eval_config.json` 指标栈+等价带+canonical_delivery_seed_index=0 预注册、`diagnostics_config.json` T-443 三轴参数+train 参照统计冻结）；`env/build_diagnostics_config.py` 生成器；hash 记录 `results/predictor_v3/config_hashes_t005.json`；T-012 `reat_t_arch.json` 待建。**预测模型：无（配置，非模型）**） |
 | `results/predictor_v3/` | **E 包 predictor-v3 机器可读证据（精选入库）**（`env_manifest_macos.json`+`env_smoke_macos.json` T-001；`env_manifest_cuda.json`+`env_smoke_cuda.json`+`determinism_probe_cuda.json` T-007 canonical 资格化（4090D/TF 2.19.1/双平台同版本；探针 PASS_BITWISE；钉版 537268d0）；`ood_windows_integrity.json` T-003 双 hash+双跑确定性（200 航次→72304 窗，payload 6383a27b…）；`config_hashes_t005.json` 三 config 自哈希记录；`determinism_probe_cpu.json` T-006 CPU 探针 PASS_BITWISE；`data_access/` 访问日志分片；后续 HPO/confirm/ablation/winner/terminal 证据按 tasks 增补） |
 | `artifacts/predictor_v3/` | **E-owned 本地产物命名空间（不入库，.gitignore Design Gate R1 授权）**（T-003 OOD 窗口 npz、训练 checkpoint 等派生产物；`datasets_v3/` 冻结资产零字节改动） |
+| `python/t445/` | ★ **F 包 T-445 Python 包**（`frozen_config`/`freeze_t001`；后续 B1 归一化复现/语料/bootstrap/Gate）。**预测模型：无** |
+| `results/t445_oracle_gate/` | ★ **F 包 T-445 机器可读证据**（fixture/env/E-guard manifest 精选入库；正式 run 待 T-012 入场券；详见该目录 README.md） |
+| `artifacts/t445/` | **F-owned 本地产物**（SimState checkpoint / 段日志，不入库；父目录 `artifacts/` 已 gitignore） |
 | `predictor_v3/` | ★ **E 包 predictor-v3 Python 包**（T-002 `data_access.py` sealed 访问门；T-003 `ood_materialize.py` OOD 窗口物化薄驱动；T-004 `norm_ext.py`；T-005 `features/quantile/metrics/inference_stats/seeds/train/registry.py` 统一 harness；`tests/` 45 例全绿；详见该目录 README.md。**预测模型：施工作业中，截至 T-005 无已训练模型工件**） |
 | `reports/parameter_audit.csv` | builder 生成的参数审计（ParamMeta，40 项） |
 
@@ -86,7 +97,7 @@ AutoDL 4090D CUDA（FR-591 平台分离）。
 | `scripts/05_export_dataset.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D 时代导出脚本；Dataset v3 导出 = `70/71` 号 + `dataset_v3/`（两段式），schema/特征/目标假设不继承 |
 | `scripts/30_export_load_profiles.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D 时代负荷剖面导出 |
 | `scripts/60_generate_voyages_v2.m` `scripts/61_generate_fleet_profiles_v2.m` `scripts/63_integrate_gate_v2.m` `scripts/64_run_matrix_v2.m` `scripts/66_export_fw_reference.m` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Model D Phase 2/2.5 fleet/固件参考链；formal fleet 生成 = T-432 `73_generate_fleet_v3.m`（BLOCKED，activation 后施工） |
-| `python/` | **SUPERSEDED FOR MODELE DATASET V3 / REPRODUCTION ONLY** | Phase 2.5 训练/数据集链（build_dataset_v2.py 等）；v2 纪律 reuse-only、schema 不继承；Dataset v3 构建在 `dataset_v3/` |
+| `python/` | Phase 2.5 训练链 **SUPERSEDED**；**`python/t445/` 为 F 包 T-445 新链**（冻结 config/语料/统计/Gate，详见该目录 README.md）。**预测模型：T-445 无 NN** |
 | `datasets/` | **SUPERSEDED FOR MODELE DATASET V3（历史产物只读）** | Phase 2/2.5 窗口化 npz/norm JSON；不作为 Model E 研究数据 |
 | `legacy_reference/` | **LEGACY（历史模型只读副本）** | 分叉继承件，仅证据对照 |
 

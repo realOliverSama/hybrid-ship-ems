@@ -1,0 +1,115 @@
+{
+  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "git_commit": "09e6efb1f88ff5c9874a94685dd3dc4e46143e81",
+  "pass": true,
+  "schema": "t445_e_stage_readonly_guard_v1",
+  "snapshot": {
+    "inventory_sha256": "aa6564159b6a81291282c59d900c451dff6be5bb176ce542970f2e3d4038fe20",
+    "key_files": [
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/diagnostics_config.json",
+        "sha256": "c6961889f6c589079e9bc17811a97412ebcfc7388d46e8a1054a5240946ce831",
+        "size_bytes": 188878
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/eval_config.json",
+        "sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a",
+        "size_bytes": 3498
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/predictor_norm_ext_v1.json",
+        "sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c",
+        "size_bytes": 11897
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/reat_t_arch.json",
+        "sha256": "ad5f1bdfbedfee74a739ebe30177d4efddae0df017c6aaa6c08faa92593a7ff0",
+        "size_bytes": 6020
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/training_budget.json",
+        "sha256": "859bf50b31dc966efafec052914e13771b63ce5f9cb2bb017a631980f3eb40ad",
+        "size_bytes": 2209
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/FINAL_WINNER_EVIDENCE_PACKAGE.json",
+        "sha256": "52c80b702393f1040f4f982f37343528f66c9714cd3bc55bb589d668e8f7fbe0",
+        "size_bytes": 20908
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/mlpq/complexity_report.json",
+        "sha256": "5e226091ce41b5695de93b90612d5cb8f87bddf2077ee2dd98daf15b6be1baba",
+        "size_bytes": 719
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/mlpq/input_contract.json",
+        "sha256": "780f627d30b54ed1b95a9e26b8f362d89ff9fdfc7a77ed20c794ddfc9ae20b29",
+        "size_bytes": 3229
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/mlpq/model_config.json",
+        "sha256": "c0efae0feff879f79f24dab1f92759ffe56f14518ab93db6b72d9bb869bd7e31",
+        "size_bytes": 819
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/mlpq/selected_config.json",
+        "sha256": "c616459fd7ab73b98c3f074f676eaa67c22f58452342680d7d890c01a613751b",
+        "size_bytes": 1398
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/reatt/selected_config.json",
+        "sha256": "fea67b7ff0ce10af619037eade22c678425986af86c405024ebb9a341f163ae4",
+        "size_bytes": 1579
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/tcnq/selected_config.json",
+        "sha256": "6db13f197e6b68371edd548c591d11de0cfbb26020b495c94fe5754734c20ddc",
+        "size_bytes": 1450
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/tft/selected_config.json",
+        "sha256": "8565291d523b24fdf2ad2d553e818770c7ce4d1bce2522b1d3dc6113f4761d8c",
+        "size_bytes": 1439
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/transformer/selected_config.json",
+        "sha256": "05891a471c523dd437577f655f0032644fed41ce4a8b7d225bf0810d72dd48e0",
+        "size_bytes": 1534
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/winner/WINNER_SELECTED_PRETERMINAL.json",
+        "sha256": "3a46c848092f35d6da66f8e1dc931653b580547bc3716366f11110679c5c0ebc",
+        "size_bytes": 1782
+      },
+      {
+        "exists": true,
+        "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/winner/reload_probe.json",
+        "sha256": "40b1253c987d8c1740a533f538121a67811fc32097612142379b399839edbd3c",
+        "size_bytes": 539
+      }
+    ],
+    "n_predictor_v3_files": 250,
+    "note": "E-stage artifacts are read-only for T-445; winner models are not consumed."
+  },
+  "static_scan": {
+    "hits": [],
+    "n_hits": 0,
+    "pass": true
+  },
+  "task": "T-001"
+}

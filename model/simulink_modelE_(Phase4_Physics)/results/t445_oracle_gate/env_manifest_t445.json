@@ -1,0 +1,27 @@
+{
+  "autodl_result_bearing_path_present": false,
+  "cloud_result_bearing_path_present": false,
+  "config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "git_commit": "09e6efb1f88ff5c9874a94685dd3dc4e46143e81",
+  "host_category": "macos_local",
+  "machine": "arm64",
+  "manifest_sha256": "19c170305a550020faf5e3f65a49b594031efcf0b245a1b4ab1cea97e55c77bb",
+  "matlab": {
+    "available": true,
+    "on_path": false,
+    "release": "2026a",
+    "version": "26.1.0.3312084 (R2026a) Update 4"
+  },
+  "matlab_required": "R2026a",
+  "notes": [
+    "T-445 result-bearing execution is Mac-local MATLAB R2026a (NFR-712).",
+    "No AutoDL/cloud result-bearing path is authorized.",
+    "Filesystem paths are not scientific identity."
+  ],
+  "platform": "Darwin",
+  "platform_release": "27.0.0",
+  "python": "3.12.7",
+  "result_bearing_host": "macos_local_matlab",
+  "schema": "t445_env_manifest_v1",
+  "task": "T-001"
+}
