@@ -56,7 +56,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: 任何冻结值与 design 不一致 → 停，修正 config（design 为事实源）；fixture manifest 缺项/overlap 违例 → 停
   - Completion evidence: config_sha256 落盘 + 单测 PASS + fixture manifest + env manifest + E 守卫基线 + README diff
 
-- [ ] 2. oracle 窗装配器 + 真 ZOH 适配器 + 单测
+- [x] 2. oracle 窗装配器 + 真 ZOH 适配器 + 单测
   - ID: T-002
   - Requirement(s): FR-721, FR-725, FR-733；Design: DGN-F-02（含 §2.2 契约/§2.3 ZOH）；AC-610
   - depends_on: T-001

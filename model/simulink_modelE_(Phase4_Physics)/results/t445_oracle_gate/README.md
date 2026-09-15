@@ -19,6 +19,7 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `e_stage_readonly_guard.json` | ★ T-001 E 段只读快照 + 静态扫描零 .keras/winner 加载 |
 | `baseline_integrity_t001.json` | Model E 基线 / `.slx` / builder sha256 登记（模型零修改） |
 | `t001_unit_test_result.json` | T-001 导出摘要 |
+| `t002_unit_test_result.json` | T-002 窗装配 + ZOH 机器测试证据 |
 | `incidents.jsonl` | 事故账本（禁删，FR-777） |
 | `access_ledger.jsonl` | 访问台账（purpose ∈ QUALIFICATION/REGRESSION/SYNTHETIC_SMOKE/FORMAL） |
 | `qualification/` | B 阶段资格化 JSON（T-007/T-010/T-011） |

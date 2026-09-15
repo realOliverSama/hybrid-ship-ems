@@ -20,3 +20,5 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 | `paths.py` / `hashutil.py` | 相对路径与 SHA256 工具 |
 | `tests/test_t001_config.py` | T-001 单测（冻结字段 / overlap 三 false / env / E 守卫） |
 | 后续 T-003+ | `compute_b1_norm.py` / `corpus_select.py` / bootstrap / Gate（尚未施工） |
+
+MATLAB 对侧（`scripts/+t445/`，非本目录）：T-002 起窗装配 / 真 ZOH 适配器。
