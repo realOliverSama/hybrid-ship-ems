@@ -149,22 +149,18 @@ else
     % C1 windows file bytes).
     fa = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
         'freeze', 'formal_assets.json')));
-    % per_voyage was exported in teval-table order; jsondecode drops the
-    % object keys, so map positionally (guarded by count equality)
-    if fa.n_voyages ~= numel(teval.voyages)
-        error('PPE:FORMAL:ASSETS', 'formal_assets voyage count drift');
-    end
-    favr = find(strcmp({teval.voyages.voyage_id}, voyage_id), 1);
-    if isempty(favr)
+    % jsondecode maps the per_voyage JSON object to a scalar struct whose
+    % fieldnames are the voyage ids
+    if ~isfield(fa.per_voyage, char(voyage_id))
         error('PPE:FORMAL:ASSETS', 'voyage %s absent from formal_assets', ...
             voyage_id);
     end
     pdoc = jsondecode(fileread(plan_file));
-    if ~strcmp(pdoc.plan_sha256, fa.per_voyage(favr).plan_sha256)
+    if ~strcmp(pdoc.plan_sha256, fa.per_voyage.(voyage_id).plan_sha256)
         error('PPE:FORMAL:ASSETS', 'plan sha mismatch for %s', voyage_id);
     end
     if ~strcmp(model.sha256_file(win_file), ...
-            fa.per_voyage(favr).c1_windows_sha256)
+            fa.per_voyage.(voyage_id).c1_windows_sha256)
         error('PPE:FORMAL:ASSETS', 'c1 windows sha mismatch for %s', ...
             voyage_id);
     end
