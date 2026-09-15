@@ -1,15 +1,16 @@
 # Phase 4-F T-445 Trajectory Oracle Gate Requirements
 
 Spec: `phase4-f-trajectory-oracle-gate`  
-Status: requirements-draft  
+Status: requirements-approved（R1~R7 闭合 + brainstorm 行政清理，2026-09-15）  
 Created: 2026-09-15  
+Approved: 2026-09-15（APPROVED WITH 7 REQUIRED CORRECTIONS——R1~R7 全部按令闭合，validation green，无需二次 Requirements Gate）  
 Brainstorm: `./brainstorm.md`（T-445 Q1~Q4 全部 CLOSED / APPROVED，2026-09-15）
 
 ## Overview
 
-T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）的**第一道 Gate**：在 Model E 仿真台上、**不用 NN**，直接给控制器真值未来负荷轨迹 P_future,true，量化「知道完整未来 30-bin 轨迹」相对「当前 E_300 scalar 预测」在**冻结 ECMS 控制族**内的开发期 oracle 燃油余量，产出机器可读的 **GO_TRAJECTORY_VALUE / NO_GO_TRAJECTORY_VALUE / INCONCLUSIVE** 裁决。**上限不存在则停止该方向**（roadmap 原纪律）；GO 才进入 T-446 预测式 EMS 架构设计。
+T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）的**第一道 Gate**：在 Model E 仿真台上、**不用 NN**，直接给控制器真值未来负荷轨迹 P_future,true，量化「完美 30-bin 轨迹 oracle」相对「完美 E_300 scalar oracle」在**冻结 ECMS 控制族**内的开发期 oracle 燃油余量，产出机器可读的 **GO_TRAJECTORY_VALUE / NO_GO_TRAJECTORY_VALUE / INCONCLUSIVE** 裁决。**上限不存在则停止该方向**（roadmap 原纪律）；GO 才进入 T-446 预测式 EMS 架构设计。
 
-科学问题的精确表述（Q1 裁决）：未来信息**维度**（perfect scalar vs perfect trajectory）的增量控制价值。预测器误差从正式 Gate 比较中剔除。
+科学问题的精确表述（Q1/R1 裁决）：**perfect E_300 scalar oracle vs perfect trajectory oracle** 的未来信息维度增量控制价值，预测器误差从正式 Gate 比较中剔除。
 
 证据等级（Q4 裁决）：T-445 结果是 `DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE`，**不是**最终控制泛化证据；IID test split 保持封印，留给 T-452 终端控制器评估。
 
@@ -47,7 +48,7 @@ T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）
 
 - B1 规范表述：**「冻结 scalar ECMS 接口/控制架构下的 scalar-oracle 上界」**；任何文档不得称其为无条件"理论上界"（Q1）。
 - B2 规范表述：`trajectory-oracle optimized ECMS reference` / `trajectory-oracle ECMS headroom reference`；除非后续 design 证明其在冻结容许 ECMS 监督策略空间上的全局最优性，否则不得称严格数学上界（Q2）。
-- Headroom 号约定（正 = 可利用余量）：`H_scalar = J_FEC,B0 − J_FEC,B1`；`H_traj = J_FEC,B1 − J_FEC,B2`；`H_traj_pct = H_traj/J_FEC,B1×100%`；`H_arch = J_FEC,B1 − J_FEC,B3`。H_traj 释义 = 相对冻结 scalar-oracle ECMS 基准的轨迹 oracle 可利用余量，**不**释义为纯因果信息维度效应（B1/B2 信息→λ 映射不同，Q2）。
+- Headroom 号约定（正 = 可利用余量）：`H_scalar = J_FEC,B0 − J_FEC,B1`；`H_traj = J_FEC,B1 − J_FEC,B2`；`H_traj_pct = H_traj/J_FEC,B1×100%`；`H_arch = J_FEC,B1 − J_FEC,B3`（相对 B1 的**总**更广控制/全局优化余量，**非** B2→B3 残差——R2）；非 Gate context 量 `H_residual = J_FEC,B2 − J_FEC,B3`，全部项资格化时恒等式 H_residual = H_arch − H_traj 成立（R2）。H_traj 规范释义 = `trajectory-oracle exploitable headroom relative to the frozen scalar-oracle ECMS reference`，**不**释义为纯因果信息维度效应或严格同控制器信息增量（B1/B2 信息→λ 映射不同，Q2/R1）。
 
 ## User Stories
 
@@ -60,7 +61,7 @@ T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）
 ### 臂构造与 parity（Q1/Q2）
 
 - **FR-720**: THE system SHALL provide B0 = Model E 现役 law=5 SOC-Adaptive ECMS 变体，控制律零修改。
-- **FR-721**: THE system SHALL provide B1 = law=6 完美 scalar oracle，其标量真值 SHALL 由 B2 所用同一 oracle 轨迹派生：E300_true(t0) = (10/3600)·Σ_{k=1..30} P_future_true,k(t0)。
+- **FR-721**: THE system SHALL provide B1 = law=6 完美 scalar oracle，其标量真值 SHALL 由 B2 所用同一 oracle 轨迹派生：E300_true(t0) = (10/3600)·Σ_{k=1..30} P_future_true,k(t0)。正式 B1 MAY 使用经批准的 oracle 输入包装器 / sample-and-hold / 末端窗口适配器，仅为满足 B1/B2 parity；此类 parity 适配 SHALL NOT 修改 law=6 核心控制逻辑（R7）。
 - **FR-722**: B1 在全部产出文档中的表述 SHALL 为「冻结 scalar ECMS 接口/控制架构下的 scalar-oracle 上界」，SHALL NOT 称无条件理论上界。
 - **FR-723**: B2 SHALL 仅以 ECMS 监督变量 Δλ_traj 作用于冻结结构 λ_B2(t) = λ0 + K_soc·(SOC_ref − SOC(t)) + Δλ_traj*(t)；下游执行链（ECMS 瞬时 argmin → Commitment/PMS → Safety → Plant）SHALL 保持冻结。
 - **FR-724**: B2 SHALL NOT 直接指挥 P_gen、P_bat、机组 commitment/启停、或直接功率调度轨迹（否则越出 ECMS 执行族、塌缩向 B3/MPC）。
@@ -85,11 +86,13 @@ T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）
 - **FR-742**: 冻结 k_eq^E 前 SHALL 显式审计 Model E 能量边界：确定哪些损耗已被电池/SOC 模型表达，仅计入适用项（整流/DC-DC/充电效率），SHALL NOT 机械沿用 Model D 电池效率因子；design SHALL 包含 `NO_DOUBLE_COUNTING_OF_ENERGY_LOSS` 检查。
 - **FR-743**: raw 物理量 SHALL 与 FEC 永远并列报告：fuel_raw、SOC0、SOC_end、ΔSOC、电池能量修正量、J_FEC。
 - **FR-744**: 在 FEC 排名之前，每个正式 run SHALL 满足统一预注册的 `TERMINAL_SOC_ADMISSIBILITY` 政策（容差带 design 期冻结，且必须先于观察任何 B1/B2 结果）；越限 run SHALL 判 `INFEASIBLE_OR_NONCOMPARABLE`，FEC SHALL NOT 用于"拯救"越限 run。
-- **FR-745**: k_eq 稳健性 SHALL 强制报告：canonical k_eq^E、0.8×、1.2×、H_traj 与 H_arch 的符号稳定性；WHEN SOC 系数非零，SHALL 计算解析 break-even 等效燃油系数 k_eq_break_even = −(fuel_raw_B1 − fuel_raw_B2)/(Bat_Cap_kWh·(SOC_end_B2 − SOC_end_B1)) 并报告 canonical k_eq^E 距其距离；IF 终端 SOC 实质相等，THEN 报告 `K_EQ_INSENSITIVE_BY_SOC_PARITY`。
-- **FR-746**: 每个正式臂 SHALL 报告并通过统一任务/物理可比性审计（可及项）：任务/航线完成、航次时长/到达一致性、速度参考跟踪 RMS 与最大误差、欠供负荷/甩负荷/推进需求缺口、SOC 硬界越限时间、电池 SOP/变换器/电压/电流硬限越限、机组 Pmin/Pmax/ramp 硬限越限、终端 SOC 容许性、母线/Plant 能量闭合残差；通过服务降级或硬约束越限获得的燃油"收益"SHALL 判无效。
+- **FR-745**: k_eq 稳健性 SHALL 强制报告（对 H_traj 恒为强制）：canonical k_eq^E、0.8×、1.2× 下 H_traj 的符号稳定性；WHEN SOC 系数非零，SHALL 计算轨迹 break-even 等效燃油系数 k_eq_break_even = −(fuel_raw_B1 − fuel_raw_B2)/(Bat_Cap_kWh·(SOC_end_B2 − SOC_end_B1)) 并报告 canonical k_eq^E 距其距离；IF 终端 SOC 实质相等，THEN 报告 `K_EQ_INSENSITIVE_BY_SOC_PARITY`。H_arch 的敏感性/break-even SHALL 仅在 B3 经 parity 资格化后报告；B3 未资格化时报 `H_arch = UNQUALIFIED_CONTEXT`，SHALL NOT 为凑齐表格生成人工 H_arch 敏感性数值（R4）。
+- **FR-746**: 每个正式臂 SHALL 报告并通过统一任务/物理可比性审计：任务/航线完成、航次时长/到达一致性、速度参考跟踪 RMS 与最大误差、欠供负荷/甩负荷/推进需求缺口、SOC 硬界越限时间、电池 SOP/变换器/电压/电流硬限越限、机组 Pmin/Pmax/ramp 硬限越限、终端 SOC 容许性、母线/Plant 能量闭合残差；通过服务降级或硬约束越限获得的燃油"收益"SHALL 判无效。审计信号覆盖状态 SHALL 按 FR-750 机器可读矩阵显式登记，SHALL NOT 以"不便测量"为由静默省略硬性可行性信号（R5）。
 - **FR-747**: 控制干预审计 SHALL 报告：Safety S1–S5 触发计数与（可及时）时长、PMS override 计数与（可及时）时长。
 - **FR-748**: 运行负担诊断 SHALL 报告（仅代理，不得称已验证磨损/退化，除非后续批准范围引入已验证退化模型）：机组启停计数、TV_Pgen = Σ|P_gen[t]−P_gen[t−1]|、ramp 限值激活计数/时长、（可得时）ON-hours/低载运行时间；电池 E_bat_throughput = ∫|P_bat(t)|dt、EFC_proxy = E_bat_throughput/(2·Bat_Cap_kWh)。T-445 正式 Gate 目标保持 J_fuel = FEC，SHALL NOT 引入 fuel+α·battery_wear+β·genset_wear 类复合目标。
 - **FR-749**: WHEN B3 被资格化，其 SHALL 使用与 B0/B1/B2 相同的 raw-fuel 定义、终端 SOC 记账、冻结 k_eq^E、FEC 公式、任务/可行性审计与运行负担报告，然后 H_arch 方可使用。
+
+- **FR-750**: THE system SHALL 维护机器可读 `audit_capability_matrix`：FR-746~748 请求的每个审计信号逐条显式登记状态（`AVAILABLE_AND_CHECKED` / `NOT_INSTRUMENTED` / `NOT_APPLICABLE`）；在任何正式 B1/B2 结果观察之前，design SHALL 冻结：硬性可行性最小信号集、允许合法 `NOT_INSTRUMENTED` 的诊断清单、哪些缺失信号阻断 Gate（R5）。
 
 ### 语料（Q4）
 
@@ -105,16 +108,16 @@ T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）
 - **FR-771**: 组内聚合 h_g = mean_{v∈g}(h_v)；正式推断单元 = split_group；SHALL 至少报告：split_group median h_g、macro mean、IQR/min/max、正组比例、LOW/MID/HIGH 分层汇总；主 Gate 点估计 = median_g(h_g)。
 - **FR-772**: 推断 SHALL 使用分层配对 split_group cluster bootstrap：B=10000、冻结种子；每个 replicate 独立有放回重抽 LOW 3 组/MID 3 组/HIGH 3 组（扩样后各 4 组），保持组完整（含全部家族航次与配对 B1/B2 结果）；计算主统计量双侧 95% percentile CI；SHALL NOT：bootstrap 单窗口、以单航次为独立单元、破坏 split_group 家族闭包、B1/B2 独立重抽。
 - **FR-773**: 预注册阈值 SHALL 冻结为 X = 2.0%（最小实用 oracle 余量目标）、Y = 0%（方向性证据底）；二者为项目预注册阈值，非普适文献常数。
-- **FR-774**: WHEN median_g(h_g) ≥ 2.0% AND bootstrap 95% CI 下界 > 0% AND 全部正式可行性/parity 硬检通过，THE gate SHALL 判 `GO_TRAJECTORY_VALUE`；释义：oracle 轨迹臂显示足够开发期余量，支持进入预测控制器施工；SHALL NOT 声称在线学习控制器可达 ≥2%。
-- **FR-775**: WHEN bootstrap 95% CI 上界 < 2.0% 且 Gate 其余有效，THE gate SHALL 判 `NO_GO_TRAJECTORY_VALUE`；释义：即使完美轨迹 oracle ECMS 参照的可信上限也未达预注册实用目标（B2 为乐观 oracle 参照，构成更强轨迹感知控制器开发的强 futility 信号）。
-- **FR-776**: 其余有效情形 SHALL 判 `INCONCLUSIVE`，且仅可触发一次预注册扩样：启用冻结预留集（+3 组/+12 航次，每层各 1 组），对合并后 48 航次/12 组全量语料用**完全相同**的统计、bootstrap、阈值、可行性规则与代码重算；SHALL NOT 合并两个独立 CI/检验；不允许第二次扩样；扩样后仍不定 SHALL 判 `FINAL_INCONCLUSIVE / DECISION_REQUIRED` 并停止自动 Gate 流程；SHALL NOT 持续采样直至出现期望结果。
-- **FR-777**: 机械/基建失败 MAY 在相同冻结臂/航次/配置身份下重跑并记 incident 记录；持续控制器/物理不可行（终端 SOC 不容许、任务/服务失败、硬物理/安全越限、持续优化器不可行）SHALL NOT 成对删除；design SHALL 冻结正式处理规则，默认期望 = 0 个持续正式 B1/B2 不可行 run；否则 SHALL 判 `GATE_VALIDITY_FAIL / AUDIT_REQUIRED`，不得静默缩小统计语料。
-- **FR-778**: WHEN B3 经 parity 资格化，SHALL 满足数值一致性期望 J_FEC,B3 ≤ J_FEC,B2 + ε_num（等价 H_arch ≥ H_traj − ε_num；ε_num design 冻结）；实质违反 SHALL 判 `B3_DOMINANCE_AUDIT_FAIL` 并要求 solver/parity/模型审计，SHALL NOT 未经审计把 B3/B2 倒挂释读为轨迹科学优越性；IF B3 未资格化，THEN 报告 `H_arch = UNQUALIFIED_CONTEXT` 且 B3 SHALL NOT 影响 B1-vs-B2 Gate。
-- **FR-779**: SHALL 同时报告非 Gate context 分解链：H_scalar = J_FEC,B0 − J_FEC,B1（scalar-oracle 价值）、H_traj（轨迹 oracle 可利用余量）、（B3 资格化时）H_arch（更广架构/全局优化余量，B2→B3 残差段）。
+- **FR-774**: WHEN median_g(h_g) ≥ 2.0% AND bootstrap 95% CI 下界 > 0% AND 全部正式可行性/parity 硬检通过，THE gate SHALL 判 `trajectory_gate_verdict = GO_TRAJECTORY_VALUE`；释义：oracle 轨迹臂显示足够开发期余量，支持进入预测控制器施工；SHALL NOT 声称在线学习控制器可达 ≥2%。
+- **FR-775**: WHEN bootstrap 95% CI 上界 < 2.0% 且 Gate 其余有效，THE gate SHALL 判 `trajectory_gate_verdict = NO_GO_TRAJECTORY_VALUE`；释义：即使完美轨迹 oracle ECMS 参照的可信上限也未达预注册实用目标（B2 为乐观 oracle 参照，构成更强轨迹感知控制器开发的强 futility 信号）。
+- **FR-776**: 其余有效情形 SHALL 判 `trajectory_gate_verdict = INCONCLUSIVE`，且仅可触发一次预注册扩样：启用冻结预留集（+3 组/+12 航次，每层各 1 组），对合并后 48 航次/12 组全量语料用**完全相同**的统计、bootstrap、阈值、可行性规则与代码重算；SHALL NOT 合并两个独立 CI/检验；不允许第二次扩样；扩样后仍不定 SHALL 判 `trajectory_gate_verdict = FINAL_INCONCLUSIVE` 且 `decision_required = true`，并停止自动 Gate 流程；SHALL NOT 持续采样直至出现期望结果。
+- **FR-777**: 机械/基建失败 MAY 在相同冻结臂/航次/配置身份下重跑并记 incident 记录；持续控制器/物理不可行（终端 SOC 不容许、任务/服务失败、硬物理/安全越限、持续优化器不可行）SHALL NOT 成对删除；design SHALL 冻结正式处理规则，默认期望 = 0 个持续正式 B1/B2 不可行 run；否则 SHALL 判 `trajectory_gate_verdict = GATE_VALIDITY_FAIL` 并触发 AUDIT_REQUIRED，不得静默缩小统计语料。
+- **FR-778**: WHEN B3 经 parity 资格化，SHALL 满足数值一致性期望 J_FEC,B3 ≤ J_FEC,B2 + ε_num（等价 H_arch ≥ H_traj − ε_num；ε_num design 冻结）；实质违反 SHALL 判 `b3_context_status = B3_DOMINANCE_AUDIT_FAIL` 并要求 solver/parity/模型审计，SHALL NOT 未经审计把 B3/B2 倒挂释读为轨迹科学优越性；IF B3 未资格化，THEN 判 `b3_context_status = UNQUALIFIED_CONTEXT`、报告 H_arch = UNQUALIFIED_CONTEXT，且 B3 SHALL NOT 影响 B1-vs-B2 Gate。
+- **FR-779**: SHALL 同时报告非 Gate context 分解链：H_scalar = J_FEC,B0 − J_FEC,B1（scalar-oracle 价值）、H_traj（轨迹 oracle 可利用余量）、（B3 资格化时）H_arch = J_FEC,B1 − J_FEC,B3（相对 B1 的总更广控制/全局优化余量）与 H_residual = J_FEC,B2 − J_FEC,B3（B2→B3 残差；恒等式 H_residual = H_arch − H_traj，R2）。
 
 ### 机器可读 Gate 与可复现性
 
-- **FR-780**: Gate 结果 SHALL 为机器可读 JSON，至少含：verdict 枚举（GO_TRAJECTORY_VALUE / NO_GO_TRAJECTORY_VALUE / INCONCLUSIVE / FINAL_INCONCLUSIVE / GATE_VALIDITY_FAIL / B3_DOMINANCE_AUDIT_FAIL）、主统计量与 CI、分层汇总、语料 manifest 引用、配置哈希、代码 commit、全部种子、可行性审计汇总；Gate FAIL/非 GO 状态 SHALL 阻止后续依赖该 Gate 的提交（沿袭项目机器可读 Gate 纪律）。
+- **FR-780**: Gate 结果 SHALL 为机器可读 JSON，裁决字段 SHALL 正交分解（R3，禁止单一超载 verdict 字段）：`trajectory_gate_verdict ∈ {GO_TRAJECTORY_VALUE, NO_GO_TRAJECTORY_VALUE, INCONCLUSIVE, FINAL_INCONCLUSIVE, GATE_VALIDITY_FAIL}`（B1/B2 轨迹 Gate 本体）；`b3_context_status ∈ {UNQUALIFIED_CONTEXT, QUALIFIED_PASS, B3_DOMINANCE_AUDIT_FAIL}`（B3 context 审计，独立于轨迹 Gate）；`decision_required: bool`（FINAL_INCONCLUSIVE → true）。确定性 Gate 优先级 SHALL 先于正式结果冻结：GATE_VALIDITY_FAIL SHALL 先于普通 GO/NO-GO/INCONCLUSIVE 分类解决。JSON 另含：主统计量与 CI、分层汇总、语料 manifest 引用、配置哈希、代码 commit、全部种子、可行性审计汇总。初始 `INCONCLUSIVE` 阻断 T-446，但显式允许在 T-445 内触发 FR-776 的一次性预留扩样；其他任何非 GO 状态 SHALL NOT 静默进入下游控制器施工。
 - **FR-781**: 全部正式 run SHALL 可复现：冻结配置、冻结种子、冻结航次清单、代码 commit 钉版于结果 manifest；oracle 真值派生链（E300_true ← B2 轨迹）SHALL 可机器复验。
 - **FR-782**: 正式结果观察顺序 SHALL 受控：TERMINAL_SOC_ADMISSIBILITY 容差带、k_eq^E、语料、阈值、统计代码均 SHALL 先于首次 B1/B2 正式结果观察冻结（预注册纪律）。
 
@@ -124,7 +127,7 @@ T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）
 - **NFR-711**: dataset v3 零字节改动：`datasets_v3/`、`results/dataset_v3/` 只读；T-445 派生产物只写本 spec 授权的新目录。
 - **NFR-712**: 执行环境 = Mac 本机 MATLAB（R2026a）+ 既有 `.venv_tf`；SHALL NOT 依赖云 GPU/AutoDL。
 - **NFR-713**: E 段成果（winner 模型工件、input_contract、指标栈）本 spec 内只读且不消费；E-additional 候选不得擅自开工。
-- **NFR-714**: 全语料（含一次性扩样预案）在 Mac 本机可隔夜完成；design SHALL 给出运行预算估算，执行后报告实际 wall time。
+- **NFR-714**: design SHALL 分别给出初始 36 航次语料与 +12 预留扩样的 wall-time/资源估算；正式长跑执行 SHALL 具备确定性 checkpoint/resume 能力；执行后 SHALL 报告实际 wall time。初始语料应在 Mac 本机实际可执行，但运行时长本身不是科学 Gate 结果，SHALL NOT 以运行时为由削弱求解器/语料/统计语义（R6）。
 - **NFR-715**: 仓库内可执行脚本 SHALL NOT 硬编码绝对路径（AGENTS.md §20.2：MATLAB 用 mfilename 推导 + pwd 兜底）。
 - **NFR-716**: Git 纪律沿袭 AGENTS.md §7/§8；Gate 非 GO 不允许提交依赖其通过的后续施工；本 spec 施工期提交遵循 feat/phase4-f 分支纪律。
 
@@ -137,9 +140,9 @@ T-445 是 Phase 4 工作包 F（预测式先进 EMS，roadmap §7 T-445~T-455）
 - [ ] **AC-614**（FR-740~742/745）：k_eq^E 冻结记录 + 效率边界审计 + NO_DOUBLE_COUNTING 检查通过；稳健性表（0.8×/1.2×/break-even 距离/K_EQ_INSENSITIVE 条款）出现在正式报告。
 - [ ] **AC-615**（FR-760~764）：语料 manifest 冻结且可由种子机器复现；波动评分臂独立性证明；dataset v3 manifest 复核 test_sealed=true 未被触碰。
 - [ ] **AC-616**（FR-770~772）：统计代码单测通过——合成已知效应数据上的配对/族闭包/分层重抽正确性；bootstrap B=10000 复现性（同种子同结果）。
-- [ ] **AC-617**（FR-774~777/780）：Gate 裁决逻辑单测覆盖全部分支（GO/NO-GO/INCONCLUSIVE→扩样/FINAL_INCONCLUSIVE/GATE_VALIDITY_FAIL/B3_DOMINANCE_AUDIT_FAIL）；Gate JSON schema 校验通过。
-- [ ] **AC-618**（FR-720/721）：B0/B1 锚点回归——参考航次上 B0/B1 行为与既有 law=5/law=6 基线一致（容差内），锚定 Phase A2/B 基线。
-- [ ] **AC-619**（FR-746~748）：可行性/服务 parity 审计、干预审计、运行负担代理在每个正式臂×航次报告中齐全。
+- [ ] **AC-617**（FR-774~778/780）：Gate 裁决逻辑单测覆盖全部 canonical 分支与确定性优先级（GATE_VALIDITY_FAIL 先于普通分类；GO / NO-GO / INCONCLUSIVE→一次性扩样 / FINAL_INCONCLUSIVE→decision_required=true；`trajectory_gate_verdict` × `b3_context_status` 正交组合全覆盖，含 UNQUALIFIED_CONTEXT / QUALIFIED_PASS / B3_DOMINANCE_AUDIT_FAIL）；Gate JSON schema 校验通过（R3）。
+- [ ] **AC-618**（FR-720/721）：B0 = 对冻结基线的**完整 law=5 回归**通过；B1 = 既有 law=6 核心 scalar→ECMS 映射与下游执行在**匹配输入夹具**下回归通过（parity 适配器未修改核心控制逻辑的证据落盘）；IF 历史 law=6 运行的 oracle 刷新/末端窗口语义与新冻结 B1/B2 parity 语义不同，THEN NOT REQUIRED 正式 B1 全航程行为逐点匹配该历史运行（R7）。
+- [ ] **AC-619**（FR-746~748/750）：`audit_capability_matrix` 对每个正式臂×航次的全部登记信号完整覆盖（状态枚举闭合无遗漏）；硬性可行性最小信号集零缺失；可行性/服务 parity 审计、干预审计、运行负担代理按矩阵状态齐全报告（R5）。
 - [ ] **AC-620**（FR-779/780）：最终报告含 H_scalar/H_traj/H_arch context 分解、机器可读 Gate JSON、SMALL_N_GATE_CAUTION 与证据等级声明（DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE）。
 
 ## Edge Cases

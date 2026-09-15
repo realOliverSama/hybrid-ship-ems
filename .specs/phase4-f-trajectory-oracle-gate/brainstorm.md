@@ -22,20 +22,28 @@ Q4 CLOSED（含修订）：语料=Dataset-v3 validation split（test 保持封�
 
 ## Clarifying Questions Asked
 
-- TODO: Record key questions asked one at a time and the user's answers.
+- **Q1 scalar 基准口径**（2026-09-15 裁决 (a)，CLOSED）：正式 scalar 参照 = B1 law=6 完美 E_300 scalar oracle，预测器误差剔除出正式 Gate；B1 规范表述为「冻结 scalar ECMS 接口/控制架构下的 scalar-oracle 上界」；law=7/MLP-Q 至多 `LEGACY_PRACTICAL_DIAGNOSTIC`；parity 不变量（同真值源/t0/视界/刷新/末端）与 headroom 号约定（H_scalar/H_traj/H_arch，正=可利用余量）确立。
+- **Q2 轨迹→控制映射原则**（2026-09-15 裁决 Route B′，CLOSED）：B2 = trajectory-oracle optimized ECMS reference，仅经 Δλ_traj 监督变量作用于 λ_base=λ0+K_soc(SOC_ref−SOC)，执行链冻结；滚动 300 s 窗六步纪律（自身状态→合法窗→优化序列→首段执行→推进 plant→重解），禁全航程回放；终端能量 charge-sustaining 机制必备；`+ecms/dp_*` 仅复用机械件，直接功率 DP 归 B3；启发式臂至多 `HEURISTIC_TRAJECTORY_DIAGNOSTIC`。
+- **Q3 J_fuel 与航次级能量 parity**（2026-09-15 APPROVED WITH MODIFICATIONS，CLOSED）：J_fuel:=J_FEC（Bat_Cap=1071.36 kWh，全局冻结 k_eq^E 由 Model E 边界重算，禁沿用 Model D 0.499，禁双计效率）；预注册 TERMINAL_SOC_ADMISSIBILITY 先于 FEC 排名；k_eq ±20%/break-even 稳健性；可行性/服务 parity + 干预 + 运行负担三类审计；禁复合磨损目标；B3 记账 parity 后审。
+- **Q4 语料与显著性判据**（2026-09-15 APPROVED WITH MODIFICATIONS，CLOSED）：val split（test 封印留 T-452）；36 航次=9 split_group（波动三分层 ×3，种子 phase4f-t445-corpus-v1，SHA256 排序）+ 预留 3 组 12 航次；h_v→h_g→median_g；分层配对 cluster bootstrap B=10000；X=2.0%/Y=0%；GO / NO-GO(CI 上界<2%) / INCONCLUSIVE→一次性扩样→FINAL_INCONCLUSIVE；持续不可行=GATE_VALIDITY_FAIL；B3 dominance 审计；证据等级=DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE。
 
 ## Proposed Approach
 
-- TODO: Summarize the recommended direction before requirements are drafted.
+两轴分解（信息维度 × 控制架构）四臂实验：B0=law=5 锚点 / B1=law=6 scalar oracle（现成变体+parity 适配器）/ B2=Route B′ 滚动窗 Δλ oracle（唯一新建件，离线慢算）/ B3=离线全航程优化参照（parity 资格后审）；统一 J_FEC 记账与冻结 k_eq^E；val 分层语料 + split_group cluster bootstrap 的机器可读 Gate；GO 才放行 T-446 架构设计，NO-GO 停止方向。全程 Model E 脚本驱动、Mac 本机执行、dataset v3 零字节改动。
 
 ## Assumptions
 
-- TODO: List assumptions accepted during brainstorming.
+- Model E 冻结基线（Phase 4-A2 物理 + B 包 PMS v2/Safety 控制基线 v1.0）与 law=5/law=6 现役变体可直接复用，控制律零修改；
+- law=6 既有 oracle 输入通道可经批准的 parity 适配器（sample-and-hold/末端窗口）满足 B1/B2 同刷新同末端语义，不改核心控制逻辑；
+- `+ecms/dp_*` 工具链可适配 Model E 燃油模型/约束（B2 窗内优化与 B3 共用适配层）；
+- Mac 本机 MATLAB R2026a + `.venv_tf` 足以执行全部正式实验（无 AutoDL 依赖）；
+- dataset v3 validation split 的 27 个 split_group 足以支撑 9+3 组分层抽样；
+- E 段 winner 模型/契约在本 spec 范围外（T-450+ 才消费）。
 
 ## Remaining Doubts
 
-- TODO: List unresolved questions, if any, and whether they block requirements.
+无阻塞性疑问。九项 design 期 bounded obligations（OQ-F1~F9：刷新节奏数值与末端窗口机制、Δλ 容许集合、终端能量机制选型、TERMINAL_SOC_ADMISSIBILITY 容差带、BSFC_ref^E/η_path^E 定义、波动评分定义、ε_num 与 B3 资格化、窗内求解器构造、sim 交替推进机制与运行预算）已在 requirements.md「Open Questions」登记，design 批准前必须全部闭合。
 
 ## Decision
 
-- [ ] User approved creating the spec skeleton and drafting requirements.
+- [x] User approved creating the spec skeleton and drafting requirements（2026-09-15 brainstorm 科学闭环授权；requirements 门 2026-09-15 APPROVED WITH 7 REQUIRED CORRECTIONS，R1~R7 闭合后转 requirements-approved）。
