@@ -1,0 +1,1051 @@
+{
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "evidence_grade": "DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE",
+  "groups": [
+    {
+      "members": [
+        {
+          "artifact_sha256": "91fee841a51f1e1865edcaec5d7a853b430fee4619bc51999aebfea77d9c1304",
+          "n_full_windows": 407,
+          "score_v": 0.23039446494980126,
+          "voyage_id": "FLTA_S2_D01009_M1"
+        },
+        {
+          "artifact_sha256": "3e6ec095f767a52405cf7108aae5c152d5d9c562db6b4906f2a5d22e8992c6ec",
+          "n_full_windows": 407,
+          "score_v": 0.23039446494980126,
+          "voyage_id": "FLTA_S2_D01009_M2"
+        },
+        {
+          "artifact_sha256": "34e7896b09e924ec79e3be746f391c74e4dab6f149b6ad63627e8b5363355db1",
+          "n_full_windows": 407,
+          "score_v": 0.1489552329411925,
+          "voyage_id": "FLTA_S2_D01009_M3"
+        },
+        {
+          "artifact_sha256": "ee8229a832d44166008142e74087e01cf3fb11c166de7c05984f541221e6de8a",
+          "n_full_windows": 407,
+          "score_v": 0.1489552329411925,
+          "voyage_id": "FLTA_S2_D01009_M4"
+        }
+      ],
+      "rank_in_tier": 1,
+      "role": "initial",
+      "score_g": 0.18967484894549688,
+      "score_rank": 5,
+      "sort_hash": "0d59653f1ac11aef57e4e440cb46ffa65f48a5a29d070e32cc3477aac428867a",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "8f26c3a5f6b501ecebc9639b2873bdbba991c7b190cc0053b39e6cafd6b14f1e",
+          "n_full_windows": 337,
+          "score_v": 0.19702670952966114,
+          "voyage_id": "FLTA_S5_D04005_M1"
+        },
+        {
+          "artifact_sha256": "5811e7579274cb2fc0bf686fa056b79f94fee86389a9cf2a3a44a2230dd81f23",
+          "n_full_windows": 337,
+          "score_v": 0.19702670952966114,
+          "voyage_id": "FLTA_S5_D04005_M2"
+        },
+        {
+          "artifact_sha256": "9a661bf5ae5172afcab617422d16e2d57036778699ce5b60314b4f4cedaa6f01",
+          "n_full_windows": 337,
+          "score_v": 0.14605463470812025,
+          "voyage_id": "FLTA_S5_D04005_M3"
+        },
+        {
+          "artifact_sha256": "5d895698542850bb60503f3d66093e540c65b0d42b932363c1d80a1da469051b",
+          "n_full_windows": 337,
+          "score_v": 0.14605463470812025,
+          "voyage_id": "FLTA_S5_D04005_M4"
+        }
+      ],
+      "rank_in_tier": 2,
+      "role": "initial",
+      "score_g": 0.17154067211889068,
+      "score_rank": 9,
+      "sort_hash": "14ffb779e1bea77387c3c57813db38cfa36942259f5ef7e6c4cd1a0b7d08060c",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "6a7ff4993ec29a36f94f18938e4abab6ef1d0635dd678ccafcbcf52885c1d31e",
+          "n_full_windows": 380,
+          "score_v": 0.24022416482779135,
+          "voyage_id": "FLTA_S3_D02008_M1"
+        },
+        {
+          "artifact_sha256": "bc640d45fb6f1f733d1d283d700703bdeac0f6fad5cde433beef976fd6e9367c",
+          "n_full_windows": 380,
+          "score_v": 0.24022416482779135,
+          "voyage_id": "FLTA_S3_D02008_M2"
+        },
+        {
+          "artifact_sha256": "9bf375df0fded3aa7e4330c27b1a624744fead63d8d674d15681504a662fd124",
+          "n_full_windows": 380,
+          "score_v": 0.16570242605804836,
+          "voyage_id": "FLTA_S3_D02008_M3"
+        },
+        {
+          "artifact_sha256": "fc56ed4fd883716844450275007f7365eaec113648481ce11ff9d0fef547a65f",
+          "n_full_windows": 380,
+          "score_v": 0.16570242605804836,
+          "voyage_id": "FLTA_S3_D02008_M4"
+        }
+      ],
+      "rank_in_tier": 3,
+      "role": "initial",
+      "score_g": 0.20296329544291986,
+      "score_rank": 3,
+      "sort_hash": "290b8fbc627f2802b3862bf66c5eae494cd68eaed9ac2aa18105aa269ec94100",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "d44589f58110de6aa14f5c3baea784ea4e3c12a53b313523b59b85b4225a3eab",
+          "n_full_windows": 304,
+          "score_v": 0.23432116855834476,
+          "voyage_id": "FLTA_S4_D03011_M1"
+        },
+        {
+          "artifact_sha256": "a86168e49990b525bc963556fb09281496781e689e6b8c0e4b0b58dc754aaa4b",
+          "n_full_windows": 304,
+          "score_v": 0.23432116855834476,
+          "voyage_id": "FLTA_S4_D03011_M2"
+        },
+        {
+          "artifact_sha256": "92e37d3ce69c48e7be3931b18b6c0ffabb3688d87c7438f75ac9b73727f84fbb",
+          "n_full_windows": 304,
+          "score_v": 0.14804235074158514,
+          "voyage_id": "FLTA_S4_D03011_M3"
+        },
+        {
+          "artifact_sha256": "88f746b7a09e89d52f16339e98a3a58851673a6564e8645c4b9bd3a9c7924847",
+          "n_full_windows": 304,
+          "score_v": 0.14804235074158514,
+          "voyage_id": "FLTA_S4_D03011_M4"
+        }
+      ],
+      "rank_in_tier": 4,
+      "role": "reserve",
+      "score_g": 0.19118175964996495,
+      "score_rank": 4,
+      "sort_hash": "408313d190788c1b6602354c7760094d58c43ace72cc89c0abdfe65b3dc40aa9",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "fe98c2f0a28cd74b8e9cc158dec12423f899fe34407b46b28a5551ecb6173324",
+          "n_full_windows": 378,
+          "score_v": 0.32269262748477173,
+          "voyage_id": "FLTA_S3_D02015_M1"
+        },
+        {
+          "artifact_sha256": "dcaf2136190eaa20a15a46ebffffbdc331fc612f4bbe53114928616c02292d53",
+          "n_full_windows": 378,
+          "score_v": 0.32269262748477173,
+          "voyage_id": "FLTA_S3_D02015_M2"
+        },
+        {
+          "artifact_sha256": "1dc7d9f4db4e1c2a2ef68a95d3c65c1f7c11104e07778a48583cb15a779ef13a",
+          "n_full_windows": 378,
+          "score_v": 0.16014744575429055,
+          "voyage_id": "FLTA_S3_D02015_M3"
+        },
+        {
+          "artifact_sha256": "eba53737ab6ee44b89e3288e3c3454e9d0bef1f606eb6f5b4b00b1678d228c7a",
+          "n_full_windows": 378,
+          "score_v": 0.16014744575429055,
+          "voyage_id": "FLTA_S3_D02015_M4"
+        }
+      ],
+      "rank_in_tier": 5,
+      "role": "unselected",
+      "score_g": 0.24142003661953113,
+      "score_rank": 1,
+      "sort_hash": "761e9089797c80265ba9c6c44d4f64e05ab66bd27b227f9cae13ae9242a0899c",
+      "split_group_id": "SG#7946d88296f6f14e",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "03723e3a1f87d84038c4663289c8f15120ae8818f06db9800b05536c2f4c10b6",
+          "n_full_windows": 432,
+          "score_v": 0.21648478507049157,
+          "voyage_id": "FLTA_S1_D00012_M1"
+        },
+        {
+          "artifact_sha256": "7fc5b9383f23facee1ea122187b1dce5d5f95115c19ee1d0efd118eb7e56f214",
+          "n_full_windows": 432,
+          "score_v": 0.21648478507049157,
+          "voyage_id": "FLTA_S1_D00012_M2"
+        },
+        {
+          "artifact_sha256": "9949a8795eaa44d6676b3646dc39f07521fc9089844fa47c41de1ad2f127f533",
+          "n_full_windows": 432,
+          "score_v": 0.14616142124709758,
+          "voyage_id": "FLTA_S1_D00012_M3"
+        },
+        {
+          "artifact_sha256": "bd30952582e57866360afdab5d4af05bae0615d94f11c5c1f51222ce791f0892",
+          "n_full_windows": 432,
+          "score_v": 0.14616142124709758,
+          "voyage_id": "FLTA_S1_D00012_M4"
+        }
+      ],
+      "rank_in_tier": 6,
+      "role": "unselected",
+      "score_g": 0.18132310315879457,
+      "score_rank": 8,
+      "sort_hash": "a10fa8a1978e6d368aed18b9170dcf34880860afe0d082098478831f5858df0c",
+      "split_group_id": "SG#9809ed52f4456f54",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "5d191249b87e229b9ce3da7e3dee74d1a9e14d9843bd11fdec180d14a0300c71",
+          "n_full_windows": 390,
+          "score_v": 0.2217008338214939,
+          "voyage_id": "FLTA_S3_D02014_M1"
+        },
+        {
+          "artifact_sha256": "5fb7ace29c49d5a398d5494e27b0d1d60a8497e711e127b731df47c5039f2091",
+          "n_full_windows": 390,
+          "score_v": 0.2217008338214939,
+          "voyage_id": "FLTA_S3_D02014_M2"
+        },
+        {
+          "artifact_sha256": "1a2b6ce7614f9a7e91b88dc3dfa4ceb597e36fec61181bfd272d453d86456bb6",
+          "n_full_windows": 390,
+          "score_v": 0.14456765884207487,
+          "voyage_id": "FLTA_S3_D02014_M3"
+        },
+        {
+          "artifact_sha256": "ad2940a0c09fd9e252473d18bc331a1ea0d2e4c03d067de814e5190abf4f6414",
+          "n_full_windows": 390,
+          "score_v": 0.14456765884207487,
+          "voyage_id": "FLTA_S3_D02014_M4"
+        }
+      ],
+      "rank_in_tier": 7,
+      "role": "unselected",
+      "score_g": 0.18313424633178438,
+      "score_rank": 7,
+      "sort_hash": "ac77ab9071153b9123e809d03faafcd1ed2b46aa3c0b3e787c194881d26f4256",
+      "split_group_id": "SG#4bfc3225bda3836c",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "fd1ea493a004f9e11090208007067dbb7b53281735e0fe2ca5989b17a1d9f1ff",
+          "n_full_windows": 420,
+          "score_v": 0.2399915747319243,
+          "voyage_id": "FLTA_S2_D01002_M1"
+        },
+        {
+          "artifact_sha256": "138f641a666e7522729563aeba364c41b19f3189b04b8608271fcc6323323b21",
+          "n_full_windows": 420,
+          "score_v": 0.2399915747319243,
+          "voyage_id": "FLTA_S2_D01002_M2"
+        },
+        {
+          "artifact_sha256": "ee6a5e9367093f33c1ca7e290eec6627edb86baa278f1fd15d8d0f6f0b669238",
+          "n_full_windows": 420,
+          "score_v": 0.1388974733807074,
+          "voyage_id": "FLTA_S2_D01002_M3"
+        },
+        {
+          "artifact_sha256": "4015ea1035ff51db70d4a0514bf7c01658eac90e48eb6fd853d4d54dede77158",
+          "n_full_windows": 420,
+          "score_v": 0.1388974733807074,
+          "voyage_id": "FLTA_S2_D01002_M4"
+        }
+      ],
+      "rank_in_tier": 8,
+      "role": "unselected",
+      "score_g": 0.18944452405631584,
+      "score_rank": 6,
+      "sort_hash": "d41708d423a2afe83e080760a2019f567d6a176d95e46328c208f5ac93db92b6",
+      "split_group_id": "SG#578d79609013598e",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "1a5e233bdf1430aa988bf2371dda1c56756a486437f2f718bd385bdd7c4681be",
+          "n_full_windows": 411,
+          "score_v": 0.28404912721318826,
+          "voyage_id": "FLTA_S1_D00015_M1"
+        },
+        {
+          "artifact_sha256": "b91436d06d0799d45ce2fcc707f158e525e3aa3c785d89c892e3b8569460743c",
+          "n_full_windows": 411,
+          "score_v": 0.28404912721318826,
+          "voyage_id": "FLTA_S1_D00015_M2"
+        },
+        {
+          "artifact_sha256": "87e6ec1b2dd4bb2272dc541730a4c0a4c56fe3baad1ab356bf717d3153c6206e",
+          "n_full_windows": 411,
+          "score_v": 0.14142577253719005,
+          "voyage_id": "FLTA_S1_D00015_M3"
+        },
+        {
+          "artifact_sha256": "1e236d3ab833ac7333a6fe182974cefb248c3067c02cc50dad9b808cd2e4070d",
+          "n_full_windows": 411,
+          "score_v": 0.14142577253719005,
+          "voyage_id": "FLTA_S1_D00015_M4"
+        }
+      ],
+      "rank_in_tier": 9,
+      "role": "unselected",
+      "score_g": 0.21273744987518914,
+      "score_rank": 2,
+      "sort_hash": "eb629e9fed78ed3e9b3d6389b54604ea66de28ce0774cd1ca6f729e76d2c1e5b",
+      "split_group_id": "SG#986ac8006a6e9e76",
+      "tier": "HIGH"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "5c707a80a9240fcce30767eb6fef5ea91844e8cb0a2072c8e2176901fa0d28b8",
+          "n_full_windows": 421,
+          "score_v": 0.1686147256925911,
+          "voyage_id": "FLTA_S2_D01004_M1"
+        },
+        {
+          "artifact_sha256": "c926dd7761f8f8a1c15c37f0da1358f3cdf0d28cbdf308a451b10ab400284e88",
+          "n_full_windows": 421,
+          "score_v": 0.1686147256925911,
+          "voyage_id": "FLTA_S2_D01004_M2"
+        },
+        {
+          "artifact_sha256": "a9d1b419981f9e89b07075fb997cc7f88b23ebd00e898baefcffeaccfdaf5a46",
+          "n_full_windows": 421,
+          "score_v": 0.1556686271571828,
+          "voyage_id": "FLTA_S2_D01004_M3"
+        },
+        {
+          "artifact_sha256": "4be6f15f0c08abf51a2f575d50977c6f9914d34305ab71670d97708c75bd1c57",
+          "n_full_windows": 421,
+          "score_v": 0.1556686271571828,
+          "voyage_id": "FLTA_S2_D01004_M4"
+        }
+      ],
+      "rank_in_tier": 1,
+      "role": "initial",
+      "score_g": 0.16214167642488694,
+      "score_rank": 10,
+      "sort_hash": "04b06cd5bc4648e42496524cebf4b7a7c9c4d204b5b7954e568069e04ff64f68",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "0cc16b6fa95cafdeedd5fb8fbcb5b83d3d661356e3ca8489013197189632ea6d",
+          "n_full_windows": 346,
+          "score_v": 0.18199125939341007,
+          "voyage_id": "FLTA_S6_D05002_M1"
+        },
+        {
+          "artifact_sha256": "9f6541fb10c9b9fd4015fb8b7f1482124d23db91d903f2bbe78966c2547bbdcc",
+          "n_full_windows": 346,
+          "score_v": 0.18199125939341007,
+          "voyage_id": "FLTA_S6_D05002_M2"
+        },
+        {
+          "artifact_sha256": "35edc5e0175faff3911f896e2d872c11e69a7332d997823e1aae0d37f33ee0bc",
+          "n_full_windows": 346,
+          "score_v": 0.13059311406203664,
+          "voyage_id": "FLTA_S6_D05002_M3"
+        },
+        {
+          "artifact_sha256": "2c7f2bee76bbec1f9e086705501cbdb05e100b25bb0419a0d5f497f929cb6448",
+          "n_full_windows": 346,
+          "score_v": 0.13059311406203664,
+          "voyage_id": "FLTA_S6_D05002_M4"
+        }
+      ],
+      "rank_in_tier": 2,
+      "role": "initial",
+      "score_g": 0.15629218672772335,
+      "score_rank": 13,
+      "sort_hash": "1ff267a493d8fdbd92a9591b84b0a7d9643a9002cd9917fa1f8e145f2d5b5dca",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "fe0f02113a96295b1b25cf9e0f6aa1c51f19a2a13d97537a27179f8df8eebcb4",
+          "n_full_windows": 361,
+          "score_v": 0.18128479713994505,
+          "voyage_id": "FLTA_S6_D05011_M1"
+        },
+        {
+          "artifact_sha256": "adc533dc6ce1f9408cbd890c430cdbe9f5b8a109f6b67fe50e299ebd7e0294ea",
+          "n_full_windows": 361,
+          "score_v": 0.18128479713994505,
+          "voyage_id": "FLTA_S6_D05011_M2"
+        },
+        {
+          "artifact_sha256": "73dac20f4d39483df4a48545a6fec9ae26e16d4460bbddd4175dc62302f8c9ed",
+          "n_full_windows": 361,
+          "score_v": 0.12199795711149611,
+          "voyage_id": "FLTA_S6_D05011_M3"
+        },
+        {
+          "artifact_sha256": "73c8903bf23aef385dbc258aa7845fdf1f081f75257e454af60a1eb9b4e2f370",
+          "n_full_windows": 361,
+          "score_v": 0.12199795711149611,
+          "voyage_id": "FLTA_S6_D05011_M4"
+        }
+      ],
+      "rank_in_tier": 3,
+      "role": "initial",
+      "score_g": 0.15164137712572057,
+      "score_rank": 16,
+      "sort_hash": "20fb5ff742874c1fc628b4562e09606633fc15ff07eec9712b3247ea5a3074ef",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "df7f3235aa564c12f4bb429c2476379e0a4c820d5d8a86444dc14531a108b95d",
+          "n_full_windows": 324,
+          "score_v": 0.13916594630920606,
+          "voyage_id": "FLTA_S5_D04001_M1"
+        },
+        {
+          "artifact_sha256": "a8cfed2f2445000920343841d3fe8cf92d78faab482b2cc6e5af4286c96bb9c8",
+          "n_full_windows": 324,
+          "score_v": 0.13916594630920606,
+          "voyage_id": "FLTA_S5_D04001_M2"
+        },
+        {
+          "artifact_sha256": "53f3b8ef0415f19451412623f8b9f2a3587b25b3a1be8791c148986b8716dc0a",
+          "n_full_windows": 324,
+          "score_v": 0.13916594630920606,
+          "voyage_id": "FLTA_S5_D04001_M3"
+        },
+        {
+          "artifact_sha256": "f6973346c162c392f806a1ce91cffbf953f62bea52962c69ca14e8962c5fc8f5",
+          "n_full_windows": 324,
+          "score_v": 0.13916594630920606,
+          "voyage_id": "FLTA_S5_D04001_M4"
+        }
+      ],
+      "rank_in_tier": 4,
+      "role": "reserve",
+      "score_g": 0.13916594630920606,
+      "score_rank": 18,
+      "sort_hash": "6410bbf6ba5f28e9f5e3e684521fbf2d730dba2dfa1f854d100b9c472456e555",
+      "split_group_id": "SG#95ab26745e67b295",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "6c7b65c2ff8c98e397290610bd1c10da0189a1f879a654ff8cf51f74a917ff09",
+          "n_full_windows": 403,
+          "score_v": 0.16727304504524287,
+          "voyage_id": "FLTA_S1_D00003_M1"
+        },
+        {
+          "artifact_sha256": "bc208dc56118443a487b74898a0878c66dee941f5ec1beb7930d04f80b885194",
+          "n_full_windows": 403,
+          "score_v": 0.16727304504524287,
+          "voyage_id": "FLTA_S1_D00003_M2"
+        },
+        {
+          "artifact_sha256": "9a2fa7e4ba01971f66a86a382aa51169c58dcf5f48b895ab56efa66882f4a739",
+          "n_full_windows": 403,
+          "score_v": 0.1381358503060941,
+          "voyage_id": "FLTA_S1_D00003_M3"
+        },
+        {
+          "artifact_sha256": "c673d76690e797cebc94dc8d081a5f64e20e21c9e60c9c9bbf87950fd6f094ae",
+          "n_full_windows": 403,
+          "score_v": 0.1381358503060941,
+          "voyage_id": "FLTA_S1_D00003_M4"
+        }
+      ],
+      "rank_in_tier": 5,
+      "role": "unselected",
+      "score_g": 0.1527044476756685,
+      "score_rank": 15,
+      "sort_hash": "6738b6914dc474fd19c955580236dd0914611d2024675e822099fbfbccafb07d",
+      "split_group_id": "SG#0c01ac154ea0f38d",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "a14e7bb15f48bd3590484f3c753a00d227c47049f65733ca7667a7a6050cd6b0",
+          "n_full_windows": 355,
+          "score_v": 0.1723028228237119,
+          "voyage_id": "FLTA_S8_D07007_M1"
+        },
+        {
+          "artifact_sha256": "e5a37063a19017110c5fa98c3732c1256cdc66ff4eba84a633e364ab4f4aacda",
+          "n_full_windows": 355,
+          "score_v": 0.1723028228237119,
+          "voyage_id": "FLTA_S8_D07007_M2"
+        },
+        {
+          "artifact_sha256": "531b5b7f0fd7a4e8153771c41dc07a1c3c0b20b9ac29bafe574723b8b60dbc29",
+          "n_full_windows": 355,
+          "score_v": 0.12303647766995678,
+          "voyage_id": "FLTA_S8_D07007_M3"
+        },
+        {
+          "artifact_sha256": "16448825c094596745bb56d675fe5e595d8eab71084931a58c2bb741b814a9f6",
+          "n_full_windows": 355,
+          "score_v": 0.12303647766995678,
+          "voyage_id": "FLTA_S8_D07007_M4"
+        }
+      ],
+      "rank_in_tier": 6,
+      "role": "unselected",
+      "score_g": 0.14766965024683434,
+      "score_rank": 17,
+      "sort_hash": "ae32a31af921c9deab9de46edf2dac92559818ca76e89f3b9c9e35aeead7367d",
+      "split_group_id": "SG#7ab699a742330ca4",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "4517df8f27e7c3f1cea77d98d2b347558cab358ac7affc32fc7484b78a5dd8ed",
+          "n_full_windows": 313,
+          "score_v": 0.1668566241891833,
+          "voyage_id": "FLTA_S5_D04010_M1"
+        },
+        {
+          "artifact_sha256": "2a426a75fe4fb8c7a1bede03db6d04f2eb5c76f50b0b3884ee34e1cc0dd450be",
+          "n_full_windows": 313,
+          "score_v": 0.1668566241891833,
+          "voyage_id": "FLTA_S5_D04010_M2"
+        },
+        {
+          "artifact_sha256": "a73167ecdc6db25642aa9915cc5a8acc5debeb2bdf58cd1abf2abe72c44e8dfe",
+          "n_full_windows": 313,
+          "score_v": 0.14546485069763235,
+          "voyage_id": "FLTA_S5_D04010_M3"
+        },
+        {
+          "artifact_sha256": "23c2074fe369bc44eb55a242ddf7804fab173798ce089ee796ef3fd6ce3cd360",
+          "n_full_windows": 313,
+          "score_v": 0.14546485069763235,
+          "voyage_id": "FLTA_S5_D04010_M4"
+        }
+      ],
+      "rank_in_tier": 7,
+      "role": "unselected",
+      "score_g": 0.15616073744340783,
+      "score_rank": 14,
+      "sort_hash": "ae6e6bdb783526b9ec366cb0c1e6ad3a64dccdf8033ad367b4b965bdeaa23a95",
+      "split_group_id": "SG#380dc6bab9066696",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "80717c047abf7cc947c04e62c4bb140b47b256044fc61b798bdd4b665c501331",
+          "n_full_windows": 341,
+          "score_v": 0.17964237149360912,
+          "voyage_id": "FLTA_S4_D03013_M1"
+        },
+        {
+          "artifact_sha256": "349860f6e680d0afaa816cd5573e3537596110c3fc02cdd0cb2fb5d89be2f973",
+          "n_full_windows": 341,
+          "score_v": 0.17964237149360912,
+          "voyage_id": "FLTA_S4_D03013_M2"
+        },
+        {
+          "artifact_sha256": "f255ec7eec456449b926f080ba3a23705c6f13e5b4162cea4b0935e788ac45f3",
+          "n_full_windows": 341,
+          "score_v": 0.1329851231450206,
+          "voyage_id": "FLTA_S4_D03013_M3"
+        },
+        {
+          "artifact_sha256": "3a26c92befa2cfaabb00f1fdbf1026c25c09fb43966909006355d53dfe977b16",
+          "n_full_windows": 341,
+          "score_v": 0.1329851231450206,
+          "voyage_id": "FLTA_S4_D03013_M4"
+        }
+      ],
+      "rank_in_tier": 8,
+      "role": "unselected",
+      "score_g": 0.15631374731931486,
+      "score_rank": 12,
+      "sort_hash": "e6de824512e692fc488303f6f79346c9ac6bceece6eaf9e4164ac60a3dd6f2b7",
+      "split_group_id": "SG#0d5bfe04f7c2326c",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "6229aae2b21c7cc97c14bf5c1aa0b163484c2597bd029f894ad996ad46c4a3ba",
+          "n_full_windows": 322,
+          "score_v": 0.18372388580942284,
+          "voyage_id": "FLTA_S4_D03003_M1"
+        },
+        {
+          "artifact_sha256": "caab5a8115c44b641fec126319856640c0709f535a72d15dc52ab7bf8a1f81fc",
+          "n_full_windows": 322,
+          "score_v": 0.18372388580942284,
+          "voyage_id": "FLTA_S4_D03003_M2"
+        },
+        {
+          "artifact_sha256": "fa8e19498c1a1760a14724b5c6b3f1f7c9785db8b3dd475f907a59092faee634",
+          "n_full_windows": 322,
+          "score_v": 0.13983352812762248,
+          "voyage_id": "FLTA_S4_D03003_M3"
+        },
+        {
+          "artifact_sha256": "d241e371ef9e51f5b8282cec19b12e5c363664ea9baa46b3ea2920141c642baf",
+          "n_full_windows": 322,
+          "score_v": 0.13983352812762248,
+          "voyage_id": "FLTA_S4_D03003_M4"
+        }
+      ],
+      "rank_in_tier": 9,
+      "role": "unselected",
+      "score_g": 0.16177870696852267,
+      "score_rank": 11,
+      "sort_hash": "fe51e9fc96c0e4358e38ec10fbf26be0775bd49d32c6d6facf9136175437794b",
+      "split_group_id": "SG#f584097e4572d609",
+      "tier": "MID"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "197de33b19e9c6a492e907e6e392709523efdbd4d83d1c3cf1f31df63b31e87e",
+          "n_full_windows": 397,
+          "score_v": 0.13074686150059572,
+          "voyage_id": "FLTA_S7_D06000_M1"
+        },
+        {
+          "artifact_sha256": "38640896157baa4b010c9efd4fe46bf4aada30e5157b6b90b2f9a289f76dd318",
+          "n_full_windows": 397,
+          "score_v": 0.13074686150059572,
+          "voyage_id": "FLTA_S7_D06000_M2"
+        },
+        {
+          "artifact_sha256": "41f731d5e86aed93867c7711e0b7bd0e26987d100809b8d5ab60bf0ba4e80fa7",
+          "n_full_windows": 397,
+          "score_v": 0.09721643923996168,
+          "voyage_id": "FLTA_S7_D06000_M3"
+        },
+        {
+          "artifact_sha256": "47aac29a52970d4b246145539e81e6b19485422d4ba311459d3e9b771eebd1fb",
+          "n_full_windows": 397,
+          "score_v": 0.09721643923996168,
+          "voyage_id": "FLTA_S7_D06000_M4"
+        }
+      ],
+      "rank_in_tier": 1,
+      "role": "initial",
+      "score_g": 0.11398165037027871,
+      "score_rank": 23,
+      "sort_hash": "0128e2feb952cfe3ce21b79bcb7a51471d511c445c3daf6f4a5df765104d1410",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "a35cc8c4f068407626b687bf3561cff78e4ae45e4900e0c48cd3bdb99f54ea93",
+          "n_full_windows": 365,
+          "score_v": 0.12681151737194774,
+          "voyage_id": "FLTA_S6_D05004_M1"
+        },
+        {
+          "artifact_sha256": "895070b8d22a5f159936997b1667920a5ca9810423e99a903869deb4ccac0f7e",
+          "n_full_windows": 365,
+          "score_v": 0.12681151737194774,
+          "voyage_id": "FLTA_S6_D05004_M2"
+        },
+        {
+          "artifact_sha256": "80f54e43b5bf8602252785966e42d8be38cdf94588f211255672b6d0579bb2ba",
+          "n_full_windows": 365,
+          "score_v": 0.12310647140120291,
+          "voyage_id": "FLTA_S6_D05004_M3"
+        },
+        {
+          "artifact_sha256": "bbfd886c09fec8f96c54ebe862419ed946e99608d5dd97cd65e8490d663bb634",
+          "n_full_windows": 365,
+          "score_v": 0.12310647140120291,
+          "voyage_id": "FLTA_S6_D05004_M4"
+        }
+      ],
+      "rank_in_tier": 2,
+      "role": "initial",
+      "score_g": 0.12495899438657532,
+      "score_rank": 20,
+      "sort_hash": "1116057eccbfb66df0b6905db7c2c396bac654362bea0f4f22cda4babfae4462",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "2af76dccedd41b9687145a96b8f6329a7f2d21e066998539861bc80e397ca6e5",
+          "n_full_windows": 368,
+          "score_v": 0.10648171761614911,
+          "voyage_id": "FLTA_S8_D07009_M1"
+        },
+        {
+          "artifact_sha256": "d9c478ea7efc775d21b21ce98e3c370d1fffabdb865d8892617d1fa952160808",
+          "n_full_windows": 368,
+          "score_v": 0.10648171761614911,
+          "voyage_id": "FLTA_S8_D07009_M2"
+        },
+        {
+          "artifact_sha256": "feab105e721a4bb7e581bc2724054bd3dccdf7400b785d2d82daa543cbcb34e4",
+          "n_full_windows": 368,
+          "score_v": 0.10648171761614911,
+          "voyage_id": "FLTA_S8_D07009_M3"
+        },
+        {
+          "artifact_sha256": "96d3ae54a509a36029e297d65c394608ce82efd37f8fdd2f6f1be48ce0ae6c2d",
+          "n_full_windows": 368,
+          "score_v": 0.10648171761614911,
+          "voyage_id": "FLTA_S8_D07009_M4"
+        }
+      ],
+      "rank_in_tier": 3,
+      "role": "initial",
+      "score_g": 0.10648171761614911,
+      "score_rank": 26,
+      "sort_hash": "2c51dc838c1969f7b24bbfc1aaed9e3905b16e874f614aa51c515f8a9e4e61a6",
+      "split_group_id": "SG#0877af60295de774",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "48ded08dcaba47b2d2021ee563e23234f621c81ae9184e99061a81a4235bde44",
+          "n_full_windows": 314,
+          "score_v": 0.11396810496842684,
+          "voyage_id": "FLTA_S7_D06015_M1"
+        },
+        {
+          "artifact_sha256": "7974381e6b96bfa800fb9ce10fb7ef17008ab20a8cea514634566cf8e0f691f7",
+          "n_full_windows": 314,
+          "score_v": 0.11396810496842684,
+          "voyage_id": "FLTA_S7_D06015_M2"
+        },
+        {
+          "artifact_sha256": "7e19ca5b831fa8f2ee12936beb92e35ae6a5cf53ee31ed263e8912a316fe5972",
+          "n_full_windows": 314,
+          "score_v": 0.10375949618656168,
+          "voyage_id": "FLTA_S7_D06015_M3"
+        },
+        {
+          "artifact_sha256": "e186384e112774213a36fb55517e6212038990e877589856b3a9f400057da9e3",
+          "n_full_windows": 314,
+          "score_v": 0.10375949618656168,
+          "voyage_id": "FLTA_S7_D06015_M4"
+        }
+      ],
+      "rank_in_tier": 4,
+      "role": "reserve",
+      "score_g": 0.10886380057749426,
+      "score_rank": 24,
+      "sort_hash": "5a51e0124bb34ece8798fd9636e610841ae49e427b457a38f6a07a82a3fab7df",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "ee51b79aa163f1e9b133af8135af875f98543988d22fb9fe9f2aa50ad172295e",
+          "n_full_windows": 348,
+          "score_v": 0.1362134148056583,
+          "voyage_id": "FLTA_S7_D06009_M1"
+        },
+        {
+          "artifact_sha256": "2dccf360360407d2c505de1baf1171af4e86a0e413a875dcb26cb2885083cf8e",
+          "n_full_windows": 348,
+          "score_v": 0.1362134148056583,
+          "voyage_id": "FLTA_S7_D06009_M2"
+        },
+        {
+          "artifact_sha256": "36a62be90434412cb5a7935c65ffc789df330a965796c57fe4c56d534150f70b",
+          "n_full_windows": 348,
+          "score_v": 0.10745163300660959,
+          "voyage_id": "FLTA_S7_D06009_M3"
+        },
+        {
+          "artifact_sha256": "43c908bbc418a6d8964fbab2c3271e4cb99792ad27c1a17132ffe6605c8186f2",
+          "n_full_windows": 348,
+          "score_v": 0.10745163300660959,
+          "voyage_id": "FLTA_S7_D06009_M4"
+        }
+      ],
+      "rank_in_tier": 5,
+      "role": "unselected",
+      "score_g": 0.12183252390613394,
+      "score_rank": 22,
+      "sort_hash": "77c56d7f283d9455684fc866e694a10c743b2b4977c78e0b4361fecb29efca28",
+      "split_group_id": "SG#126bcbc3e5bc71bd",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "84321c73b4dc7e1303df044d7afa2afcfd88e658160da2ef42d408d3cc7d442e",
+          "n_full_windows": 367,
+          "score_v": 0.14350045108231876,
+          "voyage_id": "FLTA_S8_D07010_M1"
+        },
+        {
+          "artifact_sha256": "7d0dfe653754a2c8d070b75be5d76fb549c32ce3b3d78092aebfbf82cdc9bf30",
+          "n_full_windows": 367,
+          "score_v": 0.14350045108231876,
+          "voyage_id": "FLTA_S8_D07010_M2"
+        },
+        {
+          "artifact_sha256": "6bed3f012d67135e328c28e7ec1a96f6e54fe157fb1a65552160f58bc09435f1",
+          "n_full_windows": 367,
+          "score_v": 0.10497652394271019,
+          "voyage_id": "FLTA_S8_D07010_M3"
+        },
+        {
+          "artifact_sha256": "59dd8a430956a398237a3ae75920e18d42f34d60360a5387941764951e450ca2",
+          "n_full_windows": 367,
+          "score_v": 0.10497652394271019,
+          "voyage_id": "FLTA_S8_D07010_M4"
+        }
+      ],
+      "rank_in_tier": 6,
+      "role": "unselected",
+      "score_g": 0.12423848751251447,
+      "score_rank": 21,
+      "sort_hash": "822b4f4274fc696f2aaf314138efd1013cf21dff7c9d43efd2399085b647090c",
+      "split_group_id": "SG#a85c3d314bc11b10",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "594ee7b137cfad14c332aabdfbc7cb82a24edda4d965a926f42a99861b8aa50f",
+          "n_full_windows": 336,
+          "score_v": 0.15737106129029643,
+          "voyage_id": "FLTA_S9_D08002_M1"
+        },
+        {
+          "artifact_sha256": "ffd528e2dbced69e50550d6fb3d3125cfc8b32a0f5ec8dd1162a65dc7de5df5f",
+          "n_full_windows": 336,
+          "score_v": 0.15737106129029643,
+          "voyage_id": "FLTA_S9_D08002_M2"
+        },
+        {
+          "artifact_sha256": "5125213a390b2bd86c4057ae681e0debeaf1f405e4dbbd3a1e97e75553f8a62e",
+          "n_full_windows": 336,
+          "score_v": 0.10556754536317227,
+          "voyage_id": "FLTA_S9_D08002_M3"
+        },
+        {
+          "artifact_sha256": "9c466058602fab0e5a10e428bf7798bd1c478696546a2963b3a4c9a8daa4bb64",
+          "n_full_windows": 336,
+          "score_v": 0.10556754536317227,
+          "voyage_id": "FLTA_S9_D08002_M4"
+        }
+      ],
+      "rank_in_tier": 7,
+      "role": "unselected",
+      "score_g": 0.13146930332673434,
+      "score_rank": 19,
+      "sort_hash": "9fd6d513a83567f4b9c195c827da2186192aa54a197c576fcd33cbc7f9cd5258",
+      "split_group_id": "SG#3af703c00b29b4f7",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "883b4e5cd4327031547372fcc56878314ac05f38d7dbd38d2adcb2a6acdf35bc",
+          "n_full_windows": 388,
+          "score_v": 0.10087339760672098,
+          "voyage_id": "FLTA_S9_D08001_M1"
+        },
+        {
+          "artifact_sha256": "6acfdb1f37d321e494f1cc0242fd857a1b52266f46d5e6d49a26c47ddb25e452",
+          "n_full_windows": 388,
+          "score_v": 0.10087339760672098,
+          "voyage_id": "FLTA_S9_D08001_M2"
+        },
+        {
+          "artifact_sha256": "2b1844d275c18d5cbaff8d53a890be77e7f9b4c5441976168c930257261c4629",
+          "n_full_windows": 388,
+          "score_v": 0.09716775768180604,
+          "voyage_id": "FLTA_S9_D08001_M3"
+        },
+        {
+          "artifact_sha256": "ae2f91d253e8fe15209406fd3711f6913e7ae4db09d693b43c8cfbf952f32039",
+          "n_full_windows": 388,
+          "score_v": 0.09716775768180604,
+          "voyage_id": "FLTA_S9_D08001_M4"
+        }
+      ],
+      "rank_in_tier": 8,
+      "role": "unselected",
+      "score_g": 0.0990205776442635,
+      "score_rank": 27,
+      "sort_hash": "af71b5b9833ef2bcef8370e930ecaa41efff999f5bcb9e6be9027abd0c267ed7",
+      "split_group_id": "SG#aea372408a6567e0",
+      "tier": "LOW"
+    },
+    {
+      "members": [
+        {
+          "artifact_sha256": "bdbf222cd670bdc1cdd76211cd9978de804e2e7e211e9683f9e615bc3535a88d",
+          "n_full_windows": 323,
+          "score_v": 0.10756340756200024,
+          "voyage_id": "FLTA_S9_D08011_M1"
+        },
+        {
+          "artifact_sha256": "eab47ed76e87afb80aa2b1abc5d687ca9e6d15393e1e6b4d8ee9a416cac77965",
+          "n_full_windows": 323,
+          "score_v": 0.10756340756200024,
+          "voyage_id": "FLTA_S9_D08011_M2"
+        },
+        {
+          "artifact_sha256": "80fabad64591e956724a09e94a54064794b19a89b4a92b5d976cbdc8939b331a",
+          "n_full_windows": 323,
+          "score_v": 0.10756340756200024,
+          "voyage_id": "FLTA_S9_D08011_M3"
+        },
+        {
+          "artifact_sha256": "77a7854d81994dbe63785bbd12f83f803988afef8e5209b26e2ed4870d587a1b",
+          "n_full_windows": 323,
+          "score_v": 0.10756340756200024,
+          "voyage_id": "FLTA_S9_D08011_M4"
+        }
+      ],
+      "rank_in_tier": 9,
+      "role": "unselected",
+      "score_g": 0.10756340756200024,
+      "score_rank": 25,
+      "sort_hash": "b56cf60b7e0eeb6a1435523713bac695bf598dab91e54e7df3fccc32e5fdcf11",
+      "split_group_id": "SG#22805502d362f478",
+      "tier": "LOW"
+    }
+  ],
+  "initial_group_ids": [
+    "SG#e211d3bb7908e3f8",
+    "SG#f87aa695ef15f360",
+    "SG#2d5d715a0fc3480a",
+    "SG#b7f8885bb19355fd",
+    "SG#0fe21d4411bc5e17",
+    "SG#a33d734ea439b60b",
+    "SG#498b5fd8d36df50d",
+    "SG#f2e66596e8c43d8b",
+    "SG#0877af60295de774"
+  ],
+  "initial_voyage_ids": [
+    "FLTA_S2_D01009_M1",
+    "FLTA_S2_D01009_M2",
+    "FLTA_S2_D01009_M3",
+    "FLTA_S2_D01009_M4",
+    "FLTA_S5_D04005_M1",
+    "FLTA_S5_D04005_M2",
+    "FLTA_S5_D04005_M3",
+    "FLTA_S5_D04005_M4",
+    "FLTA_S3_D02008_M1",
+    "FLTA_S3_D02008_M2",
+    "FLTA_S3_D02008_M3",
+    "FLTA_S3_D02008_M4",
+    "FLTA_S2_D01004_M1",
+    "FLTA_S2_D01004_M2",
+    "FLTA_S2_D01004_M3",
+    "FLTA_S2_D01004_M4",
+    "FLTA_S6_D05002_M1",
+    "FLTA_S6_D05002_M2",
+    "FLTA_S6_D05002_M3",
+    "FLTA_S6_D05002_M4",
+    "FLTA_S6_D05011_M1",
+    "FLTA_S6_D05011_M2",
+    "FLTA_S6_D05011_M3",
+    "FLTA_S6_D05011_M4",
+    "FLTA_S7_D06000_M1",
+    "FLTA_S7_D06000_M2",
+    "FLTA_S7_D06000_M3",
+    "FLTA_S7_D06000_M4",
+    "FLTA_S6_D05004_M1",
+    "FLTA_S6_D05004_M2",
+    "FLTA_S6_D05004_M3",
+    "FLTA_S6_D05004_M4",
+    "FLTA_S8_D07009_M1",
+    "FLTA_S8_D07009_M2",
+    "FLTA_S8_D07009_M3",
+    "FLTA_S8_D07009_M4"
+  ],
+  "manifest_sha256": "7bca3f3a576e966fc8a4aebb68e6ac7b8d50fb1938181cfa657d405f45168d3a",
+  "n_initial_groups": 9,
+  "n_initial_voyages": 36,
+  "n_reserve_groups": 3,
+  "n_reserve_voyages": 12,
+  "n_val_groups": 27,
+  "n_val_voyages": 108,
+  "ood_sealed": true,
+  "purpose": "QUALIFICATION",
+  "reserve_group_ids": [
+    "SG#1b624f14c86d40e7",
+    "SG#95ab26745e67b295",
+    "SG#30ab14ffb1a08292"
+  ],
+  "reserve_voyage_ids": [
+    "FLTA_S4_D03011_M1",
+    "FLTA_S4_D03011_M2",
+    "FLTA_S4_D03011_M3",
+    "FLTA_S4_D03011_M4",
+    "FLTA_S5_D04001_M1",
+    "FLTA_S5_D04001_M2",
+    "FLTA_S5_D04001_M3",
+    "FLTA_S5_D04001_M4",
+    "FLTA_S7_D06015_M1",
+    "FLTA_S7_D06015_M2",
+    "FLTA_S7_D06015_M3",
+    "FLTA_S7_D06015_M4"
+  ],
+  "schema": "t445_corpus_manifest_v1",
+  "scientific_access": {
+    "iid_test_voyages_loaded": 0,
+    "ood_voyages_loaded": 0,
+    "split": "validation"
+  },
+  "seed": "phase4f-t445-corpus-v1",
+  "shape_score": {
+    "group_agg": "mean_of_four_members",
+    "name": "shape_cv",
+    "p_epsilon_kW": 1.0,
+    "std_ddof": 0,
+    "windows": "full_horizon_300s_only"
+  },
+  "split_assignment_sha256": "ac4c4a7629534daf1c4d88b05848fbfe1bb1dc148679d0b7abbbe873f66c809f",
+  "task": "T-005",
+  "test_sealed": true,
+  "tier_counts": {
+    "HIGH": 9,
+    "LOW": 9,
+    "MID": 9
+  },
+  "utc": "2026-09-15T08:37:22Z"
+}

@@ -92,7 +92,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: 某硬可行性信号无法从 stream/logsout 获得（矩阵出现非计划 NOT_INSTRUMENTED）→ 停，升级用户（R5 纪律）
   - Completion evidence: 单测 PASS + audit_capability_matrix 全 AVAILABLE_AND_CHECKED 登记
 
-- [ ] 5. 语料选择 + corpus manifest 生成（arm-independent）
+- [x] 5. 语料选择 + corpus manifest 生成（arm-independent）
   - ID: T-005
   - Requirement(s): FR-760~764；Design: DGN-F-07；AC-615
   - depends_on: T-001

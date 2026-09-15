@@ -1,3 +1,4 @@
 {"purpose":"SYNTHETIC_SMOKE","task":"T-002","artifact":"t002_unit_test_result.json","utc":"2026-09-15T07:16:59Z"}
 {"purpose":"REGRESSION","task":"T-003","artifact":"t003_complete.json","utc":"2026-09-15T08:25:17Z"}
 {"purpose":"SYNTHETIC_SMOKE","task":"T-004","artifact":"t004_unit_test_result.json","utc":"2026-09-15T08:25:17Z"}
+{"artifact": "corpus_manifest.json", "iid_test_loaded": 0, "ood_loaded": 0, "purpose": "QUALIFICATION", "task": "T-005", "utc": "2026-09-15T08:37:22Z", "val_voyages_scored": 108}

@@ -21,5 +21,7 @@ T-445 Trajectory Oracle Gate（spec `.specs/phase4-f-trajectory-oracle-gate/`）
 | `tests/test_t001_config.py` | T-001 单测（冻结字段 / overlap 三 false / env / E 守卫） |
 | `verify_lambda_envelope.py` | T-003 R4 原生包络（Amendment a′：`LAW6_NATIVE_ENVELOPE_CONFIRMED`；旧 STOP JSON 保留） |
 | `compute_b1_norm.py` | T-003 从 train 语料复现 E_ref/E_scale |
+| `corpus_select.py` | ★ T-005 val-only 形状评分/三分层/SHA 排序，写 `corpus_manifest.json` |
+| `tests/test_corpus_select.py` | T-005 合成单测（shape_cv、shrinking 窗、分层、族闭包、种子复现） |
 
 MATLAB 对侧（`scripts/+t445/`，非本目录）：T-002 起窗装配 / 真 ZOH 适配器。

@@ -29,6 +29,7 @@ Phase 4-F T-445 的证据落盘根。T-001 写入冻结身份与守卫；正式 
 | `t003_control_gate_quick.json` | T-003 43 快链 GATE43_QUICK overall=true |
 | `t003_complete.json` | T-003 收口（config 6d25ce39…） |
 | `t004_unit_test_result.json` | T-004 合成 fixture FEC/审计/硬可行性 |
+| `corpus_manifest.json` | ★ T-005 冻结语料（val 27 组；initial 9×4；reserve 3×4；test_sealed 元数据） |
 | `incidents.jsonl` | 事故账本（禁删，FR-777） |
 | `access_ledger.jsonl` | 访问台账（purpose ∈ QUALIFICATION/REGRESSION/SYNTHETIC_SMOKE/FORMAL） |
 | `qualification/` | B 阶段资格化 JSON（T-007/T-010/T-011） |
