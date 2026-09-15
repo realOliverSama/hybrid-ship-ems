@@ -1,0 +1,11 @@
+{
+  "schema": "t445_t003_control_gate_quick_v1",
+  "task": "T-003",
+  "purpose": "REGRESSION",
+  "mode": "GATE43_QUICK",
+  "overall": true,
+  "wall_s": 45,
+  "note": "43 quick-chain PASS. Did not commit overwritten results/gate_control_result.json; frozen full-gate JSON restored from HEAD.",
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "utc": "2026-09-15T08:20:10Z"
+}

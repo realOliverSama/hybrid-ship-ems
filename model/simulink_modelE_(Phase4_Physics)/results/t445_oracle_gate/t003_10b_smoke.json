@@ -1,4 +1,5 @@
 {
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
   "note": "10b smoke PASS after amendment a-prime; slx sha unchanged vs T-001 baseline",
   "overall": true,
   "purpose": "REGRESSION",

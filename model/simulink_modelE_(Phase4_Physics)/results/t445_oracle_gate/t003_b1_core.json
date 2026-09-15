@@ -1,4 +1,5 @@
 {
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
   "ecms_law_offline_T1_T8": "PASS (T5/T7/T9 skipped: Model D Model_Parameters.m missing)",
   "ks_channel_max_residual": 0,
   "modele_block_vs_offline": {

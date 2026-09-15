@@ -3,6 +3,7 @@
   "E300_min_kWh": 0.23605496016154012,
   "E_ref_kWh": 27.781415008975053,
   "E_scale_kWh": 13.671476250652878,
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
   "expected": {
     "E_ref_kWh": 27.781415,
     "E_scale_kWh": 13.671476,
@@ -10,14 +11,24 @@
     "provenance_sha256": "b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045"
   },
   "match_n": true,
-  "match_prov": false,
+  "match_prov": true,
   "match_ref": true,
   "match_scale": true,
   "n_t0": 159472,
   "n_train_voyages": 396,
-  "pass": false,
-  "provenance_sha256": "b49b9cd7c54f2518e744c34b9cbe9f3942bb0db98d8f930fd56e7d579e9f37f6",
-  "record_sha256": "682fbd0e0b7941ca44d7dbb5ce7186ae1602d35091c66bf8cbf8459d8f83183b",
+  "pass": true,
+  "provenance_serialization": {
+    "encoding": "utf-8",
+    "join": "'|'.join(f'{voyage_id}:{artifact_sha256}' for voyage_id, artifact_sha256 in sorted(pairs))",
+    "ledger": "pass1_iid_ledger.json",
+    "n_bytes": 32867,
+    "sort": "tuple (voyage_id, artifact_sha256) lexicographic",
+    "source": "design-session original generator 2026-09-15",
+    "status": "PROVENANCE_SERIALIZATION_ALIGNMENT",
+    "trailing_newline": false
+  },
+  "provenance_sha256": "b9dcf268f533a9a93c73bbaeeed3a6dca6b15227cfd868fb459c46fcc81cf045",
+  "record_sha256": "991d3855c8c48cae02ff6bfa5bbddf073c2247ed6c618b79b1f030becf9b7f22",
   "schema": "t445_b1_norm_repro_v1",
   "task": "T-003"
 }

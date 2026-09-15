@@ -1,0 +1,21 @@
+{
+  "checks": {
+    "b0_three_voyage_tworun": true,
+    "b1_block_parity": true,
+    "b1_norm_repro": true,
+    "control_gate_quick": true,
+    "ks_channel": true,
+    "provenance_sha": true,
+    "r4_native": true,
+    "smoke_10b": true
+  },
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "overall": true,
+  "provenance": "PROVENANCE_SERIALIZATION_ALIGNMENT",
+  "r4": "LAW6_NATIVE_ENVELOPE_CONFIRMED",
+  "schema": "t445_t003_complete_v1",
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "slx_unchanged": true,
+  "task": "T-003",
+  "utc": "2026-09-15T08:24:17Z"
+}

@@ -28,6 +28,31 @@ def test_floor_still_applies():
     assert lam == 0.43
 
 
+def test_provenance_pipe_join_matches_frozen_sha():
+    """Original design-session serialization: '|'.join(sorted voyage:sha)."""
+    import hashlib
+
+    split = json.load(open(os.path.join(
+        paths.MODELE_ROOT, "results", "dataset_v3", "formal",
+        "split_assignment_v3.json"), encoding="utf-8"))
+    led = json.load(open(os.path.join(
+        paths.MODELE_ROOT, "results", "dataset_v3", "formal",
+        "pass1_iid_ledger.json"), encoding="utf-8"))
+    assign = split["assignment"]
+    sha_list = [
+        (r["voyage_id"], r["artifact_sha256"])
+        for r in led["voyages"]
+        if assign[r["split_group_id"]]["split"] == "train"
+    ]
+    assert len(sha_list) == 396
+    assert len(set(sha_list)) == 396
+    prov = hashlib.sha256(
+        "|".join(f"{v}:{h}" for v, h in sorted(sha_list)).encode("utf-8")
+    ).hexdigest()
+    from t445.frozen_config import PROVENANCE_B1_NORM
+    assert prov == PROVENANCE_B1_NORM
+
+
 def test_native_json_and_old_stop_retained():
     native = os.path.join(paths.RESULTS_DIR, "lambda_envelope_r4_native.json")
     old = os.path.join(paths.RESULTS_DIR, "lambda_envelope_r4.json")

@@ -58,10 +58,7 @@ def main() -> int:
         if split.get("artifact_sha256") != EXPECTED_SPLIT:
             raise SystemExit(f"split hash mismatch: {split.get('artifact_sha256')}")
 
-    train_groups = {
-        gid for gid, rec in split["assignment"].items()
-        if rec["split"] == "train"
-    }
+    assign = split["assignment"]
 
     ledger_path = os.path.join(
         paths.MODELE_ROOT, "results", "dataset_v3", "formal",
@@ -72,24 +69,22 @@ def main() -> int:
     with open(ledger_path, encoding="utf-8") as fh:
         ledger = json.load(fh)
 
-    voyages = []
-    for v in ledger["voyages"]:
-        disp = str(v.get("disposition", "ACCEPT")).upper()
-        if disp not in ("ACCEPT", "NONE", ""):
-            continue
-        if v["split_group_id"] in train_groups:
-            voyages.append(v)
-    # unique by voyage_id
-    by_id = {}
-    for v in voyages:
-        by_id[v["voyage_id"]] = v
-    voyages = [by_id[k] for k in sorted(by_id)]
-    if len(voyages) != EXPECTED_N_TRAIN:
-        raise SystemExit(f"train voyages={len(voyages)} expected {EXPECTED_N_TRAIN}")
-
-    pairs = [f"{v['voyage_id']}:{v['artifact_sha256']}" for v in voyages]
-    pairs.sort()
-    prov = hashlib.sha256("".join(pairs).encode("utf-8")).hexdigest()
+    # Exact original generator (design-session 2026-09-15):
+    # train_rows = ledger rows whose split_group is train (pass1_iid_ledger order)
+    # sha_list = [(voyage_id, artifact_sha256), ...]
+    # prov = sha256('|'.join(f'{v}:{h}' for v,h in sorted(sha_list)))
+    train_rows = [
+        v for v in ledger["voyages"]
+        if assign[v["split_group_id"]]["split"] == "train"
+    ]
+    if len(train_rows) != EXPECTED_N_TRAIN:
+        raise SystemExit(f"train voyages={len(train_rows)} expected {EXPECTED_N_TRAIN}")
+    sha_list = [(v["voyage_id"], v["artifact_sha256"]) for v in train_rows]
+    if len(set(sha_list)) != EXPECTED_N_TRAIN:
+        raise SystemExit("duplicate train voyage identities")
+    prov_bytes = "|".join(f"{v}:{h}" for v, h in sorted(sha_list)).encode("utf-8")
+    prov = hashlib.sha256(prov_bytes).hexdigest()
+    voyages = train_rows
 
     iid_dir = os.path.join(paths.MODELE_ROOT, "datasets_v3", "formal", "iid")
     e_all = []
@@ -132,6 +127,18 @@ def main() -> int:
         "match_n": int(e_cat.size) == EXPECTED_N_T0,
     }
     rec["pass"] = all(rec[k] for k in ("match_ref", "match_scale", "match_prov", "match_n"))
+    rec["provenance_serialization"] = {
+        "status": "PROVENANCE_SERIALIZATION_ALIGNMENT" if rec["match_prov"] else "MISMATCH",
+        "join": "'|'.join(f'{voyage_id}:{artifact_sha256}' for voyage_id, artifact_sha256 in sorted(pairs))",
+        "sort": "tuple (voyage_id, artifact_sha256) lexicographic",
+        "encoding": "utf-8",
+        "trailing_newline": False,
+        "ledger": "pass1_iid_ledger.json",
+        "n_bytes": len(prov_bytes),
+        "source": "design-session original generator 2026-09-15",
+    }
+    with open(paths.CONFIG_JSON, encoding="utf-8") as fh:
+        rec["config_sha256"] = json.load(fh)["config_sha256"]
     rec["record_sha256"] = hashutil.sha256_canonical(
         {k: v for k, v in rec.items() if k != "record_sha256"}
     )

@@ -1,0 +1,29 @@
+{
+  "schema": "t445_t003_b0_regression_v1",
+  "task": "T-003",
+  "purpose": "REGRESSION",
+  "arm": "B0",
+  "config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "overall": true,
+  "cases": [
+    {
+      "name": "T01C_S01_still",
+      "pass": true,
+      "n": 2.598733E+6,
+      "maxAbs": 0
+    },
+    {
+      "name": "T04C_S04_res_inc",
+      "pass": true,
+      "n": 4.233481E+6,
+      "maxAbs": 0
+    },
+    {
+      "name": "T10C_S10_current_reversal",
+      "pass": true,
+      "n": 8.303653E+6,
+      "maxAbs": 0
+    }
+  ],
+  "utc": "2026-09-15T08:18:52Z"
+}

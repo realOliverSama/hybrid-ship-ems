@@ -68,7 +68,7 @@ F 收官:  T-016(最终报告+证据索引；仅消费 final_gate_pointer.json�
   - Gate/STOP: ZOH 测试失败（minor-stage 插值泄漏）→ 停，升级用户（不得用稠密楼梯伪 ZOH 绕路）
   - Completion evidence: 单测 PASS JSON + ZOH 边界证据
 
-- [ ] 3. B0/B1 harness + B0 全回归 + B1 核心夹具回归 + B1 归一化复现
+- [x] 3. B0/B1 harness + B0 全回归 + B1 核心夹具回归 + B1 归一化复现
   - ID: T-003
   - Requirement(s): FR-720/721/728；Design: DGN-F-01/02/13；AC-618
   - depends_on: T-001, T-002
