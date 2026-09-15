@@ -34,7 +34,7 @@
     {
       "name": "toy_dp_determinism",
       "pass": true,
-      "detail": "dlam1=-0.1000 SOC_H=0.6037 J=15.2661 lam_raw_max=15.5250"
+      "detail": "dlam1=-0.1000 SOC_H=0.6037 J=19.6863 lam_raw_max=15.5250"
     },
     {
       "name": "no_artificial_cap",
@@ -42,5 +42,5 @@
       "detail": "scan_ok"
     }
   ],
-  "utc": "2026-09-15T10:02:39Z"
+  "utc": "2026-09-15T10:42:37Z"
 }

@@ -10,6 +10,7 @@ p.addParameter('use_vterm', true, @islogical);
 p.addParameter('soc_step', [], @(x) isempty(x) || isnumeric(x));
 p.addParameter('dlam_step', [], @(x) isempty(x) || isnumeric(x));
 p.addParameter('freeze_dlambda', [], @(x) isempty(x) || isnumeric(x));
+p.addParameter('N0', 1, @isnumeric);
 p.parse(varargin{:});
 opt = p.Results;
 if nargin < 3 || isempty(cfg)
@@ -53,51 +54,65 @@ cap = cfg.k_eq.bat_cap_kWh;
 oob = 0;
 izero = find(abs(dlam) < 1e-12, 1, 'first');
 assert(~isempty(izero), 'T445:B2:DL0');
-
-% terminal
-V_all = zeros(K + 1, nS);
-if opt.use_vterm
-    V_all(K + 1, :) = t445.b2_vterm(soc_grid(:), cfg, SOC_target).';
-else
-    V_all(K + 1, :) = 0;
+fm = struct('dt', cfg.b2_dp.dt_s, 'C_start', 0.6, ...
+    'P_bp', [125 250 375 400 500], 'g_kWh', [600 547 447 427 453]);
+if evalin('base', "exist('DG_C_start_kg','var')")
+    fm.C_start = evalin('base', 'DG_C_start_kg');
+    fm.P_bp = evalin('base', 'DG_BSFC_P_kW');
+    fm.g_kWh = evalin('base', 'DG_BSFC_gkWh');
 end
+N0 = max(1, min(2, round(opt.N0)));
+
+% terminal: V 与 N 无关
+V_all = zeros(K + 1, nS, 2);
+vt = zeros(nS, 1);
+if opt.use_vterm
+    vt = t445.b2_vterm(soc_grid(:), cfg, SOC_target);
+end
+V_all(K + 1, :, 1) = vt;
+V_all(K + 1, :, 2) = vt;
 infeas_step = false(K, 1);
 
 for k = K:-1:1
     Pd = Pbar(k);
-    Vnext = V_all(k + 1, :).';
-    Vk = BIG * ones(nS, 1);
-    step_infeas = true(nS, 1);
-    for i = 1:nS
-        SOC = soc_grid(i);
-        [bestJ, ~, valid, o1] = local_best(SOC, Pd, dlam, Vnext, soc_grid, ...
-            tbl, lam0, Ksoc, SOCref, floorL, cap, BIG, izero);
-        oob = oob + o1;
-        Vk(i) = bestJ;
-        step_infeas(i) = ~valid;
-        if ~valid
-            [j0, o2] = local_cost(SOC, Pd, 0, Vnext, soc_grid, tbl, ...
-                lam0, Ksoc, SOCref, floorL, cap, BIG);
-            oob = oob + o2;
-            Vk(i) = j0;
+    Vnext = squeeze(V_all(k + 1, :, :));  % nS x 2
+    Vk = BIG * ones(nS, 2);
+    step_infeas = true(nS, 2);
+    for iN = 1:2
+        for i = 1:nS
+            SOC = soc_grid(i);
+            [bestJ, ~, valid, o1] = local_best(SOC, iN, Pd, dlam, Vnext, soc_grid, ...
+                tbl, lam0, Ksoc, SOCref, floorL, cap, BIG, izero, fm);
+            oob = oob + o1;
+            Vk(i, iN) = bestJ;
+            step_infeas(i, iN) = ~valid;
+            if ~valid
+                [j0, o2] = local_cost(SOC, iN, Pd, 0, Vnext, soc_grid, tbl, ...
+                    lam0, Ksoc, SOCref, floorL, cap, BIG, fm);
+                oob = oob + o2;
+                Vk(i, iN) = j0;
+            end
         end
     end
-    V_all(k, :) = Vk.';
-    infeas_step(k) = all(step_infeas);
+    V_all(k, :, :) = Vk;
+    infeas_step(k) = all(step_infeas(:));
 end
 
-% forward: 在真实 SOC 上对 Δλ 再 argmin（用已存 V_{k+1}）
+% forward
 soc = SOC0;
+N = N0;
 dlambda = zeros(K, 1);
 soc_path = zeros(K + 1, 1);
 soc_path(1) = soc;
+N_path = zeros(K + 1, 1);
+N_path(1) = N;
 fuel_proxy = 0;
 fallback_n = 0;
 for k = 1:K
     Pd = Pbar(k);
-    Vnext = V_all(k + 1, :).';
-    [bestJ, bestU, valid, o1] = local_best(soc, Pd, dlam, Vnext, soc_grid, ...
-        tbl, lam0, Ksoc, SOCref, floorL, cap, BIG, izero); %#ok<ASGLU>
+    Vnext = squeeze(V_all(k + 1, :, :));
+    [bestJ, bestU, valid, o1] = local_best(soc, N, Pd, dlam, Vnext, soc_grid, ...
+        tbl, lam0, Ksoc, SOCref, floorL, cap, BIG, izero, fm); %#ok<ASGLU>
     oob = oob + o1;
     if ~valid || infeas_step(k)
         bestU = izero;
@@ -107,10 +122,14 @@ for k = 1:K
     lam_eff = max(lam0 + Ksoc * (SOCref - soc) + dlambda(k), floorL);
     [il, ip, ir, o2] = t445.policy_lookup(tbl, lam_eff, Pd, soc);
     oob = oob + o2;
-    fuel_proxy = fuel_proxy + tbl.fuel_kg(il, ip, ir);
+    Pg = tbl.Pg(il, ip, ir);
+    pr = t445.pms_predict(Pg, 'N_prev', N);
+    fuel_proxy = fuel_proxy + local_pms_fuel(pr, fm);
+    N = pr.N;
     soc = soc + tbl.dE_kWh(il, ip, ir) / cap;
     soc = min(max(soc, soc_grid(1)), soc_grid(end));
     soc_path(k + 1) = soc;
+    N_path(k + 1) = N;
 end
 J = t445.b2_objective(fuel_proxy, soc_path(end), cfg, SOC_target);
 if ~opt.use_vterm
@@ -133,21 +152,24 @@ sol.infeasible_share = fallback_n / K;
 sol.config_sha256 = cfg.config_sha256;
 sol.diagnostics = struct( ...
     'soc_path', soc_path, ...
+    'N_path', N_path, ...
+    'N0', N0, ...
     'use_vterm', opt.use_vterm, ...
     'lambda_floor', floorL, ...
-    'no_upper_cap', true);
+    'no_upper_cap', true, ...
+    'pms_fuel', true);
 end
 
-function [bestJ, bestU, valid, oob] = local_best(SOC, Pd, dlam, Vnext, soc_grid, ...
-        tbl, lam0, Ksoc, SOCref, floorL, cap, BIG, izero)
+function [bestJ, bestU, valid, oob] = local_best(SOC, N, Pd, dlam, Vnext, soc_grid, ...
+        tbl, lam0, Ksoc, SOCref, floorL, cap, BIG, izero, fm)
 nD = numel(dlam);
 bestJ = BIG;
 bestU = izero;
 valid = false;
 oob = 0;
 for u = 1:nD
-    [J, o1] = local_cost(SOC, Pd, dlam(u), Vnext, soc_grid, tbl, ...
-        lam0, Ksoc, SOCref, floorL, cap, BIG);
+    [J, o1] = local_cost(SOC, N, Pd, dlam(u), Vnext, soc_grid, tbl, ...
+        lam0, Ksoc, SOCref, floorL, cap, BIG, fm);
     oob = oob + o1;
     if J < bestJ - 1e-15
         bestJ = J;
@@ -157,17 +179,31 @@ for u = 1:nD
 end
 end
 
-function [J, oob] = local_cost(SOC, Pd, dlam_u, Vnext, soc_grid, tbl, ...
-        lam0, Ksoc, SOCref, floorL, cap, BIG)
+function [J, oob] = local_cost(SOC, N, Pd, dlam_u, Vnext, soc_grid, tbl, ...
+        lam0, Ksoc, SOCref, floorL, cap, BIG, fm)
 lam_eff = max(lam0 + Ksoc * (SOCref - SOC) + dlam_u, floorL);
 [il, ip, ir, oob] = t445.policy_lookup(tbl, lam_eff, Pd, SOC);
-fuel = tbl.fuel_kg(il, ip, ir);
+Pg = tbl.Pg(il, ip, ir);
+pr = t445.pms_predict(Pg, 'N_prev', N);
+fuel = local_pms_fuel(pr, fm);
 dE = tbl.dE_kWh(il, ip, ir);
 socn = SOC + dE / cap;
+n2 = max(1, min(2, pr.N));
 if socn < soc_grid(1) - 1e-12 || socn > soc_grid(end) + 1e-12
     J = BIG;
 else
-    vn = interp1(soc_grid, Vnext, socn, 'linear', BIG);
+    vn = interp1(soc_grid, Vnext(:, n2), socn, 'linear', BIG);
     J = fuel + vn;
+end
+end
+
+function fuel = local_pms_fuel(pr, fm)
+fuel = 0;
+for i = 1:pr.N
+    fuel = fuel + t445.fuel_model_e_unit(pr.P_DG(i), 3, ...
+        'P_bp', fm.P_bp, 'g_kWh', fm.g_kWh) * fm.dt;
+end
+if pr.start_event > 0
+    fuel = fuel + fm.C_start;
 end
 end

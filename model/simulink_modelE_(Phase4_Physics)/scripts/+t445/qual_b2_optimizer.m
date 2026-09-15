@@ -34,7 +34,8 @@ r.pass = Q.Q1 && Q.Q2 && Q.Q3 && Q.Q4 && Q.Q5 && Q.Q6;
 r.utc = char(datetime('now', 'TimeZone', 'UTC', 'Format', 'yyyy-MM-dd''T''HH:mm:ss''Z'));
 qdir = fullfile(ROOT, 'results', 't445_oracle_gate', 'qualification');
 if ~exist(qdir, 'dir'), mkdir(qdir); end
-fid = fopen(fullfile(qdir, 't010_b2_optimizer_qual.json'), 'w');
+% 保留既有 FAIL：t010_b2_optimizer_qual.json 不覆盖
+fid = fopen(fullfile(qdir, 't010_b2_optimizer_qual_amd_d.json'), 'w');
 fwrite(fid, jsonencode(r, 'PrettyPrint', true));
 fclose(fid);
 fprintf('[T-010 Q1-Q6] pass=%d Q1=%d Q2=%d Q3=%d Q4=%d Q5=%d Q6=%d\n', ...
@@ -138,20 +139,31 @@ stopT = settle + win;
 dt = 10;
 t0s = (0:dt:(stopT-dt)).';
 e0 = [t0s, zeros(size(t0s)), zeros(size(t0s))];
-KS5 = 0;
-% B0 全程，取 settle 后 300 s 增量
-out0 = t445.run_arm_b0b1('B0', SCN, 'StopTime', stopT);
-ds0 = model.extract_logsout(out0);
-[inc0, Pbar, SOC_s] = local_window_inc(ds0, settle, stopT);
-s6 = t445.b2_window_dp(Pbar, SOC_s, cfg, tbl, 'freeze_dlambda', 0, ...
-    't0', settle, 'SOC_target', SCN.initial_SOC);
-rel6 = abs(s6.fuel_proxy_kg - inc0.fuel) / max(abs(inc0.fuel), 1e-12);
-d6 = struct('pass', rel6 <= 0.01, 'rel', rel6, 'fuel_proxy', s6.fuel_proxy_kg, ...
-    'fuel_b0', inc0.fuel, 'SOC_s', SOC_s);
+KS = cfg.lambda_law.K_S_B2_num / cfg.lambda_law.K_S_B2_den;
 
-% Q4：同一 P̄ 上优化，再 B1 回放 Δλ 序列（K_S=1/30）
+% Q6: B2_ZERO_CORRECTION_SANITY — law=6 K_S=1/30 ê=0，非 law=5
+out6 = t445.run_arm_b0b1('B1', SCN, 'StopTime', stopT, 'EHatData', e0, 'K_S', KS);
+ds6 = model.extract_logsout(out6);
+[inc6, Pbar, SOC_s] = local_window_inc(ds6, settle, stopT);
+s6 = t445.b2_window_dp(Pbar, SOC_s, cfg, tbl, 'freeze_dlambda', 0, ...
+    't0', settle, 'SOC_target', SCN.initial_SOC, 'N0', 2);
+rel6 = abs(s6.fuel_proxy_kg - inc6.fuel) / max(abs(inc6.fuel), 1e-12);
+dsoc6 = abs((s6.SOC_H - s6.SOC0) - inc6.dSOC);
+d6 = struct('pass', rel6 <= 0.01 && dsoc6 <= 0.002, 'rel', rel6, ...
+    'dsoc_err', dsoc6, 'fuel_proxy', s6.fuel_proxy_kg, 'fuel_plant', inc6.fuel, ...
+    'name', 'B2_ZERO_CORRECTION_SANITY');
+
+% 冷启动 0–300 s 覆盖（不替代 settled，不决定 PASS）
+[incC, PbarC, SOC_c] = local_window_inc(ds6, 0, 300);
+sC = t445.b2_window_dp(PbarC, SOC_c, cfg, tbl, 'freeze_dlambda', 0, ...
+    't0', 0, 'SOC_target', SCN.initial_SOC, 'N0', 1);
+relC = abs(sC.fuel_proxy_kg - incC.fuel) / max(abs(incC.fuel), 1e-12);
+d6.cold_start_diagnostic = struct('fuel_rel', relC, 'fuel_proxy', sC.fuel_proxy_kg, ...
+    'fuel_plant', incC.fuel, 'not_used_for_pass', true);
+
+% Q4：同一 settled P̄ 优化后 law=6 回放
 s4 = t445.b2_window_dp(Pbar, SOC_s, cfg, tbl, 't0', settle, ...
-    'SOC_target', SCN.initial_SOC);
+    'SOC_target', SCN.initial_SOC, 'N0', 2);
 t0w = (settle:dt:(stopT-dt)).';
 nd = numel(s4.dlambda);
 ehat = [t0w(1:nd), zeros(nd,1), s4.dlambda];
@@ -159,10 +171,8 @@ if numel(t0w) > nd
     extra = t0w(nd+1:end);
     ehat = [ehat; [extra, zeros(size(extra)), s4.dlambda(end)*ones(size(extra))]];
 end
-% t<settle 用 0
 ehat = [e0(e0(:,1) < settle, :); ehat];
-outP = t445.run_arm_b0b1('B1', SCN, 'StopTime', stopT, 'EHatData', ehat, ...
-    'K_S', cfg.lambda_law.K_S_B2_num / cfg.lambda_law.K_S_B2_den);
+outP = t445.run_arm_b0b1('B1', SCN, 'StopTime', stopT, 'EHatData', ehat, 'K_S', KS);
 dsP = model.extract_logsout(outP);
 incP = local_window_inc(dsP, settle, stopT);
 relf = abs(s4.fuel_proxy_kg - incP.fuel) / max(abs(incP.fuel), 1e-12);

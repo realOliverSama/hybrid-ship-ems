@@ -1,0 +1,37 @@
+{
+  "schema": "t445_t010_amendment_d_fixture_freeze_v1",
+  "task": "T-010",
+  "amendment": "D_pms_fuel_surrogate",
+  "pre_formal": true,
+  "preserves_fail_artifact": "qualification/t010_b2_optimizer_qual.json",
+  "do_not_relabel_old_fail_pass": true,
+  "q6_name": "B2_ZERO_CORRECTION_SANITY",
+  "q6_plant": "law=6 K_S=1/30 zero EHat native floor 0.43",
+  "legacy_law5_diagnostic_only": true,
+  "q4_tolerances": { "fuel_rel": 0.01, "dsoc_abs": 0.002 },
+  "q6_tolerances": { "fuel_rel": 0.01, "dsoc_abs": 0.002 },
+  "fixtures": [
+    {
+      "fixture_id": "B2-Q4-SETTLED-300",
+      "source": "ModelE_TestScenarios S01",
+      "segment": "t=120..420 s",
+      "purpose": "Q4 proxy vs plant settled",
+      "replace_old": false
+    },
+    {
+      "fixture_id": "B2-Q6-ZERO-CORRECTION-SETTLED-300",
+      "source": "ModelE_TestScenarios S01",
+      "segment": "t=120..420 s",
+      "purpose": "Q6 B2_ZERO_CORRECTION_SANITY",
+      "replace_old": false
+    },
+    {
+      "fixture_id": "B2-Q6-COLDSTART-0-300",
+      "source": "ModelE_TestScenarios S01",
+      "segment": "t=0..300 s",
+      "purpose": "cold-start coverage diagnostic, not PASS/FAIL",
+      "replace_old": false
+    }
+  ],
+  "note": "Original Q4/Q6 FAIL retained. Fixtures not selected by pass outcome."
+}
