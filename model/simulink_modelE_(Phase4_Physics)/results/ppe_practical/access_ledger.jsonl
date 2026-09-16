@@ -348,3 +348,8 @@
 {"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T14:26:26Z"}
 {"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T14:26:41Z"}
 {"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T14:33:31Z"}
+{"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T14:52:26Z"}
+{"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T15:03:38Z"}
+{"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T15:08:15Z"}
+{"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T15:12:30Z"}
+{"actor":"ppe-main-agent","artifact":"T-010 formal pack FLTA_S4_D03011_M3","note":"4-arm formal result generation; no comparative analysis (TG1)","purpose":"FORMAL","split_contact":"iid-formal-corpus","utc":"2026-09-16T15:14:52Z"}
