@@ -1,3 +1,8 @@
 {"utc":"2026-09-15T19:54:52Z","voyage_id":"FLTA_S2_D01004_M1","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"错误: 文件: /Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_formal_voyage_pack.m 行: 101 列: 5\n字符向量未正常终止。"}
 {"utc":"2026-09-15T20:07:54Z","voyage_id":"FLTA_S2_D01004_M1","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"无法识别的字段名称 \"plan_sha256\"。"}
 {"utc":"2026-09-15T20:17:31Z","voyage_id":"FLTA_S2_D01004_M1","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"无法识别的字段名称 \"t0\"。"}
+{"utc":"2026-09-16T08:43:00Z","voyage_id":"FLTA_S5_D04001_M2","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"logsout 为空或所有元素未命名"}
+{"utc":"2026-09-16T08:43:05Z","voyage_id":"FLTA_S5_D04005_M2","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"Unrecognized field name \"P_hotel_kW\"."}
+{"utc":"2026-09-16T08:43:05Z","voyage_id":"FLTA_S3_D02008_M2","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"Unrecognized field name \"P_hotel_kW\"."}
+{"utc":"2026-09-16T08:43:05Z","voyage_id":"FLTA_S5_D04005_M1","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"Unrecognized field name \"P_hotel_kW\"."}
+{"utc":"2026-09-16T08:43:20Z","voyage_id":"FLTA_S4_D03011_M2","terminal":{},"warmup_parity":"N/A","resumes":-1,"error":"Unrecognized field name \"P_hotel_kW\"."}
