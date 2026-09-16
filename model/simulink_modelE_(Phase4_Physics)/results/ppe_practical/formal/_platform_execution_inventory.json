@@ -15,30 +15,28 @@
     "linux_artifact": "qualification/t005_runner_linux_requal.json",
     "mac_artifact": "qualification/t005_runner_post_amendment_rerun.json"
   },
-  "decision_basis": "execution-environment inventory only; NOT based on any observed scientific outcome (TG3). No completed formal run was overwritten or re-run: the two voyages already started on the local host are completed there, all remaining voyages run on the Linux host",
+  "decision_basis": "execution-environment availability (local license lost after the account signed in on the Linux host) and runtime homogeneity; NOT based on any observed scientific outcome (TG3)",
   "epoch_identity_note": "execution platform is not part of the frozen identity bindings; the frozen identities (slx/code/data/keras/configs) were re-verified on the Linux host before use (verify_formal_bindings --amendment: 34/34 PASS)",
   "formal_epoch": 1,
-  "invariant": "every voyage's P0/C0/C1/C2 arms execute on a single platform; no voyage mixes platforms (arm comparability and COMMON_WARMUP_PARITY stay platform-homogeneous); formal_epoch remains 1 and all frozen identities are unchanged",
-  "inventory_sha256_self": "633305f4debd91132c3a71aed6ffa35b2ad49ad630be8f01062652375ef70c78",
+  "invariant": "every voyage's P0/C0/C1/C2 arms execute on a single platform and a single MATLAB update level; no voyage mixes runtimes; formal_epoch remains 1 and all frozen identities are unchanged",
+  "inventory_sha256_self": "eef816d69cccbf0269729b0b409fae21f5448a4194514ed07e8a4057d4280cb7",
+  "mac_records_disposition": "moved verbatim to formal/quarantine_mac_platform_superseded/ with a signed quarantine manifest; re-run on Linux under the same (voyage, arm) identities",
   "platforms": [
     {
       "id": "macos-arm64",
       "matlab": "R2026a Update 4",
-      "role": "started before the pool was extended; completed in full on this platform so that each voyage's four arms share one platform",
-      "voyages": [
-        "FLTA_S2_D01004_M1",
-        "FLTA_S6_D05002_M1"
-      ]
+      "role": "worker pool origination; its five terminal records for FLTA_S2_D01004_M1 (P0,C0) and FLTA_S6_D05002_M1 (P0,C0,C1) are preserved as superseded cross-platform evidence (formal/quarantine_mac_platform_superseded/QUARANTINE_MANIFEST.json) after the host lost its MATLAB license checkout",
+      "voyages": []
     },
     {
       "id": "linux-x86_64",
       "matlab": "R2026a Update 5",
-      "role": "all four arms of each of the remaining 46 voyages on this platform",
-      "voyages": "REMAINING_46 (computed at runtime from the frozen manifest)"
+      "role": "full formal corpus: all four arms of all 48 voyages on one runtime/update level",
+      "voyages": "ALL_48"
     }
   ],
   "purpose": "execution-environment inventory for T-010 (formal epoch 1) after the worker pool was extended from the local macOS host to a remote Linux host",
   "schema": "ppe_platform_execution_inventory_v1",
   "study": "phase4f-practical-predictive-ems",
-  "utc": "2026-09-16T11:45:00Z"
+  "utc": "2026-09-16T12:10:00Z"
 }
