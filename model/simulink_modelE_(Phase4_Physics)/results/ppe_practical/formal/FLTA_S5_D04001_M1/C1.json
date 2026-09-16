@@ -15,9 +15,9 @@
   "T_eval": 3531,
   "predictor_identity": "N/A",
   "fuel_total_kg": 240.85126133473204,
-  "SOC0": 0.6,
+  "SOC0": 0.599626900271327,
   "SOC_end": 0.59031414341138866,
-  "J_FEC_kg": 246.51401168880454,
+  "J_FEC_kg": 246.29588223362231,
   "hard_feasibility": {
     "pass": false,
     "items": {
@@ -34,9 +34,9 @@
       "T_end": 3531,
       "T_frozen": 3531,
       "derate08_s": 0,
-      "shortfall_kWh": 1.9444859660450771,
+      "shortfall_kWh": 1.8021823295002697,
       "soc_hard_s": 0,
-      "dSOC": 0.009685856588611319,
+      "dSOC": 0.0093127568599383759,
       "p_over_s": 0,
       "v_out_s": 0,
       "i_over_s": 0,
@@ -47,7 +47,7 @@
     }
   },
   "terminal_status": "COMPLETE_HARD_INFEASIBLE",
-  "wall_s": 6698.767176,
+  "wall_s": 6726.925966,
   "warmup_state": {
     "SOC": 0.59789587344625073,
     "fuel_total_kg": 9.1166418603929351,
@@ -64,5 +64,5 @@
   "infeasible_fallback_n": 0,
   "n_segments": 354,
   "dlambda_n": 354,
-  "utc": "2026-09-16T08:53:10Z"
+  "utc": "2026-09-16T10:34:29Z"
 }
