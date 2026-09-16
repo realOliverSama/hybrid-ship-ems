@@ -1,0 +1,44 @@
+{
+  "cross_platform_evidence": {
+    "bitwise_identical": true,
+    "checks_passing_on_both": [
+      "determinism_bitwise",
+      "simstate_ok",
+      "checkpoint_mismatch_refuse_arm",
+      "checkpoint_mismatch_refuse_teval",
+      "resume_ok",
+      "slx_unchanged"
+    ],
+    "fixture": "T-005 toy S01 40 s (CONST400), same runner bytes (post-amendment composite)",
+    "fuel_total_kg_linux": 0.6721004672164846,
+    "fuel_total_kg_mac": 0.6721004672164846,
+    "linux_artifact": "qualification/t005_runner_linux_requal.json",
+    "mac_artifact": "qualification/t005_runner_post_amendment_rerun.json"
+  },
+  "decision_basis": "execution-environment inventory only; NOT based on any observed scientific outcome (TG3). No completed formal run was overwritten or re-run: the two voyages already started on the local host are completed there, all remaining voyages run on the Linux host",
+  "epoch_identity_note": "execution platform is not part of the frozen identity bindings; the frozen identities (slx/code/data/keras/configs) were re-verified on the Linux host before use (verify_formal_bindings --amendment: 34/34 PASS)",
+  "formal_epoch": 1,
+  "invariant": "every voyage's P0/C0/C1/C2 arms execute on a single platform; no voyage mixes platforms (arm comparability and COMMON_WARMUP_PARITY stay platform-homogeneous); formal_epoch remains 1 and all frozen identities are unchanged",
+  "inventory_sha256_self": "633305f4debd91132c3a71aed6ffa35b2ad49ad630be8f01062652375ef70c78",
+  "platforms": [
+    {
+      "id": "macos-arm64",
+      "matlab": "R2026a Update 4",
+      "role": "started before the pool was extended; completed in full on this platform so that each voyage's four arms share one platform",
+      "voyages": [
+        "FLTA_S2_D01004_M1",
+        "FLTA_S6_D05002_M1"
+      ]
+    },
+    {
+      "id": "linux-x86_64",
+      "matlab": "R2026a Update 5",
+      "role": "all four arms of each of the remaining 46 voyages on this platform",
+      "voyages": "REMAINING_46 (computed at runtime from the frozen manifest)"
+    }
+  ],
+  "purpose": "execution-environment inventory for T-010 (formal epoch 1) after the worker pool was extended from the local macOS host to a remote Linux host",
+  "schema": "ppe_platform_execution_inventory_v1",
+  "study": "phase4f-practical-predictive-ems",
+  "utc": "2026-09-16T11:45:00Z"
+}
