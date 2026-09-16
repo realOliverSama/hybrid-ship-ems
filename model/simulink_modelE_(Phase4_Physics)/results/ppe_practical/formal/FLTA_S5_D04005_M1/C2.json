@@ -1,0 +1,73 @@
+{
+  "schema": "ppe_formal_arm_voyage_v1",
+  "run_id": "dc89e854a6cd7b92",
+  "voyage_id": "FLTA_S5_D04005_M1",
+  "split_group_id": "SG#f87aa695ef15f360",
+  "tier": "HIGH",
+  "arm": "C2",
+  "formal_epoch": 1,
+  "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+  "runner_amendment_sha256": "74d7d23e19c466a4f69248bf34052cff288ea1253c1479c37edbae4ddb2a1530",
+  "code_commit_sha": "87639f5f3bf65be6f3991b3a369e2dfbff45fbbe",
+  "cstar_impl_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "teval_identity_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
+  "T_eval": 3662,
+  "predictor_identity": {
+    "keras_sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894",
+    "selected_config_sha256": "fea67b7ff0ce10af619037eade22c678425986af86c405024ebb9a341f163ae4",
+    "formal_norm_v3_sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba",
+    "predictor_norm_ext_v1_sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c"
+  },
+  "fuel_total_kg": 218.84437383253422,
+  "SOC0": 0.6,
+  "SOC_end": 0.59187659727830333,
+  "J_FEC_kg": 223.59364935790688,
+  "hard_feasibility": {
+    "pass": false,
+    "items": {
+      "task_complete": true,
+      "load_shortfall": false,
+      "soc_hard_bounds": true,
+      "terminal_soc": false,
+      "battery_sop_v_i": true,
+      "genset_limits": false,
+      "energy_closure_c5": true,
+      "safety_hard_events": true
+    },
+    "detail": {
+      "T_end": 3662,
+      "T_frozen": 3662,
+      "derate08_s": 0,
+      "shortfall_kWh": 2.5038340306503133,
+      "soc_hard_s": 0,
+      "dSOC": 0.0081234027216966487,
+      "p_over_s": 0,
+      "v_out_s": 0,
+      "i_over_s": 0,
+      "genset_band_s": 943.58999999999992,
+      "ramp_s": 0.010000000000218279,
+      "c5_ratio": 0,
+      "safety_hard_count": 0
+    }
+  },
+  "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+  "wall_s": 6876.575611,
+  "warmup_state": {
+    "SOC": 0.59800910715947553,
+    "fuel_total_kg": 8.7830925923841523,
+    "P_gen_actual_kW": 197.01775984821228,
+    "P_bat_actual_kW": 1.77351466845721E-10,
+    "P_load_total_kW": 191.10722705277274,
+    "state_DG1": 3,
+    "state_DG2": 0,
+    "N_on": 1,
+    "last_dlam": -0.1,
+    "t": 300
+  },
+  "oob_query_count": 12744,
+  "infeasible_fallback_n": 0,
+  "n_segments": 367,
+  "dlambda_n": 367,
+  "utc": "2026-09-16T21:03:21Z"
+}
