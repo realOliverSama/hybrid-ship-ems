@@ -59,10 +59,13 @@ for arm = {'P0', 'C0', 'C1', 'C2'}
                 voyage_id, a, old.terminal_status);
             pack.arms.(a) = old;
             if isfield(old, 'warmup_state'), wu.(a) = old.warmup_state; end
+            local_purge_arm_checkpoints(opt.CheckpointRoot, ...
+                char(voyage_id), a);
             continue;
         end
     end
     ckdir = fullfile(opt.CheckpointRoot, char(voyage_id));
+    local_purge_keep_latest(opt.CheckpointRoot, char(voyage_id), a);
     rf = local_latest_checkpoint(ckdir, a);
     bt = '';
     if strcmp(a, 'C2'), bt = opt.BridgeToken; end
@@ -96,6 +99,9 @@ if all(isfield(wu, {'C0', 'C1', 'C2'}))
              'incident; STOP formal execution (no repair from performance)'], ...
             voyage_id, worst);
     end
+    % disk hygiene: all 4 arms terminal + parity PASS -> checkpoints are
+    % superseded (evidence = terminal records + window hashes)
+    local_purge_checkpoints(opt.CheckpointRoot, char(voyage_id));
 end
 pack.utc = char(datetime('now', 'TimeZone', 'UTC', 'Format', ...
     'yyyy-MM-dd''T''HH:mm:ss''Z'));
@@ -124,4 +130,44 @@ end
 
 function s = ternary(c, a, b)
 if c, s = a; else, s = b; end
+end
+
+function local_purge_arm_checkpoints(ckpt_root, voyage_id, arm)
+% terminal arm: all of its checkpoints are superseded
+d = dir(fullfile(ckpt_root, voyage_id, sprintf('ckpt_%s_*.mat', arm)));
+for i = 1:numel(d)
+    delete(fullfile(d(i).folder, d(i).name));
+end
+end
+
+function local_purge_checkpoints(ckpt_root, voyage_id)
+% checkpoints are resume transport only, not evidence; purge after the
+% pack is terminal (idempotent no-op when nothing is left)
+d = dir(fullfile(ckpt_root, voyage_id, 'ckpt_*.mat'));
+for i = 1:numel(d)
+    delete(fullfile(d(i).folder, d(i).name));
+end
+if numel(d) > 0
+    fprintf('[T-010] %s: purged %d superseded checkpoints (~%.1f GB)\n', ...
+        voyage_id, numel(d), numel(d) * 2.9e-3);
+end
+end
+
+function local_purge_keep_latest(ckpt_root, voyage_id, arm)
+% mid-run hygiene: keep only the latest checkpoint of a non-terminal arm
+% (resume reads the latest segment only)
+ckdir = fullfile(ckpt_root, voyage_id);
+d = dir(fullfile(ckdir, sprintf('ckpt_%s_*_seg*.mat', arm)));
+if numel(d) <= 1, return; end
+segs = zeros(numel(d), 1);
+for i = 1:numel(d)
+    tok = regexp(d(i).name, 'seg(\d+)\.mat$', 'tokens');
+    segs(i) = str2double(tok{1}{1});
+end
+[~, ix] = max(segs);
+for i = 1:numel(d)
+    if i ~= ix
+        delete(fullfile(d(i).folder, d(i).name));
+    end
+end
 end
