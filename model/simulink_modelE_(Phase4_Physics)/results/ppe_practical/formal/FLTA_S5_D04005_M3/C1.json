@@ -47,7 +47,7 @@
     }
   },
   "terminal_status": "COMPLETE_HARD_INFEASIBLE",
-  "wall_s": 6444.465095,
+  "wall_s": 6427.901815,
   "warmup_state": {
     "SOC": 0.59800910715947553,
     "fuel_total_kg": 8.7830925923841523,
@@ -64,5 +64,5 @@
   "infeasible_fallback_n": 0,
   "n_segments": 367,
   "dlambda_n": 367,
-  "utc": "2026-09-16T15:48:09Z"
+  "utc": "2026-09-16T15:55:16Z"
 }
