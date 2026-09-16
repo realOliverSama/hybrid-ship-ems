@@ -342,3 +342,6 @@
 {"actor":"ppe-main-agent","artifact":"T-010 formal pack FLTA_S8_D07009_M4","note":"4-arm formal result generation; no comparative analysis (TG1)","purpose":"FORMAL","split_contact":"iid-formal-corpus","utc":"2026-09-16T13:40:04Z"}
 {"actor":"ppe-main-agent","artifact":"T-010 formal pack FLTA_S8_D07009_M3","note":"4-arm formal result generation; no comparative analysis (TG1)","purpose":"FORMAL","split_contact":"iid-formal-corpus","utc":"2026-09-16T13:47:14Z"}
 {"actor":"ppe-main-agent","artifact":"T-010 formal pack FLTA_S8_D07009_M4","note":"4-arm formal result generation; no comparative analysis (TG1)","purpose":"FORMAL","split_contact":"iid-formal-corpus","utc":"2026-09-16T13:47:14Z"}
+{"actor":"ppe-main-agent","artifact":"T-010 formal pack FLTA_S8_D07009_M3","note":"4-arm formal result generation; no comparative analysis (TG1)","purpose":"FORMAL","split_contact":"iid-formal-corpus","utc":"2026-09-16T13:54:26Z"}
+{"actor":"ppe-main-agent","artifact":"T-010 formal pack FLTA_S8_D07009_M4","note":"4-arm formal result generation; no comparative analysis (TG1)","purpose":"FORMAL","split_contact":"iid-formal-corpus","utc":"2026-09-16T13:54:27Z"}
+{"actor": "ppe-main-agent", "artifact": "c2_server", "note": "C2 bridge server start reqdir=req", "purpose": "QUALIFICATION", "split_contact": "none", "utc": "2026-09-16T13:57:20Z"}
