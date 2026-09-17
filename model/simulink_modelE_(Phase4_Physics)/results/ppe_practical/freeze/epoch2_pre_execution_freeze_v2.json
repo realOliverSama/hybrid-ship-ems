@@ -1,9 +1,9 @@
 {
  "bindings": {
   "EXECUTION_CODE_COMMIT_SHA": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
-  "FREEZE_PACKAGE_HEAD_SHA": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
+  "FREEZE_PACKAGE_HEAD_SHA": "cb281299fd0e5f8488a60d8e6d2f270e98708d02",
   "acceptance_v2_sha256": "6e663872ee200242dbec368d0fa88b043adc4289e79e2ecb57fbe694cdca3f33",
-  "access_ledger_file_sha256": "8eb57e26f125e8dea7e6208ea9653f94313614a9a9a3b369fa0157853f03ccb0",
+  "access_ledger_file_sha256": "fc50e0a5f605f2bf293d50a5c7132c6a7883e20be449768ff346b97334088f39",
   "amendment_design_doc_sha256": "5808a4a8d930b2a3824072581feaddc613392e6f814de64c8913f6cadb6b8f08",
   "amendment_doc_sha256": "8c5a0d8c6eddb6de89bfe3ffe5028b8a45227f92470ec5244a2f3e2a880f965b",
   "amendment_v2_qual_artifact_sha256": "c062c59a04a163504b9d6bbb777710987061c590b807e4e8a88c63b14e7da661",
@@ -22,7 +22,7 @@
   "fec_prereg_artifact_sha256": "d5c9d5f9913901e7a68f2d97b7f71165d09635daaf3ae12d4a995640ee0a0fc8",
   "formal_assets_file_sha256": "578e6e8b32091f93a97a74a97a387d028e45ad2369dd63a57f8a556d467d8f29",
   "formal_execution_manifest_file_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
-  "freeze_generator_sha256": "ff1a3b7e73b2125cf237e7343e5def2938d56ba76bf6d52ea61f49d7fcac795f",
+  "freeze_generator_sha256": "15784943cc1ebb7f2a7a1eef6befe4d532f8bc5ae501e2674e2fd18adfca3a00",
   "freeze_loader_sha256": "ab0bd3e56248596008b249770bb6da098e3ffaefd4cd92d8d0292412edad6c3f",
   "hard_feasibility_config_file_sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10",
   "incident_artifact_sha256": "463fe5250548b3adc75f470351a02c8360e3080ceb162654809e365abf8605d5",
@@ -174,7 +174,7 @@
   "dual_diagnostic": "P_service_gap = max(P_prop_demand - P_prop_actual, 0); divergence -> FAIL CLOSED",
   "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic"
  },
- "sha256_self": "acbce4f4c7e068f4bf770e6de580b01390744f17965296d5196dcf57d78e7029",
+ "sha256_self": "7bd62cefa03c6a3f0ed26d5408d57531a67e79c47be3ee5e2827ca6b3693e4b3",
  "study": "phase4f-practical-predictive-ems",
  "supersedes_chain": [
   {
@@ -189,17 +189,17 @@
   },
   {
    "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
-   "replacement_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
+   "replacement_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
    "superseded_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
   },
   {
    "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
    "replacement_root": "THIS_DOCUMENT (authoritative root is the freeze-file byte hash, recorded in EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json and epoch2_freeze_supersession.json)",
-   "superseded_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352"
+   "superseded_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
   }
  ],
- "supersedes_freeze_root_sha256": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
- "supersedes_reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
+ "supersedes_freeze_root_sha256": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+ "supersedes_reason": "ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2",
  "supersedes_subtype": "SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_BEFORE_ACCEPTED_RESULT",
- "utc": "2026-09-17T12:04:47Z"
+ "utc": "2026-09-17T12:13:51Z"
 }

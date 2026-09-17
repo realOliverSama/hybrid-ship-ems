@@ -16,17 +16,24 @@
   },
   {
    "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
-   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_0f7c74f2.json",
-   "replacement_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+   "replacement_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
    "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json",
    "superseded_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
   },
   {
    "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
    "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
-   "replacement_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
-   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_0f7c74f2.json",
-   "superseded_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352"
+   "replacement_root": "SUPERSEDED_BY_AUDIT_COMPLETION_REGENERATION",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+   "superseded_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
+  },
+  {
+   "reason": "ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+   "replacement_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+   "superseded_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
   }
  ],
  "disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
@@ -34,9 +41,9 @@
  "note": "all superseded freeze bytes preserved untouched; epoch-2 result-bearing runs remained 0 across the whole chain",
  "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
  "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
- "replacement_freeze_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+ "replacement_freeze_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
  "schema": "ppe_epoch2_freeze_supersession_v2",
- "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_0f7c74f2.json",
- "superseded_freeze_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
- "utc": "2026-09-17T12:04:47Z"
+ "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+ "superseded_freeze_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+ "utc": "2026-09-17T12:13:51Z"
 }

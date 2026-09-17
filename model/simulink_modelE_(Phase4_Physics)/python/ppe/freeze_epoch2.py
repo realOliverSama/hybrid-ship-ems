@@ -50,7 +50,7 @@ RPP = os.path.join(ROOT, "results", "ppe_practical")
 FREEZE_DIR = os.path.join(RPP, "freeze")
 OLD_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze.json")
 PREV_FREEZE = os.path.join(
-    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_0f7c74f2.json")
+    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json")
 NEW_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze_v2.json")
 GATE = os.path.join(FREEZE_DIR, "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json")
 MARKER = os.path.join(FREEZE_DIR, "epoch2_freeze_supersession.json")
@@ -58,7 +58,7 @@ INCIDENT = os.path.join(RPP, "incidents",
                         "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT.json")
 EPOCH1_FREEZE = os.path.join(FREEZE_DIR, "ppe_pre_execution_freeze.json")
 
-PREV_ROOT = "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352"
+PREV_ROOT = "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
 PREV3_FREEZE = os.path.join(
     FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json")
 PREV2_ROOT = "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
@@ -368,6 +368,15 @@ def main() -> int:
         blob = git_blob_sha(EXECUTION_CODE_COMMIT_SHA, rel)
         rp = os.path.join(os.path.dirname(os.path.dirname(ROOT)), rel)             if rel.startswith(".specs/") else os.path.join(ROOT, rel)
         cur = sha(rp)
+        if key == "access_ledger_file_sha256":
+            # 追加-only 审计日志：执行提交的字节必须是当前文件的前缀
+            with open(rp, "rb") as f:
+                curbytes = f.read()
+            r = git(["show", EXECUTION_CODE_COMMIT_SHA + ":" +
+                     "model/simulink_modelE_(Phase4_Physics)/" + rel])
+            if r.returncode != 0 or not curbytes.startswith(r.stdout):
+                bad.append(key + ":not-append-only")
+            continue
         # 绑定值 = 当前文件字节；执行提交必须复现同一字节
         if cur != prev["bindings"].get(key) and key not in (
                 "runner_voyage_sha256", "terminal_pipeline_sha256",
@@ -419,17 +428,14 @@ def main() -> int:
             drift[key] = "CHANGED"
     check("prohibited_bindings_unchanged", not drift,
           json.dumps(drift, sort_keys=True))
-    # 正向断言：证据层字节确实换新（FC-5A 落地证明）
-    postfix = {
-        "traj_writer_sha256": sha("scripts/+ppe/write_traj_v1.m"),
-        "terminal_pipeline_sha256": sha("scripts/+ppe/formal_terminal_v2.m"),
-        "runner_voyage_sha256": sha("scripts/+ppe/run_formal_voyage.m"),
-        "acceptance_v2_sha256": sha("python/ppe/acceptance_v2.py"),
-    }
-    ev_ok = prev["bindings"].get("runner_voyage_sha256") not in (
-        None, postfix["runner_voyage_sha256"])
-    check("evidence_layer_rebound_to_post_fix_bytes", ev_ok,
-          json.dumps({k: v[:12] for k, v in postfix.items()}))
+    # 正向断言（本轮=ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2）：
+    # 审计重建已绑定——ledger 相对前驱增长（+24 launch-2 尝试事件）
+    led_now = sha("results/ppe_practical/access_ledger.jsonl")
+    check("attempt_audit_reconstruction_bound",
+          led_now != prev["bindings"].get("access_ledger_file_sha256"),
+          json.dumps({"ledger_prev": str(prev["bindings"].get(
+              "access_ledger_file_sha256"))[:12],
+              "ledger_now": led_now[:12]}))
 
     # ---------- assemble bindings ----------
     bindings = dict(prev["bindings"])          # inherit (proves stability)
@@ -437,6 +443,8 @@ def main() -> int:
         "scripts/+ppe/write_ctrace_v1.m")
     bindings["observability_qual_artifact_sha256"] = quals[
         "observability"]["sha256"]
+    bindings["access_ledger_file_sha256"] = sha(
+        "results/ppe_practical/access_ledger.jsonl")
     # 可变证据层键必须显式重绑到 post-fix 字节
     bindings["traj_writer_sha256"] = sha("scripts/+ppe/write_traj_v1.m")
     bindings["terminal_pipeline_sha256"] = sha(
@@ -451,6 +459,8 @@ def main() -> int:
         "amendment_v2"]["sha256"]
     bindings["observability_qual_artifact_sha256"] = quals[
         "observability"]["sha256"]
+    bindings["access_ledger_file_sha256"] = sha(
+        "results/ppe_practical/access_ledger.jsonl")
     bindings.update({
         "code_commit_sha": EXECUTION_CODE_COMMIT_SHA,
         "EXECUTION_CODE_COMMIT_SHA": EXECUTION_CODE_COMMIT_SHA,
@@ -481,7 +491,7 @@ def main() -> int:
                      "epoch-1/epoch-2 comparison"),
         },
         "supersedes_freeze_root_sha256": prev_root,
-        "supersedes_reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
+        "supersedes_reason": "ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2",
         "supersedes_subtype": ("SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_"
                                "BEFORE_ACCEPTED_RESULT"),
         "supersedes_chain": [
@@ -629,6 +639,11 @@ def main() -> int:
             {"superseded_root": prev_root,
              "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
              "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
+             "replacement_root": "SUPERSEDED_BY_AUDIT_COMPLETION_REGENERATION",
+             "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT)},
+            {"superseded_root": prev_root,
+             "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
+             "reason": "ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2",
              "replacement_root": freeze_file_sha,
              "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT)},
         ],
