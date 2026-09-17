@@ -86,8 +86,8 @@ def main(argv: list[str] | None = None) -> int:
         problems.append(f"freeze:schema {fz.get('schema')}")
     if fz.get("formal_epoch") != 2:
         problems.append("freeze:formal_epoch!=2")
-    if fz.get("epoch2_result_bearing_runs", 0) < 1:
-        problems.append("freeze:epoch2_result_bearing_runs==0 (nothing to accept)")
+    freeze_preexec_declaration_zero = fz.get(
+        "epoch2_result_bearing_runs", 0) < 1
     gate_path = os.path.join(os.path.dirname(freeze_path),
                              "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json")
     try:
@@ -284,6 +284,9 @@ def main(argv: list[str] | None = None) -> int:
         problems.append(
             f"parity:count!={len({v for v, _ in expected})} ({n_parity})")
     checks["n_warmup_parity_pass"] = n_parity
+    if freeze_preexec_declaration_zero and n_found == 0:
+        problems.append("freeze:epoch2_result_bearing_runs==0 "
+                        "(nothing to accept)")
     checks["n_found_terminals"] = n_found
     checks["terminal_status_histogram"] = status_hist
     checks["n_problems"] = len(problems)
