@@ -1,0 +1,2207 @@
+{
+ "authorized_scope": "T-011A feasibility root-cause analysis only; no effect estimation",
+ "epoch1_integrity_summary": {
+  "acceptance": "T010_ACCEPTANCE.json pass=true problems=0",
+  "identity_bindings": "freeze b4920a29...; composite 40c5be94... uniform across the formal corpus (12 pre-atomic-transport P0 records quarantined + re-run under the current composite)",
+  "integrity_incidents": 0,
+  "parity_files": 48,
+  "terminal_records": 192,
+  "voyages": 48,
+  "warmup_parity_pass": "48/48"
+ },
+ "estimand_status": {
+  "B_perfect": "WITHHELD_INSUFFICIENT_FEASIBILITY",
+  "B_predicted": "WITHHELD_INSUFFICIENT_FEASIBILITY",
+  "L_prediction": "WITHHELD_INSUFFICIENT_FEASIBILITY",
+  "R_diagnostic": "R_UNDEFINED",
+  "study_state": "FORMAL_EXECUTION_VALID / PRIMARY_EFFECT_ESTIMATION_WITHHELD_DUE_UNIVERSAL_HARD_INFEASIBILITY"
+ },
+ "formal_epoch": 1,
+ "genset_limits_decomposition": {
+  "checker_semantics": "hard_feasibility.m expects ds fields P_gen1_kW/P_gen2_kW; Model-E logs P_DG1_kW/P_DG2_kW (field-name mismatch) -> silent fallback Pg1=Pg2=P_gen_actual_kW/2 (equal-split assumption)",
+  "exact_redecomposition": "requires per-genset trajectories (not persisted) — limitation",
+  "observed": {
+   "max_s": 2110.4700000000003,
+   "mean_s": 1228,
+   "median_s": 1121,
+   "min_s": 605.7299999999999,
+   "records_with_band0": 0
+  },
+  "ramp_component": "ramp violations ~0 s (192/192) — ramp limits are NOT the failure mode",
+  "voyage_determined": "28/48 voyages have band_s identical across all four arms (mission low-load duration determined, controller-independent)",
+  "why_equal_split_is_wrong": "PMS v2 commits and dispatches the two gensets unequally by design (single-genset low-load operation; DG1 baseload / DG2 peaking); the equal-split halves dip below p_min=125 kW during mission low-load phases even when the running genset is legal"
+ },
+ "load_shortfall_analysis": {
+  "bias_signature": "shortfall power equivalent is a tight 1.03-3.09 kW band across all 192 records (median 1.66 kW) — the signature of a small systematic residual-monitor bias integrated over the voyage, not episodic genuine unserved load",
+  "derate08_s": "0 in all 192 records — the propulsion derate never activated; a genuine sustained power shortage would have pulled the DC bus into the derate band",
+  "episode_level": "UNAVAILABLE — per-timestep trajectories were not persisted by the epoch-1 executor (design gap; see limitations)",
+  "record_level_stats": {
+   "derate08_s_dist": {
+    "0": 192
+   },
+   "max_kW": 3.092,
+   "mean_kW": 1.75,
+   "median_kW": 1.657,
+   "min_kW": 1.027
+  }
+ },
+ "non_claims": [
+  "no formal C1-C0 or C2-C0 savings",
+  "no B_perfect/B_predicted/L_prediction",
+  "no realization ratio",
+  "no bootstrap CI",
+  "no arm winner/ranking",
+  "no prediction-value GO/NO-GO",
+  "no threshold change",
+  "no epoch-1 evidence modification"
+ ],
+ "per_voyage_detail": {
+  "FLTA_S2_D01004_M1": {
+   "T_eval": 4508,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000005,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000005,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9279,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000005,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000002,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#b7f8885bb19355fd",
+   "tier": "MID"
+  },
+  "FLTA_S2_D01004_M2": {
+   "T_eval": 4508,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000005,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000005,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000005,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6008,
+     "band_s": 1310.7400000000002,
+     "dSOC": 0.00085,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.9167,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#b7f8885bb19355fd",
+   "tier": "MID"
+  },
+  "FLTA_S2_D01004_M3": {
+   "T_eval": 4508,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000004,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000004,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000004,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000002,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#b7f8885bb19355fd",
+   "tier": "MID"
+  },
+  "FLTA_S2_D01004_M4": {
+   "T_eval": 4508,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000004,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000004,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000004,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6002,
+     "band_s": 1310.7700000000002,
+     "dSOC": 0.00015,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8246,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#b7f8885bb19355fd",
+   "tier": "MID"
+  },
+  "FLTA_S2_D01009_M1": {
+   "T_eval": 4362,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#e211d3bb7908e3f8",
+   "tier": "HIGH"
+  },
+  "FLTA_S2_D01009_M2": {
+   "T_eval": 4362,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6002,
+     "band_s": 1968.4399999999998,
+     "dSOC": 0.0002,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.81,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#e211d3bb7908e3f8",
+   "tier": "HIGH"
+  },
+  "FLTA_S2_D01009_M3": {
+   "T_eval": 4362,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8700000000003,
+     "dSOC": 0.00064,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8700000000003,
+     "dSOC": 0.00064,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8700000000003,
+     "dSOC": 0.00064,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8699999999994,
+     "dSOC": 0.00064,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#e211d3bb7908e3f8",
+   "tier": "HIGH"
+  },
+  "FLTA_S2_D01009_M4": {
+   "T_eval": 4362,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8700000000003,
+     "dSOC": 0.00064,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8700000000003,
+     "dSOC": 0.00064,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8700000000003,
+     "dSOC": 0.00064,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5994,
+     "band_s": 1382.8699999999994,
+     "dSOC": 0.00064,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.6057,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#e211d3bb7908e3f8",
+   "tier": "HIGH"
+  },
+  "FLTA_S3_D02008_M1": {
+   "T_eval": 4094,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.14,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.14,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.14,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.1399999999999,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#2d5d715a0fc3480a",
+   "tier": "HIGH"
+  },
+  "FLTA_S3_D02008_M2": {
+   "T_eval": 4094,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.14,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.1399999999999,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.14,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6014,
+     "band_s": 1782.1399999999999,
+     "dSOC": 0.0014,
+     "ramp_s": 0,
+     "shortfall_kWh": 2.0541,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#2d5d715a0fc3480a",
+   "tier": "HIGH"
+  },
+  "FLTA_S3_D02008_M3": {
+   "T_eval": 4094,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#2d5d715a0fc3480a",
+   "tier": "HIGH"
+  },
+  "FLTA_S3_D02008_M4": {
+   "T_eval": 4094,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.6018,
+     "band_s": 1162.56,
+     "dSOC": 0.00176,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.596,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#2d5d715a0fc3480a",
+   "tier": "HIGH"
+  },
+  "FLTA_S4_D03011_M1": {
+   "T_eval": 3335,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#1b624f14c86d40e7",
+   "tier": "HIGH"
+  },
+  "FLTA_S4_D03011_M2": {
+   "T_eval": 3335,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.591,
+     "band_s": 858.7999999999998,
+     "dSOC": 0.00904,
+     "ramp_s": 0.009999999999763531,
+     "shortfall_kWh": 2.8641,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#1b624f14c86d40e7",
+   "tier": "HIGH"
+  },
+  "FLTA_S4_D03011_M3": {
+   "T_eval": 3335,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#1b624f14c86d40e7",
+   "tier": "HIGH"
+  },
+  "FLTA_S4_D03011_M4": {
+   "T_eval": 3335,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5899,
+     "band_s": 723.16,
+     "dSOC": 0.01007,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8362,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#1b624f14c86d40e7",
+   "tier": "HIGH"
+  },
+  "FLTA_S5_D04001_M1": {
+   "T_eval": 3531,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00931,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.8022,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#95ab26745e67b295",
+   "tier": "MID"
+  },
+  "FLTA_S5_D04001_M2": {
+   "T_eval": 3531,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#95ab26745e67b295",
+   "tier": "MID"
+  },
+  "FLTA_S5_D04001_M3": {
+   "T_eval": 3531,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#95ab26745e67b295",
+   "tier": "MID"
+  },
+  "FLTA_S5_D04001_M4": {
+   "T_eval": 3531,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5903,
+     "band_s": 605.7299999999999,
+     "dSOC": 0.00969,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9445,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#95ab26745e67b295",
+   "tier": "MID"
+  },
+  "FLTA_S5_D04005_M1": {
+   "T_eval": 3662,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5899999999999,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5899999999999,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5899999999999,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5900000000004,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f87aa695ef15f360",
+   "tier": "HIGH"
+  },
+  "FLTA_S5_D04005_M2": {
+   "T_eval": 3662,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5899999999999,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5899999999999,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5899999999999,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5919,
+     "band_s": 943.5900000000004,
+     "dSOC": 0.00812,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 2.5038,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f87aa695ef15f360",
+   "tier": "HIGH"
+  },
+  "FLTA_S5_D04005_M3": {
+   "T_eval": 3662,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f87aa695ef15f360",
+   "tier": "HIGH"
+  },
+  "FLTA_S5_D04005_M4": {
+   "T_eval": 3662,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.59,
+     "band_s": 711.49,
+     "dSOC": 0.00998,
+     "ramp_s": 0,
+     "shortfall_kWh": 1.9656,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f87aa695ef15f360",
+   "tier": "HIGH"
+  },
+  "FLTA_S6_D05002_M1": {
+   "T_eval": 3757,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0fe21d4411bc5e17",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05002_M2": {
+   "T_eval": 3757,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5868,
+     "band_s": 857.5,
+     "dSOC": 0.01319,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.4268,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0fe21d4411bc5e17",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05002_M3": {
+   "T_eval": 3757,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0fe21d4411bc5e17",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05002_M4": {
+   "T_eval": 3757,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5879,
+     "band_s": 847.6399999999999,
+     "dSOC": 0.01214,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8103,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0fe21d4411bc5e17",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05004_M1": {
+   "T_eval": 3940,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2000000000002,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f2e66596e8c43d8b",
+   "tier": "LOW"
+  },
+  "FLTA_S6_D05004_M2": {
+   "T_eval": 3940,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5876,
+     "band_s": 835.2000000000002,
+     "dSOC": 0.01238,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 2.0933,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f2e66596e8c43d8b",
+   "tier": "LOW"
+  },
+  "FLTA_S6_D05004_M3": {
+   "T_eval": 3940,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0699999999999,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0699999999999,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0699999999999,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0700000000003,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f2e66596e8c43d8b",
+   "tier": "LOW"
+  },
+  "FLTA_S6_D05004_M4": {
+   "T_eval": 3940,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0699999999999,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0699999999999,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0699999999999,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5876,
+     "band_s": 834.0700000000003,
+     "dSOC": 0.01245,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.8469,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#f2e66596e8c43d8b",
+   "tier": "LOW"
+  },
+  "FLTA_S6_D05011_M1": {
+   "T_eval": 3906,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#a33d734ea439b60b",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05011_M2": {
+   "T_eval": 3906,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.594,
+     "band_s": 1078.9900000000002,
+     "dSOC": 0.00605,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 2.9407,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#a33d734ea439b60b",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05011_M3": {
+   "T_eval": 3906,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5893,
+     "band_s": 821.5600000000002,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5893,
+     "band_s": 821.5600000000002,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5893,
+     "band_s": 821.5600000000002,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5893,
+     "band_s": 821.56,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#a33d734ea439b60b",
+   "tier": "MID"
+  },
+  "FLTA_S6_D05011_M4": {
+   "T_eval": 3906,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5893,
+     "band_s": 821.5600000000002,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5893,
+     "band_s": 821.5600000000002,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5893,
+     "band_s": 821.5600000000002,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5893,
+     "band_s": 821.56,
+     "dSOC": 0.01074,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.7585,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#a33d734ea439b60b",
+   "tier": "MID"
+  },
+  "FLTA_S7_D06000_M1": {
+   "T_eval": 4259,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#498b5fd8d36df50d",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06000_M2": {
+   "T_eval": 4259,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5913,
+     "band_s": 2110.4700000000003,
+     "dSOC": 0.00866,
+     "ramp_s": 0.020000000000209184,
+     "shortfall_kWh": 1.9249,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#498b5fd8d36df50d",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06000_M3": {
+   "T_eval": 4259,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.8900000000003,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.8900000000003,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.8900000000003,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.89,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#498b5fd8d36df50d",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06000_M4": {
+   "T_eval": 4259,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.8900000000003,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.8900000000003,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.8900000000003,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5926,
+     "band_s": 1951.89,
+     "dSOC": 0.00738,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2145,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#498b5fd8d36df50d",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06015_M1": {
+   "T_eval": 3436,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.64,
+     "dSOC": 0.0071,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.64,
+     "dSOC": 0.0071,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.64,
+     "dSOC": 0.0071,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.6399999999999,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#30ab14ffb1a08292",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06015_M2": {
+   "T_eval": 3436,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.64,
+     "dSOC": 0.0071,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.64,
+     "dSOC": 0.0071,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.64,
+     "dSOC": 0.0071,
+     "ramp_s": 0.010000000000218279,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5929,
+     "band_s": 1825.6399999999999,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.2188,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#30ab14ffb1a08292",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06015_M3": {
+   "T_eval": 3436,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#30ab14ffb1a08292",
+   "tier": "LOW"
+  },
+  "FLTA_S7_D06015_M4": {
+   "T_eval": 3436,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5929,
+     "band_s": 1494.6799999999998,
+     "dSOC": 0.0071,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.1822,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#30ab14ffb1a08292",
+   "tier": "LOW"
+  },
+  "FLTA_S8_D07009_M1": {
+   "T_eval": 3976,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0877af60295de774",
+   "tier": "LOW"
+  },
+  "FLTA_S8_D07009_M2": {
+   "T_eval": 3976,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.328,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0877af60295de774",
+   "tier": "LOW"
+  },
+  "FLTA_S8_D07009_M3": {
+   "T_eval": 3976,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0877af60295de774",
+   "tier": "LOW"
+  },
+  "FLTA_S8_D07009_M4": {
+   "T_eval": 3976,
+   "arms": {
+    "C0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C1": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.327,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "C2": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    },
+    "P0": {
+     "SOC_end": 0.5932,
+     "band_s": 1725.34,
+     "dSOC": 0.00682,
+     "ramp_s": 0.009999999999990905,
+     "shortfall_kWh": 1.3281,
+     "status": "COMPLETE_HARD_INFEASIBLE"
+    }
+   },
+   "group": "SG#0877af60295de774",
+   "tier": "LOW"
+  }
+ },
+ "predicate_matrix_by_arm": {
+  "C0": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 48,
+   "load_shortfall": 48,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 36
+  },
+  "C1": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 48,
+   "load_shortfall": 48,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 36
+  },
+  "C2": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 48,
+   "load_shortfall": 48,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 36
+  },
+  "P0": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 48,
+   "load_shortfall": 48,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 36
+  }
+ },
+ "predicate_matrix_by_group": {
+  "SG#0877af60295de774": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#0fe21d4411bc5e17": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#1b624f14c86d40e7": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#2d5d715a0fc3480a": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 0
+  },
+  "SG#30ab14ffb1a08292": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#498b5fd8d36df50d": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#95ab26745e67b295": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#a33d734ea439b60b": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#b7f8885bb19355fd": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 0
+  },
+  "SG#e211d3bb7908e3f8": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 0
+  },
+  "SG#f2e66596e8c43d8b": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  },
+  "SG#f87aa695ef15f360": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 16,
+   "load_shortfall": 16,
+   "n": 16,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 16
+  }
+ },
+ "predicate_matrix_by_tier": {
+  "HIGH": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 64,
+   "load_shortfall": 64,
+   "n": 64,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 32
+  },
+  "LOW": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 64,
+   "load_shortfall": 64,
+   "n": 64,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 64
+  },
+  "MID": {
+   "battery_sop_v_i": 0,
+   "energy_closure_c5": 0,
+   "genset_limits": 64,
+   "load_shortfall": 64,
+   "n": 64,
+   "safety_hard_events": 0,
+   "soc_hard_bounds": 0,
+   "task_complete": 0,
+   "terminal_soc": 48
+  }
+ },
+ "recommendation_category": "MIXED / DECISION_REQUIRED",
+ "recommendation_note": "(i) genset_limits and load_shortfall are checker-semantics mismatches -> any future feasibility re-evaluation requires a checker amendment (per-genset fields + genuine unserved-load signal) AND corpus re-execution, because raw trajectories were not persisted; (ii) terminal_soc is a genuine marginal contract question requiring a policy decision on the +/-0.005 energy-neutrality requirement; (iii) T-011B effect estimation remains withheld until the human gate rules on the feasibility contract",
+ "root_cause_classification": {
+  "genset_limits": {
+   "class": "FEASIBILITY_CONTRACT_MISMATCH",
+   "evidence": [
+    "field-name mismatch P_DG1_kW/P_DG2_kW (logged) vs P_gen1_kW/P_gen2_kW (expected by the checker) -> equal-split fallback",
+    "equal-split is provably wrong for PMS v2 unequal commitment/dispatch design",
+    "band_s is voyage-determined and arm-invariant in 28/48 voyages (mission low-load duration signature)",
+    "ramp component clean (~0 s)"
+   ]
+  },
+  "load_shortfall": {
+   "class": "FEASIBILITY_CONTRACT_MISMATCH + NUMERICAL_OR_BOUNDARY_ARTIFACT",
+   "evidence": [
+    "residual monitor semantics: the model builds P_bus_residual = P_gen*ASSUMED_eta_rect + P_bat_bus - P_load_total and documents it as the C*V*dV/dt capacitor-power consistency monitor — NOT an unserved-load indicator",
+    "ASSUMED_eta_rect=0.97 is marked INHERITED_LEGACY (hardcoded assumption); the genuine unserved-power signals (P_unserved_kW, P_gen_unserved_kW) exist in the model but are NOT used by the checker",
+    "tight 1.03-3.09 kW bias band across 192 records; derate08_s=0 everywhere (no genuine power starvation ever pulled the bus into derate)",
+    "zero-tolerance predicate (short_kWh==0) integrates the monitor bias into 1-3 kWh 'shortfall'"
+   ]
+  },
+  "terminal_soc": {
+   "class": "TRUE_PHYSICAL_INFEASIBILITY (marginal) + CONTRACT calibration question",
+   "evidence": [
+    "dSOC arm-invariant in 47/48 voyages to full float precision -> mission energy structure, not controller quality",
+    "tier-structured (LOW 100% > MID 75% > HIGH 50%)",
+    "all |dSOC| <= 0.0132; 96/144 marginal (0.005-0.01) — the +/-0.005 energy-neutrality contract (~5.4 kWh on the 1071 kWh battery) is stricter than what charge-sustaining operation achieves on these missions"
+   ]
+  },
+  "unresolved": [
+   "exact per-genset band violation decomposition and shortfall episode timing (trajectories not persisted)",
+   "whether ASSUMED_eta_rect vs the true rectifier efficiency, or other monitor biases, dominate the residual offset",
+   "whether the +/-0.005 terminal-SOC contract is achievable on this mission family by any charge-sustaining controller"
+  ]
+ },
+ "schema": "ppe_t011a_feasibility_root_cause_v1",
+ "sha256_self": "b8b76c3a16b26ea733d5c21ea7b6be0647dac2275e2049a2c1a06aeb54f6998b",
+ "study": "phase4f-practical-predictive-ems",
+ "terminal_soc_decomposition": {
+  "cross_arm_identity": "47/48 voyages have dSOC identical across all four arms (full float precision) — terminal SOC drift is voyage-determined, NOT controller-determined",
+  "magnitude": "all |dSOC| <= 0.0132 (max ~14 kWh on the 1071 kWh battery); 96/144 violations are marginal (0.005-0.01)",
+  "stats": {
+   "gt_020": 0,
+   "le_threshold": 48,
+   "m_005_010": 96,
+   "m_010_020": 48,
+   "max": 0.0132,
+   "median": 0.0078,
+   "min": 0.0002
+  },
+  "tier_structure": "LOW tier fails 64/64 (100%), MID 48/64 (75%), HIGH 32/64 (50%) — mission-energy structure"
+ },
+ "toy_fixture_comparison": {
+  "artifact": "qualification/t005_runner.json (T-005, toy S01 40 s CONST400)",
+  "failing_predicates": [
+   "load_shortfall (shortfall_kWh=0.612 in a 40 s run)",
+   "genset_limits (genset_band_s=10)"
+  ],
+  "lesson": "qualification verifies feasibility instrumentation, not guaranteed formal-cohort feasibility",
+  "mechanism_match": "same two universal predicates as formal epoch 1 -> the checker behavior predates the formal run and is mechanism-identical",
+  "ramp_component": "ramp_s=0",
+  "why_it_did_not_block_formal_execution": "the approved T-009 gate verified hard-feasibility INSTRUMENTATION (the evaluator produces per-predicate verdicts), and TG4 fixes infeasibility as a scientific outcome, not a STOP; nothing in the approved protocol promised cohort feasibility"
+ },
+ "utc": "2026-09-17T03:12:02Z"
+}
