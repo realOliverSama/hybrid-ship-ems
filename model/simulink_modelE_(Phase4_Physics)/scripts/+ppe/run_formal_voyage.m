@@ -243,8 +243,17 @@ if isstruct(meta) && isfield(meta, 'warmup_state')
     rec.n_segments = meta.n_segments;
     rec.dlambda_n = numel(meta.dlambda_1);
 end
+rec.trajectory_sha256 = traj_sha;
 rec.utc = char(datetime('now', 'TimeZone', 'UTC', 'Format', 'yyyy-MM-dd''T''HH:mm:ss''Z'));
 
+% FC-5 轨迹持久化：仅当 epoch-2 预执行冻结存在时启用（amendment FC-5/T-A5）
+fz2 = fullfile(ROOT, 'results', 'ppe_practical', 'freeze', 'epoch2_pre_execution_freeze.json');
+traj_sha = '';
+if exist(fz2, 'file') && exist('ds', 'var')
+    tr = ppe.write_traj_v1(ds, fullfile(ROOT, 'artifacts', 'ppe_traj_v2'), ...
+        char(voyage_id), char(arm), rec.run_id);
+    traj_sha = tr.sha256;
+end
 fid = fopen(fullfile(vdir, [char(arm) '.json']), 'w');
 fwrite(fid, jsonencode(rec, 'PrettyPrint', true));
 fclose(fid);

@@ -1,0 +1,84 @@
+{
+ "amendment_design_gate": "APPROVED WITH A1-A7 (applied)",
+ "amendment_tasks_gate": "PENDING",
+ "epoch1_preserved": {
+  "deleted": false,
+  "formal_epoch": 1,
+  "reclassified": false,
+  "rerun": false,
+  "terminal_records": "192/192",
+  "warmup_parity": "48/48 PASS"
+ },
+ "epoch2_result_bearing_runs": 0,
+ "epoch2_scientific_identities": {
+  "corpus_48_voyages": "UNCHANGED",
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "cstar_composite_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "modele_slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "predictor_keras_sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894"
+ },
+ "feasibility_contract_fields": {
+  "feas.genset.state_aware_v2": {
+   "fail_closed": "missing any per-DG signal -> INDETERMINATE",
+   "no_equal_split": true,
+   "per_dg_signals": [
+    "P_DG1_kW",
+    "P_DG2_kW"
+   ],
+   "pms_diagnostics_separate": true,
+   "state_semantics": {
+    "0": "OFF",
+    "1": "STARTING",
+    "2": "SYNC",
+    "3": "ON",
+    "4": "COOLDOWN"
+   },
+   "state_signals": [
+    "state_DG1",
+    "state_DG2"
+   ],
+   "state_x_constraint": {
+    "0": "P==0",
+    "1": "P==0",
+    "2": "P==0",
+    "3": "125 <= P <= 500 per DG; ramp 20kW/s ON-to-ON; breaker exempt",
+    "4": "P==0; cooldown dwell; cmd_start ignored"
+   }
+  },
+  "feas.shortfall.unserved_v2": {
+   "authoritative_signal": "P_unserved_kW",
+   "dual_diagnostic": "P_service_gap = max(P_prop_demand - P_prop_actual, 0)",
+   "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic",
+   "tolerance": "synthetic zero-shortfall fixture precision"
+  },
+  "feas.terminal.band_v2": {
+   "E_reserve_dis_kWh": 3.35,
+   "HARD_SAFETY_SOC": [
+    0.1,
+    0.95
+   ],
+   "NORMAL_OPERATIONAL_SOC": [
+    0.25,
+    0.9
+   ],
+   "P_reserve_chg_kW": 168,
+   "P_reserve_dis_kW": 402,
+   "SOC_terminal_max": 0.9,
+   "SOC_terminal_min": 0.25,
+   "derivation": "T-A0 E_design; dynamic SOP; S_terminal_admissible=[0.25,0.90]"
+  }
+ },
+ "formal_epoch": 2,
+ "schema": "ppe_epoch2_pre_execution_freeze_v1",
+ "sha256_self": "d1a40a16e564e20dd5022c5a28efd1881ffcff76dedeaf7439ad86d2b0e7ecf5",
+ "study": "phase4f-practical-predictive-ems",
+ "supersedes": "epoch-1 feasibility contract only (FC-1/2/3/4/5); scientific identity unchanged",
+ "traj_v1": {
+  "atomic_write": true,
+  "cadence_Hz": 1,
+  "channels": 25,
+  "per_arm_MB": 0.92,
+  "total_192_MB": 180
+ },
+ "utc": "2026-09-17T04:21:21Z"
+}
