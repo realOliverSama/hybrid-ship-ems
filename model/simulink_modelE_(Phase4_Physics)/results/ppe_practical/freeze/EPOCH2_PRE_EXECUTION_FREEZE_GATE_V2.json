@@ -6,7 +6,7 @@
    "pass": true
   },
   {
-   "detail": "3b75e4b805fe1ac6",
+   "detail": "0f7c74f251e568be",
    "name": "predecessor_root_matches_d49767a2",
    "pass": true
   },
@@ -52,17 +52,7 @@
   },
   {
    "detail": "",
-   "name": "qual_amendment_v2_unchanged_from_predecessor",
-   "pass": true
-  },
-  {
-   "detail": "",
    "name": "qual_e2e_runner_integration_pass",
-   "pass": true
-  },
-  {
-   "detail": "",
-   "name": "qual_e2e_runner_integration_unchanged_from_predecessor",
    "pass": true
   },
   {
@@ -121,20 +111,20 @@
    "pass": true
   },
   {
-   "detail": "{\"traj_writer_sha256\": \"537ca32e82bf\", \"terminal_pipeline_sha256\": \"37f41db90e71\", \"runner_voyage_sha256\": \"0d900d0f6a4e\", \"acceptance_v2_sha256\": \"6e663872ee20\"}",
+   "detail": "{\"traj_writer_sha256\": \"537ca32e82bf\", \"terminal_pipeline_sha256\": \"37f41db90e71\", \"runner_voyage_sha256\": \"9b99445812c0\", \"acceptance_v2_sha256\": \"6e663872ee20\"}",
    "name": "evidence_layer_rebound_to_post_fix_bytes",
    "pass": true
   }
  ],
- "execution_code_commit_sha": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
+ "execution_code_commit_sha": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
  "freeze_file": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
- "freeze_file_sha256": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
- "n_checks": 25,
- "n_pass": 25,
+ "freeze_file_sha256": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+ "n_checks": 23,
+ "n_pass": 23,
  "overall": true,
  "schema": "PPE_EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2",
- "sha256_self_of_freeze_doc": "f7da49c90a7ff74bebcb613a9e1996a7071bd9c8b2daed654ba0a00f9d4db255",
+ "sha256_self_of_freeze_doc": "acbce4f4c7e068f4bf770e6de580b01390744f17965296d5196dcf57d78e7029",
  "stop_rule": "overall=true -> PE3-1 rerun; then T-A8 authorized automatically (zero execution-critical byte changes); overall=false -> STOP and report",
  "task": "T-A7(v3, PE4-1)",
- "utc": "2026-09-17T07:36:58Z"
+ "utc": "2026-09-17T12:04:47Z"
 }

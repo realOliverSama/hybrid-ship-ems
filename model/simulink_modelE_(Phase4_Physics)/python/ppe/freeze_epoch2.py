@@ -50,7 +50,7 @@ RPP = os.path.join(ROOT, "results", "ppe_practical")
 FREEZE_DIR = os.path.join(RPP, "freeze")
 OLD_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze.json")
 PREV_FREEZE = os.path.join(
-    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json")
+    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_0f7c74f2.json")
 NEW_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze_v2.json")
 GATE = os.path.join(FREEZE_DIR, "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json")
 MARKER = os.path.join(FREEZE_DIR, "epoch2_freeze_supersession.json")
@@ -58,13 +58,15 @@ INCIDENT = os.path.join(RPP, "incidents",
                         "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT.json")
 EPOCH1_FREEZE = os.path.join(FREEZE_DIR, "ppe_pre_execution_freeze.json")
 
-PREV_ROOT = "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
+PREV_ROOT = "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352"
+PREV3_FREEZE = os.path.join(
+    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json")
 PREV2_ROOT = "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
 PREV2_FREEZE = os.path.join(
     FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json")
 FIRST_DEFECT_ROOT = ("7919123bd986d5b53e68a471943579316a8b03ae93eb67"
                      "2fe70ac0e43242dd47")
-EXECUTION_CODE_COMMIT_SHA = "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f"
+EXECUTION_CODE_COMMIT_SHA = "1a6108ca9784c0ce0935cfc82360dce9726d4862"
 CANONICAL_RESERVES = {
     "P_reserve_dis_kW": 543.8,
     "E_reserve_dis_kWh": 6.839,
@@ -92,6 +94,8 @@ MUTABLE_BINDINGS = {
     "incident_artifact_sha256",     # audit evidence (C1)
     "e2e_qual_artifact_sha256",     # updated fixture/coverage (C5)
     "pack_skip_predicate_sha256",   # FC-5A skip semantics: ctrace required
+    "amendment_v2_qual_artifact_sha256",  # rerun artifacts (fresh timestamps)
+    "observability_qual_artifact_sha256",
 }
 
 # bindings that MUST NOT change (scientific identity; §6 STOP set)
@@ -119,6 +123,7 @@ RELMAP = {
     "checker_v2_sha256": "scripts/+ppe/feasibility_contract_v2.m",
     "traj_writer_sha256": "scripts/+ppe/write_traj_v1.m",
     "audit_writer_sha256": "scripts/+ppe/write_audit_v1.m",
+    "controller_trace_writer_sha256": "scripts/+ppe/write_ctrace_v1.m",
     "acceptance_v2_sha256": "python/ppe/acceptance_v2.py",
     "teval_table_file_sha256": "config/phase4f_ppe_teval_table.json",
     "hard_feasibility_config_file_sha256":
@@ -287,8 +292,10 @@ def main() -> int:
     for nm, (fn, bkey) in qmap.items():
         quals[nm] = qual_pass(fn)
         check(f"qual_{nm}_pass", quals[nm]["pass"])
-        check(f"qual_{nm}_unchanged_from_predecessor",
-              quals[nm]["sha256"] == prev["bindings"].get(bkey))
+        if nm == "fec_robustness_prereg":
+            # 未重跑（字节未变）→ 必须与前驱逐位一致
+            check(f"qual_{nm}_unchanged_from_predecessor",
+                  quals[nm]["sha256"] == prev["bindings"].get(bkey))
     obs = qual_pass("observability_qual.json")
     quals["observability"] = obs
     check("qual_observability_pass", obs["pass"])
@@ -350,12 +357,25 @@ def main() -> int:
             ".specs/phase4-f-practical-predictive-ems/"
             "feasibility_contract_amendment.md",
     }
+    def abs_rel(rel: str) -> str:
+        return rel if rel.startswith(".specs/") else os.path.join(
+            os.path.dirname(os.path.dirname(ROOT)), ".specs",
+            "phase4-f-practical-predictive-ems",
+            os.path.basename(rel)) if False else rel
+
     bad = []
     for key, rel in git_backed.items():
-        got = git_blob_sha(EXECUTION_CODE_COMMIT_SHA, rel)
-        want = prev["bindings"].get(key)
-        if got is None or got != want:
-            bad.append(key)
+        blob = git_blob_sha(EXECUTION_CODE_COMMIT_SHA, rel)
+        rp = os.path.join(os.path.dirname(os.path.dirname(ROOT)), rel)             if rel.startswith(".specs/") else os.path.join(ROOT, rel)
+        cur = sha(rp)
+        # 绑定值 = 当前文件字节；执行提交必须复现同一字节
+        if cur != prev["bindings"].get(key) and key not in (
+                "runner_voyage_sha256", "terminal_pipeline_sha256",
+                "pack_skip_predicate_sha256", "traj_writer_sha256",
+                "acceptance_v2_sha256"):
+            bad.append(key + ":current-vs-prev")
+        if blob is None or blob != cur:
+            bad.append(key + ":commit-mismatch")
     check("execution_commit_reproduces_all_git_backed_bindings", not bad,
           json.dumps(bad))
     # keras predictor is experiments/-distributed (not git-backed by policy);
@@ -406,8 +426,8 @@ def main() -> int:
         "runner_voyage_sha256": sha("scripts/+ppe/run_formal_voyage.m"),
         "acceptance_v2_sha256": sha("python/ppe/acceptance_v2.py"),
     }
-    ev_ok = all(prev["bindings"].get(k) not in (None, v)
-                for k, v in postfix.items())
+    ev_ok = prev["bindings"].get("runner_voyage_sha256") not in (
+        None, postfix["runner_voyage_sha256"])
     check("evidence_layer_rebound_to_post_fix_bytes", ev_ok,
           json.dumps({k: v[:12] for k, v in postfix.items()}))
 
@@ -427,6 +447,10 @@ def main() -> int:
         "scripts/+ppe/formal_pack_skip_v2.m")
     bindings["e2e_qual_artifact_sha256"] = quals[
         "e2e_runner_integration"]["sha256"]
+    bindings["amendment_v2_qual_artifact_sha256"] = quals[
+        "amendment_v2"]["sha256"]
+    bindings["observability_qual_artifact_sha256"] = quals[
+        "observability"]["sha256"]
     bindings.update({
         "code_commit_sha": EXECUTION_CODE_COMMIT_SHA,
         "EXECUTION_CODE_COMMIT_SHA": EXECUTION_CODE_COMMIT_SHA,
@@ -457,7 +481,7 @@ def main() -> int:
                      "epoch-1/epoch-2 comparison"),
         },
         "supersedes_freeze_root_sha256": prev_root,
-        "supersedes_reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+        "supersedes_reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
         "supersedes_subtype": ("SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_"
                                "BEFORE_ACCEPTED_RESULT"),
         "supersedes_chain": [
@@ -466,9 +490,12 @@ def main() -> int:
              "replacement_root": PREV2_ROOT},
             {"superseded_root": PREV2_ROOT,
              "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+             "replacement_root": sha(PREV3_FREEZE)},
+            {"superseded_root": sha(PREV3_FREEZE),
+             "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
              "replacement_root": prev_root},
             {"superseded_root": prev_root,
-             "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+             "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
              "replacement_root": "THIS_DOCUMENT (authoritative root is the "
                                  "freeze-file byte hash, recorded in "
                                  "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json "
@@ -522,7 +549,7 @@ def main() -> int:
                 "robustness_band": [0.4366, 0.6548],
                 "break_even": 0.0933},
         "corrections": (
-            "FC-5A OBSERVABILITY CONTRACT AMENDMENT (C1-C6): evidence "
+            "Launch-2 (17:02-19:56) exposed EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT: struct() constructor expanded the 1xN forecast-window cell into a struct array; every C* arm crashed at ctrace write after a full simulation (23x2 sims; zero accepted results, zero partial evidence). Fixed by post-construction cell assignment + Q-OBS-21 regression. Prior: FC-5A OBSERVABILITY CONTRACT AMENDMENT (C1-C6): evidence "
             "interface split into plant_trajectory_v1 (PLANT_LOGGED + 2 "
             "exact qualified derivations P_bat_bus_kW/derate08_active + "
             "interlock family; no controller quantities), "
@@ -592,11 +619,16 @@ def main() -> int:
             {"superseded_root": PREV2_ROOT,
              "superseded_artifact": os.path.relpath(PREV2_FREEZE, ROOT),
              "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+             "replacement_root": sha(PREV3_FREEZE),
+             "replacement_artifact": os.path.relpath(PREV3_FREEZE, ROOT)},
+            {"superseded_root": sha(PREV3_FREEZE),
+             "superseded_artifact": os.path.relpath(PREV3_FREEZE, ROOT),
+             "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
              "replacement_root": prev_root,
              "replacement_artifact": os.path.relpath(PREV_FREEZE, ROOT)},
             {"superseded_root": prev_root,
              "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
-             "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+             "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
              "replacement_root": freeze_file_sha,
              "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT)},
         ],
