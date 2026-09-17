@@ -1,0 +1,40 @@
+{
+  "schema": "ppe_observability_qual_v1",
+  "purpose": "QUALIFICATION",
+  "pass": true,
+  "checks": {
+    "Q_OBS_1_runtime_census_matches_contract": true,
+    "Q_OBS_2_plant_channels_declared_present": true,
+    "Q_OBS_3_no_controller_quantity_in_plant_list": true,
+    "Q_OBS_4_delta_lambda_from_real_controller_path": true,
+    "Q_OBS_5_forecast_provenance_from_real_path": true,
+    "Q_OBS_6_high_rate_audit_from_real_runtime": true,
+    "Q_OBS_7_plant_trajectory_atomic_persisted": true,
+    "Q_OBS_8_controller_trace_atomic_persisted": true,
+    "Q_OBS_9_high_rate_audit_hash_valid": true,
+    "Q_OBS_10_record_only_after_artifacts": true,
+    "Q_OBS_11_artifact_hashes_match_bytes": true,
+    "Q_OBS_12_missing_plant_signal_fails_closed": true,
+    "Q_OBS_13_metadata_layer_fails_at_correct_layer": true,
+    "Q_OBS_14_derate_absence_not_falsely_invalidating": true,
+    "Q_OBS_15_checker_classification_unchanged": true,
+    "Q_OBS_16_model_e_slx_unchanged": true,
+    "Q_OBS_17_cstar_outputs_unchanged": true,
+    "Q_OBS_18_predictor_forecast_unchanged": true,
+    "Q_OBS_19_epoch1_invisible_to_completion": true,
+    "Q_OBS_20_acceptance_requires_new_artifact_set": true
+  },
+  "census": {
+    "n_runtime_signals": 96,
+    "declared_plant_channels": 26,
+    "missing": []
+  },
+  "coverage_note": "real frozen Model-E runtime census (10 s synthetic S01) + real C* controller path (20 s synthetic, trivial winfun) through the full FC-5A terminal pipeline",
+  "implementation_sha256": {
+    "write_traj_v1_m": "670a7f4a8d4a28a58c30bc86a4f5e565ec636165f14d2aa0c6540b5fc6c55fd2",
+    "write_ctrace_v1_m": "c9f62518c9fcf8553f885295fc07116ecf74ebaa8ae0ee2beb5500cb458deb9f",
+    "write_audit_v1_m": "f72e07c6b54c6158a8d5c99ddf9973999aaeb833669bc954ed2a01867edbe25d",
+    "formal_terminal_v2_m": "37f41db90e71ff73a400d47a672b8d2c0590f6f172171141c6e517fa56379d7f"
+  },
+  "utc": "2026-09-17T07:22:26Z"
+}
