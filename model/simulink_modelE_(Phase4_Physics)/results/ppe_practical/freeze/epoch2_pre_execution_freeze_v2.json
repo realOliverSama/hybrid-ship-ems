@@ -1,5 +1,7 @@
 {
  "bindings": {
+  "EXECUTION_CODE_COMMIT_SHA": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
+  "FREEZE_PACKAGE_HEAD_SHA": "086ab869598b27636de118b373e036d780978f3e",
   "acceptance_v2_sha256": "64bfd7e1f04efd16d1be19df4cb20dee9f2be96d0cea577895d1b9c630e8bc28",
   "access_ledger_file_sha256": "8eb57e26f125e8dea7e6208ea9653f94313614a9a9a3b369fa0157853f03ccb0",
   "amendment_design_doc_sha256": "5808a4a8d930b2a3824072581feaddc613392e6f814de64c8913f6cadb6b8f08",
@@ -11,7 +13,7 @@
   "c2_bridge_amended_sha256": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4",
   "checker_v2_sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
   "checkpoint_mgr_sha256": "94a178a06280a2f36e1bf6afeecec7c3b4ceb82b2f75ca3f1626409b7fd995ea",
-  "code_commit_sha": "6e4d14e12900a1d3e9fa5b3cfade999ef581365c",
+  "code_commit_sha": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
   "coherence_gate_artifact_sha256": "b9c4e46ef536f524b68855f5dd34ed245a6426c11d7cdc810ad8b7f2f095895d",
   "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
   "cstar_composite_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
@@ -19,7 +21,7 @@
   "fec_prereg_artifact_sha256": "d5c9d5f9913901e7a68f2d97b7f71165d09635daaf3ae12d4a995640ee0a0fc8",
   "formal_assets_file_sha256": "578e6e8b32091f93a97a74a97a387d028e45ad2369dd63a57f8a556d467d8f29",
   "formal_execution_manifest_file_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
-  "freeze_generator_sha256": "e777a8cd03cf49145ab723f7d8d865154a434470d932bc1bf1291bbfcbc54a33",
+  "freeze_generator_sha256": "2044d5ea0ac5035f7cee41f1f3d355d574af620c7f17beddeb4f857b236c96a7",
   "freeze_loader_sha256": "ab0bd3e56248596008b249770bb6da098e3ffaefd4cd92d8d0292412edad6c3f",
   "hard_feasibility_config_file_sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10",
   "incident_artifact_sha256": "463fe5250548b3adc75f470351a02c8360e3080ceb162654809e365abf8605d5",
@@ -87,8 +89,12 @@
   "provenance": "T-A0 dynamic derivation; PE2-1 canonical"
  },
  "classification_authority": "ppe.feasibility_contract_v2",
- "corrections": "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT recovery: completed T-A5 integration (formal_epoch=2 explicit parameter, epoch-2 output namespace, identity-safe skip semantics, checker v2 as classification authority, transactional trajectory/audit/terminal write order, high-rate audit writer); trajectory channel list aligned to approved design FC-5 \u00a75.1 (derived safety_hard_count in, P_prop_limit_kW out); all affected qualifications re-run against post-fix bytes",
+ "corrections": "PE4-1 EXECUTION_COMMIT_PROVENANCE_CORRECTION: code_commit_sha rebound from 6e4d14e1\u2026 (predates the committed runner repair) to EXECUTION_CODE_COMMIT_SHA bbbbc5f53d313e7e78c3eada92197a6fc0a9255f, verified to reproduce every git-backed execution-critical binding; FREEZE_PACKAGE_HEAD_SHA recorded separately; metadata-only cleanups (SOC grid wording, legacy seed label flag, design-basis acceptance); ZERO execution-critical byte changes vs d49767a2\u2026 (asserted in gate)",
  "cstar_execution_seed": "phase4f-ppe-formal-epoch1",
+ "cstar_execution_seed_provenance": {
+  "LEGACY_SEED_LABEL_INTENTIONALLY_PRESERVED_FOR_CROSS_EPOCH_DETERMINISM": true,
+  "note": "seed name is historical (epoch-1); the deterministic value is intentionally preserved for fair epoch-1/epoch-2 comparison"
+ },
  "e_design_events": {
   "EV1_single_to_dual_transition_plus_load_step": {
    "class_": "CONTINGENCY",
@@ -111,6 +117,11 @@
    "soc_max": 0.9053,
    "sop_at_max_kW": 939.7
   }
+ },
+ "e_design_events_acceptance": {
+  "accepted_at": "Phase 4-F epoch-2 final pre-execution gate (PE4-1 conditional pass)",
+  "scope_note": "accepted for THIS RESEARCH STUDY; EV1 includes frozen STARTING/SYNC delay and generator reachability; EV3 includes frozen generator ramp-down and Pmin behavior; these events do NOT constitute a complete regulatory or classification emergency-power certification envelope",
+  "status": "HUMAN_ACCEPTED_STUDY_LOCAL_CONSERVATIVE_CONTINGENCY_DESIGN_BASIS_EVENTS"
  },
  "epoch1_preserved": {
   "deleted": false,
@@ -143,13 +154,17 @@
   "amend_v2_pass": true,
   "coherence_pass": true,
   "e2e_runner_integration_pass": true,
-  "fec_robust_pass": true
+  "fec_robust_pass": true,
+  "rerun_rationale": "PE4-1 is metadata/provenance-only; all execution-critical bytes bitwise unchanged",
+  "rerun_required": false
  },
  "record_schema": "ppe_formal_arm_voyage_v2",
  "s_terminal_admissible": {
+  "grid": "SOC=0.25:0.01:0.90",
   "max": 0.9,
   "min": 0.25,
-  "note": "all SOC in [0.25,0.90] (1 Hz grid) survive EV-1/EV-3 within frozen SOP/hard bounds"
+  "n_points": 66,
+  "note": "66-point SOC grid, SOC=0.25:0.01:0.90; all grid points survive EV-1/EV-3 within frozen SOP/hard bounds"
  },
  "schema": "ppe_epoch2_pre_execution_freeze_v3",
  "service_shortfall": {
@@ -157,9 +172,21 @@
   "dual_diagnostic": "P_service_gap = max(P_prop_demand - P_prop_actual, 0); divergence -> FAIL CLOSED",
   "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic"
  },
- "sha256_self": "2a8967bbd7d43b69531c5cdb1a73e050a5fcf194ceb92a37865e6fc8de4979d0",
- "study": "phase4-f-practical-predictive-ems",
- "supersedes_freeze_root_sha256": "7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47",
- "supersedes_reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
- "utc": "2026-09-17T06:00:55Z"
+ "sha256_self": "d1f36c6b60134dfad06c753dc2222eb4e82c603d5c21ea91626fa4e5277787a0",
+ "study": "phase4f-practical-predictive-ems",
+ "supersedes_chain": [
+  {
+   "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+   "replacement_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
+   "superseded_root": "7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47"
+  },
+  {
+   "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+   "replacement_root": "THIS_DOCUMENT (authoritative root is the freeze-file byte hash, recorded in EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json and epoch2_freeze_supersession.json)",
+   "superseded_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+  }
+ ],
+ "supersedes_freeze_root_sha256": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
+ "supersedes_reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+ "utc": "2026-09-17T06:21:15Z"
 }

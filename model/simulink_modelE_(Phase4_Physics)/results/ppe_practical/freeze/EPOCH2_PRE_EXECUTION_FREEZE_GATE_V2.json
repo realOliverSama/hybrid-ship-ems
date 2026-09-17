@@ -2,27 +2,27 @@
  "checks": [
   {
    "detail": "",
+   "name": "predecessor_freeze_preserved",
+   "pass": true
+  },
+  {
+   "detail": "d49767a233844aa1",
+   "name": "predecessor_root_matches_d49767a2",
+   "pass": true
+  },
+  {
+   "detail": "7919123bd986d5b5",
+   "name": "first_defective_freeze_preserved",
+   "pass": true
+  },
+  {
+   "detail": "",
    "name": "incident_self_hash",
    "pass": true
   },
   {
    "detail": "",
    "name": "incident_no_contamination",
-   "pass": true
-  },
-  {
-   "detail": "",
-   "name": "incident_runs_zero",
-   "pass": true
-  },
-  {
-   "detail": "",
-   "name": "defective_freeze_preserved",
-   "pass": true
-  },
-  {
-   "detail": "7919123bd986d5b5",
-   "name": "defective_freeze_root_recorded",
    "pass": true
   },
   {
@@ -52,7 +52,17 @@
   },
   {
    "detail": "",
+   "name": "qual_amendment_v2_unchanged_from_predecessor",
+   "pass": true
+  },
+  {
+   "detail": "",
    "name": "qual_e2e_runner_integration_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_e2e_runner_integration_unchanged_from_predecessor",
    "pass": true
   },
   {
@@ -62,17 +72,17 @@
   },
   {
    "detail": "",
+   "name": "qual_fec_robustness_prereg_unchanged_from_predecessor",
+   "pass": true
+  },
+  {
+   "detail": "",
    "name": "qual_coherence_pass",
    "pass": true
   },
   {
    "detail": "",
-   "name": "coherence_reserves_canonical",
-   "pass": true
-  },
-  {
-   "detail": "{}",
-   "name": "e2e_binds_current_implementation",
+   "name": "qual_coherence_unchanged_from_predecessor",
    "pass": true
   },
   {
@@ -86,20 +96,35 @@
    "pass": true
   },
   {
+   "detail": "[]",
+   "name": "execution_commit_reproduces_all_git_backed_bindings",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "predictor_keras_on_disk_matches_binding",
+   "pass": true
+  },
+  {
    "detail": "",
    "name": "modele_slx_t445_baseline",
    "pass": true
+  },
+  {
+   "detail": "{}",
+   "name": "zero_execution_critical_byte_change",
+   "pass": true
   }
  ],
+ "execution_code_commit_sha": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
  "freeze_file": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
- "freeze_file_sha256": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
- "n_checks": 18,
- "n_pass": 18,
+ "freeze_file_sha256": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+ "n_checks": 23,
+ "n_pass": 23,
  "overall": true,
  "schema": "PPE_EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2",
- "sha256_self_of_freeze_doc": "2a8967bbd7d43b69531c5cdb1a73e050a5fcf194ceb92a37865e6fc8de4979d0",
- "stop_rule": "overall=true -> ALSO STOP: human Epoch-2 Pre-Execution Gate re-review decides T-A8; overall=false -> STOP and report",
- "t_a8": "REMAINS BLOCKED",
- "task": "T-A7(v2)",
- "utc": "2026-09-17T06:00:55Z"
+ "sha256_self_of_freeze_doc": "d1f36c6b60134dfad06c753dc2222eb4e82c603d5c21ea91626fa4e5277787a0",
+ "stop_rule": "overall=true -> PE3-1 rerun; then T-A8 authorized automatically (zero execution-critical byte changes); overall=false -> STOP and report",
+ "task": "T-A7(v3, PE4-1)",
+ "utc": "2026-09-17T06:21:15Z"
 }

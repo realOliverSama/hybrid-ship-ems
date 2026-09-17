@@ -1,24 +1,29 @@
-"""T-A7 v2 — epoch-2 pre-execution freeze regeneration (recovery auth §11).
+"""T-A7 v3 — epoch-2 canonical freeze after PE4-1 provenance correction.
 
-Generates, after the repaired runner integration and all affected
-qualifications PASS:
+PE4-1 (human gate, CONDITIONAL PASS): the previous freeze (root
+d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8) bound
+code_commit_sha = 6e4d14e1… which predates the committed runner-integration
+repair. This generator:
 
-  freeze/epoch2_pre_execution_freeze_v2.json   (schema ppe_epoch2_pre_execution_freeze_v3)
+1. audits that EXECUTION_CODE_COMMIT_SHA (bbbbc5f53d313e7e78c3eada92197a6fc0a9255f)
+   reproduces every git-backed execution-critical binding by `git show`;
+2. separates EXECUTION_CODE_COMMIT_SHA (frozen execution implementation)
+   from FREEZE_PACKAGE_HEAD_SHA (repository head at generation);
+3. preserves the predecessor freeze bytes (renamed
+   epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json) and records the
+   full supersession chain 7919123b -> d49767a2 -> NEW_ROOT;
+4. applies the two mandated metadata-only cleanups (SOC grid wording; legacy
+   seed label flag) and records the design-basis event human acceptance;
+5. proves ZERO execution-critical byte changes vs the predecessor freeze
+   (only provenance pointers and meta-tooling hashes may differ).
+
+Metadata/provenance only (PE4-1 §6): scientific qualification artifacts are
+NOT regenerated; their hashes must remain identical and are re-bound.
+
+Outputs:
+  freeze/epoch2_pre_execution_freeze_v2.json   (NEW canonical root)
   freeze/EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json
-  freeze/epoch2_freeze_supersession.json       (old defective freeze -> SUPERSEDED_BEFORE_FORMAL_EXECUTION)
-
-The freeze binds, by exact SHA-256, every execution-critical identity
-mandated by §11: runner (manifest/pack/voyage), epoch-2 output router,
-terminal pipeline, checkpoint/resume, checker v2, trajectory writer,
-high-rate audit writer, acceptance v2, reserve derivation, terminal
-admissibility, service-shortfall semantics, generator state semantics, FEC,
-Model-E, C* composite, C0/C1/C2 adapters, Predictor-v3 assets, C1 target
-store/index, T_eval, formal corpus, 192-run manifest, qualification
-artifacts (amendment v2 + E2E), coherence gate, access ledger, incident
-artifact, and the superseded defective freeze root.
-
-T-A8 is NOT started here. Overall=true only re-opens the human Epoch-2
-Pre-Execution Gate.
+  freeze/epoch2_freeze_supersession.json       (chain, loader-compatible)
 
 Run: python -m ppe.freeze_epoch2
 """
@@ -44,6 +49,8 @@ ROOT = paths.MODELE_ROOT
 RPP = os.path.join(ROOT, "results", "ppe_practical")
 FREEZE_DIR = os.path.join(RPP, "freeze")
 OLD_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze.json")
+PREV_FREEZE = os.path.join(
+    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json")
 NEW_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze_v2.json")
 GATE = os.path.join(FREEZE_DIR, "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json")
 MARKER = os.path.join(FREEZE_DIR, "epoch2_freeze_supersession.json")
@@ -51,6 +58,10 @@ INCIDENT = os.path.join(RPP, "incidents",
                         "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT.json")
 EPOCH1_FREEZE = os.path.join(FREEZE_DIR, "ppe_pre_execution_freeze.json")
 
+PREV_ROOT = "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+FIRST_DEFECT_ROOT = ("7919123bd986d5b53e68a471943579316a8b03ae93eb67"
+                     "2fe70ac0e43242dd47")
+EXECUTION_CODE_COMMIT_SHA = "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f"
 CANONICAL_RESERVES = {
     "P_reserve_dis_kW": 543.8,
     "E_reserve_dis_kWh": 6.839,
@@ -62,6 +73,66 @@ SLX_T445_BASELINE = (
 CSTAR_COMPOSITE_FROZEN = (
     "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2")
 
+# bindings that MAY change in a metadata/provenance-only regeneration
+MUTABLE_BINDINGS = {
+    "code_commit_sha",              # provenance pointer (PE4-1)
+    "EXECUTION_CODE_COMMIT_SHA",    # new field
+    "FREEZE_PACKAGE_HEAD_SHA",      # new field
+    "freeze_generator_sha256",      # meta-tooling
+    "verify_bindings_sha256",       # meta-tooling
+    "access_ledger_file_sha256",    # append-only audit snapshot (unchanged
+    # here, but semantically a living log, not execution source)
+}
+
+# file-backed bindings (re-hashed for the zero-change assertion)
+RELMAP = {
+    "runner_voyage_sha256": "scripts/+ppe/run_formal_voyage.m",
+    "runner_pack_sha256": "scripts/+ppe/run_formal_voyage_pack.m",
+    "runner_manifest_sha256": "scripts/+ppe/run_formal_manifest.m",
+    "terminal_pipeline_sha256": "scripts/+ppe/formal_terminal_v2.m",
+    "pack_skip_predicate_sha256": "scripts/+ppe/formal_pack_skip_v2.m",
+    "freeze_loader_sha256": "scripts/+ppe/load_epoch2_freeze_bindings.m",
+    "output_router_sha256": "scripts/+ppe/formal_outdir.m",
+    "checkpoint_mgr_sha256": "scripts/+ppe/checkpoint_mgr.m",
+    "checker_v2_sha256": "scripts/+ppe/feasibility_contract_v2.m",
+    "traj_writer_sha256": "scripts/+ppe/write_traj_v1.m",
+    "audit_writer_sha256": "scripts/+ppe/write_audit_v1.m",
+    "acceptance_v2_sha256": "python/ppe/acceptance_v2.py",
+    "teval_table_file_sha256": "config/phase4f_ppe_teval_table.json",
+    "hard_feasibility_config_file_sha256":
+        "config/phase4f_ppe_hard_feasibility.json",
+    "t445_config_file_sha256": "config/phase4f_t445_config.json",
+    "study_config_file_sha256": "config/phase4f_ppe_study_config.json",
+    "formal_execution_manifest_file_sha256":
+        "results/ppe_practical/freeze/formal_execution_manifest.json",
+    "formal_assets_file_sha256":
+        "results/ppe_practical/freeze/formal_assets.json",
+    "c1_coverage_file_sha256": "results/ppe_practical/freeze/c1_coverage.json",
+    "c1_target_index_file_sha256":
+        "results/ppe_practical/freeze/c1_target_index.json",
+    "access_ledger_file_sha256": "results/ppe_practical/access_ledger.jsonl",
+    "reserve_derivation_TA0_sha256":
+        ".specs/phase4-f-practical-predictive-ems/reserve_derivation_TA0.json",
+    "amendment_design_doc_sha256":
+        ".specs/phase4-f-practical-predictive-ems/"
+        "feasibility_contract_design.md",
+    "amendment_doc_sha256":
+        ".specs/phase4-f-practical-predictive-ems/"
+        "feasibility_contract_amendment.md",
+    "amendment_v2_qual_artifact_sha256":
+        "results/ppe_practical/qualification/amendment_v2_qual.json",
+    "e2e_qual_artifact_sha256":
+        "results/ppe_practical/qualification/e2e_runner_integration_qual.json",
+    "fec_prereg_artifact_sha256":
+        "results/ppe_practical/qualification/fec_robustness_prereg.json",
+    "coherence_gate_artifact_sha256":
+        "results/ppe_practical/qualification/feasibility_coherence_gate.json",
+    "incident_artifact_sha256":
+        "results/ppe_practical/incidents/"
+        "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT.json",
+    "modele_slx_sha256": "model/HybridShip_ModelE.slx",
+}
+
 
 def sha(rel_or_abs: str) -> str:
     p = rel_or_abs if os.path.isabs(rel_or_abs) else os.path.join(ROOT, rel_or_abs)
@@ -72,20 +143,28 @@ def sha(rel_or_abs: str) -> str:
     return h.hexdigest()
 
 
-def cstar_impl_sha_py() -> str:
-    sys.path.insert(0, _PY)
-    from ppe.freeze import cstar_impl_sha_py as f  # noqa: E402
-    return f()
+def git(args):
+    repo = os.path.dirname(os.path.dirname(_MODELE))
+    return subprocess.run(["git", "-C", repo] + args, capture_output=True)
 
 
 def git_head() -> str:
-    try:
-        out = subprocess.check_output(
-            ["git", "rev-parse", "HEAD"],
-            cwd=os.path.dirname(_MODELE), stderr=subprocess.DEVNULL)
-        return out.decode().strip()
-    except Exception:  # noqa: BLE001
-        return "UNKNOWN"
+    r = git(["rev-parse", "HEAD"])
+    return r.stdout.decode().strip() if r.returncode == 0 else "UNKNOWN"
+
+
+def git_blob_sha(commit: str, rel: str):
+    repo_rel = rel if rel.startswith(".specs/") else \
+        "model/simulink_modelE_(Phase4_Physics)/" + rel
+    r = git(["show", f"{commit}:{repo_rel}"])
+    if r.returncode != 0:
+        return None
+    return hashlib.sha256(r.stdout).hexdigest()
+
+
+def cstar_impl_sha_py() -> str:
+    from ppe.freeze import cstar_impl_sha_py as f  # noqa: E402
+    return f()
 
 
 def qual_pass(name: str) -> dict:
@@ -104,129 +183,97 @@ def main() -> int:
             print(f"  GATE-FAIL {name} {detail}")
         return bool(ok)
 
-    # ---------- prerequisites ----------
+    # ---------- predecessor freeze (preserved bytes) ----------
+    check("predecessor_freeze_preserved", os.path.isfile(PREV_FREEZE))
+    with open(PREV_FREEZE, encoding="utf-8") as f:
+        prev = json.load(f)
+    prev_root = sha(PREV_FREEZE)
+    check("predecessor_root_matches_d49767a2", prev_root == PREV_ROOT,
+          prev_root[:16])
+    with open(OLD_FREEZE, encoding="utf-8") as f:
+        first = json.load(f)
+    first_root = first.get("sha256_self", "")
+    check("first_defective_freeze_preserved",
+          os.path.isfile(OLD_FREEZE) and first_root == FIRST_DEFECT_ROOT,
+          first_root[:16])
+
     with open(EPOCH1_FREEZE, encoding="utf-8") as f:
         ep1 = json.load(f)
     ep1b = ep1["bindings"]
 
-    incident_sha = ""
-    if os.path.isfile(INCIDENT):
-        incident_sha = sha(INCIDENT)
-        with open(INCIDENT, encoding="utf-8") as f:
-            inc = json.load(f)
-        check("incident_self_hash",
-              inc.get("sha256_self") == hashutil.sha256_canonical(
-                  {k: v for k, v in inc.items() if k != "sha256_self"}))
-        check("incident_no_contamination",
-              inc.get("NO_FORMAL_SCIENTIFIC_OUTPUT_CONTAMINATION") is True)
-        check("incident_runs_zero",
-              inc.get("epoch2_result_bearing_runs_before_detection") == 0)
-    else:
-        check("incident_present", False, INCIDENT)
+    # incident
+    incident_sha = sha(INCIDENT)
+    with open(INCIDENT, encoding="utf-8") as f:
+        inc = json.load(f)
+    check("incident_self_hash",
+          inc.get("sha256_self") == hashutil.sha256_canonical(
+              {k: v for k, v in inc.items() if k != "sha256_self"}))
+    check("incident_no_contamination",
+          inc.get("NO_FORMAL_SCIENTIFIC_OUTPUT_CONTAMINATION") is True)
 
-    check("defective_freeze_preserved", os.path.isfile(OLD_FREEZE))
-    old_root = ""
-    if os.path.isfile(OLD_FREEZE):
-        with open(OLD_FREEZE, encoding="utf-8") as f:
-            old = json.load(f)
-        old_root = old.get("sha256_self", "")
-        check("defective_freeze_root_recorded",
-              old_root == ("7919123bd986d5b53e68a471943579316a8b03ae93eb67"
-                           "2fe70ac0e43242dd47"), old_root[:16])
-
-    # epoch-1 evidence intact (192 terminal + 48 parity)
+    # epoch-1 evidence intact
     ep1dir = os.path.join(RPP, "formal")
     n_term = n_par = 0
-    if os.path.isdir(ep1dir):
-        for vid in sorted(os.listdir(ep1dir)):
-            vd = os.path.join(ep1dir, vid)
-            if not os.path.isdir(vd) or vid.startswith(("_", "quarantine")):
-                continue
-            for fn in sorted(os.listdir(vd)):
-                if fn.endswith(".json") and fn[:-5] in (
-                        "P0", "C0", "C1", "C2"):
-                    try:
-                        with open(os.path.join(vd, fn), encoding="utf-8") as f:
-                            d = json.load(f)
-                        if str(d.get("terminal_status", "")).startswith(
-                                "COMPLETE"):
-                            n_term += 1
-                    except Exception:  # noqa: BLE001
-                        pass
-                if fn == "warmup_parity.json":
-                    try:
-                        with open(os.path.join(vd, fn), encoding="utf-8") as f:
-                            if json.load(f) == "PASS":
-                                n_par += 1
-                    except Exception:  # noqa: BLE001
-                        pass
+    for vid in sorted(os.listdir(ep1dir)):
+        vd = os.path.join(ep1dir, vid)
+        if not os.path.isdir(vd) or vid.startswith(("_", "quarantine")):
+            continue
+        for fn in sorted(os.listdir(vd)):
+            if fn.endswith(".json") and fn[:-5] in ("P0", "C0", "C1", "C2"):
+                try:
+                    d = json.load(open(os.path.join(vd, fn),
+                                       encoding="utf-8"))
+                    if str(d.get("terminal_status", "")).startswith("COMPLETE"):
+                        n_term += 1
+                except Exception:  # noqa: BLE001
+                    pass
+            if fn == "warmup_parity.json":
+                try:
+                    if json.load(open(os.path.join(vd, fn),
+                                      encoding="utf-8")) == "PASS":
+                        n_par += 1
+                except Exception:  # noqa: BLE001
+                    pass
     check("epoch1_terminals_192", n_term == 192, str(n_term))
     check("epoch1_warmup_parity_48", n_par == 48, str(n_par))
-
-    # epoch-2 namespace must not exist yet
     check("epoch2_namespace_absent",
           not os.path.isdir(os.path.join(RPP, "formal_epoch2")))
 
-    # zero epoch-2 FORMAL ledger entries
     n_e2_formal = 0
     ledp = os.path.join(RPP, "access_ledger.jsonl")
-    if os.path.isfile(ledp):
-        with open(ledp, encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    e = json.loads(line)
-                except Exception:  # noqa: BLE001
-                    continue
-                if e.get("purpose") == "FORMAL" and \
-                        e.get("formal_epoch") == 2:
-                    n_e2_formal += 1
-    check("epoch2_formal_ledger_entries_zero", n_e2_formal == 0, str(n_e2_formal))
+    for line in open(ledp, encoding="utf-8"):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            e = json.loads(line)
+        except Exception:  # noqa: BLE001
+            continue
+        if e.get("purpose") == "FORMAL" and e.get("formal_epoch") == 2:
+            n_e2_formal += 1
+    check("epoch2_formal_ledger_entries_zero", n_e2_formal == 0,
+          str(n_e2_formal))
 
-    # ---------- qualification artifacts (must pass and bind current bytes) --
+    # ---------- qualifications: hashes must be unchanged & passing ----------
     quals = {}
-    for nm, fn in (("amendment_v2", "amendment_v2_qual.json"),
-                   ("e2e_runner_integration", "e2e_runner_integration_qual.json"),
-                   ("fec_robustness_prereg", "fec_robustness_prereg.json")):
+    qmap = {"amendment_v2": ("amendment_v2_qual.json",
+                             "amendment_v2_qual_artifact_sha256"),
+            "e2e_runner_integration": ("e2e_runner_integration_qual.json",
+                                       "e2e_qual_artifact_sha256"),
+            "fec_robustness_prereg": ("fec_robustness_prereg.json",
+                                      "fec_prereg_artifact_sha256")}
+    for nm, (fn, bkey) in qmap.items():
         quals[nm] = qual_pass(fn)
         check(f"qual_{nm}_pass", quals[nm]["pass"])
+        check(f"qual_{nm}_unchanged_from_predecessor",
+              quals[nm]["sha256"] == prev["bindings"].get(bkey))
     coh = qual_pass("feasibility_coherence_gate.json")
     quals["coherence_gate"] = coh
     check("qual_coherence_pass", coh["pass"])
-    with open(os.path.join(RPP, "qualification",
-                           "feasibility_coherence_gate.json"),
-              encoding="utf-8") as f:
-        cohd = json.load(f)
-    dr = cohd.get("derived_reserves", {})
-    check("coherence_reserves_canonical",
-          abs(dr.get("P_reserve_dis_kW", -1) - 543.8) < 1e-9
-          and abs(dr.get("E_reserve_dis_kWh", -1) - 6.839) < 1e-9
-          and abs(dr.get("P_reserve_chg_kW", -1) - 819.8) < 1e-9
-          and abs(dr.get("E_reserve_chg_kWh", -1) - 5.625) < 1e-9)
+    check("qual_coherence_unchanged_from_predecessor",
+          coh["sha256"] == prev["bindings"]["coherence_gate_artifact_sha256"])
 
-    # e2e artifact must bind the CURRENT implementation bytes
-    e2e = quals["e2e_runner_integration"]["doc"]
-    isha = e2e.get("implementation_sha256", {})
-    drift = {}
-    for k, rel in (
-            ("run_formal_voyage_m", "scripts/+ppe/run_formal_voyage.m"),
-            ("run_formal_voyage_pack_m", "scripts/+ppe/run_formal_voyage_pack.m"),
-            ("run_formal_manifest_m", "scripts/+ppe/run_formal_manifest.m"),
-            ("formal_terminal_v2_m", "scripts/+ppe/formal_terminal_v2.m"),
-            ("formal_pack_skip_v2_m", "scripts/+ppe/formal_pack_skip_v2.m"),
-            ("write_traj_v1_m", "scripts/+ppe/write_traj_v1.m"),
-            ("write_audit_v1_m", "scripts/+ppe/write_audit_v1.m"),
-            ("load_epoch2_freeze_bindings_m",
-             "scripts/+ppe/load_epoch2_freeze_bindings.m"),
-            ("formal_outdir_m", "scripts/+ppe/formal_outdir.m"),
-            ("acceptance_v2_py", "python/ppe/acceptance_v2.py")):
-        if isha.get(k) != sha(rel):
-            drift[k] = rel
-    check("e2e_binds_current_implementation", not drift, json.dumps(drift))
-
-    # ---------- assemble bindings ----------
+    # ---------- PE4-1: execution commit provenance ----------
     amend_p = os.path.join(FREEZE_DIR, "post_freeze_runner_amendment.json")
     with open(amend_p, encoding="utf-8") as f:
         amend = json.load(f)
@@ -236,6 +283,63 @@ def main() -> int:
     check("cstar_composite_unchanged",
           cstar_impl_sha_py() == CSTAR_COMPOSITE_FROZEN)
 
+    git_backed = {
+        "runner_voyage_sha256": "scripts/+ppe/run_formal_voyage.m",
+        "runner_pack_sha256": "scripts/+ppe/run_formal_voyage_pack.m",
+        "runner_manifest_sha256": "scripts/+ppe/run_formal_manifest.m",
+        "terminal_pipeline_sha256": "scripts/+ppe/formal_terminal_v2.m",
+        "pack_skip_predicate_sha256": "scripts/+ppe/formal_pack_skip_v2.m",
+        "freeze_loader_sha256": "scripts/+ppe/load_epoch2_freeze_bindings.m",
+        "output_router_sha256": "scripts/+ppe/formal_outdir.m",
+        "checkpoint_mgr_sha256": "scripts/+ppe/checkpoint_mgr.m",
+        "checker_v2_sha256": "scripts/+ppe/feasibility_contract_v2.m",
+        "traj_writer_sha256": "scripts/+ppe/write_traj_v1.m",
+        "audit_writer_sha256": "scripts/+ppe/write_audit_v1.m",
+        "run_cstar_amended_sha256": "scripts/+ppe/run_cstar.m",
+        "c2_bridge_amended_sha256": "scripts/+ppe/c2_bridge.m",
+        "winfun_plan_amended_sha256": "scripts/+ppe/winfun_plan.m",
+        "acceptance_v2_sha256": "python/ppe/acceptance_v2.py",
+        "modele_slx_sha256": "model/HybridShip_ModelE.slx",
+        "teval_table_file_sha256": "config/phase4f_ppe_teval_table.json",
+        "hard_feasibility_config_file_sha256":
+            "config/phase4f_ppe_hard_feasibility.json",
+        "t445_config_file_sha256": "config/phase4f_t445_config.json",
+        "study_config_file_sha256": "config/phase4f_ppe_study_config.json",
+        "formal_execution_manifest_file_sha256":
+            "results/ppe_practical/freeze/formal_execution_manifest.json",
+        "formal_assets_file_sha256":
+            "results/ppe_practical/freeze/formal_assets.json",
+        "c1_coverage_file_sha256":
+            "results/ppe_practical/freeze/c1_coverage.json",
+        "c1_target_index_file_sha256":
+            "results/ppe_practical/freeze/c1_target_index.json",
+        "access_ledger_file_sha256":
+            "results/ppe_practical/access_ledger.jsonl",
+        "reserve_derivation_TA0_sha256":
+            ".specs/phase4-f-practical-predictive-ems/"
+            "reserve_derivation_TA0.json",
+        "amendment_design_doc_sha256":
+            ".specs/phase4-f-practical-predictive-ems/"
+            "feasibility_contract_design.md",
+        "amendment_doc_sha256":
+            ".specs/phase4-f-practical-predictive-ems/"
+            "feasibility_contract_amendment.md",
+    }
+    bad = []
+    for key, rel in git_backed.items():
+        got = git_blob_sha(EXECUTION_CODE_COMMIT_SHA, rel)
+        want = prev["bindings"].get(key)
+        if got is None or got != want:
+            bad.append(key)
+    check("execution_commit_reproduces_all_git_backed_bindings", not bad,
+          json.dumps(bad))
+    # keras predictor is experiments/-distributed (not git-backed by policy);
+    # bound by SHA-256 and verified on-disk
+    kpath = ep1b["predictor"]["keras"]["path"]
+    kpath = kpath.split("simulink_modelE_(Phase4_Physics)/", 1)[-1]
+    check("predictor_keras_on_disk_matches_binding",
+          sha(kpath) == ep1b["predictor"]["keras"]["sha256"])
+
     slx_sha = sha(paths.MODELE_SLX)
     check("modele_slx_t445_baseline", slx_sha == SLX_T445_BASELINE)
 
@@ -243,8 +347,8 @@ def main() -> int:
               encoding="utf-8") as f:
         teval = json.load(f)
 
-    bindings = {
-        "code_commit_sha": git_head(),
+    # ---------- ZERO execution-critical byte change vs predecessor ----------
+    newvals = {
         "modele_slx_sha256": slx_sha,
         "cstar_composite_sha256": cstar_impl_sha_py(),
         "run_cstar_amended_sha256": amend["run_cstar_file_sha256"]["amended"],
@@ -252,61 +356,39 @@ def main() -> int:
             amend["amended_file_overrides"]["scripts/+ppe/c2_bridge.m"],
         "winfun_plan_amended_sha256":
             amend["amended_file_overrides"]["scripts/+ppe/winfun_plan.m"],
-        "checker_v2_sha256": sha("scripts/+ppe/feasibility_contract_v2.m"),
-        "traj_writer_sha256": sha("scripts/+ppe/write_traj_v1.m"),
-        "audit_writer_sha256": sha("scripts/+ppe/write_audit_v1.m"),
-        "runner_manifest_sha256": sha("scripts/+ppe/run_formal_manifest.m"),
-        "runner_pack_sha256": sha("scripts/+ppe/run_formal_voyage_pack.m"),
-        "runner_voyage_sha256": sha("scripts/+ppe/run_formal_voyage.m"),
-        "terminal_pipeline_sha256": sha("scripts/+ppe/formal_terminal_v2.m"),
-        "pack_skip_predicate_sha256": sha("scripts/+ppe/formal_pack_skip_v2.m"),
-        "freeze_loader_sha256": sha("scripts/+ppe/load_epoch2_freeze_bindings.m"),
-        "output_router_sha256": sha("scripts/+ppe/formal_outdir.m"),
-        "checkpoint_mgr_sha256": sha("scripts/+ppe/checkpoint_mgr.m"),
-        "acceptance_v2_sha256": sha("python/ppe/acceptance_v2.py"),
+        "teval_table_sha256": teval["teval_table_sha256"],
+        "corpus_identity_sha256": prev["bindings"]["corpus_identity_sha256"],
+        "predictor": prev["bindings"]["predictor"],
+    }
+    drift = {}
+    for key, want in prev["bindings"].items():
+        if key in MUTABLE_BINDINGS:
+            continue
+        got = newvals.get(key)
+        if got is None:
+            rel = RELMAP.get(key, "")
+            p = os.path.join(ROOT, rel) if not rel.startswith(".specs/") \
+                else os.path.join(os.path.dirname(os.path.dirname(ROOT)), rel)
+            got = sha(p) if rel and os.path.isfile(p) else None
+        if got != want:
+            drift[key] = "CHANGED"
+    check("zero_execution_critical_byte_change", not drift,
+          json.dumps(drift, sort_keys=True))
+
+    # ---------- assemble bindings ----------
+    bindings = dict(prev["bindings"])          # inherit (proves stability)
+    bindings.update({
+        "code_commit_sha": EXECUTION_CODE_COMMIT_SHA,
+        "EXECUTION_CODE_COMMIT_SHA": EXECUTION_CODE_COMMIT_SHA,
+        "FREEZE_PACKAGE_HEAD_SHA": git_head(),
         "freeze_generator_sha256": sha("python/ppe/freeze_epoch2.py"),
         "verify_bindings_sha256": sha("python/ppe/verify_formal_bindings.py"),
-        "teval_table_file_sha256": sha(os.path.join(
-            ROOT, "config", "phase4f_ppe_teval_table.json")),
-        "teval_table_sha256": teval["teval_table_sha256"],
-        "hard_feasibility_config_file_sha256": sha(paths.HF_CONFIG_JSON),
-        "t445_config_file_sha256": sha(os.path.join(
-            ROOT, "config", "phase4f_t445_config.json")),
-        "study_config_file_sha256": sha(os.path.join(
-            ROOT, "config", "phase4f_ppe_study_config.json")),
-        "formal_execution_manifest_file_sha256": sha(os.path.join(
-            FREEZE_DIR, "formal_execution_manifest.json")),
-        "formal_assets_file_sha256": sha(os.path.join(
-            FREEZE_DIR, "formal_assets.json")),
-        "c1_coverage_file_sha256": sha(os.path.join(
-            FREEZE_DIR, "c1_coverage.json")),
-        "c1_target_index_file_sha256": sha(os.path.join(
-            FREEZE_DIR, "c1_target_index.json")),
-        "corpus_identity_sha256": ep1b["corpus_identity_sha256"],
-        "reserve_derivation_TA0_sha256": sha(os.path.join(
-            os.path.dirname(os.path.dirname(_MODELE)),
-            ".specs", "phase4-f-practical-predictive-ems",
-            "reserve_derivation_TA0.json")),
-        "amendment_design_doc_sha256": sha(os.path.join(
-            os.path.dirname(os.path.dirname(_MODELE)),
-            ".specs", "phase4-f-practical-predictive-ems",
-            "feasibility_contract_design.md")),
-        "amendment_doc_sha256": sha(os.path.join(
-            os.path.dirname(os.path.dirname(_MODELE)),
-            ".specs", "phase4-f-practical-predictive-ems",
-            "feasibility_contract_amendment.md")),
-        "amendment_v2_qual_artifact_sha256": quals["amendment_v2"]["sha256"],
-        "e2e_qual_artifact_sha256": quals["e2e_runner_integration"]["sha256"],
-        "fec_prereg_artifact_sha256": quals["fec_robustness_prereg"]["sha256"],
-        "coherence_gate_artifact_sha256": quals["coherence_gate"]["sha256"],
-        "access_ledger_file_sha256": sha(ledp),
         "incident_artifact_sha256": incident_sha,
-        "predictor": ep1b["predictor"],
-    }
+    })
 
     doc = {
         "schema": "ppe_epoch2_pre_execution_freeze_v3",
-        "study": "phase4-f-practical-predictive-ems",
+        "study": "phase4f-practical-predictive-ems",
         "formal_epoch": 2,
         "utc": __import__("datetime").datetime.now(
             __import__("datetime").timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ"),
@@ -317,8 +399,26 @@ def main() -> int:
         "record_schema": "ppe_formal_arm_voyage_v2",
         "classification_authority": "ppe.feasibility_contract_v2",
         "cstar_execution_seed": "phase4f-ppe-formal-epoch1",
-        "supersedes_freeze_root_sha256": old_root,
-        "supersedes_reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+        "cstar_execution_seed_provenance": {
+            "LEGACY_SEED_LABEL_INTENTIONALLY_PRESERVED_FOR_CROSS_EPOCH_"
+            "DETERMINISM": True,
+            "note": ("seed name is historical (epoch-1); the deterministic "
+                     "value is intentionally preserved for fair "
+                     "epoch-1/epoch-2 comparison"),
+        },
+        "supersedes_freeze_root_sha256": prev_root,
+        "supersedes_reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+        "supersedes_chain": [
+            {"superseded_root": FIRST_DEFECT_ROOT,
+             "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+             "replacement_root": prev_root},
+            {"superseded_root": prev_root,
+             "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+             "replacement_root": "THIS_DOCUMENT (authoritative root is the "
+                                 "freeze-file byte hash, recorded in "
+                                 "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json "
+                                 "and epoch2_freeze_supersession.json)"},
+        ],
         "incident_artifact": os.path.relpath(INCIDENT, ROOT),
         "epoch1_preserved": ep1.get("epoch1_preserved", {
             "deleted": False, "formal_epoch": 1, "reclassified": False,
@@ -327,12 +427,14 @@ def main() -> int:
             "P0_role": "UNCHANGED",
             "bootstrap_seed": "phase4f-t445-bootstrap-v1",
             "corpus_48_voyages": "UNCHANGED",
-            "corpus_identity_sha256": ep1b["corpus_identity_sha256"],
+            "corpus_identity_sha256": prev["bindings"][
+                "corpus_identity_sha256"],
             "cstar_composite_sha256": cstar_impl_sha_py(),
             "modele_slx_sha256": slx_sha,
         },
         "service_shortfall": {
-            "authoritative": "P_unserved_kW (V_dc undervoltage derate path only)",
+            "authoritative":
+                "P_unserved_kW (V_dc undervoltage derate path only)",
             "dual_diagnostic": ("P_service_gap = max(P_prop_demand - "
                                 "P_prop_actual, 0); divergence -> FAIL CLOSED"),
             "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic",
@@ -342,30 +444,46 @@ def main() -> int:
             "state-aware limits; no equal-split fallback; PMS allocator "
             "equal-split by design (D-B6 frozen)"),
         "s_terminal_admissible": {
-            "min": 0.25, "max": 0.9,
-            "note": ("all SOC in [0.25,0.90] (1 Hz grid) survive EV-1/EV-3 "
-                     "within frozen SOP/hard bounds"),
+            "min": 0.25, "max": 0.9, "n_points": 66,
+            "grid": "SOC=0.25:0.01:0.90",
+            "note": ("66-point SOC grid, SOC=0.25:0.01:0.90; all grid "
+                     "points survive EV-1/EV-3 within frozen SOP/hard "
+                     "bounds"),
         },
-        "e_design_events": old.get("e_design_events", {}) if os.path.isfile(
-            OLD_FREEZE) else {},
+        "e_design_events": prev.get("e_design_events", {}),
+        "e_design_events_acceptance": {
+            "status": "HUMAN_ACCEPTED_STUDY_LOCAL_CONSERVATIVE_CONTINGENCY_"
+                      "DESIGN_BASIS_EVENTS",
+            "accepted_at": ("Phase 4-F epoch-2 final pre-execution gate "
+                            "(PE4-1 conditional pass)"),
+            "scope_note": (
+                "accepted for THIS RESEARCH STUDY; EV1 includes frozen "
+                "STARTING/SYNC delay and generator reachability; EV3 "
+                "includes frozen generator ramp-down and Pmin behavior; "
+                "these events do NOT constitute a complete regulatory or "
+                "classification emergency-power certification envelope"),
+        },
         "fec": {"k_eq_E": 0.5457,
                 "robustness_band": [0.4366, 0.6548],
                 "break_even": 0.0933},
         "corrections": (
-            "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT recovery: completed "
-            "T-A5 integration (formal_epoch=2 explicit parameter, epoch-2 "
-            "output namespace, identity-safe skip semantics, checker v2 as "
-            "classification authority, transactional "
-            "trajectory/audit/terminal write order, high-rate audit writer); "
-            "trajectory channel list aligned to approved design FC-5 §5.1 "
-            "(derived safety_hard_count in, P_prop_limit_kW out); all "
-            "affected qualifications re-run against post-fix bytes"),
+            "PE4-1 EXECUTION_COMMIT_PROVENANCE_CORRECTION: code_commit_sha "
+            "rebound from 6e4d14e1… (predates the committed runner repair) "
+            "to EXECUTION_CODE_COMMIT_SHA bbbbc5f53d313e7e78c3eada92197a6fc0a"
+            "9255f, verified to reproduce every git-backed execution-critical "
+            "binding; FREEZE_PACKAGE_HEAD_SHA recorded separately; "
+            "metadata-only cleanups (SOC grid wording, legacy seed label "
+            "flag, design-basis acceptance); ZERO execution-critical byte "
+            "changes vs d49767a2… (asserted in gate)"),
         "qualification": {
             "amend_v2_pass": quals["amendment_v2"]["pass"],
             "e2e_runner_integration_pass":
                 quals["e2e_runner_integration"]["pass"],
             "coherence_pass": quals["coherence_gate"]["pass"],
             "fec_robust_pass": quals["fec_robustness_prereg"]["pass"],
+            "rerun_required": False,
+            "rerun_rationale": ("PE4-1 is metadata/provenance-only; all "
+                                "execution-critical bytes bitwise unchanged"),
         },
         "bindings": bindings,
     }
@@ -379,41 +497,53 @@ def main() -> int:
     overall = all(c["pass"] for c in checks)
     gate_doc = {
         "schema": "PPE_EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2",
-        "task": "T-A7(v2)",
+        "task": "T-A7(v3, PE4-1)",
         "freeze_file": os.path.relpath(NEW_FREEZE, ROOT),
         "freeze_file_sha256": freeze_file_sha,
         "sha256_self_of_freeze_doc": doc["sha256_self"],
+        "execution_code_commit_sha": EXECUTION_CODE_COMMIT_SHA,
         "checks": checks,
         "n_checks": len(checks),
         "n_pass": sum(1 for c in checks if c["pass"]),
         "overall": overall,
-        "stop_rule": ("overall=true -> ALSO STOP: human Epoch-2 "
-                      "Pre-Execution Gate re-review decides T-A8; "
+        "stop_rule": ("overall=true -> PE3-1 rerun; then T-A8 authorized "
+                      "automatically (zero execution-critical byte changes); "
                       "overall=false -> STOP and report"),
-        "t_a8": "REMAINS BLOCKED",
         "utc": doc["utc"],
     }
     with open(GATE, "w", encoding="utf-8") as f:
         json.dump(gate_doc, f, indent=1, sort_keys=True)
 
     marker = {
-        "schema": "ppe_epoch2_freeze_supersession_v1",
-        "superseded_freeze_root": old_root,
-        "superseded_artifact": os.path.relpath(OLD_FREEZE, ROOT),
+        "schema": "ppe_epoch2_freeze_supersession_v2",
+        "superseded_freeze_root": prev_root,
+        "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
         "disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
-        "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+        "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
         "replacement_freeze_root": freeze_file_sha,
         "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT),
-        "note": ("old freeze bytes preserved untouched as historical "
-                 "pre-execution evidence; epoch-2 result-bearing runs "
-                 "remained 0 before supersession"),
+        "chain": [
+            {"superseded_root": FIRST_DEFECT_ROOT,
+             "superseded_artifact": os.path.relpath(OLD_FREEZE, ROOT),
+             "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+             "replacement_root": prev_root,
+             "replacement_artifact": os.path.relpath(PREV_FREEZE, ROOT)},
+            {"superseded_root": prev_root,
+             "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
+             "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+             "replacement_root": freeze_file_sha,
+             "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT)},
+        ],
+        "note": ("all superseded freeze bytes preserved untouched; epoch-2 "
+                 "result-bearing runs remained 0 across the whole chain"),
         "utc": doc["utc"],
     }
     with open(MARKER, "w", encoding="utf-8") as f:
         json.dump(marker, f, indent=1, sort_keys=True)
 
-    print(f"[freeze-e2-v2] overall={overall} checks={len(checks)} "
-          f"root={freeze_file_sha[:16]} self={doc['sha256_self'][:16]}")
+    print(f"[freeze-e2-v3] overall={overall} checks={len(checks)} "
+          f"root={freeze_file_sha[:16]} self={doc['sha256_self'][:16]} "
+          f"exec_commit={EXECUTION_CODE_COMMIT_SHA[:12]}")
     return 0 if overall else 1
 
 
