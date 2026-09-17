@@ -4,7 +4,7 @@ function r = feasibility_contract_v2(ds, cfg, P_reserve, T_frozen, C_bus)
 % 输入：
 %   ds       extract_logsout 输出（必需信号见 FAIL CLOSED 清单）
 %   cfg      phase4f_t445_config()（冻结阈值只读）
-%   P_reserve 终端储备 struct('dis_kW',402,'chg_kW',168,'dis_kWh',3.35)
+%   P_reserve 终端储备 struct('dis_kW',544,'chg_kW',820,'dis_kWh',6.84)
 %             （T-A0 设计基准事件推导，PROSPECTIVE；reserve_derivation_TA0.json）
 %   T_frozen 冻结任务时长 [s]
 %   C_bus    可选；提供时计算 energy_closure_c5，否则该分量记 true + 诊断注记

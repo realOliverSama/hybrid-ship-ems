@@ -6,7 +6,7 @@ function r = qual_amendment_v2()
 ROOT = ppe.ppe_root();
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 cfg = phase4f_t445_config();
-PR = struct('dis_kW', 402, 'chg_kW', 168, 'dis_kWh', 3.35);  % T-A0 派生（PROSPECTIVE→已冻结于修正案）
+PR = struct('dis_kW', 544, 'chg_kW', 820, 'dis_kWh', 6.84);  % T-A0 派生（PROSPECTIVE→已冻结于修正案）
 TF = 40;
 checks = struct();
 
