@@ -235,11 +235,17 @@ def main(argv: list[str] | None = None) -> int:
                             problems.append(f"ctrace:provenance-missing {tag}")
                 except Exception as e:  # noqa: BLE001
                     problems.append(f"ctrace:unparsable {tag} ({e})")
-        # trajectory/audit artifacts must NOT point into epoch-1 namespace
+        # trajectory/audit artifacts must point INSIDE the epoch-2 namespace
+        # (path-boundary check; a bare substring test matches every
+        # formal_epoch2 path because ".../formal" is its prefix)
         for k in ("trajectory_artifact", "audit_artifact"):
             v = str(rec.get(k, ""))
-            if ep1 in v:
-                problems.append(f"record:{k}-in-epoch1-namespace {tag}")
+            if v:
+                rv = os.path.realpath(v)
+                if not rv.startswith(os.path.realpath(formal_dir)
+                                     + os.sep):
+                    problems.append(f"record:{k}-outside-epoch2-namespace "
+                                    f"{tag}")
 
     # extras: terminal records in the epoch-2 namespace that the manifest
     # does not declare (misrouted or stale output). Only files shaped like a
