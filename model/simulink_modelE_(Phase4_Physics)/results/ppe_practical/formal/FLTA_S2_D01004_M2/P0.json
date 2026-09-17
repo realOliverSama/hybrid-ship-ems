@@ -7,9 +7,9 @@
   "arm": "P0",
   "formal_epoch": 1,
   "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
-  "runner_amendment_sha256": "9b8ef59c2ddd48c62ca4cef83e005a7f4afb51d47a8f158821c8a86052a00236",
+  "runner_amendment_sha256": "74d7d23e19c466a4f69248bf34052cff288ea1253c1479c37edbae4ddb2a1530",
   "code_commit_sha": "87639f5f3bf65be6f3991b3a369e2dfbff45fbbe",
-  "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+  "cstar_impl_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
   "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
   "teval_identity_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
   "T_eval": 4508,
@@ -47,6 +47,6 @@
     }
   },
   "terminal_status": "COMPLETE_HARD_INFEASIBLE",
-  "wall_s": 60.995038,
-  "utc": "2026-09-16T03:37:59Z"
+  "wall_s": 65.691644,
+  "utc": "2026-09-17T00:36:52Z"
 }

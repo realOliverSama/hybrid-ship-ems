@@ -1,0 +1,52 @@
+{
+  "schema": "ppe_formal_arm_voyage_v1",
+  "run_id": "86d3c77981af355e",
+  "voyage_id": "FLTA_S7_D06015_M3",
+  "split_group_id": "SG#30ab14ffb1a08292",
+  "tier": "LOW",
+  "arm": "P0",
+  "formal_epoch": 1,
+  "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+  "runner_amendment_sha256": "9b8ef59c2ddd48c62ca4cef83e005a7f4afb51d47a8f158821c8a86052a00236",
+  "code_commit_sha": "87639f5f3bf65be6f3991b3a369e2dfbff45fbbe",
+  "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "teval_identity_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
+  "T_eval": 3436,
+  "predictor_identity": "N/A",
+  "fuel_total_kg": 172.94060305583761,
+  "SOC0": 0.6,
+  "SOC_end": 0.59289618766009933,
+  "J_FEC_kg": 177.09378408582896,
+  "hard_feasibility": {
+    "pass": false,
+    "items": {
+      "task_complete": true,
+      "load_shortfall": false,
+      "soc_hard_bounds": true,
+      "terminal_soc": false,
+      "battery_sop_v_i": true,
+      "genset_limits": false,
+      "energy_closure_c5": true,
+      "safety_hard_events": true
+    },
+    "detail": {
+      "T_end": 3436,
+      "T_frozen": 3436,
+      "derate08_s": 0,
+      "shortfall_kWh": 1.1822308304359421,
+      "soc_hard_s": 0,
+      "dSOC": 0.00710381233990065,
+      "p_over_s": 0,
+      "v_out_s": 0,
+      "i_over_s": 0,
+      "genset_band_s": 1494.6799999999998,
+      "ramp_s": 0.0099999999999909051,
+      "c5_ratio": 0,
+      "safety_hard_count": 0
+    }
+  },
+  "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+  "wall_s": 42.030549,
+  "utc": "2026-09-16T03:38:59Z"
+}
