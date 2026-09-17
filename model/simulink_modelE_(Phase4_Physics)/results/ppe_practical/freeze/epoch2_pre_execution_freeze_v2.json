@@ -1,8 +1,8 @@
 {
  "bindings": {
   "EXECUTION_CODE_COMMIT_SHA": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
-  "FREEZE_PACKAGE_HEAD_SHA": "086ab869598b27636de118b373e036d780978f3e",
-  "acceptance_v2_sha256": "64bfd7e1f04efd16d1be19df4cb20dee9f2be96d0cea577895d1b9c630e8bc28",
+  "FREEZE_PACKAGE_HEAD_SHA": "ffaa44cd2513a7b49fb6e40b343512d8ba048e2e",
+  "acceptance_v2_sha256": "6e663872ee200242dbec368d0fa88b043adc4289e79e2ecb57fbe694cdca3f33",
   "access_ledger_file_sha256": "8eb57e26f125e8dea7e6208ea9653f94313614a9a9a3b369fa0157853f03ccb0",
   "amendment_design_doc_sha256": "5808a4a8d930b2a3824072581feaddc613392e6f814de64c8913f6cadb6b8f08",
   "amendment_doc_sha256": "8c5a0d8c6eddb6de89bfe3ffe5028b8a45227f92470ec5244a2f3e2a880f965b",
@@ -15,19 +15,21 @@
   "checkpoint_mgr_sha256": "94a178a06280a2f36e1bf6afeecec7c3b4ceb82b2f75ca3f1626409b7fd995ea",
   "code_commit_sha": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
   "coherence_gate_artifact_sha256": "b9c4e46ef536f524b68855f5dd34ed245a6426c11d7cdc810ad8b7f2f095895d",
+  "controller_trace_writer_sha256": "c9f62518c9fcf8553f885295fc07116ecf74ebaa8ae0ee2beb5500cb458deb9f",
   "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
   "cstar_composite_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
   "e2e_qual_artifact_sha256": "4baf2838d823afd32fb89ffa2d8ade0f98587d79e97060c9e619931b9a050e6f",
   "fec_prereg_artifact_sha256": "d5c9d5f9913901e7a68f2d97b7f71165d09635daaf3ae12d4a995640ee0a0fc8",
   "formal_assets_file_sha256": "578e6e8b32091f93a97a74a97a387d028e45ad2369dd63a57f8a556d467d8f29",
   "formal_execution_manifest_file_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
-  "freeze_generator_sha256": "2044d5ea0ac5035f7cee41f1f3d355d574af620c7f17beddeb4f857b236c96a7",
+  "freeze_generator_sha256": "58fc752232bcf926d379453b49f6c1b0288c0d6ebf5be8d1be9450583cdba6a5",
   "freeze_loader_sha256": "ab0bd3e56248596008b249770bb6da098e3ffaefd4cd92d8d0292412edad6c3f",
   "hard_feasibility_config_file_sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10",
   "incident_artifact_sha256": "463fe5250548b3adc75f470351a02c8360e3080ceb162654809e365abf8605d5",
   "modele_slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "observability_qual_artifact_sha256": "72657ddeac582b04696ce5855f082b7f1d515f0f2f1e1e674b0da31c37881a97",
   "output_router_sha256": "6eedeb6bb15e6169b5da4cf18b31463ad8fd14003a5e6e6e10273cf09b119829",
-  "pack_skip_predicate_sha256": "305e98db68b5f03b757ae2eab5658af873ae3ce9204953bef421d2a205f082e3",
+  "pack_skip_predicate_sha256": "7ff2a44f72196f74c388a1c81c4ef94e906ac6ff35dbe120cfc6a9bd25cb8c24",
   "predictor": {
    "architecture_config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
    "eval_config": {
@@ -71,13 +73,13 @@
   "run_cstar_amended_sha256": "dc0bc0a91709c610ef19123a0030651501911ea8fea8a2863beeb1262a7a9e28",
   "runner_manifest_sha256": "c7f88e9188668fe87a57bc0fabde95a70b8bd78fa5758076c1687b13d217bf64",
   "runner_pack_sha256": "a9a1704245b587868ba7171823f9ef09cb499e19912d54141b4d1ff4bbcde2b1",
-  "runner_voyage_sha256": "57fbbe67d40db9e1ae83986d74192326f6fffcbb9643cdb0fa953db30e8f306c",
+  "runner_voyage_sha256": "0d900d0f6a4e98c92b60d97e5a246e9c2465d77da14643d0d3ca44689090cbc6",
   "study_config_file_sha256": "270d58296b77cdd50e3d975c0c499c851d9bbc3826837f2f61b02eb44696871a",
   "t445_config_file_sha256": "34b68c41a56db23394f32632fdbc04a540cdc1d3181d09ea52c44551a026f820",
-  "terminal_pipeline_sha256": "02c1f75d57dbd6ba6786715eb61ed84f8d0ca33ec5dd76ad18cb2da6421bbce9",
+  "terminal_pipeline_sha256": "37f41db90e71ff73a400d47a672b8d2c0590f6f172171141c6e517fa56379d7f",
   "teval_table_file_sha256": "4ab43018d694285ec6b138172e1c7e7c31022f9bd02fc33e33289447b5c03a34",
   "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
-  "traj_writer_sha256": "1e3cd526b7453be388ba187c5fc6781be45fd3000d8d440757ec955abbcd0885",
+  "traj_writer_sha256": "537ca32e82bf7088b69a0bbbf60eecf265a2eef2603ecdd4d8a90b74ee5ae906",
   "verify_bindings_sha256": "6a188b73b9e5f3b4d643d77f453e4b2378e431d6d0cf862ab77aa4426bd322fb",
   "winfun_plan_amended_sha256": "7e8d845a30968b546153187af0ff94595a1f6e01b4eea1d13c45471691fdfcdc"
  },
@@ -89,7 +91,7 @@
   "provenance": "T-A0 dynamic derivation; PE2-1 canonical"
  },
  "classification_authority": "ppe.feasibility_contract_v2",
- "corrections": "PE4-1 EXECUTION_COMMIT_PROVENANCE_CORRECTION: code_commit_sha rebound from 6e4d14e1\u2026 (predates the committed runner repair) to EXECUTION_CODE_COMMIT_SHA bbbbc5f53d313e7e78c3eada92197a6fc0a9255f, verified to reproduce every git-backed execution-critical binding; FREEZE_PACKAGE_HEAD_SHA recorded separately; metadata-only cleanups (SOC grid wording, legacy seed label flag, design-basis acceptance); ZERO execution-critical byte changes vs d49767a2\u2026 (asserted in gate)",
+ "corrections": "FC-5A OBSERVABILITY CONTRACT AMENDMENT (C1-C6): evidence interface split into plant_trajectory_v1 (PLANT_LOGGED + 2 exact qualified derivations P_bat_bus_kW/derate08_active + interlock family; no controller quantities), controller_trace_v1 (delta_lambda/forecast provenance at the 10 s decision cadence, RUNNER_DERIVED), high_rate_audit_v1 (unchanged), terminal_record_v2 (binds all artifacts + forecast source identity); resolves EPOCH2_FORMAL_EVIDENCE_INTERFACE_MISMATCH from the first launch (23 attempts / 46 model-completing simulations, zero accepted results); checker v2, C*, Model-E, Predictor-v3, reserves, corpus and manifest byte-identical",
  "cstar_execution_seed": "phase4f-ppe-formal-epoch1",
  "cstar_execution_seed_provenance": {
   "LEGACY_SEED_LABEL_INTENTIONALLY_PRESERVED_FOR_CROSS_EPOCH_DETERMINISM": true,
@@ -172,7 +174,7 @@
   "dual_diagnostic": "P_service_gap = max(P_prop_demand - P_prop_actual, 0); divergence -> FAIL CLOSED",
   "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic"
  },
- "sha256_self": "d1f36c6b60134dfad06c753dc2222eb4e82c603d5c21ea91626fa4e5277787a0",
+ "sha256_self": "f7da49c90a7ff74bebcb613a9e1996a7071bd9c8b2daed654ba0a00f9d4db255",
  "study": "phase4f-practical-predictive-ems",
  "supersedes_chain": [
   {
@@ -182,11 +184,17 @@
   },
   {
    "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
-   "replacement_root": "THIS_DOCUMENT (authoritative root is the freeze-file byte hash, recorded in EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json and epoch2_freeze_supersession.json)",
+   "replacement_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
    "superseded_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+  },
+  {
+   "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+   "replacement_root": "THIS_DOCUMENT (authoritative root is the freeze-file byte hash, recorded in EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json and epoch2_freeze_supersession.json)",
+   "superseded_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
   }
  ],
- "supersedes_freeze_root_sha256": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
- "supersedes_reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
- "utc": "2026-09-17T06:21:15Z"
+ "supersedes_freeze_root_sha256": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+ "supersedes_reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+ "supersedes_subtype": "SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_BEFORE_ACCEPTED_RESULT",
+ "utc": "2026-09-17T07:36:58Z"
 }

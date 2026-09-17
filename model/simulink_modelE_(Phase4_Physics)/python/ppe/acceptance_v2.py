@@ -208,6 +208,33 @@ def main(argv: list[str] | None = None) -> int:
                 problems.append(f"audit:artifact-missing {tag}")
             elif sha256_file(apath) != asha:
                 problems.append(f"audit:hash-mismatch {tag}")
+        # controller trace artifact (FC-5A: required for every arm; P0
+        # carries an applies=false record)
+        csha = str(rec.get("controller_trace_sha256", ""))
+        if not csha:
+            problems.append(f"ctrace:field-missing {tag}")
+        else:
+            cpath = os.path.join(vdir, f"{arm}.ctrace.v1.json")
+            if not os.path.isfile(cpath):
+                problems.append(f"ctrace:artifact-missing {tag}")
+            elif sha256_file(cpath) != csha:
+                problems.append(f"ctrace:hash-mismatch {tag}")
+            else:
+                try:
+                    with open(cpath, encoding="utf-8") as f:
+                        cd = json.load(f)
+                    if cd.get("schema") != "ppe_controller_trace_v1":
+                        problems.append(f"ctrace:schema {tag}")
+                    if arm == "P0" and cd.get("applies") is not False:
+                        problems.append(f"ctrace:p0-must-not-apply {tag}")
+                    if arm != "P0":
+                        if cd.get("applies") is not True:
+                            problems.append(f"ctrace:cstar-must-apply {tag}")
+                        elif not cd.get("forecast_source_id") or not cd.get(
+                                "forecast_window_sha256"):
+                            problems.append(f"ctrace:provenance-missing {tag}")
+                except Exception as e:  # noqa: BLE001
+                    problems.append(f"ctrace:unparsable {tag} ({e})")
         # trajectory/audit artifacts must NOT point into epoch-1 namespace
         for k in ("trajectory_artifact", "audit_artifact"):
             v = str(rec.get(k, ""))

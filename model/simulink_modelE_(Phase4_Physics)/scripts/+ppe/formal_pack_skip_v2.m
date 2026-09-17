@@ -48,10 +48,12 @@ req = {@(r) isfield(r, 'formal_epoch') && r.formal_epoch == 2, ...
     @(r) isfield(r, 'terminal_status') ...
         && strncmp(char(r.terminal_status), 'COMPLETE', 8), ...
     @(r) isfield(r, 'trajectory_sha256') && ~isempty(char(r.trajectory_sha256)), ...
-    @(r) isfield(r, 'audit_sha256') && ~isempty(char(r.audit_sha256))};
+    @(r) isfield(r, 'audit_sha256') && ~isempty(char(r.audit_sha256)), ...
+    @(r) isfield(r, 'controller_trace_sha256') ...
+        && ~isempty(char(r.controller_trace_sha256))};
 names = {'formal_epoch', 'run_id', 'voyage_id', 'arm', 'freeze_root', ...
     'cstar_composite', 'checker_v2_identity', 'terminal_status', ...
-    'trajectory_field', 'audit_field'};
+    'trajectory_field', 'audit_field', 'controller_trace_field'};
 for i = 1:numel(req)
     if ~req{i}(rec)
         reason = sprintf('identity-mismatch:%s', names{i});
@@ -63,6 +65,7 @@ end
 vdir = fileparts(ev);
 tpath = fullfile(vdir, [char(arm) '.traj.v1.mat']);
 apath = fullfile(vdir, [char(arm) '.audit.v1.json']);
+cpath = fullfile(vdir, [char(arm) '.ctrace.v1.json']);
 if ~exist(tpath, 'file')
     reason = 'artifact-missing:trajectory';
     return;
@@ -77,6 +80,14 @@ if ~exist(apath, 'file')
 end
 if ~strcmp(model.sha256_file(apath), char(rec.audit_sha256))
     reason = 'artifact-hash-mismatch:audit';
+    return;
+end
+if ~exist(cpath, 'file')
+    reason = 'artifact-missing:controller_trace';
+    return;
+end
+if ~strcmp(model.sha256_file(cpath), char(rec.controller_trace_sha256))
+    reason = 'artifact-hash-mismatch:controller_trace';
     return;
 end
 

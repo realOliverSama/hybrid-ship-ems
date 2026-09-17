@@ -1,4 +1,12 @@
 {
+ "ACCEPTED_EPOCH2_TERMINAL_RECORDS": 0,
+ "FORMAL_COMPARATIVE_EFFECTS_COMPUTED": 0,
+ "FORMAL_EXECUTION_ATTEMPTS": 23,
+ "FORMAL_RESULTS_USED_FOR_TUNING": 0,
+ "FORMAL_SIMULATIONS_REACHING_MODEL_COMPLETION": 46,
+ "PERSISTED_EPOCH2_HIGH_RATE_AUDITS": 0,
+ "PERSISTED_EPOCH2_TRAJECTORIES": 0,
+ "attempt_events_logged": 23,
  "authorization_consequence": {
   "automatic_t_a8_authorization": "VOID per PE4-1 section 6 (any execution-critical byte change - write_traj_v1 is bound - voids it)",
   "fix_paths_require_human_review": [
@@ -39,8 +47,9 @@
   "forecast_source_id": "window-provider provenance (winfun/c2_bridge), not a Model-E logsout signal"
  },
  "schema": "PPE_LAUNCH_INCIDENT_V1",
- "sha256_self": "29d58962456a91e577505d26f3feb0233fca814238215f7f8e846a8bd05c1272",
+ "sha256_self": "57d322c62dbf908551dde7183e53d9080e700effcaf1d0a78abccccb58ed3570",
  "study": "phase4f-practical-predictive-ems",
  "summary": "T-A8 fleet launch (24 workers, tokens formal-epoch2-w01..w24) hit a fail-closed evidence-channel failure on the first arm's terminal write: the frozen Model-E logsout does not provide 4 of the 25 design-mandated FC-5 trajectory channels (P_bat_bus_kW, derate08_active, delta_lambda, forecast_source_id). checker v2 required signals were all present (13/13) - the simulation itself completed; the terminal pipeline correctly refused to produce evidence.",
- "utc": "2026-09-17T07:30:00Z"
+ "utc": "2026-09-17T07:30:00Z",
+ "worker_w01_note": "job2_w01 never started: the watchdog test invocation was wrapped in a compound command whose own command line contained the string job2_w01.m, so pgrep self-matched and the relaunch branch was skipped for w01 only"
 }

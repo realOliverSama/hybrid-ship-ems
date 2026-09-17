@@ -50,7 +50,7 @@ RPP = os.path.join(ROOT, "results", "ppe_practical")
 FREEZE_DIR = os.path.join(RPP, "freeze")
 OLD_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze.json")
 PREV_FREEZE = os.path.join(
-    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json")
+    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json")
 NEW_FREEZE = os.path.join(FREEZE_DIR, "epoch2_pre_execution_freeze_v2.json")
 GATE = os.path.join(FREEZE_DIR, "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json")
 MARKER = os.path.join(FREEZE_DIR, "epoch2_freeze_supersession.json")
@@ -58,7 +58,10 @@ INCIDENT = os.path.join(RPP, "incidents",
                         "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT.json")
 EPOCH1_FREEZE = os.path.join(FREEZE_DIR, "ppe_pre_execution_freeze.json")
 
-PREV_ROOT = "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+PREV_ROOT = "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
+PREV2_ROOT = "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+PREV2_FREEZE = os.path.join(
+    FREEZE_DIR, "epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json")
 FIRST_DEFECT_ROOT = ("7919123bd986d5b53e68a471943579316a8b03ae93eb67"
                      "2fe70ac0e43242dd47")
 EXECUTION_CODE_COMMIT_SHA = "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f"
@@ -73,16 +76,35 @@ SLX_T445_BASELINE = (
 CSTAR_COMPOSITE_FROZEN = (
     "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2")
 
-# bindings that MAY change in a metadata/provenance-only regeneration
+# bindings that MAY change: evidence routing/schema layer + provenance
+# pointers + meta-tooling + audit snapshot (PE4-1 + C1-C6 gate mandate)
 MUTABLE_BINDINGS = {
-    "code_commit_sha",              # provenance pointer (PE4-1)
-    "EXECUTION_CODE_COMMIT_SHA",    # new field
-    "FREEZE_PACKAGE_HEAD_SHA",      # new field
+    "code_commit_sha",              # provenance pointer
+    "EXECUTION_CODE_COMMIT_SHA",
+    "FREEZE_PACKAGE_HEAD_SHA",
     "freeze_generator_sha256",      # meta-tooling
     "verify_bindings_sha256",       # meta-tooling
-    "access_ledger_file_sha256",    # append-only audit snapshot (unchanged
-    # here, but semantically a living log, not execution source)
+    "access_ledger_file_sha256",    # append-only audit snapshot
+    "traj_writer_sha256",           # FC-5A evidence schema (C4)
+    "terminal_pipeline_sha256",     # FC-5A write order (C4)
+    "runner_voyage_sha256",         # FC-5A deriv/ctrace threading (C4)
+    "acceptance_v2_sha256",         # FC-5A acceptance plumbing (C4)
+    "incident_artifact_sha256",     # audit evidence (C1)
+    "e2e_qual_artifact_sha256",     # updated fixture/coverage (C5)
+    "pack_skip_predicate_sha256",   # FC-5A skip semantics: ctrace required
 }
+
+# bindings that MUST NOT change (scientific identity; §6 STOP set)
+PROHIBITED_KEYS = [
+    "checker_v2_sha256", "cstar_composite_sha256",
+    "run_cstar_amended_sha256", "c2_bridge_amended_sha256",
+    "winfun_plan_amended_sha256", "modele_slx_sha256",
+    "teval_table_file_sha256", "teval_table_sha256",
+    "hard_feasibility_config_file_sha256", "t445_config_file_sha256",
+    "study_config_file_sha256", "corpus_identity_sha256",
+    "formal_execution_manifest_file_sha256", "formal_assets_file_sha256",
+    "c1_coverage_file_sha256", "c1_target_index_file_sha256",
+]
 
 # file-backed bindings (re-hashed for the zero-change assertion)
 RELMAP = {
@@ -267,6 +289,9 @@ def main() -> int:
         check(f"qual_{nm}_pass", quals[nm]["pass"])
         check(f"qual_{nm}_unchanged_from_predecessor",
               quals[nm]["sha256"] == prev["bindings"].get(bkey))
+    obs = qual_pass("observability_qual.json")
+    quals["observability"] = obs
+    check("qual_observability_pass", obs["pass"])
     coh = qual_pass("feasibility_coherence_gate.json")
     quals["coherence_gate"] = coh
     check("qual_coherence_pass", coh["pass"])
@@ -372,11 +397,36 @@ def main() -> int:
             got = sha(p) if rel and os.path.isfile(p) else None
         if got != want:
             drift[key] = "CHANGED"
-    check("zero_execution_critical_byte_change", not drift,
+    check("prohibited_bindings_unchanged", not drift,
           json.dumps(drift, sort_keys=True))
+    # 正向断言：证据层字节确实换新（FC-5A 落地证明）
+    postfix = {
+        "traj_writer_sha256": sha("scripts/+ppe/write_traj_v1.m"),
+        "terminal_pipeline_sha256": sha("scripts/+ppe/formal_terminal_v2.m"),
+        "runner_voyage_sha256": sha("scripts/+ppe/run_formal_voyage.m"),
+        "acceptance_v2_sha256": sha("python/ppe/acceptance_v2.py"),
+    }
+    ev_ok = all(prev["bindings"].get(k) not in (None, v)
+                for k, v in postfix.items())
+    check("evidence_layer_rebound_to_post_fix_bytes", ev_ok,
+          json.dumps({k: v[:12] for k, v in postfix.items()}))
 
     # ---------- assemble bindings ----------
     bindings = dict(prev["bindings"])          # inherit (proves stability)
+    bindings["controller_trace_writer_sha256"] = sha(
+        "scripts/+ppe/write_ctrace_v1.m")
+    bindings["observability_qual_artifact_sha256"] = quals[
+        "observability"]["sha256"]
+    # 可变证据层键必须显式重绑到 post-fix 字节
+    bindings["traj_writer_sha256"] = sha("scripts/+ppe/write_traj_v1.m")
+    bindings["terminal_pipeline_sha256"] = sha(
+        "scripts/+ppe/formal_terminal_v2.m")
+    bindings["runner_voyage_sha256"] = sha("scripts/+ppe/run_formal_voyage.m")
+    bindings["acceptance_v2_sha256"] = sha("python/ppe/acceptance_v2.py")
+    bindings["pack_skip_predicate_sha256"] = sha(
+        "scripts/+ppe/formal_pack_skip_v2.m")
+    bindings["e2e_qual_artifact_sha256"] = quals[
+        "e2e_runner_integration"]["sha256"]
     bindings.update({
         "code_commit_sha": EXECUTION_CODE_COMMIT_SHA,
         "EXECUTION_CODE_COMMIT_SHA": EXECUTION_CODE_COMMIT_SHA,
@@ -407,13 +457,18 @@ def main() -> int:
                      "epoch-1/epoch-2 comparison"),
         },
         "supersedes_freeze_root_sha256": prev_root,
-        "supersedes_reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+        "supersedes_reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+        "supersedes_subtype": ("SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_"
+                               "BEFORE_ACCEPTED_RESULT"),
         "supersedes_chain": [
             {"superseded_root": FIRST_DEFECT_ROOT,
              "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+             "replacement_root": PREV2_ROOT},
+            {"superseded_root": PREV2_ROOT,
+             "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
              "replacement_root": prev_root},
             {"superseded_root": prev_root,
-             "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+             "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
              "replacement_root": "THIS_DOCUMENT (authoritative root is the "
                                  "freeze-file byte hash, recorded in "
                                  "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json "
@@ -467,14 +522,18 @@ def main() -> int:
                 "robustness_band": [0.4366, 0.6548],
                 "break_even": 0.0933},
         "corrections": (
-            "PE4-1 EXECUTION_COMMIT_PROVENANCE_CORRECTION: code_commit_sha "
-            "rebound from 6e4d14e1… (predates the committed runner repair) "
-            "to EXECUTION_CODE_COMMIT_SHA bbbbc5f53d313e7e78c3eada92197a6fc0a"
-            "9255f, verified to reproduce every git-backed execution-critical "
-            "binding; FREEZE_PACKAGE_HEAD_SHA recorded separately; "
-            "metadata-only cleanups (SOC grid wording, legacy seed label "
-            "flag, design-basis acceptance); ZERO execution-critical byte "
-            "changes vs d49767a2… (asserted in gate)"),
+            "FC-5A OBSERVABILITY CONTRACT AMENDMENT (C1-C6): evidence "
+            "interface split into plant_trajectory_v1 (PLANT_LOGGED + 2 "
+            "exact qualified derivations P_bat_bus_kW/derate08_active + "
+            "interlock family; no controller quantities), "
+            "controller_trace_v1 (delta_lambda/forecast provenance at the "
+            "10 s decision cadence, RUNNER_DERIVED), high_rate_audit_v1 "
+            "(unchanged), terminal_record_v2 (binds all artifacts + "
+            "forecast source identity); resolves "
+            "EPOCH2_FORMAL_EVIDENCE_INTERFACE_MISMATCH from the first "
+            "launch (23 attempts / 46 model-completing simulations, zero "
+            "accepted results); checker v2, C*, Model-E, Predictor-v3, "
+            "reserves, corpus and manifest byte-identical"),
         "qualification": {
             "amend_v2_pass": quals["amendment_v2"]["pass"],
             "e2e_runner_integration_pass":
@@ -519,18 +578,25 @@ def main() -> int:
         "superseded_freeze_root": prev_root,
         "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
         "disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
-        "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+        "disposition_subtype": ("SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_"
+                                "BEFORE_ACCEPTED_RESULT"),
+        "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
         "replacement_freeze_root": freeze_file_sha,
         "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT),
         "chain": [
             {"superseded_root": FIRST_DEFECT_ROOT,
              "superseded_artifact": os.path.relpath(OLD_FREEZE, ROOT),
              "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+             "replacement_root": PREV2_ROOT,
+             "replacement_artifact": os.path.relpath(PREV2_FREEZE, ROOT)},
+            {"superseded_root": PREV2_ROOT,
+             "superseded_artifact": os.path.relpath(PREV2_FREEZE, ROOT),
+             "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
              "replacement_root": prev_root,
              "replacement_artifact": os.path.relpath(PREV_FREEZE, ROOT)},
             {"superseded_root": prev_root,
              "superseded_artifact": os.path.relpath(PREV_FREEZE, ROOT),
-             "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+             "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
              "replacement_root": freeze_file_sha,
              "replacement_artifact": os.path.relpath(NEW_FREEZE, ROOT)},
         ],

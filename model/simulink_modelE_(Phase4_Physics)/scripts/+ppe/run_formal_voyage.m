@@ -318,6 +318,26 @@ else
         'chg_kWh', fz2.reserves.E_reserve_chg_kWh);
     ids.T_eval = T_eval;
     ids.C_bus = local_c_bus();
+    % FC-5A 精确导出常数（来源：ModelE_Physics_Parameters / base 工作区）
+    ids.deriv = local_deriv_constants();
+    % FC-5A controller_trace_v1（C3-C/D）：C* = runner 决策序列（10 s 网格，
+    % 来自 run_cstar 运行元数据——runner 字节冻结不变）；P0 = 不适用记录。
+    switch char(arm)
+        case 'C0', srcid = 'oracle';
+        case 'C1', srcid = 'c1_stored';
+        case 'C2', srcid = 'live_bridge';
+        otherwise, srcid = 'N/A';
+    end
+    if strcmp(arm, 'P0')
+        ids.ctrace = struct('applies', false, 'forecast_source_id', 'N/A');
+    else
+        dlam = meta.dlambda_1;
+        ids.ctrace = struct('applies', true, 'decision_period_s', 10, ...
+            'time', (0:10:(numel(dlam) - 1) * 10)', ...
+            'delta_lambda', dlam(:), ...
+            'forecast_source_id', srcid, ...
+            'forecast_window_sha256', meta.window_sha256);
+    end
     ids.freeze_root_sha256 = fz2.freeze_root_sha256;
     ids.checker_v2_sha256 = fz2.checker_v2_sha256;
     ids.cstar_impl_sha256 = ctxid.cstar_impl_sha256;
@@ -333,6 +353,19 @@ else
     ids.meta = meta;
     rec = ppe.formal_terminal_v2(ds, ids);
 end
+end
+
+function d = local_deriv_constants()
+% FC-5A 导出常数（09_Bus_Residual_Monitor 反解 / CODE_DERATE 判据）
+if ~(evalin('base', "exist('ASSUMED_eta_rect', 'var')") ...
+        && evalin('base', "exist('CCS_Vdc_Steady_Band', 'var')") ...
+        && evalin('base', "exist('CCS_Vdc_Transient_Band', 'var')"))
+    error('PPE:FORMAL:DERIV', ...
+        '导出常数缺失（ASSUMED_eta_rect / CCS_Vdc_*_Band）：模型参数未加载');
+end
+d = struct('eta_rect', evalin('base', 'ASSUMED_eta_rect'), ...
+    'ccs_v_hi', evalin('base', 'CCS_Vdc_Steady_Band(1)'), ...
+    'ccs_v_lo', evalin('base', 'CCS_Vdc_Transient_Band(1)'));
 end
 
 function cb = local_c_bus()

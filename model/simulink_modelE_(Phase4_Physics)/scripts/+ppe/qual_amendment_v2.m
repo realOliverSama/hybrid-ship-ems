@@ -142,12 +142,24 @@ ds.t = (0:0.01:40)';                                   % 0.01s 原生 → 写入
 ds.safety_s1a = zeros(numel(ds.t), 1);                 % safety_hard_count 派生源
 ds.safety_s1b = zeros(numel(ds.t), 1);
 ds.safety_s2 = zeros(numel(ds.t), 1);
-ot = ppe.write_traj_v1(ds, od, 'SYNT_VOYAGE', 'C0', 'SYNT_RUN');
+ds.alarm_steady = zeros(numel(ds.t), 1);               % 安全联锁族（FC-5A）
+ds.alarm_transient = zeros(numel(ds.t), 1);
+ds.flag_vdc_low = zeros(numel(ds.t), 1);
+ds.flag_soc_low = zeros(numel(ds.t), 1);
+ds.fault_latch = zeros(numel(ds.t), 1);
+ds.safety_baseline_fallback_active = zeros(numel(ds.t), 1);
+deriv17 = struct('eta_rect', 0.97, 'ccs_v_lo', 528.0, 'ccs_v_hi', 660.0);
+ot = ppe.write_traj_v1(ds, deriv17, od, 'SYNT_VOYAGE', 'C0', 'SYNT_RUN');
 S = load(ot.path);
 q17 = isfield(S, 'traj') && isfield(S.traj, 'time') && S.traj.time(end) == 40 && abs(S.traj.time(2)-S.traj.time(1)-1.0) < 1e-9;
-% 通道清单与已批准设计 FC-5 §5.1 一致（safety_hard_count 派生通道在列；
-% P_prop_limit_kW 不在列）
-q17 = q17 && isfield(S.traj, 'safety_hard_count') ...
+% 通道清单与 FC-5A 修正契约一致（P_bat_bus_kW / derate08_active 精确导出在列；
+% controller 侧量 delta_lambda / forecast_source_id 与抽象 safety_hard_count
+% 不在列；P_prop_limit_kW 不在列）
+q17 = q17 && isfield(S.traj, 'P_bat_bus_kW') ...
+    && isfield(S.traj, 'derate08_active') ...
+    && ~isfield(S.traj, 'delta_lambda') ...
+    && ~isfield(S.traj, 'forecast_source_id') ...
+    && ~isfield(S.traj, 'safety_hard_count') ...
     && ~isfield(S.traj, 'P_prop_limit_kW');
 side = jsondecode(fileread([ot.path(1:end-4) '.sidecar.json']));
 sha_recheck = model.sha256_file(ot.path);

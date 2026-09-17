@@ -9,19 +9,27 @@
   },
   {
    "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
-   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json",
    "replacement_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
    "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json",
    "superseded_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+  },
+  {
+   "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+   "replacement_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json",
+   "superseded_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
   }
  ],
  "disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
+ "disposition_subtype": "SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_BEFORE_ACCEPTED_RESULT",
  "note": "all superseded freeze bytes preserved untouched; epoch-2 result-bearing runs remained 0 across the whole chain",
- "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+ "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
  "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
- "replacement_freeze_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+ "replacement_freeze_root": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
  "schema": "ppe_epoch2_freeze_supersession_v2",
- "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json",
- "superseded_freeze_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
- "utc": "2026-09-17T06:21:15Z"
+ "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json",
+ "superseded_freeze_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+ "utc": "2026-09-17T07:36:58Z"
 }

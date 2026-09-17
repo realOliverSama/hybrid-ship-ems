@@ -7,20 +7,21 @@ function rec = formal_terminal_v2(ds, ids)
 % 事务序（顺序即正确性；任何一步失败抛错 → 臂不产生终端记录 → 臂原子重跑）：
 %   1. 仿真完成（ds 已就绪，由调用方保证）；
 %   2. checker v2 评估（正式分类唯一权威；FAIL CLOSED 异常原样传播）；
-%   3. 1 Hz 轨迹工件原子写 + 字节哈希复验；
+%   3. 1 Hz 植物轨迹工件原子写 + 字节哈希复验（FC-5A plant_trajectory_v1）；
 %   4. 高速率审计工件原子写 + 字节哈希复验；
-%   5. 哈希入 rec，终端记录原子写（tmp → movefile）；
-%   6. 返回 rec（此时臂才视为 COMPLETE）。
+%   5. 控制器迹线工件原子写 + 字节哈希复验（controller_trace_v1，C3-C/D）；
+%   6. 哈希入 rec，终端记录原子写（tmp → movefile）；
+%   7. 返回 rec（此时臂才视为 COMPLETE）。
 %
 % ids（struct，必需字段）：
 %   voyage_id, arm, run_id, vdir            —— 输出命名空间 <OutDir>/<voyage_id>
 %   cfg（pc.t445）, PR（canonical reserves struct: dis_kW/chg_kW/dis_kWh/
-%     chg_kWh）, T_eval, C_bus               —— checker v2 输入
-%   freeze_root_sha256, checker_v2_sha256, cstar_impl_sha256, slx_sha256,
-%     teval_identity_sha256, code_commit_sha, corpus_identity_sha256,
-%     execution_seed                          —— 身份绑定
-%   split_group_id, tier, predictor_identity  —— manifest/T_eval 行字段
-%   wall_s, meta（runner meta 或 []）          —— 运行元数据
+%     chg_kWh）, T_eval, C_bus, deriv（eta_rect/ccs_v_lo/ccs_v_hi 导出常数）,
+%     ctrace（applies/decision_period_s/time/delta_lambda/
+%       forecast_source_id/forecast_window_sha256）
+%   freeze_root_sha256, checker_v2_sha256, cstar_impl_sha256, slx_sha256, ...
+%   teval_identity_sha256, split_group_id, tier, wall_s, meta（runner meta 或 []）,
+%   predictor_identity, legacy_fec, execution_seed
 %
 % 终端记录 schema：ppe_formal_arm_voyage_v2，写至 <vdir>/<arm>.json。
 
@@ -38,8 +39,8 @@ end
 
 fec = t445.metrics_fec(ds, ids.cfg);
 
-% ---- 3) 轨迹工件：原子写 + 复验 ----
-tr = ppe.write_traj_v1(ds, ids.vdir, ids.voyage_id, ids.arm, ids.run_id);
+% ---- 3) 植物轨迹工件：原子写 + 复验（FC-5A plant_trajectory_v1）----
+tr = ppe.write_traj_v1(ds, ids.deriv, ids.vdir, ids.voyage_id, ids.arm, ids.run_id);
 if ~exist(tr.path, 'file')
     error('PPE:TERM2:PERSIST', '轨迹工件写入后缺失：%s', tr.path);
 end
@@ -53,6 +54,13 @@ aud = ppe.write_audit_v1(ds, ids.cfg, ids.vdir, ids.voyage_id, ids.arm, ids.run_
 sha_rea = model.sha256_file(aud.path);
 if ~strcmp(sha_rea, aud.sha256)
     error('PPE:TERM2:PERSIST', '审计哈希复验不一致：%s', aud.path);
+end
+
+% ---- 5) 控制器迹线工件：原子写 + 复验（FC-5A controller_trace_v1）----
+ctr = ppe.write_ctrace_v1(ids.ctrace, ids.vdir, ids.voyage_id, ids.arm, ids.run_id);
+sha_rec = model.sha256_file(ctr.path);
+if ~strcmp(sha_rec, ctr.sha256)
+    error('PPE:TERM2:PERSIST', '控制器迹线哈希复验不一致：%s', ctr.path);
 end
 
 % ---- 5) 终端记录组装（哈希已存在并复验后才允许入 rec）----
@@ -71,11 +79,16 @@ rec.checker_v2 = struct('sha256', ids.checker_v2_sha256, ...
     'detail', r2.detail);
 rec.terminal_status = status;
 rec.classification_authority = 'ppe.feasibility_contract_v2';
+rec.evidence_contract = 'FC-5A';
 rec.trajectory_sha256 = tr.sha256;
 rec.trajectory_artifact = char(tr.path);
 rec.trajectory_sidecar = [char(tr.path(1:end-4)), '.sidecar.json'];
 rec.audit_sha256 = aud.sha256;
 rec.audit_artifact = char(aud.path);
+rec.controller_trace_sha256 = ctr.sha256;
+rec.controller_trace_artifact = char(ctr.path);
+rec.controller_trace_applies = logical(ctr.applies);
+rec.forecast_source_identity = ids.ctrace.forecast_source_id;
 rec.canonical_reserves = ids.PR;
 rec.fuel_total_kg = fec.fuel_raw_kg;
 rec.SOC0 = fec.SOC0;

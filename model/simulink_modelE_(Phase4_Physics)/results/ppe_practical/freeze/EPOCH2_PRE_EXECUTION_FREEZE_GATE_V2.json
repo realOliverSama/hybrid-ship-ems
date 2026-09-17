@@ -6,7 +6,7 @@
    "pass": true
   },
   {
-   "detail": "d49767a233844aa1",
+   "detail": "3b75e4b805fe1ac6",
    "name": "predecessor_root_matches_d49767a2",
    "pass": true
   },
@@ -77,6 +77,11 @@
   },
   {
    "detail": "",
+   "name": "qual_observability_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
    "name": "qual_coherence_pass",
    "pass": true
   },
@@ -112,19 +117,24 @@
   },
   {
    "detail": "{}",
-   "name": "zero_execution_critical_byte_change",
+   "name": "prohibited_bindings_unchanged",
+   "pass": true
+  },
+  {
+   "detail": "{\"traj_writer_sha256\": \"537ca32e82bf\", \"terminal_pipeline_sha256\": \"37f41db90e71\", \"runner_voyage_sha256\": \"0d900d0f6a4e\", \"acceptance_v2_sha256\": \"6e663872ee20\"}",
+   "name": "evidence_layer_rebound_to_post_fix_bytes",
    "pass": true
   }
  ],
  "execution_code_commit_sha": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
  "freeze_file": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
- "freeze_file_sha256": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
- "n_checks": 23,
- "n_pass": 23,
+ "freeze_file_sha256": "0f7c74f251e568beb3ba1482022f40ba7a0575fc08960e6df0981734b5aa9352",
+ "n_checks": 25,
+ "n_pass": 25,
  "overall": true,
  "schema": "PPE_EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2",
- "sha256_self_of_freeze_doc": "d1f36c6b60134dfad06c753dc2222eb4e82c603d5c21ea91626fa4e5277787a0",
+ "sha256_self_of_freeze_doc": "f7da49c90a7ff74bebcb613a9e1996a7071bd9c8b2daed654ba0a00f9d4db255",
  "stop_rule": "overall=true -> PE3-1 rerun; then T-A8 authorized automatically (zero execution-critical byte changes); overall=false -> STOP and report",
  "task": "T-A7(v3, PE4-1)",
- "utc": "2026-09-17T06:21:15Z"
+ "utc": "2026-09-17T07:36:58Z"
 }
