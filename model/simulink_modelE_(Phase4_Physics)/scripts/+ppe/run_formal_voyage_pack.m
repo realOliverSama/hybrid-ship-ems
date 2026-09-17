@@ -65,12 +65,17 @@ for arm = {'P0', 'C0', 'C1', 'C2'}
         end
     end
     ckdir = fullfile(opt.CheckpointRoot, char(voyage_id));
-    local_purge_keep_latest(opt.CheckpointRoot, char(voyage_id), a);
-    rf = local_latest_checkpoint(ckdir, a);
+    % Arms are atomic: history-dependent window providers (C0 persistence
+    % bins, C2 300 s H1 assembly) cannot be rehydrated from a checkpoint
+    % payload, and the runner is bitwise deterministic, so a fresh re-run is
+    % equivalent to a resumed continuation. No mid-arm resume; no checkpoint
+    % writes (transport-only files, superseded by terminal records).
+    local_purge_arm_checkpoints(opt.CheckpointRoot, char(voyage_id), a);
+    rf = [];
     bt = '';
     if strcmp(a, 'C2'), bt = opt.BridgeToken; end
     rec = ppe.run_formal_voyage(voyage_id, a, 'BridgeToken', bt, ...
-        'OutDir', opt.OutDir, 'CheckpointDir', ckdir, ...
+        'OutDir', opt.OutDir, 'CheckpointDir', '', ...
         'Prebuilt', {plan, ctx, rb}, 'ResumeFrom', rf);
     if ~isempty(rf), pack.resumes = pack.resumes + 1; end
     pack.arms.(a) = rec;

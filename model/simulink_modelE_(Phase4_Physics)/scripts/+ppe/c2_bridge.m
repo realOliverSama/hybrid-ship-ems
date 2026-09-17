@@ -47,7 +47,10 @@ end
 key = sprintf('%s_%.0f', char(vid), t0);
 reqf = fullfile(reqdir, ['req_' key '.mat']);
 respf = fullfile(respdir, ['resp_' key '.mat']);
-save(reqf, '-struct', 'req', '-v7');
+tmpf = fullfile(reqdir, ['tmp_' key '.mat']);
+save(tmpf, '-struct', 'req', '-v7');
+movefile(tmpf, reqf, 'f');   % atomic rename: the server must never read a
+                             % partially written request (transport only)
 t_deadline = tic;
 while true
     if exist(respf, 'file')
