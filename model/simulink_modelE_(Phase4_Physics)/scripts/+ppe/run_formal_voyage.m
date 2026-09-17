@@ -332,11 +332,14 @@ else
         ids.ctrace = struct('applies', false, 'forecast_source_id', 'N/A');
     else
         dlam = meta.dlambda_1;
-        ids.ctrace = struct('applies', true, 'decision_period_s', 10, ...
+        ct = struct('applies', true, 'decision_period_s', 10, ...
             'time', (0:10:(numel(dlam) - 1) * 10)', ...
             'delta_lambda', dlam(:), ...
-            'forecast_source_id', srcid, ...
-            'forecast_window_sha256', meta.window_sha256);
+            'forecast_source_id', srcid);
+        % cell 字段严禁进 struct() 构造器——会展开成 1×N 结构体数组
+        % （Q-OBS-21 回归：本次 launch-2 缺陷类）。构造后赋值。
+        ct.forecast_window_sha256 = meta.window_sha256;
+        ids.ctrace = ct;
     end
     ids.freeze_root_sha256 = fz2.freeze_root_sha256;
     ids.checker_v2_sha256 = fz2.checker_v2_sha256;

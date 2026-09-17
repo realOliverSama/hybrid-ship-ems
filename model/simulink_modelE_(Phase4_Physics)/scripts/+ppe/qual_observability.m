@@ -181,6 +181,25 @@ checks.Q_OBS_19_epoch1_invisible_to_completion = ~s19;
 checks.Q_OBS_20_acceptance_requires_new_artifact_set = ...
     local_acceptance_no_ctrace(ROOT, SBX, vdir, TF);
 
+% ---- Q-OBS-21：窗口哈希 cell（1×N）不得使 ctrace 退化为结构体数组 ----
+% 回归 launch-2 缺陷类：struct() 构造器传入 cell 会展开成 1×N 结构体数组，
+% 随后 ctrace.applies 触发逗号列表错误（每臂仿真 2 小时后必然崩溃）。
+% 正确写法=构造后赋值；此处以真实 run_cstar 元数据（meta20.window_sha256
+% 为 1×N cell）端到端复验。
+ct21 = struct('applies', true, 'decision_period_s', 10, ...
+    'time', (0:10:(numel(meta20.dlambda_1) - 1) * 10)', ...
+    'delta_lambda', meta20.dlambda_1(:), 'forecast_source_id', 'oracle');
+ct21.forecast_window_sha256 = meta20.window_sha256;
+vdir21 = fullfile(SBX, 'obs21', 'QOBS_SYN');
+ids21 = ids;
+ids21.vdir = vdir21;
+ids21.ctrace = ct21;
+rec21 = ppe.formal_terminal_v2(ds20, ids21);
+checks.Q_OBS_21_window_cell_no_struct_array = ...
+    numel(ids21.ctrace) == 1 ...
+    && ischar(rec21.controller_trace_sha256) ...
+    && exist(fullfile(vdir21, 'C0.ctrace.v1.json'), 'file') > 0;
+
 % ---- 汇总 ----
 fn = fieldnames(checks);
 allpass = true;

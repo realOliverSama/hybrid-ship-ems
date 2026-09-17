@@ -22,7 +22,8 @@
     "Q_OBS_17_cstar_outputs_unchanged": true,
     "Q_OBS_18_predictor_forecast_unchanged": true,
     "Q_OBS_19_epoch1_invisible_to_completion": true,
-    "Q_OBS_20_acceptance_requires_new_artifact_set": true
+    "Q_OBS_20_acceptance_requires_new_artifact_set": true,
+    "Q_OBS_21_window_cell_no_struct_array": true
   },
   "census": {
     "n_runtime_signals": 96,
@@ -31,10 +32,10 @@
   },
   "coverage_note": "real frozen Model-E runtime census (10 s synthetic S01) + real C* controller path (20 s synthetic, trivial winfun) through the full FC-5A terminal pipeline",
   "implementation_sha256": {
-    "write_traj_v1_m": "670a7f4a8d4a28a58c30bc86a4f5e565ec636165f14d2aa0c6540b5fc6c55fd2",
+    "write_traj_v1_m": "537ca32e82bf7088b69a0bbbf60eecf265a2eef2603ecdd4d8a90b74ee5ae906",
     "write_ctrace_v1_m": "c9f62518c9fcf8553f885295fc07116ecf74ebaa8ae0ee2beb5500cb458deb9f",
     "write_audit_v1_m": "f72e07c6b54c6158a8d5c99ddf9973999aaeb833669bc954ed2a01867edbe25d",
     "formal_terminal_v2_m": "37f41db90e71ff73a400d47a672b8d2c0590f6f172171141c6e517fa56379d7f"
   },
-  "utc": "2026-09-17T07:22:26Z"
+  "utc": "2026-09-17T12:00:18Z"
 }

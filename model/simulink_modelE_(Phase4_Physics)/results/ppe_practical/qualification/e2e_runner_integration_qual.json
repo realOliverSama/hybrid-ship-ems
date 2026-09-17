@@ -27,16 +27,16 @@
   },
   "coverage_note": "synthetic fixtures through the real terminal pipeline, skip predicate, freeze-loader chain and acceptance v2; voyage-level freeze binding verified by PE3-1 binding verification against the regenerated freeze (pre-freeze limitation, documented)",
   "implementation_sha256": {
-    "run_formal_voyage_m": "57fbbe67d40db9e1ae83986d74192326f6fffcbb9643cdb0fa953db30e8f306c",
+    "run_formal_voyage_m": "9b99445812c0dd6f136b57168fcc1a46b8748f28bbd29d99fb7969b7330ba18e",
     "run_formal_voyage_pack_m": "a9a1704245b587868ba7171823f9ef09cb499e19912d54141b4d1ff4bbcde2b1",
     "run_formal_manifest_m": "c7f88e9188668fe87a57bc0fabde95a70b8bd78fa5758076c1687b13d217bf64",
-    "formal_terminal_v2_m": "02c1f75d57dbd6ba6786715eb61ed84f8d0ca33ec5dd76ad18cb2da6421bbce9",
-    "formal_pack_skip_v2_m": "305e98db68b5f03b757ae2eab5658af873ae3ce9204953bef421d2a205f082e3",
-    "write_traj_v1_m": "1e3cd526b7453be388ba187c5fc6781be45fd3000d8d440757ec955abbcd0885",
+    "formal_terminal_v2_m": "37f41db90e71ff73a400d47a672b8d2c0590f6f172171141c6e517fa56379d7f",
+    "formal_pack_skip_v2_m": "7ff2a44f72196f74c388a1c81c4ef94e906ac6ff35dbe120cfc6a9bd25cb8c24",
+    "write_traj_v1_m": "537ca32e82bf7088b69a0bbbf60eecf265a2eef2603ecdd4d8a90b74ee5ae906",
     "write_audit_v1_m": "f72e07c6b54c6158a8d5c99ddf9973999aaeb833669bc954ed2a01867edbe25d",
     "load_epoch2_freeze_bindings_m": "ab0bd3e56248596008b249770bb6da098e3ffaefd4cd92d8d0292412edad6c3f",
     "formal_outdir_m": "6eedeb6bb15e6169b5da4cf18b31463ad8fd14003a5e6e6e10273cf09b119829",
-    "acceptance_v2_py": "64bfd7e1f04efd16d1be19df4cb20dee9f2be96d0cea577895d1b9c630e8bc28"
+    "acceptance_v2_py": "6e663872ee200242dbec368d0fa88b043adc4289e79e2ecb57fbe694cdca3f33"
   },
-  "utc": "2026-09-17T05:42:27Z"
+  "utc": "2026-09-17T12:00:40Z"
 }
