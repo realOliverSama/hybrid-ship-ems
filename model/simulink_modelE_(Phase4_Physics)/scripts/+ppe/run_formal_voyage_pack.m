@@ -1,28 +1,61 @@
 function pack = run_formal_voyage_pack(voyage_id, varargin)
-% ppe.run_formal_voyage_pack — T-010 one voyage x 4 arms (P0/C0/C1/C2),
+% ppe.run_formal_voyage_pack — one voyage x 4 arms (P0/C0/C1/C2),
 % shared rebuild/ctx, COMMON_WARMUP_PARITY at the t=300 differentiation
-% boundary, checkpoint-resume for interrupted C* arms.
+% boundary. Arms are ATOMIC (fresh re-run; no mid-arm resume, no checkpoint
+% writes).
 %
-% Name-value: 'BridgeToken' (default 'formal-epoch1'), 'OutDir',
-% 'CheckpointRoot'. Skips arms whose terminal evidence JSON already exists
-% with the current freeze identity (idempotent resume).
+% !!! FormalEpoch 是必填 name-value（1|2）：禁止隐式 epoch 推断（恢复授权 §2）。
+%
+% FormalEpoch = 1（历史路径，语义与产出 epoch-1 证据的版本一致）：
+%   OutDir 默认 results/ppe_practical/formal；跳过条件 = 记录存在且
+%   freeze_sha256 与 epoch-1 冻结一致且 COMPLETE*。
+%
+% FormalEpoch = 2（恢复执行路径）：
+%   OutDir 默认 results/ppe_practical/formal_epoch2；绑定
+%   epoch2_pre_execution_freeze_v2.json 字节根；跳过条件 =
+%   ppe.formal_pack_skip_v2 的完整 epoch-2 身份匹配（formal_epoch/run_id/
+%   voyage/arm/冻结根/C* 复合/checker v2 身份/终端状态/轨迹+审计工件存在且
+%   哈希一致，§3）——epoch-1 记录对 epoch-2 完成判定不可见（不同命名空间，
+%   且从不读取）。陈旧/失配的 epoch-2 记录先隔离到 _quarantine/ 再原子重跑。
+%
+% Name-value: 'FormalEpoch' (REQUIRED), 'BridgeToken' (default
+% 'formal-epoch<N>'), 'OutDir', 'CheckpointRoot'.
 p = inputParser;
-p.addParameter('BridgeToken', 'formal-epoch1', @ischar);
+p.addParameter('FormalEpoch', [], @(x) isnumeric(x) && any(x == [1, 2]));
+p.addParameter('BridgeToken', '', @ischar);
 p.addParameter('OutDir', '', @ischar);
 p.addParameter('CheckpointRoot', '', @ischar);
 p.parse(varargin{:});
 opt = p.Results;
+if isempty(opt.FormalEpoch)
+    error('PPE:PACK:EPOCH', ...
+        'FormalEpoch 必填（1|2）：禁止隐式 epoch 推断（恢复授权 §2）');
+end
+if isempty(opt.BridgeToken)
+    opt.BridgeToken = sprintf('formal-epoch%d', opt.FormalEpoch);
+end
 
 ROOT = ppe.ppe_root();
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
 if isempty(opt.OutDir)
-    opt.OutDir = fullfile(ROOT, 'results', 'ppe_practical', 'formal');
+    opt.OutDir = ppe.formal_outdir(ROOT, opt.FormalEpoch);
 end
 if isempty(opt.CheckpointRoot)
     opt.CheckpointRoot = fullfile(ROOT, 'artifacts', 'ppe_formal_ckpt');
 end
-freeze = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
-    'freeze', 'ppe_pre_execution_freeze.json')));
+
+if opt.FormalEpoch == 1
+    freeze = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
+        'freeze', 'ppe_pre_execution_freeze.json')));
+    fz2 = [];
+else
+    fz2 = ppe.load_epoch2_freeze_bindings(ROOT);
+    freeze = [];
+    if strcmp(fullfile(opt.OutDir), ppe.formal_outdir(ROOT, 1))
+        error('PPE:PACK:NS', ...
+            'epoch-2 pack 禁止指向 epoch-1 命名空间 formal/（证据不可变）');
+    end
+end
 
 REPO = fileparts(fileparts(ROOT));
 ACT = fullfile(REPO, 'docs', 'phase4', 'd_dataset_v3', ...
@@ -50,19 +83,41 @@ wu = struct();
 for arm = {'P0', 'C0', 'C1', 'C2'}
     a = char(arm);
     ev = fullfile(opt.OutDir, char(voyage_id), [a '.json']);
-    if exist(ev, 'file')
-        old = jsondecode(fileread(ev));
-        if isfield(old, 'freeze_sha256') ...
-                && strcmp(old.freeze_sha256, freeze.freeze_sha256) ...
-                && strncmp(old.terminal_status, 'COMPLETE', 8)
-            fprintf('[T-010] %s %s already terminal (%s) — skip\n', ...
-                voyage_id, a, old.terminal_status);
-            pack.arms.(a) = old;
-            if isfield(old, 'warmup_state'), wu.(a) = old.warmup_state; end
-            local_purge_arm_checkpoints(opt.CheckpointRoot, ...
-                char(voyage_id), a);
-            continue;
+    if opt.FormalEpoch == 1
+        skip = false;
+        if exist(ev, 'file')
+            old = jsondecode(fileread(ev));
+            if isfield(old, 'freeze_sha256') ...
+                    && strcmp(old.freeze_sha256, freeze.freeze_sha256) ...
+                    && strncmp(old.terminal_status, 'COMPLETE', 8)
+                skip = true;
+            end
         end
+        old = [];
+    else
+        [skip, old, reason] = ppe.formal_pack_skip_v2(ev, fz2, voyage_id, a);
+        if ~skip && exist(ev, 'file')
+            % 陈旧/失配的 epoch-2 记录：隔离后原子重跑（§3：不得静默计为完成）
+            local_quarantine(opt.OutDir, char(voyage_id), a, reason);
+        end
+        old = [];
+    end
+    if skip
+        if opt.FormalEpoch == 1
+            fprintf('[T-010] %s %s already terminal (%s) — skip\n', ...
+                voyage_id, a, jsondecode(fileread(ev)).terminal_status);
+            old2 = jsondecode(fileread(ev));
+            pack.arms.(a) = old2;
+            if isfield(old2, 'warmup_state'), wu.(a) = old2.warmup_state; end
+        else
+            old2 = jsondecode(fileread(ev));
+            fprintf('[T-010/e2] %s %s already terminal (%s) — skip\n', ...
+                voyage_id, a, old2.terminal_status);
+            pack.arms.(a) = old2;
+            if isfield(old2, 'warmup_state'), wu.(a) = old2.warmup_state; end
+        end
+        local_purge_arm_checkpoints(opt.CheckpointRoot, char(voyage_id), a);
+        continue;
     end
     ckdir = fullfile(opt.CheckpointRoot, char(voyage_id));
     % Arms are atomic: history-dependent window providers (C0 persistence
@@ -74,9 +129,9 @@ for arm = {'P0', 'C0', 'C1', 'C2'}
     rf = [];
     bt = '';
     if strcmp(a, 'C2'), bt = opt.BridgeToken; end
-    rec = ppe.run_formal_voyage(voyage_id, a, 'BridgeToken', bt, ...
-        'OutDir', opt.OutDir, 'CheckpointDir', '', ...
-        'Prebuilt', {plan, ctx, rb}, 'ResumeFrom', rf);
+    rec = ppe.run_formal_voyage(voyage_id, a, 'FormalEpoch', ...
+        opt.FormalEpoch, 'BridgeToken', bt, 'OutDir', opt.OutDir, ...
+        'CheckpointDir', '', 'Prebuilt', {plan, ctx, rb}, 'ResumeFrom', rf);
     if ~isempty(rf), pack.resumes = pack.resumes + 1; end
     pack.arms.(a) = rec;
     if isfield(rec, 'warmup_state'), wu.(a) = rec.warmup_state; end
@@ -117,20 +172,25 @@ fwrite(fid, jsonencode(pack.warmup_parity, 'PrettyPrint', true));
 fclose(fid);
 end
 
-function rf = local_latest_checkpoint(ckdir, arm)
-rf = [];
-if ~exist(ckdir, 'dir'), return; end
-d = dir(fullfile(ckdir, sprintf('ckpt_%s_*_seg*.mat', arm)));
-if isempty(d), return; end
-segs = zeros(numel(d), 1);
-for i = 1:numel(d)
-    tok = regexp(d(i).name, 'seg(\d+)\.mat$', 'tokens');
-    segs(i) = str2double(tok{1}{1});
+function local_quarantine(outdir, vid, arm, reason)
+% 陈旧/失配 epoch-2 证据隔离：从命名空间移除但不销毁（审计可追溯）
+vdir = fullfile(outdir, vid);
+qd = fullfile(outdir, '_quarantine', sprintf('%s_%s_%s', ...
+    char(datetime('now', 'Format', 'yyyyMMdd_HHmmssSSS')), vid, arm));
+if ~exist(qd, 'dir'), mkdir(qd); end
+pats = {fullfile(vdir, [arm '.json']), ...
+    fullfile(vdir, [arm '.traj.v1.mat']), ...
+    fullfile(vdir, [arm '.traj.v1.sidecar.json']), ...
+    fullfile(vdir, [arm '.audit.v1.json'])};
+for i = 1:numel(pats)
+    if exist(pats{i}, 'file')
+        movefile(pats{i}, fullfile(qd, strrep(pats{i}, vdir, '')), 'f');
+    end
 end
-[~, ix] = max(segs);
-S = load(fullfile(ckdir, d(ix).name));
-rf = S.payload;
-fprintf('[T-010] resume %s from segment t_stop=%g\n', arm, rf.extra.t_stop);
+fid = fopen(fullfile(qd, 'reason.txt'), 'w');
+fwrite(fid, reason);
+fclose(fid);
+fprintf('[T-010/e2] %s %s quarantined stale evidence (%s)\n', vid, arm, reason);
 end
 
 function s = ternary(c, a, b)
@@ -155,24 +215,5 @@ end
 if numel(d) > 0
     fprintf('[T-010] %s: purged %d superseded checkpoints (~%.1f GB)\n', ...
         voyage_id, numel(d), numel(d) * 2.9e-3);
-end
-end
-
-function local_purge_keep_latest(ckpt_root, voyage_id, arm)
-% mid-run hygiene: keep only the latest checkpoint of a non-terminal arm
-% (resume reads the latest segment only)
-ckdir = fullfile(ckpt_root, voyage_id);
-d = dir(fullfile(ckdir, sprintf('ckpt_%s_*_seg*.mat', arm)));
-if numel(d) <= 1, return; end
-segs = zeros(numel(d), 1);
-for i = 1:numel(d)
-    tok = regexp(d(i).name, 'seg(\d+)\.mat$', 'tokens');
-    segs(i) = str2double(tok{1}{1});
-end
-[~, ix] = max(segs);
-for i = 1:numel(d)
-    if i ~= ix
-        delete(fullfile(d(i).folder, d(i).name));
-    end
 end
 end

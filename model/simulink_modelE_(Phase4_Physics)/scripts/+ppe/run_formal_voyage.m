@@ -1,18 +1,35 @@
 function rec = run_formal_voyage(voyage_id, arm, varargin)
-% ppe.run_formal_voyage — T-010 single arm-voyage formal run (result
-% generation ONLY, TG1). No effect estimation here.
+% ppe.run_formal_voyage — single arm-voyage formal run (result generation
+% ONLY, TG1). No effect estimation here.
 %
-% Identity discipline: binds the T-009 freeze package (freeze_sha256) and
-% the T-001 T_eval row; C1 consumes the exported stored windows; C2 uses
-% the live bridge (frozen keras). P0 = continuous law=5 (contextual).
+% !!! FormalEpoch 是必填 name-value（1 或 2）：禁止隐式 epoch 推断
+% （恢复授权 §2）。缺省即报错 —— epoch-1 舰队已终结，任何新调用必须显式声明。
+%
+% FormalEpoch = 1（历史路径，语义与实际产出 epoch-1 证据的版本逐字段一致；
+% 6b062d39 引入的轨迹钩子从未成功写过任何记录（use-before-assignment 崩溃），
+% 本版本移除该钩子即恢复实际产出 epoch-1 证据的行为）：
+%   绑定 ppe_pre_execution_freeze.json + post_freeze_runner_amendment.json；
+%   分类 = t445.hard_feasibility；记录 schema ppe_formal_arm_voyage_v1；
+%   默认 OutDir results/ppe_practical/formal。
+%
+% FormalEpoch = 2（恢复实现路径）：
+%   绑定 epoch2_pre_execution_freeze_v2.json（字节根哈希经 gate 复验）+
+%   EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json（overall=true）+ 冻结内全部
+%   字节身份（runner/checker v2/轨迹写入器/审计写入器/manifest/C* 复合/
+%   slx/T_eval/储备常量）；分类 = ppe.feasibility_contract_v2（C_bus 必需）；
+%   终端管线 = ppe.formal_terminal_v2（checker → 轨迹 → 审计 → 哈希复验 →
+%   记录原子写）；记录 schema ppe_formal_arm_voyage_v2；
+%   默认 OutDir results/ppe_practical/formal_epoch2（与 epoch-1 命名空间隔离）。
 %
 % Name-value:
-%   'BridgeToken'  char — C2 bridge token (C2 only)
-%   'OutDir'       char — formal evidence dir (default results/.../formal)
-%   'CheckpointDir' char — segment checkpoints (resumable)
-%
-% Returns rec (per-arm-voyage record). Writes <OutDir>/<voyage>/<arm>.json.
+%   'FormalEpoch'   REQUIRED numeric 1|2
+%   'BridgeToken'   char — C2 bridge token (C2 only)
+%   'OutDir'        char — formal evidence dir (default per epoch, above)
+%   'CheckpointDir' char — unused for terminal arms (arms are atomic)
+%   'Prebuilt'      cell {plan,ctx,rb} — skip ledger rebuild (qualified path)
+%   'ResumeFrom'    — must be empty (arms are atomic; no mid-arm resume)
 p = inputParser;
+p.addParameter('FormalEpoch', [], @(x) isnumeric(x) && any(x == [1, 2]));
 p.addParameter('BridgeToken', '', @ischar);
 p.addParameter('OutDir', '', @ischar);
 p.addParameter('CheckpointDir', '', @ischar);
@@ -20,54 +37,72 @@ p.addParameter('Prebuilt', [], @(x) isempty(x) || iscell(x));
 p.addParameter('ResumeFrom', [], @(x) isempty(x) || isstruct(x));
 p.parse(varargin{:});
 opt = p.Results;
+if isempty(opt.FormalEpoch)
+    error('PPE:FORMAL:EPOCH', ...
+        ['FormalEpoch 必填（1|2）：禁止隐式 epoch 推断（恢复授权 §2）。', ...
+         'epoch-1 舰队已终结；epoch-2 调用必须显式声明。']);
+end
+if ~isempty(opt.ResumeFrom)
+    error('PPE:FORMAL:ATOMIC', 'arms are atomic: ResumeFrom 不受支持');
+end
 
 ROOT = ppe.ppe_root();
 addpath(fullfile(ROOT, 'config'), fullfile(ROOT, 'scripts'));
-if isempty(opt.OutDir)
-    opt.OutDir = fullfile(ROOT, 'results', 'ppe_practical', 'formal');
-end
-if ~exist(opt.OutDir, 'dir'), mkdir(opt.OutDir); end
-vdir = fullfile(opt.OutDir, char(voyage_id));
-if ~exist(vdir, 'dir'), mkdir(vdir); end
 
-% ---- freeze binding (fail-closed) ----
-freeze = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
-    'freeze', 'ppe_pre_execution_freeze.json')));
-gate = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
-    'freeze', 'PRE_EXECUTION_FREEZE_GATE.json')));
-if ~gate.overall
-    error('PPE:FORMAL:FREEZE', 'freeze gate overall=false');
+% ================== epoch dispatch: freeze binding (fail-closed) ==========
+if opt.FormalEpoch == 1
+    freeze = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
+        'freeze', 'ppe_pre_execution_freeze.json')));
+    gate = jsondecode(fileread(fullfile(ROOT, 'results', 'ppe_practical', ...
+        'freeze', 'PRE_EXECUTION_FREEZE_GATE.json')));
+    if ~gate.overall
+        error('PPE:FORMAL:FREEZE', 'freeze gate overall=false');
+    end
+    amend_file = fullfile(ROOT, 'results', 'ppe_practical', 'freeze', ...
+        'post_freeze_runner_amendment.json');
+    if ~exist(amend_file, 'file')
+        error('PPE:FORMAL:AMEND', 'runner amendment artifact missing');
+    end
+    amend = jsondecode(fileread(amend_file));
+    if ~amend.pre_execution_confirmed
+        error('PPE:FORMAL:AMEND', 'amendment not confirmed pre-execution');
+    end
+    run_cstar_path = fullfile(ROOT, 'scripts', '+ppe', 'run_cstar.m');
+    if ~strcmp(model.sha256_file(run_cstar_path), amend.run_cstar_file_sha256.amended)
+        error('PPE:FORMAL:AMEND', 'run_cstar.m bytes != amended binding');
+    end
+    if ~strcmp(ppe.cstar_impl_sha(), amend.new_cstar_impl_sha256)
+        error('PPE:FORMAL:AMEND', 'composite C* identity != amended binding');
+    end
+    amend_sha = model.sha256_file(amend_file);
+    fz2 = [];
+else
+    fz2 = ppe.load_epoch2_freeze_bindings(ROOT);
 end
-% post-freeze PRE-EXECUTION runner amendment (formal_execution had not
-% started: 0 outputs, 0 FORMAL ledger entries). Fail-closed: the runner
-% bytes and the composite C* identity MUST equal the amended bindings.
-amend_file = fullfile(ROOT, 'results', 'ppe_practical', 'freeze', ...
-    'post_freeze_runner_amendment.json');
-if ~exist(amend_file, 'file')
-    error('PPE:FORMAL:AMEND', 'runner amendment artifact missing');
-end
-amend = jsondecode(fileread(amend_file));
-if ~amend.pre_execution_confirmed
-    error('PPE:FORMAL:AMEND', 'amendment not confirmed pre-execution');
-end
-run_cstar_path = fullfile(ROOT, 'scripts', '+ppe', 'run_cstar.m');
-run_cstar_sha = model.sha256_file(run_cstar_path);
-if ~strcmp(run_cstar_sha, amend.run_cstar_file_sha256.amended)
-    error('PPE:FORMAL:AMEND', 'run_cstar.m bytes != amended binding');
-end
-if ~strcmp(ppe.cstar_impl_sha(), amend.new_cstar_impl_sha256)
-    error('PPE:FORMAL:AMEND', 'composite C* identity != amended binding');
-end
-amend_sha = model.sha256_file(amend_file);
 slx_sha = model.sha256_file(fullfile(ROOT, 'model', 'HybridShip_ModelE.slx'));
-if ~strcmp(slx_sha, freeze.bindings.modele_slx_sha256)
-    error('PPE:FORMAL:SLX', 'slx identity drift');
+if opt.FormalEpoch == 1
+    if ~strcmp(slx_sha, freeze.bindings.modele_slx_sha256)
+        error('PPE:FORMAL:SLX', 'slx identity drift');
+    end
+else
+    if ~strcmp(slx_sha, fz2.modele_slx_sha256)
+        error('PPE:FORMAL:SLX', 'slx identity drift (epoch-2 freeze)');
+    end
 end
 
 teval = jsondecode(fileread(fullfile(ROOT, 'config', ...
     'phase4f_ppe_teval_table.json')));
-if ~strcmp(teval.teval_table_sha256, freeze.bindings.teval_table_sha256)
-    error('PPE:FORMAL:TEVAL', 'T_eval table identity drift');
+teval_sha = model.sha256_file(fullfile(ROOT, 'config', ...
+    'phase4f_ppe_teval_table.json'));
+if opt.FormalEpoch == 1
+    if ~strcmp(teval.teval_table_sha256, freeze.bindings.teval_table_sha256)
+        error('PPE:FORMAL:TEVAL', 'T_eval table identity drift');
+    end
+else
+    if ~strcmp(teval_sha, fz2.teval_table_file_sha256) ...
+            || ~strcmp(teval.teval_table_sha256, fz2.teval_table_sha256)
+        error('PPE:FORMAL:TEVAL', 'T_eval table identity drift (epoch-2 freeze)');
+    end
 end
 row = [];
 for i = 1:numel(teval.voyages)
@@ -87,6 +122,19 @@ if ~evalin('base', "exist('ECMS_Lambda', 'var')")
     evalin('base', sprintf("run('%s')", fullfile(ROOT, 'config', 'ModelE_Physics_Parameters.m')));
     evalin('base', sprintf("run('%s')", fullfile(ROOT, 'config', 'ModelE_Control_Parameters.m')));
 end
+
+% ---- output namespace (epoch-bound) ----
+if isempty(opt.OutDir)
+    opt.OutDir = ppe.formal_outdir(ROOT, opt.FormalEpoch);
+end
+if opt.FormalEpoch == 2 ...
+        && strcmp(fullfile(opt.OutDir), ppe.formal_outdir(ROOT, 1))
+    error('PPE:FORMAL:NS', ...
+        'epoch-2 输出禁止指向 epoch-1 命名空间 formal/（证据不可变）');
+end
+if ~exist(opt.OutDir, 'dir'), mkdir(opt.OutDir); end
+vdir = fullfile(opt.OutDir, char(voyage_id));
+if ~exist(vdir, 'dir'), mkdir(vdir); end
 
 % ---- rebuild scenario from pass2-ledger coordinates ----
 if isempty(opt.Prebuilt)
@@ -115,15 +163,27 @@ end
 % ---- identity context (D8) ----
 ctxid = struct();
 ctxid.study_config_sha256 = pc.study_config_sha256;
-ctxid.code_commit_sha = freeze.bindings.code_commit_sha;
+if opt.FormalEpoch == 1
+    ctxid.code_commit_sha = freeze.bindings.code_commit_sha;
+    ctxid.hf_config_sha256 = freeze.bindings.hard_feasibility_object_sha256;
+    corpus_id = freeze.bindings.corpus_identity_sha256;
+else
+    ctxid.code_commit_sha = fz2.code_commit_sha;
+    ctxid.hf_config_sha256 = fz2.hard_feasibility_config_file_sha256;
+    corpus_id = fz2.corpus_identity_sha256;
+end
 ctxid.slx_sha256 = slx_sha;
 ctxid.cstar_impl_sha256 = ppe.cstar_impl_sha();
-ctxid.hf_config_sha256 = freeze.bindings.hard_feasibility_object_sha256;
-ctxid.corpus_identity_sha256 = freeze.bindings.corpus_identity_sha256;
+ctxid.corpus_identity_sha256 = corpus_id;
 ctxid.teval_identity_sha256 = teval.teval_table_sha256;
 ctxid.voyage_id = char(voyage_id);
 if strcmp(arm, 'C2')
-    pr = freeze.bindings.predictor;
+    if opt.FormalEpoch == 1
+        pr = freeze.bindings.predictor;
+    else
+        % epoch-2 freeze re-binds identical Predictor-v3 bytes (frozen)
+        pr = fz2.predictor;
+    end
     ctxid.predictor_identity = struct( ...
         'keras_sha256', pr.keras.sha256, ...
         'selected_config_sha256', pr.selected_config.sha256, ...
@@ -192,72 +252,96 @@ else
     end
     winfun = ppe.winfun_plan(plan_file, arm, wopts);
     ppe.inject_voyage(ctx.MDL, rb.comp, rb.scn, 6, T_eval);
+    % Seed 字符串为 epoch-1 冻结执行身份的延续（绑定于 epoch-2 冻结
+    % cstar_execution_seed）：保持逐位一致数值；臂原子（无 resume）。
     rargs = {'SkipInject', true, 'CheckpointDir', opt.CheckpointDir, ...
         'Seed', 'phase4f-ppe-formal-epoch1'};
-    if ~isempty(opt.ResumeFrom)
-        rf = opt.ResumeFrom;
-        rargs = [rargs, {'StartT0', rf.extra.t_stop, 'InitialOp', rf.op, ...
-            'InitialSOC', rf.extra.SOC, 'InitialGen', rf.extra.gen, ...
-            'InitialN', rf.extra.N, 'InitialDLam', rf.extra.last_dlam, ...
-            'P0Load', rf.extra.p0}];
-    end
     [ds, meta] = ppe.run_cstar(rb.scn, winfun, arm, T_eval, ctxid, rargs{:});
 end
 wall = toc(t_run);
 
-% ---- terminal record (result generation only) ----
-hf = t445.hard_feasibility(ds, cfg, 'T_frozen_s', T_eval);
-fec = t445.metrics_fec(ds, cfg);
-if hf.pass
-    status = 'COMPLETE_FEASIBLE';
+% ================== terminal record (result generation only) ==============
+if opt.FormalEpoch == 1
+    hf = t445.hard_feasibility(ds, cfg, 'T_frozen_s', T_eval);
+    fec = t445.metrics_fec(ds, cfg);
+    if hf.pass
+        status = 'COMPLETE_FEASIBLE';
+    else
+        status = 'COMPLETE_HARD_INFEASIBLE';
+    end
+    rec = struct();
+    rec.schema = 'ppe_formal_arm_voyage_v1';
+    rec.run_id = local_run_id(arm, voyage_id);
+    rec.voyage_id = char(voyage_id);
+    rec.split_group_id = char(row.split_group_id);
+    rec.tier = char(row.tier);
+    rec.arm = char(arm);
+    rec.formal_epoch = 1;
+    rec.freeze_sha256 = freeze.freeze_sha256;
+    rec.runner_amendment_sha256 = amend_sha;
+    rec.code_commit_sha = freeze.bindings.code_commit_sha;
+    rec.cstar_impl_sha256 = ctxid.cstar_impl_sha256;
+    rec.slx_sha256 = slx_sha;
+    rec.teval_identity_sha256 = teval.teval_table_sha256;
+    rec.T_eval = T_eval;
+    rec.predictor_identity = ctxid.predictor_identity;
+    rec.fuel_total_kg = fec.fuel_raw_kg;
+    rec.SOC0 = fec.SOC0;
+    rec.SOC_end = fec.SOC_end;
+    rec.J_FEC_kg = fec.J_FEC_kg;
+    rec.hard_feasibility = hf;
+    rec.terminal_status = status;
+    rec.wall_s = wall;
+    if isstruct(meta) && isfield(meta, 'warmup_state')
+        rec.warmup_state = meta.warmup_state;
+        rec.oob_query_count = meta.oob_query_count;
+        rec.infeasible_fallback_n = meta.infeasible_fallback_n;
+        rec.n_segments = meta.n_segments;
+        rec.dlambda_n = numel(meta.dlambda_1);
+    end
+    rec.utc = char(datetime('now', 'TimeZone', 'UTC', 'Format', ...
+        'yyyy-MM-dd''T''HH:mm:ss''Z'));
+    fid = fopen(fullfile(vdir, [char(arm) '.json']), 'w');
+    fwrite(fid, jsonencode(rec, 'PrettyPrint', true));
+    fclose(fid);
+    fprintf('[T-010] %s %s -> %s (%.0f s wall)\n', voyage_id, arm, status, wall);
 else
-    status = 'COMPLETE_HARD_INFEASIBLE';
+    ids = struct();
+    ids.voyage_id = voyage_id;
+    ids.arm = arm;
+    ids.run_id = local_run_id(arm, voyage_id);
+    ids.vdir = vdir;
+    ids.cfg = cfg;
+    ids.PR = struct('dis_kW', fz2.reserves.P_reserve_dis_kW, ...
+        'chg_kW', fz2.reserves.P_reserve_chg_kW, ...
+        'dis_kWh', fz2.reserves.E_reserve_dis_kWh, ...
+        'chg_kWh', fz2.reserves.E_reserve_chg_kWh);
+    ids.T_eval = T_eval;
+    ids.C_bus = local_c_bus();
+    ids.freeze_root_sha256 = fz2.freeze_root_sha256;
+    ids.checker_v2_sha256 = fz2.checker_v2_sha256;
+    ids.cstar_impl_sha256 = ctxid.cstar_impl_sha256;
+    ids.slx_sha256 = slx_sha;
+    ids.teval_identity_sha256 = teval.teval_table_sha256;
+    ids.code_commit_sha = fz2.code_commit_sha;
+    ids.corpus_identity_sha256 = fz2.corpus_identity_sha256;
+    ids.execution_seed = fz2.cstar_execution_seed;
+    ids.split_group_id = row.split_group_id;
+    ids.tier = row.tier;
+    ids.predictor_identity = ctxid.predictor_identity;
+    ids.wall_s = wall;
+    ids.meta = meta;
+    rec = ppe.formal_terminal_v2(ds, ids);
 end
-rec = struct();
-rec.schema = 'ppe_formal_arm_voyage_v1';
-rec.run_id = local_run_id(arm, voyage_id);
-rec.voyage_id = char(voyage_id);
-rec.split_group_id = char(row.split_group_id);
-rec.tier = char(row.tier);
-rec.arm = char(arm);
-rec.formal_epoch = 1;
-rec.freeze_sha256 = freeze.freeze_sha256;
-rec.runner_amendment_sha256 = amend_sha;
-rec.code_commit_sha = freeze.bindings.code_commit_sha;
-rec.cstar_impl_sha256 = ctxid.cstar_impl_sha256;
-rec.slx_sha256 = slx_sha;
-rec.teval_identity_sha256 = teval.teval_table_sha256;
-rec.T_eval = T_eval;
-rec.predictor_identity = ctxid.predictor_identity;
-rec.fuel_total_kg = fec.fuel_raw_kg;
-rec.SOC0 = fec.SOC0;
-rec.SOC_end = fec.SOC_end;
-rec.J_FEC_kg = fec.J_FEC_kg;
-rec.hard_feasibility = hf;
-rec.terminal_status = status;
-rec.wall_s = wall;
-if isstruct(meta) && isfield(meta, 'warmup_state')
-    rec.warmup_state = meta.warmup_state;
-    rec.oob_query_count = meta.oob_query_count;
-    rec.infeasible_fallback_n = meta.infeasible_fallback_n;
-    rec.n_segments = meta.n_segments;
-    rec.dlambda_n = numel(meta.dlambda_1);
 end
-rec.trajectory_sha256 = traj_sha;
-rec.utc = char(datetime('now', 'TimeZone', 'UTC', 'Format', 'yyyy-MM-dd''T''HH:mm:ss''Z'));
 
-% FC-5 轨迹持久化：仅当 epoch-2 预执行冻结存在时启用（amendment FC-5/T-A5）
-fz2 = fullfile(ROOT, 'results', 'ppe_practical', 'freeze', 'epoch2_pre_execution_freeze.json');
-traj_sha = '';
-if exist(fz2, 'file') && exist('ds', 'var')
-    tr = ppe.write_traj_v1(ds, fullfile(ROOT, 'artifacts', 'ppe_traj_v2'), ...
-        char(voyage_id), char(arm), rec.run_id);
-    traj_sha = tr.sha256;
+function cb = local_c_bus()
+if evalin('base', "exist('ASSUMED_C_bus', 'var')")
+    cb = evalin('base', 'ASSUMED_C_bus');
+else
+    error('PPE:FORMAL:CBUS', ...
+        'ASSUMED_C_bus 缺失（ModelE_Physics_Parameters 未加载）：checker v2 C5 判据必需');
 end
-fid = fopen(fullfile(vdir, [char(arm) '.json']), 'w');
-fwrite(fid, jsonencode(rec, 'PrettyPrint', true));
-fclose(fid);
-fprintf('[T-010] %s %s -> %s (%.0f s wall)\n', voyage_id, arm, status, wall);
 end
 
 function rid = local_run_id(arm, vid)

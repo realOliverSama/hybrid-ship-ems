@@ -62,7 +62,17 @@ def main(argv: list[str] | None = None) -> int:
                     help="post_freeze_runner_amendment.json; validates the "
                          "amended runner bindings instead of the frozen "
                          "run_cstar.m bytes")
+    ap.add_argument("--freeze2", default="",
+                    help="epoch2_pre_execution_freeze_v2.json; additionally "
+                         "verifies the regenerated epoch-2 freeze "
+                         "(recovery authorization §12)")
     args = ap.parse_args(argv)
+    if args.freeze2 and not args.amendment:
+        # §12: the re-run preflight includes the epoch-1 amended verification;
+        # freeze2 mode implies it (the epoch-2 freeze re-binds the same
+        # amended runner bytes).
+        args.amendment = os.path.join(paths.FREEZE_DIR,
+                                      "post_freeze_runner_amendment.json")
 
     freeze = json.load(open(FREEZE_JSON, encoding="utf-8"))
     b = freeze["bindings"]
@@ -275,8 +285,241 @@ def main(argv: list[str] | None = None) -> int:
           lc["split_contact"]["test"] == 0 and lc["split_contact"]["ood"] == 0,
           json.dumps(lc["split_contact"]))
 
+    if args.freeze2:
+        verify_epoch2(report, check, args.freeze2)
+
     print(json.dumps(report, indent=1, sort_keys=True))
     return 0 if report["pass"] else 1
+
+
+def verify_epoch2(report: dict, check, fz2_path: str) -> None:
+    """Regenerated epoch-2 freeze verification (recovery authorization §12)."""
+    import hashlib
+
+    fz2_path = os.path.abspath(fz2_path)
+    freeze_dir = os.path.dirname(fz2_path)
+    root = paths.MODELE_ROOT
+    rpp = os.path.join(root, "results", "ppe_practical")
+
+    def sha_file(p: str) -> str:
+        h = hashlib.sha256()
+        with open(p, "rb") as f:
+            for chunk in iter(lambda: f.read(1 << 20), b""):
+                h.update(chunk)
+        return h.hexdigest()
+
+    with open(fz2_path, encoding="utf-8") as f:
+        d = json.load(f)
+    check("e2_schema", d.get("schema") == "ppe_epoch2_pre_execution_freeze_v3",
+          str(d.get("schema")))
+    check("e2_formal_epoch", d.get("formal_epoch") == 2)
+    self_ok = hashutil.sha256_canonical(
+        {k: v for k, v in d.items() if k != "sha256_self"}) == \
+        d.get("sha256_self")
+    check("e2_self_hash", self_ok)
+    check("e2_result_bearing_runs_zero",
+          d.get("epoch2_result_bearing_runs") == 0)
+    cr = d.get("canonical_reserves", {})
+    check("e2_reserves_canonical",
+          abs(cr.get("P_reserve_dis_kW", -1) - 543.8) < 1e-9
+          and abs(cr.get("E_reserve_dis_kWh", -1) - 6.839) < 1e-9
+          and abs(cr.get("P_reserve_chg_kW", -1) - 819.8) < 1e-9
+          and abs(cr.get("E_reserve_chg_kWh", -1) - 5.625) < 1e-9)
+    check("e2_output_namespace",
+          d.get("output_namespace") == "results/ppe_practical/formal_epoch2")
+    check("e2_record_schema",
+          d.get("record_schema") == "ppe_formal_arm_voyage_v2")
+    check("e2_classification_authority",
+          d.get("classification_authority") == "ppe.feasibility_contract_v2")
+
+    file_sha = sha_file(fz2_path)
+    report["epoch2_freeze_root_sha256"] = file_sha
+
+    # gate
+    gate_p = os.path.join(freeze_dir, "EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json")
+    try:
+        gate = json.load(open(gate_p, encoding="utf-8"))
+        check("e2_gate_overall", gate.get("overall") is True)
+        check("e2_gate_binds_freeze_bytes",
+              gate.get("freeze_file_sha256") == file_sha)
+    except FileNotFoundError:
+        check("e2_gate_present", False, gate_p)
+
+    # supersession marker
+    marker_p = os.path.join(freeze_dir, "epoch2_freeze_supersession.json")
+    try:
+        mk = json.load(open(marker_p, encoding="utf-8"))
+        check("e2_marker_disposition",
+              mk.get("disposition") == "SUPERSEDED_BEFORE_FORMAL_EXECUTION")
+        check("e2_marker_chain",
+              mk.get("superseded_freeze_root") == d.get(
+                  "supersedes_freeze_root_sha256")
+              and mk.get("replacement_freeze_root") == file_sha)
+        old_p = os.path.join(root, mk.get("superseded_artifact", ""))
+        check("e2_defective_freeze_preserved", os.path.isfile(old_p))
+    except FileNotFoundError:
+        check("e2_marker_present", False, marker_p)
+
+    # incident artifact
+    inc_p = os.path.join(root, d.get("incident_artifact", ""))
+    try:
+        inc = json.load(open(inc_p, encoding="utf-8"))
+        check("e2_incident_self_hash",
+              inc.get("sha256_self") == hashutil.sha256_canonical(
+                  {k: v for k, v in inc.items() if k != "sha256_self"}))
+        check("e2_incident_sha_binding",
+              sha_file(inc_p) == d["bindings"].get(
+                  "incident_artifact_sha256"))
+    except (FileNotFoundError, KeyError):
+        check("e2_incident_present", False, inc_p)
+
+    # file-level bindings
+    bd = d["bindings"]
+    file_rels = {
+        "modele_slx_sha256": os.path.join(root, "model",
+                                          "HybridShip_ModelE.slx"),
+        "run_cstar_amended_sha256": os.path.join(root, "scripts", "+ppe",
+                                                 "run_cstar.m"),
+        "checker_v2_sha256": os.path.join(root, "scripts", "+ppe",
+                                          "feasibility_contract_v2.m"),
+        "traj_writer_sha256": os.path.join(root, "scripts", "+ppe",
+                                           "write_traj_v1.m"),
+        "audit_writer_sha256": os.path.join(root, "scripts", "+ppe",
+                                            "write_audit_v1.m"),
+        "runner_manifest_sha256": os.path.join(root, "scripts", "+ppe",
+                                               "run_formal_manifest.m"),
+        "runner_pack_sha256": os.path.join(root, "scripts", "+ppe",
+                                           "run_formal_voyage_pack.m"),
+        "runner_voyage_sha256": os.path.join(root, "scripts", "+ppe",
+                                             "run_formal_voyage.m"),
+        "terminal_pipeline_sha256": os.path.join(root, "scripts", "+ppe",
+                                                 "formal_terminal_v2.m"),
+        "pack_skip_predicate_sha256": os.path.join(root, "scripts", "+ppe",
+                                                   "formal_pack_skip_v2.m"),
+        "freeze_loader_sha256": os.path.join(root, "scripts", "+ppe",
+                                             "load_epoch2_freeze_bindings.m"),
+        "output_router_sha256": os.path.join(root, "scripts", "+ppe",
+                                             "formal_outdir.m"),
+        "checkpoint_mgr_sha256": os.path.join(root, "scripts", "+ppe",
+                                              "checkpoint_mgr.m"),
+        "acceptance_v2_sha256": os.path.join(root, "python", "ppe",
+                                             "acceptance_v2.py"),
+        "freeze_generator_sha256": os.path.join(root, "python", "ppe",
+                                                "freeze_epoch2.py"),
+        "verify_bindings_sha256": os.path.abspath(__file__),
+        "teval_table_file_sha256": os.path.join(root, "config",
+                                                "phase4f_ppe_teval_table.json"),
+        "hard_feasibility_config_file_sha256": paths.HF_CONFIG_JSON,
+        "t445_config_file_sha256": os.path.join(root, "config",
+                                                "phase4f_t445_config.json"),
+        "study_config_file_sha256": os.path.join(root, "config",
+                                                 "phase4f_ppe_study_config.json"),
+        "formal_execution_manifest_file_sha256": os.path.join(
+            freeze_dir, "formal_execution_manifest.json"),
+        "formal_assets_file_sha256": os.path.join(freeze_dir,
+                                                  "formal_assets.json"),
+        "c1_coverage_file_sha256": os.path.join(freeze_dir,
+                                                "c1_coverage.json"),
+        "c1_target_index_file_sha256": os.path.join(freeze_dir,
+                                                    "c1_target_index.json"),
+        "access_ledger_file_sha256": os.path.join(rpp, "access_ledger.jsonl"),
+        "incident_artifact_sha256": inc_p,
+    }
+    specs_base = os.path.join(os.path.dirname(os.path.dirname(root)), ".specs",
+                              "phase4-f-practical-predictive-ems")
+    file_rels["reserve_derivation_TA0_sha256"] = os.path.join(
+        specs_base, "reserve_derivation_TA0.json")
+    file_rels["amendment_design_doc_sha256"] = os.path.join(
+        specs_base, "feasibility_contract_design.md")
+    file_rels["amendment_doc_sha256"] = os.path.join(
+        specs_base, "feasibility_contract_amendment.md")
+    qdir = os.path.join(rpp, "qualification")
+    file_rels["amendment_v2_qual_artifact_sha256"] = os.path.join(
+        qdir, "amendment_v2_qual.json")
+    file_rels["e2e_qual_artifact_sha256"] = os.path.join(
+        qdir, "e2e_runner_integration_qual.json")
+    file_rels["fec_prereg_artifact_sha256"] = os.path.join(
+        qdir, "fec_robustness_prereg.json")
+    file_rels["coherence_gate_artifact_sha256"] = os.path.join(
+        qdir, "feasibility_coherence_gate.json")
+
+    drift = {}
+    for key, p in sorted(file_rels.items()):
+        want = bd.get(key)
+        if want is None:
+            drift[key] = "missing-binding"
+            continue
+        if not os.path.isfile(p):
+            drift[key] = "file-missing"
+            continue
+        got = sha_file(p)
+        if got != want:
+            drift[key] = {"bound": want[:12], "current": got[:12]}
+    check("e2_file_bindings", not drift, json.dumps(drift, sort_keys=True))
+
+    # composite C* identity
+    check("e2_cstar_composite", cstar_impl_sha() == bd.get(
+        "cstar_composite_sha256"))
+
+    # predictor assets
+    pr = (bd.get("predictor") or {})
+    pred_bad = []
+    for key, p in (("keras", paths.KERAS_S0),
+                   ("selected_config", paths.SELECTED_CONFIG_JSON),
+                   ("formal_norm_v3", paths.FORMAL_NORM_V3),
+                   ("predictor_norm_ext_v1", paths.PREDICTOR_NORM_EXT)):
+        w = (pr.get(key) or {}).get("sha256")
+        if w and hashutil.sha256_file(p) != w:
+            pred_bad.append(key)
+    check("e2_predictor_assets", not pred_bad, ",".join(pred_bad))
+
+    # epoch-2 namespace still absent (pre-execution)
+    check("e2_namespace_absent",
+          not os.path.isdir(os.path.join(rpp, "formal_epoch2")))
+
+    # epoch-2 FORMAL ledger entries zero
+    n = 0
+    ledp = os.path.join(rpp, "access_ledger.jsonl")
+    if os.path.isfile(ledp):
+        for line in open(ledp, encoding="utf-8"):
+            line = line.strip()
+            if not line:
+                continue
+            try:
+                e = json.loads(line)
+            except Exception:  # noqa: BLE001
+                continue
+            if e.get("purpose") == "FORMAL" and e.get("formal_epoch") == 2:
+                n += 1
+    check("e2_formal_ledger_zero", n == 0, str(n))
+
+    # epoch-1 evidence intact
+    ep1dir = os.path.join(rpp, "formal")
+    n_term = n_par = 0
+    if os.path.isdir(ep1dir):
+        for vid in sorted(os.listdir(ep1dir)):
+            vd = os.path.join(ep1dir, vid)
+            if not os.path.isdir(vd) or vid.startswith(("_", "quarantine")):
+                continue
+            for fn in sorted(os.listdir(vd)):
+                if fn.endswith(".json") and fn[:-5] in ("P0", "C0", "C1", "C2"):
+                    try:
+                        dd = json.load(open(os.path.join(vd, fn),
+                                            encoding="utf-8"))
+                        if str(dd.get("terminal_status", "")).startswith(
+                                "COMPLETE"):
+                            n_term += 1
+                    except Exception:  # noqa: BLE001
+                        pass
+                if fn == "warmup_parity.json":
+                    try:
+                        if json.load(open(os.path.join(vd, fn),
+                                          encoding="utf-8")) == "PASS":
+                            n_par += 1
+                    except Exception:  # noqa: BLE001
+                        pass
+    check("e2_epoch1_terminals_192", n_term == 192, str(n_term))
+    check("e2_epoch1_warmup_parity_48", n_par == 48, str(n_par))
 
 
 if __name__ == "__main__":

@@ -139,9 +139,16 @@ od = fullfile(tempdir, 'traj_qual_test');
 if exist(od, 'dir'), rmdir(od, 's'); end
 ds = mk(150, 0, 3, 0, 0, 150, 150, 0.6);
 ds.t = (0:0.01:40)';                                   % 0.01s 原生 → 写入器抽 1 Hz
+ds.safety_s1a = zeros(numel(ds.t), 1);                 % safety_hard_count 派生源
+ds.safety_s1b = zeros(numel(ds.t), 1);
+ds.safety_s2 = zeros(numel(ds.t), 1);
 ot = ppe.write_traj_v1(ds, od, 'SYNT_VOYAGE', 'C0', 'SYNT_RUN');
 S = load(ot.path);
 q17 = isfield(S, 'traj') && isfield(S.traj, 'time') && S.traj.time(end) == 40 && abs(S.traj.time(2)-S.traj.time(1)-1.0) < 1e-9;
+% 通道清单与已批准设计 FC-5 §5.1 一致（safety_hard_count 派生通道在列；
+% P_prop_limit_kW 不在列）
+q17 = q17 && isfield(S.traj, 'safety_hard_count') ...
+    && ~isfield(S.traj, 'P_prop_limit_kW');
 side = jsondecode(fileread([ot.path(1:end-4) '.sidecar.json']));
 sha_recheck = model.sha256_file(ot.path);
 q18 = strcmp(char(side.sha256), char(sha_recheck))  && side.n_samples == 41;
