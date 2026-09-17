@@ -19,10 +19,23 @@
         "run_formal_voyage.m: formal_assets.per_voyage lookup via jsondecode fieldname access (scalar struct keyed by voyage id)",
         "run_formal_voyage.m: resume args read checkpoint payload.extra fields; C2 bridge lifecycle; runtime asset SHA verification"
       ],
+      "second_addendum": {
+        "fixes": [
+          "c2_bridge.m: atomic request write (temp + rename)",
+          "run_formal_voyage_pack.m: arms are atomic (fresh re-run; no mid-arm resume, no checkpoint writes) - deterministic fresh re-run is bitwise-equivalent to a resumed continuation"
+        ],
+        "numerics_impact": "none (transport and scheduling only)",
+        "requalification": [
+          "qual_c2_integration (bridge path)",
+          "pack/paths exercised by the running fleet"
+        ],
+        "trigger": "first real C1/C2 launches on both hosts exposed a transport race (partial request read -> bridge fail-closed error) and the absence of a qualified mid-arm resume path for history-dependent window providers (C0 persistence bins, C2 300 s H1)"
+      },
       "utc_note": "recovery session 2026-09-16 (post original amendment)"
     }
   ],
   "amended_file_overrides": {
+    "scripts/+ppe/c2_bridge.m": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4",
     "scripts/+ppe/run_cstar.m": "dc0bc0a91709c610ef19123a0030651501911ea8fea8a2863beeb1262a7a9e28",
     "scripts/+ppe/winfun_plan.m": "7e8d845a30968b546153187af0ff94595a1f6e01b4eea1d13c45471691fdfcdc"
   },
@@ -38,9 +51,15 @@
       "change": "plan loader accepts the exported wrapper document (schema/plan_sha256/plan array) in addition to a bare plan array; required because the exported plans are wrapper documents and the frozen loader indexed the document itself (latent integration bug; the wrapper is unwrapped, the plan ARRAY semantics are unchanged)",
       "frozen_sha256": "9d6f9daf4912d2702379a2f4371c934d2b4cdd848e94990d65bc8a5ec67645e8",
       "path": "scripts/+ppe/winfun_plan.m"
+    },
+    {
+      "amended_sha256": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4",
+      "change": "bridge request files are written atomically (temp name + rename) so the polling inference server can never read a partially written request; transport only, no scientific transform change",
+      "frozen_sha256": "7ef8bdbecd5cbf749181c42037ce4d28b027e5d79a5edc2286204851e37e9aa0",
+      "path": "scripts/+ppe/c2_bridge.m"
     }
   ],
-  "amendment_sha256_self": "ef428cb8295a32a817cb4236785cd7fcf344fe50a96865e262270e37316d8505",
+  "amendment_sha256_self": "4a20765158474df9e6aafa980f12ae8dcc6645de7d61be96f7fe9412b5cf35a4",
   "authorized_by": "human Pre-Execution Gate T-010 authorization (PE-1 PASS) + takeover recovery mandate: mechanical completion only; no frozen scientific parameter touched",
   "behavior_preservation_evidence": {
     "argument": "SkipInject defaults false (frozen path intact); when true the caller injects via ppe.inject_voyage whose bitwise voyage-contract parity is qualified; warmup_state only records state",
@@ -66,7 +85,7 @@
   },
   "cstar_impl_sha256": {
     "frozen": "ae53ea08e594bc1a5a629c58da58c9a66947e729903310363ad536edf9d4fb3a",
-    "new": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+    "new": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
     "reconstructed_from_frozen_bytes": "ae53ea08e594bc1a5a629c58da58c9a66947e729903310363ad536edf9d4fb3a"
   },
   "epoch_continuity": "formal_epoch remains 1; freeze package bytes are unchanged (freeze_sha256 b4920a292454701e... remains the canonical scientific anchor); no outputs from any other identity exist; nothing quarantined",
@@ -82,7 +101,7 @@
     "injection": "frozen run_cstar.m calls t445.inject_scenario which lacks the mission_v3 comp.injection_list assignments and forces ai_logging mode 6; ppe.inject_voyage replicates member_exec injection verbatim and bitwise-reproduces the frozen Dataset-v3 voyage streams (replay_parity PASS, 3 voyages, 22 channels, maxAbsDiff=0)",
     "warmup": "design D3 COMMON_WARMUP_PARITY requires boundary-state capture at t=300 for C0/C1/C2; the snapshot records SOC/fuel/genset/battery/load/DG/N_on/last_dlam at the boundary and does not affect the trajectory"
   },
-  "new_cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+  "new_cstar_impl_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
   "pre_execution_confirmed": true,
   "preconditions_verified": {
     "access_ledger_counts_at_amendment": {
