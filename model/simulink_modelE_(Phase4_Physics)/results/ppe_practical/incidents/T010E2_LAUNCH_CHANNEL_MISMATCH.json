@@ -1,0 +1,46 @@
+{
+ "authorization_consequence": {
+  "automatic_t_a8_authorization": "VOID per PE4-1 section 6 (any execution-critical byte change - write_traj_v1 is bound - voids it)",
+  "fix_paths_require_human_review": [
+   "channel name mapping / evidence-spec amendment (FC-5 channel list vs frozen model reality) with write_traj_v1 byte change + freeze regeneration + Q17/Q18+Q-E2E fixture rerun",
+   "Model-E logging addition (slx byte change; epoch-1 identity impact - expected to be rejected)",
+   "channel census probe (read-only static introspection or 1 short nonformal sim) to establish the exact available logsout names"
+  ]
+ },
+ "classification": "METHODOLOGY_IDENTITY_FAILURE_AT_T_A8_START",
+ "contamination": {
+  "epoch1_touched": false,
+  "epoch2_audit_artifacts": 0,
+  "epoch2_formal_ledger_entries": 0,
+  "epoch2_terminal_records": 0,
+  "epoch2_trajectory_artifacts": 0
+ },
+ "execution_code_commit_sha": "bbbbc5f53d313e7e78c3eada92197a6fc0a9255f",
+ "fail_closed_behavior_verified": {
+  "audit_artifact_written": false,
+  "checker_v2_signals_present": true,
+  "note": "write order (checker -> traj -> audit -> record) held; no partial terminal evidence escaped",
+  "terminal_record_written": false,
+  "trajectory_artifact_written": false
+ },
+ "fleet_state_at_stop": {
+  "epoch1_evidence_touched": false,
+  "freeze_root_at_launch": "3b75e4b805fe1ac6a02a4f62e0d90998c828cb9ef07764ac1cbe6a19fcfcbb9f",
+  "watchdog_loop": "none (single-shot watchdog3 test invocation started the fleet; no loop was armed)",
+  "workers_running": 0
+ },
+ "formal_epoch": 2,
+ "freeze_root_at_launch": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+ "incident_type": "TRAJECTORY_CHANNEL_MODEL_LOGGING_MISMATCH",
+ "root_cause_hypothesis": {
+  "P_bat_bus_kW": "Battery_Converter internal quantity (docs use P_bat_bus without unit suffix); may exist under a different logsout name or not be logged",
+  "delta_lambda": "controller-side ECMS quantity tracked by the C* runner (last_dlam/dlambda_1), not a Model-E logsout signal",
+  "derate08_active": "08_Undervolt_Derate flag; checker v2 treats it as optional, t445.hard_feasibility likewise; may not be logged",
+  "forecast_source_id": "window-provider provenance (winfun/c2_bridge), not a Model-E logsout signal"
+ },
+ "schema": "PPE_LAUNCH_INCIDENT_V1",
+ "sha256_self": "29d58962456a91e577505d26f3feb0233fca814238215f7f8e846a8bd05c1272",
+ "study": "phase4f-practical-predictive-ems",
+ "summary": "T-A8 fleet launch (24 workers, tokens formal-epoch2-w01..w24) hit a fail-closed evidence-channel failure on the first arm's terminal write: the frozen Model-E logsout does not provide 4 of the 25 design-mandated FC-5 trajectory channels (P_bat_bus_kW, derate08_active, delta_lambda, forecast_source_id). checker v2 required signals were all present (13/13) - the simulation itself completed; the terminal pipeline correctly refused to produce evidence.",
+ "utc": "2026-09-17T07:30:00Z"
+}
