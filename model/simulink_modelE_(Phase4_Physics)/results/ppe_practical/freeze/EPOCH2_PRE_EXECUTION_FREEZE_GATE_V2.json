@@ -1,0 +1,105 @@
+{
+ "checks": [
+  {
+   "detail": "",
+   "name": "incident_self_hash",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "incident_no_contamination",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "incident_runs_zero",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "defective_freeze_preserved",
+   "pass": true
+  },
+  {
+   "detail": "7919123bd986d5b5",
+   "name": "defective_freeze_root_recorded",
+   "pass": true
+  },
+  {
+   "detail": "192",
+   "name": "epoch1_terminals_192",
+   "pass": true
+  },
+  {
+   "detail": "48",
+   "name": "epoch1_warmup_parity_48",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "epoch2_namespace_absent",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "epoch2_formal_ledger_entries_zero",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_amendment_v2_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_e2e_runner_integration_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_fec_robustness_prereg_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_coherence_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "coherence_reserves_canonical",
+   "pass": true
+  },
+  {
+   "detail": "{}",
+   "name": "e2e_binds_current_implementation",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "epoch1_amendment_run_cstar_binding",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "cstar_composite_unchanged",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "modele_slx_t445_baseline",
+   "pass": true
+  }
+ ],
+ "freeze_file": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+ "freeze_file_sha256": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
+ "n_checks": 18,
+ "n_pass": 18,
+ "overall": true,
+ "schema": "PPE_EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2",
+ "sha256_self_of_freeze_doc": "2a8967bbd7d43b69531c5cdb1a73e050a5fcf194ceb92a37865e6fc8de4979d0",
+ "stop_rule": "overall=true -> ALSO STOP: human Epoch-2 Pre-Execution Gate re-review decides T-A8; overall=false -> STOP and report",
+ "t_a8": "REMAINS BLOCKED",
+ "task": "T-A7(v2)",
+ "utc": "2026-09-17T06:00:55Z"
+}

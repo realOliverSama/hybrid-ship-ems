@@ -1,0 +1,11 @@
+{
+ "disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
+ "note": "old freeze bytes preserved untouched as historical pre-execution evidence; epoch-2 result-bearing runs remained 0 before supersession",
+ "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+ "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+ "replacement_freeze_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
+ "schema": "ppe_epoch2_freeze_supersession_v1",
+ "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze.json",
+ "superseded_freeze_root": "7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47",
+ "utc": "2026-09-17T06:00:55Z"
+}
