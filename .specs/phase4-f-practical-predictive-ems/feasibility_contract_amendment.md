@@ -1,8 +1,9 @@
 # Phase 4-F PPE — Feasibility Contract Amendment（可行性契约修正案）
 
-状态：**DRAFT — 待 Amendment Design Gate 人工/ChatGPT 评审**
+状态：**AMENDMENT DESIGN APPROVED（Design Gate：APPROVED WITH REQUIRED CORRECTIONS A1–A7，已全部落实）**
 授权：T-011A 完成后的可行性契约修正工作（formal_epoch 1 证据不可变）
-关联：T-011A `model/.../results/ppe_practical/feasibility_root_cause/T011A_REPORT.{json,md}`
+关联：T-011A `results/ppe_practical/feasibility_root_cause/T011A_REPORT.{json,md}`；
+裁决记录：`amendment_design_gate_ruling.md`；任务：`amendment_tasks.md`（待 Tasks Gate）
 
 ## 0. 摘要与范围
 
@@ -24,7 +25,7 @@ Epoch 1 保持 `FORMAL_EXECUTION_VALID / PRIMARY_EFFECT_ESTIMATION_WITHHELD_DUE_
 |---|---|---|---|---|
 | F1: genset_limits 字段名错配（P_DG1_kW/P_DG2_kW vs P_gen1_kW）+ 均分回退 → 假阳性 | FC-1 状态感知分机组合法性谓词 | D-1 信号映射 + D-2 状态×约束表 | Q1–Q8 | `feas.genset.state_aware_v2` |
 | F2: load_shortfall 误读电容功率残差监视器（零容忍 × ~1.75kW 常值偏置） | FC-2 真实缺供谓词 + FC-3 残差降级为诊断 | D-3 缺供信号定义 + D-4 残差诊断语义 | Q9–Q12 | `feas.shortfall.unserved_v2` |
-| F3: terminal_soc ±0.005 全臂一致违约（航次能量结构决定） | FC-4 终端 SOC 运行带 + SOP 储备 | D-5 带推导 + D-6 储备定义 | Q13–Q15 | `feas.terminal.band_v2` |
+| F3: terminal_soc ±0.005 全臂一致违约 = LEGACY_TERMINAL_ENERGY_NEUTRALITY_CONTRACT_VIOLATION（旧电荷维持契约未满足；任务完成/SOC 硬边界/电池 SOP/安全四判据全 PASS → 非物理不可行） | FC-4 终端 SOC 运行带 + SOP/能量储备 | D-5 三层 SOC + D-6 设计基准事件集 | Q13–Q15 + A4 派生结果 | `feas.terminal.band_v2` |
 | F4: 逐时刻轨迹未持久化（episode 取证不可行） | FC-5 1 Hz 轨迹强制持久化 | D-7 轨迹 schema/原子写 | Q17–Q18 | `traj.v1` |
 | F5: 均分分配器为冻结设计（D-B6）——修正案不得改变分配律 | 非目标（显式排除） | — | — | — |
 
@@ -78,6 +79,19 @@ Epoch 1 保持 `FORMAL_EXECUTION_VALID / PRIMARY_EFFECT_ESTIMATION_WITHHELD_DUE_
 | `P_gen_unserved_kW` | 07_PMS_v2 Allocator | 发电侧 command mismatch：`max(0, P_gen_req_eff − ΣP_ref)`；**代码红线 b：纯诊断，禁用于 Safety 判据** |
 | `P_bus_residual_kW` | 09_Bus_Residual_Monitor | `P_gen×ASSUMED_eta_rect + P_bat_bus − P_load_total`；模型注释：应等于 C·V·dV/dt —— **母线电容功率一致性诊断**。降级为诊断量（不再作为 shortfall 判据） |
 
+### 3.1b `P_unserved_kW` 服务完备性核实（Design Gate A5）
+
+源码核实（build_model_e.m 08_Undervolt_Derate 子系统）：`P_unserved = max(min(P_prop_demand,
+Mot_P_nom) − P_prop_limit, 0)`，`P_prop_limit = derate_fn(V_dc) × Mot_P_nom`——即**仅覆盖
+V_dc 欠压降额这一条缺供路径**。Model-E 无 hotel 卸载机制（hotel 刚性），gen 侧缺口由
+`P_gen_unserved_kW`（Allocator command mismatch，诊断红线 b）独立记录。
+
+**对偶服务一致性诊断（强制）**：`P_service_gap(t) = max(P_prop_demand(t) − P_prop_actual(t), 0)`
+——两条已记录信号之差，覆盖**任何原因**的推进缺口（含 SOP/转换器限制）。资格化必须证明：
+零真实缺供 ⇒ P_unserved=0 且 P_service_gap=0；注入缺供 ⇒ 两者同步响应；
+残差偏置 ⇒ 两者皆不受影响。若正式运行发现 P_service_gap > 0 而 P_unserved = 0 的持续
+分歧 → `P_unserved` 服务语义不完备 → FAIL CLOSED 并上报（不得以单一信号放行）。
+
 ### 3.2 FC-2 形式化
 
 `P_service_shortfall(t) = P_unserved_kW(t)`（权威缺供信号；对偶诊断通道 `P_gen_unserved_kW` 单独记录）。
@@ -105,27 +119,56 @@ Epoch 1 保持 `FORMAL_EXECUTION_VALID / PRIMARY_EFFECT_ESTIMATION_WITHHELD_DUE_
 | 硬安全上限 | 0.95 | soc_hard_bounds.soc_max | 电池硬安全 |
 | 任务 convention | 0.60 | Bat_SOC_init（INHERITED_LEGACY） | 航次起始约定 |
 
+### 4.1b 三层 SOC 区分（Design Gate A2 裁决，独立冻结）
+
+| 层 | 区间 | 冻结出处 | 用途 |
+|---|---|---|---|
+| HARD_SAFETY_SOC | [0.10, 0.95] | soc_hard_bounds（冻结） | 电池硬安全（soc_hard_bounds 判据继续执行） |
+| NORMAL_OPERATIONAL_SOC | **[0.25, 0.90]** | 电池 SOP 降额参数（放电降额起点 0.25 / 充电降额起点 0.90） | 正常运行窗口（本修正案冻结） |
+| TERMINAL_POWER_AND_ENERGY_RESERVE | 单独定义（§4.3） | 设计基准事件集（冻结参数推导） | 终端功率/能量储备判据 |
+
+**SOC 落在窗口内 ≠ 储备充分**：储备由 §4.3 的 P/E 储备判据单独判定（A4）。
+
 ### 4.2 建议契约（主提案 = Option B 变体）
 
 `SOC_terminal_min = 0.25`（独立冻结：放电 SOP 满能力下限）
 `SOC_terminal_max = 0.90`（独立冻结：充电 SOP 满能力上限）
-`terminal_SOP_reserve`：`P_dis_avail(SOC_end) ≥ P_reserve`，其中
-`P_reserve = P_hotel_voyage_median`（保证航后全船酒店/应急电气负载可持续供电）。
+`terminal_SOP_reserve`：`P_dis_avail(SOC_end) ≥ P_reserve_dis`（= 402 kW，§4.3 EV-1）
+且 `P_chg_avail(SOC_end) ≥ P_reserve_chg`（= 168 kW，§4.3 EV-3）
+且 `E_usable(SOC_end) ≥ E_reserve_dis`（= 3.35 kWh）。
+功率储备在带内为**派生自动满足**（§4.3 交叉验证）；检查保留作参数变化鲁棒性闸门。
 
 推导：下限 0.25 保证 voyage 结束时电池**仍具备满放电 SOP**（应急能力不受降额）；
 上限 0.90 保证仍具满充电接受能力（下一航次能量管理自由度不受降额）。
 三者（0.25/0.90/P_reserve=酒店负载）全部取自冻结仓库证据，无 epoch-1 拟合成分。
+**A1 术语修正（Gate 裁决）**：epoch-1 terminal_soc 违约的正确定性 =
+`LEGACY_TERMINAL_ENERGY_NEUTRALITY_CONTRACT_VIOLATION`（旧电荷维持契约未满足）——
+epoch-1 同时 task_complete/SOC 硬边界/电池 SOP/安全四判据全 PASS → 船舶**安全完成了任务**；
+不可仅因 ±0.005 未满足而分类为 TRUE_PHYSICAL_INFEASIBILITY。
 
-### 4.3 政策选项（D 项要求的人工决策点）
+### 4.3 终端功率/能量储备（Design Gate A3/A4 裁决：由设计基准事件集推导，非启发式）
 
-| 选项 | 定义 | 后果 |
+设计基准事件集 `E_design`（幅值全部取自冻结参数 + 正式 48 航次输入流统计）：
+
+| 事件 | 冻结参数依据 | 量化 |
 |---|---|---|
-| A 固定运行带 | [0.25, 0.90]，无附加储备 | 最宽松；应急储备仅由 SOP 隐式保证 |
-| **B（本修正案推荐）** | [0.25, 0.90] + `P_dis_avail(SOC_end) ≥ P_hotel_voyage_median` | 航后酒店负载可无限期供电；无额外能量裕度政策 |
-| C 任务续接储备 | `E_reserve(SOC_end) ≥ E_next_mission_min`（下一任务最小需求能量） | 最保守；需引入“任务续接假设”这一新工程需求（仓库无冻结先例）→ 需人工确认 |
+| EV-1 单→双机过渡 | STARTING 2500 tick(25s) + SYNC 500 tick(5s)（冻结）；窗口内仅 DG1 可达（≤额定 500 kW） | 负载取航次 P95（最坏 902 kW） |
+| EV-2 负载阶跃上升 | 负载步幅 99.9 分位逐秒 \|dP\|（语料实测 49–61 kW/s）> 机组 ramp 20 kW/s | 阶跃幅值最大 ~544 kW（P95−中位负载） |
+| EV-3 突然卸载/负载拒斥 | 机组 P_min 钳位（125×2=250 kW）+ ramp-down 限制 | 负载谷 82–212 kW |
+| EV-4 低载持续盈余 | 18/48 航次均值 < 250 kW（双机带内下限） | 钳位盈余向电池充电 |
 
-（epoch-1 观测：48 航次 SOC_end ∈ [0.587, 0.602]，全部落在 [0.25, 0.90] 带内——
-该事实**不构成本提案的依据**；提案依据仅为上表冻结 SOP 边界。）
+派生储备（最坏航次 @ P95=902 kW、DG1 钳位 500 kW、过渡窗 30 s、ramp 20 kW/s）：
+
+- `P_reserve_dis = 402 kW`（= P95 − 500，EV-1/EV-2 最坏组合的持续放电需求）
+- `E_reserve_dis = 3.35 kWh`（402 kW × 30 s；EV-2 ramp 恢复能量 ~0.03 kWh 更小）
+- `P_reserve_chg = 168 kW`（= 2×P_min 250 − 负载谷 82，EV-3 钳位盈余充电需求）
+
+SOP 交叉验证（A4 派生结果，检查保留）：SOC=0.25 处 `P_dis_avail ≈ min(1050, V/I) ≈ 900 kW ≫ 402 kW` →
+**功率储备在 [0.25,0.90] 内自动满足（派生结果）**；带内可用能量 696 kWh ≫ 3.35 kWh →
+**能量储备自动满足（派生结果）**。两项检查**保留在判据中**（参数未来变化时的鲁棒性闸门）。
+
+**冻结值（A3/A4 完成，无未决假设）**：上表全部幅值来自冻结状态机计时/钳位/ramp 参数
+与正式 48 航次冻结输入流统计；无 epoch-1 结局拟合；无人工选择的启发式系数。
 
 ### 4.4 FEC（E 项）
 
@@ -135,6 +178,12 @@ FEC 天然惩罚“以低 SOC_end 换取表观节油”，与更宽终端带**�
 SOC_end ∈ [0.25, 0.90] 全范围上 `|∂J_FEC/∂SOC_end| = Bat_Cap×k_eq_E` 为常数（线性估值），
 须报告 k_eq 的适用区间假设（SOC→OCV 非线性对能量等价的影响）；
 **该分析不得反馈用于控制器调参**。
+
+**预注册（Design Gate A7）**：主判据 k_eq_E = 0.5457 kg/kWh（冻结，不变）；
+预注册敏感性 = 冻结的 **0.8×/1.2×**（0.4366 / 0.6549）两侧分析 + **break-even k_eq**
+（使两臂 J_FEC 相等的临界 k_eq，仅诊断用）；可选次要诊断 = SOC/效率感知的终端能量
+估值（基于冻结 OCV 曲线），**恒为次要**。全部在**观察任何 epoch-2 结局之前**预注册，
+禁止看结局后选择估值规则。
 
 ## 5. FC-5 epoch-2 1 Hz 正式轨迹持久化（F 项）
 
@@ -159,6 +208,13 @@ V_dc_V; derate08_active; safety_hard_count; delta_lambda; forecast_source_id
 
 `sha256(traj.mat)` 写入终端记录（`rec.trajectory_sha256`）与 pack 日志；
 同步/封存链条按现有 30 分钟同步 + T-012 流程。
+
+## 5b. 高速率硬谓词审计（Design Gate A6）
+
+1 Hz 轨迹覆盖慢量谓词；**快量谓词**（battery SOP V/I，`duration_tol_s = 1e-6`；
+ramp 20 kW/s 逐 tick）在 0.01 s 原生节拍由执行器就地评估，并持久化**紧凑审计工件**
+（`<arm>.audit.v1.json`）：违规计数、最大越界、累计时长、首末时间戳、极值、
+事件态上下文（state/commitment）。1 Hz 轨迹 + 审计工件齐备才算完成（A6）。
 
 ## 6. 资格化测试矩阵（I 项，Q1–Q20）
 

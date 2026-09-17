@@ -37,6 +37,12 @@ P_min 运行（钳位保证）。故“带外违规”在分机组真值上只�
   —— 仅作电气一致性监视；其常值偏置（η_rect 假设 0.97 vs 真实整流效率）记录为参数校准线索。
 - 服务完备性论证：hotel 为刚性负载（模型无 hotel 卸载机制）→ 唯一可缺的服务是推进
   → 推进缺供信号即服务缺口的完备度量 ✓。
+- **对偶一致性诊断（Design Gate A5 强制）**：
+  `P_service_gap(t) = max(P_prop_demand(t) − P_prop_actual(t), 0)`（两路已记录信号之差，
+  覆盖任何原因的推进缺口）。资格化必须证明：零真实缺供 ⇒ P_unserved=0 且
+  P_service_gap=0；注入缺供 ⇒ 两者同步响应；残差偏置 ⇒ 两者皆不受影响；
+  正式运行若出现 P_service_gap>0 而 P_unserved=0 的持续分歧 → `P_unserved`
+  服务语义不完备 → FAIL CLOSED 上报（不得以单一信号放行）。
 - epoch-1 佐证：`derate08_s = 0`（192/192）→ 降额从未激活 → `P_unserved ≡ 0` 全程成立
   → **epoch-1 无真实服务缺供**（load_shortfall 判据为假阳性，T-011A §3）。
 
@@ -58,6 +64,16 @@ P_min 运行（钳位保证）。故“带外违规”在分机组真值上只�
 0.95  ── soc_hard_bounds.soc_max（硬安全）
 ```
 
+### D-5b 三层 SOC 区分（Design Gate A2 裁决，独立冻结）
+
+| 层 | 区间 | 冻结出处 | 用途 |
+|---|---|---|---|
+| HARD_SAFETY_SOC | [0.10, 0.95] | soc_hard_bounds（冻结） | 电池硬安全（soc_hard_bounds 判据不变） |
+| NORMAL_OPERATIONAL_SOC | **[0.25, 0.90]** | 电池 SOP 降额参数 | 正常运行窗口（本设计冻结） |
+| TERMINAL_POWER_AND_ENERGY_RESERVE | 单独定义（D-6） | 设计基准事件集 | 终端功率/能量储备判据 |
+
+SOC 落于 NORMAL_OPERATIONAL 窗口内**不构成**储备充分的证明（储备由 D-6 单独判定）。
+
 推导逻辑：
 - 下限取 0.25：保证航次结束时电池具备**满放电 SOP**（应急/续航能力不受降额），
   且高于 PMS `flag_soc_low`（0.20）——不会在航次结束后立即触发低 SOC 互锁监视。
@@ -70,13 +86,24 @@ P_min 运行（钳位保证）。故“带外违规”在分机组真值上只�
 
 - `P_dis_avail_kW(SOC)`：电池 SOP 四约束的最小值（电流/电压/SOC 降额/变换器，
   code_battery_ecm_e 内联实现），SOC 依赖（0.25 以下线性降额）。
-- **`P_reserve` = DECISION_REQUIRED**，Design Gate 候选值：
-  | 候选 | 定义 | 依据/后果 |
+- **`P_reserve_dis = 402 kW`、`E_reserve_dis = 3.35 kWh`、`P_reserve_chg = 168 kW`
+  —— Design Gate A3/A4 裁决：由设计基准事件集 `E_design` 从冻结参数 + 正式 48 航次
+  输入流统计推导（无人工启发式系数、无 epoch-1 结局拟合）**：
+
+  | 事件 | 冻结参数依据 | 量化 |
   |---|---|---|
-  | R-a（推荐） | `P_hotel_voyage_median`（该航次酒店负载中位数） | 航后酒店/应急负载可持续供电；数据完备（输入流 P_hotel_kW）；不引入新假设 |
-  | R-b | `P_hotel + 0.3×P_prop_median` | 更强的续航能力；0.3 系数需工程依据 |
-  | R-c | 0（无附加储备，仅带判据） | 最宽松；放弃储备语义 |
-  按 requirements FR-C3.3，R-a 为默认提案；Gate 可改选。
+  | EV-1 单→双机过渡 | STARTING 2500 tick(25s) + SYNC 500 tick(5s)（冻结）；窗口内仅 DG1 可达 ≤额定 500 kW | 负载取航次 P95（最坏 902 kW） |
+  | EV-2 负载阶跃 | 语料 99.9 分位逐秒步幅 49–61 kW/s > 机组 ramp 20 kW/s | 阶跃 ~544 kW（P95−中位） |
+  | EV-3 突然卸载 | 机组 P_min 钳位 125×2=250 kW + ramp-down 限制 | 负载谷 82–212 kW |
+  | EV-4 低载持续盈余 | 18/48 航次均值 < 250 kW | 钳位盈余充电 |
+
+  派生：`P_reserve_dis = max(P95) − 500 = 402 kW`（EV-1 窗口内 DG1 钳位额定的持续缺口）；
+  `E_reserve_dis = 402 kW × 30 s / 3600 = 3.35 kWh`（EV-2 ramp 恢复能量 ~0.03 kWh 更小）；
+  `P_reserve_chg = 2×125 − 82 = 168 kW`（钳位盈余充电）。
+
+  **A4 派生结果（保留检查）**：SOC=0.25 处 `P_dis_avail ≈ min(1050, V/I) ≈ 900 kW ≫ 402 kW`、
+  带内可用能量 696 kWh ≫ 3.35 kWh → 功率/能量储备在 [0.25,0.90] 带内**自动满足**
+  （记录为派生结果，保留作参数变化鲁棒性闸门，不因冗余删除）。
 
 ## D-7 epoch-2 1 Hz 轨迹工件
 
@@ -90,6 +117,15 @@ P_min 运行（钳位保证）。故“带外违规”在分机组真值上只�
 - 容量：0.92 MB/臂 × 192 ≈ 180 MB（数据盘余 22 GB ✓）。
 - 生成方式：sim 结束后从 logsout 一次性抽取（**不改 Model-E 物理**，仅日志提取），
   与 gate_ctrl.get_ds 同层。
+
+### D-7b 高速率硬谓词审计工件（Design Gate A6）
+
+快量谓词（battery SOP V/I `duration_tol_s=1e-6`、genset ramp 逐 tick）在 0.01 s
+原生节拍由执行器就地评估（1 Hz 采样会漏检亚秒违规），并持久化紧凑审计工件
+`<arm>.audit.v1.json`：`{predicate, violation_count, max_excursion, duration_s,
+first_t, last_t, extremum_value, context_state}` per component。
+1 Hz 轨迹 + 审计工件齐备才算完成（requirements FR-C8.2）。
+审计工件纳入 sha256 链（FR-C8.3）。
 
 ## D-8 检查器修正设计（epoch-2 生产实现，Gate 后才实施）
 
@@ -121,3 +157,22 @@ P_min 运行（钳位保证）。故“带外违规”在分机组真值上只�
 - P_reserve 数值 = 唯一人工决策点 ✓；SOP 储备语义可定义 ✓
 - 轨迹持久化仅日志提取，不改 Model-E 物理 ✓；不改 C*/预测器科学语义 ✓
 - epoch-1 零改动 ✓；无 epoch-2 正式/结果性运行 ✓
+
+## D-12 FEC 终端估值稳健性预注册（Design Gate A7）
+
+- 主判据：k_eq_E = 0.5457 kg/kWh（冻结，不变）。
+- 预注册敏感性：0.8×（0.4366）/ 1.2×（0.6549）两侧 J_FEC 重算 + break-even k_eq
+  （使成对臂 J_FEC 相等的临界 k_eq；仅诊断呈现，不进主结果）。
+- 可选次要诊断：SOC/效率感知终端能量估值（基于冻结 OCV LUT 积分）——**恒为次要**，
+  主结论以线性 k_eq 为准。
+- 全部在观察任何 epoch-2 结局**之前**实现并冻结于资格化套件；
+  禁止观察结局后选择估值规则或敏感性侧（A7 红线）。
+
+## D-13 epoch-1 terminal_soc 定性修正（Design Gate A1）
+
+epoch-1 terminal_soc 违约（144/192）的正确定性 =
+**LEGACY_TERMINAL_ENERGY_NEUTRALITY_CONTRACT_VIOLATION**：任务完成、SOC 硬边界、
+电池 SOP/V/I、安全事件四判据全 PASS → 船舶**安全完成了任务**；违约仅说明旧
+电荷维持契约（±0.005 能量中性）未满足。禁止 TRUE_PHYSICAL_INFEASIBILITY 分类语言，
+禁止据此声称船舶物理上无法安全完成任务。T-011A 报告 JSON 的对应分类字段以本条为准
+（修正案历史版本中的旧语言由本节显式取代）。

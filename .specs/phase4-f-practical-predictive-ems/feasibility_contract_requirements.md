@@ -44,13 +44,27 @@
 
 - **FR-C3.1** 废弃 `|SOC_end − SOC0| ≤ 0.005` 作为 epoch ≥ 2 的终端契约
   （epoch-1 记录按原契约保留，不重分类）。
-- **FR-C3.2** [V] 新终端契约：`SOC_terminal_min ≤ SOC_end ≤ SOC_terminal_max`，
-  默认提案 **[0.25, 0.90]**（独立冻结依据：0.25 = 放电 SOP 满能力下限
-  `ASSUMED_SOC_DisDerate_Start`；0.90 = 充电 SOP 满能力上限
-  `ASSUMED_SOC_ChgDerate_Start`；上下限均不依赖 epoch-1 结局）。
-- **FR-C3.3** [V] 附加终端储备判据：`P_dis_avail(SOC_end) ≥ P_reserve`
-  （默认提案 `P_reserve = P_hotel_voyage_median`：航后酒店/应急负载可持续供电）。
-  `P_reserve` 数值为 **DECISION_REQUIRED**（Design Gate 人工选定）。
+  epoch-1 terminal_soc 违约的正确定性 = **LEGACY_TERMINAL_ENERGY_NEUTRALITY_CONTRACT_VIOLATION**
+  （任务完成/SOC 硬边界/电池 SOP/安全判据全 PASS → 船舶安全完成任务；
+  非物理不可行，禁止该分类语言）。
+- **FR-C3.2** [V] 三层 SOC 区分（Design Gate A2 裁决，独立冻结）：
+  `HARD_SAFETY_SOC = [0.10, 0.95]`（soc_hard_bounds 判据不变）；
+  `NORMAL_OPERATIONAL_SOC = [0.25, 0.90]`（电池 SOP 降额参数独立导出，本条冻结）；
+  `TERMINAL_POWER_AND_ENERGY_RESERVE` 单独定义（FR-C3.3）。
+  新终端契约：`SOC_end ∈ NORMAL_OPERATIONAL_SOC`；
+  **SOC 落带内不构成储备充分的证明**（储备由 FR-C3.3 单独判定）。
+  冻结依据：0.25 = 放电 SOP 满能力下限 `ASSUMED_SOC_DisDerate_Start`；
+  0.90 = 充电 SOP 满能力上限 `ASSUMED_SOC_ChgDerate_Start`；均不依赖 epoch-1 结局。
+- **FR-C3.3** [V] 终端功率/能量储备判据（Design Gate A3/A4 裁决：设计基准事件集推导，
+  已无未决假设）：基于冻结事件集 E_design = {EV-1 单→双机过渡 30 s 窗口；
+  EV-2 负载阶跃（语料步幅 49–61 kW/s > 机组 ramp 20 kW/s）；EV-3 突然卸载/钳位盈余；
+  EV-4 低载持续盈余}，派生：
+  `P_reserve_dis = 402 kW`（最坏航次 P95 902 − DG 额定 500）；
+  `E_reserve_dis = 3.35 kWh`（402 kW × 30 s 过渡窗）；
+  `P_reserve_chg = 168 kW`（双机 P_min 钳位 250 − 负载谷 82）。
+  判据：`P_dis_avail(SOC_end) ≥ P_reserve_dis` 且 `P_chg_avail(SOC_end) ≥ P_reserve_chg`
+  且 `E_usable(SOC_end) ≥ E_reserve_dis`；三者在 [0.25,0.90] 带内为**派生自动满足**
+  （记录为派生结果，保留作参数变化鲁棒性闸门）。
 - **FR-C3.4** 电池硬安全边界 [0.10, 0.95]（soc_hard_bounds）**不变**、独立于
   运行带判据继续执行。
 - **FR-C3.5** 失败记录必须标注：SOC0/SOC_end/ΔSOC、带余量（signed）、
@@ -90,3 +104,22 @@
 
 禁止：改 C* 以改善结局；改预测器身份；因 epoch-1 结局更换语料或 bootstrap 方法；
 访问密封 IID/OOD；retune REAT-T；在资格化期间查看 epoch-2 正式结局。
+
+## FR-C8 高速率硬谓词审计（Design Gate A6）
+
+- **FR-C8.1** [V] 原生节拍（0.01 s）评估的快量硬谓词（battery SOP V/I
+  `duration_tol_s=1e-6`、genset ramp 20 kW/s 逐 tick）**必须**在执行时就地评估，
+  并持久化紧凑审计工件（`<arm>.audit.v1.json`）：违规计数、最大越界、累计时长、
+  首末时间戳、极值、事件态上下文（state/commitment/PMS 诊断位）。
+- **FR-C8.2** [V] 1 Hz 轨迹 + 审计工件**齐备**才计数为完成（与 FR-C5.1 同等待遇）。
+- **FR-C8.3** 审计工件纳入 sha256 链与 pack 日志。
+
+## FR-C9 FEC 终端估值稳健性预注册（Design Gate A7）
+
+- **FR-C9.1** 主判据 k_eq_E = 0.5457 kg/kWh 冻结不变。
+- **FR-C9.2** [V] 预注册敏感性：0.8×（0.4366）/ 1.2×（0.6549）两侧分析 + break-even
+  k_eq 计算（使成对臂 J_FEC 相等的临界值；仅诊断呈现）。
+- **FR-C9.3** [V] 可选次要诊断：SOC/效率感知终端能量估值（基于冻结 OCV 曲线），
+  **恒为次要**；全部在观察任何 epoch-2 结局**之前**实现并冻结于资格化套件。
+- **FR-C9.4** 禁止观察结局后选择估值规则或敏感性侧。
+
