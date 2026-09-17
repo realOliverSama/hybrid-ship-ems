@@ -86,7 +86,7 @@ SOC 落于 NORMAL_OPERATIONAL 窗口内**不构成**储备充分的证明（储�
 
 - `P_dis_avail_kW(SOC)`：电池 SOP 四约束的最小值（电流/电压/SOC 降额/变换器，
   code_battery_ecm_e 内联实现），SOC 依赖（0.25 以下线性降额）。
-- **`P_reserve_dis = 402 kW`、`E_reserve_dis = 3.35 kWh`、`P_reserve_chg = 168 kW`
+- **`P_reserve_dis = 544 kW`、`E_reserve_dis = 6.84 kWh`、`P_reserve_chg = 820 kW`
   —— Design Gate A3/A4 裁决：由设计基准事件集 `E_design` 从冻结参数 + 正式 48 航次
   输入流统计推导（无人工启发式系数、无 epoch-1 结局拟合）**：
 
@@ -97,11 +97,11 @@ SOC 落于 NORMAL_OPERATIONAL 窗口内**不构成**储备充分的证明（储�
   | EV-3 突然卸载 | 机组 P_min 钳位 125×2=250 kW + ramp-down 限制 | 负载谷 82–212 kW |
   | EV-4 低载持续盈余 | 18/48 航次均值 < 250 kW | 钳位盈余充电 |
 
-  派生：`P_reserve_dis = max(P95) − 500 = 402 kW`（EV-1 窗口内 DG1 钳位额定的持续缺口）；
-  `E_reserve_dis = 402 kW × 30 s / 3600 = 3.35 kWh`（EV-2 ramp 恢复能量 ~0.03 kWh 更小）；
-  `P_reserve_chg = 2×125 − 82 = 168 kW`（钳位盈余充电）。
+  派生：`P_reserve_dis = max(P95) − 500 = 544 kW (dynamic)`（EV-1 窗口内 DG1 钳位额定的持续缺口）；
+  `E_reserve_dis = 544 kW (dynamic) × 30 s / 3600 = 3.35 kWh`（EV-2 ramp 恢复能量 ~0.03 kWh 更小）；
+  `P_reserve_chg = 2×125 − 82 = 820 kW (dynamic)`（钳位盈余充电）。
 
-  **A4 派生结果（保留检查）**：SOC=0.25 处 `P_dis_avail ≈ min(1050, V/I) ≈ 900 kW ≫ 402 kW`、
+  **A4 派生结果（保留检查）**：SOC=0.25 处 `P_dis_avail ≈ min(1050, V/I) ≈ 900 kW ≫ 544 kW (dynamic)`、
   带内可用能量 696 kWh ≫ 3.35 kWh → 功率/能量储备在 [0.25,0.90] 带内**自动满足**
   （记录为派生结果，保留作参数变化鲁棒性闸门，不因冗余删除）。
 

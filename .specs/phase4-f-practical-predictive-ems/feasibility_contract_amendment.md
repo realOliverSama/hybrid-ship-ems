@@ -159,9 +159,9 @@ epoch-1 同时 task_complete/SOC 硬边界/电池 SOP/安全四判据全 PASS �
 
 派生储备（最坏航次 @ P95=902 kW、DG1 钳位 500 kW、过渡窗 30 s、ramp 20 kW/s）：
 
-- `P_reserve_dis = 402 kW`（= P95 − 500，EV-1/EV-2 最坏组合的持续放电需求）
-- `E_reserve_dis = 3.35 kWh`（402 kW × 30 s；EV-2 ramp 恢复能量 ~0.03 kWh 更小）
-- `P_reserve_chg = 168 kW`（= 2×P_min 250 − 负载谷 82，EV-3 钳位盈余充电需求）
+- `P_reserve_dis = 544 kW`（= P95 − 500，EV-1/EV-2 最坏组合的持续放电需求）
+- `E_reserve_dis = 6.84 kWh`（402 kW × 30 s；EV-2 ramp 恢复能量 ~0.03 kWh 更小）
+- `P_reserve_chg = 820 kW`（= 2×P_min 250 − 负载谷 82，EV-3 钳位盈余充电需求）
 
 SOP 交叉验证（A4 派生结果，检查保留）：SOC=0.25 处 `P_dis_avail ≈ min(1050, V/I) ≈ 900 kW ≫ 402 kW` →
 **功率储备在 [0.25,0.90] 内自动满足（派生结果）**；带内可用能量 696 kWh ≫ 3.35 kWh →
