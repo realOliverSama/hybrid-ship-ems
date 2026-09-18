@@ -1,6 +1,9 @@
-# FC-3 可行性契约修正案 — 设计稿（DRAFT，待 FC-3 Design Gate 评审）
+# FC-3 可行性契约修正案 — 设计（D1–D6 已并入，**DESIGN APPROVED**）
 
-状态：**DRAFT——本文件即 FC-3 Design Gate 评审对象**。未实现检查器、未重放、未重跑。
+状态：**FC-3 Design Gate：APPROVED WITH REQUIRED CORRECTIONS D1–D6（已全部并入本稿）**。
+C7/C8/C9 裁定接受（episode 计数 96/192；ON=已并网允许加载；PMIN 改类
+POST_SYNC_LOADING_TRANSIENT、撤销 PMS_TRANSITION_LIMITATION）。
+未实现检查器、未重放、未重跑。
 上游：T-011B-F 归因（`results/ppe_practical/infeasibility_attribution/`，C7/C8 修正后）
 + Post-T-011B-F Interpretation Gate 裁决（C7–C9）。
 证据基线：epoch-2 冻结证据包（root `8d6106ff`，192 臂-航次）。
@@ -15,15 +18,17 @@
 - 本修正案不使用任何控制器燃油结果（epoch-2 的 fuel/J_FEC 仅以
   INFEASIBLE_DIAGNOSTIC_ONLY 形式存在于原始记录，FC-3 与重放均不读取）。
 
-## 1. FC-3-1 硬服务削减（HARD SERVICE CURTAILMENT）定义
+## 1. FC-3-1 硬服务削减（D2：仅代表实际削减）
 
-**权威判据**：`P_unserved_kW`（08_Undervolt_Derate 路径，源码定义的"需求服务被
-电气/电力系统实际削减"信号）。
+**硬失败当且仅当**：`E_unserved = ∫P_unserved_kW dt / 3600 > tol_hard`
+（tol_hard 沿用冻结数值语义 1e-6 kWh）。
 
-- 硬失败当且仅当：`E_unserved = ∫P_unserved dt / 3600 > tol_hard`（tol_hard 沿用
-  冻结值 1e-6 kWh）或 `derate08_active` 置位时长 > 0（现有语义不变）。
-- **tol_hard 不从 epoch-2 观测分布（0.107%/0.378kWh/≤14kW）推导**——这些数值
-  仅作为归因诊断证据保留。
+- `P_unserved_kW` 为权威**仅因源码审查确立其含义** = 相关电气限制路径对
+  推进服务的**实际削减**；
+- **derate08_active 单独不构成硬服务失败**——降载状态可在需求仍被全额
+  服务时存在；其角色 = **原因/上下文诊断**（除非另有已冻结的安全谓词独立
+  定义该电气状态为不安全——电池 V/I 硬谓词即属后者，独立存在）；
+- 不因"降载逻辑激活但服务足额"而双重计罪。
 
 ## 2. FC-3-2 动态跟踪诊断（DYNAMIC TRACKING DIAGNOSTIC）定义
 
@@ -31,42 +36,42 @@
 
 - **回归诊断通道**（FC-2 设计意图的恢复），单独不构成 HARD_INFEASIBLE；
 - 仅当伴随**源码可证的削减/电气受限语义**时方可升级参与硬判据：
-  升级条件（合取）：`tracking_gap > 0` **且** `P_unserved > 0`（或
-  `derate08_active=1`，或 `P_prop_limit_kW` 类源码定义的服务限制信号激活）——
-  即跟踪缺口与权威削减共现（divergence-fail-closed 语义：
-  P_unserved=0 而 gap>0 ⇒ 纯跟踪动态，不硬判）。
+  升级条件（合取）：`tracking_gap > 0` **且** `E_unserved > tol_hard`——
+  跟踪缺口与权威削减共现（divergence-fail-closed：P_unserved=0 而 gap>0 ⇒
+  纯跟踪动态，不硬判）。**D3：`P_prop_limit_kW` 不作为 FC-3 v1 硬输入**
+  （该信号未纳入冻结证据包；仅为未来/次级服务限制一致性诊断的候选项，
+  不得为重放制造新数据依赖）。
 - 诊断输出保留在记录的 diagnostics 字段（能量/时长/极值/episode 数）。
 
-## 3. FC-3-3 PMIN 判定（派生加载态）设计
+## 3. FC-3-3 PMIN 判定（D1：源码动态最小功率准入包络）
 
-依据 C8 源码裁定（`code_genset_unit_e.m`：ON=已并网允许加载；功率链在 ON 内，
-指令钳位[125,500]→20kW/s 爬坡→τ=5s 一阶滞后；爬坡期 P<P_min 为模型自身
-registered 过渡）：
-
-**派生状态（不改 Model-E，全部由不可变证据派生）**：
+**不使用任何固定宽限窗（13.3s/26.25s 均已废弃）。** 判据为随时间变化的下包络：
 
 ```
-ON_LOADING  := state==3 且 (t − t_ON_entry) ≤ T_load_bound
-ON_STEADY   := state==3 且 (t − t_ON_entry) >  T_load_bound
+t_r = P_min / r = 6.25 s；  P_r = P_floor(t_r) = 53.6505 kW
+0 ≤ dt ≤ t_r :  P_floor(dt) = r·[dt − τ·(1 − e^{−dt/τ})]
+dt > t_r     :  P_floor(dt) = P_min + (P_r − P_min)·e^{−(dt−t_r)/τ}
+合法性：state==ON 且 P_actual(dt) ≥ P_floor(dt) − ε_numeric
 ```
 
-其中 `t_ON_entry` 由轨迹中 state 非 3→3 的跳变沿取（0.01s 原生审计 / 1Hz 轨迹
-均可取沿，重放用 1Hz）。
+- dt = t − t_ON_entry（ON 入口为 SYNC 驻留完成时刻，此刻 P_ramp=P_lag=0）；
+  指令经工厂自身钳位恒 ≥ P_min ⇒ 最小指令响应是一切合法加载轨迹的下界。
+- **ε_numeric = 0.11 kW**：推导 = 半步长量化 r·dt/2（=0.10）+ Euler 全局截断
+  上界（=0.00625），与 epoch-2 观测分布无关；源码逐位离散仿真对照闭合式
+  最大偏差 0.107 kW ≤ ε ✓。
+- 性质：ON 入口后短时低功率合法（沿冻结加载动力学）；包络指数逼近 P_min
+  （30s 处 ≈124.4，39.1s 达 P_min−ε）——长期低于 P_min 仍然硬失败；
+  **无任何结果驱动的固定豁免窗**。
+- 完整推导（含参数、公式、验证、离散裁决语义、不确定性界）见机器可读工件
+  `fc3_pmin_envelope_derivation.json`（self `45f15ea9…`）。
 
-**T_load_bound 的源码推导（非任意宽限）**：最坏情形为指令恰为 P_min 的一阶链：
-
-```
-P_lag(t) = P_cmd·(t/τ_r·u − ...)  的闭合解下界；
-T_load_bound = P_min/ramp + 4τ = 125/20 + 4×5 = 26.25 s
-```
-
-（精确最坏值 ≈13.3s，取解析上界 26.25s＝爬坡满程 + 4 倍时间常数的一阶整定
-惯例；**与任何观测分布无关**，仅由冻结参数 P_min/ramp/τ 决定。）
-
-**PMIN 硬判据**：仅 `ON_STEADY ∧ P_actual < P_min − tol` 构成违规；
-ON_LOADING 期间 P<P_min 记为 registered 过渡诊断（对齐模型 below_min_flag
-语义）。停机方向源码已自洽（ON→COOLDOWN 当拍 P=0 且 state 同拍离 3，
-不触发任何谓词）。PMAX/ramp/非ON功率合法性/电池安全/储备谓词**全部不变**。
+**1 Hz 证据离散裁决语义（重放用，前瞻定义）**：t_ON 取 1Hz 状态信号首个
+state==3 采样（真值位于其前 1s 内）；**保守裁决用 dt_lower = max(0, dt̂−1)**
+（P_floor 单调增 → 下取更宽 → 不会因时序量化产生假硬失败）。1Hz 时序模糊带：
+dt=10s→7.46kW、15s→2.75、20s→1.01、26.25s→0.29（≈ε 量级）。**声明精度为
+1Hz 而非 0.01s**（原生审计只记违规事件、不含状态跳变时戳）。
+- PMAX/ramp/非ON功率合法性/电池安全/储备谓词不变；停机方向源码自洽
+  （ON→COOLDOWN 当拍 P=0 且 state 同拍离 3，不触发任何谓词）。
 
 ## 4. 离线性判定与锁定重放资格
 
@@ -91,10 +96,15 @@ checker_v2.violations（不可变原始证据）；时间/状态上下文取自 
 - 裁决器：新冻结的 FC-3 checker（独立 SHA）；
 - 输出命名空间：`results/ppe_practical/readjudication_epoch1/`（新层，
   **不触碰、不改写 epoch-2 终端记录**——原始 HARD_INFEASIBLE 分类原样保留）；
-- 每条重放输出绑定：原 run_id + 原冻结根 `8d6106ff` + 原 trajectory_sha256
-  （复验）+ FC-3 checker SHA + 重放工具 SHA；
-- 输出内容：仅可行性分类 + 逐谓词证据（含 ON_LOADING 派生窗、registered
+- 每条重放输出**至少**包含（D4）：`original_terminal_status`、
+  `readjudicated_status`（并列，**不覆写** terminal_status 或任何原始
+  可行性字段）、`original_checker_sha`、`fc3_checker_sha`、
+  `original_epoch2_freeze_root`、`original_run_id`、`original_trajectory_sha`、
+  `original_audit_sha`、`replay_identity`；
+- 输出内容：仅可行性分类 + 逐谓词证据（含动态包络逐点判定、registered
   过渡诊断、跟踪诊断统计）。
+- **D5：warm-up parity 不重算**（与 FC-3 正交）——按 SHA 绑定已接受的
+  epoch-2 parity 工件身份（48/48 PASS，经由 T-A9 归档工件引用）。
 
 ## 6. FC-3 资格化矩阵（合成/非正式 fixture，Q-FC3-1..12）
 
@@ -112,12 +122,36 @@ checker_v2.violations（不可变原始证据）；时间/状态上下文取自 
 | Q-FC3-10 | FC-3 checker 不读取 fuel/J_FEC/臂间比较 | 静态+运行时断言 |
 | Q-FC3-11 | 锁定重放不可改写 epoch-2 原始证据 | 哈希前后复验 |
 | Q-FC3-12 | 重放输出绑定 原 run SHA + FC-3 checker SHA | 逐条校验 |
+| Q-FC3-13 | 解析/源码动态 PMIN 包络与冻结机组实现在非正式 fixture 上一致 | 数值对照（含逐位 Euler 仿真） |
+| Q-FC3-14 | 最小合法指令加载在全渐近过渡期内保持可准入 | 长窗 fixture |
+| Q-FC3-15 | 实际功率实质低于动态下包络 → 硬失败 | 注入违规 fixture |
+| Q-FC3-16 | derate 激活但推进足额 → 服务**不**硬失败 | fixture |
+| Q-FC3-17 | derate + 实际未服务推进 → 服务硬失败 | fixture |
+| Q-FC3-18 | FC3_REPLAY_INPUT_VIEW 无 fuel/J_FEC/性能字段 | 投影断言 |
+| Q-FC3-19 | 运行时访问被禁性能字段 → fail-closed | 运行时守卫 |
+| Q-FC3-20 | 锁定证据为 D1 提供足够过渡时序分辨率 | 1Hz 语义+模糊带证明 |
 
 补充案例（PMIN 专项）：合法并网一阶加载 / 稳态 ON≥Pmin / 真稳态低于 Pmin /
 停机过渡 / 重启动 / 双机转换——全部含于 Q-FC3-6/7/8 的参数化 fixture 族；
 **不设任何源自观测结果的宽限窗**（T_load_bound 纯解析推导，§3）。
 
-## 7. 未决事项（需 FC-3 Design Gate 裁决）
+## 6b. D6 — FC3_REPLAY_INPUT_VIEW（结构性燃料盲视）
+
+不依赖程序性承诺，构造**显式白名单输入投影**：
+
+- 重放引擎对以下字段**结构上不可达**：fuel_raw、J_FEC、B_perfect/B_predicted/
+  L_prediction、R、任何臂间比较性能字段；
+- 白名单暴露：run 身份、原始证据哈希、time/state、P_unserved、跟踪诊断输入
+  （P_prop_demand/actual）、DG 状态/功率、电池/SOP/V/I/安全证据、任务/服务
+  证据、原始可行性溯源字段；
+- 终端记录中可行性+燃料混居时，先构造**不可变的净化投影**再调用 FC-3
+  checker；
+- 资格化必须证明被禁字段缺席/不可达；**静态与运行时守卫**在 FC-3 代码试图
+  访问被禁字段时 fail-closed（Q-FC3-18/19）。
+
+## 7. 未决事项（FC-3 Design Gate 已裁决：①取动态包络（D1）；②P_prop_limit
+不入 v1（D3）；③批准 readjudicated_status 并列字段（D4）；④parity 不重算
+（D5）。剩余无。原 §7 四项已全部关闭。）
 
 1. `T_load_bound` 取解析上界 26.25s（P_min/ramp+4τ）还是精确最坏 13.3s？
    （本稿推荐上界——更保守、与整定惯例一致、不含逐案拟合）；

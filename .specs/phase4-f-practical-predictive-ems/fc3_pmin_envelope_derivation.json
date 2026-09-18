@@ -1,0 +1,60 @@
+{
+ "asymptotics": {
+  "floor_at_10s_kW": null,
+  "floor_at_30s_kW": null,
+  "note": "exponential approach: a generator materially below P_min long after ON entry still hard-fails; no fixed grace window exists",
+  "reaches_Pmin_minus_eps_s": 39.07
+ },
+ "discrete_replay_adjudication": {
+  "ambiguity_band_kW": {
+   "dt=10": 7.462,
+   "dt=15": 2.745,
+   "dt=20": 1.01,
+   "dt=26.25": 0.289
+  },
+  "available_evidence": "1 Hz plant_trajectory_v1 state_DG*/P_DG* signals; the 0.01 s native audit records only VIOLATION events, not state transitions",
+  "conservative_rule": "adjudicate with dt_lower = max(0, dt_hat - 1); P_floor is monotone increasing so the lower-dt floor is more permissive -> no false HARD failures from timing quantization",
+  "on_entry_estimation": "t_ON_hat = first 1 Hz sample with state == 3; true entry lies in the preceding 1 s interval",
+  "resolution_claim": "1 Hz, NOT 0.01 s; uncertainty bounded and documented (band < epsilon region beyond ~26 s)"
+ },
+ "envelope_definition": {
+  "P_r_kW": 53.6505,
+  "legality_rule": "ON state admissible iff P_actual(dt) >= P_floor(dt) - epsilon_numeric",
+  "piecewise": [
+   "0 <= dt <= t_r : P_floor(dt) = r*[dt - tau*(1 - exp(-dt/tau))]",
+   "dt > t_r      : P_floor(dt) = P_min + (P_r - P_min)*exp(-(dt - t_r)/tau)"
+  ],
+  "rationale": "P_cmd >= P_min is guaranteed by the plant's own clamp; the minimum-command response is therefore the lower bound of every legal loading trajectory",
+  "t_r_s": 6.25
+ },
+ "epsilon_numeric": {
+  "derivation": "half-sample slew quantization r*dt/2 = 0.10 kW + Euler global truncation bound r*dt^2*(t_r+5*tau)/(2*tau^2) = 0.00625 kW, rounded up; INDEPENDENT of epoch-2 outcome distributions",
+  "empirical_cross_check": "source-exact discrete simulation (cmd=P_min, 0.01 s Euler, 60 s) vs closed form: max |sim - floor| = 0.107 kW <= 0.11 kW",
+  "value_kW": 0.11
+ },
+ "frozen_parameters": {
+  "P_min_kW": 125.0,
+  "dt_s": 0.01,
+  "r_kW_per_s": 20.0,
+  "tau_s": 5.0
+ },
+ "replay_feasibility_proof": {
+  "required": [
+   "ON entry time (1 Hz, bounded)",
+   "per-DG actual power (1 Hz)",
+   "P_min/r/tau (frozen params)",
+   "P_unserved energy (native 0.01 s integral embedded in terminal records)",
+   "all other predicates from trajectory/record fields"
+  ],
+  "verdict": "LOCKED_REPLAY_ELIGIBLE = TRUE (D1 evaluable reproducibly from immutable epoch-2 evidence with the documented discrete semantics)"
+ },
+ "schema": "fc3_pmin_dynamic_envelope_derivation_v1",
+ "sha256_self": "45f15ea922a22a6ff1b78c518e1d867dacec0eb294ffcdc032526e2bd978f946",
+ "source_semantics": {
+  "chain": "ON-state: P_ref_c = clamp(P_ref, P_min, rated); P_ramp slew-limited at r; P_lag Euler update P_lag += (P_ramp - P_lag)*dt/tau with dt = 0.01 s",
+  "file": "model/simulink_modelE_(Phase4_Physics)/scripts/+model/code_genset_unit_e.m",
+  "on_meaning": "SYNC->ON fires at sync-dwell completion with P_ramp = P_lag = 0; loading happens INSIDE ON; below-Pmin during loading is the model's registered transition"
+ },
+ "task": "D1 (FC-3 Design Gate)",
+ "utc": "2026-09-18T03:59:08Z"
+}
