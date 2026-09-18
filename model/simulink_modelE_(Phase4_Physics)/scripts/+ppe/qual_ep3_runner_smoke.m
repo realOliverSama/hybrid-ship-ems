@@ -168,7 +168,7 @@ end
 
 function A = local_attrition(A, B)
 % 逐谓词累积衰减（定位 mask_n=0 的直接成因）
-t0 = max(local_on_time(A), local_on_time(B)) + 20;
+t0 = max([max(local_on_time(A), local_on_time(B)) + 20, 150]);   % Stage-2 起点
 ramp = 20 * 2;
 ratA = abs([0; diff(A.gen)]) ./ max([1; diff(A.t)], 1e-9);
 ratB = abs([0; diff(B.gen)]) ./ max([1; diff(B.t)], 1e-9);

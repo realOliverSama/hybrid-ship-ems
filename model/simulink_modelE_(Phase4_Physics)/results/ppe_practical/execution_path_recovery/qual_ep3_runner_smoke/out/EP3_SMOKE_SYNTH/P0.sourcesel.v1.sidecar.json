@@ -21,7 +21,7 @@
   "arm_binding": {
     "schema": "ppe_arm_runtime_binding_v1",
     "arm": "P0",
-    "bound_at_utc": "2026-09-18T09:21:34Z",
+    "bound_at_utc": "2026-09-18T10:21:58Z",
     "matlab_version": "MATLAB 26.1",
     "forecast_source": "N/A_NO_FORECAST",
     "controller_identity": "law5_soc_adaptive_ecms",
@@ -72,5 +72,5 @@
     }
   },
   "source_gate": "selector_baseline_active == 0 断言 EMS 分支；P_gen_req_eff_kW 必须等于所选分支的参考值",
-  "utc": "2026-09-18T09:21:59Z"
+  "utc": "2026-09-18T10:22:21Z"
 }

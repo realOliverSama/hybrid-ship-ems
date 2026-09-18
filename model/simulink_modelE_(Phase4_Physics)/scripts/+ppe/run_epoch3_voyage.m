@@ -181,7 +181,7 @@ evalin('base', sprintf("run('%s')", fullfile(ROOT, 'config', 'ModelE_TestScenari
 scn = evalin('base', 'SCENARIOS(1)');
 scn.hotel_kW = 700;                 % 合成高负荷条件（同 EP3-P1 非饱和夹具）
 scn.speed_profile_mode = 'time';
-scn.v_time_s = [0 T]; scn.v_value_mps = [7.0 7.0];
+scn.v_time_s = [0 120 T]; scn.v_value_mps = [7.0 7.0 3.0];  % Stage-1 高负荷承诺 → Stage-2 降载保 N=2
 scn.current_time_s = [0 1]; scn.current_value_mps = [0 0];
 scn.initial_SOC = 0.60; scn.stop_time_s = T;
 end
