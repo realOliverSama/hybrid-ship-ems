@@ -24,7 +24,7 @@
 - **P_unserved（权威通道，欠压降额路径）：192/192 全部 = 0.000 kWh**（checker 与 1Hz 轨迹双源一致）。无缺供事件、无 episode、无降载。
 - 失败组件是 **service_gap = max(P_prop_demand − P_prop_actual, 0)**：
   - 中位 0.378 kWh/航次（0.288–0.478），四臂**逐位相同**（中位值到小数点后 16 位一致）；
-  - **96 个启动惯性 episode**（每臂-航次 1 个）：t<60s，峰值 ≤600 kW，45% 能量集中于 t<50s——螺旋桨/船体从静止加速的惯性滞后；
+  - **96 个启动惯性 episode**（t<60s 且峰值>100kW 判据；分母 192 臂-航次、跨臂不去重、每臂 24 个）：仅 24/48 航次启动即有非零推进需求（600kW@t=0，另 24 航次 S4/S5 系启动需求为零、首 episode 为 ≤18kW 跟踪滞后）；峰值 ≤600 kW，45% 能量集中于 t<50s——螺旋桨/船体从静止加速的惯性滞后；【C7 修正：原"每臂-航次 1 个"表述错误】
   - **44,384 个巡航跟踪滞后 episode**（≤14 kW，每臂-航次约 232 个）——变速航段的速度剖面跟踪滞后；
   - 供给侧瞬时可用（机组余量 + 电池 SOP）在全部 96 个大缺口处**均大于缺口**。
 
@@ -39,7 +39,9 @@
 | 非 ON 态功率 ≠ 0 | 0 | 0 | 0 | — | — |
 | 高速率 V/I/SOP 违规 | 0 | 0 | 0 | — | — |
 
-PMIN 上下文：ON 判定后功率仍为 0–125 kW——机组一阶模型并网后的功率爬升窗（τ=5s）与低载调度窗，属**过渡相**而非稳态调度违规。
+PMIN 上下文：ON 判定后功率仍为 0–125 kW——机组模型并网后的功率加载过渡（见 K 节 C8 改类）。
+
+**【C8 源码裁定】** `code_genset_unit_e.m`：SYNC→ON 在同步驻留完成时触发（此时 P_ramp=P_lag=0），**功率加载链位于 ON 态内部**（指令钳位[125,500]→20kW/s 爬坡→τ=5s 一阶滞后），源码注释明文将爬坡期 P<P_min 定性为 *registered 过渡*（below_min_flag 登记、燃油侧钳到 125kW 节点）。闭合解析：最坏加载时长 ≈ P_min/ramp + τ·ln(...) ≈ 13.3s，与实测窗口吻合。**裁定：ON = "已并网、允许加载"（解释 A）→ PMIN 失败改类为 REMAINING_CONTRACT_SEMANTICS_ISSUE: POST_SYNC_LOADING_TRANSIENT；撤销 PMS_TRANSITION_LIMITATION**（依源码而非依可行性结果选择解释）。
 
 ## G — 因果共现
 
@@ -63,11 +65,11 @@ PMIN 上下文：ON 判定后功率仍为 0–125 kW——机组一阶模型并�
 
 ## K — 终端科学分类
 
-**MIXED**：
-1. **REMAINING_CONTRACT_SEMANTICS_ISSUE（主）**——冻结 checker 把 FC-2 定性为"对偶一致性诊断"的 service_gap 以 1e-6 kWh 容差纳入硬判据，使正常加速成为硬违规；权威通道 P_unserved 恒为零却判 load_shortfall 失败，与设计意图（authoritative=P_unserved）相悖。
-2. **PMS_TRANSITION_LIMITATION（次）**——状态感知 PMIN 谓词未豁免机组自身并网后功率爬升窗（τ=5s）与低载窗（现有豁免仅覆盖 ON↔ON ramp）。
+**【C8 后改类】UNIFORM——REMAINING_CONTRACT_SEMANTICS_ISSUE（两个组件）**：
+1. **REMAINING_CONTRACT_SEMANTICS_ISSUE（组件一）**——冻结 checker 把 FC-2 定性为"对偶一致性诊断"的 service_gap 以 1e-6 kWh 容差纳入硬判据，使正常加速成为硬违规；权威通道 P_unserved 恒为零却判 load_shortfall 失败，与设计意图（authoritative=P_unserved）相悖。
+2. **REMAINING_CONTRACT_SEMANTICS_ISSUE: POST_SYNC_LOADING_TRANSIENT（组件二）**——状态感知 PMIN 谓词把稳态 Pmin 执行到了整个 ON 态，包含模型自身登记为过渡的并网后加载窗（源码解释 A；PMS_TRANSITION_LIMITATION 已撤销）。
 
-**明确排除**：MISSION_PLANT_ENVELOPE_MISMATCH（零容量墙）；NUMERICAL_BOUNDARY_ARTIFACT（600 kW×秒级的真实物理瞬态）；CONTROLLER_AUTHORITY_LIMITATION 作为主因（真实但空洞——机制在分化前共同发生）。
+**明确排除**：MISSION_PLANT_ENVELOPE_MISMATCH（零容量墙）；NUMERICAL_BOUNDARY_ARTIFACT（600 kW×秒级的真实物理瞬态）；CONTROLLER_AUTHORITY_LIMITATION 作为主因（真实但空洞——机制在分化前共同发生）；PMS_TRANSITION_LIMITATION（C8 撤销：机组/工厂并未违反自身状态语义）。
 
 ## L — 下一阶段建议类别（仅建议，不实施）
 

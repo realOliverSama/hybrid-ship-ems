@@ -1,4 +1,32 @@
 {
+ "C7_episode_counting_correction": {
+  "aggregation_unit": "arm-voyage",
+  "count_by_arm": {
+   "C0": 24,
+   "C1": 24,
+   "C2": 24,
+   "P0": 24
+  },
+  "deduplicated_across_arms": false,
+  "denominator": "192 arm-voyages (48 voyages x 4 arms)",
+  "explanation": "only 24 of 48 voyages start with nonzero immediate prop demand (S2/S3/S6/S7/S8 strata: 600 kW demand at t=0 -> 600 kW startup gap); the other 24 (S4_D03011, S5_D04001, S5_D04005) start with P_prop_demand = 0 (departure later; first gap episode is a <=18 kW tracking lag). The earlier human-report phrase 'one per arm-voyage' was wrong.",
+  "provenance": "statistical bookkeeping only; no physical data altered",
+  "startup_inertia_episodes_total": 96,
+  "threshold_definition": "first gap episode with t0 < 60 s AND max_kW > 100 kW"
+ },
+ "C8_pmin_reclassification": {
+  "consequence": "the state-aware PMIN predicate enforced steady-state Pmin over the ENTIRE ON state including the model's own documented post-sync loading transition; the plant/PMS do NOT violate their intended state semantics",
+  "decision_discipline": "interpretation chosen from source semantics, not from feasibility outcomes",
+  "final": "REMAINING_CONTRACT_SEMANTICS_ISSUE: POST_SYNC_LOADING_TRANSIENT",
+  "interpretation": "ON = synchronized/connected and PERMITTED TO LOAD (source interpretation A)",
+  "previous": "PMS_TRANSITION_LIMITATION",
+  "source_evidence": [
+   "scripts/+model/code_genset_unit_e.m state machine: SYNC -> ON fires at n_tick >= N_ticks_sync with P_ramp = 0 and P_lag = 0 (loading happens INSIDE the ON state)",
+   "ON-state power chain: P_ref clamped to [P_min, rated]; P_ramp limited at DG_ramp_kW_per_s (20 kW/s, 0.01 s ticks); P_lag first-order lag DG_tau_s (tau = 5 s)",
+   "source comment (verbatim): ramp transition period P<P_min is registered transition (below_min_flag registers it); fuel side clamps to the 125 kW BSFC node",
+   "closed-form cross-check: worst-case P_lag reaching P_min from 0 under minimum admissible command = P_min/ramp + tau*ln(...) ~ 13.3 s; observed ON-at-P<Pmin windows ~ 7-13 s \u2014 consistent"
+  ]
+ },
  "D_first_hard_violation": {
   "C0": {
    "n": 48,
@@ -245,20 +273,20 @@
    "MISSION_PLANT_ENVELOPE_MISMATCH": "no steady or instantaneous capacity wall found (supply headroom present at every deficit)",
    "NUMERICAL_BOUNDARY_ARTIFACT": "the transients are physical (600 kW x seconds of real propeller acceleration), not solver noise"
   },
-  "primary": "REMAINING_CONTRACT_SEMANTICS_ISSUE",
+  "primary": "REMAINING_CONTRACT_SEMANTICS_ISSUE (two components: service-gap hard-inclusion; POST_SYNC_LOADING_TRANSIENT PMIN semantics)",
   "primary_evidence": [
    "authoritative P_unserved_kWh == 0.0 on ALL 192 arm-voyages (checker + 1 Hz trajectory); the undervoltage-derate service-failure channel never fires",
    "load_shortfall fails ONLY via the service_gap component (P_prop_demand - P_prop_actual), median 0.378 kWh/voyage: normal propulsion/hull acceleration lag at startup (max 600 kW, 45% of energy in t<50 s) plus <=14 kW speed-profile tracking lag in cruise (44,384 sub-20-kW episodes)",
    "the gap energies are BITWISE IDENTICAL across P0/C0/C1/C2 (median 0.37829742233260666 on all four arms): common-mode physical transient, not controller behavior",
    "no supply-side wall: at all 96 large-deficit episodes the instantaneous generator headroom + battery SOP exceeded the deficit (I verdict)"
   ],
-  "secondary": "PMS_TRANSITION_LIMITATION",
+  "secondary": null,
   "secondary_evidence": [
    "genset_limits_state_aware fails ONLY via PMIN (pmax/ramp/non-on/native high-rate all zero, incl. 0.01 s audit)",
    "DG1 PMIN 48/48 voyages, DG2 46/48; 124 episodes, 1362 s total, ~7 s per arm-voyage (0.7% of T_eval), max excursion 125 kW (ON at P=0)",
    "context: post-ON power ramp-up window of the genset first-order model (tau=5 s) and low-load dispatch windows \u2014 a plant/PMS transition phase, not steady dispatch"
   ],
-  "verdict": "MIXED: contract semantics dominant + PMS transition window secondary"
+  "verdict": "UNIFORM: REMAINING_CONTRACT_SEMANTICS_ISSUE (dominant and only physical-limitation class; PMS_TRANSITION_LIMITATION withdrawn per C8 source ruling)"
  },
  "L_recommendation": {
   "category": "MIXED_DECISION_REQUIRED",
