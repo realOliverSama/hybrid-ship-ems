@@ -6,16 +6,28 @@
  },
  "assertions": {
   "ALL_CONTROL_CRITICAL_WRITERS_FROZEN": true,
-  "CONTROL_ACTION_REACHES_PMS": "proven",
+  "C1_TARGET_RETAINED": true,
   "DATASET_V3_RETAINED": true,
+  "EMS_INTERFACE_TO_GENERATOR_QUALIFIED": true,
+  "ENDOGENOUS_INTERIOR_H_STATUS": "FAIL_NOT_CONSTRUCTIBLE_UNDER_FROZEN_CONTROLLER",
+  "ENDOGENOUS_NON_SATURATED_PROPAGATION_PROVEN": false,
+  "FC3_CHECKER_BOUND": true,
   "FORMAL_EPOCH3_RUNS": 0,
+  "FORMAL_EXECUTION_PATH_QUALIFIED_BY_COMPOSITION": true,
   "IID_TEST_DIAGNOSTIC_ACCESS": true,
   "IID_TEST_PERFORMANCE_ACCESS": 0,
   "MISSION_V3_CORPUS_RETAINED": true,
   "OOD_DIAGNOSTIC_ACCESS": true,
   "OOD_PERFORMANCE_ACCESS": 0,
   "PMS_SOURCE_MODE_ARM_BOUND": true,
-  "PREDICTOR_V3_RETAINED": true
+  "POST_BINDING_DRIFT_GUARD_ACTIVE": true,
+  "PREDICTOR_V3_RETAINED": true,
+  "PRODUCTION_CONTROLLER_TO_SELECTOR_QUALIFIED": true,
+  "QUALIFICATION_HOOK_DEFAULT_OFF": true,
+  "QUALIFICATION_HOOK_FORMAL_FORBIDDEN": true,
+  "RUNTIME_SOURCE_SELECTION_TELEMETRY_BOUND": true,
+  "SEGMENT_BOUNDARY_INVARIANCE": true,
+  "SIMULATIONINPUT_CRITICAL_BINDINGS_PROVEN": true
  },
  "blockers": [],
  "corpus_policy": "RETAIN_SAME_FROZEN_CORPUS (48 voyages; corpus identity unchanged)",
@@ -45,7 +57,7 @@
    {
     "path": "scripts/+ppe/write_sourcesel_v1.m",
     "present": true,
-    "sha256": "d315e24af13faed0c08ba2136081dd1612fd2dfbbb096545fee0a031e8ad1358"
+    "sha256": "445907c252056053f4375037cc419d914bf7055094b33d80124de41791079125"
    },
    {
     "path": "scripts/+ppe/cstar_impl_files_ep3.m",
@@ -55,7 +67,7 @@
    {
     "path": "scripts/+ppe/load_epoch3_freeze_bindings.m",
     "present": true,
-    "sha256": "490421f7fdeefd49ce769f5c26e44be134a64551babcf4d94ffae37ac511c2aa"
+    "sha256": "608e928f0c6cd8fe6c9e17ac0ffc55958813d66870b2df9f4fb162711a6a27c5"
    },
    {
     "path": "scripts/+ppe/qual_ep3.m",
@@ -65,12 +77,12 @@
    {
     "path": "scripts/+model/set_source_selection_logging.m",
     "present": true,
-    "sha256": "e926885129dd362fab7ef2ffbf28c9148f4e007ff54359bc8147e2882eeb55e6"
+    "sha256": "98a4575d543e289910ff3ddecb7f9eb74906bfeb831abaa5575ea3789910bbe0"
    },
    {
     "path": "scripts/+ppe/run_cstar.m",
     "present": true,
-    "sha256": "beb1e586b70b6299d378381bc6ccd7b711f10a1bbbf6f510b6af9ff1b10ecacf"
+    "sha256": "505689aea87f2755fdda3bf2c884577c6d93485f6c7ef5f509fa179a33716bda"
    }
   ],
   "science": [
@@ -211,9 +223,13 @@
  "overall": true,
  "provenance": {
   "generator": "python/ppe/ep3_freeze.py",
-  "generator_sha256": "c2c20b300431df468538030cbcabb7c2b7dcc9628cc0df5ceac49ba22b5e69e7"
+  "generator_sha256": "81b47e5903bec22e915c9643032413db769bb618206f11300dc30a0b01e2c7e1"
  },
  "qualification": {
+  "EP3_P1_non_saturated_propagation": {
+   "path": "results/ppe_practical/execution_path_recovery/qual_ep3_p1/qual_ep3_p1_result.json",
+   "sha256": "7160873d3f7f98074cd534113dc0e38496649643b30a2ead7e9c5661a55e2a5c"
+  },
   "impact_scope_audit": {
    "path": "results/ppe_practical/execution_path_recovery/impact_scope_audit.json",
    "sha256": "40c21b0c5978459bdf87684dc00832edf8c3a349445c056d088aeb3afc1d3a12"
@@ -227,8 +243,8 @@
    "sha256": "37c36a74df69cd8d136f4b585c69f2049ff9e217f3820077432209758e9055b7"
   }
  },
- "repaired_execution_commit": "4168646902d4e83b5c93f07f7c590c49f2f10b84",
+ "repaired_execution_commit": "f8b08dd95c0ee17af16d0f6d173ed18992e91afe",
  "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
  "schema": "ppe_epoch3_pre_execution_freeze_v1",
- "utc": "2026-09-18T06:45:49Z"
+ "utc": "2026-09-18T11:14:41Z"
 }

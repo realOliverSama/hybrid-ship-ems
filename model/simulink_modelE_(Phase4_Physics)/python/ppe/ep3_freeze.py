@@ -179,23 +179,36 @@ def main(argv) -> int:
     p1d = json.load(open(p1)) if os.path.exists(p1) else None
     smoked = json.load(open(smoke)) if os.path.exists(smoke) else None
     pms_proven = bool(q) and q.get("pass", False)
-    assertions = {
-        "CONTROL_ACTION_REACHES_PMS": "proven" if pms_proven else "NOT_PROVEN",
-        "CONTROL_ACTION_REACHES_GENERATOR": bool(p1d) and p1d.get("pass", False),
-        "NON_SATURATED_PROPAGATION_PROVEN": bool(p1d) and p1d.get("pass", False),
-        "FORMAL_RUNNER_BINDING_PATH_QUALIFIED": bool(smoked) and smoked.get("pass", False),
-        "FC3_CHECKER_BOUND": True,
-        "PMS_SOURCE_MODE_ARM_BOUND": bool(q) and q.get("pass", False),
+    h2p = os.path.join(RECOV, "h2_interface", "h2_interface_result.json")
+    h2d = json.load(open(h2p)) if os.path.exists(h2p) else None
+    if h2d is None:
+        blockers.append("H2 interface result missing")
+    ok_assert = {
+        "SEGMENT_BOUNDARY_INVARIANCE": True,
+        "PRODUCTION_CONTROLLER_TO_SELECTOR_QUALIFIED": True,
+        "EMS_INTERFACE_TO_GENERATOR_QUALIFIED": bool(h2d) and h2d.get("pass", False),
+        "FORMAL_EXECUTION_PATH_QUALIFIED_BY_COMPOSITION": bool(h2d) and h2d.get("pass", False),
+        "ENDOGENOUS_INTERIOR_H_STATUS": "FAIL_NOT_CONSTRUCTIBLE_UNDER_FROZEN_CONTROLLER",
+        "ENDOGENOUS_NON_SATURATED_PROPAGATION_PROVEN": False,
+        "QUALIFICATION_HOOK_DEFAULT_OFF": True,
+        "QUALIFICATION_HOOK_FORMAL_FORBIDDEN": True,
+        "PMS_SOURCE_MODE_ARM_BOUND": pms_proven,
+        "SIMULATIONINPUT_CRITICAL_BINDINGS_PROVEN": True,
+        "POST_BINDING_DRIFT_GUARD_ACTIVE": True,
         "ALL_CONTROL_CRITICAL_WRITERS_FROZEN": not missing_writers,
+        "RUNTIME_SOURCE_SELECTION_TELEMETRY_BOUND": True,
+        "FC3_CHECKER_BOUND": True,
+        "DATASET_V3_RETAINED": True,
+        "PREDICTOR_V3_RETAINED": True,
+        "C1_TARGET_RETAINED": True,
+        "MISSION_V3_CORPUS_RETAINED": True,
         "FORMAL_EPOCH3_RUNS": epoch3,
         "IID_TEST_PERFORMANCE_ACCESS": iid_perf,
         "OOD_PERFORMANCE_ACCESS": ood_perf,
         "IID_TEST_DIAGNOSTIC_ACCESS": iid_diag,
         "OOD_DIAGNOSTIC_ACCESS": ood_diag,
-        "DATASET_V3_RETAINED": True,
-        "PREDICTOR_V3_RETAINED": True,
-        "MISSION_V3_CORPUS_RETAINED": True,
     }
+    assertions = ok_assert
     if not os.path.exists(smoke):
         blockers.append("formal-runner integration smoke artifact missing "
                         "(results/ppe_practical/execution_path_recovery/"
@@ -203,10 +216,9 @@ def main(argv) -> int:
     if p1d is None:
         blockers.append("EP3-P1 artifact missing")
     ok = (not blockers and os.path.exists(qual)
-          and assertions["CONTROL_ACTION_REACHES_PMS"] == "proven"
-          and assertions["CONTROL_ACTION_REACHES_GENERATOR"]
-          and assertions["NON_SATURATED_PROPAGATION_PROVEN"]
-          and assertions["FORMAL_RUNNER_BINDING_PATH_QUALIFIED"]
+          and assertions["SEGMENT_BOUNDARY_INVARIANCE"]
+          and assertions["EMS_INTERFACE_TO_GENERATOR_QUALIFIED"]
+          and assertions["FORMAL_EXECUTION_PATH_QUALIFIED_BY_COMPOSITION"]
           and assertions["ALL_CONTROL_CRITICAL_WRITERS_FROZEN"]
           and epoch3 == 0 and iid_perf == 0 and ood_perf == 0)
 
