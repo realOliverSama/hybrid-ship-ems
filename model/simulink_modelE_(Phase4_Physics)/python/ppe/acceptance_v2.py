@@ -236,14 +236,16 @@ def main(argv: list[str] | None = None) -> int:
                 except Exception as e:  # noqa: BLE001
                     problems.append(f"ctrace:unparsable {tag} ({e})")
         # trajectory/audit artifacts must point INSIDE the epoch-2 namespace
-        # (path-boundary check; a bare substring test matches every
-        # formal_epoch2 path because ".../formal" is its prefix)
+        # (host-portable component check: the recorded path is produced on
+        # the execution host; validate its path COMPONENTS — an epoch-1
+        # pointer has a "formal" directory component, a legitimate epoch-2
+        # pointer has "formal_epoch2")
         for k in ("trajectory_artifact", "audit_artifact"):
-            v = str(rec.get(k, ""))
+            v = str(rec.get(k, "")).replace("\\", "/")
             if v:
-                rv = os.path.realpath(v)
-                if not rv.startswith(os.path.realpath(formal_dir)
-                                     + os.sep):
+                comps = [c for c in v.split("/") if c]
+                if "formal" in comps[:-1] or not any(
+                        c == "formal_epoch2" for c in comps):
                     problems.append(f"record:{k}-outside-epoch2-namespace "
                                     f"{tag}")
 
