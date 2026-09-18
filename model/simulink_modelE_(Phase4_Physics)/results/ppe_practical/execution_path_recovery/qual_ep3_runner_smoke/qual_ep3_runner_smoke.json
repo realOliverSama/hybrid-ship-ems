@@ -4,7 +4,7 @@
   "NONFORMAL": true,
   "FORMAL_EPOCH3_RESULT": false,
   "entry_path": "ppe.run_epoch3_voyage (same entry used by formal epoch-3)",
-  "utc": "2026-09-18T08:45:55Z",
+  "utc": "2026-09-18T09:18:28Z",
   "namespace": {
     "formal_epoch3_runs_before": 0,
     "formal_epoch3_runs_after": 0,
@@ -34,6 +34,142 @@
       "C0_runA": 0,
       "C0_runB": 0,
       "P0_runC": 0
+    },
+    "H_attrition": [
+      {
+        "predicate": "TOTAL",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "SETTLED_WINDOW",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "DG_ON",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "N_DISPATCH_OK",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "EMS_BRANCH",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "NO_FALLBACK",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "INTERIOR_ALLOCATOR",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "NO_MIN_CLAMP",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      },
+      {
+        "predicate": "NO_RAMP_SATURATION",
+        "surviving": [
+          301,
+          249,
+          249,
+          249,
+          249,
+          249,
+          0,
+          0,
+          0
+        ]
+      }
+    ],
+    "H_timebase": {
+      "n": 301,
+      "t_first": -0,
+      "t_last": 300,
+      "monotone": true,
+      "dt_median": 1,
+      "alignment": "telemetry(1 Hz) -> trajectory(1 Hz) 零阶保持（同一绝对时基）"
     },
     "H_propagation": {
       "status": "NOT_OBSERVED_IN_THIS_FIXTURE",

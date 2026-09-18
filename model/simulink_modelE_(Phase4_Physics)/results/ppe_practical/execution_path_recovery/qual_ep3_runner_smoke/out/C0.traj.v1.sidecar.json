@@ -5,8 +5,8 @@
   "run_id": "33497ba3b31f5dd7",
   "n_samples": 301,
   "t_end": 300,
-  "sha256": "189d87a45bf85ef630285dda2d36734f2cfa972bc593f7e3fffe1467a30f1d00",
-  "utc": "2026-09-18T08:45:28Z",
+  "sha256": "93bf26743077e989514d4031c8dbc985364c956f0e47d71e74801d01a129dc4b",
+  "utc": "2026-09-18T09:21:32Z",
   "channels": [
     "time",
     "P_load_total_kW",

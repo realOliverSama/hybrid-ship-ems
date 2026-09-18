@@ -1,0 +1,36 @@
+{
+ "basis": "谓词衰减表（qual_ep3_runner_smoke.json::H_attrition）证明 mask_n=0 属 §6 情形 C：TOTAL 301 → SETTLED 249 → DG_ON 249 → N_DISPATCH 249 → EMS_BRANCH 249 → NO_FALLBACK 249 → **INTERIOR_ALLOCATOR 0**（其余谓词均存活）⇒ 失败由**物理工况**造成，非 harness 接线；该谓词要求 per-unit 参考严格位于 (125,500)，而 hotel=700 夹具使 gen 域负荷≈1264 kW、ECMS 取格点最大充电解 ⇒ 聚合参考 1000 kW = allocator 上限。",
+ "derivation": "由冻结方程前瞻推导（单一夹具，非自适应扫描）：充电可行性上限 = η_rect·Pmax_agg = 970 kW；若负荷 > 970 kW 则无充电余量 ⇒ J(g) 内点最优落在负荷附近 ⇒ 参考严格带内。取 hotel=500 kW + 7 m/s ⇒ 预测 gen 域负荷 ≈1064 kW（>970）⇒ 参考预测 ≈820–940 kW（per-unit 410–470，距 Pmin 125 与 Pmax 500 分别 ≥285 / ≥30 kW 余量）；负荷远高于承诺阈值（0.85·500=425 kW LPF）⇒ 预测 N_dispatch=2。",
+ "fixture": {
+  "A_delta_lambda": 0.0,
+  "B_delta_lambda": 0.1,
+  "DG_initial_states": "OFF（自然启动）",
+  "EMS_CTRL_LAW": 6,
+  "EMS_health": "nominal",
+  "PMS_SOURCE_MODE": 1,
+  "arm": "C0",
+  "current_mps": 0.0,
+  "horizon_s": 300,
+  "hotel_kW": 500,
+  "initial_SOC": 0.6,
+  "speed_mode": "time (constant)",
+  "speed_mps": 7.0
+ },
+ "mask": "同 h_mask_semantics.json（未改）",
+ "note": "先冻结后执行；若本预测与实测不符，按 §6 分支处置，不放宽 H 判据",
+ "predictions": {
+  "Pmax_margin_kW": "≥20（per-unit，工程内点而非近界）",
+  "Pmin_margin_kW": "≥285（per-unit）",
+  "aggregate_admissible_range_kW": [
+   250,
+   1000
+  ],
+  "expected_N_dispatch": 2,
+  "expected_P_gen_ref_EMS_A_kW": "≈820–940",
+  "expected_P_gen_ref_EMS_B_kW": "≈820–960",
+  "expected_non_saturated_steady_interval_s": "约 120–300（机组合闸后 20 s 起）",
+  "expected_per_unit_allocator_target_kW": "≈410–480"
+ },
+ "schema": "ppe_h_fixture_definition_final_v1",
+ "utc": "2026-09-18T09:19:03Z"
+}
