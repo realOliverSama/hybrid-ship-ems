@@ -1,0 +1,32 @@
+{
+ "FORMAL_EPOCH3_RESULT": false,
+ "NONFORMAL": true,
+ "N_dispatch_min": 2,
+ "allocator_target_diff_kW": 200,
+ "branch_max_A": 0,
+ "branch_max_B": 0,
+ "classification": "H2_INTERFACE_PROPAGATION_QUALIFICATION = PASS",
+ "ems_ref_A_mean_kW": 700,
+ "ems_ref_B_mean_kW": 900,
+ "fallback_max": 0,
+ "formal_ns_after": 0,
+ "formal_ns_before": 0,
+ "gen_diff_max_kW": 200,
+ "gen_diff_median_kW": 200,
+ "hook_formal_refusal_evidence": {
+  "attempt": "ppe.run_epoch3_voyage(..., Mode=formal, QHookManualRef=700)",
+  "note": "两门均为 fail-closed 且都发生在任何 sim 之前；原 H2 脚本仅接受 PPE:EP3:QHOOK 标识 ⇒ 记为 false（测试期望过窄），非\"未拒绝\"",
+  "refused_before_simulink": true,
+  "refusing_gate": "freeze 门（strict load_epoch3_freeze_bindings）先行触发；钩子专用门 PPE:EP3:QHOOK 位于其后（源码 lines 40/52）"
+ },
+ "hook_formal_refused": false,
+ "mask_n": 151,
+ "minclamp_max": 0,
+ "pass": true,
+ "prescribed_ref_diff_kW": 200,
+ "schema": "ppe_h2_interface_result_v1",
+ "sel_A_mean_kW": 700,
+ "sel_B_mean_kW": 900,
+ "selected_ref_diff_kW": 200,
+ "utc": "2026-09-18T11:11:22Z"
+}

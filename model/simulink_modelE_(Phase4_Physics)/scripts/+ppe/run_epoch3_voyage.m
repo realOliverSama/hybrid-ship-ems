@@ -29,6 +29,11 @@ p.addParameter('OutDir', '', @ischar);
 p.addParameter('T', 300, @(x) isnumeric(x) && x > 20);
 p.addParameter('SmokePbar', 600, @(x) isnumeric(x) && x > 0);
 p.addParameter('SmokeFixedDelta', NaN, @(x) isnumeric(x));
+% H2 资格化专用接口钩子：在**已资格化的 EMS/PMS 接口**（05_EMS_Controller 输出）施加
+% 规定常数 EMS 参考值，使用模型**既有**的 manual 律（EMS_CTRL_LAW=0 + EMS_WORK_MODE=0 +
+% ASSUMED_EMS_Manual_Pgen_kW=R），不改任何模型/PMS/Safety 代码。
+% 纪律：默认 NaN=关；**仅 smoke 模式可用**；formal 模式出现即 fail-closed。
+p.addParameter('QHookManualRef', NaN, @(x) isnumeric(x));
 p.parse(varargin{:});
 opt = p.Results;
 ROOT = ppe.ppe_root();
@@ -57,6 +62,13 @@ end
 if isSmoke && contains(opt.OutDir, [filesep 'formal_epoch3'])
     error('PPE:EP3:NS', 'smoke 禁止写入正式 epoch-3 命名空间');
 end
+% §8 fail-closed：资格化钩子在 formal 模式一律拒绝
+if ~isSmoke && isfinite(opt.QHookManualRef)
+    error('PPE:EP3:QHOOK', '资格化接口钩子在 formal 模式被禁止（QHookManualRef 必须为 NaN）');
+end
+if isSmoke && isfinite(opt.QHookManualRef) && contains(opt.OutDir, [filesep 'formal'])
+    error('PPE:EP3:QHOOK', '钩子激活时禁止任何 formal 命名空间输出');
+end
 if ~isSmoke && contains(opt.OutDir, [filesep 'qual_ep3'])
     error('PPE:EP3:NS', 'formal 禁止写入资格化命名空间');
 end
@@ -75,6 +87,20 @@ end
 
 % ---- (3) 权威臂绑定（通用注入之后）----
 bind = ppe.arm_runtime_bind(arm, 'ForecastSource', local_fsrc(arm));
+qhook_active = false;
+if isfinite(opt.QHookManualRef)
+    % H2：在接口处施加规定常数参考（manual 律，模型既有能力；仅 smoke）
+    assignin('base', 'EMS_CTRL_LAW', 0); assignin('base', 'EMS_MODE', 0);
+    assignin('base', 'EMS_WORK_MODE', 0);
+    assignin('base', 'ASSUMED_EMS_Manual_Pgen_kW', opt.QHookManualRef);
+    bind.bindings.EMS_CTRL_LAW = 0; bind.bindings.EMS_MODE = 0;
+    bind.bindings.EMS_WORK_MODE = 0;
+    bind.qhook = struct('active', true, 'NONFORMAL_QUALIFICATION_ONLY', true, ...
+        'prescribed_ems_ref_kW', opt.QHookManualRef, ...
+        'interface', '05_EMS_Controller out:1 (P_gen_ref_kW)');
+    qhook_active = true;
+    fprintf('[EP3][QHOOK] NONFORMAL_QUALIFICATION_ONLY: prescribed EMS ref = %.1f kW\n', opt.QHookManualRef);
+end
 
 % ---- 遥测信号记录（内存内，不保存 .slx）----
 if ~bdIsLoaded(MDL), load_system(fullfile(ROOT, 'model', [MDL '.slx'])); end
@@ -135,6 +161,8 @@ rec.repaired_execution_commit = fz.repaired_execution_commit;
 rec.slx_sha256 = model.sha256_file(fullfile(ROOT, 'model', [MDL '.slx']));
 rec.T_eval = T_eval;
 rec.arm_binding = bind;
+rec.qhook_active = qhook_active;
+if qhook_active, rec.NONFORMAL_QUALIFICATION_ONLY = true; end
 rec.arm_binding_sha256 = local_json_sha(bind);
 rec.pms_source_mode = bind.workspace_readback.PMS_SOURCE_MODE;
 rec.ems_ctrl_law = bind.workspace_readback.EMS_CTRL_LAW;

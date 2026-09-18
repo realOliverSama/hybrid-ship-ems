@@ -1,0 +1,20 @@
+{
+ "R_A_kW": 700.0,
+ "R_B_kW": 900.0,
+ "estimand": "给定的两个**合法且严格内点**的 EMS 聚合参考值，是否经生产运行时的 Source Selector→allocator→发电机动力学 传播为不同的已实现发电机功率",
+ "interior_margins_kW": {
+  "R_A_margin_to_Pmax": 150.0,
+  "R_A_margin_to_Pmin": 225.0,
+  "R_A_per_unit": 350.0,
+  "R_B_margin_to_Pmax": 50.0,
+  "R_B_margin_to_Pmin": 325.0,
+  "R_B_per_unit": 450.0
+ },
+ "mask": "同 h_mask_semantics.json + Stage-2 限制；掩码不依赖 A/B 差异",
+ "mechanism": "模型既有 manual 律（EMS_CTRL_LAW=0 + EMS_WORK_MODE=0 + ASSUMED_EMS_Manual_Pgen_kW=R）在**已资格化接口**输出常数 EMS 参考；Source Selector / allocator / 发电机爬坡+惯性 / 植物 全部为真实生产路径",
+ "note": "H2 不改写历史 H（FAIL 永久保留）；钩子默认关、formal 模式 fail-closed",
+ "schema": "ppe_h2_interface_fixture_v1",
+ "stage1": "hotel 700 kW + 7 m/s（0–120 s）使 PMS 自然合闸 DG2",
+ "stage2": "3 m/s（150–300 s）保持 N=2；本阶段做 A/B 比较",
+ "utc": "2026-09-18T10:39:51Z"
+}
