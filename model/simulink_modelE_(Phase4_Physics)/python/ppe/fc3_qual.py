@@ -92,27 +92,30 @@ def main() -> int:
     # Q-FC3-1: normal acceleration, P_unserved=0 -> no hard service fail
     tr = mk_traj(gap=np.concatenate([np.full(30, 500.0), np.zeros(570)]))
     res = C.fc3_check(mk_view(), tr, AUDIT_CLEAN)
-    q["Q_FC3_1_normal_acceleration_no_hard_fail"] = \
-        not res["items"]["service_curtailment"]
+    q["Q_FC3_1_normal_acceleration_no_hard_fail"] = (
+        res["items"]["service_curtailment"]
+        and res["readjudicated_status"] != "READJUDICATED_HARD_INFEASIBLE"
+        or res["items"]["service_curtailment"])  # service passes
 
     # Q-FC3-2: small tracking lag -> no hard fail (diagnostic recorded)
     tr = mk_traj(gap=np.full(600, 10.0))
     res = C.fc3_check(mk_view(), tr, AUDIT_CLEAN)
     q["Q_FC3_2_tracking_lag_no_hard_fail"] = (
-        not res["items"]["service_curtailment"]
+        res["items"]["service_curtailment"]
         and res["diagnostics"]["tracking_gap_kWh_1hz"] > 0)
 
     # Q-FC3-3: true curtailment (E_unserved>tol) -> hard fail
     res = C.fc3_check(mk_view(e_uns=0.5), mk_traj(), AUDIT_CLEAN)
-    q["Q_FC3_3_injected_curtailment_hard_fail"] = \
-        res["items"]["service_curtailment"]
+    q["Q_FC3_3_injected_curtailment_hard_fail"] = (
+        res["readjudicated_status"] == "READJUDICATED_HARD_INFEASIBLE"
+        and not res["items"]["service_curtailment"])
 
     # Q-FC3-4: derate active with fully served propulsion -> NOT hard fail
     tr = mk_traj()
     tr["derate08_active"][:] = 1.0
     res = C.fc3_check(mk_view(), tr, AUDIT_CLEAN)
     q["Q_FC3_4_derate_served_no_hard_fail"] = (
-        not res["items"]["service_curtailment"]
+        res["items"]["service_curtailment"]
         and res["diagnostics"]["derate08_active_s_1hz"] == 600.0)
 
     # Q-FC3-5: bus residual irrelevant (not an input at all)
@@ -237,7 +240,9 @@ def main() -> int:
     tr = mk_traj(unserved=np.full(600, 40.0))
     tr["derate08_active"][:] = 1.0
     res = C.fc3_check(mk_view(e_uns=6.6), tr, AUDIT_CLEAN)
-    q["Q_FC3_17_derate_unserved_fail"] = res["items"]["service_curtailment"]
+    q["Q_FC3_17_derate_unserved_fail"] = (
+        res["readjudicated_status"] == "READJUDICATED_HARD_INFEASIBLE"
+        and not res["items"]["service_curtailment"])
 
     # Q-FC3-13: envelope matches source-exact implementation over full domain
     r, tau, pmin, dt = 20.0, 5.0, 125.0, 0.01
@@ -343,6 +348,29 @@ def main() -> int:
         OUT_Q, "fc3_locked_evidence_census.json")))
     q["Q_FC3_20_timing_resolution_proven"] = (
         cen["all_available"] and cen["resolution_policy"].startswith("1 Hz"))
+
+    # Q-FC3-29: clean fixture (zero curtailment, clean genset dynamics) must
+    # produce an overall READJUDICATED_FEASIBLE — locks the aggregation
+    # polarity defect class found during the aborted v1 replay
+    tr = mk_traj(dg_load=legal_loading(590))
+    r_clean = C.fc3_check(mk_view(), tr, AUDIT_CLEAN)
+    tr_bad = mk_traj(unserved=np.full(600, 30.0))
+    r_bad = C.fc3_check(mk_view(e_uns=5.0), tr_bad, AUDIT_CLEAN)
+    q["Q_FC3_29_clean_run_feasible_aggregation"] = bool(
+        r_clean["readjudicated_status"] == "READJUDICATED_FEASIBLE"
+        and all(r_clean["items"].values())
+        and r_bad["readjudicated_status"] == "READJUDICATED_HARD_INFEASIBLE"
+        and not r_bad["items"]["service_curtailment"])
+
+    # Q-FC3-30: every item in the vector is pass-polarity (a clean run has
+    # no False item; flipping any single item flips the overall status)
+    single_flip_ok = True
+    for k in r_clean["items"]:
+        items2 = dict(r_clean["items"])
+        items2[k] = not items2[k]
+        if all(items2.values()):
+            single_flip_ok = False
+    q["Q_FC3_30_pass_polarity_vector"] = bool(single_flip_ok)
 
     q = {k: bool(v) for k, v in q.items()}
     allpass = all(q.values())

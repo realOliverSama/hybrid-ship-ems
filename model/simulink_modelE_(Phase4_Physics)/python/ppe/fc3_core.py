@@ -219,7 +219,12 @@ def fc3_check(view: dict, traj: dict, audit: dict) -> dict:
     #    derate08 is a cause/context diagnostic only
     e_uns = float(view["payload"]["E_unserved_recorded_kWh"])
     e_uns_1hz = float(np.sum(traj["P_unserved_kW"]) / 3600.0)
-    items["service_curtailment"] = bool(e_uns > TH["tol_hard_kWh"])
+    # gate section 4 semantics: HARD CURTAILMENT iff E_unserved > tol_hard.
+    # items vector is pass-polarity (all-True == admissible), so this item
+    # encodes the PASS condition; magnitude lives in diagnostics.
+    # (Polarity wiring defect fixed prospectively after the aborted v1 run;
+    # regression Q-FC3-29 locks the clean-run aggregation path.)
+    items["service_curtailment"] = bool(e_uns <= TH["tol_hard_kWh"])
     prov["service_curtailment"] = "RECOMPUTED_1HZ(recorded-native-integral)"
     diagnostics = {
         "E_unserved_kWh": e_uns,

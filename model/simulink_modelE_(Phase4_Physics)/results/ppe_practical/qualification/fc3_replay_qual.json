@@ -36,7 +36,7 @@
    "pass": true
   },
   {
-   "detail": "READJUDICATED_HARD_INFEASIBLE",
+   "detail": "READJUDICATED_FEASIBLE",
    "name": "replay_one_smoke_shape",
    "pass": true
   },
