@@ -1,19 +1,32 @@
 {
  "assertions": {
   "ALL_CONTROL_CRITICAL_WRITERS_FROZEN": true,
-  "CONTROL_ACTION_REACHES_PMS": "NOT_PROVEN",
+  "CONTROL_ACTION_REACHES_GENERATOR": true,
+  "CONTROL_ACTION_REACHES_PMS": "proven",
+  "DATASET_V3_RETAINED": true,
+  "FC3_CHECKER_BOUND": true,
   "FORMAL_EPOCH3_RUNS": 0,
-  "IID_TEST_ACCESS": 0,
-  "OOD_ACCESS": 0,
-  "PMS_SOURCE_MODE_ARM_BOUND": false
+  "FORMAL_RUNNER_BINDING_PATH_QUALIFIED": false,
+  "IID_TEST_DIAGNOSTIC_ACCESS": true,
+  "IID_TEST_PERFORMANCE_ACCESS": 0,
+  "MISSION_V3_CORPUS_RETAINED": true,
+  "NON_SATURATED_PROPAGATION_PROVEN": true,
+  "OOD_DIAGNOSTIC_ACCESS": true,
+  "OOD_PERFORMANCE_ACCESS": 0,
+  "PMS_SOURCE_MODE_ARM_BOUND": true,
+  "PREDICTOR_V3_RETAINED": true
  },
  "blockers": [
-  "Q-EP3 qualification artifact missing (results/ppe_practical/execution_path_recovery/qual_ep3/qual_ep3_result.json) -- Q-EP3 must run on the real Model-E runtime"
+  "formal-runner integration smoke artifact missing (results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/qual_ep3_runner_smoke.json)"
  ],
  "evidence": {
+  "EP3_P1_non_saturated_propagation": {
+   "path": "results/ppe_practical/execution_path_recovery/qual_ep3_p1/qual_ep3_p1_result.json",
+   "sha256": "7160873d3f7f98074cd534113dc0e38496649643b30a2ead7e9c5661a55e2a5c"
+  },
   "impact_scope_audit": {
    "path": "results/ppe_practical/execution_path_recovery/impact_scope_audit.json",
-   "sha256": "6f6404018ae8ebf043a3776a33616fb1af61113c47663f20b87eceed89e6d528"
+   "sha256": "40c21b0c5978459bdf87684dc00832edf8c3a349445c056d088aeb3afc1d3a12"
   },
   "invalid_evidence_reclassification": {
    "path": "results/ppe_practical/execution_path_recovery/invalid_evidence_reclassification.json",
@@ -49,7 +62,7 @@
    {
     "path": "scripts/+ppe/write_sourcesel_v1.m",
     "present": true,
-    "sha256": "fdcd347cc34c1e8ad9c517f108e0baa9c126594244d2bc05305ea0b47da42401"
+    "sha256": "d315e24af13faed0c08ba2136081dd1612fd2dfbbb096545fee0a031e8ad1358"
    },
    {
     "path": "scripts/+ppe/cstar_impl_files_ep3.m",
@@ -58,23 +71,23 @@
    },
    {
     "path": "scripts/+ppe/load_epoch3_freeze_bindings.m",
-    "present": false,
-    "sha256": null
+    "present": true,
+    "sha256": "490421f7fdeefd49ce769f5c26e44be134a64551babcf4d94ffae37ac511c2aa"
    },
    {
     "path": "scripts/+ppe/qual_ep3.m",
     "present": true,
-    "sha256": "ec5f07a991b9e8d25588d4401eb24925361746ec7848b35291117e373d7bec4a"
+    "sha256": "ca6a3a3070674a3f454ef6e9c0caff0a328e9f7dea15e5df819f8e796765b6ff"
    },
    {
     "path": "scripts/+model/set_source_selection_logging.m",
     "present": true,
-    "sha256": "01fb9dd4a1bc69d7f6321b8263c6a58b3ad2d1b89d6b5e2b6b318d88910fa326"
+    "sha256": "98a4575d543e289910ff3ddecb7f9eb74906bfeb831abaa5575ea3789910bbe0"
    },
    {
     "path": "scripts/+ppe/run_cstar.m",
     "present": true,
-    "sha256": "b40bee54093029c2171ee46f579d39e3a0648f3dd4b3ee1625f898112f80160f"
+    "sha256": "beb1e586b70b6299d378381bc6ccd7b711f10a1bbbf6f510b6af9ff1b10ecacf"
    }
   ],
   "science": [
@@ -215,5 +228,5 @@
  "note": "fail-closed: gate §M forbids building the epoch-3 freeze before Q-EP3 PASS on the real Model-E runtime; no freeze file written",
  "overall": false,
  "schema": "ppe_epoch3_pre_execution_freeze_BLOCKED_v1",
- "utc": "2026-09-18T05:31:02Z"
+ "utc": "2026-09-18T07:10:01Z"
 }

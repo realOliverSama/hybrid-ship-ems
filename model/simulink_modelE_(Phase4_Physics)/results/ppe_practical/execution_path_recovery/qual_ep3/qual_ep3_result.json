@@ -1,202 +1,261 @@
 {
-  "schema": "ppe_qual_ep3_v1",
-  "tests": [
-    {
-      "id": "Q-EP3-1 / Q-EP3-2",
-      "question": "PMS_SOURCE_MODE=0 selects the baseline reference / PMS_SOURCE_MODE=1 selects the EMS reference",
-      "pass": true,
-      "evidence": {
-        "a": {
-          "id": "Q-EP3-1",
-          "pass": true,
-          "data": {
-            "selector_baseline_active_max": 1,
-            "max_abs_selected_minus_EMS_ref_kW": 690.0709082597474,
-            "max_abs_selected_minus_LPF60_baseline_kW": 1.3073986337985843E-12,
-            "t0_transient_note": "t<1 s 首拍 ems_health_ok=0 ⇒ S5 fallback 一拍；分支判定自 t>=1 s 起"
-          }
-        },
-        "b": {
-          "id": "Q-EP3-2",
-          "pass": true,
-          "data": {
-            "selector_baseline_active_max": 0,
-            "max_abs_selected_minus_EMS_ref_kW": 0
-          }
-        }
-      }
-    },
-    {
-      "id": "Q-EP3-3 / Q-EP3-4",
-      "question": "two deliberately different EMS references give different selected references / the different selected references propagate to a measurable generator response",
-      "pass": true,
-      "evidence": {
-        "a": {
-          "id": "Q-EP3-3",
-          "pass": true,
-          "data": {
-            "max_abs_ref_diff_kW": 200,
-            "delta_lambda_A": -0.1,
-            "delta_lambda_B": -0.1,
-            "path": "synthetic forecast windows -> b2_window_dp -> e_hat -> law6 -> PMS"
-          }
-        },
-        "b": {
-          "id": "Q-EP3-4",
-          "pass": true,
-          "data": {
-            "max_abs_gen_diff_kW": 10.772602129975439,
-            "non_saturated_window_n": 5864,
-            "non_saturated_window_max_abs_gen_diff_kW": 0,
-            "non_saturated_window_empty": false
-          }
-        }
-      }
-    },
-    {
-      "id": "Q-EP3-5..8",
-      "question": "P0 executes the intended law5 path / C0 executes C* with the persistence forecast / C1 executes C* with the frozen perfect-information target / C2 executes C* with frozen Predictor-v3",
-      "pass": true,
-      "evidence": {
-        "arms": [
-          {
-            "id": "Q-EP3-5",
-            "arm": "P0",
-            "EMS_CTRL_LAW": 5,
-            "PMS_SOURCE_MODE": 1,
-            "selector_baseline_active_max": 0,
-            "max_abs_selected_minus_EMS_ref_kW": 0,
-            "pass": true
-          },
-          {
-            "id": "Q-EP3-6",
-            "arm": "C0",
-            "EMS_CTRL_LAW": 6,
-            "PMS_SOURCE_MODE": 1,
-            "selector_baseline_active_max": 0,
-            "max_abs_selected_minus_EMS_ref_kW": 0,
-            "pass": true
-          },
-          {
-            "id": "Q-EP3-7",
-            "arm": "C1",
-            "EMS_CTRL_LAW": 6,
-            "PMS_SOURCE_MODE": 1,
-            "selector_baseline_active_max": 0,
-            "max_abs_selected_minus_EMS_ref_kW": 0,
-            "pass": true
-          },
-          {
-            "id": "Q-EP3-8",
-            "arm": "C2",
-            "EMS_CTRL_LAW": 6,
-            "PMS_SOURCE_MODE": 1,
-            "selector_baseline_active_max": 0,
-            "max_abs_selected_minus_EMS_ref_kW": 0,
-            "pass": true
-          }
-        ],
-        "note": "非正式合成窗口（synthetic winfun）驱动的 law/绑定验证；C1/C2 的真值/桥接资产在 epoch-3 由正式资产层提供"
-      },
-      "ids": [
-        "Q-EP3-5",
-        "Q-EP3-6",
-        "Q-EP3-7",
-        "Q-EP3-8"
-      ]
-    },
-    {
-      "id": "Q-EP3-9",
-      "question": "different forecast inputs produce a different L5 action, visible at the selected PMS reference",
-      "pass": true,
-      "evidence": {
-        "max_abs_selected_ref_diff_kW": 200,
-        "max_abs_gen_diff_kW": 10.772602129975439,
-        "path": "ppe.run_cstar (segmented C* runtime, synthetic windows)",
-        "note": "非正式合成窗；仅验证通路可见性，不评估预测价值"
-      }
-    },
-    {
-      "id": "Q-EP3-10 / Q-EP3-11",
-      "question": "generic mission injection cannot overwrite the arm-specific PMS_SOURCE_MODE / unexpected PMS_SOURCE_MODE / unknown arm fails closed",
-      "pass": true,
-      "evidence": {
-        "a": {
-          "id": "Q-EP3-10",
-          "pass": true,
-          "data": {
-            "bind_readback_ok": true,
-            "post_bind_drift_caught": true,
-            "branch_ok_after_rebind": true
-          }
-        },
-        "b": {
-          "id": "Q-EP3-11",
-          "pass": true,
-          "data": {
-            "unknown_arm_error": true,
-            "unexpected_value_error": true
-          }
-        }
-      }
-    },
-    {
-      "id": "Q-EP3-12",
-      "question": "runtime telemetry reports the actual selected branch correctly",
-      "pass": true,
-      "evidence": {
-        "baseline_fixture_selected_vs_LPF60_kW": 1.3073986337985843E-12,
-        "baseline_fixture_selected_vs_EMS_kW": 690.0709082597474,
-        "ems_fixture_selected_vs_EMS_kW": 0,
-        "baseline_run_branch_max": 0,
-        "ems_run_branch_max": 0,
-        "t0_tick_note": "首拍 ems_health_ok=0 使分支一拍为 1；判据自第 2 样本起",
-        "artifact": "/private/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/qep3_tele/QEP3_SYNTH/C0.sourcesel.v1.mat",
-        "sidecar": "/private/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/qep3_tele/QEP3_SYNTH/C0.sourcesel.v1.sidecar.json",
-        "note": "遥测通道取自模型既有输出端口（非事后反推）"
-      }
-    },
-    {
-      "id": "Q-EP3-13",
-      "question": "baseline fallback still activates correctly for its intended safety condition",
-      "pass": true,
-      "evidence": {
-        "fallback_pre_max": 0,
-        "fallback_post_max": 1,
-        "branch_post_max": 1,
-        "safety_fallback_pre_max": 0,
-        "safety_fallback_post_max": 1
-      }
-    },
-    {
-      "id": "Q-EP3-14",
-      "question": "FC-3 checker remains compatible with repaired execution evidence",
-      "pass": true,
-      "evidence": {
-        "cmd": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/../.venv_tf/bin/python -c \"import sys; sys.path.insert(0, '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/python'); import ppe.fc3_core as C; v=set(C.TRAJ_ALLOWLIST); t={'P_gen_ref_kW','P_gen_req_baseline_kW','P_gen_req_eff_kW','selector_baseline_active','P_gen_surplus_kW','out_baseline_fallback_active','ems_health_ok'}; print('OK' if not (v & t) else 'COLLIDE')\"",
-        "stdout": "OK",
-        "note": "遥测走独立工件（ppe_sourcesel_v1），植物轨迹契约 ppe_plant_traj_v1 不变；checker 白名单与新通道不相交；燃油字段仍物理缺席"
-      }
-    },
-    {
-      "id": "Q-EP3-15",
-      "question": "no formal/IID/OOD evidence is consumed",
-      "pass": true,
-      "evidence": {
-        "access_ledger_sig": {
-          "path": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/access_ledger.jsonl",
-          "n_bytes": 575397,
-          "datenum": 740243.56615740736
-        },
-        "formal_epoch2_dir_untouched": true,
-        "datasets_v3_dir_untouched": true,
-        "note": "harness 输入全部为合成场景 + 冻结配置 + 模型；未读取 formal/IID/OOD 证据文件"
-      }
-    }
+ "n_pass": 9,
+ "n_tests": 9,
+ "note": "nonformal synthetic runtime qualification; consumes no formal/IID/OOD evidence; does not modify the .slx or any controller parameter",
+ "pass": true,
+ "reporting_mapping": {
+  "executable_test_units": 9,
+  "executable_test_units_pass": "9/9",
+  "logical_requirements": 15,
+  "logical_requirements_list": [
+   "Q-EP3-1",
+   "Q-EP3-2",
+   "Q-EP3-3",
+   "Q-EP3-4",
+   "Q-EP3-5",
+   "Q-EP3-6",
+   "Q-EP3-7",
+   "Q-EP3-8",
+   "Q-EP3-9",
+   "Q-EP3-10",
+   "Q-EP3-11",
+   "Q-EP3-12",
+   "Q-EP3-13",
+   "Q-EP3-14",
+   "Q-EP3-15"
   ],
-  "n_pass": 9,
-  "n_tests": 9,
-  "pass": true,
-  "utc": "2026-09-18T06:45:24Z",
-  "note": "nonformal synthetic runtime qualification; consumes no formal/IID/OOD evidence; does not modify the .slx or any controller parameter"
+  "logical_requirements_pass": "15/15",
+  "note": "每个可执行电池覆盖 1..4 条逻辑需求；JSON 中每条需求的 pass 与证据逐条保留",
+  "unit_to_requirements": {
+   "unit1": [
+    "Q-EP3-1",
+    "Q-EP3-2"
+   ],
+   "unit2": [
+    "Q-EP3-3",
+    "Q-EP3-4"
+   ],
+   "unit3": [
+    "Q-EP3-5",
+    "Q-EP3-6",
+    "Q-EP3-7",
+    "Q-EP3-8"
+   ],
+   "unit4": [
+    "Q-EP3-9"
+   ],
+   "unit5": [
+    "Q-EP3-10",
+    "Q-EP3-11"
+   ],
+   "unit6": [
+    "Q-EP3-12"
+   ],
+   "unit7": [
+    "Q-EP3-13"
+   ],
+   "unit8": [
+    "Q-EP3-14"
+   ],
+   "unit9": [
+    "Q-EP3-15"
+   ]
+  }
+ },
+ "schema": "ppe_qual_ep3_v1",
+ "tests": [
+  {
+   "evidence": {
+    "a": {
+     "data": {
+      "max_abs_selected_minus_EMS_ref_kW": 690.0709082597474,
+      "max_abs_selected_minus_LPF60_baseline_kW": 1.3073986337985843e-12,
+      "selector_baseline_active_max": 1,
+      "t0_transient_note": "t<1 s 首拍 ems_health_ok=0 ⇒ S5 fallback 一拍；分支判定自 t>=1 s 起"
+     },
+     "id": "Q-EP3-1",
+     "pass": true
+    },
+    "b": {
+     "data": {
+      "max_abs_selected_minus_EMS_ref_kW": 0,
+      "selector_baseline_active_max": 0
+     },
+     "id": "Q-EP3-2",
+     "pass": true
+    }
+   },
+   "id": "Q-EP3-1 / Q-EP3-2",
+   "pass": true,
+   "question": "PMS_SOURCE_MODE=0 selects the baseline reference / PMS_SOURCE_MODE=1 selects the EMS reference"
+  },
+  {
+   "evidence": {
+    "a": {
+     "data": {
+      "delta_lambda_A": -0.1,
+      "delta_lambda_B": -0.1,
+      "max_abs_ref_diff_kW": 200,
+      "path": "synthetic forecast windows -> b2_window_dp -> e_hat -> law6 -> PMS"
+     },
+     "id": "Q-EP3-3",
+     "pass": true
+    },
+    "b": {
+     "data": {
+      "max_abs_gen_diff_kW": 10.77260212997544,
+      "non_saturated_window_empty": false,
+      "non_saturated_window_max_abs_gen_diff_kW": 0,
+      "non_saturated_window_n": 5864
+     },
+     "id": "Q-EP3-4",
+     "pass": true
+    }
+   },
+   "id": "Q-EP3-3 / Q-EP3-4",
+   "pass": true,
+   "question": "two deliberately different EMS references give different selected references / the different selected references propagate to a measurable generator response"
+  },
+  {
+   "evidence": {
+    "arms": [
+     {
+      "EMS_CTRL_LAW": 5,
+      "PMS_SOURCE_MODE": 1,
+      "arm": "P0",
+      "id": "Q-EP3-5",
+      "max_abs_selected_minus_EMS_ref_kW": 0,
+      "pass": true,
+      "selector_baseline_active_max": 0
+     },
+     {
+      "EMS_CTRL_LAW": 6,
+      "PMS_SOURCE_MODE": 1,
+      "arm": "C0",
+      "id": "Q-EP3-6",
+      "max_abs_selected_minus_EMS_ref_kW": 0,
+      "pass": true,
+      "selector_baseline_active_max": 0
+     },
+     {
+      "EMS_CTRL_LAW": 6,
+      "PMS_SOURCE_MODE": 1,
+      "arm": "C1",
+      "id": "Q-EP3-7",
+      "max_abs_selected_minus_EMS_ref_kW": 0,
+      "pass": true,
+      "selector_baseline_active_max": 0
+     },
+     {
+      "EMS_CTRL_LAW": 6,
+      "PMS_SOURCE_MODE": 1,
+      "arm": "C2",
+      "id": "Q-EP3-8",
+      "max_abs_selected_minus_EMS_ref_kW": 0,
+      "pass": true,
+      "selector_baseline_active_max": 0
+     }
+    ],
+    "note": "非正式合成窗口（synthetic winfun）驱动的 law/绑定验证；C1/C2 的真值/桥接资产在 epoch-3 由正式资产层提供"
+   },
+   "id": "Q-EP3-5..8",
+   "ids": [
+    "Q-EP3-5",
+    "Q-EP3-6",
+    "Q-EP3-7",
+    "Q-EP3-8"
+   ],
+   "pass": true,
+   "question": "P0 executes the intended law5 path / C0 executes C* with the persistence forecast / C1 executes C* with the frozen perfect-information target / C2 executes C* with frozen Predictor-v3"
+  },
+  {
+   "evidence": {
+    "max_abs_gen_diff_kW": 10.77260212997544,
+    "max_abs_selected_ref_diff_kW": 200,
+    "note": "非正式合成窗；仅验证通路可见性，不评估预测价值",
+    "path": "ppe.run_cstar (segmented C* runtime, synthetic windows)"
+   },
+   "id": "Q-EP3-9",
+   "pass": true,
+   "question": "different forecast inputs produce a different L5 action, visible at the selected PMS reference"
+  },
+  {
+   "evidence": {
+    "a": {
+     "data": {
+      "bind_readback_ok": true,
+      "branch_ok_after_rebind": true,
+      "post_bind_drift_caught": true
+     },
+     "id": "Q-EP3-10",
+     "pass": true
+    },
+    "b": {
+     "data": {
+      "unexpected_value_error": true,
+      "unknown_arm_error": true
+     },
+     "id": "Q-EP3-11",
+     "pass": true
+    }
+   },
+   "id": "Q-EP3-10 / Q-EP3-11",
+   "pass": true,
+   "question": "generic mission injection cannot overwrite the arm-specific PMS_SOURCE_MODE / unexpected PMS_SOURCE_MODE / unknown arm fails closed"
+  },
+  {
+   "evidence": {
+    "artifact": "/private/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/qep3_tele/QEP3_SYNTH/C0.sourcesel.v1.mat",
+    "baseline_fixture_selected_vs_EMS_kW": 690.0709082597474,
+    "baseline_fixture_selected_vs_LPF60_kW": 1.3073986337985843e-12,
+    "baseline_run_branch_max": 0,
+    "ems_fixture_selected_vs_EMS_kW": 0,
+    "ems_run_branch_max": 0,
+    "note": "遥测通道取自模型既有输出端口（非事后反推）",
+    "sidecar": "/private/var/folders/64/97jk5r5n59j8844x2w7f5fn80000gn/T/qep3_tele/QEP3_SYNTH/C0.sourcesel.v1.sidecar.json",
+    "t0_tick_note": "首拍 ems_health_ok=0 使分支一拍为 1；判据自第 2 样本起"
+   },
+   "id": "Q-EP3-12",
+   "pass": true,
+   "question": "runtime telemetry reports the actual selected branch correctly"
+  },
+  {
+   "evidence": {
+    "branch_post_max": 1,
+    "fallback_post_max": 1,
+    "fallback_pre_max": 0,
+    "safety_fallback_post_max": 1,
+    "safety_fallback_pre_max": 0
+   },
+   "id": "Q-EP3-13",
+   "pass": true,
+   "question": "baseline fallback still activates correctly for its intended safety condition"
+  },
+  {
+   "evidence": {
+    "cmd": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/../.venv_tf/bin/python -c \"import sys; sys.path.insert(0, '/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/python'); import ppe.fc3_core as C; v=set(C.TRAJ_ALLOWLIST); t={'P_gen_ref_kW','P_gen_req_baseline_kW','P_gen_req_eff_kW','selector_baseline_active','P_gen_surplus_kW','out_baseline_fallback_active','ems_health_ok'}; print('OK' if not (v & t) else 'COLLIDE')\"",
+    "note": "遥测走独立工件（ppe_sourcesel_v1），植物轨迹契约 ppe_plant_traj_v1 不变；checker 白名单与新通道不相交；燃油字段仍物理缺席",
+    "stdout": "OK"
+   },
+   "id": "Q-EP3-14",
+   "pass": true,
+   "question": "FC-3 checker remains compatible with repaired execution evidence"
+  },
+  {
+   "evidence": {
+    "access_ledger_sig": {
+     "datenum": 740243.5661574074,
+     "n_bytes": 575397,
+     "path": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/access_ledger.jsonl"
+    },
+    "datasets_v3_dir_untouched": true,
+    "formal_epoch2_dir_untouched": true,
+    "note": "harness 输入全部为合成场景 + 冻结配置 + 模型；未读取 formal/IID/OOD 证据文件"
+   },
+   "id": "Q-EP3-15",
+   "pass": true,
+   "question": "no formal/IID/OOD evidence is consumed"
+  }
+ ],
+ "utc": "2026-09-18T06:45:24Z"
 }
