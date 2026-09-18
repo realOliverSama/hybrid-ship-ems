@@ -4,7 +4,7 @@ function winfun = winfun_plan(plan_file, arm, opts)
 % Follows a python-generated per-voyage update plan (hash-bound at freeze).
 % The plan decides the ACTION at each t0; this function only executes:
 %   warmup_c0 -> C0 persistence window from this arm's own logs (all arms)
-%   anchor    -> arm source: C0 persistence / C1 stored windows file /
+%   anchor    -> arm source: P0/C0 persistence / C1 stored windows file /
 %                C2 bridge inference
 %   tail      -> C0 persistence update (legal always) / C1,C2 hold (ZOH)
 %
@@ -56,6 +56,12 @@ K0 = 30;
             return;
         end
         switch arm
+            case 'P0'
+                % P0 = law5 SOC-自适应基线：无预测消费通道（AI_Pred_Source=0，
+                % law5 不消费 ECMS_EHat_Data）。anchor 沿用 C0 persistence 窗
+                % —— 对所有臂合法的暖机窗；P0 的 EMS 律不消费该窗 ⇒ 窗内容
+                % 不影响 P0 行为，仅维持 run_cstar 的窗/DP 契约。
+                [Pbar, prov] = local_c0(t0, T_eval, ds, p0, K0);
             case 'C1'
                 S = load(opts.c1_windows_file);   % anchors, Y
                 iw = find(abs(S.anchors - t0) < 1e-9, 1, 'first');
