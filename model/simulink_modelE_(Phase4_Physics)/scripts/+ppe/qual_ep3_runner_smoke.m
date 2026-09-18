@@ -31,12 +31,13 @@ if n_formal_before ~= 0
 end
 
 % ---- 同一入口路径：C0 两次（不同合成预测窗 ⇒ 不同 EMS 参考）----
+% A/B 固定 δλ（0.00 vs +0.10，EP3-P1 同工况：双机 ON、参考落在可达带内）
 recA = ppe.run_epoch3_voyage('EP3_SMOKE_SYNTH', 'C0', 'Mode', 'smoke', ...
-    'T', opt.T, 'SmokePbar', 120, 'OutDir', fullfile(opt.OutDir, 'out'));
+    'T', opt.T, 'SmokeFixedDelta', 0.00, 'OutDir', fullfile(opt.OutDir, 'out'));
 recB = ppe.run_epoch3_voyage('EP3_SMOKE_SYNTH', 'C0', 'Mode', 'smoke', ...
-    'T', opt.T, 'SmokePbar', 600, 'OutDir', fullfile(opt.OutDir, 'out'));
+    'T', opt.T, 'SmokeFixedDelta', 0.10, 'OutDir', fullfile(opt.OutDir, 'out'));
 recP = ppe.run_epoch3_voyage('EP3_SMOKE_SYNTH', 'P0', 'Mode', 'smoke', ...
-    'T', opt.T, 'SmokePbar', 600, 'OutDir', fullfile(opt.OutDir, 'out'));
+    'T', opt.T, 'SmokeFixedDelta', 0.00, 'OutDir', fullfile(opt.OutDir, 'out'));
 
 n_formal_after = local_count_runs(FORMAL_NS);
 
@@ -77,6 +78,7 @@ gendiff_med = median([abs(A.gen(mask) - B.gen(mask)); 0]);
 ok = inj_is_defective && bind_ok && guard_seen && si_ok ...
     && branchA < 0.5 && branchB < 0.5 && branchP < 0.5 ...
     && selA_ems < 1e-9 && selB_ems < 1e-9 && selP_ems < 1e-9 ...
+    && sum(mask) > 50 && refdiff > 1.0 && gendiff > 1.0 ...
     && n_formal_before == 0 && n_formal_after == 0;
 % H（非饱和传播）在本 smoke 中**记录但不作为门禁**：绑定路径资格化由 A..G 证明；
 % 非饱和传播已由 EP3-P1 在同一 runner/守卫/绑定机制上证明（见 qual_ep3_p1_result.json）。

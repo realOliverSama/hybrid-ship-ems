@@ -13,7 +13,7 @@
   "arm_binding": {
     "schema": "ppe_arm_runtime_binding_v1",
     "arm": "C0",
-    "bound_at_utc": "2026-09-18T08:06:27Z",
+    "bound_at_utc": "2026-09-18T08:17:22Z",
     "matlab_version": "MATLAB 26.1",
     "forecast_source": "oracle",
     "controller_identity": "law6_oracle_ecms",
@@ -63,7 +63,7 @@
       "EMS_CTRL_LAW": "Variant select: 5=SOC-Adaptive, 6=Oracle predictive"
     }
   },
-  "arm_binding_sha256": "56e7a2db08a58b2404c8c593a08ce314552bc16e9e2592668ec7cb75fe5f7604",
+  "arm_binding_sha256": "50b6f93be69e8e5b473d2a27c609884258ef0fa4f36832ed6fac7aabe3c16731",
   "pms_source_mode": 1,
   "ems_ctrl_law": 6,
   "forecast_source": "oracle",
@@ -72,11 +72,11 @@
     "path": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/out/EP3_SMOKE_SYNTH/C0.sourcesel.v1.mat",
     "sidecar": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/out/EP3_SMOKE_SYNTH/C0.sourcesel.v1.sidecar.json",
     "n_samples": 301,
-    "sha256": "2e7751d95f937ec5b60dda027fde5b4692c0a8415ac566d7ea62f4db954ef27c"
+    "sha256": "f522b54ff47fde30ec5864be9f7b97b0762c6b9aebef63df2c83d8f1d6319606"
   },
   "trajectory": {
     "path": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/out/C0.traj.v1.mat",
-    "sha256": "59674ef408e4c08611d417538f9e548d34e35647fbe0607ab6e0744d9d9b143b",
+    "sha256": "6073aac5a930594800fea0200f52a717c5fc78f7d5860ab26a841e54b82c1cd8",
     "n_samples": 301,
     "sidecar": {
       "schema": "ppe_plant_traj_v1",
@@ -85,8 +85,8 @@
       "run_id": "33497ba3b31f5dd7",
       "n_samples": 301,
       "t_end": 300,
-      "sha256": "59674ef408e4c08611d417538f9e548d34e35647fbe0607ab6e0744d9d9b143b",
-      "utc": "2026-09-18T08:11:07Z",
+      "sha256": "6073aac5a930594800fea0200f52a717c5fc78f7d5860ab26a841e54b82c1cd8",
+      "utc": "2026-09-18T08:17:50Z",
       "channels": [
         "time",
         "P_load_total_kW",
@@ -133,7 +133,7 @@
       ]
     }
   },
-  "controller_trace_sha256": "a28f6d6eaf17f7e2490e82a3a12b2ba4c67375358d681d9b4b1d4638524e6df1",
+  "controller_trace_sha256": "4789efb7cabbb6acd881853eb9c4559997144de31c989964c5862f39e6129371",
   "n_segments": 30,
   "simulationinput_binding": [
     "ADAPTER_FORCE_MODE",
@@ -148,36 +148,36 @@
   ],
   "binding_guard_applied_n_segments": 30,
   "delta_lambda": [
-    -0.1,
     0.1,
-    0.020000000000000004,
-    -0.055000000000000007,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1,
-    -0.1
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1,
+    0.1
   ],
   "warmup_state": {
     "SOC": 0.56418497368355358,
@@ -188,7 +188,7 @@
     "state_DG1": 3,
     "state_DG2": 3,
     "N_on": 2,
-    "last_dlam": -0.1,
+    "last_dlam": 0.1,
     "t": 300
   },
   "hard_feasibility": {
@@ -199,5 +199,5 @@
   "SOC0": 0.6,
   "SOC_end": 0.56418497368355358,
   "J_FEC_kg": null,
-  "utc": "2026-09-18T08:11:07Z"
+  "utc": "2026-09-18T08:17:50Z"
 }

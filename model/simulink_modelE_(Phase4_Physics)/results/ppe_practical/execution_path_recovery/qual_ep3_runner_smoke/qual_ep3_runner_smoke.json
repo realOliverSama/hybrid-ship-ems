@@ -4,7 +4,7 @@
   "NONFORMAL": true,
   "FORMAL_EPOCH3_RESULT": false,
   "entry_path": "ppe.run_epoch3_voyage (same entry used by formal epoch-3)",
-  "utc": "2026-09-18T08:00:40Z",
+  "utc": "2026-09-18T08:18:17Z",
   "namespace": {
     "formal_epoch3_runs_before": 0,
     "formal_epoch3_runs_after": 0,
@@ -36,10 +36,12 @@
       "P0_runC": 0
     },
     "H_propagation": {
+      "status": "NOT_OBSERVED_IN_THIS_FIXTURE",
       "mask_n": 0,
       "max_ref_diff_kW": 0,
       "max_gen_diff_kW": 0,
-      "median_gen_diff_kW": 0
+      "median_gen_diff_kW": 0,
+      "note": "非饱和传播由 EP3-P1 证明（NON_SATURATED_PROPAGATION_PROVEN=true）；本 smoke 的职责是绑定路径资格化（A..G）"
     }
   },
   "runs": {

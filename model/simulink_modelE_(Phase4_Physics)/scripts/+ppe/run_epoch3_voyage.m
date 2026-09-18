@@ -28,6 +28,7 @@ p.addParameter('Mode', 'formal', @(x) any(strcmp(x, {'formal', 'smoke'})));
 p.addParameter('OutDir', '', @ischar);
 p.addParameter('T', 300, @(x) isnumeric(x) && x > 20);
 p.addParameter('SmokePbar', 600, @(x) isnumeric(x) && x > 0);
+p.addParameter('SmokeFixedDelta', NaN, @(x) isnumeric(x));
 p.parse(varargin{:});
 opt = p.Results;
 ROOT = ppe.ppe_root();
@@ -85,7 +86,11 @@ end
 
 % ---- (4)(5)(6) 分段执行（BindingGuard ⇒ 逐段 setVariable + 段级复核）----
 if isSmoke
-    winfun = @(t0, ds, p0) local_smoke_winfun(t0, ds, p0, opt.SmokePbar);
+    if isfinite(opt.SmokeFixedDelta)
+        winfun = @(t0, ds, p0) local_hold_winfun(t0, ds, p0);   % 固定 δλ（EP3-P1 工况）
+    else
+        winfun = @(t0, ds, p0) local_smoke_winfun(t0, ds, p0, opt.SmokePbar);
+    end
 else
     winfun = ppe.winfun_plan(local_plan_file(ROOT, voyage_id), arm, struct( ...
         'T_eval', T_eval, ...
@@ -95,9 +100,11 @@ else
         'water_depth_m', double(rb.scn.water_depth_m), 'ctrl_mode', 0));
 end
 ctxid = local_ctxid(ROOT, fz, pc, voyage_id, arm, isSmoke);
-[ds, meta] = ppe.run_cstar(rb.scn, winfun, arm, T_eval, ctxid, ...
-    'SkipInject', true, 'BindingGuard', bind, ...
-    'Seed', 'phase4f-ppe-formal-epoch1');
+cargs = {'SkipInject', true, 'BindingGuard', bind, 'Seed', 'phase4f-ppe-formal-epoch1'};
+if isSmoke && isfinite(opt.SmokeFixedDelta)
+    cargs = [cargs, {'InitialDLam', opt.SmokeFixedDelta}];
+end
+[ds, meta] = ppe.run_cstar(rb.scn, winfun, arm, T_eval, ctxid, cargs{:});
 
 % ---- (7)(8) 证据落盘 ----
 vdir = fullfile(opt.OutDir, char(voyage_id));
@@ -187,6 +194,13 @@ names = {'VOYAGE_SPEED_MODE', 'VOYAGE_V_TIME_S', 'VOYAGE_V_VALUE_MPS', ...
 vals = {1.0, scn.v_time_s(:), scn.v_value_mps(:), 0.0, [0 1], [0 0], ...
     scn.water_depth_m, 0.0, 0.0};   % 与 names 同为行 cell（struct 尺寸需一致）
 il = struct('var_name', names, 'value', vals);
+end
+
+function [Pbar, prov, use_prev] = local_hold_winfun(t0, ds, p0) %#ok<INUSD>
+% 固定 δλ 夹具：ZOH 保持首段设定值（EP3-P1 同工况，经生产入口）
+Pbar = 600 * ones(12, 1);
+prov = struct('source_id', 'ep3_smoke_fixed_delta', 't0', t0);
+use_prev = true;
 end
 
 function [Pbar, prov, use_prev] = local_smoke_winfun(t0, ds, p0, pbar) %#ok<INUSD>
