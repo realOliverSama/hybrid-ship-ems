@@ -16,11 +16,9 @@
   "FC3_CHECKER_BOUND": true,
   "FORMAL_EPOCH3_RUNS": 0,
   "FORMAL_EXECUTION_PATH_QUALIFIED_BY_COMPOSITION": true,
-  "FORMAL_RUNNER_BINDING_PATH_QUALIFIED": true,
   "IID_TEST_DIAGNOSTIC_ACCESS": true,
   "IID_TEST_PERFORMANCE_ACCESS": 0,
   "MISSION_V3_CORPUS_RETAINED": true,
-  "NON_SATURATED_PROPAGATION_PROVEN": false,
   "OOD_DIAGNOSTIC_ACCESS": true,
   "OOD_PERFORMANCE_ACCESS": 0,
   "PMS_SOURCE_MODE_ARM_BOUND": true,
@@ -71,7 +69,7 @@
    {
     "path": "scripts/+ppe/load_epoch3_freeze_bindings.m",
     "present": true,
-    "sha256": "608e928f0c6cd8fe6c9e17ac0ffc55958813d66870b2df9f4fb162711a6a27c5"
+    "sha256": "7a4b033b87e70f620a12915de928acf9f85a4c0b5ffdb48e27708b680d88cfdf"
    },
    {
     "path": "scripts/+ppe/qual_ep3.m",
@@ -247,8 +245,8 @@
    "sha256": "37c36a74df69cd8d136f4b585c69f2049ff9e217f3820077432209758e9055b7"
   }
  },
- "repaired_execution_commit": "13f0f8f4c8d3d12f583bfef91f4c280763179eee",
+ "repaired_execution_commit": "e73efb861f84f60b282c0133a04043d933c99084",
  "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
  "schema": "ppe_epoch3_pre_execution_freeze_v1",
- "utc": "2026-09-18T16:06:36Z"
+ "utc": "2026-09-18T16:20:22Z"
 }
