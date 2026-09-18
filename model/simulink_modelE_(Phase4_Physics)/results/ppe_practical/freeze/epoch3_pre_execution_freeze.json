@@ -7,6 +7,8 @@
  "assertions": {
   "ALL_CONTROL_CRITICAL_WRITERS_FROZEN": true,
   "C1_TARGET_RETAINED": true,
+  "CONTROL_ACTION_REACHES_GENERATOR": true,
+  "CONTROL_ACTION_REACHES_PMS": "proven",
   "DATASET_V3_RETAINED": true,
   "EMS_INTERFACE_TO_GENERATOR_QUALIFIED": true,
   "ENDOGENOUS_INTERIOR_H_STATUS": "FAIL_NOT_CONSTRUCTIBLE_UNDER_FROZEN_CONTROLLER",
@@ -14,9 +16,11 @@
   "FC3_CHECKER_BOUND": true,
   "FORMAL_EPOCH3_RUNS": 0,
   "FORMAL_EXECUTION_PATH_QUALIFIED_BY_COMPOSITION": true,
+  "FORMAL_RUNNER_BINDING_PATH_QUALIFIED": true,
   "IID_TEST_DIAGNOSTIC_ACCESS": true,
   "IID_TEST_PERFORMANCE_ACCESS": 0,
   "MISSION_V3_CORPUS_RETAINED": true,
+  "NON_SATURATED_PROPAGATION_PROVEN": true,
   "OOD_DIAGNOSTIC_ACCESS": true,
   "OOD_PERFORMANCE_ACCESS": 0,
   "PMS_SOURCE_MODE_ARM_BOUND": true,
@@ -223,7 +227,7 @@
  "overall": true,
  "provenance": {
   "generator": "python/ppe/ep3_freeze.py",
-  "generator_sha256": "81b47e5903bec22e915c9643032413db769bb618206f11300dc30a0b01e2c7e1"
+  "generator_sha256": "6a7daccba5e631612d9c70095fdafc2d94270414e06bf931b9be6361432402d7"
  },
  "qualification": {
   "EP3_P1_non_saturated_propagation": {
@@ -243,8 +247,8 @@
    "sha256": "37c36a74df69cd8d136f4b585c69f2049ff9e217f3820077432209758e9055b7"
   }
  },
- "repaired_execution_commit": "f8b08dd95c0ee17af16d0f6d173ed18992e91afe",
+ "repaired_execution_commit": "13f0f8f4c8d3d12f583bfef91f4c280763179eee",
  "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
  "schema": "ppe_epoch3_pre_execution_freeze_v1",
- "utc": "2026-09-18T11:14:41Z"
+ "utc": "2026-09-18T16:06:36Z"
 }

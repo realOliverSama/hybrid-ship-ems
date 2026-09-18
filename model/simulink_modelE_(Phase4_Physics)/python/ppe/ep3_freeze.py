@@ -184,6 +184,8 @@ def main(argv) -> int:
     if h2d is None:
         blockers.append("H2 interface result missing")
     ok_assert = {
+        "CONTROL_ACTION_REACHES_PMS": "proven" if pms_proven else "NOT_PROVEN",
+        "CONTROL_ACTION_REACHES_GENERATOR": bool(p1d) and p1d.get("pass", False),
         "SEGMENT_BOUNDARY_INVARIANCE": True,
         "PRODUCTION_CONTROLLER_TO_SELECTOR_QUALIFIED": True,
         "EMS_INTERFACE_TO_GENERATOR_QUALIFIED": bool(h2d) and h2d.get("pass", False),
