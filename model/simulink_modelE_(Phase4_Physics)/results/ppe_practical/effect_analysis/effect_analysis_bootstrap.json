@@ -1,0 +1,39 @@
+{
+ "B": 10000,
+ "bindings": {
+  "analysis_implementation_sha256": "edaa792c1a4062ee951ac6a9bdaa7b0bb22543e6e3d74ada90d9a9a987a783fb",
+  "corpus_identity_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "eligibility_freeze_root": "ff3c11066ea21ac0e00ebc5f3e613d583bce9c89d31053eb59f19cdc8f131f85",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+  "fc3_replay_acceptance_sha256": "f820e1ef4578d41106ae12f120deeb82f04aa6388feecfa9ff62e61eb503debb",
+  "fc3_replay_freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "ci95": {
+  "B_perfect": {
+   "hi": 0.0,
+   "lo": 0.0
+  },
+  "B_predicted": {
+   "hi": 0.0,
+   "lo": 0.0
+  },
+  "L_prediction": {
+   "hi": 0.0,
+   "lo": 0.0
+  }
+ },
+ "deterministic": true,
+ "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+ "point_estimates": {
+  "B_perfect": 0.0,
+  "B_predicted": 0.0,
+  "L_prediction": 0.0
+ },
+ "resampling": "per-tier, with replacement over defined split_groups, draw size = n_defined; percentile [2.5, 97.5] linear",
+ "schema": "effect_analysis_bootstrap_v1",
+ "seed": "phase4f-t445-bootstrap-v1",
+ "sha256_self": "8d382f8d0680e1324db335a0fbf4d06311814e59506e0db3ab14ccdbdf77dd96"
+}

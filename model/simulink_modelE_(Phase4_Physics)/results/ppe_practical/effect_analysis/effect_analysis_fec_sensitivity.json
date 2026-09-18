@@ -1,0 +1,103 @@
+{
+ "bindings": {
+  "analysis_implementation_sha256": "edaa792c1a4062ee951ac6a9bdaa7b0bb22543e6e3d74ada90d9a9a987a783fb",
+  "corpus_identity_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "eligibility_freeze_root": "ff3c11066ea21ac0e00ebc5f3e613d583bce9c89d31053eb59f19cdc8f131f85",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+  "fc3_replay_acceptance_sha256": "f820e1ef4578d41106ae12f120deeb82f04aa6388feecfa9ff62e61eb503debb",
+  "fc3_replay_freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "break_even": {
+  "B_perfect": {
+   "k_break_even": null,
+   "point_at_canonical": 0.0,
+   "status": "UNDEFINED (dSOC contrast ~ 0)",
+   "theta_at_canonical": null
+  },
+  "B_predicted": {
+   "k_break_even": null,
+   "point_at_canonical": 0.0,
+   "status": "UNDEFINED (dSOC contrast ~ 0)",
+   "theta_at_canonical": null
+  },
+  "L_prediction": {
+   "k_break_even": null,
+   "point_at_canonical": 0.0,
+   "status": "UNDEFINED (dSOC contrast ~ 0)",
+   "theta_at_canonical": null
+  }
+ },
+ "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+ "ordering": {
+  "0.8x_Bperfect_ge_Bpredicted": false,
+  "1.2x_Bperfect_ge_Bpredicted": false,
+  "canonical_Bperfect_ge_Bpredicted": true
+ },
+ "prereg_source": "qualification/fec_robustness_prereg.json",
+ "schema": "effect_analysis_fec_sensitivity_v1",
+ "sensitivity": {
+  "0.8x": {
+   "B_perfect": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "B_predicted": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "L_prediction": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "k_eq": 0.43656
+  },
+  "1.2x": {
+   "B_perfect": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "B_predicted": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "L_prediction": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "k_eq": 0.65484
+  },
+  "canonical": {
+   "B_perfect": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "B_predicted": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "L_prediction": [
+    0.0,
+    "FULL_COHORT_ESTIMATE"
+   ],
+   "k_eq": 0.5457
+  }
+ },
+ "sha256_self": "c67254cbe3814c4a94b268118f296b5af09e8c55fc499deef11ca5405df3abc0",
+ "sign_changes": {
+  "B_perfect": {
+   "0.8x_sign_change": false,
+   "1.2x_sign_change": false
+  },
+  "B_predicted": {
+   "0.8x_sign_change": false,
+   "1.2x_sign_change": false
+  },
+  "L_prediction": {
+   "0.8x_sign_change": false,
+   "1.2x_sign_change": false
+  }
+ }
+}

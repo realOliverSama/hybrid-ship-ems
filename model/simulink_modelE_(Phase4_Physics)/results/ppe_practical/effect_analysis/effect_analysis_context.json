@@ -1,0 +1,233 @@
+{
+ "P0_context": {
+  "C0_minus_P0_JFEC": {
+   "max": 0.0,
+   "mean": 0.0,
+   "median": 0.0,
+   "min": 0.0,
+   "n": 48,
+   "negative": 0,
+   "positive": 0,
+   "std": 0.0,
+   "zero": 48
+  },
+  "note": "P0 contextual only; not an attribution arm"
+ },
+ "arm_trajectory_identity": {
+  "C0C1C2_arrays_identical": 48,
+  "C0C1C2_differ": [],
+  "P0C0_arrays_identical": 48,
+  "P0C0_differ": [],
+  "max_abs_diff_overall": 0.0,
+  "n_voyages_checked": 48
+ },
+ "bindings": {
+  "analysis_implementation_sha256": "edaa792c1a4062ee951ac6a9bdaa7b0bb22543e6e3d74ada90d9a9a987a783fb",
+  "corpus_identity_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "eligibility_freeze_root": "ff3c11066ea21ac0e00ebc5f3e613d583bce9c89d31053eb59f19cdc8f131f85",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+  "fc3_replay_acceptance_sha256": "f820e1ef4578d41106ae12f120deeb82f04aa6388feecfa9ff62e61eb503debb",
+  "fc3_replay_freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "by_arm": {
+  "C0": {
+   "J_FEC": {
+    "max": 289.7272626275482,
+    "mean": 215.59575263303972,
+    "median": 214.32255478127072,
+    "min": 147.03254782793292,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 40.66081773613649,
+    "zero": 0
+   },
+   "SOC_end": {
+    "max": 0.6017624706840404,
+    "mean": 0.593179436535218,
+    "median": 0.5922470119984096,
+    "min": 0.5868099609202109,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "arm": "C0",
+   "delta_SOC": {
+    "max": 0.013190039079789107,
+    "mean": 0.006820563464781992,
+    "median": 0.007752988001590355,
+    "min": -0.0017624706840404514,
+    "n": 48,
+    "negative": 10,
+    "positive": 38,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "fuel_raw": {
+    "max": 282.44971386326125,
+    "mean": 211.60817055170048,
+    "median": 209.5205182289002,
+    "min": 147.8493872062921,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 38.47044452701346,
+    "zero": 0
+   },
+   "n": 48
+  },
+  "C1": {
+   "J_FEC": {
+    "max": 289.7272626275482,
+    "mean": 215.59575263303972,
+    "median": 214.32255478127072,
+    "min": 147.03254782793292,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 40.66081773613649,
+    "zero": 0
+   },
+   "SOC_end": {
+    "max": 0.6017624706840404,
+    "mean": 0.593179436535218,
+    "median": 0.5922470119984096,
+    "min": 0.5868099609202109,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "arm": "C1",
+   "delta_SOC": {
+    "max": 0.013190039079789107,
+    "mean": 0.006820563464781992,
+    "median": 0.007752988001590355,
+    "min": -0.0017624706840404514,
+    "n": 48,
+    "negative": 10,
+    "positive": 38,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "fuel_raw": {
+    "max": 282.44971386326125,
+    "mean": 211.60817055170048,
+    "median": 209.5205182289002,
+    "min": 147.8493872062921,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 38.47044452701346,
+    "zero": 0
+   },
+   "n": 48
+  },
+  "C2": {
+   "J_FEC": {
+    "max": 289.7272626275482,
+    "mean": 215.59575263303972,
+    "median": 214.32255478127072,
+    "min": 147.03254782793292,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 40.66081773613649,
+    "zero": 0
+   },
+   "SOC_end": {
+    "max": 0.6017624706840404,
+    "mean": 0.593179436535218,
+    "median": 0.5922470119984096,
+    "min": 0.5868099609202109,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "arm": "C2",
+   "delta_SOC": {
+    "max": 0.013190039079789107,
+    "mean": 0.006820563464781992,
+    "median": 0.007752988001590355,
+    "min": -0.0017624706840404514,
+    "n": 48,
+    "negative": 10,
+    "positive": 38,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "fuel_raw": {
+    "max": 282.44971386326125,
+    "mean": 211.60817055170048,
+    "median": 209.5205182289002,
+    "min": 147.8493872062921,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 38.47044452701346,
+    "zero": 0
+   },
+   "n": 48
+  },
+  "P0": {
+   "J_FEC": {
+    "max": 289.7272626275482,
+    "mean": 215.59575263303972,
+    "median": 214.32255478127072,
+    "min": 147.03254782793292,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 40.66081773613649,
+    "zero": 0
+   },
+   "SOC_end": {
+    "max": 0.6017624706840404,
+    "mean": 0.593179436535218,
+    "median": 0.5922470119984096,
+    "min": 0.5868099609202109,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "arm": "P0",
+   "delta_SOC": {
+    "max": 0.013190039079789107,
+    "mean": 0.006820563464781992,
+    "median": 0.007752988001590355,
+    "min": -0.0017624706840404514,
+    "n": 48,
+    "negative": 10,
+    "positive": 38,
+    "std": 0.00475308617645028,
+    "zero": 0
+   },
+   "fuel_raw": {
+    "max": 282.44971386326125,
+    "mean": 211.60817055170048,
+    "median": 209.5205182289002,
+    "min": 147.8493872062921,
+    "n": 48,
+    "negative": 0,
+    "positive": 48,
+    "std": 38.47044452701346,
+    "zero": 0
+   },
+   "n": 48
+  }
+ },
+ "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+ "note": "engineering secondary context; P0 not an attribution arm",
+ "schema": "effect_analysis_context_v1",
+ "sha256_self": "956f44f0f9525638640f02d1b1cc0b982a20f227ba6d0600d60c095b50942ab6"
+}
