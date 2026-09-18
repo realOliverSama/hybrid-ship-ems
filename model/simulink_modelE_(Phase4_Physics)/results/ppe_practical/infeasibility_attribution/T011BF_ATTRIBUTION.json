@@ -1,0 +1,277 @@
+{
+ "D_first_hard_violation": {
+  "C0": {
+   "n": 48,
+   "n_first_violation_before_300s": 48,
+   "t_first_max": 30.0,
+   "t_first_min": -0.0
+  },
+  "C1": {
+   "n": 48,
+   "n_first_violation_before_300s": 48,
+   "t_first_max": 30.0,
+   "t_first_min": -0.0
+  },
+  "C2": {
+   "n": 48,
+   "n_first_violation_before_300s": 48,
+   "t_first_max": 30.0,
+   "t_first_min": -0.0
+  },
+  "P0": {
+   "n": 48,
+   "n_first_violation_before_300s": 48,
+   "t_first_max": 30.0,
+   "t_first_min": -0.0
+  }
+ },
+ "E_load_shortfall": {
+  "authoritative_P_unserved_kWh_all_arms": {
+   "C0": {
+    "checker_shortfall_kWh_max": 0,
+    "max_over_voyages": 0.0
+   },
+   "C1": {
+    "checker_shortfall_kWh_max": 0,
+    "max_over_voyages": 0.0
+   },
+   "C2": {
+    "checker_shortfall_kWh_max": 0,
+    "max_over_voyages": 0.0
+   },
+   "P0": {
+    "checker_shortfall_kWh_max": 0,
+    "max_over_voyages": 0.0
+   }
+  },
+  "episode_root_causes": {
+   "PROPULSION_STARTUP_INERTIA (demand-vs-achieved during hull/prop spin-up)": 96,
+   "SPEED_PROFILE_TRACKING_LAG (small inertial lag during route segments)": 44384
+  },
+  "gap_energy_kWh": {
+   "C0": {
+    "max": 0.47822106253250296,
+    "med": 0.37829742233260666,
+    "min": 0.2876492013125731
+   },
+   "C1": {
+    "max": 0.47822106253250296,
+    "med": 0.37829742233260666,
+    "min": 0.2876492013125731
+   },
+   "C2": {
+    "max": 0.47822106253250296,
+    "med": 0.37829742233260666,
+    "min": 0.2876492013125731
+   },
+   "P0": {
+    "max": 0.47822106253250296,
+    "med": 0.37829742233260666,
+    "min": 0.2876492013125731
+   }
+  }
+ },
+ "F_genset_decomposition": {
+  "subpredicate_totals": {
+   "C0": {
+    "DG1_PMAX_affected": 0,
+    "DG1_PMIN_affected_voyages": 48,
+    "DG2_PMAX_affected": 0,
+    "DG2_PMIN_affected_voyages": 46,
+    "HIGH_RATE_VIOLATION_affected": 0,
+    "NON_ON_POWER_affected": 0,
+    "RAMP_native_audit_affected": 0,
+    "pmin_episode_count": 124,
+    "pmin_first_time_s_min": 30.0,
+    "pmin_max_excursion_kW": 125.0,
+    "pmin_total_duration_s": 1362.0
+   },
+   "C1": {
+    "DG1_PMAX_affected": 0,
+    "DG1_PMIN_affected_voyages": 48,
+    "DG2_PMAX_affected": 0,
+    "DG2_PMIN_affected_voyages": 46,
+    "HIGH_RATE_VIOLATION_affected": 0,
+    "NON_ON_POWER_affected": 0,
+    "RAMP_native_audit_affected": 0,
+    "pmin_episode_count": 124,
+    "pmin_first_time_s_min": 30.0,
+    "pmin_max_excursion_kW": 125.0,
+    "pmin_total_duration_s": 1362.0
+   },
+   "C2": {
+    "DG1_PMAX_affected": 0,
+    "DG1_PMIN_affected_voyages": 48,
+    "DG2_PMAX_affected": 0,
+    "DG2_PMIN_affected_voyages": 46,
+    "HIGH_RATE_VIOLATION_affected": 0,
+    "NON_ON_POWER_affected": 0,
+    "RAMP_native_audit_affected": 0,
+    "pmin_episode_count": 124,
+    "pmin_first_time_s_min": 30.0,
+    "pmin_max_excursion_kW": 125.0,
+    "pmin_total_duration_s": 1362.0
+   },
+   "P0": {
+    "DG1_PMAX_affected": 0,
+    "DG1_PMIN_affected_voyages": 48,
+    "DG2_PMAX_affected": 0,
+    "DG2_PMIN_affected_voyages": 46,
+    "HIGH_RATE_VIOLATION_affected": 0,
+    "NON_ON_POWER_affected": 0,
+    "RAMP_native_audit_affected": 0,
+    "pmin_episode_count": 124,
+    "pmin_first_time_s_min": 30.0,
+    "pmin_max_excursion_kW": 125.0,
+    "pmin_total_duration_s": 1362.0
+   }
+  }
+ },
+ "G_co_occurrence": {
+  "n": 48,
+  "per_voyage_C0": [
+   {
+    "delta_genset_minus_gap": 30.0,
+    "t_first_genset_violation": 30.0,
+    "t_first_shortfall_component": -0.0,
+    "voyage_id": "FLTA_S2_D01004_M1"
+   },
+   {
+    "delta_genset_minus_gap": 30.0,
+    "t_first_genset_violation": 30.0,
+    "t_first_shortfall_component": -0.0,
+    "voyage_id": "FLTA_S2_D01004_M2"
+   },
+   {
+    "delta_genset_minus_gap": 30.0,
+    "t_first_genset_violation": 30.0,
+    "t_first_shortfall_component": -0.0,
+    "voyage_id": "FLTA_S2_D01004_M3"
+   },
+   {
+    "delta_genset_minus_gap": 30.0,
+    "t_first_genset_violation": 30.0,
+    "t_first_shortfall_component": -0.0,
+    "voyage_id": "FLTA_S2_D01004_M4"
+   },
+   {
+    "delta_genset_minus_gap": 30.0,
+    "t_first_genset_violation": 30.0,
+    "t_first_shortfall_component": -0.0,
+    "voyage_id": "FLTA_S2_D01009_M1"
+   }
+  ]
+ },
+ "H_four_arm_similarity_and_authority": {
+  "P0_vs_C0_first_violation_identical": {
+   "count": 48,
+   "of": 48
+  },
+  "cstar_actuator_authority": {
+   "source_grounded": [
+    "scripts/+ppe/run_cstar.m: C* acts via winfun -> Pbar bins -> ECMS lambda (delta_lambda) -> battery/genset power split only (law6_lambda_eff)",
+    "scripts/+model/build_commitment_chart_e.m + build_pms_v2_e.m: DG commitment/start/stop commands are PMS v2 chart + safety interlock functions of genset-side load; independent of delta_lambda",
+    "scripts/+ppe/c2_bridge.m / winfun_plan.m: forecast window only selects Pbar; no direct actuator command"
+   ],
+   "verdict": "C* has authority ONLY over the lambda/power-split channel; DG commitment, start commands, synchronization timing and generator ramp are outside C* actuator authority"
+  },
+  "mechanism_vs_differentiation": "BEFORE_FORECAST_DIFFERENTIATION: the dominant failing evidence is the t<60 s startup transient, common to all arms by warm-up parity; forecast-source information cannot influence it",
+  "within_voyage_first_violation_identical_C0C1C2": {
+   "count": 48,
+   "of": 48
+  }
+ },
+ "I_wall_verdict": {
+  "large_deficit_episodes": 96,
+  "steady_capacity_wall": 0,
+  "supply_headroom_present": 96,
+  "verdict": "NO SUPPLY-SIDE WALL: at every large demand-vs-achieved deficit, instantaneous generator headroom + battery SOP exceeded the deficit; the deficit is load-side propulsion inertia, not a generation/reachability wall"
+ },
+ "J_magnitudes": {
+  "C0": {
+   "E_gap_over_E_demand": 1.0498875014616869,
+   "gap_energy_kWh_median": 0.37829742233260666,
+   "pmin_duration_over_Teval": 0.007054258959990815
+  },
+  "C1": {
+   "E_gap_over_E_demand": 1.0498875014616869,
+   "gap_energy_kWh_median": 0.37829742233260666,
+   "pmin_duration_over_Teval": 0.007054258959990815
+  },
+  "C2": {
+   "E_gap_over_E_demand": 1.0498875014616869,
+   "gap_energy_kWh_median": 0.37829742233260666,
+   "pmin_duration_over_Teval": 0.007054258959990815
+  },
+  "C2_normalized": {
+   "E_gap_over_E_demand": {
+    "max": 0.0016323078873064928,
+    "med": 0.0010715740085589552,
+    "min": 0.0005406322271138586
+   },
+   "gap_duration_over_T": {
+    "max": 0.481924882629108,
+    "med": 0.40507464459560266
+   },
+   "pmin_duration_over_T": {
+    "max": 0.011442256519425226,
+    "med": 0.007052571841304235
+   }
+  },
+  "P0": {
+   "E_gap_over_E_demand": 1.0498875014616862,
+   "gap_energy_kWh_median": 0.37829742233260666,
+   "pmin_duration_over_Teval": 0.007054258959990815
+  },
+  "P0_normalized": {
+   "E_gap_over_E_demand": {
+    "max": 0.0016323078873064928,
+    "med": 0.0010715740085589552,
+    "min": 0.0005406322271138586
+   },
+   "gap_duration_over_T": {
+    "max": 0.481924882629108,
+    "med": 0.40507464459560266
+   },
+   "pmin_duration_over_T": {
+    "max": 0.011442256519425226,
+    "med": 0.007052571841304235
+   }
+  }
+ },
+ "K_classification": {
+  "explicitly_excluded": {
+   "CONTROLLER_AUTHORITY_LIMITATION_as_primary": "true but vacuous: the failing mechanism is common-mode and BEFORE t=300 differentiation (48/48 per arm, t_first<=30 s; C0=C1=C2 identical 48/48; P0=C0 identical 48/48), so no controller with any information could influence it",
+   "MISSION_PLANT_ENVELOPE_MISMATCH": "no steady or instantaneous capacity wall found (supply headroom present at every deficit)",
+   "NUMERICAL_BOUNDARY_ARTIFACT": "the transients are physical (600 kW x seconds of real propeller acceleration), not solver noise"
+  },
+  "primary": "REMAINING_CONTRACT_SEMANTICS_ISSUE",
+  "primary_evidence": [
+   "authoritative P_unserved_kWh == 0.0 on ALL 192 arm-voyages (checker + 1 Hz trajectory); the undervoltage-derate service-failure channel never fires",
+   "load_shortfall fails ONLY via the service_gap component (P_prop_demand - P_prop_actual), median 0.378 kWh/voyage: normal propulsion/hull acceleration lag at startup (max 600 kW, 45% of energy in t<50 s) plus <=14 kW speed-profile tracking lag in cruise (44,384 sub-20-kW episodes)",
+   "the gap energies are BITWISE IDENTICAL across P0/C0/C1/C2 (median 0.37829742233260666 on all four arms): common-mode physical transient, not controller behavior",
+   "no supply-side wall: at all 96 large-deficit episodes the instantaneous generator headroom + battery SOP exceeded the deficit (I verdict)"
+  ],
+  "secondary": "PMS_TRANSITION_LIMITATION",
+  "secondary_evidence": [
+   "genset_limits_state_aware fails ONLY via PMIN (pmax/ramp/non-on/native high-rate all zero, incl. 0.01 s audit)",
+   "DG1 PMIN 48/48 voyages, DG2 46/48; 124 episodes, 1362 s total, ~7 s per arm-voyage (0.7% of T_eval), max excursion 125 kW (ON at P=0)",
+   "context: post-ON power ramp-up window of the genset first-order model (tau=5 s) and low-load dispatch windows \u2014 a plant/PMS transition phase, not steady dispatch"
+  ],
+  "verdict": "MIXED: contract semantics dominant + PMS transition window secondary"
+ },
+ "L_recommendation": {
+  "category": "MIXED_DECISION_REQUIRED",
+  "components": [
+   "FEASIBILITY_CONTRACT_AMENDMENT_CANDIDATE (dominant): service_gap is the FC-2 dual-consistency DIAGNOSTIC but the frozen checker included it in the hard predicate at 1e-6 kWh tolerance, making normal ship acceleration a hard violation; amendment would restore the approved design intent (authoritative = P_unserved, gap = diagnostic with divergence fail-closed only when P_unserved==0 while gap indicates curtailment-class loss)",
+   "FEASIBILITY_CONTRACT_AMENDMENT_CANDIDATE (secondary): state-aware PMIN predicate could exempt the genset model's own post-ON power ramp-up window (tau=5 s) and shutdown windows, mirroring the existing ramp ON<->ON exemption",
+   "NOT powertrain/mission redesign and NOT controller-authority extension: no capacity wall exists and the mechanism precedes forecast differentiation"
+  ],
+  "note": "diagnostic recommendation only; no redesign implemented"
+ },
+ "evidence_only": true,
+ "input_root": "results/ppe_practical/formal_epoch2 (freeze 8d6106ff)",
+ "schema": "ppe_t011bf_infeasibility_attribution_v1",
+ "study": "phase4f-practical-predictive-ems",
+ "task": "T-011B-F"
+}

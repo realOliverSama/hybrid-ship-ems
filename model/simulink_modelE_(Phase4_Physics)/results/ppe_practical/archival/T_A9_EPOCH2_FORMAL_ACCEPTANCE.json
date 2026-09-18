@@ -1,0 +1,57 @@
+{
+ "accepted_execution_identity": {
+  "canonical_reserves": {
+   "E_reserve_chg_kWh": 5.625,
+   "E_reserve_dis_kWh": 6.839,
+   "P_reserve_chg_kW": 819.8,
+   "P_reserve_dis_kW": 543.8
+  },
+  "classification_authority": "ppe.feasibility_contract_v2 (424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c)",
+  "evidence_contract": "FC-5A (plant_trajectory_v1 + controller_trace_v1 + high_rate_audit_v1 + terminal_record_v2)",
+  "execution_code_commit_sha": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
+  "formal_epoch": 2,
+  "freeze_root_sha256": "8d6106ff45b32972f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+  "record_schema": "ppe_formal_arm_voyage_v2"
+ },
+ "archival_facts_as_observed": {
+  "acceptance_v2": {
+   "pass": true,
+   "problems": 0,
+   "verified_on": [
+    "execution-server (authoritative)",
+    "local (re-verified)"
+   ]
+  },
+  "altered": false,
+  "reclassified": false,
+  "terminal_identities": "192/192",
+  "terminal_status_histogram": {
+   "COMPLETE_HARD_INFEASIBLE": 192
+  },
+  "voyage_sets": "48/48",
+  "warmup_parity": "48/48 PASS"
+ },
+ "decision": "Human epoch-2 post-execution gate: T-A9 FORMAL ACCEPTANCE / ARCHIVAL = AUTHORIZED",
+ "estimand_status": {
+  "B_perfect": "WITHHELD_UNIVERSAL_HARD_INFEASIBILITY",
+  "B_predicted": "WITHHELD_UNIVERSAL_HARD_INFEASIBILITY",
+  "L_prediction": "WITHHELD_UNIVERSAL_HARD_INFEASIBILITY",
+  "R_diagnostic": "UNDEFINED",
+  "note": "archival only; NO_GO_PREDICTION_VALUE and PREDICTION_DOES_NOT_SAVE_FUEL are NOT used; no fuel-effect analysis performed"
+ },
+ "non_claims": [
+  "B_perfect",
+  "B_predicted",
+  "L_prediction",
+  "R_diagnostic",
+  "C1-C0/C2-C0 fuel savings",
+  "bootstrap CI",
+  "prediction-value GO/NO-GO",
+  "arm ranking"
+ ],
+ "schema": "ppe_epoch2_t_a9_formal_acceptance_v1",
+ "sha256_self": "23cf35093a88ddf2bdf9cb6358c3d4a37355473f8ee08fb7ba008327c5c12dfe",
+ "study": "phase4f-practical-predictive-ems",
+ "task": "T-A9",
+ "utc": "2026-09-18T03:41:23Z"
+}
