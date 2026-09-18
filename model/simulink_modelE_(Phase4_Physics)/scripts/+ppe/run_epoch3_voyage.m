@@ -169,7 +169,13 @@ if isSmoke
     fec = struct('fuel_raw_kg', NaN, 'SOC0', ds.SOC(1), 'SOC_end', ds.SOC(end), ...
         'J_FEC_kg', NaN);
 else
-    feas = ppe.feasibility_contract_v2(ds, cfg, 'T_frozen_s', T_eval, 'C_bus', local_cbus(ROOT));
+    % FC-3：终端储备来自 T-A0 设计基准事件推导（PROSPECTIVE；与 epoch-2 同源）
+    ta0 = jsondecode(fileread(fullfile(ROOT, '..', '..', '.specs', ...
+        'phase4-f-practical-predictive-ems', 'reserve_derivation_TA0.json')));
+    dr = ta0.derived_reserves;
+    PR = struct('dis_kW', dr.P_reserve_dis_kW, 'chg_kW', dr.P_reserve_chg_kW, ...
+        'dis_kWh', dr.E_reserve_dis_kWh, 'chg_kWh', dr.E_reserve_chg_kWh);
+    feas = ppe.feasibility_contract_v2(ds, cfg, PR, T_eval, local_cbus(ROOT));
     fec = t445.metrics_fec(ds, cfg);
 end
 
