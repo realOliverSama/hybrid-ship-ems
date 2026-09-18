@@ -1,0 +1,49 @@
+{
+ "authorization": "无最终冻结；无正式运行；H 未通过",
+ "canonical_fixture": "EP3-P1/RCA fixture（7 m/s 恒速 + hotel 700 kW、SOC0.60、T=300、law6、PMS_SOURCE_MODE=1、δλ A=0.00/B=+0.10）",
+ "classification": "UNRESOLVED（就 mask_n=0 的直接成因）——但已排除两类：PRODUCTION_SMOKE_MISSION_MAPPING_DEFECT（否证：有效输入一致）与 RUNNER_SEGMENTATION_SEMANTICS_DEFECT（否证：RCA 逐位相同）",
+ "controller_side_equality": "EQUAL（PMS_SOURCE_MODE/EMS_CTRL_LAW 及绑定值一致；δλ 经 ECMS_EHat_Data 逐段注入，与路径 B 同机制）",
+ "effective_input_comparison_AC": {
+  "different_but_inert": [
+   {
+    "A": 0,
+    "C": 1,
+    "reason": "inject_voyage 由 scn.speed_profile_mode 派生（time⇒1）；CURRENT_VALUE_MPS 两路均为 0 ⇒ 无负荷效应",
+    "var": "VOYAGE_CURRENT_MODE"
+   },
+   {
+    "A": "distance/[0 1]/[0 0]",
+    "C": "time/[0 300]/[7 7]",
+    "reason": "A 路径把速度直接写入 VOYAGE_*（模型时间模式消费 VOYAGE_*）；SCN 字段在 time 模式下不被模型消费 ⇒ 有效速度剖面相同",
+    "var": "SCN.speed_profile_mode / SCN.v_time_s / SCN.v_value_mps"
+   }
+  ],
+  "identical": [
+   "PMS_SOURCE_MODE",
+   "EMS_CTRL_LAW",
+   "EMS_MODE",
+   "EMS_WORK_MODE",
+   "AI_Pred_Source",
+   "VOYAGE_SPEED_MODE",
+   "VOYAGE_V_TIME_S",
+   "VOYAGE_V_VALUE_MPS",
+   "VOYAGE_WATER_DEPTH_M",
+   "SCN.hotel_kW"
+  ],
+  "verdict": "EFFECTIVE_INPUTS_EQUIVALENT（C 正确接收了目标夹具；无生产入口映射缺陷）"
+ },
+ "first_production_entry_divergence": "无（在模型执行之前的有效输入层面已一致）",
+ "leading_remaining_hypothesis": "H-smoke 资格化 harness 自身的掩码/遥测读取接线缺陷（telemetry 与 trajectory 通道的时间基/长度对齐），而非生产 runner；掩码为空导致 refdiff/gendiff 恒为 0（差异仅在掩码内度量）",
+ "mission_side_equality": "EQUAL（有效速度/酒店/水深/SOC 初始/时域）",
+ "note_on_refdiff_zero": "refdiff=0 是**掩码为空的推论**，不是独立证据；差异只在掩码内计算",
+ "paths": {
+  "A": "直接连续 sim()（EP3-P1）",
+  "B": "ppe.run_cstar 分段（已证与 A 逐位相同）",
+  "C": "ppe.run_epoch3_voyage(mode=smoke) 外层生产入口"
+ },
+ "schema": "ppe_production_entry_effective_input_rca_v1",
+ "scripts": [
+  "scripts/tests/rca_production_effective_inputs.m"
+ ],
+ "utc": "2026-09-18T08:59:59Z"
+}
