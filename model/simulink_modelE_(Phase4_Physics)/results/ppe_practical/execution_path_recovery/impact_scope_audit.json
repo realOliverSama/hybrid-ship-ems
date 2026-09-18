@@ -1,0 +1,189 @@
+{
+ "artifacts": [
+  {
+   "affected_branch_can_change_artifact": true,
+   "artifact": "Phase 4-F formal epoch-1 + epoch-2（192 run 记录 / ctrace / traj / audit）",
+   "classification": "SCIENTIFICALLY_INVALIDATED",
+   "depends_on_closed_loop_plant_state": true,
+   "downstream_consumers": "effect_analysis（B/L 估计）、FC-3 replay/readjudication、control_path_attribution、epoch-2 记录层",
+   "ems_output_intended_to_affect_plant": true,
+   "pms_source_mode_value_and_source": "0，来源 mission_v3/scenario_compile.m:293（硬编码 manifest）经 ppe/inject_voyage.m:12-15 assignin",
+   "producing_execution_path": "ppe.run_formal_voyage → ppe.inject_voyage（执行 mission_v3 注入清单）→ ppe.run_cstar（分段 SimState）",
+   "scientific_consequence": "四臂被同一 baseline 需求律驱动 ⇒ EMS 操作从未到达 plant ⇒ 对 Phase 4-F 控制效应问题**无效**（数值本身对「已执行的缺陷实验」成立）"
+  },
+  {
+   "affected_branch_can_change_artifact": true,
+   "artifact": "effect_analysis（B_perfect / B_predicted / L_prediction = 0，CI [0,0]，bootstrap）",
+   "classification": "SCIENTIFICALLY_INVALIDATED",
+   "depends_on_closed_loop_plant_state": true,
+   "downstream_consumers": "Phase 4-F 科学结论、论文叙述",
+   "ems_output_intended_to_affect_plant": true,
+   "pms_source_mode_value_and_source": "继承 0（同上）",
+   "producing_execution_path": "python/ppe/fc3_effect_analysis.py（消费上表 192 记录）",
+   "scientific_consequence": "数值正确但**不得**用作「预测无控制价值」的证据；标记 SUPERSEDED_FOR_SCIENTIFIC_EFFECT_INFERENCE"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "FC-3 可行性契约（fc3_core.py checker v2/v3、语义修正：服务削减 vs tracking、post-sync PMIN）",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "epoch-3 可行性判定（候选 canonical 契约）",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "不适用（契约语义不含源选择）",
+   "producing_execution_path": "契约层本身不产轨迹；消费 192 轨迹做 readjudication",
+   "scientific_consequence": "契约与 checker 保持有效；历史 192/192 REJUDICATED_FEASIBLE 仅适用于 baseline 路由轨迹，**不得**外推为 epoch-3 必然可行"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "Dataset-v3 IID 语料（576 航次 stream + windows_v3_formal.npz）",
+   "classification": "AFFECTED_BUT_INTENDED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "Predictor-v3 训练/HPO/选模、C1 真值存储、Phase 4-F 语料选择",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "0（manifest；**设计如此**：语料元数据显式记录 model_baseline_ref = 'P2 bench, law=0'）",
+   "producing_execution_path": "fleet_v3.member_exec → 注入清单（PMS_SOURCE_MODE=0、EMS_CTRL_LAW=0）→ run_scenario_sim",
+   "scientific_consequence": "特征 H1 中与 plant 环耦合的 5 通道仅在推进降额时受闭环影响；实测语料 V_dc 最小 694.54 V（阈值 675 V，裕量 +19.5 V，0 个采样低于阈值）⇒ 负荷真值与 EMS/源选择无关 ⇒ **语料有效**"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "Dataset-v3 OOD 语料（200 航次 stream .mat）",
+   "classification": "AFFECTED_BUT_INTENDED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "Predictor-v3 OOD 评估、E 包证据",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "0（同上，设计如此）",
+   "producing_execution_path": "fleet_v3.gen_ood/task_ood → member_exec（同上）",
+   "scientific_consequence": "同 IID：实测最小 V_dc 696.01 V（裕量 +21.0 V，0 个采样低于阈值）⇒ 有效"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "Dataset-v3 未来目标 Y（30×10 s 负荷能量）与 E300",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "Predictor-v3 训练目标、C1 完美信息真值",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "不适用（目标为负荷真值）",
+   "producing_execution_path": "dataset_v3/targets.py:64-90，源通道 stream P_load_total_kW（1 Hz）",
+   "scientific_consequence": "目标 = 未来负荷真值；负荷与 EMS 的唯一耦合通道（欠压降额）在全部冻结语料中**从未激活** ⇒ 目标与 PMS_SOURCE_MODE 无关，**不需要重生成**"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "Predictor-v3（特征 H1 11 通道 + K/F 6 通道、训练/HPO/confirm/winner/terminal 证据）",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "C2 臂活桥推理、Phase 4-E 终端证据",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "不适用（不读 H2 闭环通道：FR-582，data_access.py:222-244）",
+   "producing_execution_path": "predictor_v3/*.py（消费 Dataset-v3 npz）",
+   "scientific_consequence": "特征面含 5 个 plant 环通道（P_load_total / v_ship / accel / n_prop_rpm / P_prop_demand），其与 EMS 的耦合同样只在降额时出现（语料实测未出现）⇒ 训练数据有效；**残余风险**：修复后运行若产生 V_dc<675 将构成 train/runtime 语义不一致，须在 epoch-3 作为断言监控"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "C1 完美信息目标存储（datasets_v3/formal/windows_v3_formal.npz::Y，hash 203dc92d…）",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "C1 臂（正式资产 artifacts/ppe_formal/c1_windows/*.mat）",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "不适用（负荷真值查表）",
+   "producing_execution_path": "dataset_v3/run_formal_freeze.py:308-330；运行时经 python/ppe/c1_index.py + +ppe/winfun_plan.m（C1_TRUTH）分发",
+   "scientific_consequence": "与目标同源同理由 ⇒ 有效，无需重生成"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "Mission-v3 语料（mission/scenario 定义、seeds、split_group/tier、T_eval 表）",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": false,
+   "downstream_consumers": "epoch-3 语料身份、PPE 正式资产",
+   "ems_output_intended_to_affect_plant": false,
+   "pms_source_mode_value_and_source": "不适用",
+   "producing_execution_path": "mission_v3 生成器（dag_sample/env_realize/plan_compose/family_expand）＋ dataset_v3/split.py（全部为**仿真前**纯函数）",
+   "scientific_consequence": "任务定义与划分先于任何仿真 ⇒ 与缺陷无关 ⇒ **沿用同一冻结语料**（epoch-3 绑定同一 corpus identity）"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "Phase 4-B/C 控制层 Gate（43/44，3 臂 AUTO 矩阵 + 注入场景 S1..S5）",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": true,
+   "downstream_consumers": "Phase 4-B 控制结论、B 包验收",
+   "ems_output_intended_to_affect_plant": true,
+   "pms_source_mode_value_and_source": "1（EMS 臂；由 run_gate.m:181 显式写入场景值）",
+   "producing_execution_path": "gate_ctrl.run_gate/run_negative（显式 assignin EMS_CTRL_LAW 与 PMS_SOURCE_MODE=src，臂定义 run_gate.m:39: R0 law=0/src=1、R5 law=5/src=1、P2 law=0/src=0）",
+   "scientific_consequence": "EMS 臂显式绑定 src=1 且实测三臂指标不同（S20：R0 SOC_end 0.6204 / R5 0.6396 / P2 0.6307；fuel 402.5/412.5/408.3 kg）⇒ EMS 确实驱动了 plant ⇒ 结论有效"
+  },
+  {
+   "affected_branch_can_change_artifact": false,
+   "artifact": "T-445 oracle gate（B 臂对照）",
+   "classification": "UNAFFECTED",
+   "depends_on_closed_loop_plant_state": true,
+   "downstream_consumers": "F 包设计裁决（B2 optimizer 资格化）",
+   "ems_output_intended_to_affect_plant": true,
+   "pms_source_mode_value_and_source": "1（config 标称；无写入点）",
+   "producing_execution_path": "+t445/inject_scenario.m（**从不写 PMS_SOURCE_MODE** ⇒ 继承 config 标称 1）；gate 以 validity_only 关闭",
+   "scientific_consequence": "gate_result.json: formal_corpus_observed=false、closure_mode=validity_only、failure_code=B2_OPTIMIZER_QUALIFICATION_FAILED、results/t445_oracle_gate/runs/ 为空 ⇒ **无结果性 B 臂语料存在**，不受本缺陷影响；其资格化工件（离线/控制器级）与源选择无关"
+  },
+  {
+   "affected_branch_can_change_artifact": true,
+   "artifact": "修复后的 epoch-3 执行（尚未发生）",
+   "classification": "REQUIRES_FURTHER_EVIDENCE",
+   "depends_on_closed_loop_plant_state": true,
+   "downstream_consumers": "Phase 4-F 修正后结论",
+   "ems_output_intended_to_affect_plant": true,
+   "pms_source_mode_value_and_source": "1（ppc.control_critical_vars 单一事实源；回读断言）",
+   "producing_execution_path": "规划中：arm_runtime_bind → run_cstar(BindingGuard) → 遥测",
+   "scientific_consequence": "须在 epoch-3 监控 V_dc ≥ 675 V 裕量（train/runtime 语义一致性）与四臂轨迹不再逐位相同"
+  }
+ ],
+ "deciding_check": {
+  "coupling_path": "P_load_total = prop_actual + hotel; prop_actual limited by Mot_P_nom*clamp((V_dc-600)/75,0,1); V_dc is closed-loop",
+  "derate_onset_V": 675.0,
+  "iid": {
+   "artifact": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/windows_v3_formal.npz",
+   "artifact_sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497",
+   "derate_margin_min_V": 19.536865234375,
+   "n_samples": 59234400,
+   "n_voyages": 576,
+   "n_windows": 197448,
+   "samples_below_derate_onset": 0,
+   "v_dc_min_V": 694.536865234375,
+   "verdict": "DERATE_NEVER_ACTIVE",
+   "window_min_percentiles_V": {
+    "p01": 694.5689068603516,
+    "p50": 700.061767578125,
+    "p99": 706.5562689208984
+   }
+  },
+  "ood": {
+   "artifacts_glob": "datasets_v3/formal/ood/*.mat",
+   "derate_margin_min_V": 21.012380677500687,
+   "n_files": 200,
+   "n_samples": 842288,
+   "per_voyage_min_percentiles_V": {
+    "p01": 696.0123806775007,
+    "p50": 700.6719932540564
+   },
+   "samples_below_derate_onset": 0,
+   "v_dc_min_V": 696.0123806775007,
+   "verdict": "DERATE_NEVER_ACTIVE"
+  },
+  "question": "is P_load_total_kW (H1 feature + predictor target + C1 truth) independent of PMS_SOURCE_MODE / EMS plant action?",
+  "residual_caveat": "1 Hz sampling cannot exclude sub-second dips; margin (+19.5 V IID / +21.0 V OOD) bounds the exposure. Repaired-execution V_dc must be monitored in epoch-3 for train/runtime semantic consistency (U2).",
+  "verdict": "DERATE_NEVER_ACTIVE in both frozen corpora at 1 Hz resolution -> the load truth is EMS-independent -> Dataset-v3 targets, C1 store and Predictor-v3 training data remain valid"
+ },
+ "read_only": true,
+ "schema": "ppe_impact_scope_audit_v1",
+ "stop_condition_check": {
+  "c1_truth_channel_invalidated": false,
+  "dataset_v3_target_invalidated": false,
+  "mission_corpus_invalidated": false,
+  "note": "writers exist but are enumerated (runtime_writer_audit.json); §G requires epoch-3 to bind them; none is unknown",
+  "predictor_v3_identity_invalidated": false,
+  "unresolved_additional_runtime_writers": true
+ },
+ "summary_counts": {
+  "AFFECTED_BUT_INTENDED": 2,
+  "REQUIRES_FURTHER_EVIDENCE": 1,
+  "SCIENTIFICALLY_INVALIDATED": 2,
+  "UNAFFECTED": 7
+ },
+ "task": "EXECUTION_PATH_DEFECT_RECOVERY_SCOPE_AUDIT"
+}

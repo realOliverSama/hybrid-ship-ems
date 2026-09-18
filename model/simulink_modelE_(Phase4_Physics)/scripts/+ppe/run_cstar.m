@@ -34,6 +34,10 @@ p.addParameter('CheckpointDir', '', @ischar);
 p.addParameter('Seed', 'phase4f-ppe-toy-v1', @ischar);
 p.addParameter('P0Load', [], @(x) isempty(x) || isnumeric(x));
 p.addParameter('SkipInject', false, @islogical);   % caller pre-injected voyage
+% EP3 执行路径修复（附加、语义惰性）：给出臂绑定记录时，每段开头复核控制关键绑定，
+% 任何"后来者"改写（PMS_SOURCE_MODE / EMS_CTRL_LAW / ...）立即 fail-closed。
+% 选项缺省为空 ⇒ epoch-1/2 调用语义逐位不变。
+p.addParameter('BindingGuard', [], @(x) isempty(x) || isstruct(x));
 p.parse(varargin{:});
 opt = p.Results;
 
@@ -100,6 +104,9 @@ warmup_state = [];
 
 for i = 1:numel(t0s)
     t0 = t0s(i);
+    if ~isempty(opt.BindingGuard)
+        ppe.assert_control_bindings(opt.BindingGuard);   % EP3：段级绑定复核
+    end
     t_stop = min(t0 + dt, T_eval);
     [Pbar, winprov, use_prev] = winfun(t0, ds, p0);
     if use_prev

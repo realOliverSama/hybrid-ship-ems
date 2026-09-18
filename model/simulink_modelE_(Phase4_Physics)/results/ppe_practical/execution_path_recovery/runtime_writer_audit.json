@@ -1,0 +1,156 @@
+{
+ "ems_ctrl_law_writers_key": [
+  {
+   "file": "config/ModelE_Physics_Parameters.m",
+   "line": 40,
+   "note": "标称默认 0（Baseline）——第二静默陷阱：忘写即跑 baseline 律",
+   "value": 0
+  },
+  {
+   "file": "scripts/+model/build_model_e.m",
+   "lines": "101-102",
+   "note": "builder 编译后把 base 留在 law=7（E4）",
+   "value": "law (循环末值 7)"
+  },
+  {
+   "file": "scripts/+ppe/inject_voyage.m",
+   "line": 17,
+   "note": "正式路径唯一恢复点",
+   "value": "double(law)"
+  },
+  {
+   "file": "scripts/+model/run_scenario_sim.m",
+   "line": 13,
+   "note": "Dataset 路径（mode=0）",
+   "value": "double(mode)"
+  },
+  {
+   "file": "scripts/+t445/inject_scenario.m",
+   "lines": "8-9",
+   "note": "T-445 路径",
+   "value": "double(mode)"
+  }
+ ],
+ "epoch2_freeze_injection_path_mention": false,
+ "pms_source_mode_writers": [
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../config/ModelE_Control_Parameters.m",
+   "line": 56,
+   "mechanism": "config definition (nominal)",
+   "note": "标称 EMS_AGGREGATE",
+   "value": 1
+  },
+  {
+   "bound_by_freeze": "partial(mission_v3 stack identity)",
+   "file": "model/.../scripts/+mission_v3/scenario_compile.m",
+   "line": 293,
+   "mechanism": "injection manifest entry (names{8})",
+   "note": "**缺陷源**：BASELINE bench convention",
+   "value": 0.0
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+ppe/inject_voyage.m",
+   "lines": "11-15",
+   "mechanism": "manifest-loop assignin",
+   "note": "正式 PPE 路径；随后仅恢复 EMS_CTRL_LAW",
+   "value": "e.value (=0)"
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+fleet_v3/member_exec.m",
+   "lines": "81-85",
+   "mechanism": "manifest-loop assignin",
+   "note": "Dataset-v3 生成路径（设计如此）",
+   "value": "e.value (=0)"
+  },
+  {
+   "bound_by_freeze": "partial",
+   "file": "model/.../scripts/+mission_v3/producer_prequal.m",
+   "lines": "550-554",
+   "mechanism": "manifest-loop assignin",
+   "note": "T-020 生产路径",
+   "value": "e.value (=0)"
+  },
+  {
+   "bound_by_freeze": "partial",
+   "file": "model/.../scripts/+mission_v3/producer_confirm.m",
+   "lines": "597-601",
+   "mechanism": "manifest-loop assignin",
+   "note": "T-022 confirm 路径",
+   "value": "e.value (=0)"
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+gate_e/reset_bench_nominal.m",
+   "lines": "21-22",
+   "mechanism": "assignin (bench reset)",
+   "note": "台架不变量恢复写 0（随后 gate 显式覆盖）",
+   "value": 0
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+gate_ctrl/run_gate.m",
+   "line": 181,
+   "mechanism": "assignin per scenario",
+   "note": "Phase 4-B gate：EMS 臂显式 1 ⇒ 未受缺陷影响",
+   "value": "src (armDefs: R0=1, R5=1, P2=0)"
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+gate_ctrl/run_negative.m",
+   "lines": "67-79,135-148",
+   "mechanism": "assignin",
+   "note": "负向验证 D4/D6",
+   "value": "src (case 值)"
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+mission_v3/+audits/feasibility_sweep.m",
+   "line": 297,
+   "mechanism": "assignin",
+   "note": "+audits 被 stack identity 排除域",
+   "value": 0
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/tests/t008_variant_compile_check.m",
+   "lines": "28-40",
+   "mechanism": "assignin (compile matrix)",
+   "note": "变体编译矩阵显式 1",
+   "value": 1
+  },
+  {
+   "bound_by_freeze": false,
+   "file": "model/.../scripts/+ppe/qual_observability.m",
+   "lines": "251-261",
+   "mechanism": "继承 config 标称 1",
+   "note": "Q-OBS 探针",
+   "value": "(未写)"
+  }
+ ],
+ "resolution": "epoch-3 冻结须绑定上述全部写入者（见 EP3_RECOVERY_REPORT §G）；未知/未绑定写入者 ⇒ overall=false",
+ "schema": "ppe_runtime_writer_audit_v1",
+ "unbound_writers_no_freeze": [
+  "scripts/+ppe/inject_voyage.m（正式 PPE 注入执行者本身未被冻结绑定；且未调用 check_injection）",
+  "scripts/+model/run_scenario_sim.m（Dataset 路径核心写入者）",
+  "scripts/+gate_e/reset_bench_nominal.m 及 +gate_e/gate_assign_*.m / run_dir_sim.m / run_e07.m",
+  "scripts/+gate_ctrl/run_gate.m / run_negative.m / injection_scenarios.m",
+  "scripts/+fleet_v3/member_exec.m 及 ctx_build/worker_provision",
+  "scripts/+mission_v3/+audits/feasibility_sweep.m（+audits/ 在栈身份排除域）",
+  "scripts/+ppe/qual_observability.m / qual_t005.m / qual_runner_amendment.m"
+ ],
+ "variables_in_scope": [
+  "PMS_SOURCE_MODE",
+  "EMS_CTRL_LAW",
+  "EMS_MODE",
+  "EMS_WORK_MODE",
+  "AI_Pred_Source",
+  "AI_TPeak_Source",
+  "ADAPTER_FORCE_MODE",
+  "ADAPTER_FORCE_P1_KW",
+  "ADAPTER_FORCE_P2_KW",
+  "EMS_HEALTH_TS"
+ ]
+}
