@@ -34,6 +34,8 @@ p.addParameter('SmokeFixedDelta', NaN, @(x) isnumeric(x));
 % ASSUMED_EMS_Manual_Pgen_kW=R），不改任何模型/PMS/Safety 代码。
 % 纪律：默认 NaN=关；**仅 smoke 模式可用**；formal 模式出现即 fail-closed。
 p.addParameter('QHookManualRef', NaN, @(x) isnumeric(x));
+% C2 活体桥 token（与 epoch-2 同机制；仅 C2 arm 消费）。缺省空 ⇒ C2 运行 fail-closed。
+p.addParameter('C2BridgeToken', '', @ischar);
 p.parse(varargin{:});
 opt = p.Results;
 ROOT = ppe.ppe_root();
@@ -118,12 +120,33 @@ if isSmoke
         winfun = @(t0, ds, p0) local_smoke_winfun(t0, ds, p0, opt.SmokePbar);
     end
 else
-    winfun = ppe.winfun_plan(local_plan_file(ROOT, voyage_id), arm, struct( ...
+    wopts = struct( ...
         'T_eval', T_eval, ...
         'c1_windows_file', fullfile(ROOT, 'artifacts', 'ppe_formal', 'c1_windows', ...
             [char(voyage_id) '.mat']), ...
         'voyage_id', char(voyage_id), ...
-        'water_depth_m', double(rb.scn.water_depth_m), 'ctrl_mode', 0));
+        'water_depth_m', double(rb.scn.water_depth_m), 'ctrl_mode', 0);
+    if strcmp(arm, 'C2')
+        % C2 活体桥（epoch-2 同机制）：token 缺省即 fail-closed。
+        if isempty(opt.C2BridgeToken)
+            error('PPE:EP3:BRIDGE', 'C2 需要 C2BridgeToken（与 epoch-2 同机制）');
+        end
+        % 旧传输文件不得被新 server 复用（仅传输层；响应确定性不受影响）
+        bdir = fullfile(ROOT, 'artifacts', 'ppe_bridge', opt.C2BridgeToken);
+        for sub = {'req', 'resp'}
+            d = fullfile(bdir, sub{1});
+            if exist(d, 'dir')
+                fl = dir(fullfile(d, [sub{1} '_*.mat']));
+                for j = 1:numel(fl)
+                    delete(fullfile(fl(j).folder, fl(j).name));
+                end
+            end
+        end
+        br = ppe.c2_bridge(opt.C2BridgeToken);
+        wopts.c2_bridge = br;
+        cleanup_br = onCleanup(@() br.stop());   % 无 server 泄漏 %#ok<NASGU>
+    end
+    winfun = ppe.winfun_plan(local_plan_file(ROOT, voyage_id), arm, wopts);
 end
 ctxid = local_ctxid(ROOT, fz, pc, voyage_id, arm, isSmoke);
 cargs = {'SkipInject', true, 'BindingGuard', bind, 'Seed', 'phase4f-ppe-formal-epoch1'};
