@@ -43,6 +43,7 @@ n_formal_after = local_count_runs(FORMAL_NS);
 
 % ---- 证据读取 ----
 A = local_tel(recA); B = local_tel(recB); P = local_tel(recP);
+A = local_attrition(A, B);
 t = A.t(:); mA = t >= 1;                                   % 排除首拍（ems_health 初始化语义）
 mB = B.t >= 1; mP = P.t >= 1;
 
@@ -67,10 +68,7 @@ selB_ems = max(abs(B.sel(mB) - B.ems(mB)));
 selP_ems = max(abs(P.sel(mP) - P.ems(mP)));
 
 % ---- H：非饱和条件下的 EMS→PMS→发电机 传播（同一入口路径）----
-mask = mA & mB & A.n == 2 & B.n == 2 & A.s1 == 3 & A.s2 == 3 & B.s1 == 3 & B.s2 == 3 ...
-    & A.minclamp < 0.5 & B.minclamp < 0.5 ...
-    & A.sel > 251 & A.sel < 999 & B.sel > 251 & B.sel < 999 ...
-    & A.fallback < 0.5 & B.fallback < 0.5;
+mask = A.maskref;   % 由 local_attrition 按冻结语义生成（逐谓词累积）
 refdiff = max([abs(A.sel(mask) - B.sel(mask)); 0]);
 gendiff = max([abs(A.gen(mask) - B.gen(mask)); 0]);
 gendiff_med = median([abs(A.gen(mask) - B.gen(mask)); 0]);
@@ -103,6 +101,8 @@ r.proof = struct( ...
     'E_bindingguard_effective_values', guard_seen, ...
     'F_branch_runtime', struct('C0_runA', branchA, 'C0_runB', branchB, 'P0_runC', branchP), ...
     'G_selected_equals_ems_ref', struct('C0_runA', selA_ems, 'C0_runB', selB_ems, 'P0_runC', selP_ems), ...
+    'H_attrition', A.attrition, ...
+    'H_timebase', A.timebase, ...
     'H_propagation', struct('status', r_note_h, 'mask_n', sum(mask), ...
         'max_ref_diff_kW', refdiff, 'max_gen_diff_kW', gendiff, ...
         'median_gen_diff_kW', gendiff_med, ...
@@ -135,18 +135,57 @@ end
 end
 
 function T = local_tel(rec)
-S = load(rec.source_selection_telemetry.path, 'tel');
+% **单一时间基**：全部掩码通道取自植物轨迹（1 Hz、绝对时间、已资格化工件），
+% 避免 telemetry 工件与轨迹之间的跨工件对齐（旧实现的 mask_n=0 疑因）。
+S = load(rec.trajectory.path, 'traj');
+tr = S.traj;
 T = struct();
-T.t = S.tel.time_s(:);
-T.sel = S.tel.P_gen_req_eff_kW_end(:);
-T.ems = S.tel.P_gen_ref_kW_end(:);
-T.branch = S.tel.selector_baseline_active_end(:);
-T.fallback = S.tel.baseline_fallback_active_end(:);
-T.gen = S.tel.P_load_gen_kW_end(:) * 0 + local_plant(rec);   % 发电机功率取自植物轨迹
-T.n = S.tel.N_dispatch_end(:);
-T.minclamp = S.tel.dispatch_min_clamp_active_end(:);
-T.s1 = local_state(rec, 'state_DG1');
-T.s2 = local_state(rec, 'state_DG2');
+T.t = tr.time(:);
+T.gen = tr.P_gen_actual_kW(:);
+T.n = tr.N_dispatch(:);
+T.s1 = tr.state_DG1(:);
+T.s2 = tr.state_DG2(:);
+T.sfallback = tr.safety_baseline_fallback_active(:);
+Q = load(rec.source_selection_telemetry.path, 'tel');
+tel = Q.tel;
+T.sel = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.P_gen_req_eff_kW_end(:), T.t, 'previous', 'extrap');
+T.ems = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.P_gen_ref_kW_end(:), T.t, 'previous', 'extrap');
+T.branch = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.selector_baseline_active_end(:), T.t, 'previous', 'extrap');
+T.fallback = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.baseline_fallback_active_end(:), T.t, 'previous', 'extrap');
+T.minclamp = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.dispatch_min_clamp_active_end(:), T.t, 'previous', 'extrap');
+T.dg1 = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.P_DG1_ref_kW_end(:), T.t, 'previous', 'extrap');
+T.dg2 = tr.P_gen_actual_kW(:) * 0 + interp1(tel.time_s(:), tel.P_DG2_ref_kW_end(:), T.t, 'previous', 'extrap');
+% 时间基契约核验
+T.timebase = struct('n', numel(T.t), 't_first', T.t(1), 't_last', T.t(end), ...
+    'monotone', all(diff(T.t) > 0), 'dt_median', median(diff(T.t)), ...
+    'alignment', 'telemetry(1 Hz) -> trajectory(1 Hz) 零阶保持（同一绝对时基）');
+end
+
+function t_on = local_on_time(S)
+i = find(S.s1 == 3 & S.s2 == 3, 1, 'first');
+if isempty(i), t_on = S.t(end); else, t_on = S.t(i); end
+end
+
+function A = local_attrition(A, B)
+% 逐谓词累积衰减（定位 mask_n=0 的直接成因）
+t0 = max(local_on_time(A), local_on_time(B)) + 20;
+ramp = 20 * 2;
+ratA = abs([0; diff(A.gen)]) ./ max([1; diff(A.t)], 1e-9);
+ratB = abs([0; diff(B.gen)]) ./ max([1; diff(B.t)], 1e-9);
+P = {};
+P{end+1} = struct('name', 'TOTAL', 'm', true(size(A.t)));
+P{end+1} = struct('name', 'SETTLED_WINDOW', 'm', P{end}.m & (A.t >= t0));
+P{end+1} = struct('name', 'DG_ON', 'm', P{end}.m & A.s1 == 3 & A.s2 == 3 & B.s1 == 3 & B.s2 == 3);
+P{end+1} = struct('name', 'N_DISPATCH_OK', 'm', P{end}.m & A.n == 2 & B.n == 2);
+P{end+1} = struct('name', 'EMS_BRANCH', 'm', P{end}.m & A.branch < 0.5 & B.branch < 0.5);
+P{end+1} = struct('name', 'NO_FALLBACK', 'm', P{end}.m & A.fallback < 0.5 & B.fallback < 0.5 & A.sfallback < 0.5 & B.sfallback < 0.5);
+P{end+1} = struct('name', 'INTERIOR_ALLOCATOR', 'm', P{end}.m & A.sel > 251 & A.sel < 999 & B.sel > 251 & B.sel < 999);
+P{end+1} = struct('name', 'NO_MIN_CLAMP', 'm', P{end}.m & A.minclamp < 0.5 & B.minclamp < 0.5);
+P{end+1} = struct('name', 'NO_RAMP_SATURATION', 'm', P{end}.m & ratA <= ramp + 1e-6 & ratB <= ramp + 1e-6);
+att = struct('predicate', cellfun(@(x) x.name, P, 'uni', 0), ...
+             'surviving', cellfun(@(x) sum(x.m), P));
+A.attrition = att;
+A.maskref = P{end}.m;
 end
 
 function v = local_plant(rec)

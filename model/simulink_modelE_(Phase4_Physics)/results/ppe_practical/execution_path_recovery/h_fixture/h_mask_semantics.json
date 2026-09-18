@@ -1,0 +1,62 @@
+{
+ "forbidden_dependencies": [
+  "A≠B",
+  "参考差幅度",
+  "发电机差幅度",
+  "H 是否通过"
+ ],
+ "note": "语义在实现修复前冻结；实现只允许改数据来源（单一时间基），不得改谓词含义",
+ "predicates_in_order": [
+  {
+   "name": "DG_ON",
+   "rule": "state_DG1==3 且 state_DG2==3（两跑）",
+   "signal": "traj.state_DG1/2"
+  },
+  {
+   "name": "N_DISPATCH_OK",
+   "rule": "N_dispatch==2（两跑）",
+   "signal": "traj.N_dispatch"
+  },
+  {
+   "name": "EMS_BRANCH",
+   "rule": "selector_baseline_active==0（两跑）",
+   "signal": "telemetry.selector_baseline_active_end"
+  },
+  {
+   "name": "NO_FALLBACK",
+   "rule": "baseline_fallback_active==0 且 safety_baseline_fallback_active==0（两跑）",
+   "signal": "telemetry + traj"
+  },
+  {
+   "name": "INTERIOR_ALLOCATOR",
+   "rule": "per-unit 参考严格位于 (125,500) ⇔ 聚合严格位于 (250,1000)（两跑）",
+   "signal": "telemetry.P_gen_req_eff_kW_end"
+  },
+  {
+   "name": "NO_MIN_CLAMP",
+   "rule": "dispatch_min_clamp_active==0（两跑）",
+   "signal": "telemetry.dispatch_min_clamp_active_end"
+  },
+  {
+   "name": "NO_MAX_CLAMP",
+   "rule": "不触及聚合上限（含于 INTERIOR_ALLOCATOR）",
+   "signal": "同 INTERIOR"
+  },
+  {
+   "name": "NO_RAMP_SATURATION",
+   "rule": "|ΔP_gen_actual|/Δt ≤ 20·N kW/s（比较窗内）",
+   "signal": "traj.P_gen_actual_kW"
+  },
+  {
+   "name": "SETTLED_WINDOW",
+   "rule": "t ≥ 机组合闸 + 20 s",
+   "signal": "traj.time + DG 状态"
+  },
+  {
+   "name": "MASK",
+   "rule": "上述全部为真"
+  }
+ ],
+ "schema": "ppe_h_mask_semantics_v1",
+ "utc": "2026-09-18T09:05:35Z"
+}
