@@ -13,7 +13,7 @@
   "arm_binding": {
     "schema": "ppe_arm_runtime_binding_v1",
     "arm": "C0",
-    "bound_at_utc": "2026-09-18T08:17:22Z",
+    "bound_at_utc": "2026-09-18T08:45:03Z",
     "matlab_version": "MATLAB 26.1",
     "forecast_source": "oracle",
     "controller_identity": "law6_oracle_ecms",
@@ -63,7 +63,7 @@
       "EMS_CTRL_LAW": "Variant select: 5=SOC-Adaptive, 6=Oracle predictive"
     }
   },
-  "arm_binding_sha256": "50b6f93be69e8e5b473d2a27c609884258ef0fa4f36832ed6fac7aabe3c16731",
+  "arm_binding_sha256": "d14e75d414a8b64303cb40d45684a34581a7c8d5054cab039e79be1a304b8557",
   "pms_source_mode": 1,
   "ems_ctrl_law": 6,
   "forecast_source": "oracle",
@@ -72,11 +72,11 @@
     "path": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/out/EP3_SMOKE_SYNTH/C0.sourcesel.v1.mat",
     "sidecar": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/out/EP3_SMOKE_SYNTH/C0.sourcesel.v1.sidecar.json",
     "n_samples": 301,
-    "sha256": "f522b54ff47fde30ec5864be9f7b97b0762c6b9aebef63df2c83d8f1d6319606"
+    "sha256": "5966a0300174e69fca084adb845a045a78470fdb4a3e7abaf5d4a24c11039447"
   },
   "trajectory": {
     "path": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/out/C0.traj.v1.mat",
-    "sha256": "6073aac5a930594800fea0200f52a717c5fc78f7d5860ab26a841e54b82c1cd8",
+    "sha256": "189d87a45bf85ef630285dda2d36734f2cfa972bc593f7e3fffe1467a30f1d00",
     "n_samples": 301,
     "sidecar": {
       "schema": "ppe_plant_traj_v1",
@@ -85,8 +85,8 @@
       "run_id": "33497ba3b31f5dd7",
       "n_samples": 301,
       "t_end": 300,
-      "sha256": "6073aac5a930594800fea0200f52a717c5fc78f7d5860ab26a841e54b82c1cd8",
-      "utc": "2026-09-18T08:17:50Z",
+      "sha256": "189d87a45bf85ef630285dda2d36734f2cfa972bc593f7e3fffe1467a30f1d00",
+      "utc": "2026-09-18T08:45:28Z",
       "channels": [
         "time",
         "P_load_total_kW",
@@ -199,5 +199,5 @@
   "SOC0": 0.6,
   "SOC_end": 0.56418497368355358,
   "J_FEC_kg": null,
-  "utc": "2026-09-18T08:17:50Z"
+  "utc": "2026-09-18T08:45:28Z"
 }

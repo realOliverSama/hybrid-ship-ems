@@ -1,0 +1,50 @@
+{
+ "A_control_input": {
+  "delta_lambda": 0.0
+ },
+ "B_control_input": {
+  "delta_lambda": 0.1
+ },
+ "classification_note": "原 H 失败分类 = H_QUALIFICATION_FIXTURE_OPERATING_POINT_INVALID (NON_SATURATED_REGION_NOT_REACHED)：旧夹具把有效参考顶到 allocator 上限；早期 FIXTURE_EFFECTIVE_INPUT_MISMATCH 标签仅指\"旧 H 夹具 vs EP3-P1 夹具\"的工况差异，**不是**连续-分段运行时的输入差异（该差异已被 RCA 否证：逐位相同）",
+ "derived_from": "frozen physical/control equations + RCA-established segmented equivalence; no adaptive search",
+ "mask_excludes": "A≠B 或效应幅度（禁止据观测定义掩码）",
+ "mask_predicates_predeclared": [
+  "两机 state==3",
+  "N_dispatch==2",
+  "selector_baseline_active==0",
+  "baseline/safety fallback==0",
+  "dispatch_min_clamp_active==0",
+  "per-unit 参考严格位于 (125,500)（等价于聚合 (250,1000) 严格内点）",
+  "t ≥ 机组合闸后 20 s（排除启动/同步瞬态）"
+ ],
+ "predicted_range": {
+  "Pmin_Pmax_margins_kW": "per-unit 距 Pmin 125 与 Pmax 500 各 ≈275 / ≈100 kW",
+  "allocator_admissible_range_kW": [
+   250,
+   1000
+  ],
+  "expected_N_dispatch": 2,
+  "expected_aggregate_reference_kW": "≈800（λ≈0.43–0.45 时 J(g) 在 g≈800 取内点最小；格点 0..1000 步长 20 ⇒ 参考为格点值）",
+  "genset_domain_load_kW": "≈1260 at t≈300 s（propulsion 7 m/s + hotel 700；RCA 实测同工况）",
+  "per_unit_reference_kW": "≈400（严格落在 (125,500) 内）",
+  "reason_non_saturated_window_exists": "负荷 > η_rect·Pmax 上限(970 kW) ⇒ ECMS 无法以\"最大充电\"取优，J 在充电区间的内点取最小 ⇒ 参考落在带内；两单元 ON ⇒ 聚合带 [250,1000] 覆盖该参考且无钳位"
+ },
+ "preferred_approach": "natural commitment（不预置 DG2 状态，不改 PMS 阈值）",
+ "purpose": "H 资格化夹具（**先冻结后执行**；不据 A/B 结果搜索夹具）",
+ "requested_profile": {
+  "DG_initial_states": "OFF (natural start-up)",
+  "EMS_CTRL_LAW": 6,
+  "EMS_health": "nominal (EMS_HEALTH_TS=[0 1;1e6 1])",
+  "PMS_SOURCE_MODE": 1,
+  "arm": "C0",
+  "current_mps": 0.0,
+  "horizon_s": 300,
+  "hotel_kW": 700,
+  "initial_SOC": 0.6,
+  "speed_mode": "time (constant)",
+  "speed_mps": 7.0,
+  "water_depth_m": "scenario default"
+ },
+ "schema": "ppe_h_fixture_definition_v1",
+ "utc": "2026-09-18T08:43:35Z"
+}
