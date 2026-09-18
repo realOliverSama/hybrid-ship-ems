@@ -105,7 +105,7 @@ warmup_state = [];
 for i = 1:numel(t0s)
     t0 = t0s(i);
     if ~isempty(opt.BindingGuard)
-        ppe.assert_control_bindings(opt.BindingGuard);   % EP3：段级绑定复核
+        ppe.assert_control_bindings(opt.BindingGuard);   % EP3：段级绑定复核（工作区）
     end
     t_stop = min(t0 + dt, T_eval);
     [Pbar, winprov, use_prev] = winfun(t0, ds, p0);
@@ -142,6 +142,14 @@ for i = 1:numel(t0s)
     id = ppe.checkpoint_mgr('identity', idctx);
 
     in = Simulink.SimulationInput(MDL);
+    if ~isempty(opt.BindingGuard)
+        % EP3：控制关键变量随每段 SimulationInput 显式携带（不依赖 base 工作区
+        % 在连续 sim 之间的可见性/编译缓存；本地 runtime 实测确认该风险真实存在）
+        bf = fieldnames(opt.BindingGuard.bindings);
+        for bi = 1:numel(bf)
+            in = in.setVariable(bf{bi}, opt.BindingGuard.bindings.(bf{bi}));
+        end
+    end
     in = t445.make_simin_zoh(in);
     in = in.setModelParameter('StopTime', sprintf('%.4f', t_stop));
     in = in.setModelParameter('SaveFinalState', 'on');

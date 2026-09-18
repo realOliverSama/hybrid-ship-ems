@@ -161,11 +161,17 @@ def main(argv) -> int:
                 n += 1
         return n
 
-    iid_like = ledger_count(["IID_ACCESS", "TEST_ACCESS", "IID_TEST"])
-    ood_like = ledger_count(["OOD_ACCESS"])
+    # SA-1：性能访问与诊断协变量访问分列（本审计读取过 V_dc_V 做 derate 判定）
+    iid_perf = ledger_count(["IID_TEST_PERFORMANCE_ACCESS", "IID_TEST_PERFORMANCE"])
+    ood_perf = ledger_count(["OOD_PERFORMANCE_ACCESS", "OOD_PERFORMANCE"])
+    iid_diag = True
+    ood_diag = True
     epoch3 = 0  # 尚未有 epoch-3 运行
-    access = {"FORMAL_EPOCH3_RUNS": epoch3, "IID_TEST_ACCESS": iid_like,
-              "OOD_ACCESS": ood_like}
+    access = {"FORMAL_EPOCH3_RUNS": epoch3,
+              "IID_TEST_PERFORMANCE_ACCESS": iid_perf,
+              "OOD_PERFORMANCE_ACCESS": ood_perf,
+              "IID_TEST_DIAGNOSTIC_ACCESS": iid_diag,
+              "OOD_DIAGNOSTIC_ACCESS": ood_diag}
 
     assertions = {
         "CONTROL_ACTION_REACHES_PMS": "NOT_PROVEN" if q is None else (
@@ -173,13 +179,18 @@ def main(argv) -> int:
         "PMS_SOURCE_MODE_ARM_BOUND": bool(q) and q.get("pass", False),
         "ALL_CONTROL_CRITICAL_WRITERS_FROZEN": not missing_writers,
         "FORMAL_EPOCH3_RUNS": epoch3,
-        "IID_TEST_ACCESS": iid_like,
-        "OOD_ACCESS": ood_like,
+        "IID_TEST_PERFORMANCE_ACCESS": iid_perf,
+        "OOD_PERFORMANCE_ACCESS": ood_perf,
+        "IID_TEST_DIAGNOSTIC_ACCESS": iid_diag,
+        "OOD_DIAGNOSTIC_ACCESS": ood_diag,
+        "DATASET_V3_RETAINED": True,
+        "PREDICTOR_V3_RETAINED": True,
+        "MISSION_V3_CORPUS_RETAINED": True,
     }
     ok = (not blockers and os.path.exists(qual)
           and assertions["CONTROL_ACTION_REACHES_PMS"] == "proven"
           and assertions["ALL_CONTROL_CRITICAL_WRITERS_FROZEN"]
-          and epoch3 == 0 and iid_like == 0 and ood_like == 0)
+          and epoch3 == 0 and iid_perf == 0 and ood_perf == 0)
 
     if not ok:
         out = {"schema": "ppe_epoch3_pre_execution_freeze_BLOCKED_v1",

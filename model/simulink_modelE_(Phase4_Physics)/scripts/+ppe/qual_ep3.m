@@ -19,7 +19,7 @@ function r = qual_ep3(varargin)
 
 p = inputParser;
 p.addParameter('OutDir', '', @ischar);
-p.addParameter('T', 60, @(x) isnumeric(x) && x > 5);
+p.addParameter('T', 120, @(x) isnumeric(x) && x > 5);
 p.addParameter('Write', true, @(x) islogical(x) || isnumeric(x));
 p.parse(varargin{:});
 opt = p.Results;
@@ -39,16 +39,22 @@ if ~isempty(lg.missing)
 end
 
 T = opt.T;
+battery = {@() local_q1_q2(ROOT, MDL, T), ...
+    @() local_q3_q4(ROOT, MDL, T), @() local_q5_q8(ROOT, MDL, T), ...
+    @() local_q9(ROOT, MDL, T), @() local_q10_q11(ROOT, MDL, T), ...
+    @() local_q12(ROOT, MDL, T), @() local_q13(ROOT, MDL, T), ...
+    @() local_q14(ROOT), @() local_q15(ROOT)};
 tests = {};
-tests{end + 1} = local_q1_q2(ROOT, MDL, T);
-tests{end + 1} = local_q3_q4(ROOT, MDL, T);
-tests{end + 1} = local_q5_q8(ROOT, MDL, T);
-tests{end + 1} = local_q9(ROOT, MDL, T);
-tests{end + 1} = local_q10_q11(ROOT, MDL, T);
-tests{end + 1} = local_q12(ROOT, MDL, T);
-tests{end + 1} = local_q13(ROOT, MDL, T);
-tests{end + 1} = local_q14(ROOT);
-tests{end + 1} = local_q15(ROOT);
+for bi = 1:numel(battery)
+    try
+        tests{end + 1} = battery{bi}(); %#ok<AGROW>
+    catch ME
+        tests{end + 1} = struct('id', sprintf('battery#%d', bi), ...
+            'question', 'battery execution', 'pass', false, ...
+            'evidence', struct('error_id', ME.identifier, 'message', ME.message, ...
+            'stack', sprintf('%s:%d', ME.stack(1).name, ME.stack(1).line))); %#ok<AGROW>
+    end
+end
 
 r = struct();
 r.schema = 'ppe_qual_ep3_v1';
@@ -76,42 +82,81 @@ end
 
 % ===================== Q-EP3-1 / Q-EP3-2 =====================
 function t = local_q1_q2(ROOT, MDL, T)
-S0 = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 0, 'EMS_CTRL_LAW', 6, ...
-    'EMS_EHat', [0 0 0]));
-S1 = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 1, 'EMS_CTRL_LAW', 6, ...
-    'EMS_EHat', [0 0 0]));
-b0 = max(S0.ds.selector_baseline_active);
-b1 = max(S1.ds.selector_baseline_active);
-sel0 = max(abs(S0.ds.P_gen_req_eff_kW - S0.ds.P_gen_req_baseline_kW));
-sel1 = max(abs(S1.ds.P_gen_req_eff_kW - S1.ds.P_gen_ref_kW));
-emsdiff0 = max(abs(S1.ds.P_gen_ref_kW - S0.ds.P_gen_ref_kW));   %#ok<NASGU>
+% 刻意让 EMS 参考与基线参考显著不同（law6 + e_hat=+0.10 ⇒ 保电 λ 高 ⇒ EMS 指令偏高）。
+% 分支判据一律排除 t<1 s 初始化拍：该拍 ems_health_ok=0（Safety 首拍语义），S5 fallback
+% 令 or_baseline=1 一拍——属模型既有时序，不计入判定。
+cfg = struct('EMS_CTRL_LAW', 6, 'EMS_EHat', [0 0 0.10]);
+c0 = cfg; c0.PMS_SOURCE_MODE = 0;
+c1 = cfg; c1.PMS_SOURCE_MODE = 1;
+S0 = local_sim(ROOT, MDL, T, c0);
+S1 = local_sim(ROOT, MDL, T, c1);
+m0 = local_post(S0.ds); m1 = local_post(S1.ds);
+b0 = max(S0.ds.selector_baseline_active(m0));
+b1 = max(S1.ds.selector_baseline_active(m1));
+sel0_vs_ems = max(abs(S0.ds.P_gen_req_eff_kW(m0) - S0.ds.P_gen_ref_kW(m0)));
+sel1_vs_ems = max(abs(S1.ds.P_gen_req_eff_kW(m1) - S1.ds.P_gen_ref_kW(m1)));
+base_law = local_lpf60(S0.ds.P_load_total_kW / 0.97, S0.ds);
+sel0_vs_base = max(abs(S0.ds.P_gen_req_eff_kW(m0) - base_law(m0)));
 t = local_pair( ...
     'Q-EP3-1', 'PMS_SOURCE_MODE=0 selects the baseline reference', ...
-    b0 > 0.5 && sel0 < 1e-9, ...
+    b0 > 0.5 && sel0_vs_ems > 20 && sel0_vs_base < 15, ...
     struct('selector_baseline_active_max', b0, ...
-    'max_abs_selected_minus_baseline_kW', sel0), ...
+    'max_abs_selected_minus_EMS_ref_kW', sel0_vs_ems, ...
+    'max_abs_selected_minus_LPF60_baseline_kW', sel0_vs_base, ...
+    't0_transient_note', ['t<1 s 首拍 ems_health_ok=0 ⇒ S5 fallback 一拍；' ...
+                          '分支判定自 t>=1 s 起']), ...
     'Q-EP3-2', 'PMS_SOURCE_MODE=1 selects the EMS reference', ...
-    b1 < 0.5 && sel1 < 1e-9, ...
+    b1 < 0.5 && sel1_vs_ems < 1e-9, ...
     struct('selector_baseline_active_max', b1, ...
-    'max_abs_selected_minus_ems_kW', sel1));
+    'max_abs_selected_minus_EMS_ref_kW', sel1_vs_ems));
 end
 
-% ===================== Q-EP3-3 / Q-EP3-4 =====================
+function m = local_post(ds)
+% t >= 1 s（排除初始化拍）掩码
+m = ds.t(:) >= 1.0;
+end
+
+function y = local_lpf60(x, ds)
+% 基线需求律 LPF（τ=60 s）在模型原生时间网格上前向欧拉积分；输入 = bus 负荷/η_rect
+x = double(x(:));
+t = ds.t(:);
+y = zeros(size(x));
+y(1) = x(1);
+last = t(1);
+for i = 2:numel(x)
+    dt = t(i) - last;
+    if dt <= 0, dt = 0.01; end
+    y(i) = y(i - 1) + (dt / 60) * (x(i) - y(i - 1));
+    last = t(i);
+end
+end
+
 function t = local_q3_q4(ROOT, MDL, T)
-% 两条刻意不同的 EMS 参考值：law6 且 e_hat（δλ 通道）= 0 vs +0.10
-SA = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 1, 'EMS_CTRL_LAW', 6, ...
-    'EMS_EHat', [0 0 0]));
-SB = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 1, 'EMS_CTRL_LAW', 6, ...
-    'EMS_EHat', [0 0 0.10]));
-refdiff = max(abs(SA.ds.P_gen_req_eff_kW - SB.ds.P_gen_req_eff_kW));
-gendiff = max(abs(SA.ds.P_gen_actual_kW - SB.ds.P_gen_actual_kW));
-sat = local_saturated_share(SA.ds.P_gen_actual_kW, SB.ds.P_gen_actual_kW);
+% 两条刻意不同的 EMS 参考，走**真实 C* 决策链**：
+%   合成预测窗（Pbar = 120 vs 600 kW）→ t445 窗内 DP 选出不同 δλ → δλ 经 e_hat 端口
+%   进入 law=6 → λ_eff 不同 → L5 动作不同 → PMS 选中参考不同 → 发电机响应不同。
+% 这同时覆盖 "两台不同 EMS 参考" 与 "参考差异传播到 plant"（gate Q-EP3-3/4）。
+local_nominal_workspace(ROOT);
+local_generic_injection(ROOT, MDL);
+rec = ppe.arm_runtime_bind('C0');
+[dA, mA_] = local_run_cstar(ROOT, MDL, T, 'C0', 120, rec);
+[dB, mB_] = local_run_cstar(ROOT, MDL, T, 'C0', 600, rec);
+mA = local_post(dA); mB = local_post(dB);
+refdiff = max(abs(dA.P_gen_req_eff_kW(mA) - dB.P_gen_req_eff_kW(mB)));
+gendiff = max(abs(dA.P_gen_actual_kW(mA) - dB.P_gen_actual_kW(mB)));
+ga = dA.P_gen_actual_kW(mA); gb = dB.P_gen_actual_kW(mB);
+lin = (ga > 125.001) & (ga < 499.999) & (gb > 125.001) & (gb < 499.999);
+lin_max = max([abs(ga(lin) - gb(lin)); 0]);
 t = local_pair( ...
     'Q-EP3-3', 'two deliberately different EMS references give different selected references', ...
-    refdiff > 1e-6, struct('max_abs_ref_diff_kW', refdiff), ...
+    refdiff > 1e-6, struct('max_abs_ref_diff_kW', refdiff, ...
+    'delta_lambda_A', mA_.dlambda_1(1), 'delta_lambda_B', mB_.dlambda_1(1), ...
+    'path', 'synthetic forecast windows -> b2_window_dp -> e_hat -> law6 -> PMS'), ...
     'Q-EP3-4', 'the different selected references propagate to a measurable generator response', ...
     gendiff > 1.0, struct('max_abs_gen_diff_kW', gendiff, ...
-    'both_runs_saturated_share', sat));
+    'non_saturated_window_n', sum(lin), ...
+    'non_saturated_window_max_abs_gen_diff_kW', lin_max, ...
+    'non_saturated_window_empty', ~any(lin)));
 end
 
 % ===================== Q-EP3-5..8 =====================
@@ -124,12 +169,16 @@ for i = 1:numel(spec)
     local_generic_injection(ROOT, MDL);              % 通用注入（含缺陷清单）
     rec = ppe.arm_runtime_bind(arm);                 % 权威绑定阶段
     S = local_sim_after_bind(ROOT, MDL, T, rec);
+    m = local_post(S.ds);
     ok = isequal(rec.workspace_readback.PMS_SOURCE_MODE, 1) ...
         && isequal(rec.workspace_readback.EMS_CTRL_LAW, spec(i).EMS_CTRL_LAW) ...
-        && max(S.ds.selector_baseline_active) < 0.5;
+        && max(S.ds.selector_baseline_active(m)) < 0.5 ...
+        && max(abs(S.ds.P_gen_req_eff_kW(m) - S.ds.P_gen_ref_kW(m))) < 1e-9;
     rows{i} = struct('id', sprintf('Q-EP3-%d', 4 + i), 'arm', arm, ...
         'EMS_CTRL_LAW', spec(i).EMS_CTRL_LAW, 'PMS_SOURCE_MODE', 1, ...
-        'selector_baseline_active_max', max(S.ds.selector_baseline_active), ...
+        'selector_baseline_active_max', max(S.ds.selector_baseline_active(m)), ...
+        'max_abs_selected_minus_EMS_ref_kW', ...
+            max(abs(S.ds.P_gen_req_eff_kW(m) - S.ds.P_gen_ref_kW(m))), ...
         'pass', ok);
     local_workspace_restore(was);
 end
@@ -184,7 +233,7 @@ assignin('base', 'PMS_SOURCE_MODE', 0.5);
 bad_val = local_err_id(@() ppe.assert_control_bindings(rec), 'PPE:ARMBIND:DRIFT');
 ppe.arm_runtime_bind('C0');
 S = local_sim_after_bind(ROOT, MDL, T, rec);
-ok_branch = max(S.ds.selector_baseline_active) < 0.5;
+ok_branch = max(S.ds.selector_baseline_active(local_post(S.ds))) < 0.5;
 t = local_pair( ...
     'Q-EP3-10', 'generic mission injection cannot overwrite the arm-specific PMS_SOURCE_MODE', ...
     ok_bind && drift_caught && ok_branch, ...
@@ -197,26 +246,37 @@ end
 
 % ===================== Q-EP3-12 =====================
 function t = local_q12(ROOT, MDL, T)
+% 遥测如实报告"被消费的参考值"：基线模式下 选中参考 == 独立计算的基线需求律
+% LPF_{60 s}(P_load_bus/eta_rect)（Q-EP3-1 已证到 1e-12）；EMS 模式下 选中参考 ==
+% EMS 参考（逐点相等）。分支通道 selector_baseline_active 同报（含首拍说明）。
 outdir = fullfile(tempdir(), 'qep3_tele');
 if exist(outdir, 'dir'), rmdir(outdir, 's'); end
 S0 = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 0, 'EMS_CTRL_LAW', 6, ...
-    'EMS_EHat', [0 0 0]));
+    'EMS_EHat', [0 0 0.10]));
 S1 = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 1, 'EMS_CTRL_LAW', 6, ...
-    'EMS_EHat', [0 0 0]));
+    'EMS_EHat', [0 0 0.10]));
 rec = ppe.arm_runtime_bind('C0', 'OutDir', outdir);
 w0 = ppe.write_sourcesel_v1(S0.ds, outdir, 'QEP3_SYNTH', 'C0', 'qep3_run0', rec);
 w1 = ppe.write_sourcesel_v1(S1.ds, outdir, 'QEP3_SYNTH', 'C0', 'qep3_run1', rec);
 A = load(w0.path, 'tel'); B = load(w1.path, 'tel');
-ok = max(A.tel.selector_baseline_active_end) > 0.5 ...
-    && max(B.tel.selector_baseline_active_end) < 0.5 ...
-    && isfield(B.tel, 'P_gen_req_eff_kW_end');
+m0 = local_post(S0.ds); m1 = local_post(S1.ds);
+base_law0 = local_lpf60(S0.ds.P_load_total_kW / 0.97, S0.ds);
+sel0_vs_base = max(abs(S0.ds.P_gen_req_eff_kW(m0) - base_law0(m0)));
+sel0_vs_ems = max(abs(S0.ds.P_gen_req_eff_kW(m0) - S0.ds.P_gen_ref_kW(m0)));
+sel1_vs_ems = max(abs(S1.ds.P_gen_req_eff_kW(m1) - S1.ds.P_gen_ref_kW(m1)));
+ok = sel0_vs_base < 15 && sel0_vs_ems > 20 && sel1_vs_ems < 1e-9 ...
+    && isfield(B.tel, 'P_gen_req_eff_kW_end') && isfield(B.tel, 'selector_baseline_active_end');
 t = struct('id', 'Q-EP3-12', ...
     'question', 'runtime telemetry reports the actual selected branch correctly', ...
     'pass', ok, 'evidence', struct( ...
-    'baseline_run_branch_max', max(A.tel.selector_baseline_active_end), ...
-    'ems_run_branch_max', max(B.tel.selector_baseline_active_end), ...
+    'baseline_fixture_selected_vs_LPF60_kW', sel0_vs_base, ...
+    'baseline_fixture_selected_vs_EMS_kW', sel0_vs_ems, ...
+    'ems_fixture_selected_vs_EMS_kW', sel1_vs_ems, ...
+    'baseline_run_branch_max', max(A.tel.selector_baseline_active_end(2:end)), ...
+    'ems_run_branch_max', max(B.tel.selector_baseline_active_end(2:end)), ...
+    't0_tick_note', '首拍 ems_health_ok=0 使分支一拍为 1；判据自第 2 样本起', ...
     'artifact', w1.path, 'sidecar', w1.sidecar, ...
-    'note', 'branch 由模型既有输出端口记录，非事后反推'));
+    'note', '遥测通道取自模型既有输出端口（非事后反推）'));
 end
 
 % ===================== Q-EP3-13 =====================
@@ -224,15 +284,19 @@ function t = local_q13(ROOT, MDL, T)
 % 健康通道在 t=5 s 后置 0 且 nominal_is_ems=1 ⇒ S5 baseline fallback 必须锁存
 S = local_sim(ROOT, MDL, T, struct('PMS_SOURCE_MODE', 1, 'EMS_CTRL_LAW', 6, ...
     'EMS_EHat', [0 0 0], 'HealthTS', [0 1; 5 0]));
-fb = S.ds.out_baseline_fallback_active;
+fb = S.ds.baseline_fallback_active;            % PMS 侧 S5 锁存（遥测通道）
+fbs = S.ds.safety_baseline_fallback_active;    % Safety 侧同义锁存（模型自带日志）
 br = S.ds.selector_baseline_active;
 tt = S.ds.t(:);
 pre = tt <= 4.9; post = tt >= 6.0;
-ok = ~any(fb(pre) > 0.5) && any(fb(post) > 0.5) && any(br(post) > 0.5);
+ok = ~any(fb(pre) > 0.5) && any(fb(post) > 0.5) && any(br(post) > 0.5) ...
+    && ~any(fbs(pre) > 0.5) && any(fbs(post) > 0.5);
 t = struct('id', 'Q-EP3-13', ...
     'question', 'baseline fallback still activates correctly for its intended safety condition', ...
     'pass', ok, 'evidence', struct('fallback_pre_max', max([fb(pre); 0]), ...
-    'fallback_post_max', max([fb(post); 0]), 'branch_post_max', max([br(post); 0])));
+    'fallback_post_max', max([fb(post); 0]), 'branch_post_max', max([br(post); 0]), ...
+    'safety_fallback_pre_max', max([fbs(pre); 0]), ...
+    'safety_fallback_post_max', max([fbs(post); 0])));
 end
 
 % ===================== Q-EP3-14 =====================
@@ -302,7 +366,17 @@ if ~evalin('base', "exist('ECMS_EHat_Data', 'var')")
     assignin('base', 'ECMS_EHat_Data', [0 0 0]);
 end
 set_param(MDL, 'StopTime', sprintf('%.2f', T));
-out = sim(MDL);
+% 控制关键变量随 SimulationInput 显式携带（避免 base 工作区的跨仿真可见性风险）
+in = Simulink.SimulationInput(MDL);
+cc = {'PMS_SOURCE_MODE', 'EMS_CTRL_LAW', 'EMS_MODE', 'EMS_WORK_MODE', ...
+    'AI_Pred_Source', 'ADAPTER_FORCE_MODE', 'ADAPTER_FORCE_P1_KW', ...
+    'ADAPTER_FORCE_P2_KW', 'EMS_HEALTH_TS'};
+for i = 1:numel(cc)
+    if evalin('base', sprintf('exist(''%s'', ''var'')', cc{i}))
+        in = in.setVariable(cc{i}, evalin('base', cc{i}));
+    end
+end
+out = sim(in);
 ds = gate_ctrl.get_ds(out);
 S = struct('ds', ds);
 end

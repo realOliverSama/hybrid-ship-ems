@@ -368,6 +368,33 @@ def main() -> int:
             "SCIENTIFICALLY_INVALIDATED": sum(1 for a in CLASSIFICATIONS if a["classification"] == "SCIENTIFICALLY_INVALIDATED"),
             "REQUIRES_FURTHER_EVIDENCE": sum(1 for a in CLASSIFICATIONS if a["classification"] == "REQUIRES_FURTHER_EVIDENCE"),
         },
+        "access_provenance": {
+            "schema": "ppe_access_provenance_v1",
+            "correction_note": ("SA-1：先前 handoff 中的 IID_TEST_ACCESS=0 / OOD_ACCESS=0 "
+                                "字面不成立——本审计**确实读取**了 IID/OOD 语料的 H2 "
+                                "V_dc_V 通道用于 derate 判定。现按性能访问与诊断协变量访问"
+                                "分列，并披露访问字段与目的。"),
+            "IID_TEST_PERFORMANCE_ACCESS": 0,
+            "OOD_PERFORMANCE_ACCESS": 0,
+            "IID_TEST_DIAGNOSTIC_ACCESS": True,
+            "OOD_DIAGNOSTIC_ACCESS": True,
+            "DIAGNOSTIC_FIELDS_ACCESSED": ["X_H2::V_dc_V（IID npz）",
+                                           "stream.V_dc_V（OOD 每航次 .mat）"],
+            "DIAGNOSTIC_PURPOSE": ("execution-path scope audit: verify whether propulsion "
+                                   "derate threshold V_dc < 675 V was activated"),
+            "disclosure_label": "POST_SELECTION_DIAGNOSTIC_COVARIATE_ACCESSED",
+            "negatives_confirmed": {
+                "no_predictor_error_metric_read": True,
+                "no_test_or_ood_loss_read": True,
+                "no_fuel_or_J_FEC_or_effect_result_read": True,
+                "no_predictor_retraining": True,
+                "no_hpo_or_model_selection": True,
+                "predictor_v3_identity_unchanged": True,
+            },
+            "scope": ("只读单通道标量统计（min / 低于阈值计数）；未读取 Y/E300 目标、"
+                      "未读取任何预测误差或损失、未读取燃油与效应结果、未触发任何训练/"
+                      "选模流程；Predictor-v3 身份（npz/norm/权重哈希）未改变"),
+        },
         "stop_condition_check": {
             "predictor_v3_identity_invalidated": False,
             "dataset_v3_target_invalidated": False,

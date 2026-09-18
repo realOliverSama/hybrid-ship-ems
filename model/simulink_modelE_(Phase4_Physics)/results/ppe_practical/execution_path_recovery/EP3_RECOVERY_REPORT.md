@@ -162,3 +162,84 @@ formal/IID/OOD、不据以调参 C\*）：1/2 分支选择；3/4 不同 EMS 参�
 2. 语料沿用已由审计支持，但**修复后执行的 V_dc 裕量**（train/runtime 一致性）需在 epoch-3
    作为断言监控——若修复后 EMS 使 V_dc 跌破 675 V，则需回到本审计重判。
 3. 登记事项：形式流 1 Hz vs schema 0.01 s；Predictor-v3 工件缺 EMS 生成身份。
+
+
+---
+
+# 附：SA-1 溯源更正 + 本地 runtime Q-EP3 资格化（授权后执行）
+
+## SA-1 访问溯源更正（性能访问 vs 诊断协变量访问）
+
+先前交接中的 `IID_TEST_ACCESS = 0 / OOD_ACCESS = 0` **字面不成立**：影响范围审计确实读取了
+IID/OOD 语料的 H2 `V_dc_V` 通道用于 derate 判定。现已分列并写入
+`impact_scope_audit.json::access_provenance` 与访问台账（`results/ppe_practical/access_ledger.jsonl`）：
+
+| 项 | 值 |
+|---|---|
+| IID_TEST_PERFORMANCE_ACCESS | **0** |
+| OOD_PERFORMANCE_ACCESS | **0** |
+| IID_TEST_DIAGNOSTIC_ACCESS | **true**（`X_H2::V_dc_V`，576 航次 / 59,234,400 采样） |
+| OOD_DIAGNOSTIC_ACCESS | **true**（`stream.V_dc_V`，200 航次 / 842,288 采样） |
+| DIAGNOSTIC_PURPOSE | execution-path scope audit: verify whether propulsion derate threshold V_dc < 675 V was activated |
+| 披露标签 | `POST_SELECTION_DIAGNOSTIC_COVARIATE_ACCESSED` |
+
+确认：未读预测误差/损失，未读 fuel/J_FEC/effect 结果，未重训练，未做 HPO/选模，
+Predictor-v3 身份未变（npz/归一化/权重哈希不变）。该更正**不**使 Predictor-v3 失效。
+
+## Q-EP3 本地 runtime 资格化：**PASS 9/9 电池 = Q-EP3-1..15 全通过**
+
+夹具：真实 Model-E runtime（`sim` + `ppe.run_cstar` 分段路径）、合成短时域（120 s，S01 静水）、
+不消费 formal/IID/OOD 绩效证据、不据以调参 C*。
+
+| 测试 | 结果要点 |
+|---|---|
+| Q-EP3-1 baseline 分支 | `selector_baseline_active`=1；选中参考与 EMS 参考差 **690 kW**；与独立计算的 `LPF_{60 s}(P_load_bus/η_rect)` **逐点一致（max\|Δ\|=1.3e-12）** |
+| Q-EP3-2 EMS 分支 | 分支=0；**选中参考 == EMS 参考（逐点相等）** |
+| Q-EP3-3 不同 EMS 参考 | 两条合成预测窗 → DP δλ 不同 → 选中参考差 **200 kW** |
+| Q-EP3-4 传播到 plant | 发电机功率差 **10.8 kW**（非饱和子窗 5,864 点内差 0，如实登记） |
+| Q-EP3-5..8 四臂绑定 | P0(law5)/C0/C1/C2(law6) 绑定回读正确、分支=0、**选中参考 == EMS 参考（逐点）** |
+| Q-EP3-9 预测窗→L5→选中参考 | 差 200 kW，发电机响应差 10.8 kW（`ppe.run_cstar` 分段路径） |
+| Q-EP3-10 通用注入不可覆盖 | 注入缺陷清单后绑定仍生效（回读正确）；**绑定后改写被 `PPE:ARMBIND:DRIFT` 捕获** |
+| Q-EP3-11 fail-closed | 未知臂 → `PPE:ARMBIND:ARM`；非预期值 → `PPE:ARMBIND:DRIFT` |
+| Q-EP3-12 遥测如实 | 基线夹具 选中≈LPF（<15 kW）、≠EMS（>20 kW）；EMS 夹具 选中==EMS（1e-9）；遥测工件 `ppe_sourcesel_v1` 落盘 |
+| Q-EP3-13 安全回退 | 健康通道 t=5 s 置 0 → `baseline_fallback_active` 锁存、分支切 baseline（前后对比 0→1） |
+| Q-EP3-14 FC-3 兼容 | `fc3_core.TRAJ_ALLOWLIST` 与新增遥测通道**不相交**（`OK`） |
+| Q-EP3-15 不消费正式证据 | 合成输入；formal_epoch2 / datasets_v3 未被读取 |
+
+**资格化过程中发现并修复的实现缺陷（harness plumbing，均已保留在仓库中）**：
+1. 遥测信号记录：对 Stateflow **Simulink Function 输出端口**开启 DataLogging 被 R2026a 拒绝、
+   信号线不支持 DataLogging、输入端口亦不接受 ⇒ 改为在**普通块输出端口**开启，并对
+   `P_gen_req_baseline_kW`（函数边界）改用"选中参考 vs 独立基线律"的等价证据；
+2. 判据时序：首拍 `ems_health_ok=0`（Safety 首拍语义）令分支一拍为 1 ⇒ 所有分支判据自 t≥1 s 起；
+3. **实质修复**（非仅 harness）：本地实测确认 **base 工作区的控制关键变量在连续 `sim` 之间
+   存在可见性/编译缓存风险** ⇒ `run_cstar` 在 `BindingGuard` 存在时把全部控制关键绑定
+   **逐段写入该段 `SimulationInput.setVariable`**（不再仅依赖工作区）。
+
+夹具参数（如 δλ、预测窗）只用于制造可判别的参考值差异，**未修改任何控制器参数**。
+
+## 资格化后身份复核
+
+- `model/HybridShip_ModelE.slx` SHA == epoch-2 冻结绑定 ✓（.slx 字节未变；set_param 仅内存生效）
+- 科学/运行时文件（builder/PMS/Safety/dispatch/config/scenario_compile/run_formal_voyage/
+  语料 npz）在工作区**无改动** ⇒ 资格化期间未变 ✓
+
+## epoch-3 预执行冻结（已生成）
+
+`results/ppe_practical/freeze/epoch3_pre_execution_freeze.json`
+（root sha256 `cbb17fb5e037ab5f193e843f940b7e3b319d838a6ce6e2517983fad3a62e3ef2`）
+
+绑定：修复提交 `4168646902d4`、注入链 **15 个写入者** + 修复层 **10 件** + 科学身份 **11 件**
+（全部 present）、臂运行时清单、遥测、Q-EP3 工件、更正后的访问台账、48 航次语料与 192-run 清单。
+
+| 断言 | 值 |
+|---|---|
+| CONTROL_ACTION_REACHES_PMS | **proven** |
+| PMS_SOURCE_MODE_ARM_BOUND | true |
+| ALL_CONTROL_CRITICAL_WRITERS_FROZEN | true |
+| DATASET_V3_RETAINED / PREDICTOR_V3_RETAINED / MISSION_V3_CORPUS_RETAINED | true / true / true |
+| FORMAL_EPOCH3_RUNS | **0** |
+| IID_TEST_PERFORMANCE_ACCESS / OOD_PERFORMANCE_ACCESS | **0 / 0** |
+| IID_TEST_DIAGNOSTIC_ACCESS / OOD_DIAGNOSTIC_ACCESS | true / true |
+| overall | **true** |
+
+**未启动任何正式运行**（192 runs 未执行）；未做任何云端操作。
