@@ -1,0 +1,62 @@
+{
+ "execution_identities": {
+  "EP3_P1": "qual_ep3_p1_result.json（连续 sim()，hotel=700、标称 7 m/s 时间模式、δλ A=0.00/B=+0.10、T=300）",
+  "production_H": "qual_ep3_runner_smoke_final.json + out/EP3_SMOKE_SYNTH/*.sourcesel.v1.mat/.traj.v1.mat（经 ppe.run_epoch3_voyage，hotel=500 最终夹具）"
+ },
+ "first_divergence": {
+  "EP3_P1_value": "SCN.speed_profile_mode='distance'（A 路径未设置该字段，时间模式速度注入未生效）⇒ 推进≈0",
+  "consequence": "两路径**并非同一夹具**：EP3-P1 负荷≈700 kW（≈仅酒店），生产 H 负荷≈1304 kW",
+  "layer": "模型执行之前的**有效速度剖面**（任务/植物侧）",
+  "production_H_value": "SCN.speed_profile_mode='time' + VOYAGE_V_*=7 m/s ⇒ 推进≈600 kW",
+  "responsible_writer": "qual_ep3_p1.local_run_A_B / qual_ep3_p1 夹具块（只写 VOYAGE_*，未写 SCN.speed_profile_mode）",
+  "source_location": "scripts/+ppe/qual_ep3_p1.m（夹具块与 local_run_A_B）；对照 scripts/+ppe/run_epoch3_voyage.m::local_smoke_scn",
+  "variable": "SCN.speed_profile_mode / 有效推进需求"
+ },
+ "mechanism": "负荷决定 ECMS 取哪个格点：负荷 ≲970 kW（η_rect·Pmax_agg）时充电可行 ⇒ J(g) 可在内点取优（EP3-P1 观测 800–880 kW，带内）；负荷 >970 kW 时充电受限/需求高 ⇒ ECMS 取格点最大 1000 kW = allocator 聚合上限 ⇒ 生产 H 的 INTERIOR 谓词按冻结语义归零。两条路径的**未掩码**参考取值范围完全一致（[721.65, 1000] kW），差别只在落在带内的样本占比。",
+ "note": "未执行任何新夹具；未置真任何断言；未生成冻结；未启动正式运行",
+ "numeric_comparison": {
+  "EP3_P1": {
+   "P_load_gen_kW": "≈700（由 gen_mean 与 pbat_mean 反解）",
+   "ems_mean_A_kW": 804.7,
+   "gen_mean_A_kW": 808.8,
+   "pbat_mean_A_kW": -87.3,
+   "sel_in_mask_A_kW": [
+    800,
+    880
+   ],
+   "sel_range_kW": [
+    721.6494845360826,
+    1000.0
+   ]
+  },
+  "production_H": {
+   "N_dispatch_med": 2.0,
+   "P_gen_ref_kW_min_med_max": [
+    800.0,
+    1000.0,
+    1000.0
+   ],
+   "P_gen_req_eff_kW_min_med_max": [
+    721.65,
+    1000.0,
+    1000.0
+   ],
+   "P_load_gen_kW_min_med_max": [
+    721.65,
+    1304.38,
+    1443.3
+   ],
+   "branch_med": 0.0
+  }
+ },
+ "root_cause_classification": "EP3P1_NOT_PRODUCTION_EQUIVALENT",
+ "schema": "ppe_ep3p1_vs_production_reference_rca_v1",
+ "secondary_classification": "FIXTURE_EFFECTIVE_INPUT_MISMATCH（仅指 EP3-P1 夹具 vs 生产夹具的工况差异）",
+ "unresolved": "无（本 RCA 的因果链闭合到\"有效速度剖面\"这一层）",
+ "utc": "2026-09-18T10:16:26Z",
+ "validity_consequences": {
+  "EP3P1_as_production_path_evidence": "**不再有效**：其 80.5/96.7 kW 传播数值取自\"未应用时间模式速度剖面\"的单模式近似工况，不能作为最终冻结的 CONTROL_ACTION_REACHES_GENERATOR / NON_SATURATED_PROPAGATION_PROVEN 证据",
+  "production_H_defect": "未发现：生产入口有效输入、分段语义、遥测读取均已分别验证；INTERIOR=0 是真实物理工况结果",
+  "telemetry_interpretation": "无错误（遥测如实报告 EMS 参考与选中参考，且与轨迹一致）"
+ }
+}
