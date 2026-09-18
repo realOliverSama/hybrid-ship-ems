@@ -1,0 +1,12 @@
+{
+ "freeze_file": "results/ppe_practical/freeze/effect_analysis_preaccess_freeze.json",
+ "freeze_file_sha256": "ff3c11066ea21ac0e00ebc5f3e613d583bce9c89d31053eb59f19cdc8f131f85",
+ "n_checks": 9,
+ "n_pass": 9,
+ "next": "STOP \u2014 human Effect-Analysis Execution Gate required",
+ "overall": true,
+ "schema": "EFFECT_ANALYSIS_ELIGIBILITY_GATE_v1",
+ "study_feasibility_status": "FULL_COHORT",
+ "task": "T-FC3-9",
+ "utc": "2026-09-18T04:18:58Z"
+}
