@@ -1,0 +1,50 @@
+{
+  "schema": "ppe_qual_ep3_runner_smoke_v1",
+  "pass": false,
+  "NONFORMAL": true,
+  "FORMAL_EPOCH3_RESULT": false,
+  "entry_path": "ppe.run_epoch3_voyage (same entry used by formal epoch-3)",
+  "utc": "2026-09-18T08:00:40Z",
+  "namespace": {
+    "formal_epoch3_runs_before": 0,
+    "formal_epoch3_runs_after": 0,
+    "smoke_dir": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke"
+  },
+  "proof": {
+    "A_generic_injection_occurred": true,
+    "B_authoritative_bind_after_injection": true,
+    "C_D_simulationinput_critical_vars": [
+      "ADAPTER_FORCE_MODE",
+      "ADAPTER_FORCE_P1_KW",
+      "ADAPTER_FORCE_P2_KW",
+      "AI_Pred_Source",
+      "EMS_CTRL_LAW",
+      "EMS_HEALTH_TS",
+      "EMS_MODE",
+      "EMS_WORK_MODE",
+      "PMS_SOURCE_MODE"
+    ],
+    "E_bindingguard_effective_values": true,
+    "F_branch_runtime": {
+      "C0_runA": 0,
+      "C0_runB": 0,
+      "P0_runC": 0
+    },
+    "G_selected_equals_ems_ref": {
+      "C0_runA": 0,
+      "C0_runB": 0,
+      "P0_runC": 0
+    },
+    "H_propagation": {
+      "mask_n": 0,
+      "max_ref_diff_kW": 0,
+      "max_gen_diff_kW": 0,
+      "median_gen_diff_kW": 0
+    }
+  },
+  "runs": {
+    "C0_pbar120": "33497ba3b31f5dd7",
+    "C0_pbar600": "33497ba3b31f5dd7",
+    "P0_pbar600": "4e71c79a9f7b4e10"
+  }
+}

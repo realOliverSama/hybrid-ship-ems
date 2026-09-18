@@ -101,6 +101,7 @@ oob = 0;
 fallback_n = 0;
 ds = [];
 warmup_state = [];
+meta_ = struct();
 
 for i = 1:numel(t0s)
     t0 = t0s(i);
@@ -146,6 +147,8 @@ for i = 1:numel(t0s)
         % EP3：控制关键变量随每段 SimulationInput 显式携带（不依赖 base 工作区
         % 在连续 sim 之间的可见性/编译缓存；本地 runtime 实测确认该风险真实存在）
         bf = fieldnames(opt.BindingGuard.bindings);
+        if ~isfield(meta_, 'binding_guard_applied'), meta_.binding_guard_applied = {}; end %#ok<AGROW>
+        meta_.binding_guard_applied = unique([meta_.binding_guard_applied; bf(:)]);
         for bi = 1:numel(bf)
             in = in.setVariable(bf{bi}, opt.BindingGuard.bindings.(bf{bi}));
         end
@@ -188,7 +191,7 @@ for i = 1:numel(t0s)
     end
 end
 
-meta = struct();
+meta = meta_;
 meta.schema = 'ppe_cstar_run_meta_v1';
 meta.arm = char(arm);
 meta.voyage_id = char(ctxid.voyage_id);

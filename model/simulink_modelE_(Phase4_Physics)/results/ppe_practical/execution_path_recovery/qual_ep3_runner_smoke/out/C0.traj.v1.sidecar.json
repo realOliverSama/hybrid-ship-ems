@@ -1,0 +1,54 @@
+{
+  "schema": "ppe_plant_traj_v1",
+  "voyage_id": "EP3_SMOKE_SYNTH",
+  "arm": "C0",
+  "run_id": "33497ba3b31f5dd7",
+  "n_samples": 301,
+  "t_end": 300,
+  "sha256": "59674ef408e4c08611d417538f9e548d34e35647fbe0607ab6e0744d9d9b143b",
+  "utc": "2026-09-18T08:11:07Z",
+  "channels": [
+    "time",
+    "P_load_total_kW",
+    "P_prop_demand_kW",
+    "P_prop_actual_kW",
+    "P_unserved_kW",
+    "P_gen_unserved_kW",
+    "P_gen_actual_kW",
+    "P_DG1_kW",
+    "P_DG2_kW",
+    "state_DG1",
+    "state_DG2",
+    "commitment_state",
+    "N_dispatch",
+    "P_bat_actual_kW",
+    "P_bat_dis_avail_kW",
+    "P_bat_chg_avail_kW",
+    "SOC",
+    "V_bat_V",
+    "I_bat_A",
+    "V_dc_V",
+    "alarm_steady",
+    "alarm_transient",
+    "flag_vdc_low",
+    "flag_soc_low",
+    "safety_baseline_fallback_active",
+    "P_bat_bus_kW",
+    "derate08_active"
+  ],
+  "derivations": [
+    {
+      "channel": "P_bat_bus_kW",
+      "relation": "P_bus_residual_kW - eta_rect*P_gen_actual_kW + P_load_total_kW",
+      "source": "build_model_e.m buildBusResidualMonitor (09_Bus_Residual_Monitor)",
+      "eta_rect": 0.97
+    },
+    {
+      "channel": "derate08_active",
+      "relation": "double(V_dc_V < CCS_Vdc_Steady_Band(1))  % derate_fn(V)<1",
+      "source": "build_model_e.m CODE_DERATE",
+      "ccs_v_hi": 675,
+      "ccs_v_lo": 600
+    }
+  ]
+}

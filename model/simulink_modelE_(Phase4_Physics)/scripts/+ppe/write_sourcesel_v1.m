@@ -22,7 +22,8 @@ function out = write_sourcesel_v1(ds, out_dir, voyage_id, arm, run_id, binding)
 
 CH = {'P_gen_ref_kW', 'P_gen_req_eff_kW', 'selector_baseline_active', ...
     'P_load_gen_kW', 'P_gen_unserved_kW', 'P_gen_surplus_kW', ...
-    'dispatch_min_clamp_active', 'baseline_fallback_active', 'ems_health_ok'};
+    'dispatch_min_clamp_active', 'baseline_fallback_active', 'ems_health_ok', ...
+    'P_DG1_ref_kW', 'P_DG2_ref_kW', 'N_dispatch'};
 % 注：基线参考 P_gen_req_baseline_kW 处于 Simulink Function 边界，R2026a 禁止直接
 % 记录（见 model.set_source_selection_logging 文件头 ⑤）。其证据形式为：
 % 基线模式下 P_gen_req_eff_kW 与独立计算的 LPF_{tau=60s}(P_load_gen_kW) 一致。

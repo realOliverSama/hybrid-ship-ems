@@ -17,7 +17,7 @@
   "PREDICTOR_V3_RETAINED": true
  },
  "blockers": [
-  "formal-runner integration smoke artifact missing (results/ppe_practical/execution_path_recovery/qual_ep3_runner_smoke/qual_ep3_runner_smoke.json)"
+  "assertions not all true"
  ],
  "evidence": {
   "EP3_P1_non_saturated_propagation": {
@@ -62,7 +62,7 @@
    {
     "path": "scripts/+ppe/write_sourcesel_v1.m",
     "present": true,
-    "sha256": "d315e24af13faed0c08ba2136081dd1612fd2dfbbb096545fee0a031e8ad1358"
+    "sha256": "445907c252056053f4375037cc419d914bf7055094b33d80124de41791079125"
    },
    {
     "path": "scripts/+ppe/cstar_impl_files_ep3.m",
@@ -72,7 +72,7 @@
    {
     "path": "scripts/+ppe/load_epoch3_freeze_bindings.m",
     "present": true,
-    "sha256": "490421f7fdeefd49ce769f5c26e44be134a64551babcf4d94ffae37ac511c2aa"
+    "sha256": "608e928f0c6cd8fe6c9e17ac0ffc55958813d66870b2df9f4fb162711a6a27c5"
    },
    {
     "path": "scripts/+ppe/qual_ep3.m",
@@ -87,7 +87,7 @@
    {
     "path": "scripts/+ppe/run_cstar.m",
     "present": true,
-    "sha256": "beb1e586b70b6299d378381bc6ccd7b711f10a1bbbf6f510b6af9ff1b10ecacf"
+    "sha256": "505689aea87f2755fdda3bf2c884577c6d93485f6c7ef5f509fa179a33716bda"
    }
   ],
   "science": [
@@ -228,5 +228,5 @@
  "note": "fail-closed: gate §M forbids building the epoch-3 freeze before Q-EP3 PASS on the real Model-E runtime; no freeze file written",
  "overall": false,
  "schema": "ppe_epoch3_pre_execution_freeze_BLOCKED_v1",
- "utc": "2026-09-18T07:10:01Z"
+ "utc": "2026-09-18T08:01:00Z"
 }
