@@ -1,0 +1,58 @@
+{
+ "checks": [
+  {
+   "detail": "192",
+   "name": "manifest_192_rows",
+   "pass": true
+  },
+  {
+   "detail": "192",
+   "name": "run_id_uniqueness_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "trajectory_audit_sha_resolve_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "freeze_root_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "view_sha_resolve_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "zero_forbidden_fields_192",
+   "pass": true
+  },
+  {
+   "detail": "2",
+   "name": "replay_tool_refuses_uninstructed",
+   "pass": true
+  },
+  {
+   "detail": "READJUDICATED_HARD_INFEASIBLE",
+   "name": "replay_one_smoke_shape",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "replay_one_no_original_mutation",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "readjudication_output_not_emitted_yet",
+   "pass": true
+  }
+ ],
+ "n_rows": 192,
+ "note": "T-FC3-5: exhaustive 192/192 (no sampling), identity hash resolution, immutability and blindness proofs; engine smoke-shape only; T-FC3-7 not executed",
+ "pass": true,
+ "schema": "fc3_replay_qualification_v1"
+}

@@ -1,0 +1,20 @@
+{
+ "identity": {
+  "formal_epoch": 2,
+  "original_epoch2_freeze_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+  "run_id": "aff884c82f265dd8",
+  "source_audit_sha": "10306891d6dd6e4957cc5169ef288dff79899539cd3c77264dd3861050b49a8b",
+  "source_run_sha": "feaeebefe91dd2ac01cc5d7c29cccd6bddfbfa5b472413b94d61127522c147f2",
+  "source_trajectory_sha": "b98fa312e4e969d3031b1837525f0c3ae3863f67542e8d8954481a3428af19d0",
+  "voyage_id": "FLTA_S2_D01004_M2"
+ },
+ "payload": {
+  "E_unserved_recorded_kWh": 0.0,
+  "T_eval_s": 4508.0,
+  "recorded_inherited_items": {
+   "energy_closure_c5": true,
+   "safety_hard_events": true
+  }
+ },
+ "schema": "fc3_replay_input_view_v1"
+}
