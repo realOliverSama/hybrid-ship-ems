@@ -160,7 +160,8 @@ vdir = fullfile(opt.OutDir, char(voyage_id));
 if ~exist(vdir, 'dir'), mkdir(vdir); end
 run_id = local_run_id(arm, voyage_id, isSmoke);
 srcsel = ppe.write_sourcesel_v1(ds, opt.OutDir, voyage_id, arm, run_id, bind);
-traj = ppe.write_traj_v1(ds, local_deriv(ROOT), opt.OutDir, voyage_id, arm, run_id);
+% 植物轨迹属于 voyage：写 per-voyage 目录（写至顶层会被后续 voyage 覆盖）
+traj = ppe.write_traj_v1(ds, local_deriv(ROOT), vdir, voyage_id, arm, run_id);
 
 % ---- (9) FC-3（正式模式；smoke 跳过且明确标记）----
 if isSmoke
@@ -171,6 +172,10 @@ else
     feas = ppe.feasibility_contract_v2(ds, cfg, 'T_frozen_s', T_eval, 'C_bus', local_cbus(ROOT));
     fec = t445.metrics_fec(ds, cfg);
 end
+
+% ---- (9b) 高速率审计 + 控制器迹线（epoch-2 已验证写入器；FC-3 之后调用）----
+aud = ppe.write_audit_v1(ds, cfg, vdir, voyage_id, arm, run_id);
+ctr = ppe.write_ctrace_v1(local_ctrace(meta, arm), vdir, voyage_id, arm, run_id);
 
 % ---- (10) 终端记录 ----
 rec = struct();
@@ -193,6 +198,8 @@ rec.forecast_source = bind.forecast_source;
 rec.controller_identity = bind.controller_identity;
 rec.source_selection_telemetry = srcsel;
 rec.trajectory = traj;
+rec.audit_artifact = aud;
+rec.ctrace_artifact = ctr;
 rec.controller_trace_sha256 = local_trace_sha(meta);
 rec.n_segments = meta.n_segments;
 if isfield(meta, 'binding_guard_applied')
@@ -223,6 +230,27 @@ end
 function f = local_fsrc(arm)
 fs = struct('P0', 'N/A_NO_FORECAST', 'C0', 'oracle', 'C1', 'c1_stored', 'C2', 'live_bridge');
 f = fs.(arm);
+end
+
+function ct = local_ctrace(meta, arm)
+% controller_trace_v1 输入（C3-C/D）：C* 决策序列取自 run_cstar 运行元数据；
+% P0 无 λ 决策 ⇒ applies=false 的最小记录（与 epoch-2 同语义）。
+if strcmp(arm, 'P0')
+    ct = struct('applies', false, 'forecast_source_id', 'N/A');
+    return;
+end
+switch char(arm)
+    case 'C0', srcid = 'oracle';
+    case 'C1', srcid = 'c1_stored';
+    case 'C2', srcid = 'live_bridge';
+    otherwise, error('PPE:EP3:CTRACE', 'arm %s 非法', arm);
+end
+dlam = meta.dlambda_1;
+ct = struct('applies', true, 'decision_period_s', 10, ...
+    'time', (0:10:(numel(dlam) - 1) * 10)', ...
+    'delta_lambda', dlam(:), 'forecast_source_id', srcid);
+% cell 字段严禁进 struct() 构造器（Q-OBS-21 回归）：构造后赋值
+ct.forecast_window_sha256 = meta.window_sha256;
 end
 
 function scn = local_smoke_scn(ROOT, T) %#ok<INUSD>
