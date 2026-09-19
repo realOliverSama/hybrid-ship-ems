@@ -46,11 +46,14 @@ isSmoke = strcmp(opt.Mode, 'smoke');
 if ~bdIsLoaded(MDL), load_system(fullfile(ROOT, 'model', [MDL '.slx'])); end   % 注入/StopTime 需已载入
 
 % ---- (0) 冻结绑定（fail-closed；smoke 也要断言冻结存在，证明路径一致）----
+% Generation-B：读 epoch3_pre_execution_freeze_genb.json（完整执行闭包），
+% 并断言关键函数的运行时路径解析与 freeze 快照一致（反 shadowing）。
 if isSmoke
-    fz = ppe.load_epoch3_freeze_bindings(ROOT, 'AllowProvisional', true);
+    fz = ppe.load_epoch3b_freeze_bindings(ROOT, 'AllowProvisional', true);
 else
-    fz = ppe.load_epoch3_freeze_bindings(ROOT);
+    fz = ppe.load_epoch3b_freeze_bindings(ROOT);
 end
+ppe.assert_genb_path(ROOT, fz.matlab_which_all);
 
 % ---- 输出命名空间守卫（§7）----
 if isempty(opt.OutDir)
