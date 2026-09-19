@@ -132,7 +132,10 @@ for i = 1:numel(crit)
     w = which(crit{{i}}, '-all');
     assert(~isempty(w), 'unresolved critical function: %s', crit{{i}});
     names{{i}} = crit{{i}};
-    firsts{{i}} = w{{1}};
+    w1 = w{{1}};
+    assert(startsWith(w1, ROOT), 'critical function outside repo: %s', w1);
+    % repo-relative first resolution: portable across generation/execution hosts
+    firsts{{i}} = w1(length(ROOT) + 2:end);
 end
 doc = struct('closure', {{keep}}, 'path_names', {{names}}, ...
     'path_first', {{firsts}});
