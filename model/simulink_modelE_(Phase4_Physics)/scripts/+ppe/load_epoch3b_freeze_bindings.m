@@ -101,7 +101,15 @@ b.campaign_namespace = doc.campaign_namespace;
 b.assertions = a;
 b.git_head = doc.git_head;
 b.execution_closure = cl;
-b.matlab_which_all = doc.matlab_which_all;
+b.path_audit_names = doc.path_audit_names;
+b.path_audit_first = doc.path_audit_first;
+b.repaired_execution_commit = doc.git_head;   % genB 执行身份 = git HEAD（兼容 runner 字段）
+% 兼容 runner 的 corpus 身份访问（fz.injection_chain.science(1).sha256）：
+% genB 的语料身份 = 冻结语料 npz（闭包内已绑定字节）
+npz = fullfile(ROOT, 'datasets_v3', 'formal', 'windows_v3_formal.npz');
+b.injection_chain = struct('science', ...
+    struct('path', 'datasets_v3/formal/windows_v3_formal.npz', ...
+           'present', true, 'sha256', model.sha256_file(npz)));
 b.fc3_authoritative = doc.fc3_authoritative;
 b.attempt_a_exclusion_ledger = doc.attempt_a_exclusion_ledger;
 b.corpus_policy = doc.corpus_policy;

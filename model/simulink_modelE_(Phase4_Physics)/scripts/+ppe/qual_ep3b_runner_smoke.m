@@ -1,4 +1,4 @@
-function r = qual_ep3b_runner_smoke()
+function r = qual_ep3b_runner_smoke(varargin)
 % ppe.qual_ep3b_runner_smoke — Generation-B 正式 runner 动态资格化
 % （NONFORMAL；同一入口 ppe.run_epoch3_voyage；不产生正式结果）。
 %

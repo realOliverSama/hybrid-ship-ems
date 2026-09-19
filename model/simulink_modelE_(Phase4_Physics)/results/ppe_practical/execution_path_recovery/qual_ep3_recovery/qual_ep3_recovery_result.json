@@ -1,0 +1,25 @@
+{
+  "schema": "ppe_qual_ep3_recovery_v1",
+  "pass": true,
+  "NONFORMAL": true,
+  "FORMAL_EPOCH3_RESULT": false,
+  "utc": "2026-09-19T05:44:45Z",
+  "checks": {
+    "R1_c2_bridge_failclosed": true,
+    "R2_p0_anchor_branch": true,
+    "R5_fc3_call_form": true,
+    "R5_fc3_call_not_namevalue": true,
+    "R6_fc3_authoritative_bytes": true,
+    "R6_runner_records_v2_and_replay_policy": true,
+    "R7_namespace_guards": true,
+    "R1b_runner_c2_token_guard": true,
+    "R8b_runner_genb_loader": true,
+    "R3_ctrace_audit_complete": true,
+    "R4_cross_voyage_no_overwrite": true,
+    "R8_four_arm_wiring": true,
+    "c2_integration": true
+  },
+  "smoke": {
+    "path": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/execution_path_recovery/qual_ep3b_runner_smoke/qual_ep3b_runner_smoke_final.json"
+  }
+}

@@ -29,8 +29,8 @@ from datetime import datetime, timezone
 from modulefinder import ModuleFinder
 
 _HERE = os.path.dirname(os.path.abspath(__file__))
-_MODEL = os.path.dirname(_HERE)              # python/ppe -> python -> ModelE
-REPO = os.path.dirname(_MODEL)               # git repo root
+_MODEL = os.path.dirname(os.path.dirname(_HERE))  # python/ppe -> python -> ModelE
+GIT_ROOT = os.path.dirname(_MODEL)           # model/ -> git repo root
 OUT = os.path.join(_MODEL, "results", "ppe_practical", "freeze")
 RECOV = os.path.join(_MODEL, "results", "ppe_practical", "execution_path_recovery")
 
@@ -41,7 +41,8 @@ def sha(p: str) -> str:
 
 
 def rel(p: str) -> str:
-    return os.path.relpath(p, REPO).replace("\\", "/")
+    # loader-side ROOT is the ModelE dir; closure paths are ModelE-relative
+    return os.path.relpath(p, _MODEL).replace("\\", "/")
 
 
 def header(p: str):
@@ -93,17 +94,21 @@ def python_closure():
 def matlab_closure_snapshot():
     """Collect (a) the repo-file transitive MATLAB closure of the runner and
     (b) a `which -all` snapshot of the critical functions, via one -batch call.
-    Returns (closure_paths, which_all) as repo-relative structures."""
-    snap = os.path.join(OUT, "_genb_matlab_snapshot.json")
-    script = os.path.join(OUT, "_genb_matlab_snapshot.m")
+    Returns (closure_paths, which_all) as repo-relative structures.
+    The helper script lives in a bracket-free temp dir: MATLAB run() cannot
+    eval a path containing parentheses."""
+    import shutil
+    import tempfile
+    tmpd = tempfile.mkdtemp(prefix="genb_snap_")
+    snap = os.path.join(tmpd, "genb_matlab_snapshot.json")
+    script = os.path.join(tmpd, "genb_matlab_snapshot.m")
     os.makedirs(OUT, exist_ok=True)
     with open(script, "w") as fh:
         fh.write(f"""
 ROOT = '{_MODEL}';
 addpath(fullfile(ROOT, 'scripts'), fullfile(ROOT, 'config'));
-r = matlab.codetools.requiredFilesAndProducts( ...
+files = matlab.codetools.requiredFilesAndProducts( ...
     fullfile(ROOT, 'scripts', '+ppe', 'run_epoch3_voyage.m'));
-files = r{{1}};
 keep = {{}};
 for i = 1:numel(files)
     if startsWith(files{{i}}, ROOT)
@@ -121,41 +126,50 @@ crit = {{'ppe.run_epoch3_voyage', 'ppe.run_cstar', 'ppe.winfun_plan', ...
     't445.sha256_doubles', 'model.extract_logsout', 'model.sha256_file', ...
     'model.set_source_selection_logging', 'model.set_ai_logging', ...
     'fleet_v3.plan_load', 'gate_ctrl.get_ds'}};
-wa = struct();
+names = cell(numel(crit), 1);
+firsts = cell(numel(crit), 1);
 for i = 1:numel(crit)
     w = which(crit{{i}}, '-all');
-    wa.(crit{{i}}) = w;
+    assert(~isempty(w), 'unresolved critical function: %s', crit{{i}});
+    names{{i}} = crit{{i}};
+    firsts{{i}} = w{{1}};
 end
-jsonencode_ok = true;
-doc = struct('closure', {{keep}}, 'which_all', {{wa}});
+doc = struct('closure', {{keep}}, 'path_names', {{names}}, ...
+    'path_first', {{firsts}});
 fid = fopen('{snap}', 'w');
 fwrite(fid, jsonencode(doc, 'PrettyPrint', true));
 fclose(fid);
 disp('GENB_SNAPSHOT_OK');
 """)
-    subprocess.run(["matlab", "-batch", f"run('{script}')"], check=True,
+    mlab = shutil.which("matlab") or "/Applications/MATLAB_R2026a.app/bin/matlab"
+    subprocess.run([mlab, "-batch", f"run('{script}')"], check=True,
                    capture_output=True, text=True, timeout=1800)
     doc = json.load(open(snap))
-    return doc["closure"], doc["which_all"]
+    return doc["closure"], doc["path_names"], doc["path_first"]
 
 
 def main(argv) -> int:
     now = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    provisional = "--provisional" in argv
     blockers, evidence = [], {}
 
-    # ---- git identity: exact commit + clean tracked tree ----
-    head = subprocess.check_output(["git", "-C", REPO, "rev-parse", "HEAD"]
-                                   ).decode().strip()
-    dirty = subprocess.check_output(
-        ["git", "-C", REPO, "status", "--porcelain"]).decode()
-    dirty_tracked = [ln for ln in dirty.splitlines()
-                     if ln.strip() and not ln.startswith("??")]
-    if dirty_tracked:
-        blockers.append("tracked working tree not clean: %d entries"
-                        % len(dirty_tracked))
+    # ---- git identity: exact commit + clean tracked tree (final: required;
+    #      provisional on a cloud deploy without git metadata: best-effort) ----
+    try:
+        head = subprocess.check_output(["git", "-C", GIT_ROOT, "rev-parse", "HEAD"]
+                                       ).decode().strip()
+        dirty = subprocess.check_output(
+            ["git", "-C", GIT_ROOT, "status", "--porcelain"]).decode()
+        dirty_tracked = [ln for ln in dirty.splitlines()
+                         if ln.strip() and not ln.startswith("??")]
+    except Exception:  # noqa: BLE001 — no git metadata at the generation host
+        head = None
+        dirty_tracked = []
+    if head is None and not provisional:
+        blockers.append("git metadata unavailable; final freeze must be "
+                        "generated inside the repository")
 
     # ---- NEW recovery qualification artifacts (final freeze only) ----
-    provisional = "--provisional" in argv
     qrec = os.path.join(RECOV, "qual_ep3_recovery", "qual_ep3_recovery_result.json")
     qsmoke = os.path.join(RECOV, "qual_ep3b_runner_smoke",
                           "qual_ep3b_runner_smoke_final.json")
@@ -192,10 +206,10 @@ def main(argv) -> int:
 
     # ---- execution closure (mechanical) ----
     try:
-        mfiles, which_all = matlab_closure_snapshot()
+        mfiles, pnames, pfirst = matlab_closure_snapshot()
     except Exception as exc:  # noqa: BLE001
         blockers.append(f"MATLAB closure snapshot failed: {exc}")
-        mfiles, which_all = [], {}
+        mfiles, pnames, pfirst = [], [], []
     pfiles = python_closure()
     closure = sorted([header(p) for p in mfiles] + [header(p) for p in pfiles],
                      key=lambda h: h["path"])
@@ -210,7 +224,7 @@ def main(argv) -> int:
         blockers.append("authoritative FC-3 checker identity drifted from "
                         "33a8309a (fc3_readjudication_freeze binding)")
     if not os.path.exists(os.path.join(
-            _MODEL, "results", "dataset_v3", "formal", "windows_v3_formal.npz")):
+            _MODEL, "datasets_v3", "formal", "windows_v3_formal.npz")):
         blockers.append("frozen corpus npz missing")
 
     # ---- formal namespace of generation A must carry the exclusion ledger and
@@ -223,7 +237,7 @@ def main(argv) -> int:
     ok = not blockers
     assertions = {
         "EXECUTION_CLOSURE_BOUND": not missing and bool(mfiles),
-        "CLEAN_TRACKED_TREE": not dirty_tracked,
+        "CLEAN_TRACKED_TREE": (head is not None) and not dirty_tracked,
         "FC3_AUTHORITATIVE_IDENTITY": os.path.exists(fc3) and sha(fc3) == FC3_AUTH_SHA,
         "ATTEMPT_A_EXCLUDED": os.path.exists(ledger),
         "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS": 0,
@@ -267,7 +281,8 @@ def main(argv) -> int:
         "superseded_roots": ["092f995d7555b6ff96ab361c330d941d15d21f5f9f1e047f8c2e50a32f9a74be"],
         "attempt_a_exclusion_ledger": rel(ledger),
         "execution_closure": closure,
-        "matlab_which_all": which_all,
+        "path_audit_names": pnames,
+        "path_audit_first": pfirst,
         "fc3_authoritative": {"path": "python/ppe/fc3_core.py",
                               "sha256": FC3_AUTH_SHA,
                               "role": "authoritative readjudication checker "

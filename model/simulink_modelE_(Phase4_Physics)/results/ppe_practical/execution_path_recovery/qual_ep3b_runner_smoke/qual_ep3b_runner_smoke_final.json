@@ -1,0 +1,20 @@
+{
+  "schema": "ppe_qual_ep3b_runner_smoke_v1",
+  "pass": true,
+  "NONFORMAL": true,
+  "FORMAL_EPOCH3_RESULT": false,
+  "entry_path": "ppe.run_epoch3_voyage (same entry used by formal gen-B)",
+  "utc": "2026-09-19T05:44:42Z",
+  "r3_evidence_complete": true,
+  "r4_cross_voyage_no_overwrite": true,
+  "r8_four_arm_wiring": true,
+  "genb_formal_runs": 0,
+  "runs": [
+    "EP3B_SMOKE_A/P0",
+    "EP3B_SMOKE_A/C0",
+    "EP3B_SMOKE_A/C1",
+    "EP3B_SMOKE_A/C2",
+    "EP3B_SMOKE_B/C0"
+  ],
+  "c2_integration_pass": true
+}

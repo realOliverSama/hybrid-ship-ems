@@ -53,7 +53,7 @@ if isSmoke
 else
     fz = ppe.load_epoch3b_freeze_bindings(ROOT);
 end
-ppe.assert_genb_path(ROOT, fz.matlab_which_all);
+ppe.assert_genb_path(fz.path_audit_names, fz.path_audit_first);
 
 % ---- 输出命名空间守卫（§7）----
 if isempty(opt.OutDir)

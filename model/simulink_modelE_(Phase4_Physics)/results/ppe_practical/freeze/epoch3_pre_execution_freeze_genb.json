@@ -1,0 +1,437 @@
+{
+ "assertions": {
+  "ATTEMPT_A_EXCLUDED": true,
+  "CLEAN_TRACKED_TREE": false,
+  "EXECUTION_CLOSURE_BOUND": true,
+  "FC3_AUTHORITATIVE_IDENTITY": true,
+  "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS": 0,
+  "QUAL_RECOVERY_PASS": true,
+  "QUAL_RUNNER_SMOKE_PASS": true
+ },
+ "attempt_a_exclusion_ledger": "results/ppe_practical/formal_epoch3/_audit_stop_gate/ATTEMPT_A_EXCLUSION_LEDGER.json",
+ "blockers": [],
+ "campaign_generation": "B",
+ "campaign_namespace": "results/ppe_practical/formal_epoch3_genB",
+ "concurrency_policy": "12-15 workers after infrastructure preflight; 20 not authorized by default",
+ "corpus_policy": "RETAIN_SAME_FROZEN_CORPUS (48 voyages; corpus identity unchanged)",
+ "execution_closure": [
+  {
+   "path": "config/phase4f_t445_config.m",
+   "present": true,
+   "sha256": "ee0b6688eaf189f4437c32096a0d00db801770cb3403d08d62028f512f69b829"
+  },
+  {
+   "path": "python/ppe/c2_inference.py",
+   "present": true,
+   "sha256": "494fd394ad598f4fe1c9774bb0a4cccafe0cfb8bbb2e98e579013720428c0078"
+  },
+  {
+   "path": "python/ppe/c2_server.py",
+   "present": true,
+   "sha256": "3ccd4f90ff2d87e9e5fecc6e696f7b11ba94c2a1eded8c9217fb858a675d74db"
+  },
+  {
+   "path": "python/ppe/causality.py",
+   "present": true,
+   "sha256": "277bb0772e1b157dc0ff690d5d65435502d5eeb6f0b3018d473a01568134ca27"
+  },
+  {
+   "path": "python/ppe/fc3_core.py",
+   "present": true,
+   "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9"
+  },
+  {
+   "path": "python/ppe/fc3_pipeline.py",
+   "present": true,
+   "sha256": "fa0629d9240f9118c5b34a7dbcd6123f7f2ce3782c3e67e25d776fff453b9816"
+  },
+  {
+   "path": "python/ppe/fc3_replay_acceptance.py",
+   "present": true,
+   "sha256": "5068a887a633712d45f69c5e33d516f620dcd788bc916ded292f228b41bdf2c9"
+  },
+  {
+   "path": "python/ppe/fc3_replay_execute.py",
+   "present": true,
+   "sha256": "64a867a2eb6978a6bf61b759c212465bf52ab15e62f6304b1ec638de19ec1e5e"
+  },
+  {
+   "path": "python/ppe/h1_assembly.py",
+   "present": true,
+   "sha256": "86e96c76247141610833d8fe59f9d16ee23bda025c773ef721223de6b4cc0f6d"
+  },
+  {
+   "path": "python/ppe/ledger.py",
+   "present": true,
+   "sha256": "de66fce193eb76268ede1f7a8a6a9cc9c8fe0471df066016590b6a4ea1af3535"
+  },
+  {
+   "path": "python/ppe/paths.py",
+   "present": true,
+   "sha256": "88b2f427701fdaf8db4562b371a32fe730f35cf0f15857777c492ede8961d3f8"
+  },
+  {
+   "path": "python/t445/hashutil.py",
+   "present": true,
+   "sha256": "bc0cafed7e894d24d53c8613f6a5bfb5c791859b40af03d3774ab3702bf02c44"
+  },
+  {
+   "path": "scripts/+ecms/bat_energy_delta_kWh.m",
+   "present": true,
+   "sha256": "c8fbe430c2067fdf12258fd07472edf9a929ca52e305aea959c3cfa9bb828d33"
+  },
+  {
+   "path": "scripts/+ecms2/ecms_cost_parts.m",
+   "present": true,
+   "sha256": "30aa793a893fdcedf3dca52d3d2dcb38697d6c8d38c9a48a635fba16d7bc064c"
+  },
+  {
+   "path": "scripts/+ecms2/ecms_params.m",
+   "present": true,
+   "sha256": "1a03df50d163d222f4e5c56f794e098d17371327b5eef54d9a364081a2d5ccd3"
+  },
+  {
+   "path": "scripts/+ecms2/ensure_bsfc_params.m",
+   "present": true,
+   "sha256": "366e50a980b00564eb6a67dbf522427459e3ced206162ab6243ce3bbecb91602"
+  },
+  {
+   "path": "scripts/+ecms2/scn_field.m",
+   "present": true,
+   "sha256": "04ec2c3748fc3b6b117f34ae1e50c84433d02118226605dd804eb3a53dac081a"
+  },
+  {
+   "path": "scripts/+fleet_v3/ctx_build.m",
+   "present": true,
+   "sha256": "cba5b19f1451e1e96f595b1c35e007061e101c72c3c3f16f1028540088da1393"
+  },
+  {
+   "path": "scripts/+fleet_v3/h2_surface_assert.m",
+   "present": true,
+   "sha256": "e70ffb4cc466015dd5a49f0e49c6ff0f429e85fb9ba8c5d3256d8fad48b9cfe2"
+  },
+  {
+   "path": "scripts/+fleet_v3/plan_load.m",
+   "present": true,
+   "sha256": "4bca900c652509d0445620d2bd49ff4b1f450f9c234def9fc3bae308d64b9875"
+  },
+  {
+   "path": "scripts/+gate_ctrl/check_c5_energy_closure.m",
+   "present": true,
+   "sha256": "eae17ac0bc29a8ab124e433f8ae8d3cd81ddc998ed32bf17887dbd6c07a22ecd"
+  },
+  {
+   "path": "scripts/+mission_v3/dag_sample.m",
+   "present": true,
+   "sha256": "4ea29df6729f13fe06628fa8f97d9b23797a6ab2aadbb840ca4a402f69c3d44b"
+  },
+  {
+   "path": "scripts/+mission_v3/eligibility.m",
+   "present": true,
+   "sha256": "0a14aa3a800fe3015d70add274e97b9997d617f7efe226064b507c0b44d75797"
+  },
+  {
+   "path": "scripts/+mission_v3/env_realize.m",
+   "present": true,
+   "sha256": "ed320b9149bea83eb4694fe8292d078fa41d3b77281a03629869552a3ff0d6b9"
+  },
+  {
+   "path": "scripts/+mission_v3/family_expand.m",
+   "present": true,
+   "sha256": "9446455903a3298392bb0e49a5502bc496d48ac1d318bd6c2528d509f2b7ffa7"
+  },
+  {
+   "path": "scripts/+mission_v3/nav_constraints.m",
+   "present": true,
+   "sha256": "3e67816f3ffe1079991f921608a2acb9d9a0e6b50460886be70ef5b0a87ff486"
+  },
+  {
+   "path": "scripts/+mission_v3/plan_compose.m",
+   "present": true,
+   "sha256": "c6591a58cf8ee90a46427dea68a84de8f6c5528eb5618c31c693207297fe6998"
+  },
+  {
+   "path": "scripts/+mission_v3/scenario_compile.m",
+   "present": true,
+   "sha256": "fad198d9c45073aea6d6360cedd0d550451870c4120c1ba41ad5f13e77045511"
+  },
+  {
+   "path": "scripts/+mission_v3/seed_tree.m",
+   "present": true,
+   "sha256": "d5abb386b73209a1dfdac1e6e75a375de279f4bef4753a8bbbd24c18385ee236"
+  },
+  {
+   "path": "scripts/+model/extract_logsout.m",
+   "present": true,
+   "sha256": "62bf6171fa57c55e9628f6c3f194776f23d955994e632d4baa72eb99f8ccffa2"
+  },
+  {
+   "path": "scripts/+model/set_ai_logging.m",
+   "present": true,
+   "sha256": "09b52f5745fad46ce69c180f72e9d2f4f6e9c7fda51fcda36b5f4ea2bbf231d3"
+  },
+  {
+   "path": "scripts/+model/set_source_selection_logging.m",
+   "present": true,
+   "sha256": "98a4575d543e289910ff3ddecb7f9eb74906bfeb831abaa5575ea3789910bbe0"
+  },
+  {
+   "path": "scripts/+model/sha256_file.m",
+   "present": true,
+   "sha256": "af0aa36a7bb3511d487d4389ac836d1bb97974f223b3ec36df062ee07ddce0ac"
+  },
+  {
+   "path": "scripts/+ppe/arm_runtime_bind.m",
+   "present": true,
+   "sha256": "a5954ba0dd1c72bd900e5e5d2d45fdaaf45e27371115a9867838bed9f4c6037f"
+  },
+  {
+   "path": "scripts/+ppe/assert_control_bindings.m",
+   "present": true,
+   "sha256": "c0dfb75e9fa8c3c201a2061dfc78c084a19bffa871f4ffe74770da2e134339c3"
+  },
+  {
+   "path": "scripts/+ppe/assert_genb_path.m",
+   "present": true,
+   "sha256": "42c1a6014d1056a272e9a980bd60e9db0066adffcfa2290b9d760e63aea3eb43"
+  },
+  {
+   "path": "scripts/+ppe/c2_bridge.m",
+   "present": true,
+   "sha256": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4"
+  },
+  {
+   "path": "scripts/+ppe/checkpoint_mgr.m",
+   "present": true,
+   "sha256": "94a178a06280a2f36e1bf6afeecec7c3b4ceb82b2f75ca3f1626409b7fd995ea"
+  },
+  {
+   "path": "scripts/+ppe/control_critical_vars.m",
+   "present": true,
+   "sha256": "8d390afe5a8c1d859351fe590e0df17eeaffd436b44c37284231c3b853ebb055"
+  },
+  {
+   "path": "scripts/+ppe/feasibility_contract_v2.m",
+   "present": true,
+   "sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c"
+  },
+  {
+   "path": "scripts/+ppe/inject_voyage.m",
+   "present": true,
+   "sha256": "e3f2e93161e089cf2155287d55633161e8d87d73be8923afdadf4b3b97714e0a"
+  },
+  {
+   "path": "scripts/+ppe/load_epoch3b_freeze_bindings.m",
+   "present": true,
+   "sha256": "a8b2141382ecbcd468a53a60b489dc98a4288b262e67a8a052957a7e0ba8c8e2"
+  },
+  {
+   "path": "scripts/+ppe/ppe_config.m",
+   "present": true,
+   "sha256": "87196558645218e29312ba73cfd620df406201c1aafab9745a1bd1beee88c78e"
+  },
+  {
+   "path": "scripts/+ppe/ppe_root.m",
+   "present": true,
+   "sha256": "72109d6ee4eae2ad27463eab40603f2047d1d635da4f55ba63e0b047bd6566b8"
+  },
+  {
+   "path": "scripts/+ppe/rebuild_voyage.m",
+   "present": true,
+   "sha256": "51129574c722d455a02a544ad963e5a20d7fa498285f3f436bcce1d1feb2254b"
+  },
+  {
+   "path": "scripts/+ppe/run_cstar.m",
+   "present": true,
+   "sha256": "505689aea87f2755fdda3bf2c884577c6d93485f6c7ef5f509fa179a33716bda"
+  },
+  {
+   "path": "scripts/+ppe/run_epoch3_voyage.m",
+   "present": true,
+   "sha256": "4ee7c1c98f85a726ff43cf7e925a02b4f344a9d1b4a934cab5d1ec8750b92ee3"
+  },
+  {
+   "path": "scripts/+ppe/winfun_plan.m",
+   "present": true,
+   "sha256": "d389ff053e57e21ad8e90563ab090756a0d4569287b9ac511d16a481c6629c37"
+  },
+  {
+   "path": "scripts/+ppe/write_audit_v1.m",
+   "present": true,
+   "sha256": "f72e07c6b54c6158a8d5c99ddf9973999aaeb833669bc954ed2a01867edbe25d"
+  },
+  {
+   "path": "scripts/+ppe/write_ctrace_v1.m",
+   "present": true,
+   "sha256": "c9f62518c9fcf8553f885295fc07116ecf74ebaa8ae0ee2beb5500cb458deb9f"
+  },
+  {
+   "path": "scripts/+ppe/write_sourcesel_v1.m",
+   "present": true,
+   "sha256": "445907c252056053f4375037cc419d914bf7055094b33d80124de41791079125"
+  },
+  {
+   "path": "scripts/+ppe/write_traj_v1.m",
+   "present": true,
+   "sha256": "537ca32e82bf7088b69a0bbbf60eecf265a2eef2603ecdd4d8a90b74ee5ae906"
+  },
+  {
+   "path": "scripts/+t445/b2_objective.m",
+   "present": true,
+   "sha256": "a5b810794511fff8e843e99bfeeffa8fd49926707d3f838631e8e098dad44d87"
+  },
+  {
+   "path": "scripts/+t445/b2_vterm.m",
+   "present": true,
+   "sha256": "ad601c8af70b06c8ea6157f0951e9c4541440e770f20ff8bfe33881537f5acad"
+  },
+  {
+   "path": "scripts/+t445/b2_window_dp.m",
+   "present": true,
+   "sha256": "5589835cf53f721bb85bce62a7257e130368ee3a7297f60692d6f7a65280caf2"
+  },
+  {
+   "path": "scripts/+t445/build_policy_table.m",
+   "present": true,
+   "sha256": "3d9d7c169514e5ef403371c9b4707c46af7a896a45e74ef5bc9f77361f0b8d07"
+  },
+  {
+   "path": "scripts/+t445/gen0_from_ds.m",
+   "present": true,
+   "sha256": "f1d953e96e788d0a312e3f863d2cea119a35ea783ca5ad01654218075fe3b8a9"
+  },
+  {
+   "path": "scripts/+t445/hard_feasibility.m",
+   "present": true,
+   "sha256": "fe7a9c67f767462552a2a81bb4fa7d2a5583502b6818f2bfad059a55b60c287d"
+  },
+  {
+   "path": "scripts/+t445/inject_scenario.m",
+   "present": true,
+   "sha256": "e59d6b29dfa5aa33684da499ec013d657b80d80795eb4ffde21780adf94f259b"
+  },
+  {
+   "path": "scripts/+t445/make_simin_zoh.m",
+   "present": true,
+   "sha256": "bf78ebca14ea9a8ff1885604f5e505b21ae4e01d9c2495aba2d05444596591df"
+  },
+  {
+   "path": "scripts/+t445/metrics_fec.m",
+   "present": true,
+   "sha256": "4d886929b68126ac6133e5d78614b312bdd8ca5c4ced74fcf3ea260cce36999e"
+  },
+  {
+   "path": "scripts/+t445/modele_root.m",
+   "present": true,
+   "sha256": "c95a3cbee83a4fdf7fb1bf7b660cb11495933aa7edee784e9fe6924d8033de41"
+  },
+  {
+   "path": "scripts/+t445/oracle_src_block.m",
+   "present": true,
+   "sha256": "a6f615376744c6195b387ae2a30631b4f828a9b39cdf81d088a38c6f1170695a"
+  },
+  {
+   "path": "scripts/+t445/policy_table_cached.m",
+   "present": true,
+   "sha256": "560ef30c2788f270e9f168cccce3eb168836b8a26968aa173546e5737fd580d5"
+  },
+  {
+   "path": "scripts/+t445/prep_ehat_zoh.m",
+   "present": true,
+   "sha256": "81e891475d2383b26a67e00a17c555b0e6d457d02a7e5aeba19d75099ae329a9"
+  },
+  {
+   "path": "scripts/+t445/realize_phys.m",
+   "present": true,
+   "sha256": "c56c84d0ec4b4079187f44cec743b32ace72a3dd024b57665226a94d53351932"
+  },
+  {
+   "path": "scripts/+t445/sha256_doubles.m",
+   "present": true,
+   "sha256": "cd9abe131b612ebb29ee01864f78b40959468c65faf826bbf56b4943f887663f"
+  }
+ ],
+ "fc3_authoritative": {
+  "path": "python/ppe/fc3_core.py",
+  "role": "authoritative readjudication checker (runner records v2 classification; final scientific status is the authoritative readjudication)",
+  "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9"
+ },
+ "formal_epoch": 3,
+ "git_head": "0cb298fe57628ac1a76104fd8cd1b90eb698cb24",
+ "git_tree_clean": true,
+ "note": "generation-B campaign namespace is results/ppe_practical/formal_epoch3_genB; generation-A namespace formal_epoch3 is sealed recovery evidence (ATTEMPT_A_EXCLUSION_LEDGER)",
+ "overall": true,
+ "path_audit_first": [
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_epoch3_voyage.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_cstar.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/winfun_plan.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/arm_runtime_bind.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/assert_control_bindings.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/c2_bridge.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_sourcesel_v1.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_traj_v1.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_audit_v1.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_ctrace_v1.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/feasibility_contract_v2.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/load_epoch3b_freeze_bindings.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/inject_voyage.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/rebuild_voyage.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/checkpoint_mgr.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/ppe_config.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/ppe_root.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/metrics_fec.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/b2_window_dp.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/make_simin_zoh.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/gen0_from_ds.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/prep_ehat_zoh.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/sha256_doubles.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/extract_logsout.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/sha256_file.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/set_source_selection_logging.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/set_ai_logging.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+fleet_v3/plan_load.m",
+  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+gate_ctrl/get_ds.m"
+ ],
+ "path_audit_names": [
+  "ppe.run_epoch3_voyage",
+  "ppe.run_cstar",
+  "ppe.winfun_plan",
+  "ppe.arm_runtime_bind",
+  "ppe.assert_control_bindings",
+  "ppe.c2_bridge",
+  "ppe.write_sourcesel_v1",
+  "ppe.write_traj_v1",
+  "ppe.write_audit_v1",
+  "ppe.write_ctrace_v1",
+  "ppe.feasibility_contract_v2",
+  "ppe.load_epoch3b_freeze_bindings",
+  "ppe.inject_voyage",
+  "ppe.rebuild_voyage",
+  "ppe.checkpoint_mgr",
+  "ppe.ppe_config",
+  "ppe.ppe_root",
+  "t445.metrics_fec",
+  "t445.b2_window_dp",
+  "t445.make_simin_zoh",
+  "t445.gen0_from_ds",
+  "t445.prep_ehat_zoh",
+  "t445.sha256_doubles",
+  "model.extract_logsout",
+  "model.sha256_file",
+  "model.set_source_selection_logging",
+  "model.set_ai_logging",
+  "fleet_v3.plan_load",
+  "gate_ctrl.get_ds"
+ ],
+ "provenance": {
+  "generator": "python/ppe/ep3_freeze_genb.py",
+  "generator_sha256": "100db31c5c567ccf1287e0207df6fa6be1d26dd5216ed1ce563ec72ba0f5101e"
+ },
+ "provisional": false,
+ "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
+ "schema": "ppe_epoch3_pre_execution_freeze_genb_v1",
+ "superseded_roots": [
+  "092f995d7555b6ff96ab361c330d941d15d21f5f9f1e047f8c2e50a32f9a74be"
+ ],
+ "utc": "2026-09-19T05:57:27Z"
+}
