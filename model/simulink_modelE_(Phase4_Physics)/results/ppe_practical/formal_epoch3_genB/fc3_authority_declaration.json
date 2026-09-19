@@ -1,0 +1,32 @@
+{
+  "schema": "ppe_genb_fc3_authority_declaration_v1",
+  "created_utc": "2026-09-19T15:25:00Z",
+  "campaign_generation": "G2 (genB)",
+  "fc3_authority": "python/ppe/fc3_core.py",
+  "fc3_authority_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+  "fc3_adjudication_version": "fc3_readjudication_freeze_v1 lineage @ checker 33a8309a (accepted replay: results/ppe_practical/readjudication_epoch1 = 192x READJUDICATED_FEASIBLE)",
+  "architecture": "Simulink/MATLAB produces raw evidence (trajectory v1, high-rate audit v1, controller trace v1, source-selector telemetry v1, terminal record) -> OFFLINE authoritative python FC-3 adjudication (ppe.fc3_core.fc3_check over sanitized view + raw evidence)",
+  "legacy_checker": {
+    "path": "scripts/+ppe/feasibility_contract_v2.m",
+    "sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+    "classification": "LEGACY_DIAGNOSTIC_NONAUTHORITATIVE",
+    "retained_role": "writes simulation_terminal_status (v2 classification) into terminal records and records the native E_unserved integral (violations.shortfall_energy_kWh) used as the sanitized-view payload input",
+    "cannot": [
+      "gate scientific acceptance",
+      "populate authoritative FC3 status",
+      "exclude a voyage from effect eligibility",
+      "overwrite the python adjudication"
+    ],
+    "enforcement": "genB freeze binds fc3_authoritative.sha256=33a8309a and the loader rejects any freeze whose fc3_authoritative points elsewhere (PPE:E3B:FC3; negative regression N1_R6_v2_authority_rejected PASS); G2 acceptance consumes readjudicated_status only"
+  },
+  "acceptance_rule": "A G2 run enters the authoritative corpus only if ppe.fc3_core.fc3_check(view, traj, audit).readjudicated_status == READJUDICATED_FEASIBLE over its preserved raw evidence",
+  "raw_evidence_replayability": {
+    "proven": true,
+    "evidence": "attempt-A diagnostic readjudication re-adjudicated 61/61 completed runs from existing 1 Hz trajectories + high-rate audits + terminal records WITHOUT any Model-E re-run (_audit_stop_gate / ep3_readjud_a_out.txt)"
+  },
+  "negative_regression": {
+    "id": "N1_R6_v2_authority_rejected",
+    "result": "PASS",
+    "observed_failure_identifier": "PPE:E3B:FC3"
+  }
+}
