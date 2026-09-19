@@ -163,8 +163,14 @@ def main(argv) -> int:
                                        ).decode().strip()
         dirty = subprocess.check_output(
             ["git", "-C", GIT_ROOT, "status", "--porcelain"]).decode()
+        # the generator's own outputs are not inputs: exclude them from the
+        # clean-tree assertion (otherwise the previous generation's freeze
+        # file would always make the next generation look dirty)
+        own_outputs = ("results/ppe_practical/freeze/"
+                       "epoch3_pre_execution_freeze_genb")
         dirty_tracked = [ln for ln in dirty.splitlines()
-                         if ln.strip() and not ln.startswith("??")]
+                         if ln.strip() and not ln.startswith("??")
+                         and own_outputs not in ln]
     except Exception:  # noqa: BLE001 — no git metadata at the generation host
         head = None
         dirty_tracked = []
