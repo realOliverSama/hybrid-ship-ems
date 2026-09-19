@@ -193,7 +193,7 @@
   {
    "path": "scripts/+ppe/assert_genb_path.m",
    "present": true,
-   "sha256": "42c1a6014d1056a272e9a980bd60e9db0066adffcfa2290b9d760e63aea3eb43"
+   "sha256": "5248e593627a5750a065f2082fc84d9d60c8b65addf910f3886ad1330c43561a"
   },
   {
    "path": "scripts/+ppe/c2_bridge.m",
@@ -248,7 +248,7 @@
   {
    "path": "scripts/+ppe/run_epoch3_voyage.m",
    "present": true,
-   "sha256": "4ee7c1c98f85a726ff43cf7e925a02b4f344a9d1b4a934cab5d1ec8750b92ee3"
+   "sha256": "6e7fd244c33d8e1fd452cc090ca666696f66b0d81fff1a81c46c76ee6a77222a"
   },
   {
    "path": "scripts/+ppe/winfun_plan.m",
@@ -357,40 +357,40 @@
   "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9"
  },
  "formal_epoch": 3,
- "git_head": "fd27189ed2a468e43fa21b67dc180ed9fa46c7f7",
+ "git_head": "ac618ae0b20f9d4e343c52246ebacd27bb3a0bca",
  "git_tree_clean": true,
  "note": "generation-B campaign namespace is results/ppe_practical/formal_epoch3_genB; generation-A namespace formal_epoch3 is sealed recovery evidence (ATTEMPT_A_EXCLUSION_LEDGER)",
  "overall": true,
  "path_audit_first": [
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_epoch3_voyage.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_cstar.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/winfun_plan.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/arm_runtime_bind.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/assert_control_bindings.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/c2_bridge.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_sourcesel_v1.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_traj_v1.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_audit_v1.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_ctrace_v1.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/feasibility_contract_v2.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/load_epoch3b_freeze_bindings.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/inject_voyage.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/rebuild_voyage.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/checkpoint_mgr.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/ppe_config.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/ppe_root.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/metrics_fec.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/b2_window_dp.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/make_simin_zoh.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/gen0_from_ds.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/prep_ehat_zoh.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/sha256_doubles.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/extract_logsout.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/sha256_file.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/set_source_selection_logging.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/set_ai_logging.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+fleet_v3/plan_load.m",
-  "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+gate_ctrl/get_ds.m"
+  "scripts/+ppe/run_epoch3_voyage.m",
+  "scripts/+ppe/run_cstar.m",
+  "scripts/+ppe/winfun_plan.m",
+  "scripts/+ppe/arm_runtime_bind.m",
+  "scripts/+ppe/assert_control_bindings.m",
+  "scripts/+ppe/c2_bridge.m",
+  "scripts/+ppe/write_sourcesel_v1.m",
+  "scripts/+ppe/write_traj_v1.m",
+  "scripts/+ppe/write_audit_v1.m",
+  "scripts/+ppe/write_ctrace_v1.m",
+  "scripts/+ppe/feasibility_contract_v2.m",
+  "scripts/+ppe/load_epoch3b_freeze_bindings.m",
+  "scripts/+ppe/inject_voyage.m",
+  "scripts/+ppe/rebuild_voyage.m",
+  "scripts/+ppe/checkpoint_mgr.m",
+  "scripts/+ppe/ppe_config.m",
+  "scripts/+ppe/ppe_root.m",
+  "scripts/+t445/metrics_fec.m",
+  "scripts/+t445/b2_window_dp.m",
+  "scripts/+t445/make_simin_zoh.m",
+  "scripts/+t445/gen0_from_ds.m",
+  "scripts/+t445/prep_ehat_zoh.m",
+  "scripts/+t445/sha256_doubles.m",
+  "scripts/+model/extract_logsout.m",
+  "scripts/+model/sha256_file.m",
+  "scripts/+model/set_source_selection_logging.m",
+  "scripts/+model/set_ai_logging.m",
+  "scripts/+fleet_v3/plan_load.m",
+  "scripts/+gate_ctrl/get_ds.m"
  ],
  "path_audit_names": [
   "ppe.run_epoch3_voyage",
@@ -425,7 +425,7 @@
  ],
  "provenance": {
   "generator": "python/ppe/ep3_freeze_genb.py",
-  "generator_sha256": "100db31c5c567ccf1287e0207df6fa6be1d26dd5216ed1ce563ec72ba0f5101e"
+  "generator_sha256": "31bf06f9d5ddce3d8557a2ecc2a72572b380c64888477e47e5bb52acaa498395"
  },
  "provisional": false,
  "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
@@ -433,5 +433,5 @@
  "superseded_roots": [
   "092f995d7555b6ff96ab361c330d941d15d21f5f9f1e047f8c2e50a32f9a74be"
  ],
- "utc": "2026-09-19T06:25:53Z"
+ "utc": "2026-09-19T07:05:36Z"
 }
