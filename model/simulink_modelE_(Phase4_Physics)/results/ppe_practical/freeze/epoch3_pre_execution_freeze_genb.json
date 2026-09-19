@@ -1,7 +1,7 @@
 {
  "assertions": {
   "ATTEMPT_A_EXCLUDED": true,
-  "CLEAN_TRACKED_TREE": false,
+  "CLEAN_TRACKED_TREE": true,
   "EXECUTION_CLOSURE_BOUND": true,
   "FC3_AUTHORITATIVE_IDENTITY": true,
   "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS": 0,
@@ -357,7 +357,7 @@
   "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9"
  },
  "formal_epoch": 3,
- "git_head": "0cb298fe57628ac1a76104fd8cd1b90eb698cb24",
+ "git_head": "fd27189ed2a468e43fa21b67dc180ed9fa46c7f7",
  "git_tree_clean": true,
  "note": "generation-B campaign namespace is results/ppe_practical/formal_epoch3_genB; generation-A namespace formal_epoch3 is sealed recovery evidence (ATTEMPT_A_EXCLUSION_LEDGER)",
  "overall": true,
@@ -433,5 +433,5 @@
  "superseded_roots": [
   "092f995d7555b6ff96ab361c330d941d15d21f5f9f1e047f8c2e50a32f9a74be"
  ],
- "utc": "2026-09-19T05:57:27Z"
+ "utc": "2026-09-19T06:25:53Z"
 }
