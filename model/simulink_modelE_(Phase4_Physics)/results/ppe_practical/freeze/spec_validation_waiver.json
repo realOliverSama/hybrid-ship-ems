@@ -1,0 +1,12 @@
+{
+  "approval_source": "Tasks Gate TG8",
+  "artifact": ".specs/phase4-f-practical-predictive-ems/brainstorm.md",
+  "artifact_sha256": "8ed4cb178d7da2b98b77eea4e33a9643688840365755d6e924fb0d15a80ff3f5",
+  "failing_check": "brainstorm.md captures user intent",
+  "reason": "approved closed Brainstorm artifact uses '## Intent'; lacks the template-only '## User Intent' heading",
+  "schema": "KNOWN_NONBLOCKING_SPEC_VALIDATION_WAIVER",
+  "scientific_content_impact": "none",
+  "scope": "only this exact failure is waived; any additional or changed validator failure is blocking",
+  "validator": "pi-spec 0.1.0 (spec_validate)",
+  "waiver_condition_still_exact": true
+}

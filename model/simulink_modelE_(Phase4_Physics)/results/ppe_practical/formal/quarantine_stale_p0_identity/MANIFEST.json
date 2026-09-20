@@ -1,0 +1,79 @@
+{
+ "moved": [
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S2_D01004_M2__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "c5ef8f5cfa1d9bad3606fecdadf1ea803e6f29a051c845edff3a37bdfc503684",
+   "voyage_id": "FLTA_S2_D01004_M2"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S2_D01009_M2__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "9d909ed0c9e043b6470446499eeda00d4ff2bf1e28e486481eb0e540ca04da96",
+   "voyage_id": "FLTA_S2_D01009_M2"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S3_D02008_M2__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "e737ce6e409b9b908ae5a998d15a1469bc390a5b5d48b79f593514f20b4b5f4c",
+   "voyage_id": "FLTA_S3_D02008_M2"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S4_D03011_M2__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "7bd32b69461a34ed1aeff23843c49f141c340f88ffef3ff0b5a37d7142c3ead7",
+   "voyage_id": "FLTA_S4_D03011_M2"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S5_D04001_M2__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "b8851f10d330d605cf95fa8342118a6b82d6876bdf3237269a048855b14439b0",
+   "voyage_id": "FLTA_S5_D04001_M2"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S5_D04005_M2__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "82f84cfab52f9b3da0d2ad4b528dadcd7b54060568ac2ec0472cf799e04c54ea",
+   "voyage_id": "FLTA_S5_D04005_M2"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S6_D05002_M3__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "ebfa7c32cee5a855614c78c8df74314c75ed86e42aa965bbc59ac8a010b5b07a",
+   "voyage_id": "FLTA_S6_D05002_M3"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S6_D05004_M3__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "09fa7d32be63651f64f9b4aa8f61fadfaef758e4081d8bfcb3ff90c98290cc3a",
+   "voyage_id": "FLTA_S6_D05004_M3"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S6_D05011_M3__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "7c85589a6e02dea5601edb924a4ff0ff68ecc67bff33fd2b1974b8ba2ffbe5be",
+   "voyage_id": "FLTA_S6_D05011_M3"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S7_D06000_M3__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "4a0cf37b46cbb99fc94e056014c98017a262557a2c16b22fb18eed21c7423ace",
+   "voyage_id": "FLTA_S7_D06000_M3"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S7_D06015_M3__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "add5a9a2fba01471080a88cb5a07ea42e3b594b076085ff01c5cfb975e7854e0",
+   "voyage_id": "FLTA_S7_D06015_M3"
+  },
+  {
+   "artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal/quarantine_stale_p0_identity/FLTA_S8_D07009_M3__P0.json",
+   "old_composite": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+   "sha256": "0eccda4af5531fd7ea28661706f7b1dacd0cf1ea1c6a981af8bbe7c3926df0aa",
+   "voyage_id": "FLTA_S8_D07009_M3"
+  }
+ ],
+ "reason": "P0 records produced before the C2-bridge atomic-write amendment; re-run under the current composite so the whole formal corpus binds one identity",
+ "schema": "ppe_stale_p0_quarantine_v1",
+ "utc": "2026-09-17T00:35:23Z"
+}

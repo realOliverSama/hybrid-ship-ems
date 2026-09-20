@@ -1,0 +1,30 @@
+{
+  "ablation_face": null,
+  "active_info_channels": [
+    "v_plan_mps",
+    "s_plan_m",
+    "h_chart_m",
+    "P_hotel_plan_kW",
+    "u_fcst_mps",
+    "wl_fcst_m"
+  ],
+  "arch": "tcnq",
+  "artifact": "experiments/predictor_v3/confirm/tcnq/tcnq_s1.keras",
+  "artifact_sha256": "b9d3bac0ee06ce2943fb0c0c64bb928014f7eb428649ac78563989f7df3fcae5",
+  "config_sha256": "7521fe1ebe8086f41c5a76f2d495b2e4e209ecc071f773a8912d4c0c01f79626",
+  "duration_s": 533.9,
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_id": "tcnq",
+  "model_key": "tcnq",
+  "param_count": 269338,
+  "schema": "predictor_v3_confirm_run_v1",
+  "seed_index": 1,
+  "seed_int": 489171635,
+  "utc": "2026-09-14T16:29:26.081711+00:00",
+  "val": {
+    "per_group_ref": "tcnq/s1_per_group.json",
+    "pinball_sgmacro": 17.027632275234517
+  },
+  "zero_kf_channels": []
+}

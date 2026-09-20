@@ -1,0 +1,435 @@
+{
+  "schema": "ppe_qual_ep3_p1_v1",
+  "pass": true,
+  "utc": "2026-09-18T07:09:36Z",
+  "telemetry_logged": [
+    "N_dispatch",
+    "P_DG1_ref_kW",
+    "P_DG2_ref_kW",
+    "P_gen_ref_kW",
+    "P_gen_req_eff_kW",
+    "P_gen_surplus_kW",
+    "P_gen_unserved_kW",
+    "P_load_gen_kW",
+    "baseline_fallback_active",
+    "dispatch_min_clamp_active",
+    "ems_health_ok",
+    "selector_baseline_active"
+  ],
+  "fixture": {
+    "T_s": 300,
+    "speed_mps": 7,
+    "hotel_kW": 700,
+    "soc_init": 0.6,
+    "delta_lambda_A": 0,
+    "delta_lambda_B": 0.1,
+    "note": "合成恒速高负荷工况；两台机组 ON 使 allocator 可达带 = [250,1000] kW，两条参考均落在带内 ⇒ 无 clamp"
+  },
+  "mask_definition": [
+    "t >= t_settle（机组合闸后 20 s）",
+    "state_DG1 == 3 且 state_DG2 == 3（均为 ON；无 STARTING/SYNC/COOLDOWN）",
+    "N_dispatch == 2",
+    "dispatch_min_clamp_active == 0（无 Pmin 钳位）",
+    "两跑 per-unit 参考均严格位于 (125, 500) kW（无 Pmax/Pmin 钳位）",
+    "baseline_fallback_active == 0 且 safety_baseline_fallback_active == 0",
+    "selector_baseline_active == 0（两跑均为 EMS 分支）"
+  ],
+  "counters": {
+    "N_total_samples": 30001,
+    "N_non_saturated_samples": 14801,
+    "N_selected_ref_different": 3200,
+    "N_pre_ramp_command_different": 3200,
+    "N_actual_generator_power_different": 14801,
+    "max_selected_ref_diff_kW": 120,
+    "max_actual_gen_diff_kW": 96.682152476812,
+    "median_actual_gen_diff_kW": 0.0069873246850988835,
+    "N_samples_with_differing_refs": 3200,
+    "median_actual_gen_diff_given_refs_differ_kW": 80.5126497601018,
+    "max_actual_gen_diff_given_refs_differ_kW": 96.682152476812,
+    "ems_ref_max_abs_diff_kW": 120
+  },
+  "diag": {
+    "t_s": [
+      0,
+      25,
+      50,
+      75,
+      100,
+      125,
+      150,
+      175,
+      200,
+      225,
+      250,
+      275,
+      300
+    ],
+    "N_A": [
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "N_B": [
+      0,
+      0,
+      1,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2,
+      2
+    ],
+    "state_A": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "state_B": [
+      [
+        1,
+        0
+      ],
+      [
+        2,
+        0
+      ],
+      [
+        3,
+        1
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ],
+      [
+        3,
+        3
+      ]
+    ],
+    "sel_A_kW": [
+      721.64948453608258,
+      800,
+      1000,
+      1000,
+      1000,
+      1000,
+      900,
+      800,
+      800,
+      800,
+      800,
+      800,
+      800
+    ],
+    "sel_B_kW": [
+      721.64948453608258,
+      800,
+      1000,
+      1000,
+      1000,
+      1000,
+      1000,
+      840,
+      800,
+      800,
+      800,
+      800,
+      800
+    ],
+    "gen_A_kW": [
+      0,
+      0,
+      302.02059403732142,
+      703.15538497816044,
+      995.05738142362861,
+      999.96686321915422,
+      929.577579258719,
+      808.44318267899155,
+      800.056605600806,
+      800.00037950073624,
+      800.00000254428551,
+      800.00000001705769,
+      800.00000000011664
+    ],
+    "gen_B_kW": [
+      0,
+      0,
+      302.02059403732142,
+      703.15538497816044,
+      995.05738142362861,
+      999.96686321915422,
+      999.99977784119255,
+      873.20446503711912,
+      801.33110046285174,
+      800.00892409228868,
+      800.00005982976222,
+      800.000000401116,
+      800.00000000268949
+    ],
+    "branch_A": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "branch_B": [
+      1,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "minclamp_A": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "minclamp_B": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "fallback_A": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "fallback_B": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0
+    ],
+    "full_range": {
+      "N_dispatch_A": [
+        0,
+        2
+      ],
+      "N_dispatch_B": [
+        0,
+        2
+      ],
+      "sel_A_kW": [
+        721.64948453608258,
+        1000
+      ],
+      "sel_B_kW": [
+        721.64948453608258,
+        1000
+      ],
+      "gen_A_kW": [
+        0,
+        999.99632907771547
+      ],
+      "gen_B_kW": [
+        0,
+        999.99985084382035
+      ],
+      "state_DG1_A": [
+        1,
+        3
+      ],
+      "state_DG2_A": [
+        0,
+        3
+      ],
+      "state_DG1_B": [
+        1,
+        3
+      ],
+      "state_DG2_B": [
+        0,
+        3
+      ]
+    }
+  },
+  "runs": {
+    "A": {
+      "selected_mean_kW": 804.72941017498817,
+      "selected_min_kW": 800,
+      "selected_max_kW": 880,
+      "ems_mean_kW": 804.72941017498817,
+      "dg1_ref_mean_kW": 402.36470508749409,
+      "dg2_ref_mean_kW": 402.36470508749409,
+      "gen_actual_mean_kW": 808.80837890375869,
+      "pbat_mean_kW": -87.274387247370385,
+      "branch_max": 0,
+      "fallback_max": 0,
+      "min_clamp_max": 0
+    },
+    "B": {
+      "selected_mean_kW": 818.9176406999527,
+      "selected_min_kW": 800,
+      "selected_max_kW": 980,
+      "ems_mean_kW": 818.9176406999527,
+      "dg1_ref_mean_kW": 409.45882034997635,
+      "dg2_ref_mean_kW": 409.45882034997635,
+      "gen_actual_mean_kW": 825.99148203295363,
+      "pbat_mean_kW": -105.23459828515955,
+      "branch_max": 0,
+      "fallback_max": 0,
+      "min_clamp_max": 0
+    }
+  },
+  "chain": {
+    "P_gen_ref_EMS": "logged at 05_EMS_Controller out:1",
+    "P_gen_ref_selected": "logged at Source_Selector out:1",
+    "DG_allocation_target": "logged at PMS_Dispatch_Allocator out:1/out:2",
+    "N_dispatch": "logged at PMS_Dispatch_Allocator out:3",
+    "post_ramp_actual": "model plant log P_DG1_kW / P_DG2_kW（含 20 kW/s 爬坡 + τ=5 s 惯性）",
+    "battery": "model plant log P_bat_actual_kW",
+    "fallback_and_saturation": "baseline_fallback_active / dispatch_min_clamp_active / selector_baseline_active"
+  }
+}

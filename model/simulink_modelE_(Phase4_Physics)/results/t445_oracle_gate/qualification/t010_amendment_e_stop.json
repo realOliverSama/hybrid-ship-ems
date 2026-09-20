@@ -1,0 +1,21 @@
+{
+  "schema": "t445_t010_complete_v1",
+  "task": "T-010",
+  "amendment": "E_generator_realization",
+  "purpose": "QUALIFICATION",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "b2_optimizer_pass": false,
+  "simstate_pass": true,
+  "overall": false,
+  "preserved_fail": [
+    "qualification/t010_b2_optimizer_qual.json",
+    "qualification/t010_b2_optimizer_qual_amd_d.json",
+    "qualification/t010_e0_fuel_audit.json"
+  ],
+  "amd_e_artifact": "qualification/t010_b2_optimizer_qual_amd_e.json",
+  "utc": "2026-09-15T12:12:48Z",
+  "verdict": "B2_OPTIMIZER_QUALIFICATION_FAILED",
+  "recommend_t445_closure": "GATE_VALIDITY_FAIL",
+  "not_no_go_trajectory_value": true,
+  "formal_gate_produced": false
+}

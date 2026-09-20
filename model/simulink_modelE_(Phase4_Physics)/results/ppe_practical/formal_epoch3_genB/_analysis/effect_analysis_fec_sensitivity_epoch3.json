@@ -1,0 +1,2467 @@
+{
+ "analysis_class": "DESCRIPTIVE_STATISTICS_PLUS_PREREGISTERED_PAIRED_ANALYSIS",
+ "bindings": {
+  "analysis_script_sha256": "9a86183379f43d16d1e71a2de691638ed4b3f7e02f3076dd16089d21fd50ddf5",
+  "corpus_identity_sha256": "03b73952ce6e5ef29ac1e1a3fa1d5fa1403a75dc1ad2af5a43c265dd94fa1b64",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+  "fc3_core_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "freeze_file_sha256": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "genb_freeze_root": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "note": "frozen ppe.stats aggregation chain + ppe.fec J_FEC; corpus = genB terminals (freeze a2dc634f) resolved per (voyage,arm) across formal_epoch3_genB + formal_epoch3 namespaces; attempt-A era terminals physically excluded",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "break_even_and_band_flip_audit": {
+  "C0_vs_C1": {
+   "flip_voyages": [
+    "FLTA_S2_D01004_M1",
+    "FLTA_S2_D01004_M2",
+    "FLTA_S2_D01004_M3",
+    "FLTA_S2_D01004_M4",
+    "FLTA_S2_D01009_M1",
+    "FLTA_S2_D01009_M2",
+    "FLTA_S2_D01009_M3",
+    "FLTA_S2_D01009_M4",
+    "FLTA_S3_D02008_M1",
+    "FLTA_S3_D02008_M2",
+    "FLTA_S3_D02008_M3",
+    "FLTA_S3_D02008_M4",
+    "FLTA_S4_D03011_M1",
+    "FLTA_S4_D03011_M2",
+    "FLTA_S5_D04001_M1",
+    "FLTA_S5_D04001_M2",
+    "FLTA_S5_D04001_M3",
+    "FLTA_S5_D04001_M4",
+    "FLTA_S8_D07009_M1",
+    "FLTA_S8_D07009_M2",
+    "FLTA_S8_D07009_M3",
+    "FLTA_S8_D07009_M4"
+   ],
+   "n_sign_flip_within_0.8x_1.2x": 22,
+   "per_voyage": [
+    {
+     "dJ_0.8x": 0.1722893673616559,
+     "dJ_1.2x": -0.35913918468787753,
+     "dJ_canonical": -0.09342490866311093,
+     "k_break_even": 0.5073264707939834,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+     "dJ_0.8x": 0.1722893673616559,
+     "dJ_1.2x": -0.35913918468787753,
+     "dJ_canonical": -0.09342490866311093,
+     "k_break_even": 0.5073264707939834,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+     "dJ_0.8x": 0.17799301535202416,
+     "dJ_1.2x": -0.6220702104936833,
+     "dJ_canonical": -0.22203859757082967,
+     "k_break_even": 0.4851215563069668,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+     "dJ_0.8x": 0.17799301535202416,
+     "dJ_1.2x": -0.6220702104936833,
+     "dJ_canonical": -0.22203859757082967,
+     "k_break_even": 0.4851215563069668,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+     "dJ_0.8x": 0.20144124033814703,
+     "dJ_1.2x": -0.2706791471102634,
+     "dJ_canonical": -0.03461895338605814,
+     "k_break_even": 0.5296942833522847,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+     "dJ_0.8x": 0.20144124033814703,
+     "dJ_1.2x": -0.2706791471102634,
+     "dJ_canonical": -0.03461895338605814,
+     "k_break_even": 0.5296942833522847,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+     "dJ_0.8x": 0.1702038334738687,
+     "dJ_1.2x": -0.4480763047367362,
+     "dJ_canonical": -0.13893623563143365,
+     "k_break_even": 0.49664941655185585,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+     "dJ_0.8x": 0.1702038334738687,
+     "dJ_1.2x": -0.4480763047367362,
+     "dJ_canonical": -0.13893623563143365,
+     "k_break_even": 0.49664941655185585,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+     "dJ_0.8x": 0.07395645542942009,
+     "dJ_1.2x": -0.6344411837080415,
+     "dJ_canonical": -0.2802423641393108,
+     "k_break_even": 0.4593483524721929,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+     "dJ_0.8x": 0.07395645542942009,
+     "dJ_1.2x": -0.6344411837080415,
+     "dJ_canonical": -0.2802423641393108,
+     "k_break_even": 0.4593483524721929,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+     "dJ_0.8x": 0.14629264585941804,
+     "dJ_1.2x": -0.22681670673539878,
+     "dJ_canonical": -0.04026203043799026,
+     "k_break_even": 0.522145522089208,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+     "dJ_0.8x": 0.14629264585941804,
+     "dJ_1.2x": -0.22681670673539878,
+     "dJ_canonical": -0.04026203043799026,
+     "k_break_even": 0.522145522089208,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+     "dJ_0.8x": 0.3925816841559897,
+     "dJ_1.2x": -0.4537691913191111,
+     "dJ_canonical": -0.0305937535815608,
+     "k_break_even": 0.5378096501164078,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+     "dJ_0.8x": 0.3925816841559897,
+     "dJ_1.2x": -0.4537691913191111,
+     "dJ_canonical": -0.0305937535815608,
+     "k_break_even": 0.5378096501164078,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+     "dJ_0.8x": 1.4582960222290318,
+     "dJ_1.2x": 0.08464524335860357,
+     "dJ_canonical": 0.7714706327938177,
+     "k_break_even": 0.6682905538121626,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+     "dJ_0.8x": 1.4582960222290318,
+     "dJ_1.2x": 0.08464524335860357,
+     "dJ_canonical": 0.7714706327938177,
+     "k_break_even": 0.6682905538121626,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+     "dJ_0.8x": 1.2714077063482443,
+     "dJ_1.2x": -0.02205125787490303,
+     "dJ_canonical": 0.6246782242366704,
+     "k_break_even": 0.6511187002123219,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+     "dJ_0.8x": 1.2714077063482443,
+     "dJ_1.2x": -0.02205125787490303,
+     "dJ_canonical": 0.6246782242366704,
+     "k_break_even": 0.6511187002123219,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+     "dJ_0.8x": 1.2714077063482443,
+     "dJ_1.2x": -0.02205125787490303,
+     "dJ_canonical": 0.6246782242366704,
+     "k_break_even": 0.6511187002123219,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+     "dJ_0.8x": 1.2714077063482443,
+     "dJ_1.2x": -0.02205125787490303,
+     "dJ_canonical": 0.6246782242366704,
+     "k_break_even": 0.6511187002123219,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+     "dJ_0.8x": 1.576093912912495,
+     "dJ_1.2x": 1.4427896449504687,
+     "dJ_canonical": 1.5094417789314818,
+     "k_break_even": 3.017345931089179,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+     "dJ_0.8x": 1.576093912912495,
+     "dJ_1.2x": 1.4427896449504687,
+     "dJ_canonical": 1.5094417789314818,
+     "k_break_even": 3.017345931089179,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+     "dJ_0.8x": 1.726919482185215,
+     "dJ_1.2x": 0.16336557843784938,
+     "dJ_canonical": 0.9451425303115322,
+     "k_break_even": 0.6776466575613087,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+     "dJ_0.8x": 1.726919482185215,
+     "dJ_1.2x": 0.16336557843784938,
+     "dJ_canonical": 0.9451425303115322,
+     "k_break_even": 0.6776466575613087,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+     "dJ_0.8x": 1.7622082505491148,
+     "dJ_1.2x": 1.0186286045779878,
+     "dJ_canonical": 1.3904184275635512,
+     "k_break_even": 0.9538614336984642,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+     "dJ_0.8x": 1.7622082505491148,
+     "dJ_1.2x": 1.0186286045779878,
+     "dJ_canonical": 1.3904184275635512,
+     "k_break_even": 0.9538614336984642,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+     "dJ_0.8x": 1.763440207921693,
+     "dJ_1.2x": 1.0204765406368264,
+     "dJ_canonical": 1.3919583742792598,
+     "k_break_even": 0.954652264177381,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+     "dJ_0.8x": 1.763440207921693,
+     "dJ_1.2x": 1.0204765406368264,
+     "dJ_canonical": 1.3919583742792598,
+     "k_break_even": 0.954652264177381,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+     "dJ_0.8x": 1.2444433832281796,
+     "dJ_1.2x": 1.413322336426286,
+     "dJ_canonical": 1.3288828598272326,
+     "k_break_even": -1.171912201816639,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+     "dJ_0.8x": 1.2444433832281796,
+     "dJ_1.2x": 1.413322336426286,
+     "dJ_canonical": 1.3288828598272326,
+     "k_break_even": -1.171912201816639,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+     "dJ_0.8x": 1.449378091773851,
+     "dJ_1.2x": 1.038111260131919,
+     "dJ_canonical": 1.243744675952885,
+     "k_break_even": 1.2058178772018326,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+     "dJ_0.8x": 1.449378091773851,
+     "dJ_1.2x": 1.038111260131919,
+     "dJ_canonical": 1.243744675952885,
+     "k_break_even": 1.2058178772018326,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+     "dJ_0.8x": -0.054062752123642976,
+     "dJ_1.2x": -0.7650782071002968,
+     "dJ_canonical": -0.4095704796119699,
+     "k_break_even": 0.41996286775631864,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+     "dJ_0.8x": -0.054062752123642976,
+     "dJ_1.2x": -0.7650782071002968,
+     "dJ_canonical": -0.4095704796119699,
+     "k_break_even": 0.41996286775631864,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+     "dJ_0.8x": 0.9999097550495288,
+     "dJ_1.2x": 0.494383416536585,
+     "dJ_canonical": 0.7471465857930568,
+     "k_break_even": 0.8683086245607807,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+     "dJ_0.8x": 0.9999097550495288,
+     "dJ_1.2x": 0.494383416536585,
+     "dJ_canonical": 0.7471465857930568,
+     "k_break_even": 0.8683086245607807,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+     "dJ_0.8x": 0.05378790652978849,
+     "dJ_1.2x": 0.22049532398749505,
+     "dJ_canonical": 0.13714161525864177,
+     "k_break_even": 0.36613227448922087,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+     "dJ_0.8x": 0.05378790652978849,
+     "dJ_1.2x": 0.22049532398749505,
+     "dJ_canonical": 0.13714161525864177,
+     "k_break_even": 0.36613227448922087,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+     "dJ_0.8x": 0.08317439803906349,
+     "dJ_1.2x": 0.016799426230975967,
+     "dJ_canonical": 0.04998691213501974,
+     "k_break_even": 0.7100864077619483,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+     "dJ_0.8x": 0.08317439803906349,
+     "dJ_1.2x": 0.016799426230975967,
+     "dJ_canonical": 0.04998691213501974,
+     "k_break_even": 0.7100864077619483,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+     "dJ_0.8x": 0.0028235092315780363,
+     "dJ_1.2x": -0.6266825383510295,
+     "dJ_canonical": -0.31192951455972584,
+     "k_break_even": 0.43753904634504404,
+     "sign_flip_within_band": true,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+     "dJ_0.8x": 0.0028235092315780363,
+     "dJ_1.2x": -0.6266825383510295,
+     "dJ_canonical": -0.31192951455972584,
+     "k_break_even": 0.43753904634504404,
+     "sign_flip_within_band": true,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+     "dJ_0.8x": 0.0028235092315780363,
+     "dJ_1.2x": -0.6266825383510295,
+     "dJ_canonical": -0.31192951455972584,
+     "k_break_even": 0.43753904634504404,
+     "sign_flip_within_band": true,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+     "dJ_0.8x": 0.0028235092315780363,
+     "dJ_1.2x": -0.6266825383510295,
+     "dJ_canonical": -0.31192951455972584,
+     "k_break_even": 0.43753904634504404,
+     "sign_flip_within_band": true,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M4"
+    }
+   ],
+   "study_break_even_rel_canonical": 1.2520285384289127,
+   "study_k_break_even": 0.6832319734206577,
+   "within_preregistered_band": false
+  },
+  "C0_vs_P0": {
+   "flip_voyages": [],
+   "n_sign_flip_within_0.8x_1.2x": 0,
+   "per_voyage": [
+    {
+     "dJ_0.8x": -2.722792454805142,
+     "dJ_1.2x": -2.4872921877985905,
+     "dJ_canonical": -2.605042321301866,
+     "k_break_even": 2.960256234358546,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+     "dJ_0.8x": -2.722792454805142,
+     "dJ_1.2x": -2.4872921877985905,
+     "dJ_canonical": -2.605042321301866,
+     "k_break_even": 2.960256234358546,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+     "dJ_0.8x": -2.8489661975224223,
+     "dJ_1.2x": -2.648370788152281,
+     "dJ_canonical": -2.7486684928373517,
+     "k_break_even": 3.5366924683742273,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+     "dJ_0.8x": -2.8489661975224223,
+     "dJ_1.2x": -2.648370788152281,
+     "dJ_canonical": -2.7486684928373517,
+     "k_break_even": 3.5366924683742273,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+     "dJ_0.8x": -2.795339894853306,
+     "dJ_1.2x": -2.5434908919013948,
+     "dJ_canonical": -2.66941539337735,
+     "k_break_even": 2.859308492536566,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+     "dJ_0.8x": -2.795339894853306,
+     "dJ_1.2x": -2.5434908919013948,
+     "dJ_canonical": -2.66941539337735,
+     "k_break_even": 2.859308492536566,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+     "dJ_0.8x": -5.045748788857441,
+     "dJ_1.2x": -4.935943294989086,
+     "dJ_canonical": -4.990846041923263,
+     "k_break_even": 10.466896432457911,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+     "dJ_0.8x": -5.045748788857441,
+     "dJ_1.2x": -4.935943294989086,
+     "dJ_canonical": -4.990846041923263,
+     "k_break_even": 10.466896432457911,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+     "dJ_0.8x": 0.3487570546224164,
+     "dJ_1.2x": 0.5201936665430738,
+     "dJ_canonical": 0.43447536058274505,
+     "k_break_even": -0.007491530359298304,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+     "dJ_0.8x": 0.3487570546224164,
+     "dJ_1.2x": 0.5201936665430738,
+     "dJ_canonical": 0.43447536058274505,
+     "k_break_even": -0.007491530359298304,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+     "dJ_0.8x": -0.6439310091307752,
+     "dJ_1.2x": -0.21026084172978887,
+     "dJ_canonical": -0.42709592543028196,
+     "k_break_even": 0.7606709747424741,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+     "dJ_0.8x": -0.6439310091307752,
+     "dJ_1.2x": -0.21026084172978887,
+     "dJ_canonical": -0.42709592543028196,
+     "k_break_even": 0.7606709747424741,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+     "dJ_0.8x": -9.21392136206601,
+     "dJ_1.2x": -26.847915278932426,
+     "dJ_canonical": -18.030918320499218,
+     "k_break_even": 0.3225067251495364,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+     "dJ_0.8x": -9.21392136206601,
+     "dJ_1.2x": -26.847915278932426,
+     "dJ_canonical": -18.030918320499218,
+     "k_break_even": 0.3225067251495364,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+     "dJ_0.8x": -12.454423049594524,
+     "dJ_1.2x": -39.16724132491993,
+     "dJ_canonical": -25.810832187257233,
+     "k_break_even": 0.3347904511921674,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+     "dJ_0.8x": -12.454423049594524,
+     "dJ_1.2x": -39.16724132491993,
+     "dJ_canonical": -25.810832187257233,
+     "k_break_even": 0.3347904511921674,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+     "dJ_0.8x": -10.491481468600774,
+     "dJ_1.2x": -30.80057706280737,
+     "dJ_canonical": -20.646029265704072,
+     "k_break_even": 0.32379867272457724,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+     "dJ_0.8x": -10.491481468600774,
+     "dJ_1.2x": -30.80057706280737,
+     "dJ_canonical": -20.646029265704072,
+     "k_break_even": 0.32379867272457724,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+     "dJ_0.8x": -10.491481468600774,
+     "dJ_1.2x": -30.80057706280737,
+     "dJ_canonical": -20.646029265704072,
+     "k_break_even": 0.32379867272457724,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+     "dJ_0.8x": -10.491481468600774,
+     "dJ_1.2x": -30.80057706280737,
+     "dJ_canonical": -20.646029265704072,
+     "k_break_even": 0.32379867272457724,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+     "dJ_0.8x": -3.27310512841591,
+     "dJ_1.2x": -5.288530128555959,
+     "dJ_canonical": -4.280817628485934,
+     "k_break_even": 0.08206733101902673,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+     "dJ_0.8x": -3.27310512841591,
+     "dJ_1.2x": -5.288530128555959,
+     "dJ_canonical": -4.280817628485934,
+     "k_break_even": 0.08206733101902673,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+     "dJ_0.8x": -4.818349395053573,
+     "dJ_1.2x": -9.75168180996126,
+     "dJ_canonical": -7.285015602507416,
+     "k_break_even": 0.2233675334282995,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+     "dJ_0.8x": -4.818349395053573,
+     "dJ_1.2x": -9.75168180996126,
+     "dJ_canonical": -7.285015602507416,
+     "k_break_even": 0.2233675334282995,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+     "dJ_0.8x": -9.039209731420183,
+     "dJ_1.2x": -23.34667034169874,
+     "dJ_canonical": -16.192940036559463,
+     "k_break_even": 0.29865441675786086,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+     "dJ_0.8x": -9.039209731420183,
+     "dJ_1.2x": -23.34667034169874,
+     "dJ_canonical": -16.192940036559463,
+     "k_break_even": 0.29865441675786086,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+     "dJ_0.8x": -13.245699664445766,
+     "dJ_1.2x": -35.79767877999748,
+     "dJ_canonical": -24.521689222221625,
+     "k_break_even": 0.30835522879384825,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+     "dJ_0.8x": -13.245699664445766,
+     "dJ_1.2x": -35.79767877999748,
+     "dJ_canonical": -24.521689222221625,
+     "k_break_even": 0.30835522879384825,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+     "dJ_0.8x": -15.677713571473454,
+     "dJ_1.2x": -41.15488738317089,
+     "dJ_canonical": -28.416300477322174,
+     "k_break_even": 0.30223853468856876,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+     "dJ_0.8x": -15.677713571473454,
+     "dJ_1.2x": -41.15488738317089,
+     "dJ_canonical": -28.416300477322174,
+     "k_break_even": 0.30223853468856876,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+     "dJ_0.8x": -13.699889055076376,
+     "dJ_1.2x": -36.1744311216664,
+     "dJ_canonical": -24.937160088371392,
+     "k_break_even": 0.30350225964285493,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+     "dJ_0.8x": -13.699889055076376,
+     "dJ_1.2x": -36.1744311216664,
+     "dJ_canonical": -24.937160088371392,
+     "k_break_even": 0.30350225964285493,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+     "dJ_0.8x": -12.314362569249404,
+     "dJ_1.2x": -35.68604434388705,
+     "dJ_canonical": -24.000203456568222,
+     "k_break_even": 0.3215499169629853,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+     "dJ_0.8x": -12.314362569249404,
+     "dJ_1.2x": -35.68604434388705,
+     "dJ_canonical": -24.000203456568222,
+     "k_break_even": 0.3215499169629853,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+     "dJ_0.8x": -15.53111691934555,
+     "dJ_1.2x": -45.92184343180908,
+     "dJ_canonical": -30.726480175577308,
+     "k_break_even": 0.32500846470634975,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+     "dJ_0.8x": -15.53111691934555,
+     "dJ_1.2x": -45.92184343180908,
+     "dJ_canonical": -30.726480175577308,
+     "k_break_even": 0.32500846470634975,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+     "dJ_0.8x": -7.9758104887788726,
+     "dJ_1.2x": -20.421730138321927,
+     "dJ_canonical": -14.198770313550398,
+     "k_break_even": 0.29667801759024126,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+     "dJ_0.8x": -7.9758104887788726,
+     "dJ_1.2x": -20.421730138321927,
+     "dJ_canonical": -14.198770313550398,
+     "k_break_even": 0.29667801759024126,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+     "dJ_0.8x": -15.634894154690024,
+     "dJ_1.2x": -40.93212023722579,
+     "dJ_canonical": -28.28350719595791,
+     "k_break_even": 0.30165253287490706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+     "dJ_0.8x": -15.634894154690024,
+     "dJ_1.2x": -40.93212023722579,
+     "dJ_canonical": -28.28350719595791,
+     "k_break_even": 0.30165253287490706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+     "dJ_0.8x": -8.271058726888263,
+     "dJ_1.2x": -19.730819333775386,
+     "dJ_canonical": -14.000939030331825,
+     "k_break_even": 0.2790168574477768,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+     "dJ_0.8x": -8.271058726888263,
+     "dJ_1.2x": -19.730819333775386,
+     "dJ_canonical": -14.000939030331825,
+     "k_break_even": 0.2790168574477768,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+     "dJ_0.8x": -10.465609798692508,
+     "dJ_1.2x": -25.479566548714153,
+     "dJ_canonical": -17.97258817370333,
+     "k_break_even": 0.2844060178823075,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+     "dJ_0.8x": -10.465609798692508,
+     "dJ_1.2x": -25.479566548714153,
+     "dJ_canonical": -17.97258817370333,
+     "k_break_even": 0.2844060178823075,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+     "dJ_0.8x": -3.1103254651363215,
+     "dJ_1.2x": -2.846195802919914,
+     "dJ_canonical": -2.9782606340281177,
+     "k_break_even": 3.006971201956179,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+     "dJ_0.8x": -3.1103254651363215,
+     "dJ_1.2x": -2.846195802919914,
+     "dJ_canonical": -2.9782606340281177,
+     "k_break_even": 3.006971201956179,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+     "dJ_0.8x": -3.1103254651363215,
+     "dJ_1.2x": -2.846195802919914,
+     "dJ_canonical": -2.9782606340281177,
+     "k_break_even": 3.006971201956179,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+     "dJ_0.8x": -3.1103254651363215,
+     "dJ_1.2x": -2.846195802919914,
+     "dJ_canonical": -2.9782606340281177,
+     "k_break_even": 3.006971201956179,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M4"
+    }
+   ],
+   "study_break_even_rel_canonical": 0.5369610561688158,
+   "study_k_break_even": 0.29301964835132277,
+   "within_preregistered_band": false
+  },
+  "C1_vs_P0": {
+   "flip_voyages": [
+    "FLTA_S3_D02008_M3",
+    "FLTA_S3_D02008_M4"
+   ],
+   "n_sign_flip_within_0.8x_1.2x": 2,
+   "per_voyage": [
+    {
+     "dJ_0.8x": -2.895081822166798,
+     "dJ_1.2x": -2.1281530031107128,
+     "dJ_canonical": -2.5116174126387554,
+     "k_break_even": 1.260545804732623,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+     "dJ_0.8x": -2.895081822166798,
+     "dJ_1.2x": -2.1281530031107128,
+     "dJ_canonical": -2.5116174126387554,
+     "k_break_even": 1.260545804732623,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+     "dJ_0.8x": -3.0269592128744462,
+     "dJ_1.2x": -2.026300577658598,
+     "dJ_canonical": -2.5266298952665225,
+     "k_break_even": 1.0968497668930939,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+     "dJ_0.8x": -3.0269592128744462,
+     "dJ_1.2x": -2.026300577658598,
+     "dJ_canonical": -2.5266298952665225,
+     "k_break_even": 1.0968497668930939,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+     "dJ_0.8x": -2.996781135191453,
+     "dJ_1.2x": -2.2728117447911313,
+     "dJ_canonical": -2.634796439991292,
+     "k_break_even": 1.3401028774521568,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+     "dJ_0.8x": -2.996781135191453,
+     "dJ_1.2x": -2.2728117447911313,
+     "dJ_canonical": -2.634796439991292,
+     "k_break_even": 1.3401028774521568,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+     "dJ_0.8x": -5.21595262233131,
+     "dJ_1.2x": -4.48786699025235,
+     "dJ_canonical": -4.85190980629183,
+     "k_break_even": 2.000302076809729,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+     "dJ_0.8x": -5.21595262233131,
+     "dJ_1.2x": -4.48786699025235,
+     "dJ_canonical": -4.85190980629183,
+     "k_break_even": 2.000302076809729,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+     "dJ_0.8x": 0.27480059919299626,
+     "dJ_1.2x": 1.1546348502511146,
+     "dJ_canonical": 0.7147177247220555,
+     "k_break_even": 0.368384119463741,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+     "dJ_0.8x": 0.27480059919299626,
+     "dJ_1.2x": 1.1546348502511146,
+     "dJ_canonical": 0.7147177247220555,
+     "k_break_even": 0.368384119463741,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+     "dJ_0.8x": -0.7902236549901933,
+     "dJ_1.2x": 0.016555865005609682,
+     "dJ_canonical": -0.38683389499229204,
+     "k_break_even": 0.6503606916835925,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+     "dJ_0.8x": -0.7902236549901933,
+     "dJ_1.2x": 0.016555865005609682,
+     "dJ_canonical": -0.38683389499229204,
+     "k_break_even": 0.6503606916835925,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+     "dJ_0.8x": -9.606503046222002,
+     "dJ_1.2x": -26.394146087613322,
+     "dJ_canonical": -18.000324566917662,
+     "k_break_even": 0.31165220444113323,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+     "dJ_0.8x": -9.606503046222002,
+     "dJ_1.2x": -26.394146087613322,
+     "dJ_canonical": -18.000324566917662,
+     "k_break_even": 0.31165220444113323,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+     "dJ_0.8x": -13.91271907182356,
+     "dJ_1.2x": -39.251886568278536,
+     "dJ_canonical": -26.582302820051048,
+     "k_break_even": 0.31671121967118643,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+     "dJ_0.8x": -13.91271907182356,
+     "dJ_1.2x": -39.251886568278536,
+     "dJ_canonical": -26.582302820051048,
+     "k_break_even": 0.31671121967118643,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+     "dJ_0.8x": -11.762889174949017,
+     "dJ_1.2x": -30.77852580493247,
+     "dJ_canonical": -21.27070748994074,
+     "k_break_even": 0.3015341000488341,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+     "dJ_0.8x": -11.762889174949017,
+     "dJ_1.2x": -30.77852580493247,
+     "dJ_canonical": -21.27070748994074,
+     "k_break_even": 0.3015341000488341,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+     "dJ_0.8x": -11.762889174949017,
+     "dJ_1.2x": -30.77852580493247,
+     "dJ_canonical": -21.27070748994074,
+     "k_break_even": 0.3015341000488341,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+     "dJ_0.8x": -11.762889174949017,
+     "dJ_1.2x": -30.77852580493247,
+     "dJ_canonical": -21.27070748994074,
+     "k_break_even": 0.3015341000488341,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+     "dJ_0.8x": -4.849199041328404,
+     "dJ_1.2x": -6.731319773506428,
+     "dJ_canonical": -5.790259407417416,
+     "k_break_even": -0.12582855916340102,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+     "dJ_0.8x": -4.849199041328404,
+     "dJ_1.2x": -6.731319773506428,
+     "dJ_canonical": -5.790259407417416,
+     "k_break_even": -0.12582855916340102,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+     "dJ_0.8x": -6.545268877238788,
+     "dJ_1.2x": -9.91504738839911,
+     "dJ_canonical": -8.23015813281895,
+     "k_break_even": 0.012585164326976702,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+     "dJ_0.8x": -6.545268877238788,
+     "dJ_1.2x": -9.91504738839911,
+     "dJ_canonical": -8.23015813281895,
+     "k_break_even": 0.012585164326976702,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+     "dJ_0.8x": -10.801417981969294,
+     "dJ_1.2x": -24.36529894627673,
+     "dJ_canonical": -17.58335846412301,
+     "k_break_even": 0.26273559654876827,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+     "dJ_0.8x": -10.801417981969294,
+     "dJ_1.2x": -24.36529894627673,
+     "dJ_canonical": -17.58335846412301,
+     "k_break_even": 0.26273559654876827,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+     "dJ_0.8x": -15.009139872367456,
+     "dJ_1.2x": -36.81815532063432,
+     "dJ_canonical": -25.913647596500887,
+     "k_break_even": 0.286337948064101,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+     "dJ_0.8x": -15.009139872367456,
+     "dJ_1.2x": -36.81815532063432,
+     "dJ_canonical": -25.913647596500887,
+     "k_break_even": 0.286337948064101,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+     "dJ_0.8x": -16.922156954701627,
+     "dJ_1.2x": -42.56820971959718,
+     "dJ_canonical": -29.7451833371494,
+     "k_break_even": 0.2925312695776592,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+     "dJ_0.8x": -16.922156954701627,
+     "dJ_1.2x": -42.56820971959718,
+     "dJ_canonical": -29.7451833371494,
+     "k_break_even": 0.2925312695776592,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+     "dJ_0.8x": -15.149267146850235,
+     "dJ_1.2x": -37.21254238179833,
+     "dJ_canonical": -26.180904764324275,
+     "k_break_even": 0.28668279466212054,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+     "dJ_0.8x": -15.149267146850235,
+     "dJ_1.2x": -37.21254238179833,
+     "dJ_canonical": -26.180904764324275,
+     "k_break_even": 0.28668279466212054,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+     "dJ_0.8x": -12.260299817125755,
+     "dJ_1.2x": -34.920966136786745,
+     "dJ_canonical": -23.590632976956257,
+     "k_break_even": 0.3184620497309787,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+     "dJ_0.8x": -12.260299817125755,
+     "dJ_1.2x": -34.920966136786745,
+     "dJ_canonical": -23.590632976956257,
+     "k_break_even": 0.3184620497309787,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+     "dJ_0.8x": -16.53102667439508,
+     "dJ_1.2x": -46.41622684834566,
+     "dJ_canonical": -31.47362676137037,
+     "k_break_even": 0.3158182120419521,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+     "dJ_0.8x": -16.53102667439508,
+     "dJ_1.2x": -46.41622684834566,
+     "dJ_canonical": -31.47362676137037,
+     "k_break_even": 0.3158182120419521,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+     "dJ_0.8x": -8.029598395308664,
+     "dJ_1.2x": -20.642225462309426,
+     "dJ_canonical": -14.335911928809043,
+     "k_break_even": 0.29759602933653057,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+     "dJ_0.8x": -8.029598395308664,
+     "dJ_1.2x": -20.642225462309426,
+     "dJ_canonical": -14.335911928809043,
+     "k_break_even": 0.29759602933653057,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+     "dJ_0.8x": -15.634894154690024,
+     "dJ_1.2x": -40.93212023722579,
+     "dJ_canonical": -28.28350719595791,
+     "k_break_even": 0.30165253287490706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+     "dJ_0.8x": -15.634894154690024,
+     "dJ_1.2x": -40.93212023722579,
+     "dJ_canonical": -28.28350719595791,
+     "k_break_even": 0.30165253287490706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+     "dJ_0.8x": -8.354233124927326,
+     "dJ_1.2x": -19.74761876000636,
+     "dJ_canonical": -14.050925942466844,
+     "k_break_even": 0.27650555570079355,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+     "dJ_0.8x": -8.354233124927326,
+     "dJ_1.2x": -19.74761876000636,
+     "dJ_canonical": -14.050925942466844,
+     "k_break_even": 0.27650555570079355,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+     "dJ_0.8x": -10.465609798692508,
+     "dJ_1.2x": -25.479566548714153,
+     "dJ_canonical": -17.97258817370333,
+     "k_break_even": 0.2844060178823075,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+     "dJ_0.8x": -10.465609798692508,
+     "dJ_1.2x": -25.479566548714153,
+     "dJ_canonical": -17.97258817370333,
+     "k_break_even": 0.2844060178823075,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+     "dJ_0.8x": -3.1131489743678995,
+     "dJ_1.2x": -2.2195132645688846,
+     "dJ_canonical": -2.666331119468392,
+     "k_break_even": 1.1969796549820706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+     "dJ_0.8x": -3.1131489743678995,
+     "dJ_1.2x": -2.2195132645688846,
+     "dJ_canonical": -2.666331119468392,
+     "k_break_even": 1.1969796549820706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+     "dJ_0.8x": -3.1131489743678995,
+     "dJ_1.2x": -2.2195132645688846,
+     "dJ_canonical": -2.666331119468392,
+     "k_break_even": 1.1969796549820706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+     "dJ_0.8x": -3.1131489743678995,
+     "dJ_1.2x": -2.2195132645688846,
+     "dJ_canonical": -2.666331119468392,
+     "k_break_even": 1.1969796549820706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M4"
+    }
+   ],
+   "study_break_even_rel_canonical": 0.5007502978381922,
+   "study_k_break_even": 0.2732594375303015,
+   "within_preregistered_band": false
+  },
+  "C2_vs_C1": {
+   "flip_voyages": [
+    "FLTA_S2_D01004_M4",
+    "FLTA_S4_D03011_M3",
+    "FLTA_S5_D04005_M3",
+    "FLTA_S5_D04005_M4",
+    "FLTA_S7_D06000_M2"
+   ],
+   "n_sign_flip_within_0.8x_1.2x": 5,
+   "per_voyage": [
+    {
+     "dJ_0.8x": -0.015789203105578305,
+     "dJ_1.2x": -0.023396819052939957,
+     "dJ_canonical": -0.01959301107925913,
+     "k_break_even": -0.016468554245154903,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+     "dJ_0.8x": -9.333088890636249e-05,
+     "dJ_1.2x": -0.00013999633335954372,
+     "dJ_canonical": -0.0001166636111329531,
+     "k_break_even": 0.0,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+     "dJ_0.8x": 0.001032893911937699,
+     "dJ_1.2x": -0.01950080024765958,
+     "dJ_canonical": -0.009233953167860937,
+     "k_break_even": 0.44754000590372983,
+     "sign_flip_within_band": true,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+     "dJ_0.8x": 0.1333427028189619,
+     "dJ_1.2x": 0.21131724748827752,
+     "dJ_canonical": 0.1723299751536197,
+     "k_break_even": 0.0632837558775157,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+     "dJ_0.8x": 0.12240509754635648,
+     "dJ_1.2x": 0.34181072948564895,
+     "dJ_canonical": 0.23210791351600268,
+     "k_break_even": 0.31478288581994346,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+     "dJ_0.8x": -0.006700059127044966,
+     "dJ_1.2x": -0.04653628561655941,
+     "dJ_canonical": -0.026618172371802182,
+     "k_break_even": 0.399847463820492,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+     "dJ_0.8x": -0.0062932713152448055,
+     "dJ_1.2x": -0.04681995613210628,
+     "dJ_canonical": -0.026556613723675543,
+     "k_break_even": 0.40266393204133744,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+     "dJ_0.8x": -0.1523059737562774,
+     "dJ_1.2x": -0.41965877052820466,
+     "dJ_canonical": -0.285982372142241,
+     "k_break_even": 0.31220989649283115,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+     "dJ_0.8x": -0.1523059737562774,
+     "dJ_1.2x": -0.41965877052820466,
+     "dJ_canonical": -0.285982372142241,
+     "k_break_even": 0.31220989649283115,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+     "dJ_0.8x": 0.23704955755983903,
+     "dJ_1.2x": 0.38062008440607714,
+     "dJ_canonical": 0.30883482098295806,
+     "k_break_even": 0.07615749566442831,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+     "dJ_0.8x": 0.16322189458893027,
+     "dJ_1.2x": 0.30073674910191683,
+     "dJ_canonical": 0.23197932184542353,
+     "k_break_even": 0.17747471588978728,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+     "dJ_0.8x": 0.3053606313515417,
+     "dJ_1.2x": 0.3519536297747536,
+     "dJ_canonical": 0.3286571305631476,
+     "k_break_even": -0.9940008324663749,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+     "dJ_0.8x": 0.20772592574405163,
+     "dJ_1.2x": 0.24690194721316622,
+     "dJ_canonical": 0.22731393647860892,
+     "k_break_even": -0.7208422417554168,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+     "dJ_0.8x": 0.1203118784540429,
+     "dJ_1.2x": -0.4684344571157322,
+     "dJ_canonical": -0.17406128933084464,
+     "k_break_even": 0.48116609814842076,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+     "dJ_0.8x": -0.016807522406945996,
+     "dJ_1.2x": -0.24313135224821425,
+     "dJ_canonical": -0.12996943732758015,
+     "k_break_even": 0.4203498378020501,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+     "dJ_0.8x": -0.13108236177210575,
+     "dJ_1.2x": -0.5624864945901602,
+     "dJ_canonical": -0.346784428181133,
+     "k_break_even": 0.37023551270149124,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+     "dJ_0.8x": -0.14655498866039496,
+     "dJ_1.2x": -0.5603601791190962,
+     "dJ_canonical": -0.3534575838897456,
+     "k_break_even": 0.3592530360894454,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+     "dJ_0.8x": -0.13108236177210575,
+     "dJ_1.2x": -0.5624864945901602,
+     "dJ_canonical": -0.346784428181133,
+     "k_break_even": 0.37023551270149124,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+     "dJ_0.8x": -0.14655498866039496,
+     "dJ_1.2x": -0.5603601791190962,
+     "dJ_canonical": -0.3534575838897456,
+     "k_break_even": 0.3592530360894454,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+     "dJ_0.8x": 0.33227463354092196,
+     "dJ_1.2x": 0.5765330626401277,
+     "dJ_canonical": 0.4544038480905249,
+     "k_break_even": 0.13962487568601062,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+     "dJ_0.8x": 0.5008327024255339,
+     "dJ_1.2x": 0.7466643338343711,
+     "dJ_canonical": 0.6237485181299526,
+     "k_break_even": -0.008141772749638131,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+     "dJ_0.8x": 0.31698264342875704,
+     "dJ_1.2x": -0.5685081540630983,
+     "dJ_canonical": -0.12576275531717052,
+     "k_break_even": 0.5146985550291565,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+     "dJ_0.8x": 0.3943276612031501,
+     "dJ_1.2x": -1.1810675044793788,
+     "dJ_canonical": -0.3933699216381146,
+     "k_break_even": 0.49119635014401775,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+     "dJ_0.8x": 0.03745081776451287,
+     "dJ_1.2x": 0.3622918922321925,
+     "dJ_canonical": 0.19987135499835273,
+     "k_break_even": 0.4113945725212431,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+     "dJ_0.8x": 0.03745081776451287,
+     "dJ_1.2x": 0.3622918922321925,
+     "dJ_canonical": 0.19987135499835273,
+     "k_break_even": 0.4113945725212431,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+     "dJ_0.8x": 0.03691256184685732,
+     "dJ_1.2x": 0.36148450835570933,
+     "dJ_canonical": 0.19919853510128327,
+     "k_break_even": 0.41173569190252773,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+     "dJ_0.8x": 0.03691256184685732,
+     "dJ_1.2x": 0.36148450835570933,
+     "dJ_canonical": 0.19919853510128327,
+     "k_break_even": 0.41173569190252773,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+     "dJ_0.8x": 0.0906062130221215,
+     "dJ_1.2x": 0.14442900314965204,
+     "dJ_canonical": 0.11751760808588677,
+     "k_break_even": 0.06910368397463662,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+     "dJ_0.8x": 0.0906062130221215,
+     "dJ_1.2x": 0.14442900314965204,
+     "dJ_canonical": 0.11751760808588677,
+     "k_break_even": 0.06910368397463662,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+     "dJ_0.8x": 0.051106426656097714,
+     "dJ_1.2x": 0.17832189124689862,
+     "dJ_canonical": 0.11471415895149817,
+     "k_break_even": 0.34887010438569216,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+     "dJ_0.8x": 0.051106426656097714,
+     "dJ_1.2x": 0.17832189124689862,
+     "dJ_canonical": 0.11471415895149817,
+     "k_break_even": 0.34887010438569216,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+     "dJ_0.8x": 0.0740349503723549,
+     "dJ_1.2x": 0.13121613690645176,
+     "dJ_canonical": 0.10262554363940332,
+     "k_break_even": 0.15394346217000415,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+     "dJ_0.8x": 0.0740349503723549,
+     "dJ_1.2x": 0.13121613690645176,
+     "dJ_canonical": 0.10262554363940332,
+     "k_break_even": 0.15394346217000415,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+     "dJ_0.8x": 0.006171494362112145,
+     "dJ_1.2x": 0.1001223551582206,
+     "dJ_canonical": 0.053146924760166386,
+     "k_break_even": 0.42222150668608205,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+     "dJ_0.8x": 0.0011510917017873434,
+     "dJ_1.2x": 0.06598064005638321,
+     "dJ_canonical": 0.03356586587908528,
+     "k_break_even": 0.43268429358150334,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+     "dJ_0.8x": -0.08565961396086533,
+     "dJ_1.2x": -0.031466649891689014,
+     "dJ_canonical": -0.05856313192627716,
+     "k_break_even": 0.7815822894527472,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+     "dJ_0.8x": -0.08192413780386043,
+     "dJ_1.2x": 0.01094732871967602,
+     "dJ_canonical": -0.035488404542092206,
+     "k_break_even": 0.6291099991463438,
+     "sign_flip_within_band": true,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+     "dJ_0.8x": 0.0648470863192634,
+     "dJ_1.2x": 0.12421664870586416,
+     "dJ_canonical": 0.09453186751256379,
+     "k_break_even": 0.1981411632634932,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+     "dJ_0.8x": 0.0648470863192634,
+     "dJ_1.2x": 0.12421664870586416,
+     "dJ_canonical": 0.09453186751256379,
+     "k_break_even": 0.1981411632634932,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+     "dJ_0.8x": -0.07862474534833497,
+     "dJ_1.2x": -0.3860308341038837,
+     "dJ_canonical": -0.23232778972610935,
+     "k_break_even": 0.380730886516558,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+     "dJ_0.8x": 0.0,
+     "dJ_1.2x": 0.0,
+     "dJ_canonical": 0.0,
+     "k_break_even": null,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+     "dJ_0.8x": -0.07862474534833497,
+     "dJ_1.2x": -0.3860308341038837,
+     "dJ_canonical": -0.23232778972610935,
+     "k_break_even": 0.380730886516558,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M4"
+    }
+   ],
+   "study_break_even_rel_canonical": 1.1235519612005578,
+   "study_k_break_even": 0.6131223052271443,
+   "within_preregistered_band": true
+  },
+  "C2_vs_P0": {
+   "flip_voyages": [
+    "FLTA_S3_D02008_M3",
+    "FLTA_S3_D02008_M4"
+   ],
+   "n_sign_flip_within_0.8x_1.2x": 2,
+   "per_voyage": [
+    {
+     "dJ_0.8x": -2.9108710252723764,
+     "dJ_1.2x": -2.151549822163653,
+     "dJ_canonical": -2.5312104237180146,
+     "k_break_even": 1.273340172600391,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+     "dJ_0.8x": -2.895175153055704,
+     "dJ_1.2x": -2.1282929994440725,
+     "dJ_canonical": -2.5117340762498883,
+     "k_break_even": 1.2606225100385875,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+     "dJ_0.8x": -3.0269592128744462,
+     "dJ_1.2x": -2.026300577658598,
+     "dJ_canonical": -2.5266298952665225,
+     "k_break_even": 1.0968497668930939,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+     "dJ_0.8x": -3.025926318962509,
+     "dJ_1.2x": -2.045801377906258,
+     "dJ_canonical": -2.5358638484343836,
+     "k_break_even": 1.1104528571609822,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+     "dJ_0.8x": -2.863438432372491,
+     "dJ_1.2x": -2.061494497302854,
+     "dJ_canonical": -2.4624664648376724,
+     "k_break_even": 1.2159553089301591,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+     "dJ_0.8x": -2.874376037645096,
+     "dJ_1.2x": -1.9310010153054824,
+     "dJ_canonical": -2.4026885264752895,
+     "k_break_even": 1.1016388781126976,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+     "dJ_0.8x": -5.222652681458355,
+     "dJ_1.2x": -4.534403275868909,
+     "dJ_canonical": -4.878527978663632,
+     "k_break_even": 2.0929372057781643,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+     "dJ_0.8x": -5.222245893646555,
+     "dJ_1.2x": -4.534686946384456,
+     "dJ_canonical": -4.878466420015505,
+     "k_break_even": 2.094471424474028,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+     "dJ_0.8x": 0.12249462543671896,
+     "dJ_1.2x": 0.7349760797229106,
+     "dJ_canonical": 0.42873535257981477,
+     "k_break_even": 0.3929045935330587,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+     "dJ_0.8x": 0.12249462543671896,
+     "dJ_1.2x": 0.7349760797229106,
+     "dJ_canonical": 0.42873535257981477,
+     "k_break_even": 0.3929045935330587,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+     "dJ_0.8x": -0.5531740974303543,
+     "dJ_1.2x": 0.3971759494116869,
+     "dJ_canonical": -0.07799907400933392,
+     "k_break_even": 0.5636151228869116,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+     "dJ_0.8x": -0.6270017604012632,
+     "dJ_1.2x": 0.3172926141075263,
+     "dJ_canonical": -0.15485457314686846,
+     "k_break_even": 0.5814956767920826,
+     "sign_flip_within_band": true,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+     "dJ_0.8x": -9.301142414870462,
+     "dJ_1.2x": -26.042192457838567,
+     "dJ_canonical": -17.671667436354518,
+     "k_break_even": 0.3152860439992108,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+     "dJ_0.8x": -9.398777120477952,
+     "dJ_1.2x": -26.147244140400147,
+     "dJ_canonical": -17.773010630439053,
+     "k_break_even": 0.3140672926126551,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+     "dJ_0.8x": -13.792407193369513,
+     "dJ_1.2x": -39.72032102539427,
+     "dJ_canonical": -26.75636410938189,
+     "k_break_even": 0.3204455041839055,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+     "dJ_0.8x": -13.92952659423051,
+     "dJ_1.2x": -39.49501792052676,
+     "dJ_canonical": -26.71227225737863,
+     "k_break_even": 0.3176287020960482,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+     "dJ_0.8x": -11.893971536721125,
+     "dJ_1.2x": -31.34101229952264,
+     "dJ_canonical": -21.617491918121885,
+     "k_break_even": 0.3030581403236653,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+     "dJ_0.8x": -11.909444163609415,
+     "dJ_1.2x": -31.338885984051565,
+     "dJ_canonical": -21.62416507383049,
+     "k_break_even": 0.3027633888540446,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+     "dJ_0.8x": -11.893971536721125,
+     "dJ_1.2x": -31.34101229952264,
+     "dJ_canonical": -21.617491918121885,
+     "k_break_even": 0.3030581403236653,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+     "dJ_0.8x": -11.909444163609415,
+     "dJ_1.2x": -31.338885984051565,
+     "dJ_canonical": -21.62416507383049,
+     "k_break_even": 0.3027633888540446,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+     "dJ_0.8x": -4.516924407787482,
+     "dJ_1.2x": -6.1547867108663,
+     "dJ_canonical": -5.335855559326891,
+     "k_break_even": -0.165416282058923,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+     "dJ_0.8x": -4.348366338902871,
+     "dJ_1.2x": -5.984655439672057,
+     "dJ_canonical": -5.166510889287464,
+     "k_break_even": -0.14350950239388444,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+     "dJ_0.8x": -6.2282862338100315,
+     "dJ_1.2x": -10.483555542462208,
+     "dJ_canonical": -8.35592088813612,
+     "k_break_even": 0.11707133300734199,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+     "dJ_0.8x": -6.150941216035639,
+     "dJ_1.2x": -11.09611489287849,
+     "dJ_canonical": -8.623528054457063,
+     "k_break_even": 0.16505741255327697,
+     "sign_flip_within_band": false,
+     "tier": "HIGH",
+     "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+     "dJ_0.8x": -10.763967164204786,
+     "dJ_1.2x": -24.003007054044538,
+     "dJ_canonical": -17.38348710912466,
+     "k_break_even": 0.25908801017649485,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+     "dJ_0.8x": -10.763967164204786,
+     "dJ_1.2x": -24.003007054044538,
+     "dJ_canonical": -17.38348710912466,
+     "k_break_even": 0.25908801017649485,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+     "dJ_0.8x": -14.972227310520594,
+     "dJ_1.2x": -36.4566708122786,
+     "dJ_canonical": -25.7144490613996,
+     "k_break_even": 0.2844435266515973,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+     "dJ_0.8x": -14.972227310520594,
+     "dJ_1.2x": -36.4566708122786,
+     "dJ_canonical": -25.7144490613996,
+     "k_break_even": 0.2844435266515973,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+     "dJ_0.8x": -16.831550741679507,
+     "dJ_1.2x": -42.42378071644754,
+     "dJ_canonical": -29.627665729063523,
+     "k_break_even": 0.2930011581360407,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+     "dJ_0.8x": -16.831550741679507,
+     "dJ_1.2x": -42.42378071644754,
+     "dJ_canonical": -29.627665729063523,
+     "k_break_even": 0.2930011581360407,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+     "dJ_0.8x": -15.09816072019413,
+     "dJ_1.2x": -37.034220490551434,
+     "dJ_canonical": -26.066190605372782,
+     "k_break_even": 0.2863221470535274,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+     "dJ_0.8x": -15.09816072019413,
+     "dJ_1.2x": -37.034220490551434,
+     "dJ_canonical": -26.066190605372782,
+     "k_break_even": 0.2863221470535274,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+     "dJ_0.8x": -12.186264866753405,
+     "dJ_1.2x": -34.789749999880286,
+     "dJ_canonical": -23.488007433316845,
+     "k_break_even": 0.31887824077356547,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+     "dJ_0.8x": -12.186264866753405,
+     "dJ_1.2x": -34.789749999880286,
+     "dJ_canonical": -23.488007433316845,
+     "k_break_even": 0.31887824077356547,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+     "dJ_0.8x": -16.524855180032958,
+     "dJ_1.2x": -46.31610449318744,
+     "dJ_canonical": -31.4204798366102,
+     "k_break_even": 0.3154826544082901,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+     "dJ_0.8x": -16.529875582693293,
+     "dJ_1.2x": -46.35024620828928,
+     "dJ_canonical": -31.440060895491285,
+     "k_break_even": 0.31556414493529855,
+     "sign_flip_within_band": false,
+     "tier": "MID",
+     "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+     "dJ_0.8x": -8.115258009269525,
+     "dJ_1.2x": -20.67369211220111,
+     "dJ_canonical": -14.394475060735317,
+     "k_break_even": 0.2955075006402395,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+     "dJ_0.8x": -8.111522533112524,
+     "dJ_1.2x": -20.631278133589745,
+     "dJ_canonical": -14.371400333351133,
+     "k_break_even": 0.2951368608406133,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+     "dJ_0.8x": -15.634894154690024,
+     "dJ_1.2x": -40.93212023722579,
+     "dJ_canonical": -28.28350719595791,
+     "k_break_even": 0.30165253287490706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+     "dJ_0.8x": -15.634894154690024,
+     "dJ_1.2x": -40.93212023722579,
+     "dJ_canonical": -28.28350719595791,
+     "k_break_even": 0.30165253287490706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+     "dJ_0.8x": -8.289386038608061,
+     "dJ_1.2x": -19.623402111300493,
+     "dJ_canonical": -13.956394074954279,
+     "k_break_even": 0.2769160421211282,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+     "dJ_0.8x": -8.289386038608061,
+     "dJ_1.2x": -19.623402111300493,
+     "dJ_canonical": -13.956394074954279,
+     "k_break_even": 0.2769160421211282,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+     "dJ_0.8x": -10.465609798692508,
+     "dJ_1.2x": -25.479566548714153,
+     "dJ_canonical": -17.97258817370333,
+     "k_break_even": 0.2844060178823075,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+     "dJ_0.8x": -10.465609798692508,
+     "dJ_1.2x": -25.479566548714153,
+     "dJ_canonical": -17.97258817370333,
+     "k_break_even": 0.2844060178823075,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+     "dJ_0.8x": -3.1131489743678995,
+     "dJ_1.2x": -2.2195132645688846,
+     "dJ_canonical": -2.666331119468392,
+     "k_break_even": 1.1969796549820706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+     "dJ_0.8x": -3.1917737197162346,
+     "dJ_1.2x": -2.605544098672768,
+     "dJ_canonical": -2.898658909194501,
+     "k_break_even": 1.6250027919209526,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+     "dJ_0.8x": -3.1131489743678995,
+     "dJ_1.2x": -2.2195132645688846,
+     "dJ_canonical": -2.666331119468392,
+     "k_break_even": 1.1969796549820706,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+     "dJ_0.8x": -3.1917737197162346,
+     "dJ_1.2x": -2.605544098672768,
+     "dJ_canonical": -2.898658909194501,
+     "k_break_even": 1.6250027919209526,
+     "sign_flip_within_band": false,
+     "tier": "LOW",
+     "voyage_id": "FLTA_S8_D07009_M4"
+    }
+   ],
+   "study_break_even_rel_canonical": 0.503941352469372,
+   "study_k_break_even": 0.2750007960425363,
+   "within_preregistered_band": false
+  }
+ },
+ "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+ "note": "0.8x/1.2x are the pre-registered FEC robustness sides",
+ "prereg_source": "qualification/fec_robustness_prereg.json",
+ "schema": "effect_analysis_fec_sensitivity_epoch3_v1",
+ "sensitivity": {
+  "0.8x": {
+   "k_eq": 0.43656,
+   "theta": {
+    "B_perfect": {
+     "hat": 0.29452493787399364,
+     "tier": {
+      "HIGH": 0.3454881704298744,
+      "LOW": 0.1439671716349238,
+      "MID": 0.39411947155718274
+     }
+    },
+    "B_predicted": {
+     "hat": 0.2713785603743063,
+     "tier": {
+      "HIGH": 0.26981362795467345,
+      "LOW": 0.14274384669915255,
+      "MID": 0.401578206469093
+     }
+    },
+    "DJ_C0_vs_P0_kg": {
+     "hat": -8.021949948883806,
+     "tier": {
+      "HIGH": -4.737007696668648,
+      "LOW": -9.743203340734016,
+      "MID": -9.585638809248753
+     }
+    },
+    "DJ_C1_vs_P0_kg": {
+     "hat": -8.686400337693161,
+     "tier": {
+      "HIGH": -5.455230856241595,
+      "LOW": -10.097757190488277,
+      "MID": -10.506212966349612
+     }
+    },
+    "DJ_C2_vs_P0_kg": {
+     "hat": -8.638031511799047,
+     "tier": {
+      "HIGH": -5.29901694822283,
+      "LOW": -10.092239302392434,
+      "MID": -10.522838284781871
+     }
+    },
+    "L_prediction": {
+     "hat": 0.023146377499687332,
+     "tier": {
+      "HIGH": 0.07567454247520101,
+      "LOW": 0.0012233249357712491,
+      "MID": -0.0074587349119102486
+     }
+    }
+   }
+  },
+  "1.2x": {
+   "k_eq": 0.65484,
+   "theta": {
+    "B_perfect": {
+     "hat": 0.010301343674142848,
+     "tier": {
+      "HIGH": -0.05596108653759889,
+      "LOW": 0.06454397872235988,
+      "MID": 0.022321138837667565
+     }
+    },
+    "B_predicted": {
+     "hat": 0.01654538257255257,
+     "tier": {
+      "HIGH": -0.05202554382712288,
+      "LOW": 0.06341570516482478,
+      "MID": 0.038245986379955785
+     }
+    },
+    "DJ_C0_vs_P0_kg": {
+     "hat": -20.22082792800497,
+     "tier": {
+      "HIGH": -11.028108738055845,
+      "LOW": -23.698243296089302,
+      "MID": -25.93613174986975
+     }
+    },
+    "DJ_C1_vs_P0_kg": {
+     "hat": -20.297306246627123,
+     "tier": {
+      "HIGH": -10.985235979698018,
+      "LOW": -23.87766370484863,
+      "MID": -26.02901905533472
+     }
+    },
+    "DJ_C2_vs_P0_kg": {
+     "hat": -20.308734710435274,
+     "tier": {
+      "HIGH": -11.000065821370963,
+      "LOW": -23.871329073797057,
+      "MID": -26.054809236137793
+     }
+    },
+    "L_prediction": {
+     "hat": -0.0062440388984097124,
+     "tier": {
+      "HIGH": -0.003935542710476032,
+      "LOW": 0.0011282735575351005,
+      "MID": -0.01592484754228821
+     }
+    }
+   }
+  },
+  "canonical": {
+   "k_eq": 0.5457,
+   "theta": {
+    "B_perfect": {
+     "hat": 0.15626709278737014,
+     "tier": {
+      "HIGH": 0.14966023272034645,
+      "LOW": 0.10395797143820776,
+      "MID": 0.21518307420355617
+     }
+    },
+    "B_predicted": {
+     "hat": 0.14749899730877186,
+     "tier": {
+      "HIGH": 0.11261017596167233,
+      "LOW": 0.1032601675770152,
+      "MID": 0.22662664838762803
+     }
+    },
+    "DJ_C0_vs_P0_kg": {
+     "hat": -14.121388938444381,
+     "tier": {
+      "HIGH": -7.882558217362238,
+      "LOW": -16.720723318411654,
+      "MID": -17.76088527955925
+     }
+    },
+    "DJ_C1_vs_P0_kg": {
+     "hat": -14.491853292160139,
+     "tier": {
+      "HIGH": -8.220233417969805,
+      "LOW": -16.987710447668448,
+      "MID": -18.267616010842165
+     }
+    },
+    "DJ_C2_vs_P0_kg": {
+     "hat": -14.47338311111715,
+     "tier": {
+      "HIGH": -8.14954138479689,
+      "LOW": -16.981784188094736,
+      "MID": -18.288823760459827
+     }
+    },
+    "L_prediction": {
+     "hat": 0.008768095478598284,
+     "tier": {
+      "HIGH": 0.03705005675867413,
+      "LOW": 0.0006978038611925863,
+      "MID": -0.01144357418407187
+     }
+    }
+   }
+  }
+ },
+ "sha256_self": "d28e15adfc8b446fc2d7a38c92e7b126d714a20d8260930e429be84d42b54691",
+ "sign_changes": {
+  "B_perfect": {
+   "0.8x_sign": 1,
+   "0.8x_sign_change": false,
+   "1.2x_sign": 1,
+   "1.2x_sign_change": false,
+   "canonical_sign": 1
+  },
+  "B_predicted": {
+   "0.8x_sign": 1,
+   "0.8x_sign_change": false,
+   "1.2x_sign": 1,
+   "1.2x_sign_change": false,
+   "canonical_sign": 1
+  },
+  "DJ_C0_vs_P0_kg": {
+   "0.8x_sign": -1,
+   "0.8x_sign_change": false,
+   "1.2x_sign": -1,
+   "1.2x_sign_change": false,
+   "canonical_sign": -1
+  },
+  "DJ_C1_vs_P0_kg": {
+   "0.8x_sign": -1,
+   "0.8x_sign_change": false,
+   "1.2x_sign": -1,
+   "1.2x_sign_change": false,
+   "canonical_sign": -1
+  },
+  "DJ_C2_vs_P0_kg": {
+   "0.8x_sign": -1,
+   "0.8x_sign_change": false,
+   "1.2x_sign": -1,
+   "1.2x_sign_change": false,
+   "canonical_sign": -1
+  },
+  "L_prediction": {
+   "0.8x_sign": 1,
+   "0.8x_sign_change": false,
+   "1.2x_sign": -1,
+   "1.2x_sign_change": true,
+   "canonical_sign": 1
+  }
+ }
+}

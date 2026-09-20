@@ -1,0 +1,26 @@
+{
+  "schema": "ppe_feasibility_contract_coherence_v1",
+  "pass": true,
+  "s_terminal_admissible": {
+    "min": 0.25,
+    "max": 0.9,
+    "n_points": 66,
+    "note": "all SOC in [0.25,0.90] (1 Hz grid) survive EV-1/EV-3 within frozen SOP/hard bounds"
+  },
+  "checks": {
+    "normal_soc_nonempty": true,
+    "discharge_survivable_nonempty": true,
+    "charge_survivable_nonempty": true,
+    "combined_nonempty": true,
+    "reserves_positive": true,
+    "sop_auto_satisfied": true,
+    "hard_bounds_respected": true
+  },
+  "derived_reserves": {
+    "P_reserve_dis_kW": 543.8,
+    "E_reserve_dis_kWh": 6.839,
+    "P_reserve_chg_kW": 819.8,
+    "E_reserve_chg_kWh": 5.625
+  },
+  "utc": "2026-09-17T05:42:26Z"
+}

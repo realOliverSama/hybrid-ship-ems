@@ -1,0 +1,32 @@
+{
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "files": {
+    "HybridShip_ModelE.slx": {
+      "exists": true,
+      "path": "simulink_modelE_(Phase4_Physics)/model/HybridShip_ModelE.slx",
+      "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+      "size_bytes": 1058111
+    },
+    "build_model_e.m": {
+      "exists": true,
+      "path": "simulink_modelE_(Phase4_Physics)/scripts/+model/build_model_e.m",
+      "sha256": "7516500e2133f90bc500e7095f8f83d75ac41d0febe950ff28834d3df941ee94",
+      "size_bytes": 132469
+    },
+    "gate_baseline_modele.json": {
+      "exists": true,
+      "path": "simulink_modelE_(Phase4_Physics)/config/gate_baseline_modele.json",
+      "sha256": "3e9f80b0d7670cc0d6a1fe13f72c67ae0c23068f3dea4774b376975ae2af917e",
+      "size_bytes": 8260
+    },
+    "gate_baseline_modele_control.json": {
+      "exists": true,
+      "path": "simulink_modelE_(Phase4_Physics)/config/gate_baseline_modele_control.json",
+      "sha256": "1c459123c27f4fdf763343f9afaf06d8602ee78c2aed0dcc080fb99710a56273",
+      "size_bytes": 1776
+    }
+  },
+  "git_commit": "66ab7420a3d77b781aae1cf11fb7eaed7be88fd6",
+  "schema": "t445_baseline_integrity_v1",
+  "task": "T-001"
+}

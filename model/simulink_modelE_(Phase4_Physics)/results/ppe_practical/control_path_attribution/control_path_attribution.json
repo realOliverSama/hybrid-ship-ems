@@ -1,0 +1,86 @@
+{
+ "P0_vs_C0_diagnostic": {
+  "finding": "P0 (law5 SOC-adaptive, no forecast/delta) realized trajectory bit-identical to C0 (law6 oracle) 48/48; consistent with both landing in the same policy-table action plateaus and floor region; diagnostic only, P0 not folded into attribution"
+ },
+ "action_sensitivity": {
+  "controller_objective_insensitivity": "NOT primary (delta_lambda DOES differ; DP is selective)",
+  "lambda_floor_dominance": "SECONDARY contributor (28.0% instants pinned in all arms)",
+  "policy_table_action_quantization": "PRIMARY (wide P_g plateaus across lambda)"
+ },
+ "classification_evidence": {
+  "architecture_maps_information_to_identical_actions": true,
+  "execution_path_defect_evidence": "NONE",
+  "manipulation_realized": true
+ },
+ "first_disappearance_layer": "L4->L5 (policy-table action quantization; secondary L4 floor clamp)",
+ "formal_rerun_required": false,
+ "formal_zero_result_classification": "VALID_NEGATIVE_ARCHITECTURAL_RESULT",
+ "layer_table": [
+  {
+   "evidence": "late (t>=300) decision instants: 17288 total; window-hash identical C0vsC1=0, C0vsC2=0, C1vsC2=1436 (8.3%); sources oracle/c1_stored/live_bridge as intended; C1 target bytes bound and runtime-fail-closed-checked at export (formal_assets)",
+   "layer": "L0/L1 ForecastWindow",
+   "status": "DIFFERS"
+  },
+  {
+   "evidence": "interior to frozen runner; not durable evidence (trace boundary)",
+   "layer": "L2 candidate objectives",
+   "status": "NOT_PERSISTED"
+  },
+  {
+   "evidence": "identical arrays 0/48 voyages (all-instant and t>=300); differing instants C0vsC1=948, C0vsC2=1210, C1vsC2=603; median max-diff 0.185; C0 pinned at -0.100 on 89% instants",
+   "layer": "L3 selected delta_lambda",
+   "status": "DIFFERS"
+  },
+  {
+   "evidence": "law6: lambda_eff=max(0.425+30*(0.6-SOC)+K_S*e_hat+delta_lambda, 0.43); 28.0% of late instants have raw-lambda below floor 0.43 in ALL three arms -> lambda_eff identically 0.43 there, independent of delta",
+   "layer": "L4 lambda_eff",
+   "status": "PARTIALLY_ABSORBED"
+  },
+  {
+   "evidence": "frozen table Pg(lambda|Pbar,SOC-region) is a crude step function: mid-load (640 kW) region-1 has 11 distinct P_g levels across the FULL lambda axis (edges 0.43,0.59,0.595,...); 10% of table cells have plateaus spanning the entire lambda axis (max width 15.1) -> residual inter-arm lambda_eff differences map to identical P_g*",
+   "layer": "L5 ECMS action P_g* (policy table)",
+   "status": "ABSORBS_RESIDUAL"
+  },
+  {
+   "evidence": "not in frozen evidence; no wiring-defect evidence: delta_lambda visibly entered the model (L3 recorded from run metadata) and the plant response is bit-identical, i.e., executed commands were identical by construction of identical trajectories",
+   "layer": "L6/L7 pre/post Safety-PMS commands",
+   "status": "NOT_PERSISTED"
+  },
+  {
+   "evidence": "48/48 voyages bit-identical arrays (5 channels incl. SOC, P_DG1/2, P_bat, P_load); max abs diff 0.0",
+   "layer": "L8/L9 plant & SOC",
+   "status": "IDENTICAL"
+  }
+ ],
+ "manipulation_checks": {
+  "C0_C1": "REALIZED (windows differ at 100% of late instants)",
+  "C0_C2": "REALIZED (windows differ at 100% of late instants)",
+  "C1_C2": "REALIZED (91.7% differ; 8.3% coincident window hashes)",
+  "C2_source": "live_bridge (frozen Predictor-v3 via C2 bridge; keras sha bound)"
+ },
+ "primary_mechanism": "ACTION_QUANTIZATION_OR_POLICY_INSENSITIVITY",
+ "probe": {
+  "plateau_stats": {
+   "max_lambda_units": 15.1,
+   "median_lambda_units": 0.005,
+   "n": 1079,
+   "p90_lambda_units": 14.99
+  },
+  "table_config_sha_match": true,
+  "type": "controller-only nonformal (frozen functions + cached frozen table; no Simulink sim)"
+ },
+ "schema": "control_path_invariance_attribution_v1",
+ "secondary_mechanism": "DOWNSTREAM_OVERRIDE_OR_SATURATION (lambda_eff floor 0.43) \u2014 partial",
+ "sha256_self": "28059d48d1077b5413d882578ff0c19d9864d4dfcc717965dea31db65ea1bacd",
+ "source": {
+  "evidence": [
+   "192 controller_trace_v1",
+   "192 plant_trajectory_v1 (array-level)",
+   "frozen t445 sources + cached policy table",
+   "frozen feasibility config"
+  ],
+  "formal_zero_result": "B_perfect=B_predicted=L_prediction=0.000 pp, CI [0,0] (accepted)"
+ },
+ "task": "CONTROL_PATH_INVARIANCE_ATTRIBUTION",
+ "utc": "2026-09-18T04:52:09Z"
+}

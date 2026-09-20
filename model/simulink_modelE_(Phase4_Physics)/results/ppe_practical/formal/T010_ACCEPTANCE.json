@@ -1,0 +1,12 @@
+{
+ "arm_records": 192,
+ "cstar_impl_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+ "formal_epoch": 1,
+ "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+ "pass": true,
+ "problems": [],
+ "schema": "ppe_t010_acceptance_v1",
+ "stale_p0_requantified": 12,
+ "utc": "2026-09-17T00:45:45Z",
+ "voyages_complete": 48
+}

@@ -1,0 +1,39 @@
+{
+  "aggregate": {
+    "max": 17.027632275234517,
+    "mean": 16.74946461701673,
+    "median": 16.925144629680112,
+    "min": 16.295616946135567,
+    "std": 0.3236347845396257
+  },
+  "artifact_sha256": "226ca9e44cc3df4a9459894455377f2f27ac55b83cdc177d86d894a1641db5c4",
+  "artifacts": [
+    {
+      "artifact_sha256": "76c4d91af2905d2561f4af4d7f7137999f6399931807eb2d9caf074dcd59be6f",
+      "seed_index": 0
+    },
+    {
+      "artifact_sha256": "b9d3bac0ee06ce2943fb0c0c64bb928014f7eb428649ac78563989f7df3fcae5",
+      "seed_index": 1
+    },
+    {
+      "artifact_sha256": "4c3c86503c5b583cbfb4f4687a851ec02afebbebdbe463baba3bf59c053a988c",
+      "seed_index": 2
+    }
+  ],
+  "config_sha256": "7521fe1ebe8086f41c5a76f2d495b2e4e209ecc071f773a8912d4c0c01f79626",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_key": "tcnq",
+  "per_seed_pinball_sgmacro": {
+    "0": 16.295616946135567,
+    "1": 17.027632275234517,
+    "2": 16.925144629680112
+  },
+  "schema": "predictor_v3_confirm_summary_v1",
+  "seed_indices": [
+    0,
+    1,
+    2
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "t445_oracle_gate_v1",
+  "title": "T-445 Trajectory Oracle Gate result",
+  "type": "object",
+  "required": [
+    "schema",
+    "trajectory_gate_verdict",
+    "b3_context_status",
+    "decision_required",
+    "expansion_used"
+  ],
+  "properties": {
+    "schema": { "const": "t445_oracle_gate_v1" },
+    "trajectory_gate_verdict": {
+      "enum": [
+        "GO_TRAJECTORY_VALUE",
+        "NO_GO_TRAJECTORY_VALUE",
+        "INCONCLUSIVE",
+        "FINAL_INCONCLUSIVE",
+        "GATE_VALIDITY_FAIL"
+      ]
+    },
+    "b3_context_status": {
+      "enum": [
+        "UNQUALIFIED_CONTEXT",
+        "QUALIFIED_PASS",
+        "B3_DOMINANCE_AUDIT_FAIL"
+      ]
+    },
+    "decision_required": { "type": "boolean" },
+    "expansion_used": { "type": "boolean" },
+    "expansion_eligible": { "type": "boolean" },
+    "median_g": { "type": "number" },
+    "ci_lower": { "type": "number" },
+    "ci_upper": { "type": "number" },
+    "mode": { "enum": ["initial", "expanded"] },
+    "X_pct": { "const": 2.0 },
+    "Y_pct": { "const": 0.0 },
+    "SMALL_N_GATE_CAUTION": { "type": "boolean" }
+  },
+  "additionalProperties": true
+}

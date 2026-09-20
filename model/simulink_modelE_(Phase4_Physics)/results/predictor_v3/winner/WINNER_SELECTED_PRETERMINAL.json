@@ -1,0 +1,54 @@
+{
+  "artifact_sha256": "ff98b632f88ff7bb9d9d1c5a4dbb1df981e4bdb5aa886c258aa6664ecae0ebc5",
+  "candidates": [
+    "mlpq",
+    "tcnq",
+    "transformer",
+    "tft",
+    "reatt"
+  ],
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "493a30cf",
+  "invariant": "本文件先于任何 test/OOD 访问；终评结果不得改变 winner 身份（FR-605）",
+  "params": {
+    "mlpq": 216314,
+    "reatt": 1012835,
+    "tcnq": 269338,
+    "tft": 405780,
+    "transformer": 223427
+  },
+  "schema": "predictor_v3_winner_selected_preterminal_v1",
+  "selected_utc": "2026-09-14T18:08:25.409551+00:00",
+  "selection": {
+    "S1": [
+      "reatt"
+    ],
+    "S2": null,
+    "S3": null,
+    "algorithm": "dgn-e-13-v1",
+    "equivalence_band_rel": [
+      -0.01,
+      0.01
+    ],
+    "stage": "S1_pinball"
+  },
+  "val_evidence_sha256": {
+    "mlpq": "15e660ffe1951ee08575e912a38c769352726cd8cd2cb9d6cc81d621a7e26999",
+    "reatt": "2a74214678aa81f7801b94ecda5ee9ac6f8758b6a1ad09083a8efa065b3db489",
+    "tcnq": "efddfbc99786ec4d728b27215b807a009fa452468784d3780b71572bc85356e5",
+    "tft": "2436c0ce8d6189ef3a1476f63c06c658a33e15c411a46715d5adc11e9d3baa09",
+    "transformer": "db5a1958f18e56abaa22edef7e401792f50f452ab81b567f0041188d21b9e896"
+  },
+  "winner": {
+    "arch": "reatt",
+    "artifact_dir": "results/predictor_v3/confirm/reatt",
+    "canonical_delivery_seed_index": 0,
+    "config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+    "model_id": "reatt"
+  },
+  "winner_identity": {
+    "config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+    "model_id": "reatt"
+  },
+  "winner_identity_sha256": "832720b0b0f39592fdeaa25957c1a61d0f0a1381d7220881e0b9af345eb37aa7"
+}

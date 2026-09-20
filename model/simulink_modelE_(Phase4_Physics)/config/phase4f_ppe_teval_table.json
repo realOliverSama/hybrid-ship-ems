@@ -1,0 +1,2028 @@
+{
+  "anchor_stride_s": 10.0,
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "n_voyages": 48,
+  "npz_anchor_consistency": "NPZ_ANCHOR_GRID_CONSISTENT",
+  "schema": "phase4f_ppe_teval_table_v1",
+  "study": "phase4-f-practical-predictive-ems",
+  "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
+  "voyages": [
+    {
+      "T_eval": 4508.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01004_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "843f6f129fe87d052613b51f28bc0637d03b931eb2b80eeb49fd9305b8575ad9",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "5c707a80a9240fcce30767eb6fef5ea91844e8cb0a2072c8e2176901fa0d28b8"
+      },
+      "T_fcst_s": 4200.0,
+      "control_update_grid": {
+        "last_update_s": 4500.0,
+        "n_updates": 451,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 8.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "n_differentiated_updates": 391,
+      "n_segments_10s": 451,
+      "role": "initial",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4200.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "T_eval": 4508.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01004_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "592fdb84638a0ec8a966f3c243a146e8d5feae756ce0d527bcc5edf31a5c4c59",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "c926dd7761f8f8a1c15c37f0da1358f3cdf0d28cbdf308a451b10ab400284e88"
+      },
+      "T_fcst_s": 4200.0,
+      "control_update_grid": {
+        "last_update_s": 4500.0,
+        "n_updates": 451,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 8.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "n_differentiated_updates": 391,
+      "n_segments_10s": 451,
+      "role": "initial",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4200.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+      "T_eval": 4508.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01004_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "57bea58fec17b1ccc79d47279c5b5f8ced4e3d5fdcbd14d4c3cb5b7fc37dc6ff",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "a9d1b419981f9e89b07075fb997cc7f88b23ebd00e898baefcffeaccfdaf5a46"
+      },
+      "T_fcst_s": 4200.0,
+      "control_update_grid": {
+        "last_update_s": 4500.0,
+        "n_updates": 451,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 8.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "n_differentiated_updates": 391,
+      "n_segments_10s": 451,
+      "role": "initial",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4200.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+      "T_eval": 4508.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01004_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "0d21a3ed79068b4a103d753cde476daa83da33b36af873690f2d58e0c5088060",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "4be6f15f0c08abf51a2f575d50977c6f9914d34305ab71670d97708c75bd1c57"
+      },
+      "T_fcst_s": 4200.0,
+      "control_update_grid": {
+        "last_update_s": 4500.0,
+        "n_updates": 451,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 8.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "n_differentiated_updates": 391,
+      "n_segments_10s": 451,
+      "role": "initial",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4200.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+      "T_eval": 4362.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01009_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "5ade09c4f004c231d7da0594880fb14011eaa6824510145076e2cb8eb863360b",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "91fee841a51f1e1865edcaec5d7a853b430fee4619bc51999aebfea77d9c1304"
+      },
+      "T_fcst_s": 4060.0,
+      "control_update_grid": {
+        "last_update_s": 4360.0,
+        "n_updates": 437,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "n_differentiated_updates": 377,
+      "n_segments_10s": 437,
+      "role": "initial",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4060.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+      "T_eval": 4362.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01009_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "ec52fad25e23de743646c0cd56d825092cdd9801de1b9726aaeb082622d87b47",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "3e6ec095f767a52405cf7108aae5c152d5d9c562db6b4906f2a5d22e8992c6ec"
+      },
+      "T_fcst_s": 4060.0,
+      "control_update_grid": {
+        "last_update_s": 4360.0,
+        "n_updates": 437,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "n_differentiated_updates": 377,
+      "n_segments_10s": 437,
+      "role": "initial",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4060.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+      "T_eval": 4362.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01009_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "eb9390b7273a1480038eb623f9555469f46488c3fb5d42840ad12060d355e2a4",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "34e7896b09e924ec79e3be746f391c74e4dab6f149b6ad63627e8b5363355db1"
+      },
+      "T_fcst_s": 4060.0,
+      "control_update_grid": {
+        "last_update_s": 4360.0,
+        "n_updates": 437,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "n_differentiated_updates": 377,
+      "n_segments_10s": 437,
+      "role": "initial",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4060.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+      "T_eval": 4362.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S2_D01009_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "1b9fd06cd127d726594aa85bfc5b55bb0c01292c8a755e4e4d92d00b6ffaf94a",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "ee8229a832d44166008142e74087e01cf3fb11c166de7c05984f541221e6de8a"
+      },
+      "T_fcst_s": 4060.0,
+      "control_update_grid": {
+        "last_update_s": 4360.0,
+        "n_updates": 437,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "n_differentiated_updates": 377,
+      "n_segments_10s": 437,
+      "role": "initial",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 4060.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+      "T_eval": 4094.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S3_D02008_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "40a2e5fca285424f6c80e2389789ce13f53129856cd4833e5c24deea2e98a241",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "6a7ff4993ec29a36f94f18938e4abab6ef1d0635dd678ccafcbcf52885c1d31e"
+      },
+      "T_fcst_s": 3790.0,
+      "control_update_grid": {
+        "last_update_s": 4090.0,
+        "n_updates": 410,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 4.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "n_differentiated_updates": 350,
+      "n_segments_10s": 410,
+      "role": "initial",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3790.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+      "T_eval": 4094.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S3_D02008_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "5a74264dbe080e5df9b2703f69b44af51b6c42ffb46b4f8f01e5d1bb06f8da77",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "bc640d45fb6f1f733d1d283d700703bdeac0f6fad5cde433beef976fd6e9367c"
+      },
+      "T_fcst_s": 3790.0,
+      "control_update_grid": {
+        "last_update_s": 4090.0,
+        "n_updates": 410,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 4.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "n_differentiated_updates": 350,
+      "n_segments_10s": 410,
+      "role": "initial",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3790.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+      "T_eval": 4094.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S3_D02008_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "b767c84f01e824e83e7725545b34c2abe3efb4a296eb2cb3102069e22345fa9f",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "9bf375df0fded3aa7e4330c27b1a624744fead63d8d674d15681504a662fd124"
+      },
+      "T_fcst_s": 3790.0,
+      "control_update_grid": {
+        "last_update_s": 4090.0,
+        "n_updates": 410,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 4.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "n_differentiated_updates": 350,
+      "n_segments_10s": 410,
+      "role": "initial",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3790.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+      "T_eval": 4094.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S3_D02008_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "55a428f7d8f9045edfdb5beb66a07cc73733b90c8a643714bf6c6f36150afe20",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "fc56ed4fd883716844450275007f7365eaec113648481ce11ff9d0fef547a65f"
+      },
+      "T_fcst_s": 3790.0,
+      "control_update_grid": {
+        "last_update_s": 4090.0,
+        "n_updates": 410,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 4.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "n_differentiated_updates": 350,
+      "n_segments_10s": 410,
+      "role": "initial",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3790.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+      "T_eval": 3335.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S4_D03011_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "97c727554fb270147cc4456a74ec24501f53f8c556858250a20a9e983b15ce75",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "d44589f58110de6aa14f5c3baea784ea4e3c12a53b313523b59b85b4225a3eab"
+      },
+      "T_fcst_s": 3030.0,
+      "control_update_grid": {
+        "last_update_s": 3330.0,
+        "n_updates": 334,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 5.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "n_differentiated_updates": 274,
+      "n_segments_10s": 334,
+      "role": "reserve",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3030.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+      "T_eval": 3335.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S4_D03011_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "b5b59282e26ad40e12bef2d0baf161576c08e764226460976ce2c9e806d8c0df",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "a86168e49990b525bc963556fb09281496781e689e6b8c0e4b0b58dc754aaa4b"
+      },
+      "T_fcst_s": 3030.0,
+      "control_update_grid": {
+        "last_update_s": 3330.0,
+        "n_updates": 334,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 5.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "n_differentiated_updates": 274,
+      "n_segments_10s": 334,
+      "role": "reserve",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3030.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+      "T_eval": 3335.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S4_D03011_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "f4fd18dd30e9a18bc78488f23cad83dbfb788163ed594e43e9bb56b7cc51e93f",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "92e37d3ce69c48e7be3931b18b6c0ffabb3688d87c7438f75ac9b73727f84fbb"
+      },
+      "T_fcst_s": 3030.0,
+      "control_update_grid": {
+        "last_update_s": 3330.0,
+        "n_updates": 334,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 5.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "n_differentiated_updates": 274,
+      "n_segments_10s": 334,
+      "role": "reserve",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3030.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+      "T_eval": 3335.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S4_D03011_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "71fcfa9cb7d7067cb2763bc6be61e606122991145457634ea6f3bf617902f8ab",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "88f746b7a09e89d52f16339e98a3a58851673a6564e8645c4b9bd3a9c7924847"
+      },
+      "T_fcst_s": 3030.0,
+      "control_update_grid": {
+        "last_update_s": 3330.0,
+        "n_updates": 334,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 5.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "n_differentiated_updates": 274,
+      "n_segments_10s": 334,
+      "role": "reserve",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3030.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+      "T_eval": 3531.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04001_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "7c5ed062c6543b4767cc4dd8be210f933dd94921c7d28ae74829408631987844",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "df7f3235aa564c12f4bb429c2476379e0a4c820d5d8a86444dc14531a108b95d"
+      },
+      "T_fcst_s": 3230.0,
+      "control_update_grid": {
+        "last_update_s": 3530.0,
+        "n_updates": 354,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 1.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "n_differentiated_updates": 294,
+      "n_segments_10s": 354,
+      "role": "reserve",
+      "split_group_id": "SG#95ab26745e67b295",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3230.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+      "T_eval": 3531.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04001_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "32fb4b23eac373d374725164c97eed566f101bf7ed00e1228d98749c86dcf080",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "a8cfed2f2445000920343841d3fe8cf92d78faab482b2cc6e5af4286c96bb9c8"
+      },
+      "T_fcst_s": 3230.0,
+      "control_update_grid": {
+        "last_update_s": 3530.0,
+        "n_updates": 354,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 1.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "n_differentiated_updates": 294,
+      "n_segments_10s": 354,
+      "role": "reserve",
+      "split_group_id": "SG#95ab26745e67b295",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3230.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+      "T_eval": 3531.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04001_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "18b4a1bbd1cd35aa58621848e43274ae7444a97e9efb317e91430dd930dccd9e",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "53f3b8ef0415f19451412623f8b9f2a3587b25b3a1be8791c148986b8716dc0a"
+      },
+      "T_fcst_s": 3230.0,
+      "control_update_grid": {
+        "last_update_s": 3530.0,
+        "n_updates": 354,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 1.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "n_differentiated_updates": 294,
+      "n_segments_10s": 354,
+      "role": "reserve",
+      "split_group_id": "SG#95ab26745e67b295",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3230.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+      "T_eval": 3531.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04001_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "faead5845de10f3bf660c3a5a01016e61f1e017df49b38f830cef684714fe0c7",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "f6973346c162c392f806a1ce91cffbf953f62bea52962c69ca14e8962c5fc8f5"
+      },
+      "T_fcst_s": 3230.0,
+      "control_update_grid": {
+        "last_update_s": 3530.0,
+        "n_updates": 354,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 1.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "n_differentiated_updates": 294,
+      "n_segments_10s": 354,
+      "role": "reserve",
+      "split_group_id": "SG#95ab26745e67b295",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3230.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+      "T_eval": 3662.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04005_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "0619e7cd37769b55477e9d7d29f4ae50bafeef7d3a42e3c0220a0bbfeda8f5b6",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "8f26c3a5f6b501ecebc9639b2873bdbba991c7b190cc0053b39e6cafd6b14f1e"
+      },
+      "T_fcst_s": 3360.0,
+      "control_update_grid": {
+        "last_update_s": 3660.0,
+        "n_updates": 367,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "n_differentiated_updates": 307,
+      "n_segments_10s": 367,
+      "role": "initial",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3360.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+      "T_eval": 3662.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04005_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "4a70bf32fbcc0af57690509d45512abd481f4b619aec940326647675797e1cff",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "5811e7579274cb2fc0bf686fa056b79f94fee86389a9cf2a3a44a2230dd81f23"
+      },
+      "T_fcst_s": 3360.0,
+      "control_update_grid": {
+        "last_update_s": 3660.0,
+        "n_updates": 367,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "n_differentiated_updates": 307,
+      "n_segments_10s": 367,
+      "role": "initial",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3360.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+      "T_eval": 3662.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04005_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "4183e945e7e64beef297182414334049af8911c43c38712d5be00b3c1171755e",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "9a661bf5ae5172afcab617422d16e2d57036778699ce5b60314b4f4cedaa6f01"
+      },
+      "T_fcst_s": 3360.0,
+      "control_update_grid": {
+        "last_update_s": 3660.0,
+        "n_updates": 367,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "n_differentiated_updates": 307,
+      "n_segments_10s": 367,
+      "role": "initial",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3360.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+      "T_eval": 3662.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S5_D04005_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "0d9a17441de1f722c526464946c12e7216ea0ee2cfe5e6a1da19dc742b71973d",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "5d895698542850bb60503f3d66093e540c65b0d42b932363c1d80a1da469051b"
+      },
+      "T_fcst_s": 3360.0,
+      "control_update_grid": {
+        "last_update_s": 3660.0,
+        "n_updates": 367,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 2.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "n_differentiated_updates": 307,
+      "n_segments_10s": 367,
+      "role": "initial",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3360.0,
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+      "T_eval": 3757.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05002_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "ffd513c8e60d4e83484210f83b7c0461d0d03602283cb1957ae352b5d0e4a869",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "0cc16b6fa95cafdeedd5fb8fbcb5b83d3d661356e3ca8489013197189632ea6d"
+      },
+      "T_fcst_s": 3450.0,
+      "control_update_grid": {
+        "last_update_s": 3750.0,
+        "n_updates": 376,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 7.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "n_differentiated_updates": 316,
+      "n_segments_10s": 376,
+      "role": "initial",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3450.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "T_eval": 3757.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05002_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "726cffcd4db1d9137bfd854c940c71afe064f4b660810e9366e509be7ce81e0d",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "9f6541fb10c9b9fd4015fb8b7f1482124d23db91d903f2bbe78966c2547bbdcc"
+      },
+      "T_fcst_s": 3450.0,
+      "control_update_grid": {
+        "last_update_s": 3750.0,
+        "n_updates": 376,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 7.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "n_differentiated_updates": 316,
+      "n_segments_10s": 376,
+      "role": "initial",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3450.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+      "T_eval": 3757.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05002_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "190636c07a187377be49bdbd87b1cf3d6f25632ab80f940a855b3e1fcfd6960e",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "35edc5e0175faff3911f896e2d872c11e69a7332d997823e1aae0d37f33ee0bc"
+      },
+      "T_fcst_s": 3450.0,
+      "control_update_grid": {
+        "last_update_s": 3750.0,
+        "n_updates": 376,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 7.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "n_differentiated_updates": 316,
+      "n_segments_10s": 376,
+      "role": "initial",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3450.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+      "T_eval": 3757.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05002_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "a98bc382fa1e4cd68520659deb00c00f34e0f2dee5bc724b5d82ac3104925fe9",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "2c7f2bee76bbec1f9e086705501cbdb05e100b25bb0419a0d5f497f929cb6448"
+      },
+      "T_fcst_s": 3450.0,
+      "control_update_grid": {
+        "last_update_s": 3750.0,
+        "n_updates": 376,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 7.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "n_differentiated_updates": 316,
+      "n_segments_10s": 376,
+      "role": "initial",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3450.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+      "T_eval": 3940.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05004_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "65287f85c296613ed7631d690149669e17655be01ab6071189667d2d5be3e25c",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "a35cc8c4f068407626b687bf3561cff78e4ae45e4900e0c48cd3bdb99f54ea93"
+      },
+      "T_fcst_s": 3640.0,
+      "control_update_grid": {
+        "last_update_s": 3930.0,
+        "n_updates": 394,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 0.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "n_differentiated_updates": 335,
+      "n_segments_10s": 394,
+      "role": "initial",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3640.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+      "T_eval": 3940.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05004_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "6398c339cd6a07657e9d8af11e25acc3f49e1996a65624f489c4faaf5d3b281c",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "895070b8d22a5f159936997b1667920a5ca9810423e99a903869deb4ccac0f7e"
+      },
+      "T_fcst_s": 3640.0,
+      "control_update_grid": {
+        "last_update_s": 3930.0,
+        "n_updates": 394,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 0.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "n_differentiated_updates": 335,
+      "n_segments_10s": 394,
+      "role": "initial",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3640.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+      "T_eval": 3940.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05004_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "6c6a650162087183193144a6913c1f8a4ac888de5e83c5ac49f1aa59ba9901af",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "80f54e43b5bf8602252785966e42d8be38cdf94588f211255672b6d0579bb2ba"
+      },
+      "T_fcst_s": 3640.0,
+      "control_update_grid": {
+        "last_update_s": 3930.0,
+        "n_updates": 394,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 0.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "n_differentiated_updates": 335,
+      "n_segments_10s": 394,
+      "role": "initial",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3640.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+      "T_eval": 3940.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05004_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "66c9cd089131be50e2ff52b5218dc66b507c973dad1de3bfd5e86674196e4014",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "bbfd886c09fec8f96c54ebe862419ed946e99608d5dd97cd65e8490d663bb634"
+      },
+      "T_fcst_s": 3640.0,
+      "control_update_grid": {
+        "last_update_s": 3930.0,
+        "n_updates": 394,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 0.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "n_differentiated_updates": 335,
+      "n_segments_10s": 394,
+      "role": "initial",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3640.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+      "T_eval": 3906.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05011_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "8638d96ecfb17dd288f91ae1881346dcf154081eda0c9c7b6082af49271112a7",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "fe0f02113a96295b1b25cf9e0f6aa1c51f19a2a13d97537a27179f8df8eebcb4"
+      },
+      "T_fcst_s": 3600.0,
+      "control_update_grid": {
+        "last_update_s": 3900.0,
+        "n_updates": 391,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "n_differentiated_updates": 331,
+      "n_segments_10s": 391,
+      "role": "initial",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3600.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+      "T_eval": 3906.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05011_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "e49c09d2f037a52945ee1d7e5fef3aa2f3cde5837b7835faeb5ae8a7c10ec85b",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "adc533dc6ce1f9408cbd890c430cdbe9f5b8a109f6b67fe50e299ebd7e0294ea"
+      },
+      "T_fcst_s": 3600.0,
+      "control_update_grid": {
+        "last_update_s": 3900.0,
+        "n_updates": 391,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "n_differentiated_updates": 331,
+      "n_segments_10s": 391,
+      "role": "initial",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3600.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+      "T_eval": 3906.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05011_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "9ed605645541d3418b5ad5ee38d2ecfcae19e332cbbd9de54961c5a536bf22e4",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "73dac20f4d39483df4a48545a6fec9ae26e16d4460bbddd4175dc62302f8c9ed"
+      },
+      "T_fcst_s": 3600.0,
+      "control_update_grid": {
+        "last_update_s": 3900.0,
+        "n_updates": 391,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "n_differentiated_updates": 331,
+      "n_segments_10s": 391,
+      "role": "initial",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3600.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+      "T_eval": 3906.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S6_D05011_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "e99a0481f3de2c681d3250e7cc71583ca56062650633053ed3fee626edf1ca7f",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "73c8903bf23aef385dbc258aa7845fdf1f081f75257e454af60a1eb9b4e2f370"
+      },
+      "T_fcst_s": 3600.0,
+      "control_update_grid": {
+        "last_update_s": 3900.0,
+        "n_updates": 391,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "n_differentiated_updates": 331,
+      "n_segments_10s": 391,
+      "role": "initial",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3600.0,
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+      "T_eval": 4259.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06000_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "50f7c63ea5db0631357708ce85423946670c1ac5c8aa799c71bb09151f201d89",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "197de33b19e9c6a492e907e6e392709523efdbd4d83d1c3cf1f31df63b31e87e"
+      },
+      "T_fcst_s": 3950.0,
+      "control_update_grid": {
+        "last_update_s": 4250.0,
+        "n_updates": 426,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 9.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "n_differentiated_updates": 366,
+      "n_segments_10s": 426,
+      "role": "initial",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3950.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+      "T_eval": 4259.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06000_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "63b32f64fb31c4822b787359f143e1df8ad9abd268333506f8dc3a11fdf836f2",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "38640896157baa4b010c9efd4fe46bf4aada30e5157b6b90b2f9a289f76dd318"
+      },
+      "T_fcst_s": 3950.0,
+      "control_update_grid": {
+        "last_update_s": 4250.0,
+        "n_updates": 426,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 9.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "n_differentiated_updates": 366,
+      "n_segments_10s": 426,
+      "role": "initial",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3950.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+      "T_eval": 4259.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06000_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "1156c4fa55a838d68402eda5883689bba6044c0601f2120f602c76d718adaacd",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "41f731d5e86aed93867c7711e0b7bd0e26987d100809b8d5ab60bf0ba4e80fa7"
+      },
+      "T_fcst_s": 3950.0,
+      "control_update_grid": {
+        "last_update_s": 4250.0,
+        "n_updates": 426,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 9.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "n_differentiated_updates": 366,
+      "n_segments_10s": 426,
+      "role": "initial",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3950.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+      "T_eval": 4259.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06000_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "d07d03666aacfb7ba6bea599252395d10c12061abd3a1f70b8fc17e5ef6fdf8f",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "47aac29a52970d4b246145539e81e6b19485422d4ba311459d3e9b771eebd1fb"
+      },
+      "T_fcst_s": 3950.0,
+      "control_update_grid": {
+        "last_update_s": 4250.0,
+        "n_updates": 426,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 9.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "n_differentiated_updates": 366,
+      "n_segments_10s": 426,
+      "role": "initial",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3950.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+      "T_eval": 3436.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06015_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "d5eabfdfec3021a52f1568be93df74674132a59332b9ccd1b1a271d4d454464f",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "48ded08dcaba47b2d2021ee563e23234f621c81ae9184e99061a81a4235bde44"
+      },
+      "T_fcst_s": 3130.0,
+      "control_update_grid": {
+        "last_update_s": 3430.0,
+        "n_updates": 344,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "n_differentiated_updates": 284,
+      "n_segments_10s": 344,
+      "role": "reserve",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3130.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+      "T_eval": 3436.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06015_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "c9457f187610c7d42866aeb719ff75af6f59577b3c2dc9b9a599196edcbc6a97",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "7974381e6b96bfa800fb9ce10fb7ef17008ab20a8cea514634566cf8e0f691f7"
+      },
+      "T_fcst_s": 3130.0,
+      "control_update_grid": {
+        "last_update_s": 3430.0,
+        "n_updates": 344,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "n_differentiated_updates": 284,
+      "n_segments_10s": 344,
+      "role": "reserve",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3130.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+      "T_eval": 3436.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06015_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "84addf5091969c536e9d98bd8be861e4b9daf70483a02814b18d775582cca793",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "7e19ca5b831fa8f2ee12936beb92e35ae6a5cf53ee31ed263e8912a316fe5972"
+      },
+      "T_fcst_s": 3130.0,
+      "control_update_grid": {
+        "last_update_s": 3430.0,
+        "n_updates": 344,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "n_differentiated_updates": 284,
+      "n_segments_10s": 344,
+      "role": "reserve",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3130.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+      "T_eval": 3436.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S7_D06015_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "9924c1f49bb73b0995990d7249b55e4f46a21631ac2477405ed47469608fcad4",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "e186384e112774213a36fb55517e6212038990e877589856b3a9f400057da9e3"
+      },
+      "T_fcst_s": 3130.0,
+      "control_update_grid": {
+        "last_update_s": 3430.0,
+        "n_updates": 344,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "n_differentiated_updates": 284,
+      "n_segments_10s": 344,
+      "role": "reserve",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3130.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+      "T_eval": 3976.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S8_D07009_M1.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "bee3dd7b037d8da1d6e7ed56fb1ce675cb9fe13f71235ef11afc368194cce119",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "2af76dccedd41b9687145a96b8f6329a7f2d21e066998539861bc80e397ca6e5"
+      },
+      "T_fcst_s": 3670.0,
+      "control_update_grid": {
+        "last_update_s": 3970.0,
+        "n_updates": 398,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "n_differentiated_updates": 338,
+      "n_segments_10s": 398,
+      "role": "initial",
+      "split_group_id": "SG#0877af60295de774",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3670.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+      "T_eval": 3976.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S8_D07009_M2.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "97a58638d2d6fe496e8792a413c4dfe17d0caa961425ba417dc29ec5fc3968c1",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "d9c478ea7efc775d21b21ce98e3c370d1fffabdb865d8892617d1fa952160808"
+      },
+      "T_fcst_s": 3670.0,
+      "control_update_grid": {
+        "last_update_s": 3970.0,
+        "n_updates": 398,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "n_differentiated_updates": 338,
+      "n_segments_10s": 398,
+      "role": "initial",
+      "split_group_id": "SG#0877af60295de774",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3670.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+      "T_eval": 3976.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S8_D07009_M3.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "e76702e2948f6610d10b9f883f675572525eb1046eeaf0b9138f71e96003651a",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "feab105e721a4bb7e581bc2724054bd3dccdf7400b785d2d82daa543cbcb34e4"
+      },
+      "T_fcst_s": 3670.0,
+      "control_update_grid": {
+        "last_update_s": 3970.0,
+        "n_updates": 398,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "n_differentiated_updates": 338,
+      "n_segments_10s": 398,
+      "role": "initial",
+      "split_group_id": "SG#0877af60295de774",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3670.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+      "T_eval": 3976.0,
+      "T_eval_provenance": {
+        "artifact": "datasets_v3/formal/iid/FLTA_S8_D07009_M4.mat",
+        "artifact_identity_source": "pass2_iid_ledger (retained canonical copy; two-run payload-identical)",
+        "artifact_sha256": "578f1b0708f1b0bc5c0319faef24fd6d3227f5e327b5304608b3aa8860d859bc",
+        "derivation": "floor(stream.time_s[-1]) == t_1hz[-1] (dataset_v3.run_formal_freeze aggregation edges)",
+        "derivation_code": "python/ppe/teval.py + dataset_v3/windowing.py",
+        "selection_lineage_sha256": "96d3ae54a509a36029e297d65c394608ce82efd37f8fdd2f6f1be48ce0ae6c2d"
+      },
+      "T_fcst_s": 3670.0,
+      "control_update_grid": {
+        "last_update_s": 3970.0,
+        "n_updates": 398,
+        "start_s": 0.0,
+        "step_s": 10.0
+      },
+      "differentiation_boundary_s": 300.0,
+      "final_partial_bin_s": 6.0,
+      "first_anchor_s": 300.0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "n_differentiated_updates": 338,
+      "n_segments_10s": 398,
+      "role": "initial",
+      "split_group_id": "SG#0877af60295de774",
+      "t_start": 0.0,
+      "target_exhaustion_boundary_s": 3670.0,
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M4"
+    }
+  ],
+  "warmup_s": 300.0
+}

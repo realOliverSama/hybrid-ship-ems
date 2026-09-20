@@ -1,0 +1,57 @@
+{
+ "diagnostics": {
+  "E_unserved_1hz_crosscheck_kWh": 0.0,
+  "E_unserved_kWh": 0.0,
+  "derate08_active_s_1hz": 0.0,
+  "tracking_gap_kWh_1hz": 0.35573961793640957
+ },
+ "fc3_checker_sha": "8b5e6b4928f3292221574cf6452ff9b04b8b70daec8c0bb80579ad0d8e8832d6",
+ "fc3_replay_freeze_root": "58b2b8ff6cd5c0a567449816ebd9be586f80b0b64c67202c870af7c1cc0852b3",
+ "fc3_replay_tool_sha": "113b9901fed17b08bb9a86d45ad02cf016ff35bf857d7f8cf9523bcbafca3af2",
+ "genset_diagnostics": {
+  "loading_registered_transition_samples": 2094,
+  "non_on_power_violation": false,
+  "pmax_violation": false,
+  "pmin_envelope_violation_samples": 0,
+  "pmin_violation_episodes": [],
+  "pmin_worst_excursion_kW": 0.0,
+  "ramp_violation_native": false
+ },
+ "original_audit_sha": "08c138b108fd60d7956fa7027b24a661d9e96a7e4ce0b8ac16c8e52a1b387000",
+ "original_checker_sha": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+ "original_epoch2_freeze_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+ "original_run_id": "6e13f0f25016ea2e",
+ "original_terminal_status": "COMPLETE_HARD_INFEASIBLE",
+ "original_trajectory_sha": "cdc5f3d286c3ec5a6eca979825d0279132ff20a2b9675d07ff2d0d7c8053c6c8",
+ "predicate_items": {
+  "battery_sop_v_i": true,
+  "energy_closure_c5": true,
+  "genset_limits_fc3": true,
+  "safety_hard_events": true,
+  "service_curtailment": false,
+  "soc_hard_bounds": true,
+  "task_complete": true,
+  "terminal_soc_band": true,
+  "terminal_sop_reserve": true
+ },
+ "predicate_provenance": {
+  "battery_sop_v_i": "RECOMPUTED_NATIVE_AUDIT(V,I)+RECOMPUTED_1HZ(P-over-SOP)",
+  "energy_closure_c5": "INHERITED_V2_RECORDED",
+  "genset_limits_fc3": "RECOMPUTED_1HZ(PMIN envelope+PMAX+non-ON)+RECOMPUTED_NATIVE_AUDIT(ramp)",
+  "safety_hard_events": "INHERITED_V2_RECORDED",
+  "service_curtailment": "RECOMPUTED_1HZ(recorded-native-integral)",
+  "soc_hard_bounds": "RECOMPUTED_1HZ",
+  "task_complete": "RECOMPUTED_1HZ",
+  "terminal_soc_band": "RECOMPUTED_1HZ",
+  "terminal_sop_reserve": "RECOMPUTED_1HZ"
+ },
+ "readjudicated_status": "READJUDICATED_HARD_INFEASIBLE",
+ "replay_identity": {
+  "freeze_root": "58b2b8ff6cd5c0a567449816ebd9be586f80b0b64c67202c870af7c1cc0852b3",
+  "input_view_schema_sha": "b2f9908f7805347735be8df3d63aa380c30b6a72f4b8966d763f640380279828",
+  "tool": "ppe.fc3_replay",
+  "tool_sha": "113b9901fed17b08bb9a86d45ad02cf016ff35bf857d7f8cf9523bcbafca3af2"
+ },
+ "sanitized_view_sha": "5bcfbf776862c7d15826fd2b379f266066a5552c3abd5c54219f5bbe0ad2443d",
+ "schema": "fc3_replay_artifact_v1"
+}

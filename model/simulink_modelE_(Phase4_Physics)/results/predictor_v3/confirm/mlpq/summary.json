@@ -1,0 +1,39 @@
+{
+  "aggregate": {
+    "max": 17.653644325947592,
+    "mean": 17.451627858026686,
+    "median": 17.435151667192617,
+    "min": 17.266087580939853,
+    "std": 0.15864773619258685
+  },
+  "artifact_sha256": "18cdfce682230f5a906f62f3b51b0567a3d5100762ff2068082f0095397da188",
+  "artifacts": [
+    {
+      "artifact_sha256": "f138e453aed43c91707744d302e92feebe37ba83ba47dadd639368a5521f4172",
+      "seed_index": 0
+    },
+    {
+      "artifact_sha256": "d6ddbf98cd4cac9e94f9ba2c1cf6c45600ac7b5fe685db122a4e3c15cf865780",
+      "seed_index": 1
+    },
+    {
+      "artifact_sha256": "b4b73a12273575e22a1e7aea8f8a94d78f0f34ca7d192419c784a2cee6d91408",
+      "seed_index": 2
+    }
+  ],
+  "config_sha256": "f9f68f210bdf2d177c9faae3c8055481f0e6a1810d87521b982f126d50903771",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_key": "mlpq",
+  "per_seed_pinball_sgmacro": {
+    "0": 17.266087580939853,
+    "1": 17.435151667192617,
+    "2": 17.653644325947592
+  },
+  "schema": "predictor_v3_confirm_summary_v1",
+  "seed_indices": [
+    0,
+    1,
+    2
+  ]
+}

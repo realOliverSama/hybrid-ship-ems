@@ -1,0 +1,49 @@
+{
+ "chain": [
+  {
+   "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json",
+   "replacement_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze.json",
+   "superseded_root": "7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47"
+  },
+  {
+   "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json",
+   "replacement_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_d49767a2.json",
+   "superseded_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+  },
+  {
+   "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+   "replacement_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_3b75e4b8.json",
+   "superseded_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
+  },
+  {
+   "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+   "replacement_root": "SUPERSEDED_BY_AUDIT_COMPLETION_REGENERATION",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+   "superseded_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
+  },
+  {
+   "reason": "ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2",
+   "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+   "replacement_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+   "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+   "superseded_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
+  }
+ ],
+ "disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
+ "disposition_subtype": "SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_BEFORE_ACCEPTED_RESULT",
+ "note": "all superseded freeze bytes preserved untouched; epoch-2 result-bearing runs remained 0 across the whole chain",
+ "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+ "replacement_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+ "replacement_freeze_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+ "schema": "ppe_epoch2_freeze_supersession_v2",
+ "superseded_artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.SUPERSEDED_1a2a0a78.json",
+ "superseded_freeze_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+ "utc": "2026-09-17T12:13:51Z"
+}

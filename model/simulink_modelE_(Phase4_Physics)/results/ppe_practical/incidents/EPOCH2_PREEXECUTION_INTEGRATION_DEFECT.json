@@ -1,0 +1,79 @@
+{
+ "NO_FORMAL_SCIENTIFIC_OUTPUT_CONTAMINATION": true,
+ "classification": {
+  "creates_formal_epoch3": false,
+  "is_epoch2_scientific_failure": false,
+  "is_formal_result_invalidation": false,
+  "rationale": "epoch-2 result-bearing run count is zero; the approved scientific contract is implemented prospectively under formal_epoch=2 per recovery authorization"
+ },
+ "contamination_verification": {
+  "conclusion": "zero epoch-2 result-bearing terminal or trajectory output exists on either host; epoch-1 evidence untouched",
+  "epoch2_output_namespace_exists": false,
+  "local_formal_terminal_like_jsons": 254,
+  "local_jsons_carrying_trajectory_sha256": 0,
+  "local_jsons_referencing_epoch2": 0,
+  "method": "full-text scan of every formal terminal/parity JSON for 'epoch2' references and 'trajectory_sha256' fields; namespace listing for any epoch-2 output directory",
+  "server_files_referencing_epoch2": 0,
+  "server_formal_jsons": 260
+ },
+ "defects_found": [
+  {
+   "artifact": "scripts/+ppe/run_formal_voyage.m",
+   "defect": "rec.formal_epoch hardcoded to 1; runner bound epoch-1 freeze package, epoch-1 runner amendment, and epoch-1 output namespace; no epoch-2 execution path existed",
+   "id": "D1"
+  },
+  {
+   "artifact": "scripts/+ppe/run_formal_voyage_pack.m",
+   "defect": "idempotent skip compared records against epoch-1 freeze_sha256 only, so epoch-1 terminal records would classify all 192 epoch-2 arms as complete (silent no-op)",
+   "id": "D2"
+  },
+  {
+   "artifact": "scripts/+ppe/run_formal_voyage.m",
+   "defect": "trajectory_sha256 assigned before traj_sha definition (use-before-assignment); any arm reaching record assembly would error after simulation and before writing the terminal record",
+   "id": "D3"
+  },
+  {
+   "artifact": "scripts/+ppe/feasibility_contract_v2.m wiring",
+   "defect": "checker v2 existed but was not connected to the formal evaluation path; t445.hard_feasibility would have remained the epoch-2 classification path",
+   "id": "D4"
+  },
+  {
+   "artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze.json",
+   "defect": "T-A7 freeze (sha256_self 7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47) bound runner_integrated_sha256 = 3a04fa360492465838f4f738e868e4565504e18ec74b810b6bfdd17942bf5f41, i.e. the exact defective run_formal_voyage.m bytes",
+   "id": "D5"
+  },
+  {
+   "artifact": "scripts/+ppe/write_traj_v1.m",
+   "defect": "trajectory channel list deviated from approved design FC-5 25-channel list (P_prop_limit_kW present, derived safety_hard_count absent)",
+   "id": "D6"
+  }
+ ],
+ "detected_by": "epoch-2 takeover audit (PE3-1 pre-launch code/binding verification, before any sync or worker launch)",
+ "disposition_of_defective_freeze": {
+  "artifact": "results/ppe_practical/freeze/epoch2_pre_execution_freeze.json",
+  "execution_disposition": "SUPERSEDED_BEFORE_FORMAL_EXECUTION",
+  "preserved": true,
+  "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+  "supersession_marker": "results/ppe_practical/freeze/epoch2_freeze_supersession.json"
+ },
+ "epoch2_result_bearing_runs_before_detection": 0,
+ "formal_epoch": 2,
+ "incident_type": "EPOCH2_PREEXECUTION_INTEGRATION_DEFECT",
+ "recovery_authorization": {
+  "authorized_by": "human (epoch-2 takeover decision, OPTION 1)",
+  "scope": [
+   "complete T-A5 integration",
+   "fix runner defects",
+   "rerun affected nonformal qualification",
+   "add E2E runner integration qualification",
+   "regenerate/re-sign T-A7",
+   "rerun PE3-1 against new freeze",
+   "STOP for human Epoch-2 Pre-Execution Gate"
+  ],
+  "t_a8": "REMAINS BLOCKED"
+ },
+ "schema": "PPE_PREEXECUTION_INCIDENT_V1",
+ "sha256_self": "df6913d5836677da72709f15859a103f9f8632f57ac5f60d828ebbec49f01779",
+ "study": "phase4f-practical-predictive-ems",
+ "utc_detected": "2026-09-17T05:05:00Z"
+}

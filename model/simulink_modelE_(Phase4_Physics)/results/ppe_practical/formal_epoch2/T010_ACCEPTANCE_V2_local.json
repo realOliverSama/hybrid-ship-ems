@@ -1,0 +1,27 @@
+{
+ "checks": {
+  "formal_dir": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal_epoch2",
+  "freeze_root_sha256": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+  "n_expected_identities": 192,
+  "n_found_terminals": 192,
+  "n_problems": 0,
+  "n_warmup_parity_pass": 48,
+  "production_manifest": true,
+  "terminal_status_histogram": {
+   "COMPLETE_HARD_INFEASIBLE": 192
+  }
+ },
+ "formal_epoch": 2,
+ "freeze_root_sha256": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+ "n_expected_identities": 192,
+ "n_found_terminals": 192,
+ "n_warmup_parity_pass": 48,
+ "pass": true,
+ "problems": [],
+ "schema": "ppe_epoch2_acceptance_v2",
+ "study": "phase4f-practical-predictive-ems",
+ "terminal_status_histogram": {
+  "COMPLETE_HARD_INFEASIBLE": 192
+ },
+ "utc": "2026-09-18T03:27:49Z"
+}

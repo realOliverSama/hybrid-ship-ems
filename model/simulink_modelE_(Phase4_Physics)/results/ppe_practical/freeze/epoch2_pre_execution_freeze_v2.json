@@ -1,0 +1,205 @@
+{
+ "bindings": {
+  "EXECUTION_CODE_COMMIT_SHA": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
+  "FREEZE_PACKAGE_HEAD_SHA": "cb281299fd0e5f8488a60d8e6d2f270e98708d02",
+  "acceptance_v2_sha256": "6e663872ee200242dbec368d0fa88b043adc4289e79e2ecb57fbe694cdca3f33",
+  "access_ledger_file_sha256": "fc50e0a5f605f2bf293d50a5c7132c6a7883e20be449768ff346b97334088f39",
+  "amendment_design_doc_sha256": "5808a4a8d930b2a3824072581feaddc613392e6f814de64c8913f6cadb6b8f08",
+  "amendment_doc_sha256": "8c5a0d8c6eddb6de89bfe3ffe5028b8a45227f92470ec5244a2f3e2a880f965b",
+  "amendment_v2_qual_artifact_sha256": "c062c59a04a163504b9d6bbb777710987061c590b807e4e8a88c63b14e7da661",
+  "audit_writer_sha256": "f72e07c6b54c6158a8d5c99ddf9973999aaeb833669bc954ed2a01867edbe25d",
+  "c1_coverage_file_sha256": "ef16982e41d1b09323afe6b3811e18fa5ba61d380452cb8a4769291a9a2fe675",
+  "c1_target_index_file_sha256": "4309b617f9d06b8bdb563e0d41bd24b11dbd38a90fe20ceeb04e22e13c66cff0",
+  "c2_bridge_amended_sha256": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4",
+  "checker_v2_sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+  "checkpoint_mgr_sha256": "94a178a06280a2f36e1bf6afeecec7c3b4ceb82b2f75ca3f1626409b7fd995ea",
+  "code_commit_sha": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
+  "coherence_gate_artifact_sha256": "b9c4e46ef536f524b68855f5dd34ed245a6426c11d7cdc810ad8b7f2f095895d",
+  "controller_trace_writer_sha256": "c9f62518c9fcf8553f885295fc07116ecf74ebaa8ae0ee2beb5500cb458deb9f",
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "cstar_composite_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "e2e_qual_artifact_sha256": "47d395e6d8a4a14214dc5d90407d6dac40674de0a8b54ebbc5f2e94cf1ffccba",
+  "fec_prereg_artifact_sha256": "d5c9d5f9913901e7a68f2d97b7f71165d09635daaf3ae12d4a995640ee0a0fc8",
+  "formal_assets_file_sha256": "578e6e8b32091f93a97a74a97a387d028e45ad2369dd63a57f8a556d467d8f29",
+  "formal_execution_manifest_file_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "freeze_generator_sha256": "15784943cc1ebb7f2a7a1eef6befe4d532f8bc5ae501e2674e2fd18adfca3a00",
+  "freeze_loader_sha256": "ab0bd3e56248596008b249770bb6da098e3ffaefd4cd92d8d0292412edad6c3f",
+  "hard_feasibility_config_file_sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10",
+  "incident_artifact_sha256": "463fe5250548b3adc75f470351a02c8360e3080ceb162654809e365abf8605d5",
+  "modele_slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "observability_qual_artifact_sha256": "5e8f809bac012c0222bf50df48f782d7fe14c808cdacd98dd80ec9ed00032db2",
+  "output_router_sha256": "6eedeb6bb15e6169b5da4cf18b31463ad8fd14003a5e6e6e10273cf09b119829",
+  "pack_skip_predicate_sha256": "7ff2a44f72196f74c388a1c81c4ef94e906ac6ff35dbe120cfc6a9bd25cb8c24",
+  "predictor": {
+   "architecture_config_sha256": "1d662ff03ed7ca042b731707501d6b254fc35b64ae858431c66745025e544b5d",
+   "eval_config": {
+    "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/eval_config.json",
+    "sha256": "2bf077ba8045486a9d242b99ab842fe96009f0a29570b6dfbf1c1d370eac928a"
+   },
+   "formal_norm_v3": {
+    "path": "simulink_modelE_(Phase4_Physics)/results/dataset_v3/formal/formal_norm_v3.json",
+    "sha256": "b64210bc47a035afe9fd164c65ba63fca84aead53dc7e2dcaada79bd88f065ba"
+   },
+   "keras": {
+    "path": "simulink_modelE_(Phase4_Physics)/experiments/predictor_v3/confirm/reatt/reatt_s0.keras",
+    "sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894"
+   },
+   "predictor_norm_ext_v1": {
+    "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/predictor_norm_ext_v1.json",
+    "sha256": "a1cace1fb6f6eda58ad3be76723663c6a196b98bbc4c2c34c7b537dc4c2fe92c"
+   },
+   "reat_t_arch": {
+    "path": "simulink_modelE_(Phase4_Physics)/config/predictor_v3/reat_t_arch.json",
+    "sha256": "ad5f1bdfbedfee74a739ebe30177d4efddae0df017c6aaa6c08faa92593a7ff0"
+   },
+   "s0_evidence": {
+    "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/confirm/reatt/s0_evidence.json",
+    "sha256": "d8e3c82ddcdc36ced41459fe4b90d685176f297c0f72558e0cf80fdc1f07ab1b"
+   },
+   "seed_index": 0,
+   "seed_int": 1115655093,
+   "selected_config": {
+    "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/candidates/reatt/selected_config.json",
+    "sha256": "fea67b7ff0ce10af619037eade22c678425986af86c405024ebb9a341f163ae4"
+   },
+   "trial_id": "reatt-t018",
+   "winner_identity_sha256": "832720b0b0f39592fdeaa25957c1a61d0f0a1381d7220881e0b9af345eb37aa7",
+   "winner_json": {
+    "path": "simulink_modelE_(Phase4_Physics)/results/predictor_v3/winner/WINNER_SELECTED_PRETERMINAL.json",
+    "sha256": "3a46c848092f35d6da66f8e1dc931653b580547bc3716366f11110679c5c0ebc"
+   }
+  },
+  "reserve_derivation_TA0_sha256": "e318d4d00c8507ae215a2c9b6b5a7b09372a948c71cefc9bc6f14a2dfb06678f",
+  "run_cstar_amended_sha256": "dc0bc0a91709c610ef19123a0030651501911ea8fea8a2863beeb1262a7a9e28",
+  "runner_manifest_sha256": "c7f88e9188668fe87a57bc0fabde95a70b8bd78fa5758076c1687b13d217bf64",
+  "runner_pack_sha256": "a9a1704245b587868ba7171823f9ef09cb499e19912d54141b4d1ff4bbcde2b1",
+  "runner_voyage_sha256": "9b99445812c0dd6f136b57168fcc1a46b8748f28bbd29d99fb7969b7330ba18e",
+  "study_config_file_sha256": "270d58296b77cdd50e3d975c0c499c851d9bbc3826837f2f61b02eb44696871a",
+  "t445_config_file_sha256": "34b68c41a56db23394f32632fdbc04a540cdc1d3181d09ea52c44551a026f820",
+  "terminal_pipeline_sha256": "37f41db90e71ff73a400d47a672b8d2c0590f6f172171141c6e517fa56379d7f",
+  "teval_table_file_sha256": "4ab43018d694285ec6b138172e1c7e7c31022f9bd02fc33e33289447b5c03a34",
+  "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
+  "traj_writer_sha256": "537ca32e82bf7088b69a0bbbf60eecf265a2eef2603ecdd4d8a90b74ee5ae906",
+  "verify_bindings_sha256": "6a188b73b9e5f3b4d643d77f453e4b2378e431d6d0cf862ab77aa4426bd322fb",
+  "winfun_plan_amended_sha256": "7e8d845a30968b546153187af0ff94595a1f6e01b4eea1d13c45471691fdfcdc"
+ },
+ "canonical_reserves": {
+  "E_reserve_chg_kWh": 5.625,
+  "E_reserve_dis_kWh": 6.839,
+  "P_reserve_chg_kW": 819.8,
+  "P_reserve_dis_kW": 543.8,
+  "provenance": "T-A0 dynamic derivation; PE2-1 canonical"
+ },
+ "classification_authority": "ppe.feasibility_contract_v2",
+ "corrections": "Launch-2 (17:02-19:56) exposed EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT: struct() constructor expanded the 1xN forecast-window cell into a struct array; every C* arm crashed at ctrace write after a full simulation (23x2 sims; zero accepted results, zero partial evidence). Fixed by post-construction cell assignment + Q-OBS-21 regression. Prior: FC-5A OBSERVABILITY CONTRACT AMENDMENT (C1-C6): evidence interface split into plant_trajectory_v1 (PLANT_LOGGED + 2 exact qualified derivations P_bat_bus_kW/derate08_active + interlock family; no controller quantities), controller_trace_v1 (delta_lambda/forecast provenance at the 10 s decision cadence, RUNNER_DERIVED), high_rate_audit_v1 (unchanged), terminal_record_v2 (binds all artifacts + forecast source identity); resolves EPOCH2_FORMAL_EVIDENCE_INTERFACE_MISMATCH from the first launch (23 attempts / 46 model-completing simulations, zero accepted results); checker v2, C*, Model-E, Predictor-v3, reserves, corpus and manifest byte-identical",
+ "cstar_execution_seed": "phase4f-ppe-formal-epoch1",
+ "cstar_execution_seed_provenance": {
+  "LEGACY_SEED_LABEL_INTENTIONALLY_PRESERVED_FOR_CROSS_EPOCH_DETERMINISM": true,
+  "note": "seed name is historical (epoch-1); the deterministic value is intentionally preserved for fair epoch-1/epoch-2 comparison"
+ },
+ "e_design_events": {
+  "EV1_single_to_dual_transition_plus_load_step": {
+   "class_": "CONTINGENCY",
+   "dg2_delay_s": 30.0,
+   "energy_kWh": 6.839,
+   "initial_dg1_kW": 358.0,
+   "load_level_kW": 902.0,
+   "peak_gap_kW": 543.8,
+   "provenance": "frozen ticks 2500+500@0.01s; corpus P95 worst",
+   "soc_min": 0.8936,
+   "sop_at_min_kW": 1005.3
+  },
+  "EV3_load_rejection": {
+   "class_": "CONTINGENCY",
+   "energy_kWh": 5.625,
+   "load_from_kW": 902.0,
+   "load_to_kW": 82.0,
+   "peak_surplus_kW": 819.8,
+   "provenance": "corpus load valley min; genset ramp-down 20kW/s + P_min clamp",
+   "soc_max": 0.9053,
+   "sop_at_max_kW": 939.7
+  }
+ },
+ "e_design_events_acceptance": {
+  "accepted_at": "Phase 4-F epoch-2 final pre-execution gate (PE4-1 conditional pass)",
+  "scope_note": "accepted for THIS RESEARCH STUDY; EV1 includes frozen STARTING/SYNC delay and generator reachability; EV3 includes frozen generator ramp-down and Pmin behavior; these events do NOT constitute a complete regulatory or classification emergency-power certification envelope",
+  "status": "HUMAN_ACCEPTED_STUDY_LOCAL_CONSERVATIVE_CONTINGENCY_DESIGN_BASIS_EVENTS"
+ },
+ "epoch1_preserved": {
+  "deleted": false,
+  "formal_epoch": 1,
+  "reclassified": false,
+  "rerun": false
+ },
+ "epoch2_result_bearing_runs": 0,
+ "epoch2_scientific_identities": {
+  "P0_role": "UNCHANGED",
+  "bootstrap_seed": "phase4f-t445-bootstrap-v1",
+  "corpus_48_voyages": "UNCHANGED",
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "cstar_composite_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "modele_slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+ },
+ "fec": {
+  "break_even": 0.0933,
+  "k_eq_E": 0.5457,
+  "robustness_band": [
+   0.4366,
+   0.6548
+  ]
+ },
+ "formal_epoch": 2,
+ "genset_root_cause": "checker v2 uses per-unit truth P_DG1_kW/P_DG2_kW with state-aware limits; no equal-split fallback; PMS allocator equal-split by design (D-B6 frozen)",
+ "incident_artifact": "results/ppe_practical/incidents/EPOCH2_PREEXECUTION_INTEGRATION_DEFECT.json",
+ "output_namespace": "results/ppe_practical/formal_epoch2",
+ "qualification": {
+  "amend_v2_pass": true,
+  "coherence_pass": true,
+  "e2e_runner_integration_pass": true,
+  "fec_robust_pass": true,
+  "rerun_rationale": "PE4-1 is metadata/provenance-only; all execution-critical bytes bitwise unchanged",
+  "rerun_required": false
+ },
+ "record_schema": "ppe_formal_arm_voyage_v2",
+ "s_terminal_admissible": {
+  "grid": "SOC=0.25:0.01:0.90",
+  "max": 0.9,
+  "min": 0.25,
+  "n_points": 66,
+  "note": "66-point SOC grid, SOC=0.25:0.01:0.90; all grid points survive EV-1/EV-3 within frozen SOP/hard bounds"
+ },
+ "schema": "ppe_epoch2_pre_execution_freeze_v3",
+ "service_shortfall": {
+  "authoritative": "P_unserved_kW (V_dc undervoltage derate path only)",
+  "dual_diagnostic": "P_service_gap = max(P_prop_demand - P_prop_actual, 0); divergence -> FAIL CLOSED",
+  "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic"
+ },
+ "sha256_self": "7bd62cefa03c6a3f0ed26d5408d57531a67e79c47be3ee5e2827ca6b3693e4b3",
+ "study": "phase4f-practical-predictive-ems",
+ "supersedes_chain": [
+  {
+   "reason": "PREEXECUTION_RUNNER_INTEGRATION_DEFECT",
+   "replacement_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8",
+   "superseded_root": "7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47"
+  },
+  {
+   "reason": "EXECUTION_COMMIT_PROVENANCE_CORRECTION",
+   "replacement_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe",
+   "superseded_root": "d49767a233844aa12efebeba562666a8686710c55219145d4648e92250e4a1b8"
+  },
+  {
+   "reason": "EVIDENCE_INTERFACE_CHANNEL_MISMATCH",
+   "replacement_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+   "superseded_root": "3b75e4b805fe1ac66e621c46869e3b20ef0a61eac267d0157c26714e7200defe"
+  },
+  {
+   "reason": "EVIDENCE_PIPELINE_CTRACE_CONSTRUCTION_DEFECT",
+   "replacement_root": "THIS_DOCUMENT (authoritative root is the freeze-file byte hash, recorded in EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2.json and epoch2_freeze_supersession.json)",
+   "superseded_root": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366"
+  }
+ ],
+ "supersedes_freeze_root_sha256": "1a2a0a789d7d5877f0e34ae1357fb26639981f3865399d7c543b42c62c55b366",
+ "supersedes_reason": "ATTEMPT_AUDIT_RECONSTRUCTION_LAUNCH2",
+ "supersedes_subtype": "SUPERSEDED_AFTER_FORMAL_LAUNCH_ATTEMPT_BEFORE_ACCEPTED_RESULT",
+ "utc": "2026-09-17T12:13:51Z"
+}

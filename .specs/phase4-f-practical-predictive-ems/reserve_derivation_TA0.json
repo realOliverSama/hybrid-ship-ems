@@ -1,0 +1,81 @@
+{
+ "schema": "ppe_t011a_reserve_derivation_TA0_v1",
+ "frozen_params": {
+  "DG_rated": 500.0,
+  "DG_min": 125.0,
+  "ramp_kW_per_s": 20.0,
+  "t_starting_s": 25.0,
+  "t_sync_s": 5.0,
+  "t_cooldown_s": 30.0,
+  "bat_cap_kWh": 1071.36,
+  "conv_kW": 1050.0,
+  "i_surr_a": 1823.0,
+  "soc_hard": [
+   0.1,
+   0.95
+  ],
+  "soc_derate": [
+   0.25,
+   0.9
+  ],
+  "eta_dcdc": 0.97,
+  "ocv_lut": [
+   541.08,
+   578.68,
+   585.99,
+   591.12,
+   592.87,
+   593.42,
+   594.97,
+   600.12,
+   600.55
+  ],
+  "r0_lut": [
+   0.00866,
+   0.00815,
+   0.0077,
+   0.00745,
+   0.00715,
+   0.00702,
+   0.00682,
+   0.00662,
+   0.00632
+  ]
+ },
+ "events": {
+  "EV1_single_to_dual_transition_plus_load_step": {
+   "class_": "CONTINGENCY",
+   "load_level_kW": 902.0,
+   "initial_dg1_kW": 358.0,
+   "dg2_delay_s": 30.0,
+   "provenance": "frozen ticks 2500+500@0.01s; corpus P95 worst",
+   "peak_gap_kW": 543.8,
+   "energy_kWh": 6.839,
+   "soc_min": 0.8936,
+   "sop_at_min_kW": 1005.3
+  },
+  "EV3_load_rejection": {
+   "class_": "CONTINGENCY",
+   "load_from_kW": 902.0,
+   "load_to_kW": 82.0,
+   "provenance": "corpus load valley min; genset ramp-down 20kW/s + P_min clamp",
+   "peak_surplus_kW": 819.8,
+   "energy_kWh": 5.625,
+   "soc_max": 0.9053,
+   "sop_at_max_kW": 939.7
+  }
+ },
+ "derived_reserves": {
+  "P_reserve_dis_kW": 543.8,
+  "E_reserve_dis_kWh": 6.839,
+  "P_reserve_chg_kW": 819.8,
+  "E_reserve_chg_kWh": 5.625
+ },
+ "s_terminal_admissible": {
+  "min": 0.25,
+  "max": 0.9,
+  "n_points": 66,
+  "note": "all SOC in [0.25,0.90] (1 Hz grid) survive EV-1/EV-3 within frozen SOP/hard bounds"
+ },
+ "utc": "2026-09-17T03:58:07Z"
+}

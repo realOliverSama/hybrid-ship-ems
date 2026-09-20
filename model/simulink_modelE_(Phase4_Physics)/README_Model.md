@@ -134,6 +134,12 @@ EMS 复用同一 Commitment/Dispatch/Safety 共享链）。
 一致性已证）；Model E 的角色是**物理可信被控对象 + 真实控制 baseline（P2 臂）**，为 F 包
 预测式 EMS 提供 "environment → physics → load" 因果链基座。
 
+**Phase 4-F T-445（CLOSED `GATE_VALIDITY_FAIL`，2026-09-15）**：不接入任何 NN 预测器。
+B0=law=5，B1=law=6 完美 E300 标量 oracle，B2=同一 law=6 + Δλ 轨迹监督。B2 代理未通过
+冻结 1% 资格化，正式语料未跑，不得声称轨迹 oracle 上限。E 段 winner（REAT-T）只读未消费。
+Amendment C：J_FEC 的 k_eq^E=0.5457 kg/kWh 按标称 SOC kWh（1071.36·ΔSOC）折算，OCV 效率
+0.9687 仅诊断；w_term=1.17e5 与 k_eq 同时冻结。
+
 ## 5. 验证状态
 
 - **T-412 整体物理 Gate against candidate：overall=true**（2026-09-04，B 包 T-012 重跑，

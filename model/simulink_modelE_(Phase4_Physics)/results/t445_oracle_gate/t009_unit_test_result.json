@@ -1,0 +1,16 @@
+{
+  "schema": "t445_t009_evidence_v1",
+  "task": "T-009",
+  "purpose": "SYNTHETIC_SMOKE",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "overall": true,
+  "slx_unchanged": true,
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "oob_query_count": 0,
+  "resume_max_rel_SOC": 0,
+  "resume_pass": true,
+  "identity_seven_fields": true,
+  "n_segments": 4,
+  "n_retry": 0,
+  "utc": "2026-09-15T10:08:18Z"
+}

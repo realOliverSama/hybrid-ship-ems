@@ -1,0 +1,49 @@
+{
+ "common": {
+  "A_delta_lambda": 0.0,
+  "B_delta_lambda": 0.1,
+  "DG_initial_states": "OFF（自然启动）",
+  "EMS_CTRL_LAW": 6,
+  "EMS_health": "nominal",
+  "PMS_SOURCE_MODE": 1,
+  "T_s": 300,
+  "arm": "C0",
+  "current_mps": 0.0,
+  "initial_SOC": 0.6
+ },
+ "interior_proof_offline": "由冻结 law6/策略表离线评估：负荷≈750 kW 时充电可行（< η_rect·Pmax_agg=970 kW）⇒ J(g) 内点在 g≈600–800 取优 ⇒ per-unit 300–400 严格带内；δλ=0.00 与 +0.10 对应不同 λ_eff（0.425 vs 0.525）⇒ 策略表单元不同、动作不同",
+ "mask": "同 h_mask_semantics.json + Stage-2 时间限制（t ≥ 150 s）；掩码独立于 A/B 幅度",
+ "note": "本定义为**唯一**最终夹具；冻结后不因 A/B 运行结果修改",
+ "predictions": {
+  "Pmax_margin_kW": "≥25（per-unit）",
+  "Pmin_margin_kW": "≥175（per-unit）",
+  "stable_comparison_interval_s": "[150, 300]（降载后 LPF 过渡 + H 掩码的机组合闸+20 s 稳定判据）",
+  "stage2_DG_states": "两机 state=3",
+  "stage2_N_dispatch": 2,
+  "stage2_P_gen_ref_EMS_A_kW": "≈600–800（内点，λ≈0.43）",
+  "stage2_P_gen_ref_EMS_B_kW": "≈700–950（λ≈0.53）",
+  "stage2_per_unit_allocator_target_kW": "≈300–475（严格位于 (125,500)，两端余量 ≥25 kW）"
+ },
+ "principle": "两阶段：Stage-1 承诺/预热（高负荷使 PMS 自然合闸 DG2），Stage-2 内部点传播测试（降载但保持 N=2）",
+ "schema": "ppe_h_fixture_definition_final_v1",
+ "stage1": {
+  "hotel_kW": 700,
+  "interval_s": [
+   0,
+   120
+  ],
+  "source_derived_reason": "P_commit = LPF60(P_load_gen)（Demand Policy，τ=60 s）；负荷≈1264 kW ≫ 承诺启动阈值 0.85·500=425 kW ⇒ DG2 经 STARTING/SYNC（tick 计数）后稳定 ON；实测同工况 t≈75 s 达 N=2（RCA 证据）",
+  "speed_mps": 7.0
+ },
+ "stage2": {
+  "expected_gen_domain_load_kW": "≈750（酒店 700 + 推进 ≈50；推进功率 ∝ v³ ⇒ 7→3 m/s 降 ≈96%）",
+  "hotel_kW": 700,
+  "interval_s": [
+   150,
+   300
+  ],
+  "source_derived_reason": "停止阈值 0.70·500=350 kW（remaining-unit 口径）而 Stage-2 负荷 ≈750 kW 且 LPF60 衰减速率为 (750−1200)/60 ≈ −7.5 kW/s ⇒ 300 s 内 P_commit 仍 ≫ 350 kW ⇒ DG2 保持 ON（N=2）",
+  "speed_mps": 3.0
+ },
+ "utc": "2026-09-18T10:19:59Z"
+}

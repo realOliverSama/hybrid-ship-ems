@@ -1,0 +1,63 @@
+{
+  "candidates": [
+    {
+      "id": "a",
+      "summary": "Revise DGN-F-03: drop the 0.80 upper-cap claim; extend the B2 policy-table lambda axis to the reachable domain (e.g. [0.43, 2.0])."
+    },
+    {
+      "id": "b",
+      "summary": "Other user-approved form (explicit Design revision)."
+    }
+  ],
+  "cap": {
+    "constant_block_ECMS_Lambda_Cap": false,
+    "declared_dgn_f_03": 0.8,
+    "identifier_hit": false,
+    "pass": false,
+    "present_in_CODE_ECMS_ORACLE": false,
+    "present_in_ecms_law": false
+  },
+  "cap_implementable_via_approved_run_local": false,
+  "decision_required": true,
+  "do_not": [
+    "Do not add a cap by editing law=6 MATLAB Function (core logic).",
+    "Do not persist .slx structure (DGN-F-01).",
+    "Do not let the optimizer wear a 0.80 hat while the live controller has none.",
+    "Do not continue T-004+ until Design review."
+  ],
+  "floor": {
+    "applies_when": "K_S ~= 0",
+    "constant_block_ECMS_Lambda_Floor": true,
+    "declared": 0.43,
+    "pass": true,
+    "present_in_CODE_ECMS_ORACLE": true,
+    "present_in_ecms_law": true
+  },
+  "logsout_reconstruction": {
+    "ran": false,
+    "reason": "Structural STOP fires before regression voyages: cap absent and not legally injectable."
+  },
+  "p_gen_saturation_not_lambda": true,
+  "record_sha256": "8e9d695076d2e5547386ce136b9218c564b38869aeb0188df51afeca6fd54c62",
+  "run_local_mechanisms": {
+    "SimulationInput_setBlockParameter": {
+      "can_add_lambda_cap_min": false,
+      "can_override_ECMS_Lambda_Floor_constant": true,
+      "can_override_Interpolate": true,
+      "reason": "setBlockParameter can only change existing block parameters. law=6 MATLAB Function has no Lambda_Cap input; the P clamp Saturation is on P_gen_ref not lambda."
+    },
+    "assignin_workspace": {
+      "can_add_lambda_cap_min": false,
+      "reason": "ECMS_Lambda_Floor is a floor only; no cap workspace variable is consumed."
+    },
+    "per_run_set_param_memory": {
+      "can_add_lambda_cap_min": false,
+      "reason": "No existing cap parameter to set. Rewriting MATLAB Function script would modify law=6 core control logic (FR-721 forbidden)."
+    }
+  },
+  "schema": "t445_lambda_envelope_r4_v1",
+  "stop": true,
+  "stop_code": "R4_CAP_NOT_LEGALLY_IMPLEMENTABLE",
+  "task": "T-003",
+  "utc": "2026-09-15T07:20:16Z"
+}

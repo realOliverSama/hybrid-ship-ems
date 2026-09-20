@@ -1,0 +1,4817 @@
+{
+  "arms": [
+    "P0",
+    "C0",
+    "C1",
+    "C2"
+  ],
+  "execution_order_rule": "voyage_id ascending x arm [P0,C0,C1,C2]; fixed; no result-dependent change (TG3)",
+  "manifest_sha256": "42a03d6ead9cb4f8ec04aed448619b40082de61e496b84c7a86c53e7653c2dba",
+  "n_runs": 192,
+  "n_voyages": 48,
+  "runs": [
+    {
+      "T_eval": 4508.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 0,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "6e9ce4848b26722d",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a229ace85ec2c77d893b9d39f042c47f5d06d9e4046985d7354ee374e2a33d9c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 1,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "541df570d46d4a2e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a229ace85ec2c77d893b9d39f042c47f5d06d9e4046985d7354ee374e2a33d9c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 2,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "c17cb196d775ed34",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a229ace85ec2c77d893b9d39f042c47f5d06d9e4046985d7354ee374e2a33d9c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 3,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "07ee2ef2db0e2a94",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a229ace85ec2c77d893b9d39f042c47f5d06d9e4046985d7354ee374e2a33d9c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 4,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "04cd2ed46ea96e66",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "2c8cfd38fe2597fc870c158d00f4009c0444e52530080adce8faba5c3bfcdaba",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 5,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "aff884c82f265dd8",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "2c8cfd38fe2597fc870c158d00f4009c0444e52530080adce8faba5c3bfcdaba",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 6,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "83f6dfd46069ece0",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "2c8cfd38fe2597fc870c158d00f4009c0444e52530080adce8faba5c3bfcdaba",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 7,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "d50a75c6873d8c4f",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "2c8cfd38fe2597fc870c158d00f4009c0444e52530080adce8faba5c3bfcdaba",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M2"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 8,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "7f498bb1b7fae1fd",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a3c6e01475a5f06a82d2f64093437b245cb07a780c75ea50cb08f2476e259b2c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 9,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "89c4b7909617a58b",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a3c6e01475a5f06a82d2f64093437b245cb07a780c75ea50cb08f2476e259b2c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 10,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "5e69b2248ab12962",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a3c6e01475a5f06a82d2f64093437b245cb07a780c75ea50cb08f2476e259b2c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 11,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "7508b48bff0d83b0",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "a3c6e01475a5f06a82d2f64093437b245cb07a780c75ea50cb08f2476e259b2c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M3"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 12,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "ef968a250b7a7103",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "93acae7e581ec9a5ce4bcfae25beb47d5789234c6e8a8e12ec38cbf7f2db2da4",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 13,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "0bbb922c83ff179b",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "93acae7e581ec9a5ce4bcfae25beb47d5789234c6e8a8e12ec38cbf7f2db2da4",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 14,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "e19b634334b6c4b3",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "93acae7e581ec9a5ce4bcfae25beb47d5789234c6e8a8e12ec38cbf7f2db2da4",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+      "T_eval": 4508.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 15,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2975408111.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01004_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1004@F1"
+      },
+      "run_id": "6096ab9a9cfee71a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#b7f8885bb19355fd",
+      "teval_row_sha256": "93acae7e581ec9a5ce4bcfae25beb47d5789234c6e8a8e12ec38cbf7f2db2da4",
+      "tier": "MID",
+      "voyage_id": "FLTA_S2_D01004_M4"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 16,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "92b8c7eaed1945e8",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "51e013b5c98d91a1a042379208665fd3e9769f8515a3dfb0a1faa04978dee4b7",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 17,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "252de9c152777d78",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "51e013b5c98d91a1a042379208665fd3e9769f8515a3dfb0a1faa04978dee4b7",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 18,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "9f8d8a9debfc9d11",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "51e013b5c98d91a1a042379208665fd3e9769f8515a3dfb0a1faa04978dee4b7",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 19,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "c36512c2b5c89d37",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "51e013b5c98d91a1a042379208665fd3e9769f8515a3dfb0a1faa04978dee4b7",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M1"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 20,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "da1c18d789ed00f7",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "a4a3a51b4c3f494518a91f885fc1b87290d5df0a235f79aa4e43edeb609771c2",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 21,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "d1216d478e731e33",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "a4a3a51b4c3f494518a91f885fc1b87290d5df0a235f79aa4e43edeb609771c2",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 22,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "1af238cb54e07f6f",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "a4a3a51b4c3f494518a91f885fc1b87290d5df0a235f79aa4e43edeb609771c2",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 23,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "67311714e12f0fff",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "a4a3a51b4c3f494518a91f885fc1b87290d5df0a235f79aa4e43edeb609771c2",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M2"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 24,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "78933f8523a71b0d",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "062774b9a1ecb655b7c17916180bdefd2c3d6f867d4853ddd6b5325ed3cd5a84",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 25,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "7319ddba766c4956",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "062774b9a1ecb655b7c17916180bdefd2c3d6f867d4853ddd6b5325ed3cd5a84",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 26,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "73eba2b1cb0f9f4d",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "062774b9a1ecb655b7c17916180bdefd2c3d6f867d4853ddd6b5325ed3cd5a84",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 27,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "3733fd814fa996aa",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "062774b9a1ecb655b7c17916180bdefd2c3d6f867d4853ddd6b5325ed3cd5a84",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M3"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 28,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "2c27983b94de2590",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "ff9cd4d45bb0448f54a470fa72a95a48b7b76468a83a7bb8c6b3955ff85e8624",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 29,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "61f548a88e1e2b8e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "ff9cd4d45bb0448f54a470fa72a95a48b7b76468a83a7bb8c6b3955ff85e8624",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 30,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "2ccaebfb40b64734",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "ff9cd4d45bb0448f54a470fa72a95a48b7b76468a83a7bb8c6b3955ff85e8624",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+      "T_eval": 4362.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 31,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2966638694.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S2_D01009_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1009@F1"
+      },
+      "run_id": "c0381faeffe62c09",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#e211d3bb7908e3f8",
+      "teval_row_sha256": "ff9cd4d45bb0448f54a470fa72a95a48b7b76468a83a7bb8c6b3955ff85e8624",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S2_D01009_M4"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 32,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "4fdb3a05ebade6cc",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "859ce4c67f496c0f16b07e590a19807c72d0e3984be9be68f7ded7f9be0221be",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 33,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "8883a4bc57180418",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "859ce4c67f496c0f16b07e590a19807c72d0e3984be9be68f7ded7f9be0221be",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 34,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "1dee59234d9a24d1",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "859ce4c67f496c0f16b07e590a19807c72d0e3984be9be68f7ded7f9be0221be",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 35,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M1",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "6ede09613d184c9c",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "859ce4c67f496c0f16b07e590a19807c72d0e3984be9be68f7ded7f9be0221be",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M1"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 36,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "addba7b88613ee0b",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "bf8737f545ce89bfeed9b6ed46e47a097de5a5dd3885d47a7764548559687739",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 37,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "2ad893e8d021c8c5",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "bf8737f545ce89bfeed9b6ed46e47a097de5a5dd3885d47a7764548559687739",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 38,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "22430b301e0f8014",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "bf8737f545ce89bfeed9b6ed46e47a097de5a5dd3885d47a7764548559687739",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 39,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M2",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "a67a3d9e63cc413a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "bf8737f545ce89bfeed9b6ed46e47a097de5a5dd3885d47a7764548559687739",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M2"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 40,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "1a9c059fa5553ce9",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "5c8b384c92b7ce927ce9ed057628f605753a20a87fac7b710cc39232b7ac98bb",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 41,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "c3da9dbe1217ebb2",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "5c8b384c92b7ce927ce9ed057628f605753a20a87fac7b710cc39232b7ac98bb",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 42,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "ea4447b62b2cd909",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "5c8b384c92b7ce927ce9ed057628f605753a20a87fac7b710cc39232b7ac98bb",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 43,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M3",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "a2b1172e8ca82d52",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "5c8b384c92b7ce927ce9ed057628f605753a20a87fac7b710cc39232b7ac98bb",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M3"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 44,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "920d3c2234fad32e",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "491a0e41081b35f272ba2bf1b713e17fe2f738836105720f048f3106f97c377c",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 45,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "b6009ac78b82fb05",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "491a0e41081b35f272ba2bf1b713e17fe2f738836105720f048f3106f97c377c",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 46,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "eff08bba601037be",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "491a0e41081b35f272ba2bf1b713e17fe2f738836105720f048f3106f97c377c",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+      "T_eval": 4094.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 47,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3945394339.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "ROUTINE_PATROL",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "ROUTINE_PATROL",
+        "scenario_id": "FLTA_S3_D02008_M4",
+        "scenario_stratum": "STRAT_ROUTINE_PATROL__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#2008@F1"
+      },
+      "run_id": "cf2438080d66baed",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#2d5d715a0fc3480a",
+      "teval_row_sha256": "491a0e41081b35f272ba2bf1b713e17fe2f738836105720f048f3106f97c377c",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S3_D02008_M4"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 48,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "720caa20122d630d",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "b48cf674b1a13815afad131b9b3bec0b37637872a59032ac10772df2b55a5c90",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 49,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "721167401d6e6fab",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "b48cf674b1a13815afad131b9b3bec0b37637872a59032ac10772df2b55a5c90",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 50,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "948b5dd106d239e9",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "b48cf674b1a13815afad131b9b3bec0b37637872a59032ac10772df2b55a5c90",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 51,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "969ba766889dc147",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "b48cf674b1a13815afad131b9b3bec0b37637872a59032ac10772df2b55a5c90",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M1"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 52,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "077078d78a03e4e1",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "e7bbe6bc805dcf500b4589a1b2548a28c253504f65c852f8ebfba3fa64b44f14",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 53,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "8d8de1b8f8d8b045",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "e7bbe6bc805dcf500b4589a1b2548a28c253504f65c852f8ebfba3fa64b44f14",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 54,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "7f5c13dbc2abc0b9",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "e7bbe6bc805dcf500b4589a1b2548a28c253504f65c852f8ebfba3fa64b44f14",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 55,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "da4dc66564859b27",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "e7bbe6bc805dcf500b4589a1b2548a28c253504f65c852f8ebfba3fa64b44f14",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M2"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 56,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "b4f1d2cacfaa8325",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "58c18d99fce8979b45b0cc2d881187120c98b7735a3b4dd95417951295ebec88",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 57,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "1766c16de8148436",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "58c18d99fce8979b45b0cc2d881187120c98b7735a3b4dd95417951295ebec88",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 58,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "cd02a522963e3efe",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "58c18d99fce8979b45b0cc2d881187120c98b7735a3b4dd95417951295ebec88",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 59,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "121753c521b3f721",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "58c18d99fce8979b45b0cc2d881187120c98b7735a3b4dd95417951295ebec88",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M3"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 60,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "bfcce446f08f1c63",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "d01430af2a5527c83c8a7352cb5a2056f3d1031358fbcf9eebf6ca53b2eb6d97",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 61,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "c6eb53e716ada762",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "d01430af2a5527c83c8a7352cb5a2056f3d1031358fbcf9eebf6ca53b2eb6d97",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 62,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "a652a8a7a87f1d35",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "d01430af2a5527c83c8a7352cb5a2056f3d1031358fbcf9eebf6ca53b2eb6d97",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+      "T_eval": 3335.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 63,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3788787996.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S4_D03011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#3011@F1"
+      },
+      "run_id": "6b605d877cb39846",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#1b624f14c86d40e7",
+      "teval_row_sha256": "d01430af2a5527c83c8a7352cb5a2056f3d1031358fbcf9eebf6ca53b2eb6d97",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S4_D03011_M4"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 64,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "844640997498dcea",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "40023b9e1dd03d4eca6a3d0e90837893ef34262c61a4fca6c3e1e2e7231a5806",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 65,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "3a2d59cfa6d9bec0",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "40023b9e1dd03d4eca6a3d0e90837893ef34262c61a4fca6c3e1e2e7231a5806",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 66,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "32b9e61ddef7a9e6",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "40023b9e1dd03d4eca6a3d0e90837893ef34262c61a4fca6c3e1e2e7231a5806",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 67,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "b9cc6fc3860cbf17",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "40023b9e1dd03d4eca6a3d0e90837893ef34262c61a4fca6c3e1e2e7231a5806",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M1"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 68,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "376c0b1bd21b23bc",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "0c33d8abfbbb15c7736b657c8aaa6c53cba9e8d5ea5dd92165cad92b60a3087c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 69,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "757884e4ee8b4d09",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "0c33d8abfbbb15c7736b657c8aaa6c53cba9e8d5ea5dd92165cad92b60a3087c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 70,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "d210434003ba03e7",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "0c33d8abfbbb15c7736b657c8aaa6c53cba9e8d5ea5dd92165cad92b60a3087c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 71,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "7c0b192727476a09",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "0c33d8abfbbb15c7736b657c8aaa6c53cba9e8d5ea5dd92165cad92b60a3087c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M2"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 72,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "3a50778e9f246e73",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "df720e632588283230759b7cc51588f96d0ff53c0fffa50dc5e41c1a4cc880c0",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 73,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "056a89a93ef63c85",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "df720e632588283230759b7cc51588f96d0ff53c0fffa50dc5e41c1a4cc880c0",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 74,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "804814b24135e70a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "df720e632588283230759b7cc51588f96d0ff53c0fffa50dc5e41c1a4cc880c0",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 75,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "9c775c43809b4799",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "df720e632588283230759b7cc51588f96d0ff53c0fffa50dc5e41c1a4cc880c0",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M3"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 76,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "55f8c37f2b0129d4",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "28fb9454112bae0ce58b3560234082abae9f201347e2df2e892d9889e88f96e9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 77,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "826b0c2320a74c6f",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "28fb9454112bae0ce58b3560234082abae9f201347e2df2e892d9889e88f96e9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 78,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "c7bdbc07fe4b0f81",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "28fb9454112bae0ce58b3560234082abae9f201347e2df2e892d9889e88f96e9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+      "T_eval": 3531.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 79,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "4204829367.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04001_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4001@F1"
+      },
+      "run_id": "03592905ef834eb2",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#95ab26745e67b295",
+      "teval_row_sha256": "28fb9454112bae0ce58b3560234082abae9f201347e2df2e892d9889e88f96e9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S5_D04001_M4"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 80,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "96d0a4302ced8040",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "fdc929bcbdf45336abb8eeb0b1cb89581d08d0a873b1d138e72f48089a9cdf56",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 81,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "dfa9453d8687ee46",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "fdc929bcbdf45336abb8eeb0b1cb89581d08d0a873b1d138e72f48089a9cdf56",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 82,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "c498e6e7d121d9fc",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "fdc929bcbdf45336abb8eeb0b1cb89581d08d0a873b1d138e72f48089a9cdf56",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 83,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "dc89e854a6cd7b92",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "fdc929bcbdf45336abb8eeb0b1cb89581d08d0a873b1d138e72f48089a9cdf56",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M1"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 84,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "71cdcc22e2a3ee42",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "f23ae1e8509001d89ad95caa8ea06e0e18aeee4bbd519c48a6b7a8ba5c4244b4",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 85,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "310a8849fd5c4aab",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "f23ae1e8509001d89ad95caa8ea06e0e18aeee4bbd519c48a6b7a8ba5c4244b4",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 86,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "e842080a2f3f610b",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "f23ae1e8509001d89ad95caa8ea06e0e18aeee4bbd519c48a6b7a8ba5c4244b4",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 87,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "aff413a58ce4c066",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "f23ae1e8509001d89ad95caa8ea06e0e18aeee4bbd519c48a6b7a8ba5c4244b4",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M2"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 88,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "0a7a5a917c27156e",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "3295fd527f6d668d2ae1290a0e4af253325d000862f7397403a59c7874099366",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 89,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "3e8383304c944fd4",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "3295fd527f6d668d2ae1290a0e4af253325d000862f7397403a59c7874099366",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 90,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "e910cb122af17550",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "3295fd527f6d668d2ae1290a0e4af253325d000862f7397403a59c7874099366",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 91,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "6212637d5a1c87e0",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "3295fd527f6d668d2ae1290a0e4af253325d000862f7397403a59c7874099366",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M3"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 92,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "83415d945b4c0f9c",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "eeb4426ca88ea87138ef841f43b41aa9928662001a650ec93d9b5ac88c489716",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 93,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "54f0df29bd32ac7a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "eeb4426ca88ea87138ef841f43b41aa9928662001a650ec93d9b5ac88c489716",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 94,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "b874e2ba271f945d",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "eeb4426ca88ea87138ef841f43b41aa9928662001a650ec93d9b5ac88c489716",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+      "T_eval": 3662.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 95,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1306007032",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S5_D04005_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#4005@F1"
+      },
+      "run_id": "94ed88c703b3939b",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f87aa695ef15f360",
+      "teval_row_sha256": "eeb4426ca88ea87138ef841f43b41aa9928662001a650ec93d9b5ac88c489716",
+      "tier": "HIGH",
+      "voyage_id": "FLTA_S5_D04005_M4"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 96,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "a3e13dc8e9859eee",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "0fa0608b962762f6d0c4f0aca6ad6894122fcac0b96b2e99a3132ef0e585fd02",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 97,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "9e3fcaea5a118cae",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "0fa0608b962762f6d0c4f0aca6ad6894122fcac0b96b2e99a3132ef0e585fd02",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 98,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "5d21c6f611532b4c",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "0fa0608b962762f6d0c4f0aca6ad6894122fcac0b96b2e99a3132ef0e585fd02",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 99,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "58d8ffacb737cfe2",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "0fa0608b962762f6d0c4f0aca6ad6894122fcac0b96b2e99a3132ef0e585fd02",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 100,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "ae7cdccb05a07935",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "2bf1018ffb611da0f99ec2abbaa0f5ebcd60ed158bcb31a355042f99dd52d82c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 101,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "8dfb1336a3e09ef7",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "2bf1018ffb611da0f99ec2abbaa0f5ebcd60ed158bcb31a355042f99dd52d82c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 102,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "de3d0360d73b488f",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "2bf1018ffb611da0f99ec2abbaa0f5ebcd60ed158bcb31a355042f99dd52d82c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 103,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "ee29de6dedc916c1",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "2bf1018ffb611da0f99ec2abbaa0f5ebcd60ed158bcb31a355042f99dd52d82c",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M2"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 104,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "5f36c194981dd578",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "fe48f6230c5e888f4a14e98eae7fafda0f796d76802df34f860898c21d032ca3",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 105,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "61ea6f41994e506e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "fe48f6230c5e888f4a14e98eae7fafda0f796d76802df34f860898c21d032ca3",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 106,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "d82d779770519ffd",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "fe48f6230c5e888f4a14e98eae7fafda0f796d76802df34f860898c21d032ca3",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 107,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "f0d5acfcc993a430",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "fe48f6230c5e888f4a14e98eae7fafda0f796d76802df34f860898c21d032ca3",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M3"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 108,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "ba3efe04b8bf76dd",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "9946d39ec6980095c7a568906590118c2e332a5be69419e4a3f78276b758613f",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 109,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "ea6cf26dd675a52e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "9946d39ec6980095c7a568906590118c2e332a5be69419e4a3f78276b758613f",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 110,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "45bf060a4c1bbc46",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "9946d39ec6980095c7a568906590118c2e332a5be69419e4a3f78276b758613f",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+      "T_eval": 3757.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 111,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1358636616",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05002_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5002@F1"
+      },
+      "run_id": "1798c0cec28bc497",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0fe21d4411bc5e17",
+      "teval_row_sha256": "9946d39ec6980095c7a568906590118c2e332a5be69419e4a3f78276b758613f",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05002_M4"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 112,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "2bde350aa41818b4",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "d182bdb258414402c53325a266513bd2c0770f8fd095e98b41b2cac6ff7c987e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 113,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "2f8b4852b5051eb9",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "d182bdb258414402c53325a266513bd2c0770f8fd095e98b41b2cac6ff7c987e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 114,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "5bba3f42d796242e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "d182bdb258414402c53325a266513bd2c0770f8fd095e98b41b2cac6ff7c987e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 115,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "1c91616c23704f58",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "d182bdb258414402c53325a266513bd2c0770f8fd095e98b41b2cac6ff7c987e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M1"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 116,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "ee3ec46e060545c2",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "1afb92fe86e401b2c0eb95bf2a70b7eb4cffc6ec1f91261f5f75e7cce2b112c2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 117,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "57737b4757ddfca4",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "1afb92fe86e401b2c0eb95bf2a70b7eb4cffc6ec1f91261f5f75e7cce2b112c2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 118,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "98a3e4a4ba7acf17",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "1afb92fe86e401b2c0eb95bf2a70b7eb4cffc6ec1f91261f5f75e7cce2b112c2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 119,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "e763b214d44b5007",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "1afb92fe86e401b2c0eb95bf2a70b7eb4cffc6ec1f91261f5f75e7cce2b112c2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M2"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 120,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "5e45e311b627c76a",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "0f035b6123ee4e12dea4c92d81758c90c48b6a59a9c3bcc244e2044ff6ee2e12",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 121,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "140124da8329068e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "0f035b6123ee4e12dea4c92d81758c90c48b6a59a9c3bcc244e2044ff6ee2e12",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 122,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "1927f6782f779cdf",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "0f035b6123ee4e12dea4c92d81758c90c48b6a59a9c3bcc244e2044ff6ee2e12",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 123,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "aa3fecb6d4c467b7",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "0f035b6123ee4e12dea4c92d81758c90c48b6a59a9c3bcc244e2044ff6ee2e12",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M3"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 124,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "701ed6e9e4f51f2e",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "7288dfb369debb726eb1c5df5fc36a69fd262feb50d279558e318a1848da0a15",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 125,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "c93e05758bd962f1",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "7288dfb369debb726eb1c5df5fc36a69fd262feb50d279558e318a1848da0a15",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 126,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "ce938553aa945b18",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "7288dfb369debb726eb1c5df5fc36a69fd262feb50d279558e318a1848da0a15",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+      "T_eval": 3940.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 127,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "3711441662.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05004_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5004@F1"
+      },
+      "run_id": "7d8627b294b3774d",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#f2e66596e8c43d8b",
+      "teval_row_sha256": "7288dfb369debb726eb1c5df5fc36a69fd262feb50d279558e318a1848da0a15",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S6_D05004_M4"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 128,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "8c72e34e9d32177f",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "68e818554bdeda807ef7a90d8913d9a7cc87aa3f8d1004a57ca36ecd420c2cc9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 129,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "52d23591cfb7cf6e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "68e818554bdeda807ef7a90d8913d9a7cc87aa3f8d1004a57ca36ecd420c2cc9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 130,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "ce788a94d094801a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "68e818554bdeda807ef7a90d8913d9a7cc87aa3f8d1004a57ca36ecd420c2cc9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 131,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M1",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "38e971712fc2dd2b",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "68e818554bdeda807ef7a90d8913d9a7cc87aa3f8d1004a57ca36ecd420c2cc9",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M1"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 132,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "e768d2607bb83c56",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "954ffab4d3717968f21b4abb1defc7ab7dccad1dcddc3ddc98b58909a47050e5",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 133,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "33e12f287682e976",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "954ffab4d3717968f21b4abb1defc7ab7dccad1dcddc3ddc98b58909a47050e5",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 134,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "1eb8b6bcc7679a3d",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "954ffab4d3717968f21b4abb1defc7ab7dccad1dcddc3ddc98b58909a47050e5",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 135,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M2",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "74894dac17f03e1f",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "954ffab4d3717968f21b4abb1defc7ab7dccad1dcddc3ddc98b58909a47050e5",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M2"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 136,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "c221652ef6d0ce1d",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "e23cd0def903ca2a8cbacb94cfb210e321f44f6c216d151ae8cb1ff0f4c0f230",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 137,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "4c428a9efec004f7",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "e23cd0def903ca2a8cbacb94cfb210e321f44f6c216d151ae8cb1ff0f4c0f230",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 138,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "96a95f1e9f3f0480",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "e23cd0def903ca2a8cbacb94cfb210e321f44f6c216d151ae8cb1ff0f4c0f230",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 139,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M3",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "4167f070a04dfcc9",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "e23cd0def903ca2a8cbacb94cfb210e321f44f6c216d151ae8cb1ff0f4c0f230",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M3"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 140,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "f5b63017acabbab8",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "424f1a1f7adaede4d4ee5257e36b7d2ff645a356bfa7ae921052c8d8d759ec89",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 141,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "fe808865c75eef56",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "424f1a1f7adaede4d4ee5257e36b7d2ff645a356bfa7ae921052c8d8d759ec89",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 142,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "f41274a1c8e4881e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "424f1a1f7adaede4d4ee5257e36b7d2ff645a356bfa7ae921052c8d8d759ec89",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+      "T_eval": 3906.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 143,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2777855003.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "EMERGENCY_RESPONSE",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "EMERGENCY_RESPONSE",
+        "scenario_id": "FLTA_S6_D05011_M4",
+        "scenario_stratum": "STRAT_EMERGENCY_RESPONSE__DRY",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5011@F1"
+      },
+      "run_id": "16859d52d42275c9",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#a33d734ea439b60b",
+      "teval_row_sha256": "424f1a1f7adaede4d4ee5257e36b7d2ff645a356bfa7ae921052c8d8d759ec89",
+      "tier": "MID",
+      "voyage_id": "FLTA_S6_D05011_M4"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 144,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "f42c73fbcac2f963",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "2609d5a4a8b58dd0d7384e77217c69cad1458c82e8d89b0614c8d0889afba732",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 145,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "e65339fe267472d2",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "2609d5a4a8b58dd0d7384e77217c69cad1458c82e8d89b0614c8d0889afba732",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 146,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "aa424f0b46a2cfb1",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "2609d5a4a8b58dd0d7384e77217c69cad1458c82e8d89b0614c8d0889afba732",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 147,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "a665df65c7352464",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "2609d5a4a8b58dd0d7384e77217c69cad1458c82e8d89b0614c8d0889afba732",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M1"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 148,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "e5c936b5127fd8b3",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "7563bbe4271d7e1d00783566794b17064f4e23eeb0423e44651270233c096218",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 149,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "e0a2fcdd520a4fa0",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "7563bbe4271d7e1d00783566794b17064f4e23eeb0423e44651270233c096218",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 150,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "4ecb27e9bbbc95fc",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "7563bbe4271d7e1d00783566794b17064f4e23eeb0423e44651270233c096218",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 151,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "92db996b7d45d824",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "7563bbe4271d7e1d00783566794b17064f4e23eeb0423e44651270233c096218",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M2"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 152,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "b5bed6c09a04b494",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "c5fe1d8790a3cc252bc23e92535d238858701c09a8cca96a6b3d23755ad873ea",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 153,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "6c48bb23c5587abb",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "c5fe1d8790a3cc252bc23e92535d238858701c09a8cca96a6b3d23755ad873ea",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 154,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "c69d57cfebfb6b4f",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "c5fe1d8790a3cc252bc23e92535d238858701c09a8cca96a6b3d23755ad873ea",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 155,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "aaad577a7ed01550",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "c5fe1d8790a3cc252bc23e92535d238858701c09a8cca96a6b3d23755ad873ea",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M3"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 156,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "b3431f432ee202b1",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "1751c49e59039042c5f55adada0e7ee3e4bba7026dcbf74bbd2f38c7459f04e2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 157,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "60ca4b9c0c507322",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "1751c49e59039042c5f55adada0e7ee3e4bba7026dcbf74bbd2f38c7459f04e2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 158,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "beb31848fec91b76",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "1751c49e59039042c5f55adada0e7ee3e4bba7026dcbf74bbd2f38c7459f04e2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+      "T_eval": 4259.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 159,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "2148215711.0",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06000_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6000@F1"
+      },
+      "run_id": "8b6b4074f63a0608",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#498b5fd8d36df50d",
+      "teval_row_sha256": "1751c49e59039042c5f55adada0e7ee3e4bba7026dcbf74bbd2f38c7459f04e2",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06000_M4"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 160,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "43f65bfbf1a83bed",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9f2331b1216e19a30ed7e21ee8630cdeeef195d1c5d82a4b7b5fff87087ecc6e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 161,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "6e13f0f25016ea2e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9f2331b1216e19a30ed7e21ee8630cdeeef195d1c5d82a4b7b5fff87087ecc6e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 162,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "99df6fef53b5d39a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9f2331b1216e19a30ed7e21ee8630cdeeef195d1c5d82a4b7b5fff87087ecc6e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 163,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "f10dabdb8ac3d08c",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9f2331b1216e19a30ed7e21ee8630cdeeef195d1c5d82a4b7b5fff87087ecc6e",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M1"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 164,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "e94d1edcea571e98",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "d8444fcfb09caea482650d5d798c1a24b35ac6f7ee30fa05eea6ad2d938e13c1",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 165,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "240549384e64d95a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "d8444fcfb09caea482650d5d798c1a24b35ac6f7ee30fa05eea6ad2d938e13c1",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 166,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "bb586892eac3b251",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "d8444fcfb09caea482650d5d798c1a24b35ac6f7ee30fa05eea6ad2d938e13c1",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 167,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "5a4e3f639b51d051",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "d8444fcfb09caea482650d5d798c1a24b35ac6f7ee30fa05eea6ad2d938e13c1",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M2"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 168,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "86d3c77981af355e",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9bb1a8bb48bb8c5651b6c487428c8f1c27e7c1d1880e949f500ff1243fedffc9",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 169,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "eb53eb1ed37e0808",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9bb1a8bb48bb8c5651b6c487428c8f1c27e7c1d1880e949f500ff1243fedffc9",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 170,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "34816857fce1cbfb",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9bb1a8bb48bb8c5651b6c487428c8f1c27e7c1d1880e949f500ff1243fedffc9",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 171,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "d9eeaa1d743ef961",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "9bb1a8bb48bb8c5651b6c487428c8f1c27e7c1d1880e949f500ff1243fedffc9",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M3"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 172,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "c7ff6347303d3734",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "37582def42c02c6852e147be20b31407c71aaeadb81fcd90c714d945a5aabf50",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 173,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "cabe2c29626bc8d8",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "37582def42c02c6852e147be20b31407c71aaeadb81fcd90c714d945a5aabf50",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 174,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "4d52c5a3c33b210e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "37582def42c02c6852e147be20b31407c71aaeadb81fcd90c714d945a5aabf50",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+      "T_eval": 3436.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 175,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "1959403594",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S7_D06015_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__NORMAL",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#6015@F1"
+      },
+      "run_id": "c578982312c2aa7e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#30ab14ffb1a08292",
+      "teval_row_sha256": "37582def42c02c6852e147be20b31407c71aaeadb81fcd90c714d945a5aabf50",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S7_D06015_M4"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 176,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "da25ffee5943abd1",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "defe89dd96deb51077fc7b0ef806a38d69c46d2ed63bbed55a80298553ab1feb",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 177,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "33244694eb10ffa5",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "defe89dd96deb51077fc7b0ef806a38d69c46d2ed63bbed55a80298553ab1feb",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 178,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "fd34552f9c077da6",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "defe89dd96deb51077fc7b0ef806a38d69c46d2ed63bbed55a80298553ab1feb",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 179,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M1",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "b56d8460d39a0ed3",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "defe89dd96deb51077fc7b0ef806a38d69c46d2ed63bbed55a80298553ab1feb",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M1"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 180,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "8a0ac459478da8bf",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "69de1411787ae04f8f4838bc57199f168782b4678253ecf20952ed9e4de0574c",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 181,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "7f64f1413362d9fe",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "69de1411787ae04f8f4838bc57199f168782b4678253ecf20952ed9e4de0574c",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 182,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "7b5dbcf6a39b5ebb",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "69de1411787ae04f8f4838bc57199f168782b4678253ecf20952ed9e4de0574c",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 183,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M2",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "40e05fe88a97c74a",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "69de1411787ae04f8f4838bc57199f168782b4678253ecf20952ed9e4de0574c",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M2"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 184,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "31b9a73b7df568ca",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "b35facab2e21800d9dbf33dc9d3d134015b0fe160e74988d1d358fbd62e9f235",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 185,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "12b7194264527aef",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "b35facab2e21800d9dbf33dc9d3d134015b0fe160e74988d1d358fbd62e9f235",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 186,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "3a8a725eaedf3f0e",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "b35facab2e21800d9dbf33dc9d3d134015b0fe160e74988d1d358fbd62e9f235",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 187,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M3",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "0c9abe2cad5c34e4",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "b35facab2e21800d9dbf33dc9d3d134015b0fe160e74988d1d358fbd62e9f235",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M3"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "P0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 188,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "8f80ffd52874f3e6",
+      "runner_type": "continuous_law5",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "548db12590318eaa0806399aea4b52e11ab2f4088033dbf649651549c7e09414",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M4"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C0",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 189,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "a4d1d83f4a63c3fa",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "548db12590318eaa0806399aea4b52e11ab2f4088033dbf649651549c7e09414",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M4"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C1",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 190,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "5d31ee561a5ef117",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "548db12590318eaa0806399aea4b52e11ab2f4088033dbf649651549c7e09414",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M4"
+    },
+    {
+      "T_eval": 3976.0,
+      "arm": "C2",
+      "checkpoint_identity_schema": "ppe_cstar_checkpoint_identity_v1",
+      "exec_order": 191,
+      "initial_condition_identity": {
+        "SOC0": 0.6,
+        "scenario_seed": "763712375",
+        "source": "stream.SOC[0]"
+      },
+      "mission_identity": {
+        "mission_template_id": "WORK_MISSION",
+        "producer_script_sha": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40",
+        "route_template_id": "WORK_MISSION",
+        "scenario_id": "FLTA_S8_D07009_M4",
+        "scenario_stratum": "STRAT_WORK_MISSION__FLOOD",
+        "voyage_family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#7009@F1"
+      },
+      "run_id": "b840efc92ae03e54",
+      "runner_type": "cstar_segmented_simstate_10s",
+      "split_group_id": "SG#0877af60295de774",
+      "teval_row_sha256": "548db12590318eaa0806399aea4b52e11ab2f4088033dbf649651549c7e09414",
+      "tier": "LOW",
+      "voyage_id": "FLTA_S8_D07009_M4"
+    }
+  ],
+  "schema": "ppe_formal_execution_manifest_v1",
+  "study": "phase4f-practical-predictive-ems",
+  "teval_table_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e"
+}

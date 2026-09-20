@@ -1,0 +1,62 @@
+{
+ "authorization": "no final freeze; no formal runs; H not yet re-run",
+ "channels_compared": [
+  "P_load_total_kW",
+  "N_dispatch",
+  "state_DG1",
+  "state_DG2",
+  "P_gen_actual_kW",
+  "SOC"
+ ],
+ "fixture": {
+  "EMS_CTRL_LAW": 6,
+  "PMS_SOURCE_MODE": 1,
+  "T_s": 300,
+  "arm": "C0",
+  "delta_lambda": 0.0,
+  "hotel_kW": 700,
+  "initial_SOC": 0.6,
+  "solver_and_params": "frozen config scripts (ModelE_Physics/Control/TestScenarios)",
+  "speed_mps": 7.0,
+  "type": "canonical synthetic"
+ },
+ "paths": {
+  "A": "continuous sim(mdl) with SimulationInput critical-var binding, StopTime=300",
+  "B": "production ppe.run_cstar segmented SimState path (same injected workspace, BindingGuard, SkipInject=true)"
+ },
+ "result": {
+  "N_dispatch_max_A": 2,
+  "N_dispatch_max_B": 2,
+  "first_divergence": null,
+  "max_abs_diff_all_channels": 0.0,
+  "n_samples_A": 30001,
+  "n_samples_B": 30001,
+  "t_end_A_s": 300.0,
+  "t_end_B_s": 300.0,
+  "verdict": "SEGMENT_BOUNDARY_INVARIANCE = PASS (bit-identical)"
+ },
+ "schema": "ppe_segmented_runtime_equivalence_rca_v1",
+ "script": "scripts/tests/rca_segmented_equivalence.m",
+ "smoke_H_mask_explanation": {
+  "classification": "FIXTURE_EFFECTIVE_INPUT_MISMATCH (fixture operating point not the intended non-saturated one; runner semantics correct)",
+  "observed": "through run_epoch3_voyage the H mask was empty (N_dispatch=1 in the DP-driven fixture)",
+  "rca_finding": "with the same intended fixture (hotel 700, 7 m/s) BOTH paths reach N_dispatch=2 and agree bit-exactly; the synthetic load (~1264 kW genset-domain) drives the ECMS reference to the allocator ceiling (2x500 kW), which the predeclared non-saturated mask excludes by construction (sel strictly < 999) => mask empty",
+  "repair": "prospective fixture re-selection: lower hotel load so the ECMS reference lands strictly inside (250,1000) kW while N_dispatch=2"
+ },
+ "state_audit_source_derived": {
+  "callbacks": "no InitFcn/StartFcn/PreLoadFcn present in the frozen .slx blockdiagram (source audit)",
+  "note": "no state reinitialization observed; segmented path reproduces the continuous path exactly",
+  "reapplied_per_segment": [
+   "ECMS_EHat_Data (ZOH table per decision instant, by design)",
+   "control-critical workspace vars also forced per segment via SimulationInput.setVariable (EP3 repair)"
+  ],
+  "simstate_restored": [
+   "continuous plant states (SOC/battery/DC bus)",
+   "DG ramp/lag states",
+   "solver state incl. absolute time (trajectories show a monotone absolute grid across segments)"
+  ],
+  "timebase": "logsout time is absolute across segments (n=30001, t_end=300.00 both paths)"
+ },
+ "task": "SEGMENTED_RUNTIME_EQUIVALENCE_RCA",
+ "utc": "2026-09-18T08:38:33Z"
+}

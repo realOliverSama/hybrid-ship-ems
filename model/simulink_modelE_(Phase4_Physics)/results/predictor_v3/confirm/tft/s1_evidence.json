@@ -1,0 +1,30 @@
+{
+  "ablation_face": null,
+  "active_info_channels": [
+    "v_plan_mps",
+    "s_plan_m",
+    "h_chart_m",
+    "P_hotel_plan_kW",
+    "u_fcst_mps",
+    "wl_fcst_m"
+  ],
+  "arch": "tft",
+  "artifact": "experiments/predictor_v3/confirm/tft/tft_s1.keras",
+  "artifact_sha256": "843d09b6ccb2166b7891c1ecd74411850a597e021fd6e496b9a642cd832a6948",
+  "config_sha256": "68eb393636c2716ea7fe44f57330291c0a3ebec857180da71cb64bd1484246ca",
+  "duration_s": 4992.8,
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_id": "tft",
+  "model_key": "tft",
+  "param_count": 405780,
+  "schema": "predictor_v3_confirm_run_v1",
+  "seed_index": 1,
+  "seed_int": 1775810961,
+  "utc": "2026-09-14T14:30:34.560396+00:00",
+  "val": {
+    "per_group_ref": "tft/s1_per_group.json",
+    "pinball_sgmacro": 3.9345699626934585
+  },
+  "zero_kf_channels": []
+}

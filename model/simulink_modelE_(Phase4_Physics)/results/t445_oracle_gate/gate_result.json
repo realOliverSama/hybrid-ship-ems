@@ -1,0 +1,127 @@
+{
+  "DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE": "NOT_ESTABLISHED",
+  "SMALL_N_GATE_CAUTION": true,
+  "X_pct": 2.0,
+  "Y_pct": 0.0,
+  "b3_context_reason": "NOT_EXECUTED_DUE_MAIN_GATE_VALIDITY_FAILURE",
+  "b3_context_status": "UNQUALIFIED_CONTEXT",
+  "ci_is_placeholder": true,
+  "ci_lower": 0.0,
+  "ci_upper": 0.0,
+  "closure_mode": "validity_only",
+  "code_commit_at_write": "b5cdf80989c46172c2e47f8b5efde37e5d2c34a6",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "continuation_requires_roadmap_amendment": true,
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "decision_required": true,
+  "effect_statistics_computed": false,
+  "evidence_grade": "DEVELOPMENT_STAGE_ORACLE_HEADROOM_EVIDENCE",
+  "expansion_eligible": false,
+  "expansion_used": false,
+  "failure_code": "B2_OPTIMIZER_QUALIFICATION_FAILED",
+  "failure_stage": "PRE_FORMAL_B2_OPTIMIZER_QUALIFICATION",
+  "formal_corpus_observed": false,
+  "headroom_statistics": "NOT_COMPUTED",
+  "interpretation": "Under the frozen Model-E / ECMS architecture, the project did not establish a sufficiently qualified trajectory-oracle reference. Therefore T-445 cannot support a scientific GO/NO-GO inference regarding the control value of 300 s load-trajectory information.",
+  "k_eq_E": 0.5457,
+  "median_g": 0.0,
+  "median_g_is_placeholder": true,
+  "methodological_validity_failure": true,
+  "mode": "initial",
+  "not_evidence_trajectory_prediction_has_no_value": true,
+  "predictor_v3_phase4e_unaffected": true,
+  "preserved_fail_artifacts": [
+    "qualification/t010_b2_optimizer_qual.json",
+    "qualification/t010_b2_optimizer_qual_amd_d.json",
+    "qualification/t010_fuel_gap_d1.json",
+    "qualification/t010_e0_fuel_audit.json",
+    "qualification/t010_b2_optimizer_qual_amd_e.json",
+    "qualification/t007_keq_charge_restoration.json",
+    "lambda_envelope_r4.json"
+  ],
+  "qualification_error_evolution": [
+    {
+      "Q4_fuel_rel": "~0.092",
+      "Q6_fuel_rel": "~0.099",
+      "artifact": "qualification/t010_b2_optimizer_qual.json",
+      "note": "aggregate ECMS BSFC vs dual-genset FuelModelE",
+      "stage": "initial_T010"
+    },
+    {
+      "Q4_fuel_rel": 0.03837211940836734,
+      "Q6_fuel_rel": 0.07378953476700914,
+      "artifact": "qualification/t010_b2_optimizer_qual_amd_d.json",
+      "note": "PMS-aware FuelModelE surrogate; still FAIL",
+      "stage": "Amendment_D"
+    },
+    {
+      "artifact": "qualification/t010_e0_fuel_audit.json",
+      "jensen_meanDG": "~0.004",
+      "matched_Q4": 0.03837211940836734,
+      "matched_Q6": 0.07378953476700914,
+      "note": "matched-input residual is surrogate vs plant, not 10s load representation",
+      "stage": "E0_diagnostic"
+    },
+    {
+      "Q4_fuel_rel": 0.013143757194834934,
+      "Q6_fuel_rel": 0.01001229771173236,
+      "artifact": "qualification/t010_b2_optimizer_qual_amd_e.json",
+      "note": "generator-realization surrogate; final authorized fidelity amendment; still FAIL",
+      "stage": "Amendment_E_final"
+    }
+  ],
+  "qualification_matrix": {
+    "Q1": {
+      "note": "policy-table parity 597960, OOB=0",
+      "pass": true
+    },
+    "Q2": {
+      "pass": false,
+      "rel": 0.015342091690099056,
+      "threshold": 0.005
+    },
+    "Q3": {
+      "pass": true,
+      "rel": 0.0
+    },
+    "Q4": {
+      "dsoc_err": 0.0007791812999826675,
+      "dsoc_pass": true,
+      "fuel_rel": 0.013143757194834934,
+      "pass": false,
+      "threshold": 0.01
+    },
+    "Q5": {
+      "pass": true
+    },
+    "Q6": {
+      "dsoc_err": 0.0010018624561910494,
+      "dsoc_pass": true,
+      "fuel_rel": 0.01001229771173236,
+      "pass": false,
+      "threshold": 0.01
+    },
+    "SimState": {
+      "nseg": 552,
+      "pass": true
+    }
+  },
+  "reserve_used": false,
+  "schema": "t445_oracle_gate_v1",
+  "scientific_question": "does perfect 300 s trajectory information provide >=2% exploitable control value relative to scalar E300?",
+  "scientific_question_status": "UNRESOLVED",
+  "skipped_tasks": {
+    "T-011": "SKIPPED_DUE_GATE_VALIDITY_FAILURE",
+    "T-012": "SKIPPED_DUE_GATE_VALIDITY_FAILURE",
+    "T-013": "SKIPPED_DUE_GATE_VALIDITY_FAILURE",
+    "T-014_ordinary_effect_statistics": "SKIPPED_DUE_GATE_VALIDITY_FAILURE",
+    "T-015": "SKIPPED_DUE_GATE_VALIDITY_FAILURE"
+  },
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "st_edge_ai_upload_untouched": true,
+  "t446_blocked": true,
+  "task": "T-445",
+  "trajectory_gate_verdict": "GATE_VALIDITY_FAIL",
+  "utc": "2026-09-15T12:33:31Z",
+  "w_term": 117000.0
+}

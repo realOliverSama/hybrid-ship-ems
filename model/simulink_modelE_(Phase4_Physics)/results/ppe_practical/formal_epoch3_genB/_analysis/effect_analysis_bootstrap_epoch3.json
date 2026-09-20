@@ -1,0 +1,110 @@
+{
+ "B": 10000,
+ "R_diagnostic": {
+  "R": 0.9438903269895161,
+  "reason": "",
+  "status": "OK"
+ },
+ "analysis_class": "DESCRIPTIVE_STATISTICS_PLUS_PREREGISTERED_PAIRED_ANALYSIS",
+ "bindings": {
+  "analysis_script_sha256": "9a86183379f43d16d1e71a2de691638ed4b3f7e02f3076dd16089d21fd50ddf5",
+  "corpus_identity_sha256": "03b73952ce6e5ef29ac1e1a3fa1d5fa1403a75dc1ad2af5a43c265dd94fa1b64",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+  "fc3_core_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "freeze_file_sha256": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "genb_freeze_root": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "note": "frozen ppe.stats aggregation chain + ppe.fec J_FEC; corpus = genB terminals (freeze a2dc634f) resolved per (voyage,arm) across formal_epoch3_genB + formal_epoch3 namespaces; attempt-A era terminals physically excluded",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "ci95_pp": {
+  "B_perfect": {
+   "hi": 0.309735201317787,
+   "lo": 0.014202956251077314
+  },
+  "B_predicted": {
+   "hi": 0.28781148863893213,
+   "lo": 0.013276742814234287
+  },
+  "L_prediction": {
+   "hi": 0.04084092270704154,
+   "lo": -0.028724431093231854
+  }
+ },
+ "descriptives_pp": {
+  "B_perfect": {
+   "max": 0.7063806248212117,
+   "mean": 0.15626709278737017,
+   "median": 0.017893403158293738,
+   "min": -0.20718423430719027,
+   "n": 48,
+   "negative": 20,
+   "positive": 24,
+   "std": 0.2898646338482982,
+   "zero": 4
+  },
+  "B_predicted": {
+   "max": 0.5940128912531532,
+   "mean": 0.1474989973087719,
+   "median": 0.0018931970225886747,
+   "min": -0.2590981190662586,
+   "n": 48,
+   "negative": 20,
+   "positive": 24,
+   "std": 0.2858616303285081,
+   "zero": 4
+  },
+  "L_prediction": {
+   "max": 0.2918985509198249,
+   "mean": 0.008768095478598284,
+   "median": 0.0,
+   "min": -0.18864816048202165,
+   "n": 48,
+   "negative": 19,
+   "positive": 22,
+   "std": 0.11052369301096049,
+   "zero": 7
+  }
+ },
+ "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+ "point_estimates_pp": {
+  "B_perfect": 0.15626709278737014,
+  "B_predicted": 0.14749899730877186,
+  "L_prediction": 0.008768095478598284
+ },
+ "resampling": "per-tier, with replacement over defined split_groups, draw size = n_defined; percentile [2.5,97.5] linear",
+ "schema": "effect_analysis_bootstrap_epoch3_v1",
+ "seed": "phase4f-t445-bootstrap-v1",
+ "sha256_self": "85cf7b495b8365d65fae128c60059b7cc410ec472e5bffca39d77e170f123f2a",
+ "wilcoxon_note": "voyage-level paired signed-rank supplement; the pre-registered inference unit is the split-group bootstrap CI above",
+ "wilcoxon_primary_supplement": {
+  "B_perfect": {
+   "W": 258.0,
+   "n": 48,
+   "n_nonzero": 44,
+   "p_holm_two_sided": 0.016986451562308057,
+   "p_one_sided_neg": 0.9971689247396153,
+   "p_one_sided_pos": 0.0028310752603846762,
+   "p_two_sided": 0.0056621505207693525
+  },
+  "B_predicted": {
+   "W": 274.0,
+   "n": 48,
+   "n_nonzero": 44,
+   "p_holm_two_sided": 0.019797053561178373,
+   "p_one_sided_neg": 0.9950507366097054,
+   "p_one_sided_pos": 0.004949263390294593,
+   "p_two_sided": 0.009898526780589187
+  },
+  "L_prediction": {
+   "W": 387.0,
+   "n": 48,
+   "n_nonzero": 41,
+   "p_holm_two_sided": 0.5729257977166919,
+   "p_one_sided_neg": 0.713537101141654,
+   "p_one_sided_pos": 0.28646289885834597,
+   "p_two_sided": 0.5729257977166919
+  }
+ }
+}

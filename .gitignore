@@ -10,6 +10,8 @@
 # ==========================================================
 
 **/slprj/
+# 改名后的 slprj 缓存（如 slprj_v1_stale/）仍是生成缓存，同样永不入库
+**/slprj*/
 **/sccprj/
 **/*.slxc
 **/*.asv
@@ -51,6 +53,10 @@
 # 质量门运行时裁决（每次运行重新生成；基线 config/gate_baseline_smoke.json 入库）
 model/simulink/results/gate_result.json
 firmware/gate/fw_gate_result.json
+
+# EMS01 CHIL 会话生成输出（2026-09-15 用户裁决：KEEP LOCAL + 仅此精确路径；
+# 禁止泛化为 **/fault_out/，以免遮蔽未来其他位置的故障注入科学证据）
+/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/fault_out/
 
 # ==========================================================
 # Temporary files
@@ -221,6 +227,8 @@ model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/*
 # Phase 4-E predictor-v3（2026-09-13，Design Gate R1 授权，T-001 登记）
 # E-owned 本地产物命名空间不入库：E 派生数据/训练中间产物本地留存，
 # 机器可读证据精选入 results/predictor_v3/（入库）。
+# Phase 4-F T-445（2026-09-15）：artifacts/t445/ checkpoint 同此父规则不入库；
+# 机器可读证据精选入 results/t445_oracle_gate/（入库）。
 # ==========================================================
 .venv_tf/
 model/simulink_modelE_(Phase4_Physics)/artifacts/

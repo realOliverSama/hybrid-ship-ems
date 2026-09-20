@@ -1,0 +1,38 @@
+{
+ "schema": "ppe_t011a_demand_envelope_v1",
+ "source": "frozen dataset-v3 1Hz input streams (P_load_total_kW, T<=T_eval), restricted to the 48 formal-corpus voyages",
+ "n": 48,
+ "mean_kW": {
+  "min": 243,
+  "median": 358,
+  "max": 508
+ },
+ "p95_kW": {
+  "min": 410,
+  "median": 631,
+  "max": 902
+ },
+ "max_kW": {
+  "min": 661,
+  "median": 838,
+  "max": 912
+ },
+ "min_kW": {
+  "min": 82,
+  "median": 181,
+  "max": 212
+ },
+ "demand_kWh": {
+  "min": 280,
+  "median": 381,
+  "max": 557
+ },
+ "envelope_flags": {
+  "voyages_with_peak_above_single_genset_in_band_500kW": 48,
+  "voyages_with_peak_above_dual_in_band_total_1000kW": 0,
+  "voyages_with_mean_below_dual_in_band_min_250kW": 2,
+  "voyages_with_min_below_single_genset_in_band_min_125kW": 12
+ },
+ "note": "P_load_total_kW is the frozen mission demand (propulsion+hotel+unplanned); the 4 arms reshape the gen/battery split, not this demand",
+ "utc": "2026-09-17T03:15:57Z"
+}

@@ -1,0 +1,25 @@
+{
+  "cases": [
+    {
+      "detail": "n_t0_const=100 shrinking_t0=[0 10 20] max_rel=0",
+      "name": "assemble_window",
+      "pass": true
+    },
+    {
+      "detail": "neigh_maxdiff=0.999 dInt_off=0 dInt_on=0.00999",
+      "name": "zoh_machine",
+      "pass": true
+    }
+  ],
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "overall": true,
+  "rebind_note": "Scientific evidence not rerun. Evidence rebound to post-Amendment-C config identity (nominal-SOC FEC k_eq + matching w_term). Old SHA retained for provenance.",
+  "rebind_utc": "2026-09-15T09:45:57Z",
+  "schema": "t445_t002_evidence_v1",
+  "science": "UNAFFECTED_BY_AMENDMENT_C",
+  "superseded_config_sha256": "25605c03b9f528425398316d47531a6225b8c9ac4cb9e4d32145a808630f0f33",
+  "t002_science": "UNAFFECTED_BY_DGN_F03_AMENDMENT",
+  "task": "T-002",
+  "utc": "2026-09-15T07:16:59Z",
+  "zoh_implementation_unchanged": true
+}

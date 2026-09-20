@@ -1,0 +1,72 @@
+{
+ "by_arm": {
+  "C0|READJUDICATED_HARD_INFEASIBLE": 48,
+  "C1|READJUDICATED_HARD_INFEASIBLE": 48,
+  "C2|READJUDICATED_HARD_INFEASIBLE": 48,
+  "P0|READJUDICATED_HARD_INFEASIBLE": 48
+ },
+ "by_split_group": {
+  "SG#0877af60295de774|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#0fe21d4411bc5e17|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#1b624f14c86d40e7|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#2d5d715a0fc3480a|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#30ab14ffb1a08292|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#498b5fd8d36df50d|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#95ab26745e67b295|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#a33d734ea439b60b|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#b7f8885bb19355fd|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#e211d3bb7908e3f8|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#f2e66596e8c43d8b|READJUDICATED_HARD_INFEASIBLE": 16,
+  "SG#f87aa695ef15f360|READJUDICATED_HARD_INFEASIBLE": 16
+ },
+ "by_tier": {
+  "HIGH|READJUDICATED_HARD_INFEASIBLE": 64,
+  "LOW|READJUDICATED_HARD_INFEASIBLE": 64,
+  "MID|READJUDICATED_HARD_INFEASIBLE": 64
+ },
+ "deterministic_replay": "PASS (predeclared sorted-prefix subset)",
+ "executor_sha256": "64a867a2eb6978a6bf61b759c212465bf52ab15e62f6304b1ec638de19ec1e5e",
+ "fc3_checker_sha256": "8b5e6b4928f3292221574cf6452ff9b04b8b70daec8c0bb80579ad0d8e8832d6",
+ "fc3_pmin_failures_by_arm": {},
+ "fc3_predicate_fail_counts_by_arm": {
+  "C0": {
+   "service_curtailment": 48
+  },
+  "C1": {
+   "service_curtailment": 48
+  },
+  "C2": {
+   "service_curtailment": 48
+  },
+  "P0": {
+   "service_curtailment": 48
+  }
+ },
+ "fc3_replay_tool_sha256": "113b9901fed17b08bb9a86d45ad02cf016ff35bf857d7f8cf9523bcbafca3af2",
+ "forbidden_field_blinding": "PASS (key-based scan, input+output)",
+ "fuel_effect_analysis": "NONE (structurally blinded)",
+ "n_found": 192,
+ "non_target_predicate_equivalence": "192/192 (pre-replay differential, TG4)",
+ "original_evidence_unchanged": true,
+ "pass": true,
+ "problems": [],
+ "replay_freeze_root": "58b2b8ff6cd5c0a567449816ebd9be586f80b0b64c67202c870af7c1cc0852b3",
+ "sanitized_manifest_sha256": "2352ad41d8ee2a6161a9df00e17826202ea50e75f74607df65de8b2a31753f48",
+ "sanitized_view_schema_sha256": "b2f9908f7805347735be8df3d63aa380c30b6a72f4b8966d763f640380279828",
+ "schema": "fc3_replay_acceptance_v1",
+ "service_curtailment_failures_by_arm": {
+  "C0": 48,
+  "C1": 48,
+  "C2": 48,
+  "P0": 48
+ },
+ "simulink_executions_during_replay": 0,
+ "task": "T-FC3-8",
+ "terminal_status_histogram": {
+  "READJUDICATED_HARD_INFEASIBLE": 192
+ },
+ "transition_matrix": {
+  "COMPLETE_HARD_INFEASIBLE->READJUDICATED_HARD_INFEASIBLE": 192
+ },
+ "utc": "2026-09-18T04:15:31Z"
+}

@@ -1,0 +1,32 @@
+{
+  "schema": "ppe_pe1_post_freeze_metadata_only_v1",
+  "check": "PE-1: execution-code vs current-HEAD identity",
+  "execution_code_commit": "87639f5f",
+  "freeze_package_head": "82d12963",
+  "compare": "git diff 87639f5f..82d12963",
+  "changed_paths": [
+    ".specs/phase4-f-practical-predictive-ems/tasks.md",
+    "model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/freeze/PRE_EXECUTION_FREEZE_GATE.json",
+    "model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/freeze/formal_execution_manifest.json",
+    "model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/freeze/ppe_pre_execution_freeze.json",
+    "model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/freeze/spec_validation_waiver.json",
+    "项目开发进展.md"
+  ],
+  "tasks_md_change": "T-009 checkbox [ ]->[x] only (1 insertion, 1 deletion)",
+  "execution_critical_paths_changed": 0,
+  "execution_critical_scope": [
+    "C* implementation (scripts/+ppe, +t445 core)",
+    "ForecastWindow core (python/ppe/forecast_window.py, formal_windows.py)",
+    "C0/C1/C2 assemblers",
+    "predictor inference bridge (c2_*.py, c2_bridge.m)",
+    "segmented runner + checkpoint identity",
+    "FEC (fec.py, metrics_fec.m)",
+    "hard-feasibility evaluation",
+    "Model-E setup/run scripts",
+    "T_eval loader / C1 target index / causality runtime checks",
+    "study configs (phase4f_ppe_*.json)"
+  ],
+  "POST_FREEZE_METADATA_ONLY_COMMITS_VERIFIED": true,
+  "utc": "2026-09-15T16:22:21Z",
+  "pe1_evidence_sha256": "e22ddcf6e70fa1de39cf5f1329c38dac82ba0d0605f272c95b49928ca810d637"
+}

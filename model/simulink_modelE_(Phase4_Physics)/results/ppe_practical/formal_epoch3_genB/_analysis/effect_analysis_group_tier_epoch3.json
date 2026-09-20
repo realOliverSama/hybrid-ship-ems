@@ -1,0 +1,89 @@
+{
+ "analysis_class": "DESCRIPTIVE_STATISTICS_PLUS_PREREGISTERED_PAIRED_ANALYSIS",
+ "bindings": {
+  "analysis_script_sha256": "9a86183379f43d16d1e71a2de691638ed4b3f7e02f3076dd16089d21fd50ddf5",
+  "corpus_identity_sha256": "03b73952ce6e5ef29ac1e1a3fa1d5fa1403a75dc1ad2af5a43c265dd94fa1b64",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+  "fc3_core_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "freeze_file_sha256": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "genb_freeze_root": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "note": "frozen ppe.stats aggregation chain + ppe.fec J_FEC; corpus = genB terminals (freeze a2dc634f) resolved per (voyage,arm) across formal_epoch3_genB + formal_epoch3 namespaces; attempt-A era terminals physically excluded",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "estimator_status": {
+  "B_perfect": "FULL_COHORT_ESTIMATE",
+  "B_predicted": "FULL_COHORT_ESTIMATE",
+  "L_prediction": "FULL_COHORT_ESTIMATE"
+ },
+ "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+ "group_values": {
+  "B_perfect": {
+   "SG#0877af60295de774": -0.17618159395333308,
+   "SG#0fe21d4411bc5e17": 0.5927702402662647,
+   "SG#1b624f14c86d40e7": 0.19032277694544047,
+   "SG#2d5d715a0fc3480a": -0.10404093837389082,
+   "SG#30ab14ffb1a08292": 0.017893403158293738,
+   "SG#498b5fd8d36df50d": 0.03975475584363724,
+   "SG#95ab26745e67b295": 0.28995363303418503,
+   "SG#a33d734ea439b60b": 0.06298043107532957,
+   "SG#b7f8885bb19355fd": -0.08497200756155456,
+   "SG#e211d3bb7908e3f8": -0.050551662469056194,
+   "SG#f2e66596e8c43d8b": 0.5343653207042333,
+   "SG#f87aa695ef15f360": 0.5629107547788924
+  },
+  "B_predicted": {
+   "SG#0877af60295de774": -0.1105708094602835,
+   "SG#0fe21d4411bc5e17": 0.507748827112586,
+   "SG#1b624f14c86d40e7": 0.1513359181282124,
+   "SG#2d5d715a0fc3480a": -0.08769208639124956,
+   "SG#30ab14ffb1a08292": -0.015945390727193233,
+   "SG#498b5fd8d36df50d": 0.053386635058303086,
+   "SG#95ab26745e67b295": 0.45246747418113653,
+   "SG#a33d734ea439b60b": 0.02735739988841089,
+   "SG#b7f8885bb19355fd": -0.08106710763162127,
+   "SG#e211d3bb7908e3f8": -0.10757279877813791,
+   "SG#f2e66596e8c43d8b": 0.4861702354372345,
+   "SG#f87aa695ef15f360": 0.49436967088786443
+  },
+  "L_prediction": {
+   "SG#0877af60295de774": -0.06561078449304956,
+   "SG#0fe21d4411bc5e17": 0.08502141315367867,
+   "SG#1b624f14c86d40e7": 0.038986858817228076,
+   "SG#2d5d715a0fc3480a": -0.01634885198264127,
+   "SG#30ab14ffb1a08292": 0.033838793885486974,
+   "SG#498b5fd8d36df50d": -0.013631879214665849,
+   "SG#95ab26745e67b295": -0.1625138411469515,
+   "SG#a33d734ea439b60b": 0.03562303118691866,
+   "SG#b7f8885bb19355fd": -0.0039048999299333004,
+   "SG#e211d3bb7908e3f8": 0.05702113630908171,
+   "SG#f2e66596e8c43d8b": 0.04819508526699878,
+   "SG#f87aa695ef15f360": 0.068541083891028
+  }
+ },
+ "schema": "effect_analysis_group_tier_epoch3_v1",
+ "sha256_self": "66550981f9fa1e0f5f049b598bd256f05e0c43249870302310771b4e77887af7",
+ "theta_hat_pp": {
+  "B_perfect": 0.15626709278737014,
+  "B_predicted": 0.14749899730877186,
+  "L_prediction": 0.008768095478598284
+ },
+ "tier_values": {
+  "B_perfect": {
+   "HIGH": 0.14966023272034645,
+   "LOW": 0.10395797143820776,
+   "MID": 0.21518307420355617
+  },
+  "B_predicted": {
+   "HIGH": 0.11261017596167233,
+   "LOW": 0.1032601675770152,
+   "MID": 0.22662664838762803
+  },
+  "L_prediction": {
+   "HIGH": 0.03705005675867413,
+   "LOW": 0.0006978038611925863,
+   "MID": -0.01144357418407187
+  }
+ }
+}

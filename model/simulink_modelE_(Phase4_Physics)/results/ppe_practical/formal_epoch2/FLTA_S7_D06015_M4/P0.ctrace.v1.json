@@ -1,0 +1,10 @@
+{
+  "schema": "ppe_controller_trace_v1",
+  "voyage_id": "FLTA_S7_D06015_M4",
+  "arm": "P0",
+  "run_id": "c7ff6347303d3734",
+  "applies": false,
+  "forecast_source_id": "N/A",
+  "note": "P0 continuous law-5 baseline: no lambda decisions; forecast source N/A",
+  "utc": "2026-09-17T17:15:17Z"
+}

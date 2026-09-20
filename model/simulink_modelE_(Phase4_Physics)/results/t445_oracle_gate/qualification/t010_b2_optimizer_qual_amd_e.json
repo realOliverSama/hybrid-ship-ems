@@ -1,0 +1,69 @@
+{
+  "schema": "t445_t010_b2_optimizer_qual_v1",
+  "task": "T-010",
+  "purpose": "QUALIFICATION",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "Q": {
+    "Q1": true,
+    "Q2": false,
+    "Q3": true,
+    "Q4": false,
+    "Q5": true,
+    "Q6": false
+  },
+  "detail": {
+    "Q1": {
+      "pass": true,
+      "nodes_ok": 597960,
+      "nodes_n": 597960,
+      "nodes_maxAbs": 0,
+      "rand_ok": 1000,
+      "rand_n": 1000,
+      "rand_maxAbs": 0,
+      "oob": 0,
+      "domain_in": 3526,
+      "domain_n": 3526,
+      "LAMBDA_DOMAIN_COVERAGE": true
+    },
+    "Q2": {
+      "pass": false,
+      "rel": 0.015342091690099056,
+      "J0": 17.7356199241082,
+      "J1": 17.463518417051784
+    },
+    "Q3": {
+      "pass": true,
+      "rel": 0,
+      "J0": 17.7356199241082,
+      "J1": 17.7356199241082
+    },
+    "Q5": {
+      "pass": true,
+      "dlam1": -0.1
+    },
+    "Q4": {
+      "pass": false,
+      "fuel_rel": 0.013143757194834934,
+      "dsoc_err": 0.0007791812999826675,
+      "fuel_proxy": 23.053577340220595,
+      "fuel_plant": 22.754497746746935
+    },
+    "Q6": {
+      "pass": false,
+      "rel": 0.01001229771173236,
+      "dsoc_err": 0.0010018624561910494,
+      "fuel_proxy": 21.975928555391111,
+      "fuel_plant": 22.198183376011364,
+      "name": "B2_ZERO_CORRECTION_SANITY",
+      "cold_start_diagnostic": {
+        "fuel_rel": 0.029842515221705238,
+        "fuel_proxy": 21.606499000862886,
+        "fuel_plant": 20.980391352566585,
+        "not_used_for_pass": true
+      }
+    }
+  },
+  "pass": false,
+  "utc": "2026-09-15T12:03:54Z",
+  "amendment": "E_generator_realization"
+}

@@ -1,0 +1,207 @@
+{
+  "checks": [
+    {
+      "detail": "",
+      "name": "T-001 complete",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "T-002 complete",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "T-003 complete",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "T-008 qualification suite overall PASS",
+      "pass": true
+    },
+    {
+      "detail": "15852/15852",
+      "name": "C1 target coverage = 100%",
+      "pass": true
+    },
+    {
+      "detail": "exact float32 378/378",
+      "name": "C1 stored/reconstruction parity PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "K/F causality ledger PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "C2 bridge transport PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "C2 inference determinism PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:c0_no_leakage",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:warmup_causality",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:forecastwindow_parity",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:c1_arm_independence",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:plan_assembler",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:h1_path_parity",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:fec_reconstruction",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:terminal_soc_predicate",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:hf_config_equality",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:feasibility_machine",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:common_triplet_stats",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:equal_tier_bootstrap",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "pytest:r_undefined",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "C* determinism PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "action bounds/grid PASS (SOC n=171)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "current-state initialization PASS",
+      "pass": true
+    },
+    {
+      "detail": "{'SOC': 0, 'P_gen_actual_kW': 0, 'P_bat_actual_kW': 0, 'v_ship_mps': 0}",
+      "name": "SimState equivalence PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "checkpoint mismatch refusal PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "hard-feasibility instrumentation PASS",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "terminal-SOC predicate live",
+      "pass": true
+    },
+    {
+      "detail": "192",
+      "name": "formal execution manifest = 192 identities",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "frozen corpus = 48 voyages / 12 groups / 4-4-4 tiers",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "REAT-T artifact identities match",
+      "pass": true
+    },
+    {
+      "detail": "190de549e3830382",
+      "name": "Model-E .slx identity matches T-445 baseline",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "spec_validate waiver: exactly the TG8-known failure",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "FORMAL access ledger count = 0",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "IID-test scientific access = 0",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "OOD scientific/controller-selection access = 0",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "scientific working tree clean",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "name": "no result-bearing controller tuning (no formal runs exist)",
+      "pass": true
+    }
+  ],
+  "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+  "manifest_sha256": "42a03d6ead9cb4f8ec04aed448619b40082de61e496b84c7a86c53e7653c2dba",
+  "n_checks": 39,
+  "n_pass": 39,
+  "overall": true,
+  "schema": "PRE_EXECUTION_FREEZE_GATE",
+  "stop_rule": "overall=false -> STOP and report; overall=true -> ALSO STOP: human Pre-Execution Gate decides T-010 (TG9)",
+  "task": "T-009"
+}

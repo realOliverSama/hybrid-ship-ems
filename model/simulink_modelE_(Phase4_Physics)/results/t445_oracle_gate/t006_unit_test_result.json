@@ -1,0 +1,12 @@
+{
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "overall": true,
+  "purpose": "SYNTHETIC_SMOKE",
+  "pytest_returncode": 0,
+  "pytest_stdout": ".................                                                        [100%]\n17 passed in 0.49s",
+  "record_sha256": "f016c66e4386fcc34e9564ed00c898a81bf44f5aa9f848a82b750b2349d75bcd",
+  "schema": "t445_t006_evidence_v1",
+  "task": "T-006",
+  "utc": "2026-09-15T09:45:58Z",
+  "wrote_formal_gate_result": false
+}

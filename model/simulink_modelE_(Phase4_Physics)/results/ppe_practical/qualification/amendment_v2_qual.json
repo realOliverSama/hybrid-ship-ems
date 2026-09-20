@@ -1,0 +1,30 @@
+{
+  "schema": "ppe_amendment_v2_qual_v1",
+  "purpose": "QUALIFICATION",
+  "pass": true,
+  "checks": {
+    "Q1_per_unit_truth_discriminates": true,
+    "Q2_missing_signal_failclosed": true,
+    "Q3_non_on_power_violation": true,
+    "Q3b_non_on_clean_pass": true,
+    "Q4_legal_single_dg_low_load": true,
+    "Q5_legal_dual_high_load": true,
+    "Q6_true_pmax_violation": true,
+    "Q7_true_ramp_violation": true,
+    "Q8_transition_state_semantics": true,
+    "Q9_zero_unserved_pass": true,
+    "Q10_injected_unserved_fail": true,
+    "Q11_residual_bias_no_trigger": true,
+    "Q12_residual_diagnostic_recorded": true,
+    "Q13_terminal_band_and_reserve_pass": true,
+    "Q14_terminal_out_of_band_fail": true,
+    "Q15_normal_soc_insufficient_power_reserve": true,
+    "Q15b_normal_soc_insufficient_energy_reserve": true,
+    "Q16_fec_reconstruction": true,
+    "Q17_traj_schema_hash": true,
+    "Q18_traj_atomic_resume": true,
+    "Q19_no_sealed_access": true,
+    "Q20_no_result_tuning": true
+  },
+  "utc": "2026-09-17T12:00:58Z"
+}

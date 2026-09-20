@@ -1,0 +1,11 @@
+{
+ "freeze_file": "results/ppe_practical/freeze/fc3_readjudication_freeze.json",
+ "freeze_file_sha256": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+ "n_checks": 13,
+ "n_pass": 13,
+ "overall": true,
+ "schema": "FC3_READJUDICATION_GATE_v1",
+ "t_fc3_7": "BLOCKED \u2014 human FC-3 Replay Gate required",
+ "task": "T-FC3-6",
+ "utc": "2026-09-18T04:16:09Z"
+}

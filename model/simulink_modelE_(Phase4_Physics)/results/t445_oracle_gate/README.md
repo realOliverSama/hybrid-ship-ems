@@ -1,0 +1,58 @@
+# results/t445_oracle_gate/ — T-445 Trajectory Oracle Gate 机器可读证据
+
+> **入库策略**: 精选入库（manifest / Gate JSON / 报告）；逐 run 大日志与 checkpoint 不在此目录
+> （本地 `artifacts/t445/`）。dataset v3 只读，不在此写入。
+
+## 用途
+
+Phase 4-F T-445 的证据落盘根。**CLOSED 2026-09-15：`GATE_VALIDITY_FAIL`。**
+T-001 写入冻结身份与守卫。正式 36 航次从未执行（`runs/` 空）。Canonical 终态见
+`final_gate_pointer.json` → `gate_result.json`。历史 FAIL 工件禁覆盖、禁改标 PASS。
+
+**预测模型**：无（oracle 真值轨迹，非 NN）。
+
+## 目录结构
+
+| 条目 | 说明 |
+|---|---|
+| `qualification_fixture_manifest.json` | ★ T-001 非正式 fixture 身份冻结（三 overlap 标志全 false） |
+| `env_manifest_t445.json` | ★ T-001 环境守卫（macos_local + MATLAB R2026a + 无云端 result-bearing） |
+| `e_stage_readonly_guard.json` | ★ T-001 E 段只读快照 + 静态扫描零 .keras/winner 加载 |
+| `baseline_integrity_t001.json` | Model E 基线 / `.slx` / builder sha256 登记（模型零修改） |
+| `t001_unit_test_result.json` | T-001 导出摘要 |
+| `t002_unit_test_result.json` | T-002 窗装配 + ZOH 机器测试证据 |
+| `lambda_envelope_r4.json` | T-003 原 R4 STOP（`R4_CAP_NOT_LEGALLY_IMPLEMENTABLE`）溯源，禁删 |
+| `lambda_envelope_r4_native.json` | Amendment a′ 后 R4：`LAW6_NATIVE_ENVELOPE_CONFIRMED` |
+| `b1_norm_repro.json` | T-003 B1 归一化复现（E_ref/E_scale/n_t0） |
+| `t003_10b_smoke.json` | T-003 10b smoke 不受影响 |
+| `t003_b1_core.json` | T-003 B1 核心：K_S 恒等式 + Model E 块 vs 离线容差 0 |
+| `t003_b0_regression.json` | T-003 B0 三参考航次两跑逐样本 maxAbs=0 |
+| `t003_control_gate_quick.json` | T-003 43 快链 GATE43_QUICK overall=true |
+| `t003_complete.json` | T-003 收口（config 6d25ce39…） |
+| `t004_unit_test_result.json` | T-004 合成 fixture FEC/审计/硬可行性 |
+| `corpus_manifest.json` | ★ T-005 冻结语料（val 27 组；initial 9×4；reserve 3×4；test_sealed 元数据） |
+| `t006_unit_test_result.json` | T-006 合成统计/裁决单测证据（非正式 gate_result） |
+| `t008_unit_test_result.json` | T-008 策略表/窗内 DP/V_term 单测 + AC-611/612/613 |
+| `qualification/t010_b2_optimizer_qual.json` | T-010 原 Q4/Q6 FAIL（禁改标 PASS） |
+| `qualification/t010_fuel_gap_d1.json` | Amendment D1 燃油缺口分解 |
+| `qualification/t010_b2_optimizer_qual_amd_d.json` | Amendment D 后 Q1–Q6 重跑（Q4/Q6 仍 FAIL） |
+| `qualification/t010_amendment_d_fixtures.json` | D5 夹具冻结（settled + 冷启动） |
+| `qualification/t010_e0_fuel_audit.json` | Amendment E0 10 s 非线性燃油表示诊断（非 PASS 门；不改 Q4/Q6） |
+| `qualification/t010_b2_optimizer_qual_amd_e.json` | Amendment E 机组实现代理后 Q1–Q6（不覆盖原 FAIL / D / E0） |
+| `qualification/t010_amendment_e_stop.json` | Amendment E 后 T-010 收口：B2_OPTIMIZER_QUALIFICATION_FAILED（非正式 Gate） |
+| `qualification/t010_simstate_equiv.json` | T-010 SimState 连续 vs 分段 S20（nseg=552，PASS；与 Q4/Q6 独立） |
+| `gate_result.json` | ★ Canonical validity-only Gate：`GATE_VALIDITY_FAIL` |
+| `final_gate_pointer.json` | ★ T-016 canonical 指针（来源=validity-fail） |
+| `evidence_index.json` | ★ 证据 hash 链 |
+| `final_report.md` | ★ T-445 最终报告 |
+| `skipped/` | T-011..T-015 `SKIPPED_DUE_GATE_VALIDITY_FAILURE` |
+| `t009_unit_test_result.json` | T-009 B2 分段 toy smoke + checkpoint/resume（rel=0，.slx 未改） |
+| `amendment_c_rebind.json` | Amendment C 后 T-002/003/005 配置身份重绑记录（语料 identity SHA 不变） |
+| `qualification/t007_keq_charge_restoration.json` | T-007 原 0.58→0.62 vs 0.9687 **FAIL 保留件**（禁改标 PASS） |
+| `qualification/t007_energy_ladder.json` | T-007 能量边界阶梯审计（记账 PASS；0.72 为口径错位非未解释损耗） |
+| `qualification/t007_identity_qualification.json` | T-007 Amendment C 身份资格化（标称 SOC FEC 构造） |
+| `incidents.jsonl` | 事故账本（禁删，FR-777） |
+| `access_ledger.jsonl` | 访问台账（purpose ∈ QUALIFICATION/REGRESSION/SYNTHETIC_SMOKE/FORMAL） |
+| `qualification/` | B 阶段资格化 JSON（T-007/T-010/T-011） |
+| `runs/` | 正式逐 run JSON（T-013 起；T-001 仅建目录） |
+| 后续 | `corpus_manifest.json` / `freeze_record.json` / `gate_result.json` / `final_report.md` |

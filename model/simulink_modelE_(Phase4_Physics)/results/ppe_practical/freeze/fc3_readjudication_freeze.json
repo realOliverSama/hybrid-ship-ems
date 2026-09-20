@@ -1,0 +1,102 @@
+{
+ "assertions": {
+  "FUEL_OUTCOMES_ACCESSIBLE_TO_FC3_CHECKER": false,
+  "LOCKED_REPLAY_ELIGIBLE": true,
+  "ORIGINAL_EPOCH2_EVIDENCE_MUTABLE": false,
+  "SIMULINK_RERUN_REQUIRED": false
+ },
+ "bindings": {
+  "access_ledger_sha256": "3077b488bde06b6749d43548d17dfd74e22f5b2d5de534d03303e2609c614bff",
+  "corpus_manifest_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "discrete_policy_sha256": "9f8f86a35ce65a23083bcbfef102a8328fb3a61fd425bc0a198c16b1b41e8ccf",
+  "epoch2_evidence_tree_sha256": "3d36f57b1a27b7cbab7ba61ca6cdc3fefd38c80365e4e2e754a41a0b2520f7ca",
+  "fc3_checker_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+  "fc3_replay_tool_sha256": "113b9901fed17b08bb9a86d45ad02cf016ff35bf857d7f8cf9523bcbafca3af2",
+  "freeze_generator_sha256": "1f7aeead37bd027e9e59345345c53899cd21ce71e74265067130be370f583f64",
+  "input_view_schema_sha256": "b2f9908f7805347735be8df3d63aa380c30b6a72f4b8966d763f640380279828",
+  "locked_evidence_census_sha256": "b114f1be37070b8632ddddb80269a4d400bd10b74c81c071c2a741cc9e051113",
+  "non_target_differential_sha256": "777cebdacd8f099aea90e4c9c620bd967121eb4198bee97f6ba3e036cf51eb04",
+  "original_epoch2_freeze_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+  "original_warmup_parity_binding": {
+   "epoch2_acceptance_sha256": "a124c2cfff519c50da125b613f11d2656542e37a98e9b613eb641b9d7b6203e3",
+   "paradigm": "bound by SHA, not recomputed (D5)",
+   "parity_result": "48/48 PASS (as accepted)",
+   "ta9_acceptance_sha256": "2e24e3767341314b3140967f23552eda9f779cf789c46f1d5f862ab982174623"
+  },
+  "pmin_derivation_artifact_sha256": "048c6a0783e45c48e35748cfbe01c24da090270e48f5770159a217a17e6411d3",
+  "qualification_artifact_sha256": "40445a76a1c18b9ae10cb3fd87dd0c5e416de2ded95d8b8a2b6ab98c07d626cb",
+  "replay_qualification_sha256": "54afdee16ef6e5fcb1bea1688d7272b04a988102c1c26b27e7e14c64f2def6a1",
+  "sanitized_input_manifest_file_sha256": "645d57af4559015952ac2b8428bfbb444062d8a3112eaf9840beab54b2382d3b",
+  "sanitized_input_manifest_sha256": "2352ad41d8ee2a6161a9df00e17826202ea50e75f74607df65de8b2a31753f48",
+  "view_pipeline_sha256": "fa0629d9240f9118c5b34a7dbcd6123f7f2ce3782c3e67e25d776fff453b9816"
+ },
+ "checks": [
+  {
+   "detail": "192",
+   "name": "manifest_192_rows",
+   "pass": true
+  },
+  {
+   "detail": "192",
+   "name": "run_id_uniqueness_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "trajectory_audit_sha_resolve_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "freeze_root_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "view_sha_resolve_192",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "zero_forbidden_fields_192",
+   "pass": true
+  },
+  {
+   "detail": "2",
+   "name": "replay_tool_refuses_uninstructed",
+   "pass": true
+  },
+  {
+   "detail": "READJUDICATED_FEASIBLE",
+   "name": "replay_one_smoke_shape",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "replay_one_no_original_mutation",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "readjudication_output_not_emitted_yet",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "assert_no_online_change_vs_epoch2",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "assert_no_effect_inputs",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "assert_evidence_immutable",
+   "pass": true
+  }
+ ],
+ "schema": "fc3_readjudication_freeze_v1",
+ "utc": "2026-09-18T04:16:09Z"
+}

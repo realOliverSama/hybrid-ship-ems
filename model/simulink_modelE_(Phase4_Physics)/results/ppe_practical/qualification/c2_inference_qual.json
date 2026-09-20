@@ -1,0 +1,11 @@
+{
+  "determinism_bitwise": true,
+  "keras_sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894",
+  "note": "train-split sanity is a NONFORMAL smoke, not a metric claim",
+  "schema": "ppe_c2_inference_qual_v1",
+  "synthetic_finite": true,
+  "train_window_index": 0,
+  "train_window_mae_kw": 3.3199564615885415,
+  "train_window_sanity_plausible": true,
+  "verdict": "PASS"
+}

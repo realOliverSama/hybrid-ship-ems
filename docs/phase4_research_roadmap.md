@@ -347,14 +347,37 @@ BiLSTM/BiGRU（双向读取引入部署审查点，边际价值低）。
 
 > 纪律沿袭"先证明收益上限再施工"。全部 Mac 本机执行。
 
-### T-445 — Trajectory Oracle Gate（控制施工前第一道 Gate）
+### T-445 — Trajectory Oracle Gate（控制施工前第一道 Gate） — **CLOSED**
 不用 NN，直接给控制器真值未来负荷轨迹 P_future,true，问：知道完整未来轨迹比当前
 E_300 scalar 理论上多省多少？**上限不存在则停止。**
 
-### T-446 — Predictive EMS architecture brainstorm（只设计）
+**终态（2026-09-15）**：`trajectory_gate_verdict = GATE_VALIDITY_FAIL`（不是
+`NO_GO_TRAJECTORY_VALUE`）。T-010 B2 代理资格化 FAIL；正式 36 航次未执行；h_v/bootstrap
+未计算。科学问题“300 s 轨迹信息相对 E300 是否 ≥2% 可利用控制价值”**未裁决**。
+这是方法学有效性失败，不是轨迹预测无价值的证据。Phase 4-E Predictor-v3 不受影响。
+原定义 T-446 阻断。后继见工作包 F 修订：practical predictive-EMS evaluation。
+
+Canonical：`model/simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/final_gate_pointer.json`
+
+### T-456 — Practical predictive-EMS evaluation（路线修订）
+
+T-445 关闭后的 **新** F 包科学问题（spec
+`.specs/phase4-f-practical-predictive-ems/`）：
+
+在 **一个固定实用** 预测式监督控制器 C* 下，C0 持续预测 / C1 合法 30×10 s 真值 /
+C2 冻结 REAT-T q50 分别带来多少 **实用 Model-E 控制收益**。
+
+C1 仅称 `PERFECT_INFORMATION_CONTROLLER_REFERENCE`，禁止称为理论上限。
+Brainstorm：**CLOSED/APPROVED**。Requirements：**APPROVED**（RG1–RG9）。
+Design：**draft**，待 Design Gate。Gate 前不得跑正式 48 航次 C0/C1/C2。
+
+### T-446 — Predictive EMS architecture brainstorm（只设计） — **BLOCKED**
 Prediction trajectory → Upper predictive layer → SOC_ref / P_gen target / λ schedule
 → Existing ECMS。需裁决优化对象是 SOC_ref trajectory / P_gen trajectory /
 λ trajectory 中的哪一个。
+
+**T-445 GATE_VALIDITY_FAIL 后原定义阻断。** 不得把失败的 oracle-upper-bound 声明复活为
+T-446 入场券。后继 practical predictive-EMS 路线另开 spec。
 
 ### T-447 — Upper MPC baseline
 最简单版本：H=300 s，控制间隔 10 s，
@@ -429,7 +452,8 @@ B (T-413~T-418) ─┴─► C (T-419~T-429) ─► D (T-430~T-435)
 ```
 
 - A/B 可部分并行；T-412（物理 Gate）是 C/D 的硬前置；
-- T-445（Oracle Gate）是 F 包控制施工的前置，FAIL 即停止该方向；
+- T-445（Oracle Gate）是 F 包原路线控制施工的前置；**已 CLOSED `GATE_VALIDITY_FAIL`**，
+  原“轨迹 oracle 上限 → T-446 MPC”方向停止。后继须路线图修订（practical predictive-EMS）；
 - 每包启动前单独 brainstorm 定稿；包内任务顺序以该包 spec 的 tasks.md 为准。
 
 ---
@@ -438,4 +462,5 @@ B (T-413~T-418) ─┴─► C (T-419~T-429) ─► D (T-430~T-435)
 
 | 日期 | 变更 | 来源 |
 |---|---|---|
+| 2026-09-15 | T-445 CLOSED `GATE_VALIDITY_FAIL`：B2 代理未资格化，正式语料未跑；原 F 包 oracle-upper-bound 路线停止 | T-445 收口 session |
 | 2026-09-03 | 初版：用户×GPT 讨论结论落库 + 旧规划对照 + Q1~Q5 裁决（旧 phase4-model-e supersede；文档位置；两层分支策略；沿用 T-4xx 编号；B2 并入 T-417）；`Phase4` 分支创建 | 本 session |

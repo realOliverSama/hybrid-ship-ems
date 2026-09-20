@@ -1,0 +1,8 @@
+{
+ "all_equal": true,
+ "mismatch_rows": [],
+ "n": 192,
+ "n_v2_genset_fail_attributable_to_pmin_only": 192,
+ "note": "blinded: no fuel/J_FEC read; final readjudicated status not produced/released (TG4)",
+ "schema": "fc3_non_target_differential_v1"
+}

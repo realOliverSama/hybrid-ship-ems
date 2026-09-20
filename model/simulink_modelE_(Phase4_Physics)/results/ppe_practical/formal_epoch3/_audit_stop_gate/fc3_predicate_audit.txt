@@ -1,0 +1,88 @@
+thresholds: pmin=125.0 pmax=500.0 ramp=20.000001 soc_hard={'soc_max': 0.95, 'soc_min': 0.1, 'violation_duration_s': 0.0}
+=== B. FC-3 PREDICATE DECODE (42 runs) ===
+failed predicate counts over 42 runs:
+  load_shortfall               42
+  genset_limits_state_aware    42
+
+per-run failed-predicate detail (only runs with failures):
+FLTA_S2_D01004_M1 MID P0 dSOC=+0.0033 SOCend=0.6033 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..983 n=21, 21.3 s]
+FLTA_S2_D01004_M1 MID C0 dSOC=+0.0023 SOCend=0.6023 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..983 n=107, 107.2 s]
+FLTA_S2_D01004_M1 MID C1 dSOC=+0.0000 SOCend=0.6000 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..983 n=107, 107.2 s]
+FLTA_S2_D01004_M1 MID C2 dSOC=+0.0000 SOCend=0.6000 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..983 n=107, 107.2 s]
+FLTA_S2_D01004_M2 MID P0 dSOC=+0.0033 SOCend=0.6033 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..983 n=21, 21.3 s]
+FLTA_S2_D01004_M2 MID C0 dSOC=+0.0023 SOCend=0.6023 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..983 n=107, 107.2 s]
+FLTA_S2_D01009_M1 HIGH P0 dSOC=+0.0025 SOCend=0.6025 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1116 n=21, 21.3 s]
+FLTA_S2_D01009_M1 HIGH C0 dSOC=+0.0015 SOCend=0.6015 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1116 n=107, 107.2 s]
+FLTA_S2_D01009_M1 HIGH C1 dSOC=+0.0006 SOCend=0.5994 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1116 n=107, 107.2 s]
+FLTA_S2_D01009_M1 HIGH C2 dSOC=+0.0009 SOCend=0.5991 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1116 n=107, 107.2 s]
+FLTA_S2_D01009_M2 HIGH P0 dSOC=+0.0025 SOCend=0.6025 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1116 n=21, 21.3 s]
+FLTA_S2_D01009_M2 HIGH C1 dSOC=+0.0006 SOCend=0.5994 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1116 n=107, 107.2 s]
+FLTA_S3_D02008_M1 HIGH P0 dSOC=+0.0028 SOCend=0.6028 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..40 n=11, 10.6 s]
+FLTA_S3_D02008_M1 HIGH C0 dSOC=+0.0021 SOCend=0.6021 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..126 n=97, 96.6 s]
+FLTA_S3_D02008_M4 HIGH P0 dSOC=+0.0036 SOCend=0.6036 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1028 n=23, 22.6 s]
+FLTA_S3_D02008_M4 HIGH C0 dSOC=+0.0018 SOCend=0.6018 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1027 n=108, 107.2 s]
+FLTA_S4_D03011_M3 HIGH P0 dSOC=+0.0001 SOCend=0.6001 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..978 n=21, 21.3 s]
+FLTA_S4_D03011_M3 HIGH C0 dSOC=+0.1143 SOCend=0.7143 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..978 n=107, 107.2 s]
+FLTA_S5_D04001_M2 MID P0 dSOC=+0.0002 SOCend=0.6002 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..977 n=21, 21.3 s]
+FLTA_S5_D04001_M2 MID C0 dSOC=+0.0870 SOCend=0.6870 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..977 n=107, 107.2 s]
+FLTA_S5_D04005_M1 HIGH P0 dSOC=+0.0011 SOCend=0.6011 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..3440 n=47, 47.0 s]
+FLTA_S5_D04005_M1 HIGH C0 dSOC=+0.0097 SOCend=0.6097 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..3425 n=118, 117.9 s]
+FLTA_S5_D04005_M4 HIGH P0 dSOC=+0.0002 SOCend=0.6002 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..958 n=22, 21.3 s]
+FLTA_S5_D04005_M4 HIGH C0 dSOC=+0.0213 SOCend=0.6213 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..958 n=108, 107.2 s]
+FLTA_S6_D05002_M3 MID P0 dSOC=+0.0002 SOCend=0.5998 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1940 n=32, 31.9 s]
+FLTA_S6_D05002_M3 MID C0 dSOC=+0.0963 SOCend=0.6963 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1940 n=118, 117.9 s]
+FLTA_S6_D05004_M1 LOW P0 dSOC=+0.0007 SOCend=0.6007 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1931 n=32, 31.9 s]
+FLTA_S6_D05004_M1 LOW C0 dSOC=+0.1096 SOCend=0.7096 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1931 n=112, 111.3 s]
+FLTA_S6_D05004_M1 LOW C1 dSOC=+0.1104 SOCend=0.7104 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1931 n=112, 111.3 s]
+FLTA_S6_D05004_M1 LOW C2 dSOC=+0.1101 SOCend=0.7101 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1931 n=112, 111.3 s]
+FLTA_S6_D05004_M3 LOW P0 dSOC=+0.0005 SOCend=0.5995 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1930 n=31, 32.0 s]
+FLTA_S6_D05004_M3 LOW C0 dSOC=+0.0956 SOCend=0.6956 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..1930 n=111, 111.3 s]
+FLTA_S6_D05011_M2 MID P0 dSOC=+0.0004 SOCend=0.5996 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..3212 n=43, 42.6 s]
+FLTA_S6_D05011_M2 MID C0 dSOC=+0.0996 SOCend=0.6996 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..3212 n=129, 128.5 s]
+FLTA_S7_D06000_M1 LOW P0 dSOC=+0.0004 SOCend=0.5996 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..3859 n=57, 56.9 s]
+FLTA_S7_D06000_M1 LOW C0 dSOC=+0.0528 SOCend=0.6528 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..3859 n=129, 128.5 s]
+FLTA_S7_D06000_M4 LOW P0 dSOC=+0.0006 SOCend=0.5994 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..2975 n=32, 32.0 s]
+FLTA_S7_D06000_M4 LOW C0 dSOC=+0.1076 SOCend=0.7076 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..2975 n=118, 117.9 s]
+FLTA_S7_D06015_M3 LOW P0 dSOC=+0.0005 SOCend=0.5995 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..2569 n=33, 32.0 s]
+FLTA_S7_D06015_M3 LOW C0 dSOC=+0.0637 SOCend=0.6637 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..2607 n=141, 139.0 s]
+FLTA_S8_D07009_M2 LOW P0 dSOC=+0.0003 SOCend=0.5997 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..422 n=21, 21.3 s]
+FLTA_S8_D07009_M2 LOW C0 dSOC=+0.0014 SOCend=0.5986 | FAILED: load_shortfall,genset_limits_state_aware | shortfall[not-visible-at-1Hz, E=0.00 kWh] pmin[t=30..422 n=99, 99.7 s]
+
+=== C. CROSS-ARM PATTERN ===
+FLTA_S2_D01004_M1 [MID] ARM_INDEPENDENT -> P0,C0,C1,C2:genset_limits_state_aware,load_shortfall COMMON_PATH_FEASIBILITY_FAILURE
+FLTA_S2_D01004_M2 [MID] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S2_D01009_M1 [HIGH] ARM_INDEPENDENT -> P0,C0,C1,C2:genset_limits_state_aware,load_shortfall COMMON_PATH_FEASIBILITY_FAILURE
+FLTA_S2_D01009_M2 [HIGH] PARTIAL(2/4 arms) -> P0,C1:genset_limits_state_aware,load_shortfall
+FLTA_S3_D02008_M1 [HIGH] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S3_D02008_M4 [HIGH] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S4_D03011_M3 [HIGH] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S5_D04001_M2 [MID] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S5_D04005_M1 [HIGH] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S5_D04005_M4 [HIGH] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S6_D05002_M3 [MID] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S6_D05004_M1 [LOW] ARM_INDEPENDENT -> P0,C0,C1,C2:genset_limits_state_aware,load_shortfall COMMON_PATH_FEASIBILITY_FAILURE
+FLTA_S6_D05004_M3 [LOW] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S6_D05011_M2 [MID] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S7_D06000_M1 [LOW] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S7_D06000_M4 [LOW] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S7_D06015_M3 [LOW] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+FLTA_S8_D07009_M2 [LOW] PARTIAL(2/4 arms) -> P0,C0:genset_limits_state_aware,load_shortfall
+
+tier coverage of completed runs:
+{'MID': 12, 'HIGH': 16, 'LOW': 14}
+
+=== D. EPOCH-2 vs EPOCH-3 (canary voyages, items only) ===
+FLTA_S2_D01004_M1 P0 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01004_M1 C0 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01004_M1 C1 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01004_M1 C2 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01009_M1 P0 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01009_M1 C0 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01009_M1 C1 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S2_D01009_M1 C2 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S6_D05004_M1 P0 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S6_D05004_M1 C0 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S6_D05004_M1 C1 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+FLTA_S6_D05004_M1 C2 | e2 failed=['genset_limits_state_aware', 'load_shortfall'] | e3 failed=['genset_limits_state_aware', 'load_shortfall'] | diff=NONE
+
+AUDIT_BC_DONE

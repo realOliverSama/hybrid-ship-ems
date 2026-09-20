@@ -1,0 +1,38 @@
+{
+ "canonical_classification": "IMPLEMENTATION_INVALID_ZERO_RESULT",
+ "epoch_plan": {
+  "formal_epoch": 3,
+  "not_a_new_estimand": true,
+  "reason": "repaired online source selection changes execution behavior"
+ },
+ "fc3_status": "FC-3 contract retained as candidate canonical feasibility contract; historical 192/192 REJUDICATED_FEASIBLE applies only to the old baseline-routed trajectories and SHALL NOT be assumed to carry over to epoch-3",
+ "formal_zero_result_disposition": "IMPLEMENTATION_INVALID_ZERO_RESULT",
+ "numerical_status": "CORRECT_FOR_THE_EXECUTED_DEFECTIVE_EXPERIMENT",
+ "numerical_values": {
+  "B_perfect_pp": 0.0,
+  "B_predicted_pp": 0.0,
+  "L_prediction_pp": 0.0,
+  "ci95": [
+   0.0,
+   0.0
+  ]
+ },
+ "preservation": {
+  "deleted": [],
+  "note": "全部原件逐字节保留；本工件为**新增**分类标记，不修改任何历史文件",
+  "preserved": [
+   "results/ppe_practical/formal_epoch2/**",
+   "results/ppe_practical/formal/**",
+   "results/ppe_practical/effect_analysis/**",
+   "results/ppe_practical/readjudication_epoch1*/**",
+   "results/ppe_practical/fc3_replay_input_view/**",
+   "results/ppe_practical/control_path_attribution/**"
+  ],
+  "rewritten": []
+ },
+ "prohibition": "SHALL NOT be reported as evidence that prediction has zero control value",
+ "reason": "PMS_SOURCE_MODE forced the PMS Source Selector to consume the baseline-demand branch rather than the intended EMS reference; the C0/C1/C2 control manipulation did not propagate to the plant",
+ "revoked_prior_classification": "VALID_NEGATIVE_ARCHITECTURAL_RESULT",
+ "schema": "ppe_invalid_evidence_reclassification_v1",
+ "scientific_status": "SUPERSEDED_FOR_SCIENTIFIC_EFFECT_INFERENCE"
+}

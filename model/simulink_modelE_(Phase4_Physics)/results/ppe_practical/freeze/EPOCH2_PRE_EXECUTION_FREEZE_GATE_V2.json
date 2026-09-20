@@ -1,0 +1,130 @@
+{
+ "checks": [
+  {
+   "detail": "",
+   "name": "predecessor_freeze_preserved",
+   "pass": true
+  },
+  {
+   "detail": "1a2a0a789d7d5877",
+   "name": "predecessor_root_matches_d49767a2",
+   "pass": true
+  },
+  {
+   "detail": "7919123bd986d5b5",
+   "name": "first_defective_freeze_preserved",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "incident_self_hash",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "incident_no_contamination",
+   "pass": true
+  },
+  {
+   "detail": "192",
+   "name": "epoch1_terminals_192",
+   "pass": true
+  },
+  {
+   "detail": "48",
+   "name": "epoch1_warmup_parity_48",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "epoch2_namespace_absent",
+   "pass": true
+  },
+  {
+   "detail": "0",
+   "name": "epoch2_formal_ledger_entries_zero",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_amendment_v2_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_e2e_runner_integration_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_fec_robustness_prereg_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_fec_robustness_prereg_unchanged_from_predecessor",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_observability_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_coherence_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "qual_coherence_unchanged_from_predecessor",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "epoch1_amendment_run_cstar_binding",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "cstar_composite_unchanged",
+   "pass": true
+  },
+  {
+   "detail": "[]",
+   "name": "execution_commit_reproduces_all_git_backed_bindings",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "predictor_keras_on_disk_matches_binding",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "modele_slx_t445_baseline",
+   "pass": true
+  },
+  {
+   "detail": "{}",
+   "name": "prohibited_bindings_unchanged",
+   "pass": true
+  },
+  {
+   "detail": "{\"ledger_prev\": \"8eb57e26f125\", \"ledger_now\": \"fc50e0a5f605\"}",
+   "name": "attempt_audit_reconstruction_bound",
+   "pass": true
+  }
+ ],
+ "execution_code_commit_sha": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
+ "freeze_file": "results/ppe_practical/freeze/epoch2_pre_execution_freeze_v2.json",
+ "freeze_file_sha256": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+ "n_checks": 23,
+ "n_pass": 23,
+ "overall": true,
+ "schema": "PPE_EPOCH2_PRE_EXECUTION_FREEZE_GATE_V2",
+ "sha256_self_of_freeze_doc": "7bd62cefa03c6a3f0ed26d5408d57531a67e79c47be3ee5e2827ca6b3693e4b3",
+ "stop_rule": "overall=true -> PE3-1 rerun; then T-A8 authorized automatically (zero execution-critical byte changes); overall=false -> STOP and report",
+ "task": "T-A7(v3, PE4-1)",
+ "utc": "2026-09-17T12:13:51Z"
+}

@@ -1,0 +1,57 @@
+{
+ "diagnostics": {
+  "E_unserved_1hz_crosscheck_kWh": 0.0,
+  "E_unserved_kWh": 0.0,
+  "derate08_active_s_1hz": 0.0,
+  "tracking_gap_kWh_1hz": 0.4379779087110041
+ },
+ "fc3_checker_sha": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+ "fc3_replay_freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+ "fc3_replay_tool_sha": "113b9901fed17b08bb9a86d45ad02cf016ff35bf857d7f8cf9523bcbafca3af2",
+ "genset_diagnostics": {
+  "loading_registered_transition_samples": 3444,
+  "non_on_power_violation": false,
+  "pmax_violation": false,
+  "pmin_envelope_violation_samples": 0,
+  "pmin_violation_episodes": [],
+  "pmin_worst_excursion_kW": 0.0,
+  "ramp_violation_native": false
+ },
+ "original_audit_sha": "9a839aabf5a440d1f2b3f0ed69630db3454a5e72163726c2ba56026e7172c6b6",
+ "original_checker_sha": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+ "original_epoch2_freeze_root": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+ "original_run_id": "2c27983b94de2590",
+ "original_terminal_status": "COMPLETE_HARD_INFEASIBLE",
+ "original_trajectory_sha": "9c2f45caef849a43154e2b326528579b386d2855705e02cf87b64ae6fa5db24b",
+ "predicate_items": {
+  "battery_sop_v_i": true,
+  "energy_closure_c5": true,
+  "genset_limits_fc3": true,
+  "safety_hard_events": true,
+  "service_curtailment": true,
+  "soc_hard_bounds": true,
+  "task_complete": true,
+  "terminal_soc_band": true,
+  "terminal_sop_reserve": true
+ },
+ "predicate_provenance": {
+  "battery_sop_v_i": "RECOMPUTED_NATIVE_AUDIT(V,I)+RECOMPUTED_1HZ(P-over-SOP)",
+  "energy_closure_c5": "INHERITED_V2_RECORDED",
+  "genset_limits_fc3": "RECOMPUTED_1HZ(PMIN envelope+PMAX+non-ON)+RECOMPUTED_NATIVE_AUDIT(ramp)",
+  "safety_hard_events": "INHERITED_V2_RECORDED",
+  "service_curtailment": "RECOMPUTED_1HZ(recorded-native-integral)",
+  "soc_hard_bounds": "RECOMPUTED_1HZ",
+  "task_complete": "RECOMPUTED_1HZ",
+  "terminal_soc_band": "RECOMPUTED_1HZ",
+  "terminal_sop_reserve": "RECOMPUTED_1HZ"
+ },
+ "readjudicated_status": "READJUDICATED_FEASIBLE",
+ "replay_identity": {
+  "freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+  "input_view_schema_sha": "b2f9908f7805347735be8df3d63aa380c30b6a72f4b8966d763f640380279828",
+  "tool": "ppe.fc3_replay",
+  "tool_sha": "113b9901fed17b08bb9a86d45ad02cf016ff35bf857d7f8cf9523bcbafca3af2"
+ },
+ "sanitized_view_sha": "fc61c60fcc45cf4f2699b0753b286d493ba4e540440e6347b1c56af5c3675cf8",
+ "schema": "fc3_replay_artifact_v1"
+}

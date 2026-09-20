@@ -1,0 +1,16 @@
+{
+  "artifact_sha256": "ef905bf369b3fabe6e64de14bc6fbc32da7bf6d2ef84d2b355e1a9c3a41e1b0a",
+  "campaign_id": "t443-terminal-20260915",
+  "incidents": [
+    {
+      "action": "fix campaign field from PRETERMINAL manifest (same value, hash recomputed); rerun lanes",
+      "phase": "lane0 load_terminal test",
+      "rerun_allowed_by": "FR-608",
+      "root_cause_class": "registration omission (register_campaign did not copy winner_selected_utc from PRETERMINAL manifest)",
+      "symptom": "SealedAccessError check4: campaign missing winner_selected_utc",
+      "utc": "2026-09-14T18:21:31.727786+00:00",
+      "verdict": "mechanical rerun allowed"
+    }
+  ],
+  "schema": "predictor_v3_terminal_incident_ledger_v1"
+}

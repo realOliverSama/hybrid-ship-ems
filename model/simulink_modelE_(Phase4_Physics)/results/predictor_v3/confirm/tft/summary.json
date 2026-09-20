@@ -1,0 +1,39 @@
+{
+  "aggregate": {
+    "max": 4.582384411277185,
+    "mean": 4.218062002907932,
+    "median": 4.137231634753156,
+    "min": 3.9345699626934585,
+    "std": 0.2705747601686541
+  },
+  "artifact_sha256": "3530cae59953f0fe4fbf25c22f80e7134ab89506436948e1a9738152cfd7924d",
+  "artifacts": [
+    {
+      "artifact_sha256": "02b96851a760640e02168f823e7b4fa3fc1867ae937c91ff4af355c0fa7f793a",
+      "seed_index": 0
+    },
+    {
+      "artifact_sha256": "843d09b6ccb2166b7891c1ecd74411850a597e021fd6e496b9a642cd832a6948",
+      "seed_index": 1
+    },
+    {
+      "artifact_sha256": "9cce205d2e0c105652a7bcae55622db28c51e8945d699566894c4b3494450258",
+      "seed_index": 2
+    }
+  ],
+  "config_sha256": "68eb393636c2716ea7fe44f57330291c0a3ebec857180da71cb64bd1484246ca",
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_key": "tft",
+  "per_seed_pinball_sgmacro": {
+    "0": 4.137231634753156,
+    "1": 3.9345699626934585,
+    "2": 4.582384411277185
+  },
+  "schema": "predictor_v3_confirm_summary_v1",
+  "seed_indices": [
+    0,
+    1,
+    2
+  ]
+}

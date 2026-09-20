@@ -1,0 +1,91 @@
+{
+  "schema": "ppe_formal_arm_voyage_v2",
+  "run_id": "da25ffee5943abd1",
+  "voyage_id": "FLTA_S8_D07009_M1",
+  "split_group_id": "SG#0877af60295de774",
+  "tier": "LOW",
+  "arm": "P0",
+  "formal_epoch": 2,
+  "freeze_root_sha256": "8d6106ff45b3297295f5cba7e3e87845bf3c9666e85d5f983eab9fe9406bf30e",
+  "checker_v2": {
+    "sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+    "schema": "hard_feasibility_v2",
+    "pass": false,
+    "items": {
+      "task_complete": true,
+      "load_shortfall": false,
+      "soc_hard_bounds": true,
+      "terminal_soc_band": true,
+      "terminal_sop_reserve": true,
+      "battery_sop_v_i": true,
+      "genset_limits_state_aware": false,
+      "energy_closure_c5": true,
+      "safety_hard_events": true
+    },
+    "violations": {
+      "genset_pmin_s": 21.299999999999976,
+      "genset_pmax_s": 0,
+      "genset_ramp_s": 0,
+      "non_on_power_s": 0,
+      "shortfall_energy_kWh": 0,
+      "service_gap_energy_kWh": 0.30443839672096645,
+      "derate08_s": 0
+    },
+    "diagnostics": {
+      "bus_residual_energy_kWh": 1.3280824334181545,
+      "bus_residual_bias_kW": -2.1693349678607206,
+      "service_gap_note": "P_service_gap 为对偶一致性诊断（覆盖任何原因的推进缺口）",
+      "below_min_note": "below_min_*/min_clamp_* 为 PMS 调度诊断，非机组硬违规（amendment FC-1.4）",
+      "energy_closure_note": "C_bus 未提供时 c5 分量记 true（epoch-2 runner 必须提供）"
+    },
+    "detail": {
+      "dSOC": 0.0068164795594304328,
+      "SOC_end": 0.59318352044056954,
+      "P_dis_avail_end": 1050,
+      "P_chg_avail_end": 1049.2725522474266,
+      "P_reserve": {
+        "dis_kW": 543.8,
+        "chg_kW": 819.8,
+        "dis_kWh": 6.839,
+        "chg_kWh": 5.625
+      },
+      "c5_ratio": 8.1800452713950469E-7
+    }
+  },
+  "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+  "classification_authority": "ppe.feasibility_contract_v2",
+  "evidence_contract": "FC-5A",
+  "trajectory_sha256": "2cd0904d3af6b40ec961def5ea59d419417ad140dcbf3109047bf5dbf0a8d5f8",
+  "trajectory_artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal_epoch2/FLTA_S8_D07009_M1/P0.traj.v1.mat",
+  "trajectory_sidecar": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal_epoch2/FLTA_S8_D07009_M1/P0.traj.v1.sidecar.json",
+  "audit_sha256": "d1ab2f42b824495e408e5e85ba36d4319659fe6881da7e32795be5cc36da2c47",
+  "audit_artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal_epoch2/FLTA_S8_D07009_M1/P0.audit.v1.json",
+  "controller_trace_sha256": "65bfe8fb8b54db809f751ffa663df5592a4defb1d8cd7431b6cccb8c5f5d3437",
+  "controller_trace_artifact": "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/results/ppe_practical/formal_epoch2/FLTA_S8_D07009_M1/P0.ctrace.v1.json",
+  "controller_trace_applies": false,
+  "forecast_source_identity": "N/A",
+  "canonical_reserves": {
+    "dis_kW": 543.8,
+    "chg_kW": 819.8,
+    "dis_kWh": 6.839,
+    "chg_kWh": 5.625
+  },
+  "fuel_total_kg": 179.41528358771498,
+  "SOC0": 0.6,
+  "SOC_end": 0.59318352044056954,
+  "J_FEC_kg": 183.40047804992483,
+  "legacy_diagnostics": {
+    "note": "epoch-1 t445.hard_feasibility retained as non-authoritative continuity diagnostic",
+    "hard_feasibility_pass": ""
+  },
+  "cstar_impl_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "teval_identity_sha256": "78f978b844a31781624244db63a55440b1a47a9b41a5173498b4c7f7a35ed09e",
+  "code_commit_sha": "1a6108ca9784c0ce0935cfc82360dce9726d4862",
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "execution_seed": "phase4f-ppe-formal-epoch1",
+  "T_eval": 3976,
+  "predictor_identity": "N/A",
+  "wall_s": 43.445921,
+  "utc": "2026-09-17T12:23:39Z"
+}

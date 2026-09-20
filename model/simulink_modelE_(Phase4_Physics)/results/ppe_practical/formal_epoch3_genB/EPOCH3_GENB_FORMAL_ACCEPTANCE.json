@@ -1,0 +1,186 @@
+{
+ "campaign": {
+  "design": "48 frozen voyages stratified LOW/MID/HIGH x 4 arms = 192 terminals",
+  "freeze_file_sha256": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "freeze_root_prefix": "a2dc634f",
+  "study": "hybrid-ship EMS 4-arm control contrast (P0 rule / C0 persistence / C1 perfect-info / C2 Predictor-v3 NN)"
+ },
+ "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+ "gates": {
+  "G1_corpus_reconciliation": {
+   "duplicated": 0,
+   "expected": 192,
+   "extra_out_of_universe": 0,
+   "missing": 0,
+   "namespace_split": {
+    "G1_only": 65,
+    "G2_only": 127,
+    "both": 0
+   },
+   "pass": true,
+   "per_arm": {
+    "C0": 48,
+    "C1": 48,
+    "C2": 48,
+    "P0": 48
+   },
+   "unique_covered": 192
+  },
+  "G2_fc3_readjudication": {
+   "ERROR": 0,
+   "READJUDICATED_FEASIBLE": 192,
+   "READJUDICATED_HARD_INFEASIBLE": 0,
+   "authority": "python/ppe/fc3_core.py",
+   "fc3_core_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+   "n": 192,
+   "note": "terminal-recorded hard_feasibility (v2 static semantics) is superseded by this authoritative readjudication",
+   "pass": true,
+   "semantics": "v3 dynamic PMIN envelope; service = recorded-native E_unserved; tracking gap is diagnostic-only"
+  },
+  "G3_pre_execution_freeze": {
+   "assertion_polarity_note": "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS is a count whose PASS value is 0 (no prior authoritative campaign runs at freeze time); boolean assertions are pass=true",
+   "assertions": {
+    "ATTEMPT_A_EXCLUDED": true,
+    "CLEAN_TRACKED_TREE": true,
+    "EXECUTION_CLOSURE_BOUND": true,
+    "FC3_AUTHORITATIVE_IDENTITY": true,
+    "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS": 0,
+    "QUAL_RECOVERY_PASS": true,
+    "QUAL_RUNNER_SMOKE_PASS": true
+   },
+   "campaign_generation": "B",
+   "campaign_namespace": "results/ppe_practical/formal_epoch3_genB",
+   "corpus_policy": "RETAIN_SAME_FROZEN_CORPUS (48 voyages; corpus identity unchanged)",
+   "freeze_file": "results/ppe_practical/freeze/epoch3_pre_execution_freeze_genb.json",
+   "git_head": "ac618ae0b20f9d4e343c52246ebacd27bb3a0bca",
+   "git_tree_clean": true,
+   "overall": true,
+   "pass": true,
+   "provisional": false,
+   "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
+   "schema": "ppe_epoch3_pre_execution_freeze_genb_v1",
+   "utc": "2026-09-19T07:05:36Z"
+  },
+  "G4_effect_analysis": {
+   "R_diagnostic": {
+    "R": 0.9438903269895161,
+    "reason": "",
+    "status": "OK"
+   },
+   "acceptance_pass": true,
+   "analysis_class": "DESCRIPTIVE_STATISTICS_PLUS_PREREGISTERED_PAIRED_ANALYSIS",
+   "artifact_shas": {
+    "bootstrap": "3289746e68bd5138784a2047878ddf4474277dd4716bd6f77fe5ca5b84c9c8ae",
+    "context": "f6cb6c474bab17c622885e48cac540d4a4c25012d6b433079cb9fbc40696c708",
+    "fec_sensitivity": "f0dde28f8b04ce57d789093aac07e354b6d794b4375b003d74a95c291814a314",
+    "group_tier": "e3ab10ebfb8cb395ac7cfc32c185c3650196a1ac8291503bbe70d5b8c938cc2a",
+    "primary": "7fda396511bae08956c640037c4439fddb0490ebff4e49af34ef9fcbc03e9dfa"
+   },
+   "bootstrap_deterministic": true,
+   "ci95_pp": {
+    "B_perfect": {
+     "hi": 0.309735201317787,
+     "lo": 0.014202956251077314
+    },
+    "B_predicted": {
+     "hi": 0.28781148863893213,
+     "lo": 0.013276742814234287
+    },
+    "L_prediction": {
+     "hi": 0.04084092270704154,
+     "lo": -0.028724431093231854
+    }
+   },
+   "corpus_runs": 192,
+   "max_reconstruction_diff": 0.0,
+   "pass": true,
+   "theta_hat_pp": {
+    "B_perfect": 0.15626709278737014,
+    "B_predicted": 0.14749899730877186,
+    "L_prediction": 0.008768095478598284
+   }
+  },
+  "G5_occupancy_descriptive": {
+   "analysis_class": "DESCRIPTIVE_STATISTICS_ONLY",
+   "artifact_sha256": "8c1037b9c629025876cd1183a19e5e89717263ef7f5b6903371bae919fd493b6",
+   "n_runs": 192,
+   "pass": true,
+   "per_arm": {
+    "C0": 48,
+    "C1": 48,
+    "C2": 48,
+    "P0": 48
+   }
+  },
+  "G6_eligibility_manifest": {
+   "expected_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+   "pass": true,
+   "path": "results/ppe_practical/effect_analysis_eligibility_manifest.json",
+   "sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3"
+  },
+  "G7_attempt_a_disposition": {
+   "g1_attempt_a_era_terminals_census": {
+    "terminals": 31
+   },
+   "ledger": "results/ppe_practical/formal_epoch3/_audit_stop_gate/ATTEMPT_A_EXCLUSION_LEDGER.json",
+   "ledger_sha256": "4b01d77dcdf179962b3a8415b39004ca421b36a5bb34fe5791b9f03289196af8",
+   "mixing_check": "genB corpus filters freeze_root a2dc634f; attempt-A terminals (different freeze root) are physically excluded from every analysis input",
+   "pass": true,
+   "reasons": [
+    "FORMAL_FREEZE_DRIFT=true",
+    "FC3_CONTRACT_BINDING_REGRESSION=CONFIRMED"
+   ],
+   "superseded_dir": "_superseded_pre_fc3_fix (sealed, not in corpus)",
+   "verdict": "INVALID_FOR_FINAL_EFFECT_INFERENCE"
+  },
+  "G8_frozen_module_identity": {
+   "fc3_core_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+   "fec_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+   "pass": true,
+   "stats_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+  },
+  "G9_no_mutation": {
+   "freeze_sha256_after": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+   "freeze_sha256_before": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+   "manifest_sha256_after": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+   "manifest_sha256_before": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+   "pass": true
+  }
+ },
+ "overall_pass": true,
+ "problems": [],
+ "schema": "ppe_epoch3_genb_formal_acceptance_v1",
+ "sha256_self": "ff1284694be5ee92b3c56d297cb6bf1bdf91d78d2decdc9dff79ebb8bbaf3c21",
+ "summary_numbers": {
+  "P0_context_kg": {
+   "DJ_C0_vs_P0_kg": -14.121388938444381,
+   "DJ_C1_vs_P0_kg": -14.491853292160139,
+   "DJ_C2_vs_P0_kg": -14.47338311111715
+  },
+  "P0_context_note": "chain FULL_COHORT estimates; see effect_analysis_context_epoch3.json for tiers, CI and Wilcoxon",
+  "R": 0.9438903269895161,
+  "ci95_pp": {
+   "B_perfect": {
+    "hi": 0.309735201317787,
+    "lo": 0.014202956251077314
+   },
+   "B_predicted": {
+    "hi": 0.28781148863893213,
+    "lo": 0.013276742814234287
+   },
+   "L_prediction": {
+    "hi": 0.04084092270704154,
+    "lo": -0.028724431093231854
+   }
+  },
+  "corpus": "192/192 terminals, 0 duplicate, 0 missing",
+  "fc3": "192/192 READJUDICATED_FEASIBLE (fc3_core 33a8309a)",
+  "theta_pp": {
+   "B_perfect": 0.15626709278737014,
+   "B_predicted": 0.14749899730877186,
+   "L_prediction": 0.008768095478598284
+  }
+ },
+ "title": "EPOCH-3 GENERATION-B FORMAL ACCEPTANCE",
+ "utc": "2026-09-20T10:37:13Z"
+}

@@ -1,0 +1,12 @@
+{
+  "coverage": 1.0,
+  "failclosed_missing_voyage": true,
+  "failclosed_offgrid_t0": true,
+  "index_sha256": "927eec72b504dc3b7579d55c1a67028a8fe87a2cd6b9d8635c4d289c5b45f3fb",
+  "n_required_keys": 15852,
+  "overall": true,
+  "parity_exact_float32": 378,
+  "parity_float64_space_max_rel_err": 5.504105019222562e-08,
+  "schema": "ppe_t002_result_v1",
+  "task": "T-002"
+}

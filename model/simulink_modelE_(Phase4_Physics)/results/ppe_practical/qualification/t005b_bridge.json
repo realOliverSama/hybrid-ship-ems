@@ -1,0 +1,11 @@
+{
+  "schema": "ppe_t005b_bridge_qual_v1",
+  "task": "T-005b",
+  "purpose": "QUALIFICATION",
+  "bitwise_repeat": true,
+  "shape_ok": true,
+  "failclosed_offanchor": true,
+  "q50_head": 103.98235321044922,
+  "pass": true,
+  "utc": "2026-09-15T15:57:43Z"
+}

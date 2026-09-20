@@ -1,0 +1,412 @@
+{
+  "artifact_sha256": "b6138e855bb1e924bf844f4ecf55c3dc7d77bbcc2251cf9e764fa884ff986df6",
+  "campaign_id": "t443-terminal-20260915-r2",
+  "incidents": [
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s0 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:21.966280+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s0 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:21.966479+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s0 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:21.967403+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s0 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:21.967659+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s0 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:21.967864+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s1 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:27.342326+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s1 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:27.342978+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s1 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:27.343256+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s1 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:27.343520+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s1 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:27.343798+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s2 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:32.597902+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s2 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:32.598645+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s2 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:32.599023+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s2 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:32.599375+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "mlpq s2 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:32.599729+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s0 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:50.707817+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s0 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:50.708520+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s0 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:50.708960+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s0 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:50.709375+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s0 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:56:50.709799+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s1 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:00.999753+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s1 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:01.000681+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s1 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:01.001203+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s1 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:01.001706+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s1 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:01.002201+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s2 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:11.370458+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s2 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:11.371402+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s2 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:11.372005+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s2 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:11.372586+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "tcnq s2 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:11.373167+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s0 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:36.892638+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s0 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:36.893623+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s0 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:36.894292+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s0 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:36.894945+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s0 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:36.895582+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s1 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:48.938019+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s1 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:48.938955+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s1 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:48.939429+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s1 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:48.939881+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s1 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:57:48.940331+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s2 ood_A1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:58:00.511769+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s2 ood_B1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:58:00.512537+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s2 ood_C1",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:58:00.513039+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s2 ood_C2",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:58:00.513514+00:00",
+      "verdict": "FAILED recorded"
+    },
+    {
+      "action": "recorded; no rerun by this driver",
+      "phase": "transformer s2 ood_C3",
+      "rerun_allowed_by": null,
+      "root_cause_class": "eval_error",
+      "symptom": "TypeError: 'NoneType' object is not subscriptable",
+      "utc": "2026-09-14T18:58:00.513956+00:00",
+      "verdict": "FAILED recorded"
+    }
+  ],
+  "schema": "predictor_v3_terminal_incident_ledger_v1"
+}

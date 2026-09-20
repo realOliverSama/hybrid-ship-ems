@@ -1,0 +1,112 @@
+{
+  "schema": "ppe_genb_known_failure_regression_matrix_v1",
+  "created_utc": "2026-09-19T15:20:00Z",
+  "candidate_execution_commit": "fd27189e (result-bearing bytes; generator/guard lineage completed at f5b83400/ac618ae0 provenance-only)",
+  "execution_tree": "b98ca9a66f4a181226ff35366bcf7a712d74d4d3 (fd27189e^{tree}; runner/loader/guard/recovery/smoke bytes on cloud verified identical)",
+  "freeze_root": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "rule": "10/10 PASS required before new formal execution",
+  "records": [
+    {
+      "id": "R1",
+      "class": "PMS_SOURCE_MODE baseline/bypass introduced",
+      "test_name": "qual_ep3b_runner_smoke.r8_four_arm_wiring (explicit per-arm assertions: pms_source_mode==1, ems_ctrl_law=={5,6,6,6})",
+      "injected_fault": "binding table flipped to baseline (PMS_SOURCE_MODE=0) or wrong law",
+      "expected_failure": "smoke wiring assertion fails (rec.pms_source_mode==1 is a hard assertion); control_critical_vars.m is byte-bound in the freeze closure so a table edit also trips PPE:E3B:BYTES",
+      "observed": "wiring=1 on candidate bytes; control_critical_vars.m closure sha bound",
+      "result": "PASS",
+      "evidence": ["results/ppe_practical/execution_path_recovery/qual_ep3b_runner_smoke/qual_ep3b_runner_smoke_final.json", "genB freeze execution_closure"],
+      "negative_case_note": "detector polarity is explicit (==1 / ==wantLaw); a baseline mutation necessarily flips the assertion to FAIL"
+    },
+    {
+      "id": "R2",
+      "class": "C2 bridge missing/not consumed",
+      "test_name": "qual_ep3_recovery.R1_c2_bridge_failclosed + c2_integration",
+      "injected_fault": "C2 requested without bridge handle",
+      "expected_failure": "PPE:WINFUN:BRIDGE before Simulink",
+      "observed_failure_identifier": "PPE:WINFUN:BRIDGE",
+      "result": "PASS",
+      "evidence": ["qual_ep3_recovery_result.json (R1, c2_integration)"]
+    },
+    {
+      "id": "R3",
+      "class": "P0 production branch missing",
+      "test_name": "qual_ep3_recovery.R2_p0_anchor_branch",
+      "injected_fault": "P0 anchor action with no branch",
+      "expected_failure": "PPE:WINFUN:ARM 'arm P0 illegal' (the generation-A defect)",
+      "observed": "anchor serves C0 persistence window (source_id=C0_PERSISTENCE); attempt-A 61 runs included P0 production executions",
+      "result": "PASS",
+      "evidence": ["qual_ep3_recovery_result.json"]
+    },
+    {
+      "id": "R4",
+      "class": "controller trace / high-rate audit missing",
+      "test_name": "qual_ep3b_runner_smoke.r3_evidence_complete",
+      "injected_fault": "writers not invoked / files absent",
+      "expected_failure": "evidence-completeness assertion fails (7 files per run)",
+      "observed": "evidence=1 on candidate bytes",
+      "result": "PASS",
+      "evidence": ["qual_ep3b_runner_smoke_final.json"]
+    },
+    {
+      "id": "R5",
+      "class": "two voyages share/overwrite trajectory namespace",
+      "test_name": "qual_ep3b_runner_smoke.r4_cross_voyage_no_overwrite",
+      "injected_fault": "writer output at top level (the generation-A defect)",
+      "expected_failure": "second voyage overwrites first trajectory => coexistence assertion fails",
+      "observed": "cross=1 (per-voyage directories coexist)",
+      "result": "PASS",
+      "evidence": ["qual_ep3b_runner_smoke_final.json"]
+    },
+    {
+      "id": "R6",
+      "class": "wrong FC-3 authority / v2 semantics selected as authoritative",
+      "test_name": "qual_ep3_recovery.R6_fc3_authoritative_bytes + R5_fc3_call_form + negative regression N1_R6_v2_authority_rejected",
+      "injected_fault": "freeze fc3_authoritative.sha256 swapped to the v2 MATLAB checker",
+      "expected_failure": "loader rejects before any use: PPE:E3B:FC3",
+      "observed_failure_identifier": "PPE:E3B:FC3",
+      "result": "PASS",
+      "evidence": ["ep3_neg_regress log (N1)", "qual_ep3_recovery_result.json", "fc3_authority_declaration.json"]
+    },
+    {
+      "id": "R7",
+      "class": "post-freeze mutation of a result-bearing file",
+      "test_name": "negative regression N2_R7_closure_drift_rejected",
+      "injected_fault": "appended a line to winfun_plan.m after freeze",
+      "expected_failure": "loader closure byte check fails BEFORE Simulink: PPE:E3B:BYTES",
+      "observed_failure_identifier": "PPE:E3B:BYTES",
+      "result": "PASS",
+      "evidence": ["ep3_neg_regress log (N2, restored=1 verified by freeze closure sha)"]
+    },
+    {
+      "id": "R8",
+      "class": "qualification hook active in formal mode",
+      "test_name": "negative regression N4_R8_formal_hook_rejected",
+      "injected_fault": "formal run with QHookManualRef=700",
+      "expected_failure": "rejected before Simulink: PPE:EP3:QHOOK",
+      "observed_failure_identifier": "PPE:EP3:QHOOK",
+      "result": "PASS",
+      "evidence": ["ep3_neg_regress log (N4)"]
+    },
+    {
+      "id": "R9",
+      "class": "wrong arm binding / law / forecast source",
+      "test_name": "qual_ep3b_runner_smoke.r8_four_arm_wiring (per-arm law + pms + forecast-source assertions) + attempt-A census arm-binding fields",
+      "injected_fault": "wrong law/source for any arm",
+      "expected_failure": "wiring assertion fails; attempt-A style 20-item check item 7 fails",
+      "observed": "wiring=1; attempt-A 61 runs all arm-identity PASS",
+      "result": "PASS",
+      "evidence": ["qual_ep3b_runner_smoke_final.json", "_audit_stop_gate/census.txt"]
+    },
+    {
+      "id": "R10",
+      "class": "MATLAB path shadowing of a critical function",
+      "test_name": "negative regression N3_R10_shadowing_rejected + genB freeze path audit (29 functions, repo-relative)",
+      "injected_fault": "freeze-first resolution pointing at an unexpected file",
+      "expected_failure": "assert_genb_path fails before Simulink: PPE:E3B:PATH",
+      "observed_failure_identifier": "PPE:E3B:PATH",
+      "result": "PASS",
+      "evidence": ["ep3_neg_regress log (N3)", "genB freeze path_audit_names/path_first"]
+    }
+  ],
+  "summary": "10/10 PASS"
+}

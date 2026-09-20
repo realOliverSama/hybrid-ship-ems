@@ -1,0 +1,476 @@
+{
+  "artifact_sha256": "d9a601c9d1fb56fb6f1e1e44213900d1a7a618ed883ecfae23a66c813826016e",
+  "axis3": {
+    "mlpq": {
+      "per_condition": {
+        "A1": {
+          "R_deg": {
+            "ci_lower": 1.9142650249579154,
+            "ci_upper": 2.3223600571358967,
+            "point": 2.098242501662095,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 36,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "B1": {
+          "R_deg": {
+            "ci_lower": 1.0312257332926946,
+            "ci_upper": 1.2958835569213873,
+            "point": 1.1545925256511163,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "SMALL",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C1": {
+          "R_deg": {
+            "ci_lower": 1.3279799348438586,
+            "ci_upper": 1.6628744676104221,
+            "point": 1.4825097581919506,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 44,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C2": {
+          "R_deg": {
+            "ci_lower": 1.1580773860741613,
+            "ci_upper": 1.4421772895146963,
+            "point": 1.28785751160298,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C3": {
+          "R_deg": {
+            "ci_lower": 1.307311143373374,
+            "ci_upper": 1.7431243870174855,
+            "point": 1.5161070130179803,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        }
+      }
+    },
+    "reatt": {
+      "per_condition": {
+        "A1": {
+          "R_deg": {
+            "ci_lower": 4.523766635440783,
+            "ci_upper": 6.647082615680865,
+            "point": 5.407213415293382,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 36,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "B1": {
+          "R_deg": {
+            "ci_lower": 1.2145868914634643,
+            "ci_upper": 1.818236576434821,
+            "point": 1.4712456864080943,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C1": {
+          "R_deg": {
+            "ci_lower": 2.1902607571820876,
+            "ci_upper": 3.428928255233325,
+            "point": 2.7432736961606543,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 44,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C2": {
+          "R_deg": {
+            "ci_lower": 1.0613816612468063,
+            "ci_upper": 1.6348458695035393,
+            "point": 1.305890789920831,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C3": {
+          "R_deg": {
+            "ci_lower": 2.196158552122862,
+            "ci_upper": 3.3527425789819763,
+            "point": 2.694895776216951,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        }
+      }
+    },
+    "tcnq": {
+      "per_condition": {
+        "A1": {
+          "R_deg": {
+            "ci_lower": 1.9299932795855572,
+            "ci_upper": 2.378982072817386,
+            "point": 2.1373848562259576,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 36,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "B1": {
+          "R_deg": {
+            "ci_lower": 1.1825612316955394,
+            "ci_upper": 1.4894907837813618,
+            "point": 1.3239726211041922,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C1": {
+          "R_deg": {
+            "ci_lower": 1.3609684284683665,
+            "ci_upper": 1.7082762417334552,
+            "point": 1.5231285955347906,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 44,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C2": {
+          "R_deg": {
+            "ci_lower": 1.1629292608459907,
+            "ci_upper": 1.4654922295120165,
+            "point": 1.3012982829892836,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C3": {
+          "R_deg": {
+            "ci_lower": 1.3802682939661186,
+            "ci_upper": 1.8675794818628269,
+            "point": 1.6047476674140246,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        }
+      }
+    },
+    "tft": {
+      "per_condition": {
+        "A1": {
+          "R_deg": {
+            "ci_lower": 6.5605046062929,
+            "ci_upper": 10.79967759289509,
+            "point": 8.236462645187032,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 36,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "B1": {
+          "R_deg": {
+            "ci_lower": 1.2224671342769826,
+            "ci_upper": 2.0299740123637138,
+            "point": 1.5517553193497593,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C1": {
+          "R_deg": {
+            "ci_lower": 2.3772830225411266,
+            "ci_upper": 4.178637779704083,
+            "point": 3.1137888858487632,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 44,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C2": {
+          "R_deg": {
+            "ci_lower": 1.1271156674488358,
+            "ci_upper": 1.9966359911480842,
+            "point": 1.4673932758486046,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C3": {
+          "R_deg": {
+            "ci_lower": 1.9534490594829812,
+            "ci_upper": 3.3705525664895863,
+            "point": 2.498997534445684,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        }
+      }
+    },
+    "transformer": {
+      "per_condition": {
+        "A1": {
+          "R_deg": {
+            "ci_lower": 7.121352102001493,
+            "ci_upper": 10.910338509936022,
+            "point": 8.760086055860995,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 36,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "B1": {
+          "R_deg": {
+            "ci_lower": 1.1096555326921675,
+            "ci_upper": 1.7376747026444168,
+            "point": 1.3709589783759166,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C1": {
+          "R_deg": {
+            "ci_lower": 2.941458839553387,
+            "ci_upper": 5.004145105798681,
+            "point": 3.82994554424808,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 44,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C2": {
+          "R_deg": {
+            "ci_lower": 1.0091786569935017,
+            "ci_upper": 1.586276621442875,
+            "point": 1.2528037697555812,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "MODERATE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": false,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        },
+        "C3": {
+          "R_deg": {
+            "ci_lower": 1.840724437035635,
+            "ci_upper": 2.8655833539718767,
+            "point": 2.275493463443016,
+            "status": "OK"
+          },
+          "ci_lower_exceeds_1": true,
+          "ci_upper_within_20pct": false,
+          "effect_band": "LARGE",
+          "metric": "pinball",
+          "n_groups_iid": 18,
+          "n_groups_ood": 40,
+          "small_n_caution": false,
+          "status": "OK",
+          "substantial_degradation": true,
+          "summary_label": "SUPPORTED_DEGRADATION"
+        }
+      }
+    }
+  },
+  "schema": "predictor_v3_axis3_v1"
+}

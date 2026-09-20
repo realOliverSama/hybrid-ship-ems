@@ -1,0 +1,13 @@
+{
+  "schema": "ppe_fec_robustness_prereg_v1",
+  "purpose": "QUALIFICATION (pre-registration)",
+  "k_eq_canonical": 0.5457,
+  "k_eq_sensitivity": {
+    "lo_0_8x": 0.43656,
+    "hi_1_2x": 0.65484
+  },
+  "k_eq_break_even_synth": 0.0933,
+  "note": "break-even 仅诊断呈现；合成数据演示；正式 break-even 属 T-011B（未授权）",
+  "pass": true,
+  "utc": "2026-09-17T05:42:26Z"
+}

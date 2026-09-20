@@ -1,0 +1,79 @@
+{
+  "cross_platform_evidence": {
+    "bitwise_identical": true,
+    "fuel_total_kg": 0.6721004672164846,
+    "linux_artifact": "results/ppe_practical/qualification/t005_runner_linux_requal.json",
+    "mac_artifact": "results/ppe_practical/qualification/t005_runner_post_amendment_rerun.json",
+    "note": "platforms agree bitwise on the qualified toy fixture; the quarantine is nevertheless applied to keep the formal corpus on a single runtime/update level"
+  },
+  "decision_basis": "execution-environment availability and runtime homogeneity; NOT based on any observed scientific outcome (TG3). No record was deleted or edited.",
+  "formal_epoch": 1,
+  "policy": "the quarantined records remain identity-valid epoch-1 evidence, preserved verbatim; the formal corpus is produced by Linux re-runs of the same (voyage, arm) identities under the same freeze/amendment identities",
+  "quarantine_sha256_self": "0af5e0e2e5a7a3f51785b69319bf00122db4e4045f69ac7202822d7e5bfd4185",
+  "quarantined_records": [
+    {
+      "arm": "P0",
+      "cstar_impl_sha256": "e9ab6a95b738b4b5d7afafd1e185e34718fe28eac32ff3dc2156a99bfcba4281",
+      "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+      "quarantined_artifact": "results/ppe_practical/formal/quarantine_mac_platform_superseded/FLTA_S2_D01004_M1/P0.json",
+      "record_sha256": "502c48c1da59bb9f5486b76f767de645c3cb757ff9c5c3521fba93b8e39cf4d0",
+      "run_id": "6e9ce4848b26722d",
+      "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "arm": "C0",
+      "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+      "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+      "quarantined_artifact": "results/ppe_practical/formal/quarantine_mac_platform_superseded/FLTA_S2_D01004_M1/C0.json",
+      "record_sha256": "70e6c63899218038226120d6c5f0772d20c54cb4bf835a6edad9fe5b9c1b3297",
+      "run_id": "541df570d46d4a2e",
+      "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    },
+    {
+      "arm": "P0",
+      "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+      "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+      "quarantined_artifact": "results/ppe_practical/formal/quarantine_mac_platform_superseded/FLTA_S6_D05002_M1/P0.json",
+      "record_sha256": "38a104046fac68d0e783098ebb29a459411dab67e7fce974c8de7cf3da4f2787",
+      "run_id": "a3e13dc8e9859eee",
+      "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "arm": "C0",
+      "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+      "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+      "quarantined_artifact": "results/ppe_practical/formal/quarantine_mac_platform_superseded/FLTA_S6_D05002_M1/C0.json",
+      "record_sha256": "23e916bac5bae753986c1ca95e284859672ca4aff7082c31b6f2c1cbcfc50afa",
+      "run_id": "9e3fcaea5a118cae",
+      "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "arm": "C1",
+      "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+      "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+      "quarantined_artifact": "results/ppe_practical/formal/quarantine_mac_platform_superseded/FLTA_S6_D05002_M1/C1.json",
+      "record_sha256": "81c59b75c76947b05c7b291fdbfb751ca9b0cb64141deb7877d667d69167ac8c",
+      "run_id": "5d21c6f611532b4c",
+      "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+      "voyage_id": "FLTA_S6_D05002_M1"
+    },
+    {
+      "arm": "C1",
+      "cstar_impl_sha256": "4be29f4ecd4cd35eaa1f6fba14b4928ebce623f02bdc895e5c2833a165acb5c4",
+      "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+      "quarantined_artifact": "results/ppe_practical/formal/quarantine_mac_platform_superseded/FLTA_S2_D01004_M1/C1.json",
+      "record_sha256": "5138b54b5bab8aa09dfe212d6602868cc304e272570c1fe1c715f2cfe5b7fb63",
+      "run_id": "c17cb196d775ed34",
+      "terminal_status": "COMPLETE_HARD_INFEASIBLE",
+      "voyage_id": "FLTA_S2_D01004_M1"
+    }
+  ],
+  "reason": "the local macOS host lost its MATLAB license checkout after the same MathWorks account signed in on the Linux worker host (MathWorks Licensing Error 5, code -5.3). The formal epoch can therefore not continue on macOS, and mixing runtimes within a voyage (macOS R2026a Update 4 arms + Linux R2026a Update 5 arms) is not acceptable for COMMON_WARMUP_PARITY and arm comparability. Additionally, this record binds the pre-atomic-transport composite cstar_impl_sha256=4be29f4e... while the formal corpus runs the amended composite 40c5be94..., so it cannot be mixed into the same voyage.",
+  "schema": "ppe_superseded_records_quarantine_v1",
+  "study": "phase4f-practical-predictive-ems",
+  "utc": "2026-09-16T12:05:00Z"
+}

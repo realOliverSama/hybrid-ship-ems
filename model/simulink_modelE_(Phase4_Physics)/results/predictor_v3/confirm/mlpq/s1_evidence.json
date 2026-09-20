@@ -1,0 +1,30 @@
+{
+  "ablation_face": null,
+  "active_info_channels": [
+    "v_plan_mps",
+    "s_plan_m",
+    "h_chart_m",
+    "P_hotel_plan_kW",
+    "u_fcst_mps",
+    "wl_fcst_m"
+  ],
+  "arch": "mlpq",
+  "artifact": "experiments/predictor_v3/confirm/mlpq/mlpq_s1.keras",
+  "artifact_sha256": "d6ddbf98cd4cac9e94f9ba2c1cf6c45600ac7b5fe685db122a4e3c15cf865780",
+  "config_sha256": "f9f68f210bdf2d177c9faae3c8055481f0e6a1810d87521b982f126d50903771",
+  "duration_s": 775.1,
+  "env_manifest_sha256": "05fda3ba5ed5a33b44e2b2eb96d94312a2e2fd43617a0dd5157f469ca4853023",
+  "git_commit": "fb61295f",
+  "model_id": "mlpq",
+  "model_key": "mlpq",
+  "param_count": 216314,
+  "schema": "predictor_v3_confirm_run_v1",
+  "seed_index": 1,
+  "seed_int": 1279381591,
+  "utc": "2026-09-14T12:03:30.338100+00:00",
+  "val": {
+    "per_group_ref": "mlpq/s1_per_group.json",
+    "pinball_sgmacro": 17.435151667192617
+  },
+  "zero_kf_channels": []
+}

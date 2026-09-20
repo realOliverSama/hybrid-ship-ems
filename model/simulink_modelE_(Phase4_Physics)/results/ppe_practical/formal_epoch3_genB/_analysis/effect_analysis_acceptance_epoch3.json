@@ -1,0 +1,37 @@
+{
+ "analysis_class": "DESCRIPTIVE_STATISTICS_PLUS_PREREGISTERED_PAIRED_ANALYSIS",
+ "artifact_shas": {
+  "bootstrap": "3289746e68bd5138784a2047878ddf4474277dd4716bd6f77fe5ca5b84c9c8ae",
+  "context": "f6cb6c474bab17c622885e48cac540d4a4c25012d6b433079cb9fbc40696c708",
+  "fec_sensitivity": "f0dde28f8b04ce57d789093aac07e354b6d794b4375b003d74a95c291814a314",
+  "group_tier": "e3ab10ebfb8cb395ac7cfc32c185c3650196a1ac8291503bbe70d5b8c938cc2a",
+  "primary": "7fda396511bae08956c640037c4439fddb0490ebff4e49af34ef9fcbc03e9dfa"
+ },
+ "bindings": {
+  "analysis_script_sha256": "9a86183379f43d16d1e71a2de691638ed4b3f7e02f3076dd16089d21fd50ddf5",
+  "corpus_identity_sha256": "03b73952ce6e5ef29ac1e1a3fa1d5fa1403a75dc1ad2af5a43c265dd94fa1b64",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+  "fc3_core_sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "freeze_file_sha256": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "genb_freeze_root": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f",
+  "note": "frozen ppe.stats aggregation chain + ppe.fec J_FEC; corpus = genB terminals (freeze a2dc634f) resolved per (voyage,arm) across formal_epoch3_genB + formal_epoch3 namespaces; attempt-A era terminals physically excluded",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "bootstrap_deterministic": true,
+ "corpus_runs": 192,
+ "evidence_label": "FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE",
+ "max_reconstruction_diff": 0.0,
+ "n_voyages_primary": 48,
+ "pass": true,
+ "per_arm": {
+  "C0": 48,
+  "C1": 48,
+  "C2": 48,
+  "P0": 48
+ },
+ "problems": [],
+ "schema": "effect_analysis_acceptance_epoch3_v1",
+ "sha256_self": "2b80b1b9e56dd15d09f2da066630a21b5e6afbf8a6d72c60ad6c2d5546e85120"
+}

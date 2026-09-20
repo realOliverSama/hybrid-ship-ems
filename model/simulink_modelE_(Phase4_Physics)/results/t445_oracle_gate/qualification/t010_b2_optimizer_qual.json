@@ -1,0 +1,61 @@
+{
+  "schema": "t445_t010_b2_optimizer_qual_v1",
+  "task": "T-010",
+  "purpose": "QUALIFICATION",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "Q": {
+    "Q1": true,
+    "Q2": true,
+    "Q3": true,
+    "Q4": false,
+    "Q5": true,
+    "Q6": false
+  },
+  "detail": {
+    "Q1": {
+      "pass": true,
+      "nodes_ok": 597960,
+      "nodes_n": 597960,
+      "nodes_maxAbs": 0,
+      "rand_ok": 1000,
+      "rand_n": 1000,
+      "rand_maxAbs": 0,
+      "oob": 0,
+      "domain_in": 3526,
+      "domain_n": 3526,
+      "LAMBDA_DOMAIN_COVERAGE": true
+    },
+    "Q2": {
+      "pass": true,
+      "rel": 0,
+      "J0": 15.530791925947419,
+      "J1": 15.530791925947419
+    },
+    "Q3": {
+      "pass": true,
+      "rel": 0,
+      "J0": 15.530791925947419,
+      "J1": 15.530791925947419
+    },
+    "Q5": {
+      "pass": true,
+      "dlam1": -0.1
+    },
+    "Q4": {
+      "pass": false,
+      "fuel_rel": 0.091834254165874984,
+      "dsoc_err": 0.00032680827165620929,
+      "fuel_proxy": 21.173222222222229,
+      "fuel_plant": 23.314270901921336
+    },
+    "Q6": {
+      "pass": false,
+      "rel": 0.099315185932157421,
+      "fuel_proxy": 19.99356666666667,
+      "fuel_b0": 22.198183376011364,
+      "SOC_s": 0.591403693523428
+    }
+  },
+  "pass": false,
+  "utc": "2026-09-15T10:20:49Z"
+}

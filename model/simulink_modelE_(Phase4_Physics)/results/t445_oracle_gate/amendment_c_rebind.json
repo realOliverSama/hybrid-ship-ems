@@ -1,0 +1,64 @@
+{
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "corpus": {
+    "corpus_identity_sha256_after": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+    "corpus_identity_sha256_before": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+    "identity_unchanged": true,
+    "new_config": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+    "old_config": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+    "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/corpus_manifest.json"
+  },
+  "preserved_unrebound": [
+    "qualification/t007_keq_charge_restoration.json",
+    "qualification/t007_energy_ladder.json",
+    "lambda_envelope_r4.json"
+  ],
+  "purpose": "QUALIFICATION",
+  "rebound": [
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/t002_unit_test_result.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/t003_complete.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/t003_b0_regression.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/t003_b1_core.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/t003_10b_smoke.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/t003_control_gate_quick.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/b1_norm_repro.json"
+    },
+    {
+      "new": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+      "old": "539e3a880deac30b61748d5e4947fcf12732a987b21663ac09e574dd2b0cf0d1",
+      "path": "simulink_modelE_(Phase4_Physics)/results/t445_oracle_gate/lambda_envelope_r4_native.json"
+    }
+  ],
+  "record_sha256": "5ef4ee72343e200a659c8ff5792d3773261da5cacb177476890fb319f1380eef",
+  "schema": "t445_amendment_c_rebind_v1",
+  "superseded_config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "task": "T-001",
+  "utc": "2026-09-15T09:45:57Z"
+}

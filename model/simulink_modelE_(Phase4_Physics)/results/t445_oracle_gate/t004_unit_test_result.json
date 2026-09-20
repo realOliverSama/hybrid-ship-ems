@@ -1,0 +1,22 @@
+{
+  "schema": "t445_t004_evidence_v1",
+  "task": "T-004",
+  "purpose": "SYNTHETIC_SMOKE",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "overall": true,
+  "fec": {
+    "fuel_raw_kg": 10,
+    "SOC0": 0.6,
+    "SOC_end": 0.598,
+    "dSOC": -0.0020000000000000018,
+    "battery_energy_correction_kg": 1.1692823040000007,
+    "J_FEC_kg": 11.169282304000001,
+    "k_eq_kg_per_kWh": 0.5457,
+    "bat_cap_kWh": 1071.36,
+    "k_eq_status": "CANONICAL"
+  },
+  "audit_closed": true,
+  "hard_pass_clean": true,
+  "hard_fail_terminal": true,
+  "utc": "2026-09-15T09:46:13Z"
+}

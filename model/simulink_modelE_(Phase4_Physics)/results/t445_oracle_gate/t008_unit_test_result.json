@@ -1,0 +1,46 @@
+{
+  "schema": "t445_t008_evidence_v1",
+  "task": "T-008",
+  "purpose": "SYNTHETIC_SMOKE",
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "k_eq_status": "CANONICAL",
+  "overall": true,
+  "cases": [
+    {
+      "name": "policy_table_domain",
+      "pass": true,
+      "detail": "nL=3020 max=15.5250"
+    },
+    {
+      "name": "policy_table_parity_sample",
+      "pass": true,
+      "detail": "ok=75/75 maxAbs=0"
+    },
+    {
+      "name": "AC611_action_boundary",
+      "pass": true,
+      "detail": "fields=schema,dlambda,info_window,K,SOC0,SOC_H,SOC_target,fuel_proxy_kg,J_window_kg,oob_query_count,infeasible_fallback_n,infeasible_share,config_sha256,diagnostics"
+    },
+    {
+      "name": "AC612_info_window",
+      "pass": true,
+      "detail": "win=[40,340] dlam_equal=1"
+    },
+    {
+      "name": "AC613_antiarbitrage",
+      "pass": true,
+      "detail": "G=3.043728 J0=26.940465 Jem=27.859237 exc=0.0000 in_deadzone oob=0"
+    },
+    {
+      "name": "toy_dp_determinism",
+      "pass": true,
+      "detail": "dlam1=-0.1000 SOC_H=0.6040 J=17.0377 lam_raw_max=15.5250"
+    },
+    {
+      "name": "no_artificial_cap",
+      "pass": true,
+      "detail": "scan_ok"
+    }
+  ],
+  "utc": "2026-09-15T11:59:08Z"
+}

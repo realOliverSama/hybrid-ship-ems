@@ -1,0 +1,88 @@
+{
+ "bindings": {
+  "analysis_implementation_sha256": "edaa792c1a4062ee951ac6a9bdaa7b0bb22543e6e3d74ada90d9a9a987a783fb",
+  "corpus_identity_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "eligibility_freeze_root": "ff3c11066ea21ac0e00ebc5f3e613d583bce9c89d31053eb59f19cdc8f131f85",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+  "fc3_replay_acceptance_sha256": "f820e1ef4578d41106ae12f120deeb82f04aa6388feecfa9ff62e61eb503debb",
+  "fc3_replay_freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba"
+ },
+ "estimator_status": {
+  "B_perfect": "FULL_COHORT_ESTIMATE",
+  "B_predicted": "FULL_COHORT_ESTIMATE",
+  "L_prediction": "FULL_COHORT_ESTIMATE"
+ },
+ "evidence_label": "DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE",
+ "group_values": {
+  "B_perfect": {
+   "SG#0877af60295de774": 0.0,
+   "SG#0fe21d4411bc5e17": 0.0,
+   "SG#1b624f14c86d40e7": 0.0,
+   "SG#2d5d715a0fc3480a": 0.0,
+   "SG#30ab14ffb1a08292": 0.0,
+   "SG#498b5fd8d36df50d": 0.0,
+   "SG#95ab26745e67b295": 0.0,
+   "SG#a33d734ea439b60b": 0.0,
+   "SG#b7f8885bb19355fd": 0.0,
+   "SG#e211d3bb7908e3f8": 0.0,
+   "SG#f2e66596e8c43d8b": 0.0,
+   "SG#f87aa695ef15f360": 0.0
+  },
+  "B_predicted": {
+   "SG#0877af60295de774": 0.0,
+   "SG#0fe21d4411bc5e17": 0.0,
+   "SG#1b624f14c86d40e7": 0.0,
+   "SG#2d5d715a0fc3480a": 0.0,
+   "SG#30ab14ffb1a08292": 0.0,
+   "SG#498b5fd8d36df50d": 0.0,
+   "SG#95ab26745e67b295": 0.0,
+   "SG#a33d734ea439b60b": 0.0,
+   "SG#b7f8885bb19355fd": 0.0,
+   "SG#e211d3bb7908e3f8": 0.0,
+   "SG#f2e66596e8c43d8b": 0.0,
+   "SG#f87aa695ef15f360": 0.0
+  },
+  "L_prediction": {
+   "SG#0877af60295de774": 0.0,
+   "SG#0fe21d4411bc5e17": 0.0,
+   "SG#1b624f14c86d40e7": 0.0,
+   "SG#2d5d715a0fc3480a": 0.0,
+   "SG#30ab14ffb1a08292": 0.0,
+   "SG#498b5fd8d36df50d": 0.0,
+   "SG#95ab26745e67b295": 0.0,
+   "SG#a33d734ea439b60b": 0.0,
+   "SG#b7f8885bb19355fd": 0.0,
+   "SG#e211d3bb7908e3f8": 0.0,
+   "SG#f2e66596e8c43d8b": 0.0,
+   "SG#f87aa695ef15f360": 0.0
+  }
+ },
+ "note": "FULL_COHORT canonical estimator; 4/4/4 groups makes it mathematically equivalent to equal 1/3 tier weighting",
+ "schema": "effect_analysis_group_tier_v1",
+ "sha256_self": "590f8d07b1973ea02be65bf5e863d3e214c3adb70643fc272b8ae16b08fb8928",
+ "theta_hat": {
+  "B_perfect": 0.0,
+  "B_predicted": 0.0,
+  "L_prediction": 0.0
+ },
+ "tier_values": {
+  "B_perfect": {
+   "HIGH": 0.0,
+   "LOW": 0.0,
+   "MID": 0.0
+  },
+  "B_predicted": {
+   "HIGH": 0.0,
+   "LOW": 0.0,
+   "MID": 0.0
+  },
+  "L_prediction": {
+   "HIGH": 0.0,
+   "LOW": 0.0,
+   "MID": 0.0
+  }
+ }
+}

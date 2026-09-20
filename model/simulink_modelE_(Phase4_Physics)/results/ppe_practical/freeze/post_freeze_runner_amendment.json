@@ -1,0 +1,132 @@
+{
+  "added_machinery_files_unbound_at_freeze": [
+    "scripts/+ppe/inject_voyage.m",
+    "scripts/+ppe/rebuild_voyage.m",
+    "scripts/+ppe/run_formal_voyage.m",
+    "scripts/+ppe/run_formal_voyage_pack.m",
+    "scripts/+ppe/run_formal_manifest.m",
+    "scripts/+ppe/qual_replay_parity.m",
+    "scripts/+ppe/qual_runner_amendment.m",
+    "python/ppe/export_formal_assets.py",
+    "python/ppe/verify_formal_bindings.py"
+  ],
+  "addenda": [
+    {
+      "formal_outputs_affected": "none (the single P0 record does not consume plans/windows; its executed identities are bound in the record itself, cstar_impl_sha256=e9ab6a95b738b4b5...)",
+      "formal_outputs_at_addendum_time": 1,
+      "mechanical_fixes_before_c_arm_execution": [
+        "run_formal_voyage_pack.m: unbalanced quote (latent parse error; file unbound and never executed before T-010 launch)",
+        "run_formal_voyage.m: formal_assets.per_voyage lookup via jsondecode fieldname access (scalar struct keyed by voyage id)",
+        "run_formal_voyage.m: resume args read checkpoint payload.extra fields; C2 bridge lifecycle; runtime asset SHA verification"
+      ],
+      "second_addendum": {
+        "fixes": [
+          "c2_bridge.m: atomic request write (temp + rename)",
+          "run_formal_voyage_pack.m: arms are atomic (fresh re-run; no mid-arm resume, no checkpoint writes) - deterministic fresh re-run is bitwise-equivalent to a resumed continuation"
+        ],
+        "numerics_impact": "none (transport and scheduling only)",
+        "requalification": [
+          "qual_c2_integration (bridge path)",
+          "pack/paths exercised by the running fleet"
+        ],
+        "trigger": "first real C1/C2 launches on both hosts exposed a transport race (partial request read -> bridge fail-closed error) and the absence of a qualified mid-arm resume path for history-dependent window providers (C0 persistence bins, C2 300 s H1)"
+      },
+      "utc_note": "recovery session 2026-09-16 (post original amendment)"
+    }
+  ],
+  "amended_file_overrides": {
+    "scripts/+ppe/c2_bridge.m": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4",
+    "scripts/+ppe/run_cstar.m": "dc0bc0a91709c610ef19123a0030651501911ea8fea8a2863beeb1262a7a9e28",
+    "scripts/+ppe/winfun_plan.m": "7e8d845a30968b546153187af0ff94595a1f6e01b4eea1d13c45471691fdfcdc"
+  },
+  "amended_files": [
+    {
+      "amended_sha256": "dc0bc0a91709c610ef19123a0030651501911ea8fea8a2863beeb1262a7a9e28",
+      "change": "(1) SkipInject name-value: caller pre-injected voyage guard around t445.inject_scenario (default false = frozen behavior); (2) D3 t=300 warm-up boundary warmup_state snapshot in run meta (additive instrumentation only); control loop unchanged",
+      "frozen_sha256": "84ae12cec1a068906f884725bc6d38ef7669d9d510f3febb4c0f6e308dfed018",
+      "path": "scripts/+ppe/run_cstar.m"
+    },
+    {
+      "amended_sha256": "7e8d845a30968b546153187af0ff94595a1f6e01b4eea1d13c45471691fdfcdc",
+      "change": "plan loader accepts the exported wrapper document (schema/plan_sha256/plan array) in addition to a bare plan array; required because the exported plans are wrapper documents and the frozen loader indexed the document itself (latent integration bug; the wrapper is unwrapped, the plan ARRAY semantics are unchanged)",
+      "frozen_sha256": "9d6f9daf4912d2702379a2f4371c934d2b4cdd848e94990d65bc8a5ec67645e8",
+      "path": "scripts/+ppe/winfun_plan.m"
+    },
+    {
+      "amended_sha256": "c17142f75fc3c8eaa3e8aba89bcef7b7d60999968e6a4dd87636de64834822b4",
+      "change": "bridge request files are written atomically (temp name + rename) so the polling inference server can never read a partially written request; transport only, no scientific transform change",
+      "frozen_sha256": "7ef8bdbecd5cbf749181c42037ce4d28b027e5d79a5edc2286204851e37e9aa0",
+      "path": "scripts/+ppe/c2_bridge.m"
+    }
+  ],
+  "amendment_sha256_self": "4a20765158474df9e6aafa980f12ae8dcc6645de7d61be96f7fe9412b5cf35a4",
+  "authorized_by": "human Pre-Execution Gate T-010 authorization (PE-1 PASS) + takeover recovery mandate: mechanical completion only; no frozen scientific parameter touched",
+  "behavior_preservation_evidence": {
+    "argument": "SkipInject defaults false (frozen path intact); when true the caller injects via ppe.inject_voyage whose bitwise voyage-contract parity is qualified; warmup_state only records state",
+    "replay_parity": {
+      "pass": true,
+      "utc": "2026-09-15T16:43:04Z"
+    },
+    "runner_amendment_smoke": {
+      "artifact": "runner_amendment_smoke.json",
+      "pass": true,
+      "resume_extra_payload_equal": true,
+      "skipinject_bitwise_equal": true,
+      "utc": "2026-09-15T19:51:24Z",
+      "warmup_snapshot_ok": true
+    },
+    "t005_rerun_on_amended_bytes": {
+      "artifact": "t005_runner_post_amendment_rerun.json",
+      "bit_identical_to_freeze_time_result": true,
+      "fuel_total_kg": 0.6721004672164846,
+      "pass": true,
+      "utc": "2026-09-15T17:30:09Z"
+    }
+  },
+  "cstar_impl_sha256": {
+    "frozen": "ae53ea08e594bc1a5a629c58da58c9a66947e729903310363ad536edf9d4fb3a",
+    "new": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+    "reconstructed_from_frozen_bytes": "ae53ea08e594bc1a5a629c58da58c9a66947e729903310363ad536edf9d4fb3a"
+  },
+  "epoch_continuity": "formal_epoch remains 1; freeze package bytes are unchanged (freeze_sha256 b4920a292454701e... remains the canonical scientific anchor); no outputs from any other identity exist; nothing quarantined",
+  "formal_epoch": 1,
+  "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+  "kind": "POST_FREEZE_PRE_EXECUTION_RUNNER_AMENDMENT",
+  "mechanical_defects_fixed_by_recovery": [
+    "run_formal_voyage resume read rf.t_stop; the checkpoint payload binds extra.t_stop (resume was unusable)",
+    "C2 bridge server leaked one TF process per C2 run (stop now forced via onCleanup; stale bridge traffic cleared per run)",
+    "runtime fail-closed verification of exported plan/C1-windows SHAs vs formal_assets.json was missing and is added"
+  ],
+  "necessity": {
+    "injection": "frozen run_cstar.m calls t445.inject_scenario which lacks the mission_v3 comp.injection_list assignments and forces ai_logging mode 6; ppe.inject_voyage replicates member_exec injection verbatim and bitwise-reproduces the frozen Dataset-v3 voyage streams (replay_parity PASS, 3 voyages, 22 channels, maxAbsDiff=0)",
+    "warmup": "design D3 COMMON_WARMUP_PARITY requires boundary-state capture at t=300 for C0/C1/C2; the snapshot records SOC/fuel/genset/battery/load/DG/N_on/last_dlam at the boundary and does not affect the trajectory"
+  },
+  "new_cstar_impl_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "pre_execution_confirmed": true,
+  "preconditions_verified": {
+    "access_ledger_counts_at_amendment": {
+      "FORMAL": 0,
+      "FREEZE_PREP": 135,
+      "QUALIFICATION": 106,
+      "SYNTHETIC_SMOKE": 1
+    },
+    "all_scientific_bindings_unchanged": true,
+    "checkpoint_dirs_existing": 0,
+    "execution_code_commit": "87639f5f3bf6",
+    "formal_ledger_entries_at_amendment": 0,
+    "formal_outputs_existing": 0,
+    "freeze_self_hash_matches": true,
+    "freeze_sha256": "b4920a292454701ee720b645ed71cbe06a748321533b77e3a0c7a2d3326ef64c",
+    "only_drifted_bound_file": "scripts/+ppe/run_cstar.m",
+    "pe1_evidence_sha256": "e22ddcf6e70fa1de39cf5f1329c38dac82ba0d0605f272c95b49928ca810d637",
+    "pe1_status": "POST_FREEZE_METADATA_ONLY_COMMITS_VERIFIED=true"
+  },
+  "run_cstar_file_sha256": {
+    "amended": "dc0bc0a91709c610ef19123a0030651501911ea8fea8a2863beeb1262a7a9e28",
+    "frozen": "84ae12cec1a068906f884725bc6d38ef7669d9d510f3febb4c0f6e308dfed018"
+  },
+  "schema": "ppe_post_freeze_runner_amendment_v1",
+  "study": "phase4f-practical-predictive-ems",
+  "trigger": "T-010 execution machinery completion was interrupted by an agent usage-limit session loss before commit/verification; recovery verified that formal execution had NOT started",
+  "verification_tool": "python -m ppe.verify_formal_bindings --amendment results/ppe_practical/freeze/post_freeze_runner_amendment.json"
+}

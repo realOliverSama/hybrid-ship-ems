@@ -1,0 +1,232 @@
+{
+ "assertions": {
+  "ALL_CONTROL_CRITICAL_WRITERS_FROZEN": true,
+  "CONTROL_ACTION_REACHES_GENERATOR": true,
+  "CONTROL_ACTION_REACHES_PMS": "proven",
+  "DATASET_V3_RETAINED": true,
+  "FC3_CHECKER_BOUND": true,
+  "FORMAL_EPOCH3_RUNS": 0,
+  "FORMAL_RUNNER_BINDING_PATH_QUALIFIED": false,
+  "IID_TEST_DIAGNOSTIC_ACCESS": true,
+  "IID_TEST_PERFORMANCE_ACCESS": 0,
+  "MISSION_V3_CORPUS_RETAINED": true,
+  "NON_SATURATED_PROPAGATION_PROVEN": true,
+  "OOD_DIAGNOSTIC_ACCESS": true,
+  "OOD_PERFORMANCE_ACCESS": 0,
+  "PMS_SOURCE_MODE_ARM_BOUND": true,
+  "PREDICTOR_V3_RETAINED": true
+ },
+ "blockers": [
+  "assertions not all true"
+ ],
+ "evidence": {
+  "EP3_P1_non_saturated_propagation": {
+   "path": "results/ppe_practical/execution_path_recovery/qual_ep3_p1/qual_ep3_p1_result.json",
+   "sha256": "7160873d3f7f98074cd534113dc0e38496649643b30a2ead7e9c5661a55e2a5c"
+  },
+  "impact_scope_audit": {
+   "path": "results/ppe_practical/execution_path_recovery/impact_scope_audit.json",
+   "sha256": "40c21b0c5978459bdf87684dc00832edf8c3a349445c056d088aeb3afc1d3a12"
+  },
+  "invalid_evidence_reclassification": {
+   "path": "results/ppe_practical/execution_path_recovery/invalid_evidence_reclassification.json",
+   "sha256": "52a09ad6fe3f22ae9ae6024a957e105a6576e04be4b86040b0e450a3e701c739"
+  },
+  "runtime_writer_audit": {
+   "path": "results/ppe_practical/execution_path_recovery/runtime_writer_audit.json",
+   "sha256": "37c36a74df69cd8d136f4b585c69f2049ff9e217f3820077432209758e9055b7"
+  }
+ },
+ "injection_chain": {
+  "repair": [
+   {
+    "path": "scripts/+ppe/control_critical_vars.m",
+    "present": true,
+    "sha256": "8d390afe5a8c1d859351fe590e0df17eeaffd436b44c37284231c3b853ebb055"
+   },
+   {
+    "path": "scripts/+ppe/arm_runtime_bind.m",
+    "present": true,
+    "sha256": "a5954ba0dd1c72bd900e5e5d2d45fdaaf45e27371115a9867838bed9f4c6037f"
+   },
+   {
+    "path": "scripts/+ppe/assert_control_bindings.m",
+    "present": true,
+    "sha256": "c0dfb75e9fa8c3c201a2061dfc78c084a19bffa871f4ffe74770da2e134339c3"
+   },
+   {
+    "path": "scripts/+ppe/arm_runtime_manifest.m",
+    "present": true,
+    "sha256": "1dbb333ac58796553067dd1d1b81954f7a912d9263050386aba8636fd5817245"
+   },
+   {
+    "path": "scripts/+ppe/write_sourcesel_v1.m",
+    "present": true,
+    "sha256": "445907c252056053f4375037cc419d914bf7055094b33d80124de41791079125"
+   },
+   {
+    "path": "scripts/+ppe/cstar_impl_files_ep3.m",
+    "present": true,
+    "sha256": "fbbf515c5ee3394ef415d75118d23a0d9273145a6ebd2cb6e9dccb374c483d74"
+   },
+   {
+    "path": "scripts/+ppe/load_epoch3_freeze_bindings.m",
+    "present": true,
+    "sha256": "608e928f0c6cd8fe6c9e17ac0ffc55958813d66870b2df9f4fb162711a6a27c5"
+   },
+   {
+    "path": "scripts/+ppe/qual_ep3.m",
+    "present": true,
+    "sha256": "ca6a3a3070674a3f454ef6e9c0caff0a328e9f7dea15e5df819f8e796765b6ff"
+   },
+   {
+    "path": "scripts/+model/set_source_selection_logging.m",
+    "present": true,
+    "sha256": "98a4575d543e289910ff3ddecb7f9eb74906bfeb831abaa5575ea3789910bbe0"
+   },
+   {
+    "path": "scripts/+ppe/run_cstar.m",
+    "present": true,
+    "sha256": "505689aea87f2755fdda3bf2c884577c6d93485f6c7ef5f509fa179a33716bda"
+   }
+  ],
+  "science": [
+   {
+    "path": "model/HybridShip_ModelE.slx",
+    "present": true,
+    "sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9"
+   },
+   {
+    "path": "config/phase4f_t445_config.json",
+    "present": true,
+    "sha256": "34b68c41a56db23394f32632fdbc04a540cdc1d3181d09ea52c44551a026f820"
+   },
+   {
+    "path": "config/phase4f_ppe_teval_table.json",
+    "present": true,
+    "sha256": "4ab43018d694285ec6b138172e1c7e7c31022f9bd02fc33e33289447b5c03a34"
+   },
+   {
+    "path": "config/phase4f_ppe_hard_feasibility.json",
+    "present": true,
+    "sha256": "c7e8cb41879dc8ba5d1df28a0de8afc2969278dc61712a8cc9fa05f5904f7b10"
+   },
+   {
+    "path": "config/phase4f_ppe_study_config.json",
+    "present": true,
+    "sha256": "270d58296b77cdd50e3d975c0c499c851d9bbc3826837f2f61b02eb44696871a"
+   },
+   {
+    "path": "scripts/+ppe/feasibility_contract_v2.m",
+    "present": true,
+    "sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c"
+   },
+   {
+    "path": "scripts/+ppe/write_traj_v1.m",
+    "present": true,
+    "sha256": "537ca32e82bf7088b69a0bbbf60eecf265a2eef2603ecdd4d8a90b74ee5ae906"
+   },
+   {
+    "path": "scripts/+ppe/write_audit_v1.m",
+    "present": true,
+    "sha256": "f72e07c6b54c6158a8d5c99ddf9973999aaeb833669bc954ed2a01867edbe25d"
+   },
+   {
+    "path": "scripts/+ppe/formal_terminal_v2.m",
+    "present": true,
+    "sha256": "37f41db90e71ff73a400d47a672b8d2c0590f6f172171141c6e517fa56379d7f"
+   },
+   {
+    "path": "python/ppe/fc3_core.py",
+    "present": true,
+    "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9"
+   },
+   {
+    "path": "datasets_v3/formal/windows_v3_formal.npz",
+    "present": true,
+    "sha256": "203dc92df1f1aad980480514ea6c1ef09c50299f5fc91274e11d63f5b2491497"
+   }
+  ],
+  "writers": [
+   {
+    "path": "scripts/+mission_v3/scenario_compile.m",
+    "present": true,
+    "sha256": "fad198d9c45073aea6d6360cedd0d550451870c4120c1ba41ad5f13e77045511"
+   },
+   {
+    "path": "scripts/+ppe/inject_voyage.m",
+    "present": true,
+    "sha256": "e3f2e93161e089cf2155287d55633161e8d87d73be8923afdadf4b3b97714e0a"
+   },
+   {
+    "path": "scripts/+model/run_scenario_sim.m",
+    "present": true,
+    "sha256": "0088f28619df9b1e21ff20bd6c002f5dcb3810f6bb965eaebc3902f4d08f30b1"
+   },
+   {
+    "path": "scripts/+fleet_v3/member_exec.m",
+    "present": true,
+    "sha256": "045d3814836e201c1e81a44af25a52e524dd646bfd9f207981d5ab519c38ac40"
+   },
+   {
+    "path": "scripts/+mission_v3/producer_prequal.m",
+    "present": true,
+    "sha256": "e18402ea1bb922580ce73e3e35045a29ac15e7e61d24738a01afb0adcbd658da"
+   },
+   {
+    "path": "scripts/+mission_v3/producer_confirm.m",
+    "present": true,
+    "sha256": "0eb743fa433b956a05431e2274c3781302e5b251050819f4add7af103ee82b65"
+   },
+   {
+    "path": "scripts/+gate_e/reset_bench_nominal.m",
+    "present": true,
+    "sha256": "97f83edb2bf29073237dd06c1999a36319b9d189d1fa75859d3c7d4c99c84871"
+   },
+   {
+    "path": "scripts/+gate_e/gate_assign_bench_inputs.m",
+    "present": true,
+    "sha256": "2fa46f679a63d2a0143dc8a681553279f98f969fd95e9d866b002ff7683d1856"
+   },
+   {
+    "path": "scripts/+gate_ctrl/run_gate.m",
+    "present": true,
+    "sha256": "8669f58c758244f37bf40fb41b5562b9716c2f98c3107bc89e282be66217c0de"
+   },
+   {
+    "path": "scripts/+gate_ctrl/run_negative.m",
+    "present": true,
+    "sha256": "86f9e3742b8df62ec3267cabe821e3d06e213d1dc69c085577626cad0ca1e541"
+   },
+   {
+    "path": "scripts/+gate_ctrl/injection_scenarios.m",
+    "present": true,
+    "sha256": "4a21cfc9a615960825d4ab5030e3e3b8d5791dde5d8c2d87058ea07868ade6c3"
+   },
+   {
+    "path": "scripts/+mission_v3/+audits/feasibility_sweep.m",
+    "present": true,
+    "sha256": "871896d3fdbfa0851f0417f5a79cbd5146bd8f76d462e0d5b62210f014a1372b"
+   },
+   {
+    "path": "config/ModelE_Control_Parameters.m",
+    "present": true,
+    "sha256": "a6fe516a50a080fe94cad6e80a99408a4fd6a37b5d4a5f0aabef08b60cc96c63"
+   },
+   {
+    "path": "config/ModelE_Physics_Parameters.m",
+    "present": true,
+    "sha256": "9a518c0a9368d427ffab38e6c14d62a98dfde4c8d2a608da6f1419ff5d3e9264"
+   },
+   {
+    "path": "config/ModelE_TestScenarios.m",
+    "present": true,
+    "sha256": "50d9a2e59addae2d89093a4d39c380251415abddf99a9285adeb773e9aead924"
+   }
+  ]
+ },
+ "note": "fail-closed: gate §M forbids building the epoch-3 freeze before Q-EP3 PASS on the real Model-E runtime; no freeze file written",
+ "overall": false,
+ "schema": "ppe_epoch3_pre_execution_freeze_BLOCKED_v1",
+ "utc": "2026-09-18T08:01:00Z"
+}

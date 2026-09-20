@@ -1,0 +1,84 @@
+{
+ "assertions": {
+  "EFFECT_ANALYSIS_EXECUTED": false,
+  "ELIGIBILITY_MASKS_FROZEN": true,
+  "FUEL_JFEC_READ_DURING_ELIGIBILITY": false,
+  "IID_TEST_ACCESSED": false,
+  "OOD_ACCESSED": false
+ },
+ "bindings": {
+  "access_ledger_counts": {
+   "AUDIT_RECONSTRUCTION_NOTE": 1,
+   "FC3_READJUDICATION_FREEZE": 1,
+   "FC3_REPLAY_ABORTED_DEFECT": 1,
+   "FC3_REPLAY_COMPLETE": 1,
+   "FORMAL": 1478,
+   "FORMAL_EXECUTION_ATTEMPT_ABORTED_PRE_TERMINAL": 47,
+   "FREEZE_PREP": 137,
+   "INFRASTRUCTURE_INCIDENT": 1,
+   "QUALIFICATION": 325,
+   "SYNTHETIC_SMOKE": 1
+  },
+  "access_ledger_sha256": "2895729da543708844d5f3bca699fdf7cb7c4977d96c4a0657933d982a7ae466",
+  "corpus_identity_sha256": "e9d0679ec4baef8f0adf40e718c07f0086151581e44c7b8f504a0119497abac6",
+  "design_spec_sha256": "ea77e97079f2dd17b7605f0c87397ca8d8f198d17951159b7e97a842a36484a5",
+  "effect_analysis_implementation": "NOT IMPLEMENTED",
+  "eligibility_manifest_self_sha256": "2c9f0cf1b1164369251192c92453dda0e7faf998a45c507fee7392d68c594840",
+  "eligibility_manifest_sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3",
+  "fc3_replay_acceptance_sha256": "f820e1ef4578d41106ae12f120deeb82f04aa6388feecfa9ff62e61eb503debb",
+  "fc3_replay_freeze_root": "29014408dcecacfe048fa135163576898894c7eb5b097c2fb0fdd794fc0843c2",
+  "fec_module_sha256": "75d7c63f2aeda867ec91338a93b0ced4ab7300a42c7f2c0ebacd46810e325596",
+  "stats_module_sha256": "75278cadee95f26b04955962d985bb757aa78344be07fac56888d9c30dd0a5ba",
+  "voyage_membership_manifest_sha256": "645d57af4559015952ac2b8428bfbb444062d8a3112eaf9840beab54b2382d3b"
+ },
+ "checks": [
+  {
+   "detail": "",
+   "name": "replay_acceptance_pass",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "replay_acceptance_192",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "accepted_all_feasible",
+   "pass": true
+  },
+  {
+   "detail": "48",
+   "name": "voyage_meta_48",
+   "pass": true
+  },
+  {
+   "detail": "48/48/48/48",
+   "name": "mask_counts_derived_consistency",
+   "pass": true
+  },
+  {
+   "detail": "48",
+   "name": "derived_counts_match_accepted_replay_facts",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "eligibility_manifest_fuel_blind",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "assert_iid_sealed",
+   "pass": true
+  },
+  {
+   "detail": "",
+   "name": "assert_ood_sealed",
+   "pass": true
+  }
+ ],
+ "schema": "effect_analysis_preaccess_freeze_v1",
+ "task": "T-FC3-9",
+ "utc": "2026-09-18T04:18:58Z"
+}

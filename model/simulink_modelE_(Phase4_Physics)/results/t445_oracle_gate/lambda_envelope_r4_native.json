@@ -1,0 +1,37 @@
+{
+  "amendment": "a_prime_dgn_f03_2026-09-15",
+  "checks": {
+    "b1_b2_same_law6_core": true,
+    "fixture_lambda_eff_stays_gt_0p80": true,
+    "fixture_lambda_raw_gt_0p80": true,
+    "floor_0p43_in_CODE_ECMS_ORACLE": true,
+    "floor_0p43_in_ecms_law": true,
+    "floor_constant_block": true,
+    "no_hidden_upper_cap": true,
+    "prior_r4_stop_artifact_retained": true,
+    "slx_checksum_unchanged": true
+  },
+  "config_sha256": "52377c626f7e9ccb527846250f1d360ad63238c44ec33ac1184e6f399da07c33",
+  "envelope": "lambda_eff = max(lambda_raw, 0.43)",
+  "fixture": {
+    "Delta_lambda": 0.1,
+    "K_S": 0.03333333333333333,
+    "SOC": 0.1,
+    "lambda_eff": 15.525,
+    "lambda_raw": 15.525
+  },
+  "overall": true,
+  "prior_stop_artifact": "lambda_envelope_r4.json",
+  "rebind_note": "Scientific evidence not rerun. Evidence rebound to post-Amendment-C config identity (nominal-SOC FEC k_eq + matching w_term). Old SHA retained for provenance.",
+  "rebind_utc": "2026-09-15T09:45:57Z",
+  "record_sha256": "df22ea11e94f48d9ad5f101612e419857094aa7b33db94696cb03bd7f7c35d24",
+  "schema": "t445_lambda_envelope_r4_native_v1",
+  "science": "UNAFFECTED_BY_AMENDMENT_C",
+  "slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "slx_sha256_t001_baseline": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "status": "LAW6_NATIVE_ENVELOPE_CONFIRMED",
+  "superseded_config_sha256": "6d25ce39903f5f0011334e2a5d376a27dadc5280204d4bdc8212d74ffe3a58c3",
+  "task": "T-003",
+  "upper_cap": null,
+  "utc": "2026-09-15T07:41:53Z"
+}

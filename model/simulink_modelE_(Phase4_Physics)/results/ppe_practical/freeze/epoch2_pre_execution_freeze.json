@@ -1,0 +1,196 @@
+{
+ "canonical_reserves": {
+  "E_reserve_chg_kWh": 5.625,
+  "E_reserve_dis_kWh": 6.839,
+  "P_reserve_chg_kW": 819.8,
+  "P_reserve_dis_kW": 543.8,
+  "provenance": "T-A0 dynamic derivation; PE2-1 canonical"
+ },
+ "checker_v2_sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+ "corrections": "PE2-1..PE2-4; reserves unified to T-A0 dynamic (544/6.84/820/5.62); genset root-cause corrected to field mismatch + state-unaware fallback (PMS equal-split by design D-B6)",
+ "e_design_events": {
+  "EV1_single_to_dual_transition_plus_load_step": {
+   "class_": "CONTINGENCY",
+   "dg2_delay_s": 30.0,
+   "energy_kWh": 6.839,
+   "initial_dg1_kW": 358.0,
+   "load_level_kW": 902.0,
+   "peak_gap_kW": 543.8,
+   "provenance": "frozen ticks 2500+500@0.01s; corpus P95 worst",
+   "soc_min": 0.8936,
+   "sop_at_min_kW": 1005.3
+  },
+  "EV3_load_rejection": {
+   "class_": "CONTINGENCY",
+   "energy_kWh": 5.625,
+   "load_from_kW": 902.0,
+   "load_to_kW": 82.0,
+   "peak_surplus_kW": 819.8,
+   "provenance": "corpus load valley min; genset ramp-down 20kW/s + P_min clamp",
+   "soc_max": 0.9053,
+   "sop_at_max_kW": 939.7
+  }
+ },
+ "epoch1_preserved": {
+  "deleted": false,
+  "formal_epoch": 1,
+  "reclassified": false,
+  "rerun": false,
+  "terminal_records": "192/192",
+  "warmup_parity": "48/48 PASS"
+ },
+ "epoch2_result_bearing_runs": 0,
+ "epoch2_scientific_identities": {
+  "P0_role": "UNCHANGED",
+  "bootstrap_seed": "phase4f-t445-bootstrap-v1",
+  "corpus_48_voyages": "UNCHANGED",
+  "corpus_identity_sha256": "245fa307cf36143259672f93cf801587eb701d721028a735b3cd91c97c42f115",
+  "cstar_composite_sha256": "40c5be942201ec04254500bf1f9da5e6590df118da95f2578c297686e805a7a2",
+  "modele_slx_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "predictor_keras_sha256": ""
+ },
+ "formal_epoch": 2,
+ "genset_root_cause": "checker searches P_gen1_kW/P_gen2_kW; Model-E logs P_DG1_kW/P_DG2_kW; equal-split fallback is state-unaware; PMS allocator equal-split by design (D-B6 frozen); defect is field mismatch, NOT unequal dispatch",
+ "qualification": {
+  "amend_v2_pass": true,
+  "coherence_pass": true,
+  "coverage_matrix": [
+   {
+    "check": "Q1_per_unit_truth_discriminates",
+    "passed": true,
+    "qid": "Q1"
+   },
+   {
+    "check": "Q2_missing_signal_failclosed",
+    "passed": true,
+    "qid": "Q2"
+   },
+   {
+    "check": "Q3_non_on_power_violation",
+    "passed": true,
+    "qid": "Q3"
+   },
+   {
+    "check": "Q3b_non_on_clean_pass",
+    "passed": true,
+    "qid": "Q3b"
+   },
+   {
+    "check": "Q4_legal_single_dg_low_load",
+    "passed": true,
+    "qid": "Q4"
+   },
+   {
+    "check": "Q5_legal_dual_high_load",
+    "passed": true,
+    "qid": "Q5"
+   },
+   {
+    "check": "Q6_true_pmax_violation",
+    "passed": true,
+    "qid": "Q6"
+   },
+   {
+    "check": "Q7_true_ramp_violation",
+    "passed": true,
+    "qid": "Q7"
+   },
+   {
+    "check": "Q8_transition_state_semantics",
+    "passed": true,
+    "qid": "Q8"
+   },
+   {
+    "check": "Q8b_transition_clean_pass",
+    "passed": null,
+    "qid": "Q8b"
+   },
+   {
+    "check": "Q9_zero_unserved_pass",
+    "passed": true,
+    "qid": "Q9"
+   },
+   {
+    "check": "Q10_injected_unserved_fail",
+    "passed": true,
+    "qid": "Q10"
+   },
+   {
+    "check": "Q11_residual_bias_no_trigger",
+    "passed": true,
+    "qid": "Q11"
+   },
+   {
+    "check": "Q12_residual_diagnostic_recorded",
+    "passed": true,
+    "qid": "Q12"
+   },
+   {
+    "check": "Q13_terminal_band_and_reserve_pass",
+    "passed": true,
+    "qid": "Q13"
+   },
+   {
+    "check": "Q14_terminal_out_of_band_fail",
+    "passed": true,
+    "qid": "Q14"
+   },
+   {
+    "check": "Q15_normal_soc_insufficient_power_reserve",
+    "passed": true,
+    "qid": "Q15"
+   },
+   {
+    "check": "Q15b_normal_soc_insufficient_energy_reserve",
+    "passed": true,
+    "qid": "Q15b"
+   },
+   {
+    "check": "Q16_fec_reconstruction",
+    "passed": true,
+    "qid": "Q16"
+   },
+   {
+    "check": "Q17_traj_schema_hash",
+    "passed": true,
+    "qid": "Q17"
+   },
+   {
+    "check": "Q18_traj_atomic_resume",
+    "passed": true,
+    "qid": "Q18"
+   },
+   {
+    "check": "Q19_no_sealed_access",
+    "passed": true,
+    "qid": "Q19"
+   },
+   {
+    "check": "Q20_no_result_tuning",
+    "passed": true,
+    "qid": "Q20"
+   }
+  ],
+  "executable_tests_pass": 22,
+  "fec_robust_pass": true,
+  "logical_q_covered": "23/26"
+ },
+ "runner_integrated_sha256": "3a04fa360492465838f4f738e868e4565504e18ec74b810b6bfdd17942bf5f41",
+ "s_terminal_admissible": {
+  "max": 0.9,
+  "min": 0.25,
+  "n_points": 66,
+  "note": "all SOC in [0.25,0.90] (1 Hz grid) survive EV-1/EV-3 within frozen SOP/hard bounds"
+ },
+ "schema": "ppe_epoch2_pre_execution_freeze_v2",
+ "service_shortfall": {
+  "authoritative": "P_unserved_kW (V_dc undervoltage derate path only)",
+  "dual_diagnostic": "P_service_gap = max(P_prop_demand - P_prop_actual, 0); divergence -> FAIL CLOSED",
+  "retired": "P_bus_residual_kW -> DC-bus consistency diagnostic"
+ },
+ "sha256_self": "7919123bd986d5b53e68a471943579316a8b03ae93eb672fe70ac0e43242dd47",
+ "study": "phase4f-practical-predictive-ems",
+ "supersedes": "epoch-1 feasibility contract only (FC-1/2/3/4/5); scientific identity unchanged",
+ "traj_writer_sha256": "6c2b8329cf5c11db5ef945346d0f51a07af70cd8f8b28bd5e83b2c941ea7e2cd",
+ "utc": "2026-09-17T04:31:23Z"
+}

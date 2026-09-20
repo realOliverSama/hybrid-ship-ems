@@ -1,0 +1,66 @@
+{
+ "schema": "ppe_epoch3_attempt_a_exclusion_ledger_v1",
+ "created_utc": "2026-09-19T04:30:00Z",
+ "verdict": "INVALID_FOR_FINAL_EFFECT_INFERENCE",
+ "authority": "EPOCH-3 Attempt-A Disposition / FC-3 Contract Recovery Gate (operator directive)",
+ "authoritative_corpus_progress": "0/192",
+ "attempt_a_namespace": "results/ppe_practical/formal_epoch3 (campaign generation A)",
+ "reasons": [
+  "FORMAL_FREEZE_DRIFT=true",
+  "FC3_CONTRACT_BINDING_REGRESSION=CONFIRMED"
+ ],
+ "formal_freeze_drift_evidence": {
+  "authoritative_freeze_root": "092f995d7555b6ff96ab361c330d941d15d21f5f9f1e047f8c2e50a32f9a74be",
+  "freeze_recorded_execution_commit": "e73efb861f84f60b282c0133a04043d933c99084",
+  "actual_execution_commit": "fd156e58 (plus 3d610f56/d5c937e9/c951d4a6 lineage)",
+  "bound_files_byte_consistent": true,
+  "unbound_formal_path_files_modified_after_freeze": [
+   "scripts/+ppe/run_epoch3_voyage.m (3d610f56 C2 bridge; d5c937e9 evidence writers; fd156e58 FC-3 call form)",
+   "scripts/+ppe/winfun_plan.m (c951d4a6 P0 anchor branch)"
+  ],
+  "note": "freeze byte-boundary (40 files) held; the result-bearing orchestration layer was outside the freeze boundary and was amended after freeze without re-freeze; recorded execution commit in terminal records is inherited from the freeze and does not describe the executing bytes."
+ },
+ "fc3_contract_binding_regression_evidence": {
+  "checker_actually_bound_by_runner": {
+   "path": "scripts/+ppe/feasibility_contract_v2.m",
+   "sha256": "424ab662c9822bdea60d2f620e380ec34670f2f342e36c378bbc8b0d99e8de9c",
+   "semantics": "v2 (static P_min zero-tolerance; service_gap in hard load_shortfall)",
+   "observed_failures": [
+    "genset_limits_state_aware (static PMIN, 10.6-117.9 s, loading transient)",
+    "load_shortfall (service_gap_energy 0.35-0.47 kWh, E_unserved=0)"
+   ]
+  },
+  "authoritative_checker": {
+   "path": "python/ppe/fc3_core.py",
+   "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9",
+   "bound_by": "results/ppe_practical/freeze/fc3_readjudication_freeze.json (fc3_checker_sha256)",
+   "semantics": "FC-3 amendment v3 (dynamic PMIN envelope, epsilon_numeric=0.11 kW, tau=5 s; hard service curtailment iff E_unserved>tol; service_gap diagnostic)",
+   "accepted_replay": "results/ppe_practical/readjudication_epoch1/ = 192x READJUDICATED_FEASIBLE"
+  },
+  "identity_comparison": "SHAs differ (424ab662 != 33a8309a); epoch-3 freeze asserted FC3_CHECKER_BOUND on the python checker while the runner invoked the MATLAB v2-semantics checker",
+  "readjudication_of_attempt_a": "authoritative fc3_core.fc3_check over existing 1 Hz trajectories + high-rate audits: 61/61 completed runs READJUDICATED_FEASIBLE (12 canary + 49 others); pmin_envelope_violation_samples=0 everywhere; E_unserved=0 everywhere; loading-transient samples 1240-3845 per run are exactly the samples the static-PMIN predicate misclassified",
+  "outcome": "6A -> FC3_CONTRACT_BINDING_REGRESSION=CONFIRMED"
+ },
+ "exclusion_rule": "All Attempt-A runs (any run with terminal records under the attempt_a_namespace, regardless of completion time) are excluded from the authoritative 192-run corpus. They are preserved verbatim as FORMAL_EPOCH3_ATTEMPT_A_RECOVERY_EVIDENCE and as diagnostic input to the FC-3 contract recovery.",
+ "record_fields_note": "Existing terminal metadata (is_formal_result=true, COMPLETED_FORMAL) records what the runner believed at execution time and is preserved unmodified; this ledger supplies the study-level adjudication.",
+ "evidence_inventory": [
+  "terminal records (<voyage>/<ARM>.json)",
+  "plant trajectories (<ARM>.traj.v1.mat + sidecar)",
+  "high-rate audits (<ARM>.audit.v1.json)",
+  "controller traces (<ARM>.ctrace.v1.json)",
+  "source-selector telemetry (<ARM>.sourcesel.v1.mat + sidecar)",
+  "FC-3 outputs (inside terminal records, checker 424ab662)",
+  "infrastructure logs (/tmp/ep3_s1*.log, /tmp/ep3_s2*.log, /tmp/ep3_s1r_*.log, /tmp/ep3_s2r_*.log, /tmp/ep3_w*.log, /tmp/ep3_v*.log)",
+  "retry evidence (_superseded_pre_fc3_fix/, /root/autodl-tmp/ep3_logs_failed_attempt1/, /root/autodl-tmp/ep3_logs_w1_aborted/)",
+  "audit artifacts (_audit_stop_gate/census.txt, _audit_stop_gate/fc3_predicate_audit.txt)"
+ ],
+ "census_at_creation": "85 terminal records (final)",
+ "dispatcher_status": "STOPPED; no new formal dispatch until a new final freeze is approved and staged rollout (Stage 0/1/2) passes its integrity gates",
+ "attemptA_final_terminal_count": 85,
+ "controlled_stop": {
+  "utc": "2026-09-19T14:55:00Z",
+  "reason": "disk threshold 5 GB reached (resource isolation gate E)",
+  "workers_killed": 20,
+  "evidence_preserved": true
+ }
+}

@@ -1,0 +1,140 @@
+{
+  "access_ledger": {
+    "by_purpose": {
+      "FORMAL": 0,
+      "FREEZE_PREP": 125,
+      "QUALIFICATION": 106,
+      "SYNTHETIC_SMOKE": 0
+    },
+    "n_entries": 231,
+    "split_contact": {
+      "ood": 0,
+      "test": 0
+    }
+  },
+  "items": [
+    {
+      "detail": "",
+      "evidence": "freeze/t001_freeze_prep.json",
+      "item": "T-001 freeze prep (T_eval table, corpus, identities)",
+      "pass": true
+    },
+    {
+      "detail": "coverage=1.0 parity_exact=378",
+      "evidence": "freeze/t002_result.json",
+      "item": "DGN-PPE-09.1/2 C1 stored-target parity + fail-closed + coverage",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/c2_causality_verification.json",
+      "item": "DGN-PPE-09.7 channel-level K/F causality ledger (FR-832)",
+      "pass": true
+    },
+    {
+      "detail": "34 passed in 3.33s",
+      "evidence": "pytest ppe/tests",
+      "item": "T-004 ForecastWindow / C0 no-leakage / warm-up (AC-801/803, D3)",
+      "pass": true
+    },
+    {
+      "detail": "34 passed in 3.33s",
+      "evidence": "pytest ppe/tests",
+      "item": "T-006 FEC identity + TERMINAL_SOC + HF config (AC-805/807/813/814)",
+      "pass": true
+    },
+    {
+      "detail": "34 passed in 3.33s",
+      "evidence": "pytest ppe/tests",
+      "item": "DGN-PPE-09.5/6 common-triplet + equal-tier bootstrap (synthetic)",
+      "pass": true
+    },
+    {
+      "detail": "34 passed in 3.33s",
+      "evidence": "pytest ppe/tests",
+      "item": "R_UNDEFINED guards (AC-809)",
+      "pass": true
+    },
+    {
+      "detail": "34 passed in 3.33s",
+      "evidence": "pytest ppe/tests",
+      "item": "estimand identity zero-safe (AC-806)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/t005_runner.json",
+      "item": "C* determinism two-run (FR-871.1)",
+      "pass": true
+    },
+    {
+      "detail": "{'SOC': 0, 'P_gen_actual_kW': 0, 'P_bat_actual_kW': 0, 'v_ship_mps': 0}",
+      "evidence": "qualification/t005_runner.json",
+      "item": "SimState continuous-vs-segmented equivalence (FR-871.8)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/t005_runner.json",
+      "item": "DGN-PPE-09.8 checkpoint identity mismatch refusal (D8)",
+      "pass": true
+    },
+    {
+      "detail": "max_rel=0",
+      "evidence": "qualification/t005_runner.json",
+      "item": "resume == uninterrupted (D8)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/t005_runner.json + ppe_config assertions",
+      "item": "action bounds/grid: SOC n=171 (AC-804)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "resume re-inits SOC/gen/N from plant logs",
+      "item": "current-state init from plant (FR-871.7)",
+      "pass": true
+    },
+    {
+      "detail": "toy fixture intentionally infeasible (dSOC=0.0076>0.005, shortfall>0): instrumentation flags correctly",
+      "evidence": "qualification/t005_runner.json",
+      "item": "hard-feasibility instrumentation live (FR-871.9)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/t005_runner.json",
+      "item": "fuel_raw path live (Model-E fuel_total_kg, 0.6 kg/start)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/t005b_bridge.json",
+      "item": "C2 bridge transport: cross-process bitwise + fail-closed (D7)",
+      "pass": true
+    },
+    {
+      "detail": "",
+      "evidence": "qualification/c2_inference_qual.json",
+      "item": "C2 inference determinism + contract (keras SHA-gated)",
+      "pass": true
+    },
+    {
+      "detail": "{\"n_entries\": 231, \"by_purpose\": {\"FREEZE_PREP\": 125, \"QUALIFICATION\": 106, \"SYNTHETIC_SMOKE\": 0, \"FORMAL\": 0}, \"split_contact\": {\"test\": 0, \"ood\": 0}}",
+      "evidence": "access_ledger.jsonl",
+      "item": "access ledger: FORMAL=0 / test=0 / OOD=0 (FR-874)",
+      "pass": true
+    }
+  ],
+  "no_formal_outcomes": true,
+  "overall": true,
+  "schema": "ppe_qual_suite_v1",
+  "t445_limitations_documented": {
+    "Q2": "SOC grid 0.01 vs 0.005 rel=0.0153 — documented limitation of the discrete algorithm now frozen at 0.005; retired as Gate (FR-814)",
+    "Q4": "proxy-vs-plant fuel rel=0.01314 > 1% — documented limitation; outcomes measured on Model-E logs, not surrogate (FR-815/FR-870)",
+    "Q6": "proxy-vs-plant fuel rel=0.010012 > 1% — same status as Q4"
+  },
+  "task": "T-008"
+}
