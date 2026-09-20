@@ -1,0 +1,259 @@
+{
+ "schema": "ppe_genb_scale_down_retry_list_v1",
+ "created_utc": "2026-09-20T01:20:00Z",
+ "reason": "graceful scale-down 20->13 (disk 4.8G<5G + anon 55.2GB)",
+ "pending": [
+  {
+   "voyage": "FLTA_S2_D01009_M2",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M3",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S4_D03011_M4",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M1",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M2",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S6_D05004_M4",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M1",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M2",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M3",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S2_D01009_M2",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M3",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S4_D03011_M4",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M1",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M2",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S6_D05004_M4",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M1",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M2",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M3",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S2_D01009_M2",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M3",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S4_D03011_M4",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M1",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M2",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S6_D05004_M4",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M1",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M2",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M3",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S2_D01009_M3",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M4",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S5_D04001_M1",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M2",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M3",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S6_D05011_M1",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M2",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M3",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M4",
+   "arm": "P0"
+  },
+  {
+   "voyage": "FLTA_S2_D01009_M3",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M4",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S5_D04001_M1",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M2",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M3",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S6_D05011_M1",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M2",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M3",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M4",
+   "arm": "C0"
+  },
+  {
+   "voyage": "FLTA_S2_D01009_M3",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M4",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S5_D04001_M1",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M2",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M3",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S6_D05011_M1",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M2",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M3",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M4",
+   "arm": "C1"
+  },
+  {
+   "voyage": "FLTA_S2_D01009_M3",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S3_D02008_M4",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S5_D04001_M1",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S5_D04005_M2",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S6_D05002_M3",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S6_D05011_M1",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S7_D06000_M2",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S7_D06015_M3",
+   "arm": "C2"
+  },
+  {
+   "voyage": "FLTA_S8_D07009_M4",
+   "arm": "C2"
+  }
+ ]
+}

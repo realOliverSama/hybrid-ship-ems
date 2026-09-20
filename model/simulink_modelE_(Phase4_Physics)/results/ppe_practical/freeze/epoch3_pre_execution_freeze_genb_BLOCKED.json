@@ -1,0 +1,22 @@
+{
+ "assertions": {
+  "ATTEMPT_A_EXCLUDED": true,
+  "CLEAN_TRACKED_TREE": false,
+  "EXECUTION_CLOSURE_BOUND": true,
+  "FC3_AUTHORITATIVE_IDENTITY": true,
+  "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS": 0,
+  "QUAL_RECOVERY_PASS": false,
+  "QUAL_RUNNER_SMOKE_PASS": false
+ },
+ "blockers": [
+  "missing qual_ep3_recovery: results/ppe_practical/execution_path_recovery/qual_ep3_recovery/qual_ep3_recovery_result.json",
+  "missing qual_ep3b_runner_smoke: results/ppe_practical/execution_path_recovery/qual_ep3b_runner_smoke/qual_ep3b_runner_smoke_final.json"
+ ],
+ "execution_closure_n": 67,
+ "git_head": "0cb298fe57628ac1a76104fd8cd1b90eb698cb24",
+ "note": "fail-closed; no freeze file written",
+ "overall": false,
+ "provisional": false,
+ "schema": "ppe_epoch3_pre_execution_freeze_GENB_BLOCKED_v1",
+ "utc": "2026-09-19T05:56:21Z"
+}

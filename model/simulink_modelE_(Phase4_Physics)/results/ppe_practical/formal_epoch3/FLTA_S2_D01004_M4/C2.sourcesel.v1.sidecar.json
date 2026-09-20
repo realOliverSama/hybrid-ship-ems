@@ -1,0 +1,76 @@
+{
+  "schema": "ppe_sourcesel_sidecar_v1",
+  "voyage_id": "FLTA_S2_D01004_M4",
+  "arm": "C2",
+  "run_id": "b6774f8de8e8e51c",
+  "n_samples": 4509,
+  "channels": [
+    "P_gen_ref_kW",
+    "P_gen_req_eff_kW",
+    "selector_baseline_active",
+    "P_load_gen_kW",
+    "P_gen_unserved_kW",
+    "P_gen_surplus_kW",
+    "dispatch_min_clamp_active",
+    "baseline_fallback_active",
+    "ems_health_ok",
+    "P_DG1_ref_kW",
+    "P_DG2_ref_kW",
+    "N_dispatch"
+  ],
+  "arm_binding": {
+    "schema": "ppe_arm_runtime_binding_v1",
+    "arm": "C2",
+    "bound_at_utc": "2026-09-19T12:19:22Z",
+    "matlab_version": "MATLAB 26.1",
+    "forecast_source": "live_bridge",
+    "controller_identity": "law6_oracle_ecms",
+    "strict": true,
+    "bindings": {
+      "PMS_SOURCE_MODE": 1,
+      "EMS_CTRL_LAW": 6,
+      "EMS_MODE": 1,
+      "EMS_WORK_MODE": 2,
+      "AI_Pred_Source": 0,
+      "ADAPTER_FORCE_MODE": 0,
+      "ADAPTER_FORCE_P1_KW": 0,
+      "ADAPTER_FORCE_P2_KW": 0,
+      "EMS_HEALTH_TS": [
+        [
+          0,
+          1
+        ],
+        [
+          1.0E+6,
+          1
+        ]
+      ]
+    },
+    "workspace_readback": {
+      "PMS_SOURCE_MODE": 1,
+      "EMS_CTRL_LAW": 6,
+      "EMS_MODE": 1,
+      "EMS_WORK_MODE": 2,
+      "AI_Pred_Source": 0,
+      "ADAPTER_FORCE_MODE": 0,
+      "ADAPTER_FORCE_P1_KW": 0,
+      "ADAPTER_FORCE_P2_KW": 0,
+      "EMS_HEALTH_TS": [
+        [
+          0,
+          1
+        ],
+        [
+          1.0E+6,
+          1
+        ]
+      ]
+    },
+    "semantics": {
+      "PMS_SOURCE_MODE": "1=EMS_AGGREGATE(EMS 参考值进入 dispatch)；0=BASELINE_POLICY（EMS 输出被丢弃）— source: 07_PMS_v2/Source_Selector, cmp_mode_baseline=(PMS_SOURCE_MODE<0.5)",
+      "EMS_CTRL_LAW": "Variant select: 5=SOC-Adaptive, 6=Oracle predictive"
+    }
+  },
+  "source_gate": "selector_baseline_active == 0 断言 EMS 分支；P_gen_req_eff_kW 必须等于所选分支的参考值",
+  "utc": "2026-09-19T14:15:25Z"
+}

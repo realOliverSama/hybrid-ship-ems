@@ -1,7 +1,7 @@
 {
  "assertions": {
   "ATTEMPT_A_EXCLUDED": true,
-  "CLEAN_TRACKED_TREE": false,
+  "CLEAN_TRACKED_TREE": true,
   "EXECUTION_CLOSURE_BOUND": true,
   "FC3_AUTHORITATIVE_IDENTITY": true,
   "FORMAL_AUTHORITATIVE_CAMPAIGN_RUNS": 0
@@ -191,7 +191,7 @@
   {
    "path": "scripts/+ppe/assert_genb_path.m",
    "present": true,
-   "sha256": "42c1a6014d1056a272e9a980bd60e9db0066adffcfa2290b9d760e63aea3eb43"
+   "sha256": "5248e593627a5750a065f2082fc84d9d60c8b65addf910f3886ad1330c43561a"
   },
   {
    "path": "scripts/+ppe/c2_bridge.m",
@@ -221,7 +221,7 @@
   {
    "path": "scripts/+ppe/load_epoch3b_freeze_bindings.m",
    "present": true,
-   "sha256": "d85130dfdfad0718b91d945ebd0bfb5bbdd89588c08ea446effe1b1dbd4ee30b"
+   "sha256": "a8b2141382ecbcd468a53a60b489dc98a4288b262e67a8a052957a7e0ba8c8e2"
   },
   {
    "path": "scripts/+ppe/ppe_config.m",
@@ -246,7 +246,7 @@
   {
    "path": "scripts/+ppe/run_epoch3_voyage.m",
    "present": true,
-   "sha256": "4ee7c1c98f85a726ff43cf7e925a02b4f344a9d1b4a934cab5d1ec8750b92ee3"
+   "sha256": "6e7fd244c33d8e1fd452cc090ca666696f66b0d81fff1a81c46c76ee6a77222a"
   },
   {
    "path": "scripts/+ppe/winfun_plan.m",
@@ -355,40 +355,40 @@
   "sha256": "33a8309ad6f585bed5203cd0223484a0df3eda5ba8d4eeb8193e1ba85c34a4a9"
  },
  "formal_epoch": 3,
- "git_head": null,
+ "git_head": "f5b83400d2f9b87304c87e3b9431d5d7d7ced418",
  "git_tree_clean": true,
  "note": "generation-B campaign namespace is results/ppe_practical/formal_epoch3_genB; generation-A namespace formal_epoch3 is sealed recovery evidence (ATTEMPT_A_EXCLUSION_LEDGER)",
  "overall": true,
  "path_audit_first": [
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_epoch3_voyage.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/run_cstar.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/winfun_plan.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/arm_runtime_bind.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/assert_control_bindings.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/c2_bridge.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_sourcesel_v1.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_traj_v1.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_audit_v1.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/write_ctrace_v1.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/feasibility_contract_v2.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/load_epoch3b_freeze_bindings.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/inject_voyage.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/rebuild_voyage.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/checkpoint_mgr.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/ppe_config.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+ppe/ppe_root.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/metrics_fec.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/b2_window_dp.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/make_simin_zoh.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/gen0_from_ds.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/prep_ehat_zoh.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+t445/sha256_doubles.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/extract_logsout.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/sha256_file.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/set_source_selection_logging.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+model/set_ai_logging.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+fleet_v3/plan_load.m",
-  "/root/autodl-tmp/hybrid-ship-ems/model/simulink_modelE_(Phase4_Physics)/scripts/+gate_ctrl/get_ds.m"
+  "scripts/+ppe/run_epoch3_voyage.m",
+  "scripts/+ppe/run_cstar.m",
+  "scripts/+ppe/winfun_plan.m",
+  "scripts/+ppe/arm_runtime_bind.m",
+  "scripts/+ppe/assert_control_bindings.m",
+  "scripts/+ppe/c2_bridge.m",
+  "scripts/+ppe/write_sourcesel_v1.m",
+  "scripts/+ppe/write_traj_v1.m",
+  "scripts/+ppe/write_audit_v1.m",
+  "scripts/+ppe/write_ctrace_v1.m",
+  "scripts/+ppe/feasibility_contract_v2.m",
+  "scripts/+ppe/load_epoch3b_freeze_bindings.m",
+  "scripts/+ppe/inject_voyage.m",
+  "scripts/+ppe/rebuild_voyage.m",
+  "scripts/+ppe/checkpoint_mgr.m",
+  "scripts/+ppe/ppe_config.m",
+  "scripts/+ppe/ppe_root.m",
+  "scripts/+t445/metrics_fec.m",
+  "scripts/+t445/b2_window_dp.m",
+  "scripts/+t445/make_simin_zoh.m",
+  "scripts/+t445/gen0_from_ds.m",
+  "scripts/+t445/prep_ehat_zoh.m",
+  "scripts/+t445/sha256_doubles.m",
+  "scripts/+model/extract_logsout.m",
+  "scripts/+model/sha256_file.m",
+  "scripts/+model/set_source_selection_logging.m",
+  "scripts/+model/set_ai_logging.m",
+  "scripts/+fleet_v3/plan_load.m",
+  "scripts/+gate_ctrl/get_ds.m"
  ],
  "path_audit_names": [
   "ppe.run_epoch3_voyage",
@@ -423,7 +423,7 @@
  ],
  "provenance": {
   "generator": "python/ppe/ep3_freeze_genb.py",
-  "generator_sha256": "100db31c5c567ccf1287e0207df6fa6be1d26dd5216ed1ce563ec72ba0f5101e"
+  "generator_sha256": "42734ffb0cc173903191c73d24db805680ea0af7c9746f496966f7208c8517bb"
  },
  "provisional": true,
  "run_manifest": "192 runs = 48 voyages x {P0,C0,C1,C2}",
@@ -431,5 +431,5 @@
  "superseded_roots": [
   "092f995d7555b6ff96ab361c330d941d15d21f5f9f1e047f8c2e50a32f9a74be"
  ],
- "utc": "2026-09-19T05:04:50Z"
+ "utc": "2026-09-19T06:32:30Z"
 }

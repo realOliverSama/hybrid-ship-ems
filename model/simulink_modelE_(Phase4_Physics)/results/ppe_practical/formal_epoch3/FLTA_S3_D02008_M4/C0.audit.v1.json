@@ -1,0 +1,69 @@
+{
+  "schema": "ppe_audit_v1",
+  "voyage_id": "FLTA_S3_D02008_M4",
+  "arm": "C0",
+  "run_id": "b4235c9c02ef26d9",
+  "n_samples": 409401,
+  "t_first": 0,
+  "t_last": 4094,
+  "tolerances": {
+    "ramp_kW_per_s": 20.000001,
+    "v_min_V": 360,
+    "v_max_V": 657,
+    "i_abs_max_A": 1823
+  },
+  "battery_voltage": {
+    "count": 0,
+    "duration_s": 0,
+    "max_exceed": 0,
+    "first_t": null,
+    "last_t": null,
+    "limit": [
+      360,
+      657
+    ],
+    "context_state_DG1": [],
+    "context_state_DG2": [],
+    "context_commitment_state": []
+  },
+  "battery_current": {
+    "count": 0,
+    "duration_s": 0,
+    "max_exceed": 0,
+    "first_t": null,
+    "last_t": null,
+    "limit": 1823,
+    "context_state_DG1": [],
+    "context_state_DG2": [],
+    "context_commitment_state": []
+  },
+  "battery_power_over_avail": {
+    "count": 0,
+    "duration_s": 0,
+    "max_exceed": 0,
+    "first_t": null,
+    "last_t": null,
+    "limit": "P_avail",
+    "context_state_DG1": [],
+    "context_state_DG2": [],
+    "context_commitment_state": []
+  },
+  "genset_ramp_on_on": {
+    "count": 0,
+    "duration_s": 0,
+    "max_rate_kW_per_s": 0,
+    "limit_kW_per_s": 20.000001,
+    "first_t": null,
+    "last_t": null
+  },
+  "extremes": {
+    "V_bat_min_V": 586.55469224645458,
+    "V_bat_max_V": 602.02560745604637,
+    "I_bat_min_A": -592.14380786996128,
+    "I_bat_max_A": 823.820161868418
+  },
+  "derate08_active_s": 0,
+  "any_violation": false,
+  "note": "diagnostic evidence only; epoch-2 classification authority is ppe.feasibility_contract_v2",
+  "utc": "2026-09-19T16:02:22Z"
+}
