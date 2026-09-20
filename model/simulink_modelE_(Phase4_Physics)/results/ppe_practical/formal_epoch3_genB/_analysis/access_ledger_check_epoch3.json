@@ -1,0 +1,30 @@
+{
+ "counts_1997_lines": {
+  "ATTRIBUTION_COMPLETE": 1,
+  "AUDIT_RECONSTRUCTION_NOTE": 1,
+  "EFFECT_ANALYSIS_COMPLETE": 1,
+  "FC3_ELIGIBILITY_FREEZE": 1,
+  "FC3_READJUDICATION_FREEZE": 1,
+  "FC3_REPLAY_ABORTED_DEFECT": 1,
+  "FC3_REPLAY_COMPLETE": 1,
+  "FORMAL": 1478,
+  "FORMAL_EXECUTION_ATTEMPT_ABORTED_PRE_TERMINAL": 47,
+  "FREEZE_PREP": 137,
+  "IID_TEST_DIAGNOSTIC_ACCESS + OOD_DIAGNOSTIC_ACCESS": 1,
+  "INFRASTRUCTURE_INCIDENT": 1,
+  "QUALIFICATION": 325,
+  "SYNTHETIC_SMOKE": 1
+ },
+ "criterion": "count(purpose==IID_TEST)==0 and count(purpose==OOD)==0",
+ "disclosed_post_selection_access": {
+  "note": "SA-1 provenance correction, read-only V_dc_V derate-threshold scan; no performance metric/loss/fuel/J_FEC/effect read; label POST_SELECTION_DIAGNOSTIC_COVARIATE_ACCESSED (disclosed in ledger)",
+  "purpose": "IID_TEST_DIAGNOSTIC_ACCESS + OOD_DIAGNOSTIC_ACCESS",
+  "utc": "2026-09-18T05:35:16Z"
+ },
+ "iid_test_entries": 0,
+ "ood_entries": 0,
+ "pass": true,
+ "purpose": "replicate the epoch-2 effect-analysis acceptance check: sealed IID_TEST/OOD access must be zero at effect-analysis time",
+ "schema": "ppe_epoch3_genb_access_ledger_check_appendix_v1",
+ "sha256_self": "08a629e4993f8606190a16a94634c759016894e6dc7016de350d2f266323608b"
+}

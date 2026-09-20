@@ -30,7 +30,20 @@ EPOCH-3 generation-B（genB）4 臂对照实验的**权威正式语料**与验�
   - `occupancy_descriptive_epoch3.json`：P_gen_ref 带 125/500 kW 占用、
     N_dispatch、λ 网格分布、源选择/fallback/clamp 频率
   - `effect_analysis_acceptance_epoch3.json`：效果分析自身验收
-  - `scripts/`：生成上述工件的三个脚本（bytes 与工件 bindings 中的 sha 一致）
+  - `safety_descriptive_epoch3.json`：安全/稳定性分臂对比（事后描述性）——
+    V_dc std/极差/p99|dV|/675V 降额裕量、推进跟踪 gap（四臂逐样本一致）、
+    配对 Wilcoxon 补充；结论=非劣化（V_dc std C* 臂略高 +2.3~2.6V）
+  - `predictor_v3_offline_accuracy_summary.json`：Predictor-v3（reatt s0）
+    离线精度证据汇编（IID test / 三种子 / OOD 五轴 / 架构对照，逐条带出处 sha）
+  - `access_ledger_check_epoch3.json`：复刻 epoch-2 的封存访问检查
+    （IID_TEST/OOD 用途计数 0/0 = PASS；唯一相关条目为已披露的
+    2026-09-18 SA-1 只读 V_dc 诊断协变量访问）
+  - `EPOCH3_GENB_EFFECT_REPORT.md`：论文结果草稿（中文，含 Limitations
+    与三条可用结论措辞）
+  - `figures/`：论文级图表 5 张（配对节油、分层 J_FEC、k_eq 敏感性、
+    Δλ 饱和分布、安全性 V_dc）
+  - `scripts/`：生成上述工件的脚本（bytes 与工件 bindings 中的 sha 一致；
+    效果/占用率/验收三支在云端运行，安全性/图表两支在本地语料运行）
 - `g3_killed_pending.txt` / `g3_retry_pending.json`：Stage-3 worker 补跑期间的
   运行操作记录（被杀/待重试清单，战役过程证据）。
 - `fc3_authority_declaration.json` / `known_failure_regression_matrix.json`：

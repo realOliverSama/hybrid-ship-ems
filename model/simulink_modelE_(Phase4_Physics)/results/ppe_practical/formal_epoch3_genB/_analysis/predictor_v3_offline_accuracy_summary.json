@@ -1,0 +1,175 @@
+{
+ "analysis_class": "EVIDENCE_CONSOLIDATION_NO_NEW_COMPUTATION",
+ "architecture_context_s0_test": {
+  "mlpq": {
+   "e300_mae_kW": 3.1122959547075264,
+   "e300_r2": 0.8178268726708461,
+   "nmae_q50_global": 0.24970599001385166,
+   "sha256": "948b52873978d783ce2ffa4dd1ea6b10849a38b3992cea98fc16ce206118fb2e"
+  },
+  "reatt": {
+   "e300_mae_kW": 0.7461212782408928,
+   "e300_r2": 0.9931184088378502,
+   "nmae_q50_global": 0.06350353903899551,
+   "sha256": "20cf510fa6b636be39a6784c6cb3f3d076375e1af3aeb7b377eb512ed0ab1515"
+  },
+  "tcnq": {
+   "e300_mae_kW": 2.913290463637563,
+   "e300_r2": 0.8334712157412099,
+   "nmae_q50_global": 0.23327062123760015,
+   "sha256": "95a4be4959d4e822f8aa48a1eea9cf279c65df7dc0d261800f822e9966053a84"
+  },
+  "tft": {
+   "e300_mae_kW": 0.8223475709404666,
+   "e300_r2": 0.9913440259161241,
+   "nmae_q50_global": 0.06622747541619609,
+   "sha256": "1715f5f41b8e53652b8736eb9e304c4acc7e56d6b4cf67dc298c2a2f3ba9b3e5"
+  },
+  "transformer": {
+   "e300_mae_kW": 0.6978068258221174,
+   "e300_r2": 0.9894899981921814,
+   "nmae_q50_global": 0.06468523692375477,
+   "sha256": "e41693aee4f10ed75b3bd6662e39c71267ab037720faed10fff2f26ce1f6c938"
+  }
+ },
+ "closed_loop_linkage": "closed-loop value capture R=0.944 (effect_analysis_bootstrap_epoch3.json); offline IID R2=0.9931 with OOD degradation to R2 0.914-0.980 \u2014 consistent with the lambda-saturation finding (84-86% of decisions at the -0.10 bound) that the closed loop is insensitive to forecast-error differences at this scale",
+ "delivery_seed_s0_test": {
+  "coverage_error_80": 0.20224026598467093,
+  "e300_mae_kW": 0.7461212782408928,
+  "e300_r2": 0.9931184088378502,
+  "e300_rmse_kW": 1.026373324018863,
+  "n_windows": 25236,
+  "nmae_q50_global": 0.06350353903899551,
+  "segments_mae_q50_kW": {
+   "long": 13.127,
+   "mid": 10.729,
+   "short": 9.264
+  }
+ },
+ "delivery_seed_s0_test_sha256": "20cf510fa6b636be39a6784c6cb3f3d076375e1af3aeb7b377eb512ed0ab1515",
+ "honest_caveats": [
+  "coverage_error_80 of delivery seed s0 = 0.202 (quantile-band calibration imperfect; only the median path feeds the EMS lambda correction)",
+  "OOD axis A1 NMAE 29.0% is the worst case; the epoch-3 formal corpus is IID-tier voyages, so OOD degradation does not enter the formal estimates"
+ ],
+ "ood_axes_s0": {
+  "A1": {
+   "coverage_error_80": 0.5744639205669345,
+   "e300_mae_kW": 3.9120747138181926,
+   "e300_r2": 0.9143602380822954,
+   "e300_rmse_kW": 5.3532580010875535,
+   "n_windows": 14136,
+   "nmae_q50_global": 0.2902902181354754,
+   "segments_mae_q50_kW": {
+    "long": 59.076,
+    "mid": 50.836,
+    "short": 40.63
+   },
+   "sha256": "30e22aba9c0b0c7f0f712e9fe672ae6982c23332d68aae599af75344f7945049"
+  },
+  "B1": {
+   "coverage_error_80": 0.4033016690065759,
+   "e300_mae_kW": 1.371923377948636,
+   "e300_r2": 0.9802330843473989,
+   "e300_rmse_kW": 1.9452663109395352,
+   "n_windows": 13720,
+   "nmae_q50_global": 0.09956112081777811,
+   "segments_mae_q50_kW": {
+    "long": 19.632,
+    "mid": 17.529,
+    "short": 15.007
+   },
+   "sha256": "231df3bccebb20c6cea926d649da749cff8c78e6c5afd251292a135c716a3c40"
+  },
+  "C1": {
+   "coverage_error_80": 0.37598899430981453,
+   "e300_mae_kW": 1.9966787092119462,
+   "e300_r2": 0.9477576325025437,
+   "e300_rmse_kW": 3.0212422567689745,
+   "n_windows": 16992,
+   "nmae_q50_global": 0.15831725741440184,
+   "segments_mae_q50_kW": {
+    "long": 32.693,
+    "mid": 27.181,
+    "short": 22.297
+   },
+   "sha256": "747a131522d3af0f7a4a9ce46c44fd779484b3c8b3653d0422c7039e6ac2e801"
+  },
+  "C2": {
+   "coverage_error_80": 0.48185874301642656,
+   "e300_mae_kW": 1.5221998826735674,
+   "e300_r2": 0.952368047463471,
+   "e300_rmse_kW": 1.8253934473713413,
+   "n_windows": 14924,
+   "nmae_q50_global": 0.11476409617988077,
+   "segments_mae_q50_kW": {
+    "long": 22.9,
+    "mid": 19.628,
+    "short": 17.912
+   },
+   "sha256": "78ee9b28e622a28a75c1b3f332f614a1426c1dc7ee2a1881aa85ce4aaa103382"
+  },
+  "C3": {
+   "coverage_error_80": 0.44284682200710657,
+   "e300_mae_kW": 1.9206839630621855,
+   "e300_r2": 0.9630297732087495,
+   "e300_rmse_kW": 2.5748283811763875,
+   "n_windows": 12532,
+   "nmae_q50_global": 0.14721513668340588,
+   "segments_mae_q50_kW": {
+    "long": 28.401,
+    "mid": 25.757,
+    "short": 23.769
+   },
+   "sha256": "61f7c058351d2e5a2002f420dadc9da77f7c95f86c221e284374d2c63585b843"
+  }
+ },
+ "provenance": {
+  "campaign": "results/predictor_v3/terminal_campaigns/t443-terminal-20260915-r2.json (status COMPLETE, 90/90)",
+  "terminal_dir": "results/predictor_v3/terminal/",
+  "winner": "results/predictor_v3/FINAL_WINNER_EVIDENCE_PACKAGE.json"
+ },
+ "purpose": "consolidated OFFLINE accuracy evidence for Predictor-v3 (winner reatt, canonical delivery seed index 0) to pair with the closed-loop R diagnostic; numbers cited verbatim from frozen terminal-campaign artifacts",
+ "schema": "ppe_epoch3_predictor_v3_offline_accuracy_summary_v1",
+ "seed_stability_test": {
+  "s0": {
+   "coverage_error_80": 0.20224026598467093,
+   "e300_mae_kW": 0.7461212782408928,
+   "e300_r2": 0.9931184088378502,
+   "e300_rmse_kW": 1.026373324018863,
+   "n_windows": 25236,
+   "nmae_q50_global": 0.06350353903899551,
+   "segments_mae_q50_kW": {
+    "long": 13.127,
+    "mid": 10.729,
+    "short": 9.264
+   }
+  },
+  "s1": {
+   "coverage_error_80": 0.08013510573551619,
+   "e300_mae_kW": 0.7375199930262215,
+   "e300_r2": 0.9932231192833069,
+   "e300_rmse_kW": 1.0142476599973294,
+   "n_windows": 25236,
+   "nmae_q50_global": 0.06499851300091511,
+   "segments_mae_q50_kW": {
+    "long": 13.247,
+    "mid": 10.855,
+    "short": 10.114
+   }
+  },
+  "s2": {
+   "coverage_error_80": 0.054245589630634417,
+   "e300_mae_kW": 0.7004661777241408,
+   "e300_r2": 0.994237324345882,
+   "e300_rmse_kW": 0.9453949452065444,
+   "n_windows": 25236,
+   "nmae_q50_global": 0.06178790704920982,
+   "segments_mae_q50_kW": {
+    "long": 12.536,
+    "mid": 10.218,
+    "short": 9.929
+   }
+  }
+ },
+ "sha256_self": "646a46b4334c30b2493392eb28ad6d99f9cb489112320ff942eb9426fad28f24"
+}
