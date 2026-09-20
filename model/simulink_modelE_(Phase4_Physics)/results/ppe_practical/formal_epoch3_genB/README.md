@@ -17,6 +17,8 @@ EPOCH-3 generation-B（genB）4 臂对照实验的**权威正式语料**与验�
 - `EPOCH3_GENB_FORMAL_ACCEPTANCE.json` — 最终验收工件（G1–G9 九项门禁，
   overall_pass=true；对账 192/192、FC-3 v3 重判 192/192 FEASIBLE、
   freeze gate、效果分析、占用率、清单身份、Attempt-A 处置、模块身份、无变异）。
+- `evidence_index.json` — T-012 证据密封索引：25 个权威工件的 sha256 哈希链
+  （freeze、台账、验收、分析工件、图表、脚本）与 T-010/011/012 任务映射。
 - `_analysis/` — 效果分析（描述性统计 + 预注册配对分析）与占用率描述工件：
   - `effect_analysis_primary_epoch3.json`：逐航次 B_perfect / B_predicted /
     L_prediction（分母 J_C0）与恒等式残差

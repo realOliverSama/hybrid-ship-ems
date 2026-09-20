@@ -1,0 +1,176 @@
+{
+ "chain_rule": "each entry sha256 = sha256 of the file bytes at sealing time; re-verify with sha256sum; corpus terminal files are covered by their own per-file freeze_root_sha256 bindings + corpus_identity_sha256 in effect analysis bindings",
+ "corpus": {
+  "arms": [
+   "P0",
+   "C0",
+   "C1",
+   "C2"
+  ],
+  "fc3_readjudication": "192/192 READJUDICATED_FEASIBLE",
+  "freeze_root_prefix": "a2dc634f",
+  "n_terminals": 192,
+  "voyages": 48
+ },
+ "items": [
+  {
+   "bytes": 13886,
+   "path": "results/ppe_practical/freeze/epoch3_pre_execution_freeze_genb.json",
+   "role": "pre_execution_freeze (root a2dc634f)",
+   "sha256": "a2dc634f0b5342ded42552a53a81f82202b552477b73b6016e6ec9ebf7a1351f"
+  },
+  {
+   "bytes": 4632,
+   "path": "results/ppe_practical/formal_epoch3/_audit_stop_gate/ATTEMPT_A_EXCLUSION_LEDGER.json",
+   "role": "attempt_a_exclusion_ledger",
+   "sha256": "3a42d7eadef3131ebcf07821f601627b96da1478be13ccb58f0e1050aafd3b67"
+  },
+  {
+   "bytes": 6731,
+   "path": "results/ppe_practical/formal_epoch3_genB/EPOCH3_GENB_FORMAL_ACCEPTANCE.json",
+   "role": "formal_acceptance_G1_G9",
+   "sha256": "820ea33376b98596f3e738a48a26b75511ae7b9de8d3e580781da3876034c02a"
+  },
+  {
+   "bytes": 9257,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/EPOCH3_GENB_EFFECT_REPORT.md",
+   "role": "analysis_artifact",
+   "sha256": "d5c24f78b34a1e73eebfa28feeac7305193ce550abd86acd710708410f36c2d9"
+  },
+  {
+   "bytes": 1243,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/access_ledger_check_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "f8ab353f755e95e580ec91df6538ba317d7f96e887fb19686f70107a0c5be1e0"
+  },
+  {
+   "bytes": 1983,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/effect_analysis_acceptance_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "973733abaf99d6f2d3c219f4e823ad227f0faaeb625740e40336a632b26bc715"
+  },
+  {
+   "bytes": 3635,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/effect_analysis_bootstrap_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "3289746e68bd5138784a2047878ddf4474277dd4716bd6f77fe5ca5b84c9c8ae"
+  },
+  {
+   "bytes": 43318,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/effect_analysis_context_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "f6cb6c474bab17c622885e48cac540d4a4c25012d6b433079cb9fbc40696c708"
+  },
+  {
+   "bytes": 70759,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/effect_analysis_fec_sensitivity_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "f0dde28f8b04ce57d789093aac07e354b6d794b4375b003d74a95c291814a314"
+  },
+  {
+   "bytes": 3782,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/effect_analysis_group_tier_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "e3ab10ebfb8cb395ac7cfc32c185c3650196a1ac8291503bbe70d5b8c938cc2a"
+  },
+  {
+   "bytes": 23932,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/effect_analysis_primary_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "7fda396511bae08956c640037c4439fddb0490ebff4e49af34ef9fcbc03e9dfa"
+  },
+  {
+   "bytes": 217653,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/occupancy_descriptive_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "8c1037b9c629025876cd1183a19e5e89717263ef7f5b6903371bae919fd493b6"
+  },
+  {
+   "bytes": 5964,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/predictor_v3_offline_accuracy_summary.json",
+   "role": "analysis_artifact",
+   "sha256": "199301e748f2ca6639952bf82be48bd07ba3a4b0f7353b72b13aab975b0dea7a"
+  },
+  {
+   "bytes": 156627,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/safety_descriptive_epoch3.json",
+   "role": "analysis_artifact",
+   "sha256": "ca8963091811727baed084deff7e1000f286536cbd5c2665b4acf997fb683318"
+  },
+  {
+   "bytes": 89794,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/figures/fig1_paired_savings_vs_P0.png",
+   "role": "thesis_figure",
+   "sha256": "b44721237843b101e23a74b44e6c58af02fa5470d29a79b3f9963f2afcb576e8"
+  },
+  {
+   "bytes": 45305,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/figures/fig2_tier_arm_jfec.png",
+   "role": "thesis_figure",
+   "sha256": "5219bddbdfd7f76bd3d58b9d062a877e5dc3d23d5ef74565294583ebb656c221"
+  },
+  {
+   "bytes": 143123,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/figures/fig3_keq_sensitivity.png",
+   "role": "thesis_figure",
+   "sha256": "d064e7d97039332806c3bdebd1539e4bf629ebf9abee2182daacdcfbf1ddad34"
+  },
+  {
+   "bytes": 72378,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/figures/fig4_delta_lambda_dist.png",
+   "role": "thesis_figure",
+   "sha256": "4da1cea1b84b03a1218fcdb459ad93df9b81099dc27a43e562ab1b3329b97a92"
+  },
+  {
+   "bytes": 67733,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/figures/fig5_safety_vdc.png",
+   "role": "thesis_figure",
+   "sha256": "fa7ef52b8a4fa622aa26c0c836dbf9cc5b756883750b80002474adb9afa9c37e"
+  },
+  {
+   "bytes": 14568,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/scripts/ep3_acceptance.py",
+   "role": "analysis_script_evidence",
+   "sha256": "b868dd4e5b8b3606719cbf15dcf2bc4abd7fc1d3ec47363de66b9b06d125cdef"
+  },
+  {
+   "bytes": 24826,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/scripts/ep3_effect_analysis.py",
+   "role": "analysis_script_evidence",
+   "sha256": "9a86183379f43d16d1e71a2de691638ed4b3f7e02f3076dd16089d21fd50ddf5"
+  },
+  {
+   "bytes": 7109,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/scripts/ep3_figures.py",
+   "role": "analysis_script_evidence",
+   "sha256": "12e67b3dbeb616a6a448664ac1055b851b51a9b5c12e4d4faf16a2cb80f1aad2"
+  },
+  {
+   "bytes": 10447,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/scripts/ep3_occupancy.py",
+   "role": "analysis_script_evidence",
+   "sha256": "cf4508b5847037d820d815f97d2571b341e9ad98e99b171d5562ad762dfe7e9e"
+  },
+  {
+   "bytes": 9684,
+   "path": "results/ppe_practical/formal_epoch3_genB/_analysis/scripts/ep3_safety.py",
+   "role": "analysis_script_evidence",
+   "sha256": "641bc8b53c1132429b9a750ba09271cd9bb0eccdaf4951e7809d47a025263541"
+  },
+  {
+   "bytes": 20805,
+   "path": "results/ppe_practical/effect_analysis_eligibility_manifest.json",
+   "role": "frozen_eligibility_manifest",
+   "sha256": "9a0b608e827115ecbaf3ac25a54744358f3b22d56667082ebc928af21525f7b3"
+  }
+ ],
+ "n_items": 25,
+ "purpose": "T-012 final evidence sealing: hash chain over the authoritative epoch-3 generation-B campaign evidence (spec .specs/phase4-f-practical-predictive-ems/tasks.md D-section)",
+ "schema": "ppe_epoch3_genb_evidence_index_v1",
+ "sha256_self": "d012eb6cb77d195417459bad1cc4429a6bce1cb793bc2d3ae289c4623aa6d06c",
+ "task_mapping": {
+  "T-010": "192 per-arm-voyage terminals under formal_epoch3_genB/ + formal_epoch3/ (genB freeze), acceptance gates G1/G2",
+  "T-011": "_analysis/effect_analysis_*_epoch3.json (label FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE; supersedes the development-stage label anticipated at spec time) + EPOCH3_GENB_EFFECT_REPORT.md",
+  "T-012": "this evidence_index.json + README sync + acceptance G9 no-mutation check"
+ }
+}
