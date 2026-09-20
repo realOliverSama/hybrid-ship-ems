@@ -31,6 +31,8 @@ EPOCH-3 generation-B（genB）4 臂对照实验的**权威正式语料**与验�
     N_dispatch、λ 网格分布、源选择/fallback/clamp 频率
   - `effect_analysis_acceptance_epoch3.json`：效果分析自身验收
   - `scripts/`：生成上述工件的三个脚本（bytes 与工件 bindings 中的 sha 一致）
+- `g3_killed_pending.txt` / `g3_retry_pending.json`：Stage-3 worker 补跑期间的
+  运行操作记录（被杀/待重试清单，战役过程证据）。
 - `fc3_authority_declaration.json` / `known_failure_regression_matrix.json`：
   FC-3 权威声明与已知失败回归矩阵（先前提交）。
 
