@@ -324,7 +324,13 @@ Gate authorization. No result-bearing skip of qualification.
 
 ## D — Formal execution (NOT AUTHORIZED in this session)
 
-- [ ] 10. Formal 48-voyage × 4-arm result generation
+- [x] 10. Formal 48-voyage × 4-arm result generation
+  - EXECUTED 2026-09-19/20 as epoch-3 generation-B campaign (after Attempt-A
+    checker-binding regression, sealed INVALID_FOR_FINAL_EFFECT_INFERENCE):
+    192/192 terminals under freeze root a2dc634f, per-(voyage,arm) resolved
+    across formal_epoch3_genB + formal_epoch3 namespaces; FC-3 v3
+    readjudication 192/192 READJUDICATED_FEASIBLE; acceptance G1/G2 PASS
+    (results/ppe_practical/formal_epoch3_genB/EPOCH3_GENB_FORMAL_ACCEPTANCE.json)
   - ID: T-010
   - Requirement(s): FR-800–805, FR-860, DGN-PPE-07, TG1, TG4
   - depends_on: T-009 `overall=true` **and** human Pre-Execution Gate
@@ -342,7 +348,12 @@ Gate authorization. No result-bearing skip of qualification.
     identity/hash mismatch; leakage → abort `STUDY_VALIDITY_FAIL`
   - Completion evidence: per-arm-voyage JSON + feasibility lists
 
-- [ ] 11. Effect estimation / bootstrap / development-stage report
+- [x] 11. Effect estimation / bootstrap / development-stage report
+  - EXECUTED 2026-09-20: frozen ppe.stats chain (group->tier->FULL_COHORT,
+    frozen-seed bootstrap B=10000, R diagnostic). Evidence label realized as
+    FORMAL_EPOCH3_GENB_CONTROL_EVIDENCE (strengthens the spec-anticipated
+    development-stage label). Artifacts: _analysis/effect_analysis_*_epoch3.json
+    (6 files) + EPOCH3_GENB_EFFECT_REPORT.md + figures/ (5)
   - ID: T-011
   - Requirement(s): FR-840–844, FR-866, FR-880–881, FR-890–891, TG1
   - depends_on: T-010 complete (full fixed corpus)
@@ -352,7 +363,11 @@ Gate authorization. No result-bearing skip of qualification.
     `DEVELOPMENT_STAGE_PRACTICAL_CONTROL_EVIDENCE`.
   - Completion evidence: `ppe_effect_report.json` + `final_report.md`
 
-- [ ] 12. Final evidence sealing
+- [x] 12. Final evidence sealing
+  - EXECUTED 2026-09-20: per-artifact sha256_self chain + hash-chain index
+    results/ppe_practical/formal_epoch3_genB/evidence_index.json (25 items:
+    freeze, ledger, acceptance, analysis artifacts, figures, scripts);
+    README synced; acceptance G9 no-mutation re-hash PASS
   - ID: T-012
   - Requirement(s): FR-890–891, NFR-800–805
   - depends_on: T-011
