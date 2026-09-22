@@ -176,10 +176,22 @@ endif()
 # 机制）：-DEMS_PREDICTOR=mlpq + 重烧 mlpq hex（0x70200000）即回 v3 收官态，
 # mlpq 分支源清单与编译定义均保持 v3 现状逐字节等价（资产全保留）。
 set(EMS_PREDICTOR "tcnq" CACHE STRING "EMS01 predictor slot: mlpq | tcnq (FR-511 compile-time swap)")
-# phase4-g NPU 线：REAT-T 推理后端形态选择（本工程 = NPU；CPU 副本 = OFF）
-# ON  → Model/reatt8_q_npu（EC blobs + NOR 权重 @0x70200000，stai ext 生命周期，int8 I/O）
-# OFF → Model/reatt8_q（全 CPU 编译形态，权重入 ELF，SYNC 执行，f32 I/O）
-set(EMS_REATT_NPU "ON" CACHE STRING "REAT-T backend: NPU (EC blobs) vs CPU form")
+# phase4-g NPU 线：REAT-T 推理形态三选一（本工程 = NPU 线，默认 SPLIT）
+# CPU   → 整图全 CPU 编译形态（Model/reatt8_q，权重入 ELF，SYNC 执行，f32 I/O）
+# NPU   → 整图 NPU 形态（Model/reatt8_q_npu，EC blobs + NOR 权重 @0x70300000，
+#         stai ext 生命周期，混合精度 I/O）——phase4-g 实验形态：编译/烧录/执行
+#         全通但输出退化（m 恒等于量化零点，与输入无关；根因定性于 ST
+#         Neural-ART 编译/执行语义层，见 Model/reatt8_q_npu/NOTE.md）
+# SPLIT → 拆分形态（用户 2026-09-23 裁决）：N1 = TCN 支路回 CPU 编译形态
+#         （part_n1，权重入 ELF），N2 = Attention/Dense/Fusion/Decoder 走 NPU
+#         形态（part_n2，NOR 权重 @0x70300000）；两段经 h_past[96] f32 共享
+#         缓冲零拷贝衔接（无量化往返）。
+set(EMS_REATT_FORM "SPLIT" CACHE STRING "REAT-T inference form: CPU | NPU | SPLIT")
+
+if(NOT (EMS_REATT_FORM STREQUAL "CPU" OR EMS_REATT_FORM STREQUAL "NPU"
+        OR EMS_REATT_FORM STREQUAL "SPLIT"))
+    message(FATAL_ERROR "EMS_REATT_FORM must be CPU, NPU or SPLIT, got: ${EMS_REATT_FORM}")
+endif()
 
 if(NOT (EMS_PREDICTOR STREQUAL "mlpq" OR EMS_PREDICTOR STREQUAL "tcnq"))
     message(FATAL_ERROR "EMS_PREDICTOR must be mlpq or tcnq, got: ${EMS_PREDICTOR}")
@@ -280,16 +292,28 @@ if(EMS_FW_MODE STREQUAL "NPU")
             # stai runtime 全局一次初始化共享助手（reatt 与 tcnq/workclf 共用契约；
             # 无 SRAM 体积代价，两配置同编保持 tcnq 路径行为一致）
             "${EMS01_APP_DIR}/ems_stai_rt.c"
-            # REAT-T 生成物包装：仅 Release；形态由 EMS_REATT_NPU 选择
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},ON>>:${EMS01_APP_DIR}/ems_npu_reattnpu.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},ON>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/reattnpu.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},ON>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/stai_reattnpu.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},OFF>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},OFF>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"
+            # REAT-T 生成物包装：仅 Release；形态由 EMS_REATT_FORM 选择
+            # —— 整图 NPU（EMS_REATT_FORM=NPU，phase4-g 实验形态）
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},NPU>>:${EMS01_APP_DIR}/ems_npu_reattnpu.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},NPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/reattnpu.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},NPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/stai_reattnpu.c>"
+            # —— 拆分形态（EMS_REATT_FORM=SPLIT，本工程默认）：
+            #    N1 TCN CPU 形态（包装 TU #include 图；权重 TU 直编）
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${EMS01_APP_DIR}/ems_reatt_split.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${EMS01_APP_DIR}/ems_npu_reattn1c.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n1/reattn1c_data.c>"
+            #    N2 Attention/Dense NPU 形态（包装 TU 仅契约断言；图与 stai 绑定分 TU）
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${EMS01_APP_DIR}/ems_npu_reattn2n.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n2/reattn2n.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n2/stai_reattn2n.c>"
+            # —— 整图 CPU 形态（EMS_REATT_FORM=CPU）
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"
         )
         target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
             $<$<CONFIG:Release>:EMS_REATT_SERVICE=1>
-            $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},ON>>:EMS_REATT_NPU=1>
+            $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},NPU>>:EMS_REATT_NPU=1>
+            $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:EMS_REATT_SPLIT=1>
         )
     else()
         set(EMS01_AI_MW "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/STEdgeAI")

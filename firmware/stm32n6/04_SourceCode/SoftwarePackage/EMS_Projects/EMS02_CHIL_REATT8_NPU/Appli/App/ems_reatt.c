@@ -19,13 +19,21 @@
 
 /* 服务可用性契约（spec phase4-g D4）：
  * - Release（NOR appli，正式交付形态）：完整实现（EMS_REATT_SERVICE 由
- *   CMake 于 NPU+tcnq 栈 Release 配置注入）；
+ *   CMake 于 NPU+tcnq 栈 Release 配置注入）；推理形态三选一（EMS_REATT_FORM）：
+ *     SPLIT → 本文件不定义 ems_reatt_query（实现见 ems_reatt_split.c：
+ *             N1=TCN CPU 形态 + N2=Attention/Dense NPU 形态）；
+ *     NPU   → 下列 EMS_REATT_NPU 分支（整图 NPU 形态，phase4-g 实验形态）；
+ *     CPU   → 下列 #else 分支（整图 CPU 形态，CPU 工程交付形态）。
  * - Debug（LRUN_RAMxspi1 2047K SRAM 窗口）：REATT 权重 1.43MB + 激活 333KB
  *   + 图代码 ≈2.09MB，加应用本体物理超窗（实测溢出 1.15MB）——Debug 编译
  *   明确桩（CMD_REATT → NACK ERR_INFER），Debug 镜像 = TCN64 基线形态，
  *   保 fw_gate 双构建门禁与既有调试工作流；
  * - REF / mlpq 可逆性分支：stai 4.0.1 栈未链接，同为桩。 */
-#if defined(EMS_REATT_SERVICE) && (EMS_FW_MODE == EMS_FW_MODE_NPU) && defined(EMS_PREDICTOR_TCNQ)
+#if defined(EMS_REATT_SPLIT)
+
+/* 拆分形态：实现体在 ems_reatt_split.c（本 TU 空，避免重复符号） */
+
+#elif defined(EMS_REATT_SERVICE) && (EMS_FW_MODE == EMS_FW_MODE_NPU) && defined(EMS_PREDICTOR_TCNQ)
 
 #if defined(EMS_REATT_NPU)
 
@@ -180,6 +188,12 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
         }
     }
 
+    /* 官方缓存维护契约（stneuralart_cache_maintenance，用户缓冲必须由应用维护）：
+     * 输入由 MCU 写入 → CPU cache CLEAN（写回）后才可交 NPU 读取；
+     * 输出由 NPU 写入 → CPU cache INVALIDATE 后再读。缺 clean 会让 NPU 读到
+     * 陈旧数据（phase4-g NPU bring-up 实证修复点）。 */
+    SCB_CleanDCache_by_Addr((uint32_t *)rn_in_hist, (int32_t)sizeof(rn_in_hist));
+    SCB_CleanDCache_by_Addr((uint32_t *)rn_in_kf, (int32_t)sizeof(rn_in_kf));
     SCB_InvalidateDCache_by_Addr(rn_out, (int32_t)sizeof(rn_out));
 
     in_ptrs[0] = (stai_ptr)rn_in_hist;

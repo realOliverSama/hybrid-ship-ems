@@ -114,3 +114,44 @@ exact；本次 REATT 全退化——程度更重，可能同根或另有工具�
 降 `--optimization`）；③ `--mode target` 官方直连验证（需按其 USB-CDC 文档构建 ST 验证
 固件）；④ **分体网络**：卷积段（TCN）留 CPU 形态、Dense/attention 段（workclf 类简单
 图，历史 NPU 正常）独立编译上 NPU——最多可硬件化 ~70% MAC。
+
+---
+
+## 2026-09-23 — 分体网络实验（用户裁决路线；未试杠杆 ④ 的落地）
+
+**动机**：把"有问题的那一部分（TCN）放 CPU，其余能上 NPU 的尽量上 NPU"——若 N2
+（无卷积的 Dense/attention 段）正常，则根因锁定 TCN；若 N2 同样退化，则 NPU 线
+定论关闭。
+
+**实施**（`Host/tools/npu/npu_export_split.py` + `npu_quantize_split.py`，固件形态
+`EMS_REATT_FORM=SPLIT`）：
+
+| 段 | 参数 | 编译形态 | I/O 契约（生成物实测） | 权重/激活 |
+|---|---|---|---|---|
+| N1 = TCN 支路 | 168,864 | CPU（`part_n1/reattn1c.*`，编译自 `reatt_n1_int8.onnx`） | IN 3300×f32 / OUT 96×f32 | 权重 584,392 B 入 ELF；激活 283,776 B |
+| N2 = Future+Fusion+Decoder | 843,971 | NPU（`part_n2/reattn2n.*`，编译自 `reatt_n2_int8.onnx`） | IN kf 180B int8 / h_past 384B **f32** / OUT 90B int8 | 权重 atonbuf 877,009 B → NOR 0x70300000（83.6%）；激活 1.08 MB npuRAM3-5 |
+
+拆分保真（host，fp32 两段链 vs 整图 keras）= **0.015 kW MAE**（拆分本身无损）；
+int8 链 29.6 kW = TCN 段 20.5 + N2 段 16.1（整图 int8 23.5 kW）。
+
+**板上结果（Release，appli 逐字节校验、N2 权重 sha 一致、FSBL 前后未变）**：
+
+1. **N1（CPU 形态）正常**：`RS-N1` 诊断行 h_past 非退化且随输入变化
+   （hp[0..3]=2.1481,2.1481,0.0000,1.5343；min −1.0434 / max 15.0980）。
+2. **N2（NPU 形态）退化**：整窗 30 lead 输出为**同一常数三元组**（int8 码
+   (−128,−111,−111)），跨 12 个不同输入窗 m 通道恒 −128（量化零点）；同一输入
+   两次调用结果不同（另一次 (−128,−28,+12)）⇒ 与输入无关 + 非确定。
+3. **判别实验**：workclf（简单图、NOR 权重 0x70400000，本平台历史正常）在本 appli
+   `CMD_WC_TEST` **全 NACK ERR_INFER**（40/40，`Host/results/reatt_board/wc_test_report.json`）
+   ——与假设台账 #9 记录一致（历史上正常）。
+4. 板上 L1：拆分形态 q50 MAE **288 kW**（整图 NPU 347 kW），同档退化。
+
+**推论**：① TCN **不是**根因（N2 无卷积同样退化）；② N2 与 workclf 同时失败，指向
+**共享集成路径**（NPU 侧 NOR 权重可达性 / NPU cache 属性 / EC 运行时）而非图复杂度，
+但 N2 权重经回读校验与源文件逐字节一致、N1 同源 NOR 读路径（ELF .rodata 在 NOR）
+在 CPU 侧正常 ⇒ 剩余可疑点集中在 **NPU 作为 master 的 NOR 通路与缓存属性**。
+
+**下一步（需 Dev boot）**：① 读回 0x70400000 workclf 权重区与
+`Binary/network-data-workclf.hex` 比对（台账遗留项）；② 带插桩重建：打印 workclf
+失败步骤的 stai rc 码 + N2 原始 90B + CPU 侧 NOR 权重校验和；③ 若 workclf 修复
+（权重区缺失）而 N2 仍退化，则 N2 的问题回到图/工具链层。

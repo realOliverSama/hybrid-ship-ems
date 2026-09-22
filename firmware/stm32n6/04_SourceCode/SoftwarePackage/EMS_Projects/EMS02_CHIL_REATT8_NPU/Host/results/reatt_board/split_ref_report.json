@@ -1,0 +1,35 @@
+{
+  "schema": "phase4g_reatt_split_reference_v1",
+  "n": 64,
+  "source": {
+    "npz": "reatt_ref_vectors.npz",
+    "n1": "reatt_n1_int8.onnx",
+    "n2": "reatt_n2_int8.onnx"
+  },
+  "deploy_quant": {
+    "kf_scale": 0.022380275651812553,
+    "kf_zp": -19,
+    "out_scale": 3.608830451965332,
+    "out_zp": -128
+  },
+  "h_past_stats": {
+    "min": -2.2708346843719482,
+    "max": 21.726362228393555,
+    "mean": 1.6102060079574585,
+    "std": 3.3946452140808105
+  },
+  "out_boundary_quant_effect_kW": {
+    "q50_mae": 0.0,
+    "q50_max": 0.0
+  },
+  "vs_keras_kW": {
+    "q50_mae": 28.548803329467773,
+    "q50_max": 105.950439453125
+  },
+  "h_past_head": [
+    3.743809938430786,
+    1.4115999937057495,
+    0.0,
+    5.830519676208496
+  ]
+}

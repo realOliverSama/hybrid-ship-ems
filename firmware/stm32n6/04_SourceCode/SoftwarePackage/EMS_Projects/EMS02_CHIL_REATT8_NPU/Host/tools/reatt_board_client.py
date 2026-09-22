@@ -52,6 +52,8 @@ def find_repo_root(start_dir):
 REPO_ROOT = find_repo_root(SCRIPT_DIR)
 PROJ = os.path.normpath(os.path.join(SCRIPT_DIR, "..", ".."))
 REF = os.path.join(PROJ, "Host", "reference", "reatt", "reatt_ref_vectors.npz")
+REF_SPLIT = os.path.join(PROJ, "Host", "reference", "reatt",
+                         "reatt_ref_vectors_split.npz")
 RES = os.path.join(PROJ, "Host", "results", "reatt_board")
 
 SYNC0, SYNC1 = 0xAA, 0x55
@@ -140,6 +142,9 @@ def main():
     ap.add_argument("--parity", nargs="?", type=int, const=0,
                     help="对拍（可给定向量数；0=全部）")
     ap.add_argument("--latency", type=int, default=0)
+    ap.add_argument("--form", choices=("whole", "split"), default="whole",
+                    help="L1 参考形态：whole=整图 int8（q_int8）；"
+                         "split=拆分链 int8（q_split，N1 CPU + N2 NPU）")
     args = ap.parse_args()
 
     os.makedirs(RES, exist_ok=True)
@@ -151,9 +156,12 @@ def main():
         b.close()
         return 0 if ok else 1
 
-    z = np.load(REF)
+    suffix = "" if args.form == "whole" else "_split"
+    z = np.load(REF if args.form == "whole" else REF_SPLIT)
     hist_raw, kf_raw = z["hist_raw"], z["kf_raw"]
-    q_int8, q_keras = z["q_int8"], z["q_keras"]
+    q_int8 = z["q_int8"] if args.form == "whole" else z["q_split"]
+    q_keras = z["q_keras"]
+    l1_label = "hostint8" if args.form == "whole" else "splitchain"
     n = len(hist_raw) if not args.parity else args.parity
 
     rows = []
@@ -187,6 +195,7 @@ def main():
     us = np.array(us_list)
     report = {
         "schema": "phase4g_reatt_board_parity_v1",
+        "form": args.form, "l1_reference": l1_label,
         "n": n, "baud": args.baud,
         "l1_board_vs_hostint8": {
             "q50_mae_kW_mean": float(np.mean(l1_mae)),
@@ -208,12 +217,12 @@ def main():
         "finite_rate": float(np.mean([r["finite"] for r in rows])),
         "total_wall_s": time.time() - t_all,
     }
-    csv_path = os.path.join(RES, "board_parity.csv")
+    csv_path = os.path.join(RES, f"board_parity{suffix}.csv")
     with open(csv_path, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()))
         w.writeheader()
         w.writerows(rows)
-    json.dump(report, open(os.path.join(RES, "board_parity_report.json"), "w"),
+    json.dump(report, open(os.path.join(RES, f"board_parity{suffix}_report.json"), "w"),
               indent=2, ensure_ascii=False)
     print(json.dumps(report, indent=2))
     return 0 if report["l1_board_vs_hostint8"]["pass"] else 1
