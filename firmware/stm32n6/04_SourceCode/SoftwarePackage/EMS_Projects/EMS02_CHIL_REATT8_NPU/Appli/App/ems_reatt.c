@@ -11,6 +11,7 @@
  * 调用语境：单任务顺序（ems_app 分发路径），无并发；init 状态静态。
  */
 #include <math.h>
+#include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
 
@@ -62,6 +63,7 @@ static int32_t rn_qzp_kf;
 static float rn_qscale_out;
 static int32_t rn_qzp_out;
 static bool rn_ready;
+static bool rn_ran_before; /* new_inference 仅在上一次异步推理之后需要（stai 契约） */
 
 static uint32_t rn_now_us(void)
 {
@@ -89,13 +91,13 @@ static int rn_init_once(void)
     if (!rn_ready) {
         stai_network_info info;
         if (stai_reattnpu_init(ems_stai_ctx_reattnpu) != STAI_SUCCESS) {
-            return 1;
+            printf("RN-FAIL init\r\n"); return 1;
         }
         if (stai_reattnpu_get_info(ems_stai_ctx_reattnpu, &info) != STAI_SUCCESS) {
-            return 1;
+            printf("RN-FAIL getinfo\r\n"); return 1;
         }
         if (info.n_inputs < 2u || info.n_outputs < 1u) {
-            return 1;
+            printf("RN-FAIL ni=%u no=%u\r\n", (unsigned)info.n_inputs, (unsigned)info.n_outputs); return 1;
         }
         const stai_tensor *ti0 = &info.inputs[0];
         const stai_tensor *ti1 = &info.inputs[1];
@@ -104,15 +106,20 @@ static int rn_init_once(void)
         if (ti0->format != STAI_FORMAT_FLOAT32
                 || ti1->format != STAI_FORMAT_S8
                 || to->format != STAI_FORMAT_S8) {
-            return 1;
+            printf("RN-FAIL fmt %d %d %d\r\n", (int)ti0->format, (int)ti1->format, (int)to->format); return 1;
         }
         if (ti1->scale.size != 1u || to->scale.size != 1u) {
-            return 1; /* 仅支持 per-tensor（当前生成物形态） */
+            printf("RN-FAIL sc %u %u\r\n", (unsigned)ti1->scale.size, (unsigned)to->scale.size); return 1;
         }
         rn_qscale_kf = ti1->scale.data[0];
         rn_qzp_kf = (int32_t)ti1->zeropoint.data[0];
         rn_qscale_out = to->scale.data[0];
         rn_qzp_out = (int32_t)to->zeropoint.data[0];
+        printf("RN-Q f=%d,%d,%d s=%.6f,%.6f,%.6f zp=%d,%d,%d\r\n",
+               (int)ti0->format, (int)ti1->format, (int)to->format,
+               (double)ti0->scale.size ? 0.0 : 0.0, (double)rn_qscale_kf,
+               (double)rn_qscale_out, (int)ti0->zeropoint.size ? (int)ti0->zeropoint.data[0] : 0,
+               (int)rn_qzp_kf, (int)rn_qzp_out);
         rn_ready = true;
     }
     return 0;
@@ -178,20 +185,52 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
     in_ptrs[0] = (stai_ptr)rn_in_hist;
     in_ptrs[1] = (stai_ptr)rn_in_kf;
     out_ptrs[0] = (stai_ptr)rn_out;
+    {
+        static uint32_t diag2_n;
+        if (diag2_n < 1u) {
+            diag2_n++;
+            stai_ptr cur_in[2] = {0};
+            stai_size n_in = 0;
+            (void)stai_reattnpu_get_inputs(ems_stai_ctx_reattnpu, cur_in, &n_in);
+            printf("RN-IO pre  n=%u a0=%p a1=%p | ours %p %p\r\n",
+                   (unsigned)n_in, (void*)cur_in[0], (void*)cur_in[1],
+                   (void*)rn_in_hist, (void*)rn_in_kf);
+            printf("RN-DATA h0=%.3f k0=%d k1=%d k2=%d\r\n",
+                   (double)rn_in_hist[0], (int)rn_in_kf[0], (int)rn_in_kf[1], (int)rn_in_kf[2]);
+        }
+    }
     if (stai_reattnpu_set_inputs(ems_stai_ctx_reattnpu, in_ptrs,
                                  LL_ATON_REATTNPU_IN_NUM) != STAI_SUCCESS
             || stai_reattnpu_set_outputs(ems_stai_ctx_reattnpu, out_ptrs,
                                          LL_ATON_REATTNPU_OUT_NUM) != STAI_SUCCESS) {
-        return 1;
+        printf("RN-FAIL setio\r\n"); return 1;
     }
 
-    if (stai_ext_reattnpu_new_inference(ems_stai_ctx_reattnpu) != STAI_SUCCESS) {
-        return 1;
+    if (rn_ran_before) {
+        /* stai 契约：new_inference 仅在上一异步推理之后准备下一拍；
+         * 首拍调用非法（stai_reattnpu.h 注记），故首拍跳过。 */
+        if (stai_ext_reattnpu_new_inference(ems_stai_ctx_reattnpu) != STAI_SUCCESS) {
+            printf("RN-FAIL newinf\r\n"); return 1;
+        }
     }
     rc = stai_reattnpu_run(ems_stai_ctx_reattnpu, STAI_MODE_ASYNC);
     if (rn_wait_done(ems_stai_ctx_reattnpu, rc,
                      stai_ext_reattnpu_run_continue) != 0) {
-        return 1;
+        printf("RN-FAIL run rc=%d\r\n", (int)rc); return 1;
+    }
+
+    rn_ran_before = true;
+    {
+        static uint32_t diag_n;
+        if (diag_n < 3u) {
+            diag_n++;
+            printf("RN-OUT b=%d,%d,%d,%d,%d,%d m=%.2f a=%.2f b2=%.2f\r\n",
+                   (int)rn_out[0], (int)rn_out[1], (int)rn_out[2],
+                   (int)rn_out[3], (int)rn_out[4], (int)rn_out[5],
+                   (double)rn_dequant(rn_out[0], rn_qscale_out, rn_qzp_out),
+                   (double)rn_dequant(rn_out[1], rn_qscale_out, rn_qzp_out),
+                   (double)rn_dequant(rn_out[2], rn_qscale_out, rn_qzp_out));
+        }
     }
 
     /* 输出反量化 + 单调分位变换（与 CPU 形态同式） */

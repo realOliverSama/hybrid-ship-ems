@@ -27,7 +27,8 @@ reatt_s0.keras（冻结）
 
 | 文件 | 说明 |
 |---|---|
-| `reatt_static_int8.onnx` | int8 QDQ ONNX（1.58MB，NPU 编译器输入；与 fp32 对拍 corr 0.978 / mean 16.9kW） |
+| `reatt_concat_fp32.onnx` | **v3 部署图**（静态 attention + tanh GELU + Concat 零填充；对拍 winner corr 1.000000） |
+| `reatt_concat_int8.onnx` | int8 QDQ ONNX（1.59MB，NPU 编译器输入；与 fp32 对拍 corr 0.978 / mean 16.9kW）。v1/v2 图变体（tanh 独立版 / midpad 手术版）已迭代废弃，历史见 git |
 | `reattnpu.c` / `reattnpu.h` / `reattnpu_ecblobs.h` | 生成代码（EC blob 化，stai API） |
 | `stai_reattnpu.c/.h` | stai NPU 形态绑定层（ext 生命周期） |
 | `reattnpu_atonbuf.xSPI2.raw` | **NOR 权重块（1.05MB）** → `../../Binary/network-data-reattnpu.hex` @ **0x70200000**（2MB 池，workclf 0x70400000 下界内） |
@@ -47,3 +48,39 @@ reatt_s0.keras（冻结）
 2. NOR 权重烧录 `Binary/network-data-reattnpu.hex` → 0x70200000（Level C，专用加载器，
    仅该 2MB 区；覆盖旧 TCN NPU 权重，回滚=重烧 Binary 资产）；
 3. 板上复验：L1/L2 对拍（同 64 向量）+ **推理时延对比**（预期 0.80s CPU → 数十 ms NPU 量级）。
+
+
+## 板上结果与结论（2026-09-23 凌晨，板级实证）
+
+### 已达成（工具链闭环 + 固件 + 启动）
+
+- NPU 形态固件**能启动、能推理**：PING 20/20；CMD_REATT 单帧 ~300ms（对比 CPU 形态
+  800ms）；混合精度 I/O 契约经工具自打印证实与固件实现逐项一致
+  （f32 hist / int8 kf Q(0.022380276,−19) / int8 out Q(3.620067120,−128)）；
+- 权重池 0x702F0000（1088KB，appli 尾 0x7022951F 与 workclf 0x70400000 双向无重叠，
+  回读逐字节一致）；appli-only 烧录 + FSBL 前后哈希不变。
+
+### 失败（板端数值退化，两种图形态同样复现）
+
+- **输出退化**：m 通道恒 −128（0.00 kW）、跨不同输入输出不变——网络输出与输入
+  解耦。两个图形态（v2 中间维 Pad 手术 / **v3 Concat 零填充**）**同样复现**；
+- ONNX 语义经 ORT 验证正确（q50≈753 kW 等），**问题不在 ONNX/量化标定**；
+- **继承的历史结论（关键）**：TCN64 工程 2026-09-03 已对同类问题定性为
+  **Neural-ART int8 执行语义与解释器结构性分歧（与图形态无关）**——原生 dilation
+  与 SpaceToBatch 分解两形态均复现，判 **NO-GO**，随后改走全 CPU 形态
+  （证据：`../EMS01_CHIL_ECMS_TCN64/Host/results/tcn_swap/layer2_diagnosis_20260903.json`；
+  当时 workclf 类简单图在 NPU 上正常 cls_match 99.96%）。
+  本次 REATT（含 209 个 SW epoch 的混合图）复现同一类退化。
+
+### 建议（部署决策）
+
+1. **交付形态维持全 CPU 编译形态**（EMS02_CHIL_REATT8_CPU，已验收：64/64 有限、
+  L2≈L0、mock 闭环 Δfuel −0.06%）——NPU 路由当前被工具链/NPU 语义层阻塞；
+2. NPU 线后续选项（需独立立项/外部支持）：
+   a. ST 工具链级支持（Neural-ART int8 累加/重整化语义取证）；
+   b. 升级 SDK（5.x / LiteRT 系）重试；
+   c. **分体网络实验**：卷积重段（TCN 分支）保留 CPU、Dense/attention 段
+      （workclf 类简单图，历史 NPU 正常）走 NPU——需切图与中间张量接口设计。
+3. 遗留硬件待办：ST-LINK 对 NOR 的**读取通路**在本次会话末段失效（写/校验此前
+   正常；0x70000000/0x702F0000/0x70400000 全区域读失败，需另行排查 ST-LINK/加载器/
+   板卡状态）；workclf NOR 权重区完整性核查因此未完成。

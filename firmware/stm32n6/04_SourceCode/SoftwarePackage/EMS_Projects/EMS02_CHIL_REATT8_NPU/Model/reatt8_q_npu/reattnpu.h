@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    reattnpu.h
   * @author  STEdgeAI
-  * @date    2026-09-22 22:33:37
+  * @date    2026-09-22 23:49:44
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_REATTNPU_C_MODEL_NAME        "reattnpu"
-#define LL_ATON_REATTNPU_ORIGIN_MODEL_NAME   "reatt_static_int8"
+#define LL_ATON_REATTNPU_ORIGIN_MODEL_NAME   "reatt_concat_int8"
 
 /************************** USER ALLOCATED IOs ********************************/
 #define LL_ATON_REATTNPU_USER_ALLOCATED_INPUTS   (2)  // Number of input buffers not allocated by the compiler
@@ -28,16 +28,16 @@
 
 /************************** INPUTS ********************************************/
 #define LL_ATON_REATTNPU_IN_NUM        (2)    // Total number of input buffers
-// Input buffer 1 -- Input_687_out_0
+// Input buffer 1 -- Input_688_out_0
 #define LL_ATON_REATTNPU_IN_1_ALIGNMENT   (32)
 #define LL_ATON_REATTNPU_IN_1_SIZE_BYTES  (13200)
-// Input buffer 2 -- Input_73_out_0
+// Input buffer 2 -- Input_74_out_0
 #define LL_ATON_REATTNPU_IN_2_ALIGNMENT   (32)
 #define LL_ATON_REATTNPU_IN_2_SIZE_BYTES  (180)
 
 /************************** OUTPUTS *******************************************/
 #define LL_ATON_REATTNPU_OUT_NUM        (1)    // Total number of output buffers
-// Output buffer 1 -- Quantize_1216_out_0
+// Output buffer 1 -- Quantize_1219_out_0
 #define LL_ATON_REATTNPU_OUT_1_ALIGNMENT   (32)
 #define LL_ATON_REATTNPU_OUT_1_SIZE_BYTES  (90)
 

@@ -156,12 +156,12 @@
                     "constants_preferred": "true"
                 },
                 "offset": {
-                    "value": "0x70200000",
+                    "value": "0x702F0000",
                     "magnitude": "BYTES"
                 },
                 "size": {
-                    "value": "2",
-                    "magnitude": "MBYTES"
+                    "value": "1088",
+                    "magnitude": "KBYTES"
                 }
             }
         ]

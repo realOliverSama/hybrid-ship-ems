@@ -17,7 +17,20 @@ import sys
 
 import numpy as np
 
-REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..", "..", ".."))
+def _find_repo_root(start):
+    d = os.path.abspath(start)
+    while True:
+        if (os.path.isfile(os.path.join(d, "AGENTS.md"))
+                and os.path.isdir(os.path.join(d, "model"))
+                and os.path.isdir(os.path.join(d, "firmware"))):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise SystemExit("ERROR: 无法定位仓库根")
+        d = parent
+
+
+REPO = _find_repo_root(os.path.dirname(os.path.abspath(__file__)))
 MODELE = os.path.join(REPO, "model", "simulink_modelE_(Phase4_Physics)")
 OUT = os.path.join(REPO, "firmware", "stm32n6", "04_SourceCode", "SoftwarePackage",
                    "EMS_Projects", "EMS01_CHIL_REATT8", "Model", "reatt8_q_npu")
