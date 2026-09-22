@@ -1,0 +1,48 @@
+{
+ "task": "T-808",
+ "spec": "ems01-chil-tcn64-swap",
+ "generated": "2026-09-02 23:29",
+ "fw_gate": {
+  "result": "PASS 7/7",
+  "exit": 0,
+  "note": "gate 内部覆盖 Debug(NPU 默认)+Release 构建；REF 树(build-ref2, EMS_FW_MODE=REF+EMS_PREDICTOR=tcnq)另行手动构建并按本文件核验"
+ },
+ "images": {
+  "NPU_debug": {
+   "elf": "Appli/build/Debug/EMS01_CHIL_ECMS_Appli.elf",
+   "sha256": "cf0f9c0763d7de4b4a5d90578ccaca2b6b8c89b429c52fe20657ad28cd630641",
+   "elf_mtime": "2026-09-02 23:28",
+   "fw_mode": "NPU",
+   "predictor": "tcnq",
+   "newest_source": "Appli/App/ems_params.c",
+   "newest_source_mtime": "2026-09-02 23:23",
+   "freshness": "fresh"
+  },
+  "REF_debug": {
+   "elf": "Appli/build-ref2/EMS01_CHIL_ECMS_Appli.elf",
+   "sha256": "5427419a335bb29ffc8a89047241e52c35aefa0379aba14d0ba2e26a06155f18",
+   "elf_mtime": "2026-09-02 23:28",
+   "fw_mode": "REF",
+   "predictor": "tcnq",
+   "newest_source": "Appli/App/ems_params.c",
+   "newest_source_mtime": "2026-09-02 23:23",
+   "freshness": "fresh"
+  }
+ },
+ "ref_occupancy": {
+  "ram_used_bytes": 1876152,
+  "ram_region_bytes": 2096128,
+  "pct": 89.51,
+  "budget_gate_bytes": 2030592,
+  "pass": true,
+  "note": "design §Error Handling：≤2047K−64KB；实测余量 219,976B（含 64KB 门内余量 106,824B）"
+ },
+ "gc_checks": {
+  "NPU_ems_tcnq_symbols": 0,
+  "NPU_tcnq_renamed_symbols_present": true,
+  "REF_ems_tcnq_tables": 36,
+  "REF_ems_mlpq_w1_absent": true
+ },
+ "rwx_warning": "pre-existing linker notice (RWX LOAD segment), v1 先例同在，非本次引入",
+ "static_assert": "ems_npu_tcnq.c IN_1=1200/IN_2=8/OUT_1=12 编译期校验通过（构建零错误）"
+}

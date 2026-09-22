@@ -11,7 +11,7 @@ phase4-g 分支，完成后并入；以 `EMS01_CHIL_ECMS_TCN64` 副本为基础�
 1. **G1 量化部署链**：冻结 REAT-T winner（`reatt_s0.keras`，FR-836 身份
    `d8da6af4…`）→ 部署图裁剪（输出 = raw_proj (m,a,b)，单调分位变换移固件）→
    TFLite int8（部署口径标定 = 归一化 train 窗）→ ST Edge AI 4.0.1 全 CPU
-   编译形态（无 `--st-neural-art`，同 TCN64 先例）→ 固件 `EMS01_CHIL_REATT8`。
+   编译形态（无 `--st-neural-art`，同 TCN64 先例）→ 固件 `EMS02_CHIL_REATT8_CPU`。
 2. **G2 板上服务**：新 UART 命令 `CMD_REATT`（raw hist 300×11 f32 + kf 30×6 f32
    → q10/q50/q90 30×3 f32 + infer_us），固件内完成冻结归一化（formal_norm_v3
    逐 bin + norm_ext 逐 lead）→ int8 推理 → 稳定 softplus 分位变换。
@@ -69,7 +69,7 @@ law6/PMS/plant 留在 PC Simulink。理由：Model E 控制侧为 Simulink 内�
 ## 目录与产物
 
 ```text
-firmware/.../EMS_Projects/EMS01_CHIL_REATT8/     # TCN64 副本 + REATT 服务
+firmware/.../EMS_Projects/EMS02_CHIL_REATT8_CPU/     # TCN64 副本 + REATT 服务
   ├─ Model/reatt8_q/            # tflite + stedgeai 生成包 + NOTE + 脚本 + 日志
   ├─ Appli/App/ems_reatt*.c/.h  # 板上 REATT 服务（归一化+推理+变换）
   ├─ Appli/App/ems_reatt_params.*  # 【生成物】冻结归一化常数（sha256 溯源）
@@ -87,7 +87,7 @@ model/simulink_modelE_(Phase4_Physics)/
 
 - [x] T-001 去风险实验（keras→tflite→stedgeai，本 spec §关键数字）
 - [x] T-002 分支 + spec
-- [x] T-003 工程副本 EMS01_CHIL_REATT8（commit 1504f990；fw_gate 7/7；Debug=TCN64
+- [x] T-003 工程副本 EMS02_CHIL_REATT8_CPU（commit 1504f990；fw_gate 7/7；Debug=TCN64
       基线+桩 / Release=REATT 全量的形态差异登记于工程 README 与 §D4）
 - [x] T-004 量化管线正式化 + 三口径报告 + 参考向量（L0 PASS：q50 MAE 23.5 kW /
       corr 0.981 / 有限 100%；再生 tflite 逐字节一致 efde1aff…）

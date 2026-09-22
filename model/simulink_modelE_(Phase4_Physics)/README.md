@@ -46,7 +46,7 @@ C0 = 严格因果持续性；C1 = PERFECT_INFORMATION_CONTROLLER_REFERENCE（冻
 
 **Phase 4-G REATT-T 板上部署 + soft-HIL**（spec
 `.specs/phase4-g-reatt-board-deployment/`，2026-09-22 起）：冻结 winner 量化
-（int8 全 CPU 编译形态）部署至 `firmware/.../EMS_Projects/EMS01_CHIL_REATT8/`，
+（int8 全 CPU 编译形态）部署至 `firmware/.../EMS_Projects/EMS02_CHIL_REATT8_CPU/`，
 C2 臂推理经板后端复跑（预测器在环 soft-HIL）。本工作区新增（全部 additive，
 冻结件零改动）：`python/ppe/c2_server_board.py`（板后端文件桥服务 + --mock
 联调）、`scripts/+ppe/c2_bridge_board.m`、`scripts/+ppe/run_softhil_voyage.m`

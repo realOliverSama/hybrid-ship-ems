@@ -2,7 +2,7 @@ function bridge = c2_bridge_board(token, port, use_mock)
 % ppe.c2_bridge_board — C2 推理**板上后端**文件桥（phase4-g，spec
 % .specs/phase4-g-reatt-board-deployment D7）。与 ppe.c2_bridge 同协议同
 % 传输（req/resp .mat 目录轮询）；唯一差异 = Python 服务进程为
-% ppe.c2_server_board（推理在 EMS01_CHIL_REATT8 固件板，int8 全 CPU 形态），
+% ppe.c2_server_board（推理在 EMS02_CHIL_REATT8_CPU 固件板，int8 全 CPU 形态），
 % 非本进程 keras fp32。
 %
 % 本文件为 phase4-g 新增副本；ppe.c2_bridge.m（冻结件）零改动。
@@ -53,9 +53,26 @@ end
 pydir = fullfile(ROOT, 'python');
 env = sprintf('PYTHONPATH="%s:%s" ', pydir, ROOT);
 logf = fullfile(base, 'server.log');
-cmd = sprintf('%s"%s" -m ppe.c2_server_board --reqdir "%s" --respdir "%s" --stop-file "%s" --port "%s"%s > "%s" 2>&1 &', ...
-    env, py, reqdir, respdir, stopf, port, mockarg, logf);
-system(cmd);
+if ~isempty(getenv('EMS_REATT_EXTERNAL_SERVER'))
+    % phase4-g 绕过（bring-up 2026-09-22）：MATLAB system() 派生的子进程串口
+    % 行为异常（同命令 bash 派生正常；疑似 DYLD_* 环境注入），改由主机侧
+    % 预启动服务器（bash），本桥只做文件传输。根因登记遗留问题。
+    cmd = '';
+else
+    % bring-up：显式传 --baud（服务器默认曾与固件不一致导致静默，代价惨痛）
+    baud = getenv('EMS_REATT_BAUD');
+    if isempty(baud), baud = '115200'; end
+    cmd = sprintf('%s"%s" -m ppe.c2_server_board --reqdir "%s" --respdir "%s" --stop-file "%s" --port "%s" --baud %s%s > "%s" 2>&1 &', ...
+        env, py, reqdir, respdir, stopf, port, baud, mockarg, logf);
+    system(cmd);
+end
+% phase4-g 调试：记录派生解释器与端口（bring-up）
+fid = fopen(fullfile(base, 'spawn.log'), 'a');
+if fid > 0
+    fwrite(fid, sprintf('[%s] py=%s port=%s cmd_ok\n', ...
+        char(datetime('now')), py, port));
+    fclose(fid);
+end
 
 mock_on = ~isempty(mockarg);
 bridge = struct();

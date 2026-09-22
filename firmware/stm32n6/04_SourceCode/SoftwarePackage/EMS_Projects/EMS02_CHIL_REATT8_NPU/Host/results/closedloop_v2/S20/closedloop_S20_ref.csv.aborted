@@ -1,0 +1,1 @@
+tick,t_s,P_load_kW,SOC,v_cmd_mps,v_ship_mps,accel_mps2,x_ship_m,P_gen_kW,e_hat,K,cls_eff,flags,infer_us,ctrl_us,fuel_total_kg,P_bat_kW,P_prop_kW,voyage_stop

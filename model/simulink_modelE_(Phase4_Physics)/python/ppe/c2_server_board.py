@@ -1,7 +1,7 @@
 """C2 inference file-bridge server — BOARD backend (phase4-g soft-HIL).
 
 与冻结件 ppe/c2_server.py 同文件协议（req/resp .mat 目录轮询，fail-closed）；
-唯一差异 = 推理不在本进程（keras），而是转发到 EMS01_CHIL_REATT8 固件板的
+唯一差异 = 推理不在本进程（keras），而是转发到 EMS02_CHIL_REATT8_CPU 固件板的
 CMD_REATT 服务（int8 全 CPU 形态，原始域 hist/kf 上板、归一化在固件内）。
 
 - 科学变换（H1 聚合 / kf 快照取行）复用冻结件只读导入：
@@ -45,7 +45,7 @@ KF_ORDER = REQUIRED_K + REQUIRED_F
 H1_ORDER = REQUIRED_H1
 FW_PROJECT = os.path.normpath(os.path.join(
     _MODELE, "..", "..", "firmware", "stm32n6", "04_SourceCode", "SoftwarePackage",
-    "EMS_Projects", "EMS01_CHIL_REATT8"))
+    "EMS_Projects", "EMS02_CHIL_REATT8_CPU"))
 FW_QUANT_REPORT = os.path.join(
     FW_PROJECT, "Host", "results", "reatt_board", "quant_report.json")
 FW_TFLITE = os.path.join(
@@ -75,7 +75,7 @@ def enc_frame(ftype: int, payload: bytes) -> bytes:
 class BoardLink:
     """CMD_REATT 串口客户端（协议同固件工程 Host/tools/reatt_board_client.py）。"""
 
-    def __init__(self, port: str, baud: int = 921600):
+    def __init__(self, port: str, baud: int = 115200):
         import serial
         self.ser = serial.Serial(port, baud, timeout=10.0)
         self.rxbuf = bytearray()
@@ -188,7 +188,7 @@ def main(argv=None) -> int:
     ap.add_argument("--respdir", required=True)
     ap.add_argument("--stop-file", default="")
     ap.add_argument("--port", default="")
-    ap.add_argument("--baud", type=int, default=921600)
+    ap.add_argument("--baud", type=int, default=115200)  # bring-up：与固件一致（CH340 921600 不可靠）
     ap.add_argument("--poll-s", type=float, default=0.2)
     ap.add_argument("--max-requests", type=int, default=0)
     ap.add_argument("--mock", action="store_true",
@@ -203,11 +203,14 @@ def main(argv=None) -> int:
     else:
         if not args.port:
             raise SystemExit("--port 必填（或用 --mock）")
-        board = BoardLink(args.port, args.baud)
-        if not board.ping():
-            raise SystemExit("板 PING 失败")
+        # bring-up 裁决（2026-09-22）：每请求独立 worker 子进程 + 新开端口。
+        # 持口服务器在 macOS/CH340 上不可靠（MATLAB 冷启动窗口争用、长空闲
+        # 设备静默）；新开端口模式在板级验证中 100% 可靠（L1 对拍 64/64）。
+        board = None
         normalizer = None  # 真板：归一化在固件内
         backend = "board_int8"
+        # 启动零板交互（bring-up：MATLAB 冷启动窗口串口不可用，启动期碰板必败）；
+        # 板交互完全延迟到首个请求（worker 内含 ping+重试，fail-closed 每请求）。
 
     tfl_sha = ""
     if os.path.isfile(FW_QUANT_REPORT):
@@ -231,6 +234,7 @@ def main(argv=None) -> int:
 
     done = set()
     n = 0
+    last_keepalive = time.time()
     while True:
         if args.stop_file and os.path.exists(args.stop_file):
             break
@@ -257,7 +261,27 @@ def main(argv=None) -> int:
                     h_n, k_n = normalizer(hist_raw, kf_raw)
                     q3, us = board.reatt(h_n, k_n, 0)
                 else:
-                    q3, us = board.reatt(hist_raw, kf_raw, 0)
+                    import subprocess as _sp
+                    npz_tmp = os.path.join(
+                        os.path.dirname(os.path.normpath(args.respdir)), "_q_tmp.npz")
+                    np.savez(npz_tmp, hist_raw=hist_raw.astype("<f4"),
+                             kf_raw=kf_raw.astype("<f4"))
+                    jr = {"ok": False, "error": "no attempt"}
+                    for _wa in range(4):  # 请求内重试（桥超时 300s 合同内）
+                        r = _sp.run([sys.executable, "-m", "ppe.reatt_query_once",
+                                     "--port", args.port, "--baud", str(args.baud),
+                                     "--npz", npz_tmp],
+                                    capture_output=True, text=True, timeout=120)
+                        lines = r.stdout.strip().splitlines()
+                        jr = json.loads(lines[-1]) if lines else {"ok": False,
+                                                                  "error": "no output"}
+                        if jr.get("ok"):
+                            break
+                        time.sleep(3.0)
+                    if not jr.get("ok"):
+                        raise RuntimeError(f"worker: {jr.get('error')}")
+                    q3 = np.asarray(jr["q"], dtype=float)
+                    us = int(jr["infer_us"])
                 dt_ms = (time.time() - t_q) * 1000.0
                 q50 = q3[:, 1].astype(float)
                 prov = {
