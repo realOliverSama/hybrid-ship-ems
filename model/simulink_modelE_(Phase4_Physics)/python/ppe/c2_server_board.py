@@ -222,9 +222,10 @@ def main(argv=None) -> int:
              f"backend={backend} tflite={tfl_sha[:12]}（非正式；purpose 枚举为"
              f"冻结件 ppe/ledger.py 封闭集，借 QUALIFICATION 槽位 + note 区分）")
 
-    log_path = os.path.join(os.path.dirname(args.respdir.rstrip("/")), "..",
-                            "board_queries.jsonl")
-    log_path = os.path.normpath(log_path)
+    # 每 token 一份查询日志：artifacts/ppe_softhil/<token>/board_queries.jsonl
+    log_path = os.path.join(
+        os.path.dirname(os.path.normpath(args.respdir).rstrip(os.sep)),
+        "board_queries.jsonl")
     os.makedirs(os.path.dirname(log_path), exist_ok=True)
     logf = open(log_path, "a", encoding="utf-8")
 

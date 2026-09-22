@@ -27,6 +27,7 @@ function rec = run_softhil_voyage(voyage_id, arm, varargin)
 p = inputParser;
 p.addParameter('C2BridgeToken', '', @ischar);
 p.addParameter('C2BridgePort', '', @ischar);
+p.addParameter('C2Mock', false, @(x) islogical(x) && isscalar(x));
 p.addParameter('OutDir', '', @ischar);
 p.parse(varargin{:});
 opt = p.Results;
@@ -44,9 +45,15 @@ ppe.assert_genb_path(ROOT, fz.path_audit_names, fz.path_audit_first);
 if isempty(opt.OutDir)
     opt.OutDir = fullfile(ROOT, 'results', 'ppe_practical', 'soft_hil');
 end
-for forbidden = {'formal_epoch3_genB', 'formal_epoch3', 'formal_epoch2', ...
-        +filesep + 'formal', 'qual_ep3', 'qualification'}
-    if contains(opt.OutDir, forbidden{1})
+if opt.C2Mock
+    % mock 联调产物与板级证据隔离（不作板级证据）
+    opt.OutDir = fullfile(ROOT, 'results', 'ppe_practical', 'soft_hil', '_mock');
+end
+% 子串匹配即足以覆盖 formal/、formal_epoch2、formal_epoch3(_genB)、
+% qual_ep3*、qualification*（soft_hil 命名空间不含上述任一子串）
+forbidden = {'formal', 'qual'};
+for k_forbidden = 1:numel(forbidden)
+    if contains(opt.OutDir, forbidden{k_forbidden})
         error('PPE:SOFTHIL:NS', ...
             'soft-HIL 输出禁止指向正式/资格化命名空间：%s', opt.OutDir);
     end
@@ -87,7 +94,7 @@ if strcmp(arm, 'C2')
             end
         end
     end
-    br = ppe.c2_bridge_board(opt.C2BridgeToken, opt.C2BridgePort);
+    br = ppe.c2_bridge_board(opt.C2BridgeToken, opt.C2BridgePort, opt.C2Mock);
     wopts.c2_bridge = br;
     cleanup_br = onCleanup(@() br.stop());   %#ok<NASGU> 无 server 泄漏
 end
@@ -120,6 +127,7 @@ ctr = ppe.write_ctrace_v1(local_ctrace(meta, arm), vdir, voyage_id, arm, run_id)
 rec = struct();
 rec.schema = 'ppe_softhil_arm_voyage_v1';
 rec.SOFT_HIL_NONFORMAL = true;
+if opt.C2Mock, rec.MOCK_BACKEND = true; end
 rec.is_formal_result = false;
 rec.backend = ['c2_board_int8（差异①：推理经 ppe.c2_bridge_board → ' ...
     'EMS01_CHIL_REATT8 CMD_REATT，int8 全 CPU 形态；对照基线 = 冻结 genB ' ...

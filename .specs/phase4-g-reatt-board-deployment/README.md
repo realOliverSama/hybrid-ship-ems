@@ -87,11 +87,48 @@ model/simulink_modelE_(Phase4_Physics)/
 
 - [x] T-001 去风险实验（keras→tflite→stedgeai，本 spec §关键数字）
 - [x] T-002 分支 + spec
-- [ ] T-003 工程副本 EMS01_CHIL_REATT8
-- [ ] T-004 量化管线正式化 + 三口径报告 + 参考向量
-- [ ] T-005 固件接入（reatt8_q 包 / ems_reatt / proto / baud / CMake）
-- [ ] T-006 双构建 + fw_gate
-- [ ] T-007 Release 烧录 + 板级 L1/L2/时延
-- [ ] T-008 Model E 板后端 + soft-HIL 6 航次
-- [ ] T-009 结果分析 + 报告
-- [ ] T-010 文档登记 + 提交 + 并入 Phase4
+- [x] T-003 工程副本 EMS01_CHIL_REATT8（commit 1504f990；fw_gate 7/7；Debug=TCN64
+      基线+桩 / Release=REATT 全量的形态差异登记于工程 README 与 §D4）
+- [x] T-004 量化管线正式化 + 三口径报告 + 参考向量（L0 PASS：q50 MAE 23.5 kW /
+      corr 0.981 / 有限 100%；再生 tflite 逐字节一致 efde1aff…）
+- [x] T-005 固件接入（reatt8_q 包 / ems_reatt / proto CMD_REATT / baud 921600 /
+      CMake 配置分形；协议环回 14/14 回归 PASS）
+- [x] T-006 双构建 + fw_gate（7/7 PASS，2026-09-22）
+- [ ] T-007 Release 烧录 + 板级 L1/L2/时延 —— **阻塞：ST-LINK 未连接**（持续复测）
+- [ ] T-008 Model E 板后端 + soft-HIL 6 航次（代码完成 + mock 联调/mock 冒烟通过；
+      板上 6 航次待板卡）
+- [ ] T-009 结果分析 + 报告（softhil_report.py 就绪，待板上数据）
+- [x] T-010a 文档登记 + 检查点提交（1504f990；最终并入 Phase4 待板上阶段完成后）
+
+## 板上阶段执行手册（板卡连接后依序执行；用户已授权自主烧录）
+
+```text
+0. 连接检查
+   STM32_Programmer_CLI -l          # 须列出 ST-LINK
+   ls /dev/cu.usb*                  # 串口设备（EMS_REATT_PORT）
+
+1. Release 烧录（appli-only，保 FSBL；CubeProgrammer + ATK 外部加载器）
+   CLI=/Applications/STMicroelectronics/STM32Cube/STM32CubeProgrammer/STM32CubeProgrammer.app/Contents/MacOs/bin/STM32_Programmer_CLI
+   ELDR=<SoftwarePackage>/Projects/... 不适用——用 vendor 外部加载器 MX25UM25645G_ATK-CNN647B.stldr（见 release-stm32n647-appli skill 与 TCN64 先例）
+   流程：erase 仅 appli 扇区（0x70100400 起覆盖 hex 字节图的最小扇区集，FSBL 区零接触）
+        → program Appli/build/flash/EMS01_CHIL_ECMS_Appli.hex 一次
+        → verify + 独立 readback 哈希 → 断开（不 run/reset/go）
+   （workclf 权重 @0x70400000 与 0x70200000 既有内容不动；REATT 权重在 appli ELF 内）
+
+2. 板级 L1/L2/时延（固件工程内）
+   .venv_tf/bin/python Host/tools/reatt_board_client.py --port $EMS_REATT_PORT --ping
+   .venv_tf/bin/python Host/tools/reatt_board_client.py --port $EMS_REATT_PORT --parity
+   （L1 门：q50 mean ≤0.5 kW / max ≤5 kW / 有限 100%；产物 Host/results/reatt_board/）
+
+3. soft-HIL 6 航次（Model E；选航次 = 每 tier 字典序前 2：
+   HIGH: FLTA_S2_D01009_M1/M2；MID: FLTA_S2_D01004_M1/M2；LOW: FLTA_S6_D05004_M1/M2）
+   cd model/simulink_modelE_(Phase4_Physics)
+   matlab -batch "addpath('config','scripts'); ppe.run_softhil_voyage('<vid>','C2','C2BridgeToken','g1')"
+   （EMS_REATT_PORT 环境变量给板串口；逐航次跑）
+
+4. 配对分析
+   .venv_tf/bin/python -m ppe.softhil_report
+   （产物 results/ppe_practical/soft_hil/_analysis/）
+```
+
+回退：重烧 TCN64 工程 Release appli 即恢复母本板态（本工程未动任何 NOR 权重区）。

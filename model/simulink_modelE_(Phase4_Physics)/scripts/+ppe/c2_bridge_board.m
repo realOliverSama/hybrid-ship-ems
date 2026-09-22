@@ -1,4 +1,4 @@
-function bridge = c2_bridge_board(token, port)
+function bridge = c2_bridge_board(token, port, use_mock)
 % ppe.c2_bridge_board — C2 推理**板上后端**文件桥（phase4-g，spec
 % .specs/phase4-g-reatt-board-deployment D7）。与 ppe.c2_bridge 同协议同
 % 传输（req/resp .mat 目录轮询）；唯一差异 = Python 服务进程为
@@ -7,14 +7,16 @@ function bridge = c2_bridge_board(token, port)
 %
 % 本文件为 phase4-g 新增副本；ppe.c2_bridge.m（冻结件）零改动。
 % 板串口 port 缺省取环境变量 EMS_REATT_PORT，再缺省报错（fail-closed）。
+% use_mock = true 时服务以 --mock 启动（host int8 模拟板，联调用；产物必须
+% 标 MOCK，不作板级证据）。
 %
 % bridge = struct with function handles（与 c2_bridge 同形）：
 %   Pbar = bridge.request(voyage_id, t0, t_raw, cols)  % cols: struct of 11 H1
 %   bridge.stop()
 %
 % Determinism: response provenance carries keras_sha256（源权重身份，FR836
-% 冻结值——板 int8 由该权重量化派生）+ backend 字段（board_int8 + tflite
-% sha256）；MATLAB 侧 keras 身份校验同 c2_bridge 不变。
+% 冻结值——板 int8 由该权重量化派生）+ backend 字段（board_int8 /
+% mock_host_int8 + tflite sha256）；MATLAB 侧 keras 身份校验同 c2_bridge 不变。
 ROOT = ppe.ppe_root();
 base = fullfile(ROOT, 'artifacts', 'ppe_softhil', token);
 reqdir = fullfile(base, 'req');
@@ -24,7 +26,11 @@ if ~exist(reqdir, 'dir'), mkdir(reqdir); end
 if ~exist(respdir, 'dir'), mkdir(respdir); end
 if exist(stopf, 'file'), delete(stopf); end
 
-if nargin < 2 || isempty(port)
+mockarg = '';
+if nargin >= 3 && use_mock
+    mockarg = ' --mock';
+    port = 'mock';   % --mock 不需要串口
+elseif nargin < 2 || isempty(port)
     port = getenv('EMS_REATT_PORT');
 end
 if isempty(port)
@@ -35,9 +41,10 @@ end
 py = 'python3';
 [st, ~] = system([py ' -c "import serial,numpy,scipy;print(1)"']);
 if st ~= 0
-    % 回退 .venv_tf（含 pyserial/scipy）
-    cand = fullfile(fileparts(ROOT), '.venv_tf', 'bin', 'python');
-    if exist(cand, 'file') ~= 2
+    % 回退仓库根 .venv_tf（含 pyserial/scipy/TF；冻结 c2_bridge.m 同款推导）
+    cand = fullfile(fileparts(ROOT), '..', '.venv_tf', 'bin', 'python');
+    if exist(cand, 'file') ~= 2 ...
+            || system(['"' cand '" -c "import serial,numpy,scipy;print(1)"']) ~= 0
         error('PPE:BRIDGE:PY', '找不到含 numpy/scipy/pyserial 的 python');
     end
     py = cand;
@@ -46,18 +53,20 @@ end
 pydir = fullfile(ROOT, 'python');
 env = sprintf('PYTHONPATH="%s:%s" ', pydir, ROOT);
 logf = fullfile(base, 'server.log');
-cmd = sprintf('%s"%s" -m ppe.c2_server_board --reqdir "%s" --respdir "%s" --stop-file "%s" --port "%s" > "%s" 2>&1 &', ...
-    env, py, reqdir, respdir, stopf, port, logf);
+cmd = sprintf('%s"%s" -m ppe.c2_server_board --reqdir "%s" --respdir "%s" --stop-file "%s" --port "%s"%s > "%s" 2>&1 &', ...
+    env, py, reqdir, respdir, stopf, port, mockarg, logf);
 system(cmd);
 
+mock_on = ~isempty(mockarg);
 bridge = struct();
-bridge.request = @(vid, t0, t_raw, cols) local_request(reqdir, respdir, vid, t0, t_raw, cols);
+bridge.request = @(vid, t0, t_raw, cols) local_request(reqdir, respdir, vid, t0, t_raw, cols, mock_on);
 bridge.stop = @() local_stop(stopf);
 bridge.reqdir = reqdir;
 bridge.respdir = respdir;
+bridge.mock = mock_on;
 end
 
-function Pbar = local_request(reqdir, respdir, vid, t0, t_raw, cols)
+function Pbar = local_request(reqdir, respdir, vid, t0, t_raw, cols, mock_on)
 req = struct('voyage_id', char(vid), 't0', double(t0), 't', t_raw(:));
 fn = fieldnames(cols);
 for i = 1:numel(fn)
@@ -91,7 +100,9 @@ if isstruct(prov)
     if isfield(prov, 'keras_sha256') && ~strcmp(prov.keras_sha256, expected)
         error('PPE:BRIDGE:IDENTITY', 'response keras SHA mismatch');
     end
-    if ~isfield(prov, 'backend') || ~strcmp(prov.backend, 'board_int8')
+    backend_ok = strcmp(prov.backend, 'board_int8') ...
+        || (mock_on && strcmp(prov.backend, 'mock_host_int8'));
+    if ~isfield(prov, 'backend') || ~backend_ok
         error('PPE:BRIDGE:BACKEND', 'response 非板后端（backend 字段缺失/不符）');
     end
 end
