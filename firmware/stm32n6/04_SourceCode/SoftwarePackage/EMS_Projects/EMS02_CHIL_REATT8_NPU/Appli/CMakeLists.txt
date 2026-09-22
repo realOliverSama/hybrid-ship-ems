@@ -306,6 +306,12 @@ if(EMS_FW_MODE STREQUAL "NPU")
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${EMS01_APP_DIR}/ems_npu_reattn2n.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n2/reattn2n.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n2/stai_reattn2n.c>"
+            # —— D2 判别实验（phase4-g，2026-09-23）：NPU 平凡自检图（双恒等 MatMul，
+            #    权重 145 B 落 NOR 0x703E0000；hex = Binary/network-data-reattself.hex）。
+            #    Release 全形态编入（诊断用，仅首次 REATT query 触发）。
+            "$<$<CONFIG:Release>:${EMS01_APP_DIR}/ems_npu_reattself.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/reattself.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/stai_reattself.c>"
             # —— 整图 CPU 形态（EMS_REATT_FORM=CPU）
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"

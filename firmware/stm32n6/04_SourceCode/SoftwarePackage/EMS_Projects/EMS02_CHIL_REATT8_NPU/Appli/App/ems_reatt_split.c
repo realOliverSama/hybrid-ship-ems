@@ -62,6 +62,91 @@ static int32_t rs_out_zp;
 static bool rs_ready;
 static bool rs_ran_before; /* N2 new_inference 仅在上一次异步推理之后需要（stai 契约） */
 
+static int rs_wait_done(stai_network *ctx, stai_return_code rc,
+                        stai_return_code (*run_continue)(stai_network *));
+
+/* ---- D2 判别诊断（2026-09-23）：NOR 权重区 CPU 侧校验和 + NPU 平凡自检图 ----
+ * 自检图 = 双恒等 MatMul（scale 1.0 / zp 0）⇒ 期望输出 = 输入 int8 逐字节相等；
+ * 权重 145 B 落 NOR 0x703E0000（phase4-g D2 池），激活 320 B npuRAM5。 */
+#include "../../Model/reatt8_q_npu/selftest/reattself.h"
+#include "../../Model/reatt8_q_npu/selftest/stai_reattself.h"
+
+STAI_NETWORK_CONTEXT_DECLARE(rs_ctx_self, STAI_REATTSELF_CONTEXT_SIZE)
+
+static int8_t rs_self_in[LL_ATON_REATTSELF_IN_1_SIZE_BYTES] __attribute__((aligned(32)));
+static int8_t rs_self_out[LL_ATON_REATTSELF_OUT_1_SIZE_BYTES] __attribute__((aligned(32)));
+
+/* 简单滚动和（与 host 侧 python 同式，用于比对 appli 读 NOR 的内容） */
+static uint32_t rs_nor_sum(const volatile uint8_t *p, uint32_t n)
+{
+    uint32_t s = 0u;
+    for (uint32_t i = 0u; i < n; i++) {
+        s = s * 31u + (uint32_t)p[i];
+    }
+    return s;
+}
+
+static void rs_nor_probe(void)
+{
+    const volatile uint8_t *n2 = (const volatile uint8_t *)0x70300000u; /* N2 权重 */
+    const volatile uint8_t *sf = (const volatile uint8_t *)0x703E0000u; /* 自检图权重 */
+    const volatile uint8_t *wc = (const volatile uint8_t *)0x70400000u; /* workclf 权重 */
+    printf("RS-NOR n2=%08lx,%02x%02x%02x%02x sf=%08lx,%02x%02x%02x%02x wc=%08lx,%02x%02x%02x%02x\r\n",
+           (unsigned long)rs_nor_sum(n2, 4096u), n2[0], n2[1], n2[2], n2[3],
+           (unsigned long)rs_nor_sum(sf, 145u), sf[0], sf[1], sf[2], sf[3],
+           (unsigned long)rs_nor_sum(wc, 4096u), wc[0], wc[1], wc[2], wc[3]);
+}
+
+static int rs_selftest_run(void)
+{
+    static const int8_t probe[LL_ATON_REATTSELF_IN_1_SIZE_BYTES] =
+        { -128, -100, -1, 0, 1, 50, 100, 127 };
+    stai_ptr in_ptrs[LL_ATON_REATTSELF_IN_NUM];
+    stai_ptr out_ptrs[LL_ATON_REATTSELF_OUT_NUM];
+    stai_return_code rc;
+
+    for (uint32_t i = 0u; i < sizeof(probe); i++) {
+        rs_self_in[i] = probe[i];
+    }
+    rc = stai_reattself_init(rs_ctx_self);
+    if (rc != STAI_SUCCESS) {
+        printf("RS-SELF init rc=%d\r\n", (int)rc);
+        return 1;
+    }
+    SCB_CleanDCache_by_Addr((uint32_t *)rs_self_in, (int32_t)sizeof(rs_self_in));
+    SCB_InvalidateDCache_by_Addr(rs_self_out, (int32_t)sizeof(rs_self_out));
+    in_ptrs[0] = (stai_ptr)rs_self_in;
+    out_ptrs[0] = (stai_ptr)rs_self_out;
+    rc = stai_reattself_set_inputs(rs_ctx_self, in_ptrs, LL_ATON_REATTSELF_IN_NUM);
+    if (rc != STAI_SUCCESS) {
+        printf("RS-SELF setin rc=%d\r\n", (int)rc);
+        return 1;
+    }
+    rc = stai_reattself_set_outputs(rs_ctx_self, out_ptrs, LL_ATON_REATTSELF_OUT_NUM);
+    if (rc != STAI_SUCCESS) {
+        printf("RS-SELF setout rc=%d\r\n", (int)rc);
+        return 1;
+    }
+    /* 首拍 STILL_RUNNING(0x50000) 预期内忽略（官方示例同语义，见 ems_infer_npu.c 注） */
+    rc = stai_ext_reattself_new_inference(rs_ctx_self);
+    if (rc != STAI_SUCCESS && rc != STAI_ERROR_NETWORK_STILL_RUNNING) {
+        printf("RS-SELF newinf rc=%d\r\n", (int)rc);
+        return 1;
+    }
+    rc = stai_reattself_run(rs_ctx_self, STAI_MODE_ASYNC);
+    if (rs_wait_done(rs_ctx_self, rc, stai_ext_reattself_run_continue) != 0) {
+        printf("RS-SELF run rc=%d err=%d\r\n", (int)rc,
+               (int)stai_reattself_get_error(rs_ctx_self));
+        return 1;
+    }
+    SCB_InvalidateDCache_by_Addr(rs_self_out, (int32_t)sizeof(rs_self_out));
+    printf("RS-SELF in=[-128 -100 -1 0 1 50 100 127] out=[%d %d %d %d %d %d %d %d]\r\n",
+           (int)rs_self_out[0], (int)rs_self_out[1], (int)rs_self_out[2],
+           (int)rs_self_out[3], (int)rs_self_out[4], (int)rs_self_out[5],
+           (int)rs_self_out[6], (int)rs_self_out[7]);
+    return 0;
+}
+
 static uint32_t rs_now_us(void)
 {
     return (uint32_t)(DWT->CYCCNT / (SystemCoreClock / 1000000u));
@@ -188,6 +273,16 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
 
     if (rs_init_once() != 0) {
         return 1;
+    }
+
+    /* ---- D2 判别诊断：仅首次 query 执行（NOR 校验和 + 平凡自检图） ---- */
+    {
+        static bool rs_diag_done;
+        if (!rs_diag_done) {
+            rs_diag_done = true;
+            rs_nor_probe();
+            (void)rs_selftest_run();
+        }
     }
 
     /* ---- 阶段 1：hist 归一化（冻结常数，ems_reatt_params.h） ---- */

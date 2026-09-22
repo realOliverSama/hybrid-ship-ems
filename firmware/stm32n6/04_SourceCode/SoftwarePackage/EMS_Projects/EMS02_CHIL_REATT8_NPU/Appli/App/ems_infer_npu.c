@@ -313,6 +313,7 @@ int ems_infer_workclf(const double pdec30[30], double v, double a, int *cls,
     stai_ptr out_ptrs[STAI_WORKCLF_OUT_NUM];
 
     if (ems_stai_workclf_init_once() != 0) {
+        printf("WC-FAIL init\r\n");       /* D2 插桩：区分初始化 vs 执行阶段 */
         return 1;
     }
 
@@ -330,16 +331,33 @@ int ems_infer_workclf(const double pdec30[30], double v, double a, int *cls,
     in_ptrs[0] = (stai_ptr)clf_bypass;
     in_ptrs[1] = (stai_ptr)clf_pdec;
     out_ptrs[0] = (stai_ptr)clf_out;
-    if (stai_workclf_set_inputs(ems_stai_ctx_workclf, in_ptrs, STAI_WORKCLF_IN_NUM) != STAI_SUCCESS ||
-        stai_workclf_set_outputs(ems_stai_ctx_workclf, out_ptrs, STAI_WORKCLF_OUT_NUM) != STAI_SUCCESS) {
-        return 1;
+    {
+        stai_return_code rc_i = stai_workclf_set_inputs(ems_stai_ctx_workclf, in_ptrs,
+                                                         STAI_WORKCLF_IN_NUM);
+        stai_return_code rc_o = stai_workclf_set_outputs(ems_stai_ctx_workclf, out_ptrs,
+                                                          STAI_WORKCLF_OUT_NUM);
+        if (rc_i != STAI_SUCCESS || rc_o != STAI_SUCCESS) {
+            printf("WC-FAIL setio i=%d o=%d\r\n", (int)rc_i, (int)rc_o);
+            return 1;
+        }
     }
 
-    if (stai_ext_workclf_new_inference(ems_stai_ctx_workclf) != STAI_SUCCESS) {
-        return 1;
+    {
+        /* 4.0.1 stai 语义（官方 hello_world/main_stai.c 同款）：每个 run 前调
+         * new_inference（= __ll_aton_stai_reset），其要求 exec_status ∈ {DONE,
+         * RUNNING_NO_WFE}，而 init 后为 STAI_SUCCESS ⇒ **首拍必返
+         * STILL_RUNNING(0x50000)**，官方示例对该返回码不检查（预期内忽略）。
+         * 本调用为单任务顺序（wait_done 后才返回），不存在真"仍在运行"。 */
+        stai_return_code rc_n = stai_ext_workclf_new_inference(ems_stai_ctx_workclf);
+        if (rc_n != STAI_SUCCESS && rc_n != STAI_ERROR_NETWORK_STILL_RUNNING) {
+            printf("WC-FAIL newinf rc=%d\r\n", (int)rc_n);
+            return 1;
+        }
     }
     rc = stai_workclf_run(ems_stai_ctx_workclf, STAI_MODE_ASYNC);
     if (ems_stai_wait_done(ems_stai_ctx_workclf, rc, stai_ext_workclf_run_continue) != 0) {
+        printf("WC-FAIL run rc=%d err=%d\r\n", (int)rc,
+               (int)stai_workclf_get_error(ems_stai_ctx_workclf));   /* D2 插桩 */
         return 1;
     }
 
