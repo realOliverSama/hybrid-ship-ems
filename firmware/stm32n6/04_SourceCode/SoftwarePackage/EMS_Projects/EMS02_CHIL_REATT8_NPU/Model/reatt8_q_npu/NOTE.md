@@ -84,3 +84,33 @@ reatt_s0.keras（冻结）
 3. 遗留硬件待办：ST-LINK 对 NOR 的**读取通路**在本次会话末段失效（写/校验此前
    正常；0x70000000/0x702F0000/0x70400000 全区域读失败，需另行排查 ST-LINK/加载器/
    板卡状态）；workclf NOR 权重区完整性核查因此未完成。
+
+
+## 板端退化排查全账（2026-09-23，每条均有板级/离线证据）
+
+症状：**输出与输入解耦**——m 通道恒 0（int8 −128≡zp）、跨向量不变；a/b 近常数。
+工具自打印与 Q.json 均证实固件 I/O 契约、量化参数、反量化口径**逐项正确**；
+ONNX 在 ORT 上语义正确。以下假设逐一实验并**排除**：
+
+| # | 假设 | 实验 | 结果 |
+|---|---|---|---|
+| 1 | 图形态（Pad 分解）致编出错误图 | v2 中间维 Pad 手术 vs **v3 Concat 零填充**（无 Pad） | 两者同样退化 → 排除 |
+| 2 | 输入缓冲 cache 契约违反（用户缓冲必须 clean+invalidate） | 固件补 `SCB_CleanDCache`（官方 cache maintenance 文档契约） | 仍退化 → 排除（契约缺陷已修复保留） |
+| 3 | Softmax SW 岛交接破坏 | `--expand-softmax`（5 SW → 0，纯 HW epochs 218→234） | 仍退化 → 排除 |
+| 4 | 权重池地址非 1MB 对齐（ATON 取数对齐假设） | 池迁 **0x70300000**（1MB 对齐，回读逐字节一致） | 仍退化 → 排除 |
+| 5 | 量化参数/输出口径错 | 工具 Q.json：输出 SIGNED int8 scale [3.620067] zp [−128]，与固件一致 | 排除 |
+| 6 | I/O 绑定未生效 / 输入未送达 | get_info/set_inputs 链路 + 缓冲内容自检打印 | 排除 |
+| 7 | 激活溢出到未初始化的 HyperRAM（Release 无 XSPI1 init） | 生成报告 hyperRAM 占用 = 0 B，全在 npuRAM3-6 | 排除 |
+| 8 | 权重未正确烧录 | 各版回读哈希逐字节一致（含旧池/新池） | 排除 |
+| 9 | 与 REATT 共存致 workclf NPU 失效 | 冷启动首命令 WC_TEST 即失败（无共存） | workclf 今日也异常（历史上正常，另需排查） |
+
+**结论**：本工程侧可查项已全部排除；衰竭点位于 **ST Neural-ART 编译/执行语义层**，
+与项目 2026-09-03 对 TCN 的 NO-GO 判定同类（当时 TCN NPU 形态输出部分偏差 34%/47.7%
+exact；本次 REATT 全退化——程度更重，可能同根或另有工具链缺陷）。
+
+**未试杠杆（均为工具链/外部资源级）**：① 新版 STEdgeAI（5.x/LiteRT 线）重试——本机
+仅有 4.0.1；② 直接调用底层 `atonn` 编译（FAQ 确认可行，中间 ONNX+Q.json 在
+`st_ai_output/`）做优化开关消融（如 `--Ono-clone-dma`、去 `--enable-virtual-mem-pools`、
+降 `--optimization`）；③ `--mode target` 官方直连验证（需按其 USB-CDC 文档构建 ST 验证
+固件）；④ **分体网络**：卷积段（TCN）留 CPU 形态、Dense/attention 段（workclf 类简单
+图，历史 NPU 正常）独立编译上 NPU——最多可硬件化 ~70% MAC。

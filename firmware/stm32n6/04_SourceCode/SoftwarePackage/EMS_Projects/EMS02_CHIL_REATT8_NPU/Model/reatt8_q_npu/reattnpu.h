@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    reattnpu.h
   * @author  STEdgeAI
-  * @date    2026-09-22 23:49:44
+  * @date    2026-09-23 00:13:05
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention

@@ -1,5 +1,5 @@
 ST Edge AI Core v4.0.1-20581 7ed50de05
-Created date          : 2026-09-22 23:49:52
+Created date          : 2026-09-23 00:13:12
 Parameters            : generate --no-inputs-allocation --no-outputs-allocation --model reatt_concat_int8.onnx --target stm32n6 --st-neural-art default@user_neuralart.json --name reattnpu
 
 Model name - reatt_concat_int8
@@ -3630,19 +3630,19 @@ model: macc=192,545,778 weights=4,050,864 activations=-- io=--
 Compilation details
 ------------------------------------------------------------------------------------
 Compiler version: 1.1.3-275
-Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_output/reatt_concat_int8_OE_3_3_1.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_output/reatt_concat_int8_OE_3_3_1_Q.json -g reattnpu.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/my_mpools/stm32n6.mpool --load-cdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/cortex-m55.cdesc --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_ws/neural_art__reattnpu/stm32n6.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_ws/neural_art__reattnpu/ --network-name reattnpu --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json --generate-stai
+Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_output/reatt_concat_int8_OE_3_3_1.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_output/reatt_concat_int8_OE_3_3_1_Q.json -g reattnpu.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/my_mpools/stm32n6.mpool --load-cdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/cortex-m55.cdesc --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_ws/neural_art__reattnpu/stm32n6.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/st_ai_ws/neural_art__reattnpu/ --network-name reattnpu --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --expand-softmax --output-info-file c_info.json --generate-stai
 ====================================================================================
 
 Memory usage information 
 ------------------------------------------------------------------------------------
 	npuRAM3    [0x34200000 - 0x34270000]:    432.000 kB /    448.000 kB  ( 96.43 % used) -- weights:          0  B (  0.00 % used)  activations:    432.000 kB ( 96.43 % used)
-	npuRAM4    [0x34270000 - 0x342E0000]:    444.844 kB /    448.000 kB  ( 99.30 % used) -- weights:          0  B (  0.00 % used)  activations:    444.844 kB ( 99.30 % used)
-	npuRAM5    [0x342E0000 - 0x34350000]:    447.984 kB /    448.000 kB  (100.00 % used) -- weights:          0  B (  0.00 % used)  activations:    447.984 kB (100.00 % used)
+	npuRAM4    [0x34270000 - 0x342E0000]:    447.609 kB /    448.000 kB  ( 99.91 % used) -- weights:          0  B (  0.00 % used)  activations:    447.609 kB ( 99.91 % used)
+	npuRAM5    [0x342E0000 - 0x34350000]:    447.781 kB /    448.000 kB  ( 99.95 % used) -- weights:          0  B (  0.00 % used)  activations:    447.781 kB ( 99.95 % used)
 	npuRAM6    [0x34350000 - 0x343C0000]:     16.000 kB /    448.000 kB  (  3.57 % used) -- weights:          0  B (  0.00 % used)  activations:     16.000 kB (  3.57 % used)
-	octoFlash  [0x702F0000 - 0x70400000]:  1,023.938 kB /      1.062 MB  ( 94.11 % used) -- weights:  1,023.938 kB ( 94.11 % used)  activations:          0  B (  0.00 % used)
+	octoFlash  [0x70300000 - 0x70400000]:  1,023.626 kB /      1.000 MB  ( 99.96 % used) -- weights:  1,023.626 kB ( 99.96 % used)  activations:          0  B (  0.00 % used)
 	hyperRAM   [0x90000000 - 0x91000000]:          0  B /     16.000 MB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
 ---
-Total:                                             2.309 MB                                  -- weights:  1,023.938 kB                  activations:      1.309 MB                   
+Total:                                             2.312 MB                                  -- weights:  1,023.626 kB                  activations:      1.312 MB                   
 ====================================================================================
 
 Memory to be allocated by the user: inputs (13.094 kB), outputs (96  B)
@@ -3655,393 +3655,381 @@ Memory to be allocated by the user: inputs (13.094 kB), outputs (96  B)
 Used memory ranges
 ------------------------------------------------------------------------------------
 	npuRAM3    [0x34200000 - 0x34270000]: 0x34200000-0x3426C000
-	npuRAM4    [0x34270000 - 0x342E0000]: 0x34270000-0x342DF360
-	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x3434FFF0
+	npuRAM4    [0x34270000 - 0x342E0000]: 0x34270000-0x342DFE70
+	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x3434FF20
 	npuRAM6    [0x34350000 - 0x343C0000]: 0x34350000-0x34354000
-	octoFlash  [0x702F0000 - 0x70400000]: 0x702F0000-0x703EFFD0
+	octoFlash  [0x70300000 - 0x70400000]: 0x70300000-0x703FFE90
 ====================================================================================
 
 Epochs details
 ------------------------------------------------------------------------------------
-Total number of epochs                               474
->> pure software (SW) epochs                         209
+Total number of epochs                               485
+>> pure software (SW) epochs                         204
 >> hybrid epochs (using both software and hardware)   47
->> pure hardware (HW or EC) epochs                   218  (implemented in 95 epoch controller blobs/meta epochs)
+>> pure hardware (HW or EC) epochs                   234  (implemented in 88 epoch controller blobs/meta epochs)
 ---
-+--------------------+--------+--------------------------+
-| epoch ID           |  Type  |         Details          |
-+--------------------+--------+--------------------------+
-| epochs    1 -> 1   |   EC   |                          |
-| epoch_2            |   SW   |      QuantizeLinear      |
-| epochs    3 -> 12  |   EC   |                          |
-| epoch_13           |   SW   |           Conv           |
-| epochs   14 -> 16  |   EC   |                          |
-| epoch_17           | Hybrid |          Slice           |
-| epochs   18 -> 18  |   EC   |                          |
-| epoch_19           | Hybrid |          Concat          |
-| epochs   20 -> 22  |   EC   |                          |
-| epoch_23           |   SW   |     DequantizeLinear     |
-| epoch_24           |   SW   |       Sqrt(float)        |
-| epoch_25           |   SW   |    Reciprocal(float)     |
-| epoch_26           |   SW   |      QuantizeLinear      |
-| epoch_27           |   SW   |      QuantizeLinear      |
-| epoch_28           |   SW   |           Mul            |
-| epochs   29 -> 30  |   EC   |                          |
-| epoch_31           |   SW   |     DequantizeLinear     |
-| epoch_32           | Hybrid |        Transpose         |
-| epochs   33 -> 33  |   EC   |                          |
-| epoch_34           |   SW   |     DequantizeLinear     |
-| epoch_35           |   SW   | GlobalAveragePool(float) |
-| epochs   36 -> 36  |   EC   |                          |
-| epoch_37           |   SW   |        Sub(float)        |
-| epoch_38           |   SW   |        Mul(float)        |
-| epoch_39           |   SW   |      QuantizeLinear      |
-| epoch_40           |   SW   |      QuantizeLinear      |
-| epoch_41           |   SW   |      QuantizeLinear      |
-| epochs   42 -> 42  |   EC   |                          |
-| epoch_43           | Hybrid |        Transpose         |
-| epoch_44           |   SW   |           Conv           |
-| epoch_45           |   SW   |           Conv           |
-| epoch_46           |   SW   |           Conv           |
-| epochs   47 -> 47  |   EC   |                          |
-| epoch_48           |   SW   |     DequantizeLinear     |
-| epoch_49           |   SW   |       Sqrt(float)        |
-| epoch_50           |   SW   |    Reciprocal(float)     |
-| epoch_51           |   SW   |      QuantizeLinear      |
-| epoch_52           |   SW   |      QuantizeLinear      |
-| epoch_53           |   SW   |           Mul            |
-| epochs   54 -> 55  |   EC   |                          |
-| epoch_56           | Hybrid |        Transpose         |
-| epoch_57           | Hybrid |        Transpose         |
-| epochs   58 -> 60  |   EC   |                          |
-| epoch_61           |   SW   |           Conv           |
-| epochs   62 -> 62  |   EC   |                          |
-| epoch_63           |   SW   |           Conv           |
-| epoch_64           |   SW   |           Conv           |
-| epoch_65           |   SW   |           Conv           |
-| epochs   66 -> 69  |   EC   |                          |
-| epoch_70           |   SW   |         Softmax          |
-| epochs   71 -> 71  |   EC   |                          |
-| epoch_72           | Hybrid |          Split           |
-| epochs   73 -> 73  |   EC   |                          |
-| epoch_74           |   SW   |           Conv           |
-| epoch_75           |   SW   |           Conv           |
-| epoch_76           |   SW   |           Conv           |
-| epoch_77           |   SW   |           Conv           |
-| epochs   78 -> 79  |   EC   |                          |
-| epoch_80           | Hybrid |        Transpose         |
-| epochs   81 -> 81  |   EC   |                          |
-| epoch_82           |   SW   |           Conv           |
-| epochs   83 -> 88  |   EC   |                          |
-| epoch_89           |   SW   |     DequantizeLinear     |
-| epoch_90           |   SW   |       Sqrt(float)        |
-| epoch_91           |   SW   |    Reciprocal(float)     |
-| epoch_92           |   SW   |      QuantizeLinear      |
-| epoch_93           |   SW   |      QuantizeLinear      |
-| epoch_94           |   SW   |           Mul            |
-| epochs   95 -> 95  |   EC   |                          |
-| epoch_96           | Hybrid |       SpaceToDepth       |
-| epochs   97 -> 98  |   EC   |                          |
-| epoch_99           | Hybrid |       DepthToSpace       |
-| epochs  100 -> 100 |   EC   |                          |
-| epoch_101          |   SW   |           Conv           |
-| epochs  102 -> 103 |   EC   |                          |
-| epoch_104          |   SW   |     DequantizeLinear     |
-| epoch_105          | Hybrid |        Transpose         |
-| epochs  106 -> 106 |   EC   |                          |
-| epoch_107          |   SW   |     DequantizeLinear     |
-| epoch_108          |   SW   | GlobalAveragePool(float) |
-| epochs  109 -> 109 |   EC   |                          |
-| epoch_110          |   SW   |        Sub(float)        |
-| epoch_111          |   SW   |        Mul(float)        |
-| epoch_112          |   SW   |      QuantizeLinear      |
-| epoch_113          |   SW   |      QuantizeLinear      |
-| epoch_114          |   SW   |      QuantizeLinear      |
-| epochs  115 -> 115 |   EC   |                          |
-| epoch_116          | Hybrid |        Transpose         |
-| epochs  117 -> 117 |   EC   |                          |
-| epoch_118          |   SW   |     DequantizeLinear     |
-| epoch_119          |   SW   |       Sqrt(float)        |
-| epoch_120          |   SW   |    Reciprocal(float)     |
-| epoch_121          |   SW   |      QuantizeLinear      |
-| epoch_122          |   SW   |      QuantizeLinear      |
-| epoch_123          |   SW   |           Mul            |
-| epochs  124 -> 126 |   EC   |                          |
-| epoch_127          |   SW   |           Conv           |
-| epochs  128 -> 134 |   EC   |                          |
-| epoch_135          |   SW   |     DequantizeLinear     |
-| epoch_136          |   SW   |       Sqrt(float)        |
-| epoch_137          |   SW   |    Reciprocal(float)     |
-| epoch_138          |   SW   |      QuantizeLinear      |
-| epoch_139          |   SW   |      QuantizeLinear      |
-| epoch_140          |   SW   |           Mul            |
-| epochs  141 -> 147 |   EC   |                          |
-| epoch_148          | Hybrid |       SpaceToDepth       |
-| epoch_149          |   SW   |           Conv           |
-| epoch_150          |   SW   |           Conv           |
-| epoch_151          |   SW   |           Conv           |
-| epochs  152 -> 153 |   EC   |                          |
-| epoch_154          | Hybrid |       DepthToSpace       |
-| epochs  155 -> 155 |   EC   |                          |
-| epoch_156          | Hybrid |        Transpose         |
-| epoch_157          | Hybrid |        Transpose         |
-| epochs  158 -> 159 |   EC   |                          |
-| epoch_160          |   SW   |     DequantizeLinear     |
-| epoch_161          | Hybrid |        Transpose         |
-| epochs  162 -> 162 |   EC   |                          |
-| epoch_163          |   SW   |     DequantizeLinear     |
-| epoch_164          |   SW   | GlobalAveragePool(float) |
-| epochs  165 -> 165 |   EC   |                          |
-| epoch_166          |   SW   |           Conv           |
-| epoch_167          |   SW   |           Conv           |
-| epoch_168          |   SW   |           Conv           |
-| epoch_169          |   SW   |           Conv           |
-| epoch_170          |   SW   |        Sub(float)        |
-| epoch_171          |   SW   |        Mul(float)        |
-| epoch_172          |   SW   |      QuantizeLinear      |
-| epoch_173          |   SW   |      QuantizeLinear      |
-| epoch_174          |   SW   |      QuantizeLinear      |
-| epochs  175 -> 175 |   EC   |                          |
-| epoch_176          | Hybrid |        Transpose         |
-| epochs  177 -> 177 |   EC   |                          |
-| epoch_178          |   SW   |     DequantizeLinear     |
-| epoch_179          |   SW   |       Sqrt(float)        |
-| epoch_180          |   SW   |    Reciprocal(float)     |
-| epoch_181          |   SW   |      QuantizeLinear      |
-| epoch_182          |   SW   |      QuantizeLinear      |
-| epoch_183          |   SW   |           Mul            |
-| epochs  184 -> 185 |   EC   |                          |
-| epoch_186          |   SW   |         Softmax          |
-| epochs  187 -> 187 |   EC   |                          |
-| epoch_188          | Hybrid |          Split           |
-| epochs  189 -> 189 |   EC   |                          |
-| epoch_190          |   SW   |           Conv           |
-| epoch_191          |   SW   |           Conv           |
-| epoch_192          |   SW   |           Conv           |
-| epoch_193          |   SW   |           Conv           |
-| epochs  194 -> 195 |   EC   |                          |
-| epoch_196          | Hybrid |        Transpose         |
-| epochs  197 -> 197 |   EC   |                          |
-| epoch_198          |   SW   |           Conv           |
-| epochs  199 -> 203 |   EC   |                          |
-| epoch_204          |   SW   |     DequantizeLinear     |
-| epoch_205          |   SW   |       Sqrt(float)        |
-| epoch_206          |   SW   |    Reciprocal(float)     |
-| epoch_207          |   SW   |      QuantizeLinear      |
-| epoch_208          |   SW   |      QuantizeLinear      |
-| epoch_209          |   SW   |           Mul            |
-| epochs  210 -> 213 |   EC   |                          |
-| epoch_214          |   SW   |           Conv           |
-| epoch_215          | Hybrid |           Pad            |
-| epoch_216          | Hybrid |       SpaceToDepth       |
-| epochs  217 -> 218 |   EC   |                          |
-| epoch_219          | Hybrid |       DepthToSpace       |
-| epoch_220          | Hybrid |           Pad            |
-| epochs  221 -> 223 |   EC   |                          |
-| epoch_224          |   SW   |     DequantizeLinear     |
-| epoch_225          | Hybrid |        Transpose         |
-| epochs  226 -> 226 |   EC   |                          |
-| epoch_227          |   SW   |     DequantizeLinear     |
-| epoch_228          |   SW   | GlobalAveragePool(float) |
-| epochs  229 -> 229 |   EC   |                          |
-| epoch_230          |   SW   |           Conv           |
-| epoch_231          |   SW   |        Sub(float)        |
-| epoch_232          |   SW   |        Mul(float)        |
-| epoch_233          |   SW   |      QuantizeLinear      |
-| epoch_234          |   SW   |      QuantizeLinear      |
-| epoch_235          |   SW   |      QuantizeLinear      |
-| epochs  236 -> 236 |   EC   |                          |
-| epoch_237          | Hybrid |        Transpose         |
-| epochs  238 -> 239 |   EC   |                          |
-| epoch_240          |   SW   |     DequantizeLinear     |
-| epoch_241          |   SW   |       Sqrt(float)        |
-| epoch_242          |   SW   |    Reciprocal(float)     |
-| epoch_243          |   SW   |      QuantizeLinear      |
-| epoch_244          |   SW   |      QuantizeLinear      |
-| epoch_245          |   SW   |           Mul            |
-| epochs  246 -> 247 |   EC   |                          |
-| epoch_248          |   SW   |     DequantizeLinear     |
-| epoch_249          |   SW   |       Sqrt(float)        |
-| epoch_250          |   SW   |    Reciprocal(float)     |
-| epoch_251          |   SW   |      QuantizeLinear      |
-| epoch_252          |   SW   |      QuantizeLinear      |
-| epoch_253          |   SW   |           Mul            |
-| epochs  254 -> 260 |   EC   |                          |
-| epoch_261          |   SW   |           Conv           |
-| epoch_262          |   SW   |           Conv           |
-| epoch_263          |   SW   |           Conv           |
-| epochs  264 -> 266 |   EC   |                          |
-| epoch_267          | Hybrid |        Transpose         |
-| epoch_268          | Hybrid |        Transpose         |
-| epochs  269 -> 272 |   EC   |                          |
-| epoch_273          |   SW   |           Conv           |
-| epoch_274          |   SW   |           Conv           |
-| epoch_275          |   SW   |           Conv           |
-| epoch_276          |   SW   |           Conv           |
-| epochs  277 -> 280 |   EC   |                          |
-| epoch_281          |   SW   |         Softmax          |
-| epochs  282 -> 282 |   EC   |                          |
-| epoch_283          | Hybrid |           Pad            |
-| epoch_284          | Hybrid |          Split           |
-| epoch_285          | Hybrid |       SpaceToDepth       |
-| epochs  286 -> 286 |   EC   |                          |
-| epoch_287          |   SW   |           Conv           |
-| epoch_288          |   SW   |           Conv           |
-| epoch_289          |   SW   |           Conv           |
-| epoch_290          |   SW   |           Conv           |
-| epochs  291 -> 291 |   EC   |                          |
-| epoch_292          | Hybrid |       DepthToSpace       |
-| epoch_293          | Hybrid |           Pad            |
-| epochs  294 -> 294 |   EC   |                          |
-| epoch_295          | Hybrid |        Transpose         |
-| epochs  296 -> 296 |   EC   |                          |
-| epoch_297          |   SW   |           Conv           |
-| epochs  298 -> 298 |   EC   |                          |
-| epoch_299          |   SW   |     DequantizeLinear     |
-| epoch_300          | Hybrid |        Transpose         |
-| epochs  301 -> 301 |   EC   |                          |
-| epoch_302          |   SW   |     DequantizeLinear     |
-| epoch_303          |   SW   | GlobalAveragePool(float) |
-| epochs  304 -> 304 |   EC   |                          |
-| epoch_305          |   SW   |        Sub(float)        |
-| epoch_306          |   SW   |        Mul(float)        |
-| epoch_307          |   SW   |      QuantizeLinear      |
-| epoch_308          |   SW   |      QuantizeLinear      |
-| epoch_309          |   SW   |      QuantizeLinear      |
-| epochs  310 -> 310 |   EC   |                          |
-| epoch_311          | Hybrid |        Transpose         |
-| epochs  312 -> 312 |   EC   |                          |
-| epoch_313          |   SW   |     DequantizeLinear     |
-| epoch_314          |   SW   |       Sqrt(float)        |
-| epoch_315          |   SW   |    Reciprocal(float)     |
-| epoch_316          |   SW   |      QuantizeLinear      |
-| epoch_317          |   SW   |      QuantizeLinear      |
-| epoch_318          |   SW   |           Mul            |
-| epochs  319 -> 319 |   EC   |                          |
-| epoch_320          |   SW   |     DequantizeLinear     |
-| epoch_321          |   SW   |       Sqrt(float)        |
-| epoch_322          |   SW   |    Reciprocal(float)     |
-| epoch_323          |   SW   |      QuantizeLinear      |
-| epoch_324          |   SW   |      QuantizeLinear      |
-| epoch_325          |   SW   |           Mul            |
-| epochs  326 -> 329 |   EC   |                          |
-| epoch_330          |   SW   |           Conv           |
-| epochs  331 -> 340 |   EC   |                          |
-| epoch_341          |   SW   |           Conv           |
-| epochs  342 -> 345 |   EC   |                          |
-| epoch_346          | Hybrid |           Pad            |
-| epoch_347          | Hybrid |       SpaceToDepth       |
-| epochs  348 -> 348 |   EC   |                          |
-| epoch_349          |   SW   |     DequantizeLinear     |
-| epoch_350          |   SW   |       Sqrt(float)        |
-| epoch_351          |   SW   |    Reciprocal(float)     |
-| epoch_352          |   SW   |      QuantizeLinear      |
-| epoch_353          |   SW   |      QuantizeLinear      |
-| epoch_354          |   SW   |           Mul            |
-| epochs  355 -> 355 |   EC   |                          |
-| epoch_356          | Hybrid |       DepthToSpace       |
-| epoch_357          | Hybrid |           Pad            |
-| epochs  358 -> 360 |   EC   |                          |
-| epoch_361          |   SW   |     DequantizeLinear     |
-| epoch_362          | Hybrid |        Transpose         |
-| epochs  363 -> 363 |   EC   |                          |
-| epoch_364          |   SW   |     DequantizeLinear     |
-| epoch_365          |   SW   | GlobalAveragePool(float) |
-| epoch_366          |   SW   |           Conv           |
-| epoch_367          |   SW   |        Sub(float)        |
-| epoch_368          |   SW   |        Mul(float)        |
-| epoch_369          |   SW   |      QuantizeLinear      |
-| epoch_370          |   SW   |      QuantizeLinear      |
-| epoch_371          |   SW   |      QuantizeLinear      |
-| epoch_372          |   SW   |           Conv           |
-| epoch_373          |   SW   |           Conv           |
-| epochs  374 -> 374 |   EC   |                          |
-| epoch_375          | Hybrid |        Transpose         |
-| epochs  376 -> 376 |   EC   |                          |
-| epoch_377          |   SW   |     DequantizeLinear     |
-| epoch_378          |   SW   |       Sqrt(float)        |
-| epoch_379          |   SW   |    Reciprocal(float)     |
-| epoch_380          |   SW   |      QuantizeLinear      |
-| epoch_381          |   SW   |      QuantizeLinear      |
-| epoch_382          |   SW   |           Mul            |
-| epochs  383 -> 383 |   EC   |                          |
-| epoch_384          | Hybrid |        Transpose         |
-| epoch_385          | Hybrid |        Transpose         |
-| epochs  386 -> 388 |   EC   |                          |
-| epoch_389          |   SW   |           Conv           |
-| epochs  390 -> 390 |   EC   |                          |
-| epoch_391          |   SW   |           Conv           |
-| epoch_392          |   SW   |           Conv           |
-| epoch_393          |   SW   |           Conv           |
-| epochs  394 -> 397 |   EC   |                          |
-| epoch_398          |   SW   |         Softmax          |
-| epochs  399 -> 399 |   EC   |                          |
-| epoch_400          | Hybrid |          Split           |
-| epochs  401 -> 401 |   EC   |                          |
-| epoch_402          |   SW   |           Conv           |
-| epoch_403          |   SW   |           Conv           |
-| epoch_404          |   SW   |           Conv           |
-| epoch_405          |   SW   |           Conv           |
-| epochs  406 -> 407 |   EC   |                          |
-| epoch_408          | Hybrid |        Transpose         |
-| epochs  409 -> 409 |   EC   |                          |
-| epoch_410          |   SW   |           Conv           |
-| epochs  411 -> 412 |   EC   |                          |
-| epoch_413          |   SW   |           Conv           |
-| epochs  414 -> 415 |   EC   |                          |
-| epoch_416          |   SW   |         Softmax          |
-| epochs  417 -> 417 |   EC   |                          |
-| epoch_418          |   SW   |     DequantizeLinear     |
-| epoch_419          |   SW   |       Sqrt(float)        |
-| epoch_420          |   SW   |    Reciprocal(float)     |
-| epoch_421          |   SW   |      QuantizeLinear      |
-| epoch_422          |   SW   |      QuantizeLinear      |
-| epoch_423          |   SW   |           Mul            |
-| epochs  424 -> 424 |   EC   |                          |
-| epoch_425          |   SW   |     DequantizeLinear     |
-| epoch_426          |   SW   |     ReduceSum(float)     |
-| epoch_427          |   SW   |      QuantizeLinear      |
-| epoch_428          |   SW   |           Tile           |
-| epochs  429 -> 432 |   EC   |                          |
-| epoch_433          |   SW   |           Conv           |
-| epochs  434 -> 440 |   EC   |                          |
-| epoch_441          |   SW   |           Conv           |
-| epochs  442 -> 445 |   EC   |                          |
-| epoch_446          | Hybrid |          Concat          |
-| epochs  448 -> 449 |   EC   |                          |
-| epoch_450          |   SW   |     DequantizeLinear     |
-| epoch_451          |   SW   |       Sqrt(float)        |
-| epoch_452          |   SW   |    Reciprocal(float)     |
-| epoch_453          |   SW   |      QuantizeLinear      |
-| epoch_454          |   SW   |      QuantizeLinear      |
-| epoch_455          |   SW   |           Mul            |
-| epochs  456 -> 460 |   EC   |                          |
-| epoch_461          |   SW   |           Conv           |
-| epochs  462 -> 468 |   EC   |                          |
-| epoch_469          |   SW   |           Conv           |
-| epochs  470 -> 476 |   EC   |                          |
-| epoch_477          |   SW   |           Conv           |
-| epochs  478 -> 480 |   EC   |                          |
-+--------------------+--------+--------------------------+
++----------------------+--------+--------------------------+
+| epoch ID             |  Type  |         Details          |
++----------------------+--------+--------------------------+
+| epochs    1 -> 1     |   EC   |                          |
+| epoch_2              |   SW   |      QuantizeLinear      |
+| epochs    3 -> 12    |   EC   |                          |
+| epoch_13             |   SW   |           Conv           |
+| epochs   14 -> 16    |   EC   |                          |
+| epoch_17             | Hybrid |          Slice           |
+| epochs   18 -> 18    |   EC   |                          |
+| epoch_19             | Hybrid |          Concat          |
+| epochs   20 -> 22    |   EC   |                          |
+| epoch_23             |   SW   |     DequantizeLinear     |
+| epoch_24             |   SW   |       Sqrt(float)        |
+| epoch_25             |   SW   |    Reciprocal(float)     |
+| epoch_26             |   SW   |      QuantizeLinear      |
+| epoch_27             |   SW   |      QuantizeLinear      |
+| epoch_28             |   SW   |           Mul            |
+| epochs   29 -> 30    |   EC   |                          |
+| epoch_31             |   SW   |     DequantizeLinear     |
+| epoch_32             | Hybrid |        Transpose         |
+| epochs   33 -> 33    |   EC   |                          |
+| epoch_34             |   SW   |     DequantizeLinear     |
+| epoch_35             |   SW   | GlobalAveragePool(float) |
+| epochs   36 -> 36    |   EC   |                          |
+| epoch_37             |   SW   |        Sub(float)        |
+| epoch_38             |   SW   |        Mul(float)        |
+| epoch_39             |   SW   |      QuantizeLinear      |
+| epoch_40             |   SW   |      QuantizeLinear      |
+| epoch_41             |   SW   |      QuantizeLinear      |
+| epochs   42 -> 42    |   EC   |                          |
+| epoch_43             | Hybrid |        Transpose         |
+| epoch_44             |   SW   |           Conv           |
+| epoch_45             |   SW   |           Conv           |
+| epoch_46             |   SW   |           Conv           |
+| epochs   47 -> 47    |   EC   |                          |
+| epoch_48             |   SW   |     DequantizeLinear     |
+| epoch_49             |   SW   |       Sqrt(float)        |
+| epoch_50             |   SW   |    Reciprocal(float)     |
+| epoch_51             |   SW   |      QuantizeLinear      |
+| epoch_52             |   SW   |      QuantizeLinear      |
+| epoch_53             |   SW   |           Mul            |
+| epochs   54 -> 55    |   EC   |                          |
+| epoch_56             | Hybrid |        Transpose         |
+| epoch_57             | Hybrid |        Transpose         |
+| epochs   58 -> 60    |   EC   |                          |
+| epoch_61             |   SW   |           Conv           |
+| epochs   62 -> 62    |   EC   |                          |
+| epoch_63             |   SW   |           Conv           |
+| epoch_64             |   SW   |           Conv           |
+| epoch_65             |   SW   |           Conv           |
+| epochs   66 -> 71    |   EC   |                          |
+| epoch_72             | Hybrid |        Transpose         |
+| epochs   73 -> 76    |   EC   |                          |
+| epoch_77             |   SW   |           Conv           |
+| epoch_78             |   SW   |           Conv           |
+| epoch_79             |   SW   |           Conv           |
+| epoch_80             |   SW   |           Conv           |
+| epochs   81 -> 83    |   EC   |                          |
+| epoch_84             | Hybrid |        Transpose         |
+| epochs   85 -> 85    |   EC   |                          |
+| epoch_86             |   SW   |           Conv           |
+| epochs   87 -> 87    |   EC   |                          |
+| epoch_88             | Hybrid |       SpaceToDepth       |
+| epochs   89 -> 90    |   EC   |                          |
+| epoch_91             | Hybrid |       DepthToSpace       |
+| epochs   92 -> 93    |   EC   |                          |
+| epoch_94             |   SW   |     DequantizeLinear     |
+| epoch_95             |   SW   |       Sqrt(float)        |
+| epoch_96             |   SW   |    Reciprocal(float)     |
+| epoch_97             |   SW   |      QuantizeLinear      |
+| epoch_98             |   SW   |      QuantizeLinear      |
+| epoch_99             |   SW   |           Mul            |
+| epochs  100 -> 100   |   EC   |                          |
+| epoch_101            |   SW   |     DequantizeLinear     |
+| epoch_102            | Hybrid |        Transpose         |
+| epochs  103 -> 103   |   EC   |                          |
+| epoch_104            |   SW   |     DequantizeLinear     |
+| epoch_105            |   SW   | GlobalAveragePool(float) |
+| epochs  106 -> 106   |   EC   |                          |
+| epoch_107            |   SW   |        Sub(float)        |
+| epoch_108            |   SW   |        Mul(float)        |
+| epoch_109            |   SW   |      QuantizeLinear      |
+| epoch_110            |   SW   |      QuantizeLinear      |
+| epoch_111            |   SW   |      QuantizeLinear      |
+| epochs  112 -> 112   |   EC   |                          |
+| epoch_113            | Hybrid |        Transpose         |
+| epochs  114 -> 114   |   EC   |                          |
+| epoch_115            |   SW   |     DequantizeLinear     |
+| epoch_116            |   SW   |       Sqrt(float)        |
+| epoch_117            |   SW   |    Reciprocal(float)     |
+| epoch_118            |   SW   |      QuantizeLinear      |
+| epoch_119            |   SW   |      QuantizeLinear      |
+| epoch_120            |   SW   |           Mul            |
+| epoch_121            |   SW   |           Conv           |
+| epochs  122 -> 132   |   EC   |                          |
+| epoch_133            |   SW   |           Conv           |
+| epochs  134 -> 140   |   EC   |                          |
+| epoch_141            |   SW   |     DequantizeLinear     |
+| epoch_142            |   SW   |       Sqrt(float)        |
+| epoch_143            |   SW   |    Reciprocal(float)     |
+| epoch_144            |   SW   |      QuantizeLinear      |
+| epoch_145            |   SW   |      QuantizeLinear      |
+| epoch_146            |   SW   |           Mul            |
+| epochs  147 -> 147   |   EC   |                          |
+| epoch_148            | Hybrid |       SpaceToDepth       |
+| epochs  149 -> 150   |   EC   |                          |
+| epoch_151            | Hybrid |       DepthToSpace       |
+| epochs  152 -> 153   |   EC   |                          |
+| epoch_154            |   SW   |           Conv           |
+| epoch_155            |   SW   |           Conv           |
+| epoch_156            |   SW   |           Conv           |
+| epochs  157 -> 157   |   EC   |                          |
+| epoch_158            |   SW   |     DequantizeLinear     |
+| epoch_159            | Hybrid |        Transpose         |
+| epochs  160 -> 160   |   EC   |                          |
+| epoch_161            |   SW   |     DequantizeLinear     |
+| epoch_162            |   SW   | GlobalAveragePool(float) |
+| epochs  163 -> 163   |   EC   |                          |
+| epoch_164            |   SW   |        Sub(float)        |
+| epoch_165            |   SW   |        Mul(float)        |
+| epoch_166            |   SW   |      QuantizeLinear      |
+| epoch_167            |   SW   |      QuantizeLinear      |
+| epoch_168            |   SW   |      QuantizeLinear      |
+| epoch_169            | Hybrid |        Transpose         |
+| epoch_170            | Hybrid |        Transpose         |
+| epochs  171 -> 171   |   EC   |                          |
+| epoch_172            | Hybrid |        Transpose         |
+| epochs  173 -> 173   |   EC   |                          |
+| epoch_174            |   SW   |     DequantizeLinear     |
+| epoch_175            |   SW   |       Sqrt(float)        |
+| epoch_176            |   SW   |    Reciprocal(float)     |
+| epoch_177            |   SW   |      QuantizeLinear      |
+| epoch_178            |   SW   |      QuantizeLinear      |
+| epoch_179            |   SW   |           Mul            |
+| epochs  180 -> 180   |   EC   |                          |
+| epoch_181            |   SW   |           Conv           |
+| epochs  182 -> 182   |   EC   |                          |
+| epoch_183            |   SW   |           Conv           |
+| epoch_184            |   SW   |           Conv           |
+| epoch_185            |   SW   |           Conv           |
+| epochs  186 -> 191   |   EC   |                          |
+| epoch_192            | Hybrid |        Transpose         |
+| epochs  193 -> 197   |   EC   |                          |
+| epoch_198            |   SW   |           Conv           |
+| epoch_199            |   SW   |           Conv           |
+| epoch_200            |   SW   |           Conv           |
+| epoch_201            |   SW   |           Conv           |
+| epochs  202 -> 204   |   EC   |                          |
+| epoch_205            | Hybrid |        Transpose         |
+| epochs  206 -> 206   |   EC   |                          |
+| epoch_207            |   SW   |           Conv           |
+| epochs  208 -> 209   |   EC   |                          |
+| epoch_210            | Hybrid |           Pad            |
+| epoch_211            | Hybrid |       SpaceToDepth       |
+| epochs  212 -> 213   |   EC   |                          |
+| epoch_214            | Hybrid |       DepthToSpace       |
+| epoch_215            | Hybrid |           Pad            |
+| epochs  216 -> 216   |   EC   |                          |
+| epoch_217            |   SW   |     DequantizeLinear     |
+| epoch_218            |   SW   |       Sqrt(float)        |
+| epoch_219            |   SW   |    Reciprocal(float)     |
+| epoch_220            |   SW   |      QuantizeLinear      |
+| epoch_221            |   SW   |      QuantizeLinear      |
+| epoch_222            |   SW   |           Mul            |
+| epochs  223 -> 224   |   EC   |                          |
+| epoch_225            |   SW   |     DequantizeLinear     |
+| epoch_226            | Hybrid |        Transpose         |
+| epochs  227 -> 227   |   EC   |                          |
+| epoch_228            |   SW   |     DequantizeLinear     |
+| epoch_229            |   SW   | GlobalAveragePool(float) |
+| epochs  230 -> 230   |   EC   |                          |
+| epoch_231            |   SW   |        Sub(float)        |
+| epoch_232            |   SW   |        Mul(float)        |
+| epoch_233            |   SW   |      QuantizeLinear      |
+| epoch_234            |   SW   |      QuantizeLinear      |
+| epoch_235            |   SW   |      QuantizeLinear      |
+| epoch_236            |   SW   |           Conv           |
+| epochs  237 -> 237   |   EC   |                          |
+| epoch_238            | Hybrid |        Transpose         |
+| epochs  239 -> 239   |   EC   |                          |
+| epoch_240            |   SW   |     DequantizeLinear     |
+| epoch_241            |   SW   |       Sqrt(float)        |
+| epoch_242            |   SW   |    Reciprocal(float)     |
+| epoch_243            |   SW   |      QuantizeLinear      |
+| epoch_244            |   SW   |      QuantizeLinear      |
+| epoch_245            |   SW   |           Mul            |
+| epochs  246 -> 253   |   EC   |                          |
+| epoch_254            |   SW   |           Conv           |
+| epochs  255 -> 261   |   EC   |                          |
+| epoch_262            |   SW   |     DequantizeLinear     |
+| epoch_263            |   SW   |       Sqrt(float)        |
+| epoch_264            |   SW   |    Reciprocal(float)     |
+| epoch_265            |   SW   |      QuantizeLinear      |
+| epoch_266            |   SW   |      QuantizeLinear      |
+| epoch_267            |   SW   |           Mul            |
+| epochs  268 -> 271   |   EC   |                          |
+| epoch_272            | Hybrid |           Pad            |
+| epoch_273            | Hybrid |       SpaceToDepth       |
+| epochs  274 -> 275   |   EC   |                          |
+| epoch_276            | Hybrid |       DepthToSpace       |
+| epoch_277            | Hybrid |           Pad            |
+| epochs  278 -> 278   |   EC   |                          |
+| epoch_279            |   SW   |           Conv           |
+| epoch_280            |   SW   |           Conv           |
+| epoch_281            |   SW   |           Conv           |
+| epochs  282 -> 283   |   EC   |                          |
+| epoch_284            |   SW   |     DequantizeLinear     |
+| epoch_285            | Hybrid |        Transpose         |
+| epochs  286 -> 286   |   EC   |                          |
+| epoch_287            |   SW   |     DequantizeLinear     |
+| epoch_288            |   SW   | GlobalAveragePool(float) |
+| epoch_289            | Hybrid |        Transpose         |
+| epoch_290            | Hybrid |        Transpose         |
+| epoch_291            |   SW   |        Sub(float)        |
+| epoch_292            |   SW   |        Mul(float)        |
+| epoch_293            |   SW   |      QuantizeLinear      |
+| epoch_294            |   SW   |      QuantizeLinear      |
+| epoch_295            |   SW   |      QuantizeLinear      |
+| epochs  296 -> 296   |   EC   |                          |
+| epoch_297            | Hybrid |        Transpose         |
+| epochs  298 -> 299   |   EC   |                          |
+| epoch_300            |   SW   |           Conv           |
+| epoch_301            |   SW   |           Conv           |
+| epoch_302            |   SW   |           Conv           |
+| epoch_303            |   SW   |           Conv           |
+| epoch_304            |   SW   |     DequantizeLinear     |
+| epoch_305            |   SW   |       Sqrt(float)        |
+| epoch_306            |   SW   |    Reciprocal(float)     |
+| epoch_307            |   SW   |      QuantizeLinear      |
+| epoch_308            |   SW   |      QuantizeLinear      |
+| epoch_309            |   SW   |           Mul            |
+| epochs  310 -> 315   |   EC   |                          |
+| epoch_316            | Hybrid |        Transpose         |
+| epochs  317 -> 319   |   EC   |                          |
+| epoch_320            |   SW   |           Conv           |
+| epoch_321            |   SW   |           Conv           |
+| epoch_322            |   SW   |           Conv           |
+| epoch_323            |   SW   |           Conv           |
+| epochs  324 -> 325   |   EC   |                          |
+| epoch_326            | Hybrid |        Transpose         |
+| epochs  327 -> 327   |   EC   |                          |
+| epoch_328            |   SW   |           Conv           |
+| epochs  329 -> 334   |   EC   |                          |
+| epoch_335            | Hybrid |           Pad            |
+| epoch_336            | Hybrid |       SpaceToDepth       |
+| epoch_337            |   SW   |     DequantizeLinear     |
+| epoch_338            |   SW   |       Sqrt(float)        |
+| epoch_339            |   SW   |    Reciprocal(float)     |
+| epoch_340            |   SW   |      QuantizeLinear      |
+| epoch_341            |   SW   |      QuantizeLinear      |
+| epoch_342            |   SW   |           Mul            |
+| epochs  343 -> 344   |   EC   |                          |
+| epoch_345            | Hybrid |       DepthToSpace       |
+| epoch_346            | Hybrid |           Pad            |
+| epochs  347 -> 349   |   EC   |                          |
+| epoch_350            |   SW   |     DequantizeLinear     |
+| epoch_351            | Hybrid |        Transpose         |
+| epoch_352            |   SW   |           Conv           |
+| epochs  353 -> 353   |   EC   |                          |
+| epoch_354            |   SW   |     DequantizeLinear     |
+| epoch_355            |   SW   | GlobalAveragePool(float) |
+| <no executed epochs> |   EC   |                          |
+| epoch_357            |   SW   |        Sub(float)        |
+| epoch_358            |   SW   |        Mul(float)        |
+| epoch_359            |   SW   |      QuantizeLinear      |
+| epoch_360            |   SW   |      QuantizeLinear      |
+| epoch_361            |   SW   |      QuantizeLinear      |
+| epochs  362 -> 362   |   EC   |                          |
+| epoch_363            | Hybrid |        Transpose         |
+| epochs  364 -> 364   |   EC   |                          |
+| epoch_365            |   SW   |     DequantizeLinear     |
+| epoch_366            |   SW   |       Sqrt(float)        |
+| epoch_367            |   SW   |    Reciprocal(float)     |
+| epoch_368            |   SW   |      QuantizeLinear      |
+| epoch_369            |   SW   |      QuantizeLinear      |
+| epoch_370            |   SW   |           Mul            |
+| epochs  371 -> 374   |   EC   |                          |
+| epoch_375            |   SW   |           Conv           |
+| epochs  376 -> 382   |   EC   |                          |
+| epoch_383            |   SW   |     DequantizeLinear     |
+| epoch_384            |   SW   |       Sqrt(float)        |
+| epoch_385            |   SW   |    Reciprocal(float)     |
+| epoch_386            |   SW   |      QuantizeLinear      |
+| epoch_387            |   SW   |      QuantizeLinear      |
+| epoch_388            |   SW   |           Mul            |
+| epochs  389 -> 390   |   EC   |                          |
+| epoch_391            |   SW   |           Conv           |
+| epochs  392 -> 395   |   EC   |                          |
+| epoch_396            |   SW   |           Conv           |
+| epoch_397            |   SW   |           Conv           |
+| epoch_398            |   SW   |           Conv           |
+| epochs  399 -> 401   |   EC   |                          |
+| epoch_402            | Hybrid |        Transpose         |
+| epoch_403            | Hybrid |        Transpose         |
+| epoch_404            |   SW   |     DequantizeLinear     |
+| epoch_405            |   SW   |     ReduceSum(float)     |
+| epoch_406            |   SW   |      QuantizeLinear      |
+| epoch_407            |   SW   |           Tile           |
+| epochs  408 -> 411   |   EC   |                          |
+| epoch_412            |   SW   |           Conv           |
+| epoch_413            |   SW   |           Conv           |
+| epoch_414            |   SW   |           Conv           |
+| epoch_415            |   SW   |           Conv           |
+| epochs  416 -> 421   |   EC   |                          |
+| epoch_422            | Hybrid |        Transpose         |
+| epochs  423 -> 424   |   EC   |                          |
+| epoch_426            |   SW   |           Conv           |
+| epoch_427            |   SW   |           Conv           |
+| epoch_428            |   SW   |           Conv           |
+| epoch_429            |   SW   |           Conv           |
+| epochs  430 -> 430   |   EC   |                          |
+| epoch_432            | Hybrid |        Transpose         |
+| <no executed epochs> |   EC   |                          |
+| epoch_434            |   SW   |           Conv           |
+| epochs  435 -> 439   |   EC   |                          |
+| epoch_440            |   SW   |     DequantizeLinear     |
+| epoch_441            |   SW   |       Sqrt(float)        |
+| epoch_442            |   SW   |    Reciprocal(float)     |
+| epoch_443            |   SW   |      QuantizeLinear      |
+| epoch_444            |   SW   |      QuantizeLinear      |
+| epoch_445            |   SW   |           Mul            |
+| epochs  446 -> 450   |   EC   |                          |
+| epoch_451            |   SW   |           Conv           |
+| epochs  452 -> 458   |   EC   |                          |
+| epoch_459            |   SW   |           Conv           |
+| epochs  460 -> 463   |   EC   |                          |
+| epoch_464            | Hybrid |          Concat          |
+| epochs  466 -> 467   |   EC   |                          |
+| epoch_468            |   SW   |     DequantizeLinear     |
+| epoch_469            |   SW   |       Sqrt(float)        |
+| epoch_470            |   SW   |    Reciprocal(float)     |
+| epoch_471            |   SW   |      QuantizeLinear      |
+| epoch_472            |   SW   |      QuantizeLinear      |
+| epoch_473            |   SW   |           Mul            |
+| epochs  474 -> 478   |   EC   |                          |
+| epoch_479            |   SW   |           Conv           |
+| epochs  480 -> 486   |   EC   |                          |
+| epoch_487            |   SW   |           Conv           |
+| epochs  488 -> 494   |   EC   |                          |
+| epoch_495            |   SW   |           Conv           |
+| epochs  496 -> 498   |   EC   |                          |
++----------------------+--------+--------------------------+
 ==================================================================================== 
  Requested memory size by section - "stm32n6npu" target
  ------------------------------- --------- ----------- ------ ----------- 
  module                               text      rodata   data         bss 
  ------------------------------- --------- ----------- ------ ----------- 
- reattnpu.o                         39,428     338,807      0          12 
- EC Blobs                              156     362,880      0         900 
- NetworkRuntime1201_CM55_GCC.a     114,748          16     32           0 
+ EC Blobs                              160     382,592      0         900 
+ reattnpu.o                         36,692     345,460      0          12 
+ NetworkRuntime1201_CM55_GCC.a     103,796          16     32           0 
  stai_reattnpu.o                         0           0      0           0 
  lib (toolchain)*                   12,404       2,262      0           0 
- ll atonn runtime                   23,706       8,517    352       1,741 
+ ll atonn runtime                   19,698       7,537    232       1,741 
  ------------------------------- --------- ----------- ------ ----------- 
- RT total**                        190,442     712,482    384       2,653 
+ RT total**                        172,750     737,867    264       2,653 
  ------------------------------- --------- ----------- ------ ----------- 
- weights                                 0   1,048,513      0           0 
- activations                             0           0      0   1,373,008 
+ weights                                 0   1,048,193      0           0 
+ activations                             0           0      0   1,375,632 
  io                                      0           0      0      13,470 
  ------------------------------- --------- ----------- ------ ----------- 
- TOTAL                             190,442   1,760,995    384   1,389,131 
+ TOTAL                             172,750   1,786,060    264   1,391,755 
  ------------------------------- --------- ----------- ------ ----------- 
  *  toolchain objects (libm/libgcc*)
  ** RT AI runtime objects (kernels+infrastructure)
@@ -4050,9 +4038,9 @@ Total number of epochs                               474
   ---------------------------------------------------
                FLASH (ro)      %*    RAM (rw)      % 
   ---------------------------------------------------
-  RT total        903,308   46.3%       3,037   0.2% 
+  RT total        910,881   46.5%       2,917   0.2% 
   ---------------------------------------------------
-  TOTAL         1,951,821           1,389,515        
+  TOTAL         1,959,074           1,392,019        
   ---------------------------------------------------
   *  rt/total
 
