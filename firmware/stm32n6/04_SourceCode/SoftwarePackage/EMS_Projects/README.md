@@ -13,6 +13,7 @@ Phase 3 起，全部 EMS 固件工程统一放在本文件夹下，**一个 EMS 
 EMS_Projects/
 ├── EMS01_CHIL_ECMS/          # MLP-Q G2 v3 基线（已恢复纯净态，git = HEAD @1308ab76）
 ├── EMS01_CHIL_ECMS_TCN64/    # TCN-f64 换型工程（batch 证据 + 流式 closure + NPU 实验记录）
+├── EMS01_CHIL_REATT8/        # REAT-T int8 板上预测服务（phase4-g：Phase 4-F C2 板后端 + soft-HIL）
 └── Home/                     # vendor 模板空目录，非 EMS 工程
 ```
 
@@ -25,6 +26,7 @@ EMS_Projects/
 |---|---|---|
 | `EMS01_CHIL_ECMS` | MLP-Q G2 v3 基线（已恢复纯净态：git = HEAD，fw_gate 7/7，重建双镜像 nm 无 TCN 符号） | v1/v3 先例工程；本会话 TCN 换型改动已全部迁出至 TCN64 |
 | `EMS01_CHIL_ECMS_TCN64` | **TCN-f64 换型工作区**（batch 换型验证态证据 + 流式 closure 实现 + NPU 频率实验记录合一） | 用户工程隔离规则承接体；流式与 batch 为同一模型演进阶段，证据合并在 `Host/results/tcn_swap/`；spec `ems01-chil-tcn64-swap` |
+| `EMS01_CHIL_REATT8` | **REAT-T int8 板上预测服务**（phase4-g，2026-09-22 立项；TCN64 副本 + REATT 服务链：Model/reatt8_q 部署包 + CMD_REATT 协议 + 板上归一化） | Phase 4-F C2 soft-HIL 板后端（预测器在环）；Debug=TCN64 基线+桩 / Release=REATT 全量（交付形态）；spec `phase4-g-reatt-board-deployment` |
 
 > 注：早期曾计划"batch 与流式分列两工程"，实际实施中流式 closure 直接在 TCN64 内
 > 演进（batch 证据即流式的基线），故最终为两工程结构。

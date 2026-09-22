@@ -1,0 +1,241 @@
+{
+  "task": "T-604",
+  "spec": "ems01-chil-v3-closedloop (FR-602/NFR-601/AC-602)",
+  "generated": "2026-09-02 12:15:39",
+  "matlab_version": "R2026a",
+  "matlab_version_string": "26.1.0.3312084 (R2026a) Update 4",
+  "scenario": "voyage002",
+  "run_id": "G2_test_voyage_002_v2",
+  "plantstep_model": "model/HybridShip_ModelD_PlantStep.slx",
+  "model_sha256": "f438ff9637e01302119fac113e42b301c69e96128470ee3fd31622dad7e7686e",
+  "model_sha_unchanged_after_codegen": true,
+  "parameters_file": "config/Model_Parameters.m",
+  "parameters_sha256": "830eec47fda301242e8ef4aa6a3165726d79aca8cb67b52c0b023b8863e719d8",
+  "scenario_variables": {
+    "scn_key": {
+      "name": "voyage_002",
+      "id": 2002,
+      "stop_time_s": 4211,
+      "initial_SOC": 0.6,
+      "hotel_kW": 100,
+      "target_speed_mps": 1.4048,
+      "voyage_distance_m": 1.0E+6,
+      "profile_code": 4,
+      "resistance_profile": "bands",
+      "speed_profile_mode": "time",
+      "accel_ramp_mps2": 0.15,
+      "decel_ramp_mps2": 0.05
+    },
+    "inject": {
+      "VOYAGE_SPEED_MODE": 1,
+      "VOYAGE_V_TIME_S": [
+        0,
+        349,
+        899,
+        1645,
+        2025,
+        2832,
+        3853,
+        4211
+      ],
+      "VOYAGE_V_VALUE_MPS": [
+        1.6764,
+        2.4635,
+        4.4007,
+        2.8071,
+        5.6872,
+        5.3714,
+        1.4048,
+        1.4048
+      ],
+      "VOYAGE_CURRENT_MODE": 1,
+      "VOYAGE_CURRENT_TIME_S": [
+        0,
+        349,
+        899,
+        1645,
+        2025,
+        2832,
+        3853,
+        4211
+      ],
+      "VOYAGE_CURRENT_VALUE_MPS": [
+        0.0218,
+        -0.0122,
+        -0.2,
+        0.0441,
+        0.2664,
+        0.0045,
+        0.1213,
+        0.1213
+      ],
+      "Bat_SOC_init": 0.6,
+      "EMS_CTRL_LAW": 7,
+      "EMS_MODE": 1,
+      "AI_Pred_Source": 0
+    }
+  },
+  "scenario_variables_sha256": "aa140a9b3068772fdf085e716e6a5d2f3e5acd7f39ba97b23a23a162f6c44213",
+  "scenario_variables_note": "jsonencode(scn_key + inject VOYAGE_*/SCN兜底) 的 sha256（临时文件 shasum -a 256）",
+  "codegen": {
+    "target_file": "grt.tlc",
+    "coder_type": "GRT",
+    "gen_code_only": true,
+    "config_applied": [
+      "GenCodeOnly=on",
+      "DefaultParameterBehavior=Inlined",
+      "GenerateReport=off",
+      "SupportNonFinite=on",
+      "InlineInvariantSignals=on",
+      "MatFileLogging=off",
+      "SolverMode=SingleTasking"
+    ],
+    "config_failed": [
+      "ExternalMode=off (block_diagram 没有名为 'ExternalMode' 的参数)",
+      "DynamicMemoryAllocation=Never (block_diagram 没有名为 'DynamicMemoryAllocation' 的参数)"
+    ],
+    "fallback_note": "ert.tlc 生成失败回退 grt.tlc（design §4.1 显式 fallback；失败消息: ert.tlc: 多种原因导致错误。）"
+  },
+  "artifacts": {
+    "dir": "Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw",
+    "n_files": 26,
+    "files": [
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/HybridShip_ModelD_PlantStep.c",
+        "sha256": "e40a50ff185707a21c92d3aa98b04a4331b2224d653db547d33b22729b99387a",
+        "bytes": 33500
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/HybridShip_ModelD_PlantStep.h",
+        "sha256": "2be4db47d4adabcc55e73968092149ff91b8f41d922fc36dae15daa1d48c8514",
+        "bytes": 15020
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/HybridShip_ModelD_PlantStep.mk",
+        "sha256": "667d2c40a198a8ce16e1e70e2f8f7c080a6973fb80658e1b70038e35857b3ca1",
+        "bytes": 19429
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/HybridShip_ModelD_PlantStep_data.c",
+        "sha256": "da7de6927112ea84a3a2a3cc40f5a4f12302bead97d02cd3eeca5de04d06e7a7",
+        "bytes": 14953
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/HybridShip_ModelD_PlantStep_private.h",
+        "sha256": "8b820f59bb746765dff6c4811bfce20ea8e5ee45a6220e843c696be797e7e973",
+        "bytes": 1765
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/HybridShip_ModelD_PlantStep_types.h",
+        "sha256": "f3f68777f02da8e3521c8107668751910b7f0b83c6ecf1b77545ba8ec65778cd",
+        "bytes": 996
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/buildInfo.mat",
+        "sha256": "8533d880454c8fa7f28c7ca9777a4d9b5760af38448007a69bcc5e13175bec77",
+        "bytes": 16645
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/builtin_typeid_types.h",
+        "sha256": "d138889e8da3f3ab9d60667fee1c37b10a9db2d6d5221e7e6e11bf91b5e29c77",
+        "bytes": 1516
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/codeInfo.mat",
+        "sha256": "ee236f9dd1a5c998ed5c70c905b8a342dde66de303d3e8b1a432f3a70668a57c",
+        "bytes": 6103
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/codedescriptor.dmr",
+        "sha256": "97ae9c01bb95f7a427f9f53fbd8a37465234525d60cab4f85cc8ec01c1bb4068",
+        "bytes": 1.260544E+6
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/compileInfo.mat",
+        "sha256": "dd759d3d920fd916932daadaddb073a399e1350e2102521c67d189a3691a12c2",
+        "bytes": 3833
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/multiword_types.h",
+        "sha256": "9f76df7b7abdc69a3705d63e9d31dcf14f0232da37bafe280535fb7eb80f175d",
+        "bytes": 16379
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rtGetInf.c",
+        "sha256": "c793ec604f149084c5f63ab856f0bd5429ac96d1d493423f8c1f283b3607d662",
+        "bytes": 1129
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rtGetInf.h",
+        "sha256": "31c767feaac24c437a170f313cf680c7d777b5ce7a69218b14f3aa62108d3ae1",
+        "bytes": 963
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rt_nonfinite.c",
+        "sha256": "3d6210c3954fbe13310ba160d231f810cb8c57014de3f1c03071afa238f4762b",
+        "bytes": 1442
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rt_nonfinite.h",
+        "sha256": "ac9d8907586e9b99755d3d8c62f17d5722aebbe4848727a72f3ccc076369ed3c",
+        "bytes": 1128
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rtmodel.h",
+        "sha256": "f97a29a74ec6b5badafa77f6fa2ed7739569e1adde92581f6775617ca8d37e83",
+        "bytes": 857
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rtw_proj.tmw",
+        "sha256": "270496a3c1afba8578cf9bd04f8fb0bc08d6634ef9dce560c255d3dffc574b58",
+        "bytes": 404
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rtwtypes.h",
+        "sha256": "d0ce2767196fa66ceb2a7588ca09f169a2706bf25068e458d1dabbcad4bd2f0d",
+        "bytes": 1064
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/rtwtypeschksum.mat",
+        "sha256": "d8a2be6085c9b49f78e36570cf3c9af84f2db999fae143dc774e113dd182cfcc",
+        "bytes": 2023
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/tmwtypes.h",
+        "sha256": "f32409c5f85fd193aa6fa74ce097118fcf55e3235b8b3a9197fe760361c602dd",
+        "bytes": 22962
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/tmwinternal/BlockTraceInfo.mat",
+        "sha256": "505b073aece6d4052de11b938429166ba6f807aa600c75eb45697591d8b64015",
+        "bytes": 3373
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/tmwinternal/CompileInfo.xml",
+        "sha256": "8909b7eebebe889173c40bb6bee556b65d38043ad944dc54f7c8c0fb5a85584b",
+        "bytes": 46731
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/tmwinternal/binfo.mat",
+        "sha256": "b133a9817a5adc70f0a338652ac10f92d317c939f49ddde8958539384b6ee8d9",
+        "bytes": 34067
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/tmwinternal/minfo.mat",
+        "sha256": "1fb634821428d155b921002ae62a0ec7815d27a7ff369a22c22a8591631735a4",
+        "bytes": 2052
+      },
+      {
+        "file": "HybridShip_ModelD_PlantStep_grt_rtw/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/voyage002/HybridShip_ModelD_PlantStep_grt_rtw/tmwinternal/simulink_cache.xml",
+        "sha256": "e494a7e344686a16380ec12ebc879a536b4361e73ccf856034dff23f115eefd3",
+        "bytes": 366
+      }
+    ]
+  },
+  "idempotency": {
+    "prior_rtw_existed": false,
+    "note": "每场景重跑先删除自身 rtw 产物目录（20_build_plantstep_model.m delete 前例同类）"
+  },
+  "out_dir": "Host/plantstep/voyage002/",
+  "overall": true
+}

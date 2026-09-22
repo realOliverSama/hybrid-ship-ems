@@ -44,6 +44,15 @@ formal 证据，精选入库）、`artifacts/ppe_formal*/ppe_bridge/ppe_toy_ckpt
 C0 = 严格因果持续性；C1 = PERFECT_INFORMATION_CONTROLLER_REFERENCE（冻结存储真值查表，
 非理论上界）；P0 = 无预测（contextual 基线）**。
 
+**Phase 4-G REATT-T 板上部署 + soft-HIL**（spec
+`.specs/phase4-g-reatt-board-deployment/`，2026-09-22 起）：冻结 winner 量化
+（int8 全 CPU 编译形态）部署至 `firmware/.../EMS_Projects/EMS01_CHIL_REATT8/`，
+C2 臂推理经板后端复跑（预测器在环 soft-HIL）。本工作区新增（全部 additive，
+冻结件零改动）：`python/ppe/c2_server_board.py`（板后端文件桥服务 + --mock
+联调）、`scripts/+ppe/c2_bridge_board.m`、`scripts/+ppe/run_softhil_voyage.m`
+（genB 执行路径板后端副本）、`results/ppe_practical/soft_hil/`（非正式证据
+命名空间，SOFT_HIL_NONFORMAL）。配对基线 = 冻结 genB 同航次 C2 host 记录。
+
 ## 目录结构
 
 | 条目 | 说明 |

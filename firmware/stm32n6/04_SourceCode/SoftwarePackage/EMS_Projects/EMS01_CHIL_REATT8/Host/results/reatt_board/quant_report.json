@@ -1,0 +1,61 @@
+{
+  "schema": "phase4g_reatt_quant_report_v1",
+  "l0_gate": {
+    "q50_mae_kW_max": 25.0,
+    "q50_corr_min": 0.98,
+    "pass": true
+  },
+  "l0_metrics": {
+    "q50_mae_kW": 23.493596307436626,
+    "q50_max_kW": 208.67845153808594,
+    "q50_p99_kW": 112.83691467285155,
+    "q10_mae_kW": 25.699196591013102,
+    "q90_mae_kW": 21.93733678672101,
+    "q50_corr": 0.9807014914209137,
+    "finite_rate": 1.0,
+    "q50_mae_vs_truth_int8": 27.9216908454895,
+    "q50_mae_vs_truth_keras": 8.325414657592773
+  },
+  "provenance": {
+    "keras_sha256": "d8da6af4667875c45de7de90383d2b6b750420f5af62c7dcdcb1e5997897f894",
+    "fr836_frozen": true,
+    "tflite_int8_sha256": "efde1aff326caa6230cf6b8ab89ff85a75e28a04e39d5d4348c26084023f066a",
+    "tflite_int8_bytes": 1212176,
+    "tf_version": "2.19.1",
+    "n_params": 1012835,
+    "deploy_output": "raw_proj (m,a,b) [30,3]; quantile transform in firmware"
+  },
+  "caliber_contract": {
+    "training": "windows_v3_formal splits=='train'，frozen formal_norm_v3/norm_ext_v1 归一化域（features.assemble 同变换）",
+    "deployment_feed": "固件 ems_reatt.c：原始域 hist/kf → ems_reatt_params（formal_norm_v3/norm_ext_v1 冻结常数，f32 域）→ f32 张量",
+    "int8_calibration": "本脚本标定集 = train 窗原始域 → 同冻结变换 → 归一化域（n=1024, seed=20260922）",
+    "channel_orders": {
+      "h1": [
+        "P_load_total_kW",
+        "v_ship_mps",
+        "acceleration_mps2",
+        "n_prop_rpm",
+        "P_hotel_kW",
+        "v_current_mps",
+        "water_depth_m",
+        "P_prop_demand_kW",
+        "ctrl_mode",
+        "v_ref_mps",
+        "manual_power_cmd_pct"
+      ],
+      "kf": [
+        "v_plan_mps",
+        "s_plan_m",
+        "h_chart_m",
+        "P_hotel_plan_kW",
+        "u_fcst_mps",
+        "wl_fcst_m"
+      ]
+    },
+    "consistent": true,
+    "note": "三口径同为归一化域同变换；与 T-508 事故模式（raw 喂归一化标定模型）相反，本链为正向样板（同 MLP-Q）。"
+  },
+  "seed": 20260922,
+  "n_cal": 1024,
+  "n_ref": 64
+}
