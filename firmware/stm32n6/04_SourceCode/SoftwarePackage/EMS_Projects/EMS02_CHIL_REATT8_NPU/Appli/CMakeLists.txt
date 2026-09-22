@@ -312,6 +312,21 @@ if(EMS_FW_MODE STREQUAL "NPU")
             "$<$<CONFIG:Release>:${EMS01_APP_DIR}/ems_npu_reattself.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/reattself.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/stai_reattself.c>"
+            # —— phase4-g 夜备（2026-09-23）：N2 逐级 bisection 阶梯（dl1..dl4 子图
+            #    + dlf1 整图 --Ono-clone-dma 消融；权重 hex 各自独立 NOR 池
+            #    0x70410000/0x70420000/0x70440000/0x70600000/0x70800000）。
+            #    仅 Release；首次 REATT query 由 ems_reatt_split.c 触发一次。
+            "$<$<CONFIG:Release>:${EMS01_APP_DIR}/ems_diag_ladder.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl1/dl1.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl1/stai_dl1.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/dl2.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/stai_dl2.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/dl3.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/stai_dl3.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4/dl4.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4/stai_dl4.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/dlf1.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/stai_dlf1.c>"
             # —— 整图 CPU 形态（EMS_REATT_FORM=CPU）
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"

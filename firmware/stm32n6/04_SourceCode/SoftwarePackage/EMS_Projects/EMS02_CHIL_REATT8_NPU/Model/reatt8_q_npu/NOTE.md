@@ -168,3 +168,39 @@ int8 链 29.6 kW = TCN 段 20.5 + N2 段 16.1（整图 int8 23.5 kW）。
 
 ⇒ 判据结论：N2 的 NPU 执行**既不反映输入、也不反映权重语义**；结合 workclf 同 appli 失败，
 指向 NPU 侧数据通路（NOR 权重可达性 / NPU cache 属性 / EC 运行时）而非图结构或量化。
+
+---
+
+## 2026-09-23（夜备）— N2 逐级 bisection 阶梯（晨间判别实验，一次烧录全部跑完）
+
+**前提（已实证）**：NPU 通路正常（自检图输出=输入逐字节；workclf 归一化口径 40/40）；
+N2 图输出退化为与输入无关的常数三元组。appli 读 NOR 三区校验和与 host 一致（RS-NOR）。
+
+**阶梯设计**（`Host/tools/npu/npu_export_ladder.py`；全部独立 `--name`，同固件共存）：
+
+| 级 | 网络 | 切点（源图 float 张量） | 考察对象 | NOR 池 |
+|---|---|---|---|---|
+| L1 | dl1 | kf_input → lead_pos | kf 输入通路（Transpose/DQ/Reshape/Dense/位置加） | 0x70410000 |
+| L2 | dl2 | LN1 输出 → o_proj 输出 | 单块 attention（Q/K/V、QKᵀ、scale、Softmax、AV、o_proj） | 0x70440000 |
+| L3 | dl3 | h_past_input → h_tile | **头号嫌疑**：Unsqueeze/Reshape/Q/DQ/Slice/Tile（30-lead 全同指纹） | （无权重） |
+| L4 | dl4 | {fut_seq, h_tile} → raw | fusion+LN+Dense+decoder 头部 | 0x70600000 |
+| F1 | dlf1 | 整图重编译 + **--Ono-clone-dma** | 编译选项消融（clone_dma 为 4.0.0 新默认） | 0x70800000 |
+
+golden：部署口径输入（kf 归一化 + reatt_n1_int8 的 h_past）过整图一次取全部切点张量；
+每级再用 ORT 跑该级子图得 golden 输出；固件运行时读边界 scale/zp 自适配，
+float 域比对（S8 输出容差 2×步长；f32 输出 5%×(1+max|exp|)），单行判决 RS-Lx PASS/DIFF。
+
+**地址规划（全 32MB NOR，占位检查零重叠）**：
+appli 0x70100400..0x7036E814（阶梯使其从 1.65MB 涨到 2.55MB）→ **服务 N2 权重池被迫
+迁 0x70300000 → 0x70A00000**（`my_mpools/service_n2.mpool`；reattn2n 已重编，hex 更新）；
+selftest 0x703E0000；workclf 0x70400000（未动）；dl1/dl2/dl4/dlfut/dlf1 见上表
+（dlfut = fut 支路整段 kf→fut3，0x70700000，为"Tile 坏→fut(NPU)+Tile(固件复制)+fusion(dl4)"
+修复预案预备）；dl2c/dl4c/dlfutc = 各段 **CPU 形态兜底编译**（已生成未接线，
+权重入 ELF，坏段→CPU 时即刻组装）。
+
+**晨间流程**：Dev boot → `Host/tools/flash_ladder.sh`（一键 7 项全带 -v）→ 切 Flash boot
+冷启动 → `python3 Host/tools/ladder_morning.py --port /dev/cu.usbserial-1120` → 判决表自动输出。
+
+**判决树**：F1 PASS ⇒ clone_dma 即根因（服务 N2 重编译加选项即修）；首个 DIFF 级 =
+首个坏段 ⇒ 该段退 CPU 形态（dl2c/dl4c/dlfutc 已备），其余留 NPU；L1-L4 全 PASS 而
+F1 DIFF ⇒ 图结构无错，第二轮编译选项消融。

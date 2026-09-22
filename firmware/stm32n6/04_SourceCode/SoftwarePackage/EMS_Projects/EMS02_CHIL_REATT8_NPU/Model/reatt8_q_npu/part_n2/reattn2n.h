@@ -2,7 +2,7 @@
   ******************************************************************************
   * @file    reattn2n.h
   * @author  STEdgeAI
-  * @date    2026-09-23 00:25:31
+  * @date    2026-09-23 02:01:01
   * @brief   Minimal description of the generated c-implemention of the network
   ******************************************************************************
   * @attention
@@ -20,7 +20,7 @@
 
 /******************************************************************************/
 #define LL_ATON_REATTN2N_C_MODEL_NAME        "reattn2n"
-#define LL_ATON_REATTN2N_ORIGIN_MODEL_NAME   "reatt_n2_int8"
+#define LL_ATON_REATTN2N_ORIGIN_MODEL_NAME   "reattn2n_src"
 
 /************************** USER ALLOCATED IOs ********************************/
 #define LL_ATON_REATTN2N_USER_ALLOCATED_INPUTS   (2)  // Number of input buffers not allocated by the compiler

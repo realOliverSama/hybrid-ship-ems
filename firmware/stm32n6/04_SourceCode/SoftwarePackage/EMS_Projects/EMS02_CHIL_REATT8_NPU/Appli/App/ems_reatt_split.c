@@ -282,6 +282,10 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
             rs_diag_done = true;
             rs_nor_probe();
             (void)rs_selftest_run();
+            {
+                extern void ems_diag_ladder_run(void);   /* 逐级 bisection（夜备） */
+                ems_diag_ladder_run();
+            }
         }
     }
 

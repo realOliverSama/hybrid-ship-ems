@@ -628,7 +628,7 @@ static const stai_network_info __stai_reattn2n_network_info = {
     .n_weights = STAI_REATTN2N_WEIGHTS_NUM,
     .n_states = STAI_REATTN2N_STATES_NUM,
 
-    .c_model_datetime = "2026-09-23 00:25:30",
+    .c_model_datetime = "2026-09-23 02:01:01",
 
     .n_nodes = 687,
 

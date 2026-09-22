@@ -14,6 +14,8 @@
 | `onnx_truncate.py` | 按张量截断 ONNX | NPU 编译器故障二分定位用（逐层缩短图找首个致病算子） |
 | `npu_export_split.py` | **拆分导出（2026-09-23）** | N1 = hist→h_past（TCN 段，走 CPU 形态）；N2 = kf+h_past→raw (m,a,b)（attention/Dense 段，走 NPU）；权重自冻结 winner 移植 |
 | `npu_quantize_split.py` | **拆分 int8 量化（2026-09-23）** | `--part n1\|n2`；N2 的 h_past 标定输入取 **N1 int8 输出**（部署口径，非 fp32） |
+| `npu_export_ladder.py` | **N2 逐级 bisection 阶梯（2026-09-23 夜备）** | `cut/golden/emit-c` 三步：切 dl1..dl4 子图 + dlf1 消融变体、ORT golden 提取、固件判决数据生成；一次烧录全部跑完 |
+| `flash_ladder.sh` | 阶梯固件一键烧录（7 项全带 -v 校验） | Dev boot 下执行；清单含 appli/reattn2n@0x70A00000/dl1/dl2/dl4/dlf1/reattself |
 
 ## 与 stedgeai 的配合
 
@@ -30,6 +32,6 @@
 stedgeai 的中间工作目录（`st_ai_output/`、`st_ai_ws/`，含 OE ONNX 与池文件副本）
 **不入库**（本地可再生，体积 37 MB / 104 MB）。
 
-板级验证工具（对拍/探针/workclf 判别）在上一层 `Host/tools/`：
+板级验证工具（对拍/探针/workclf 判别/晨间阶梯判决）在上一层 `Host/tools/`：
 `reatt_board_client.py`（`--form whole|split`）、`reatt_split_probe.py`、
-`wc_test_client.py`、`gen_reference_split.py`。
+`wc_test_client.py`、`gen_reference_split.py`、`ladder_morning.py`。
