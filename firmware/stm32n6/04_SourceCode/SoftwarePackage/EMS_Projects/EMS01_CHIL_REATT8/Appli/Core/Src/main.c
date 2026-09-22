@@ -83,6 +83,7 @@ static void MX_GPIO_Init(void);
 static void MX_USART1_UART_Init(void);
 static void SystemIsolation_Config(void);
 /* USER CODE BEGIN PFP */
+void PeriphCommonClock_Config(void); /* phase4-g：定义在本文件后部，显式原型（CubeMX 世系丢失的调用补回，见 SysInit 注） */
 
 /* USER CODE END PFP */
 
@@ -206,6 +207,13 @@ int main(void)
   /* USER CODE END Init */
 
   /* USER CODE BEGIN SysInit */
+  /* phase4-g 修复（板上 bring-up 2026-09-22 定位）：CubeMX 生成的
+   * PeriphCommonClock_Config()（CKPER=HSI，.ioc USART1Freq=64M）在本工程
+   * main() 调用序列中缺失（ATK 模板世系丢失）——Dev boot 下 CKPER 复位默认
+   * 恰为 HSI(64MHz) 故从未暴露；Flash boot（FSBL 置 PLL/SYSCLK 后）USART1
+   * 有效波特率随 CLKP 漂移（实测 115200 配置全线乱码）。此处显式补调，
+   * 任何 boot 模式下内核时钟确定 = HSI 64MHz。 */
+  PeriphCommonClock_Config();
 #ifdef DEBUG
   MX_XSPI1_Init();
   HyperRAM_Init(&HyperRAMObject, &hxspi1);
@@ -296,6 +304,7 @@ int main(void)
     if ((heartbeat & 0x000FFFFFu) == 0u)
     {
       LED0_TOGGLE(); /* 心跳指示（EMS 应用替换 05_Serial 按键演示） */
+      (void)0; /* phase4-g bring-up 诊断全部移除（三探针/眨眼/回显）；心跳 LED 保留 */
     }
     /* USER CODE END WHILE */
 

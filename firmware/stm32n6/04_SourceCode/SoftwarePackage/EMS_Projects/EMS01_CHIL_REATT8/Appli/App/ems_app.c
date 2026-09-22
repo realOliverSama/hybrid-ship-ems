@@ -382,6 +382,8 @@ static uint8_t ems_rx_ring[EMS_RX_RING_SIZE];
 static volatile uint16_t ems_rx_head;
 static volatile uint16_t ems_rx_tail;
 static uint8_t ems_rx_byte; /* HAL 单字节 IT 接收位 */
+volatile uint32_t ems_rx_diag_count; /* phase4-g bring-up 诊断：RX 中断累计字节数 */
+const uint32_t ems_rodata_probe = 0x5A0FACE5u; /* phase4-g bring-up 诊断：已知值落 .rodata，板上报读校验 XIP 完整性 */
 
 static void ems_rx_arm(void)
 {
@@ -409,6 +411,7 @@ void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart)
             ems_rx_ring[ems_rx_head] = ems_rx_byte;
             ems_rx_head = next;
         }
+        ems_rx_diag_count++;
         ems_rx_arm();
     }
 }

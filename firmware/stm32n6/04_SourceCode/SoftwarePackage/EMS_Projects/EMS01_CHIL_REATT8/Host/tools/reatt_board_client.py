@@ -91,19 +91,19 @@ class Board:
             chunk = self.ser.read(4096)
             if chunk:
                 self.rxbuf.extend(chunk)
-            while len(self.rxbuf) >= 4:
+            while len(self.rxbuf) >= 5:  # 同步2+TYPE1+LEN2
                 if self.rxbuf[0] != SYNC0 or self.rxbuf[1] != SYNC1:
                     self.rxbuf.pop(0)
                     continue
-                ln = struct.unpack("<H", self.rxbuf[2:4])[0]
-                if len(self.rxbuf) < 4 + ln + 2:
+                ln = struct.unpack("<H", self.rxbuf[3:5])[0]  # [AA 55][TYPE][LEN LE16]
+                if len(self.rxbuf) < 5 + ln + 2:
                     break
-                body = bytes(self.rxbuf[4:4 + 1 + ln])
-                crc_rx = struct.unpack("<H", self.rxbuf[4 + ln:6 + ln])[0]
-                del self.rxbuf[:6 + ln]
+                body = bytes(self.rxbuf[2:5 + ln])  # TYPE+LEN+PAYLOAD（CRC 作用域 TYPE..PAYLOAD）
+                crc_rx = struct.unpack("<H", self.rxbuf[5 + ln:7 + ln])[0]
+                del self.rxbuf[:7 + ln]
                 if crc16_ccitt(body) != crc_rx:
                     continue  # CRC 错帧丢弃（与固件 NACK+事件环语义互补）
-                return body[0], body[1:]
+                return body[0], body[3:]  # payload（剥 TYPE+LEN）
         raise TimeoutError("板响应超时")
 
     def ping(self) -> bool:

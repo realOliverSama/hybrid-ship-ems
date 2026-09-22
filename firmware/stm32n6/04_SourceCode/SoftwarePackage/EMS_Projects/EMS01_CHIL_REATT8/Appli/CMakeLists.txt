@@ -205,6 +205,9 @@ target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE BSP_UART_RX_DISABLE)
 # 与 host L0（-ffp-contract=off）保持位一致：REF 后端 double 控制律、FMA 合同不同
 # 会造成 CHIL 对比误差，故关闭编译器融合。
 target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -ffp-contract=off)
+# phase4-g：EMS_REATT_UART_BAUD 接线（cache 变量 → 编译定义；ems_config.h 消费）。
+set(EMS_REATT_UART_BAUD "115200" CACHE STRING "USART1 runtime baud override (ems_config.h)")
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS_REATT_UART_BAUD=${EMS_REATT_UART_BAUD})
 # 串口日志含 %.6f（ems_app.c INFER_TEST 帧）；newlib-nano 默认无浮点 printf
 # 转换器，强制链接浮点变体，保证 T-506/T-507 人工可读遥测不失真（两后端共用）。
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE -u _printf_float)

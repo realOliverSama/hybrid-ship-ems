@@ -20,13 +20,15 @@
 #define EMS_GATE_MODE 2
 #endif
 
-/* phase4-g（D6）：USART1 运行时波特率覆盖（main.c USER CODE 2）。
- * .ioc 保持 115200（CubeMX 生成态不动）；本工程默认 921600 承载
- * CMD_REATT 13924 B 长帧（115200 下 1.21 s/帧不可接受）。
- * 主机工具默认同值（Host/tools/reatt_board_client.py --baud）。
- * 链路不稳时可 -DEMS_REATT_UART_BAUD=115200 回退（协议字节流不变）。 */
+/* phase4-g（D6，2026-09-22 bring-up 修正）：USART1 运行时波特率覆盖。
+ * ⚠ 事故教训：本宏必须经 CMake target_compile_definitions 接线
+ * （cache 变量 EMS_REATT_UART_BAUD），此前只改 cache 不传编译定义，
+ * #ifndef 兜底默认静默生效——板上 bring-up 全程被未接线的开关带偏。
+ * 默认 115200（板载 CH340 链路久经验证；921600 实测 CH340 不可靠：
+ * 高速垃圾字节流）。13924B 长帧代价 = 1.21s/帧 × ~391 锚点/航次 ≈ +8min，
+ * 可接受。协议字节流与波特率无关。 */
 #ifndef EMS_REATT_UART_BAUD
-#define EMS_REATT_UART_BAUD 921600
+#define EMS_REATT_UART_BAUD 115200
 #endif
 
 #endif /* EMS_CONFIG_H */
