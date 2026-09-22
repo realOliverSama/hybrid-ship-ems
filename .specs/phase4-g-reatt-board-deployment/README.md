@@ -95,8 +95,12 @@ model/simulink_modelE_(Phase4_Physics)/
       CMake 配置分形；协议环回 14/14 回归 PASS）
 - [x] T-006 双构建 + fw_gate（7/7 PASS，2026-09-22）
 - [ ] T-007 Release 烧录 + 板级 L1/L2/时延 —— **阻塞：ST-LINK 未连接**（持续复测）
-- [ ] T-008 Model E 板后端 + soft-HIL 6 航次（代码完成 + mock 联调/mock 冒烟通过；
-      板上 6 航次待板卡）
+- [x] T-008a Model E 板后端 + mock 冒烟（1 航次 MATLAB 全链 PASS，2026-09-22：
+      FLTA_S2_D01004_M1/C2/mock 后端，451 段 391 锚点，fuel 185.010 kg vs 冻结
+      host C2 185.125 kg（Δ=−0.115 kg / −0.062%），SOC_end Δ=−1.9e-4——int8 量化
+      的控制层端到端影响量级预览；mock infer_us=0 非时延证据）
+- [ ] T-008b soft-HIL 6 板上航次（待板卡；单航次 wall 实测 ~50 min（本地
+      R2026a），6 航次约 5h，可分批）
 - [ ] T-009 结果分析 + 报告（softhil_report.py 就绪，待板上数据）
 - [x] T-010a 文档登记 + 检查点提交（1504f990；最终并入 Phase4 待板上阶段完成后）
 
