@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdbool.h>
 #include <stdint.h>
+#include <string.h>
 
 #include "stm32n6xx_hal.h"
 #include "stai.h"
@@ -259,6 +260,56 @@ static int rs_init_once(void)
                (double)rs_out_scale, (int)rs_out_zp);
         rs_ready = true;
     }
+    return 0;
+}
+
+/* S0 判别探针：golden 输入（kf 归一化 f32 + h_past f32）直接走**服务生命周期**
+ * 跑 reattn2n，输出原始 int8 90 B。若 S0 输出正确而服务路径退化 ⇒ 毒在 N1 的
+ * h_past；若 S0 也退化 ⇒ 图/编译本身坏（与输入无关）。 */
+int ems_reatt_n2_golden_probe(const float kf_norm[EMS_REATT_KF_N],
+                              const float h_past[96u],
+                              int8_t raw_out[EMS_REATT_Q_N])
+{
+    stai_ptr in_ptrs[LL_ATON_REATTN2N_IN_NUM], out_ptrs[1];
+    stai_return_code rc;
+
+    if (rs_init_once() != 0) {
+        return 1;
+    }
+    for (uint32_t k = 0u; k < EMS_REATT_KF_T; k++) {
+        for (uint32_t ch = 0u; ch < EMS_REATT_KF_CH_N; ch++) {
+            uint32_t idx = k * EMS_REATT_KF_CH_N + ch;
+            float v = (kf_norm[idx] - EMS_REATT_KF_MEAN[ch * EMS_REATT_KF_T + k])
+                      / EMS_REATT_KF_SCALE[ch * EMS_REATT_KF_T + k];
+            rs_n2_kf[idx] = rs_quant(v, rs_kf_scale, rs_kf_zp);
+        }
+    }
+    memcpy(rs_n1_hpast, h_past, 96u * sizeof(float));
+    SCB_CleanDCache_by_Addr((uint32_t *)rs_n1_hpast, (int32_t)sizeof(rs_n1_hpast));
+    SCB_CleanDCache_by_Addr((uint32_t *)rs_n2_kf, (int32_t)sizeof(rs_n2_kf));
+    SCB_InvalidateDCache_by_Addr(rs_n2_out, (int32_t)sizeof(rs_n2_out));
+    in_ptrs[0] = (stai_ptr)rs_n2_kf;
+    in_ptrs[1] = (stai_ptr)rs_n1_hpast;
+    out_ptrs[0] = (stai_ptr)rs_n2_out;
+    if (stai_reattn2n_set_inputs(rs_ctx_n2, in_ptrs, LL_ATON_REATTN2N_IN_NUM) != STAI_SUCCESS
+            || stai_reattn2n_set_outputs(rs_ctx_n2, out_ptrs, LL_ATON_REATTN2N_OUT_NUM) != STAI_SUCCESS) {
+        printf("RS-S0 FAIL setio\r\n");
+        return 1;
+    }
+    if (rs_ran_before) {
+        if (stai_ext_reattn2n_new_inference(rs_ctx_n2) != STAI_SUCCESS) {
+            printf("RS-S0 FAIL newinf\r\n");
+            return 1;
+        }
+    }
+    rc = stai_reattn2n_run(rs_ctx_n2, STAI_MODE_ASYNC);
+    if (rs_wait_done(rs_ctx_n2, rc, stai_ext_reattn2n_run_continue) != 0) {
+        printf("RS-S0 FAIL run\r\n");
+        return 1;
+    }
+    rs_ran_before = true;
+    SCB_InvalidateDCache_by_Addr(rs_n2_out, (int32_t)sizeof(rs_n2_out));
+    memcpy(raw_out, rs_n2_out, EMS_REATT_Q_N);
     return 0;
 }
 

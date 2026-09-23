@@ -1,3 +1,10 @@
 RS-Q kf=0.022380/-19 out=3.608830/-128
 RS-NOR n2=5d079aec,1dc114f8 sf=6ff8c563,01000000 wc=f916d5f5,fe274a3c
 RS-SELF in=[-128 -100 -1 0 1 50 100 127] out=[-128 -100 -1 0 1 50 100 127]
+RS-F1 @init
+RS-F1 @getinfo
+RS-F1 @getin
+RS-F1 @filled
+RS-F1 @getout
+RS-F1 @newinf
+RS-F1 @run

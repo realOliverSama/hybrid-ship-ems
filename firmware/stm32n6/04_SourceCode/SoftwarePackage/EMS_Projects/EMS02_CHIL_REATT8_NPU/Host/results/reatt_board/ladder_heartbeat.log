@@ -1,0 +1,11 @@
+RS-Q kf=0.022380/-19 out=3.608830/-128
+RS-NOR n2=5d079aec,1dc114f8 sf=6ff8c563,01000000 wc=f916d5f5,fe274a3c
+RS-SELF in=[-128 -100 -1 0 1 50 100 127] out=[-128 -100 -1 0 1 50 100 127]
+RS-L1 @init
+RS-L1 @getinfo
+RS-L1 @getin
+RS-L1 @filled
+RS-L1 @getout
+RS-L1 @newinf
+RS-L1 @run
+RS-L1 poll=0 st=17

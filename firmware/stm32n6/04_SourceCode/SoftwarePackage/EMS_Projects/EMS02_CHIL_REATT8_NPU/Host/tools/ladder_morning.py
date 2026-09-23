@@ -103,8 +103,8 @@ def main() -> int:
     txt = "".join(ch if 32 <= ord(ch) < 127 or ch in "\r\n\t" else "."
                   for ch in raw.decode("latin1"))
     lines = [l.strip() for l in txt.splitlines() if l.strip()]
-    keys = ("RS-NOR", "RS-SELF", "RS-L1", "RS-L2", "RS-L3", "RS-L4", "RS-F1",
-            "RS-N1", "RS-N2", "RS-T", "FAIL")
+    keys = ("RS-NOR", "RS-SELF", "RS-S0", "RS-L1", "RS-L2", "RS-L3", "RS-L4",
+            "RS-F1", "RS-N1", "RS-N2", "RS-T", "FAIL")
     hits = [l for l in lines if any(k in l for k in keys)]
     print("---- 板上诊断 ----")
     for l in hits:
@@ -114,8 +114,24 @@ def main() -> int:
     verdicts = {}
     for l in hits:
         for tag in ("L1", "L2", "L3", "L4", "F1"):
-            if l.startswith(f"RS-{tag} "):
-                verdicts[tag] = ("PASS" if "PASS" in l.split() else "DIFF")
+            if l.startswith(f"RS-{tag} match=") or l.startswith(f"RS-{tag} TIMEOUT") \
+                    or l.startswith(f"RS-{tag} FAIL"):
+                verdicts[tag] = ("PASS" if " PASS" in l else
+                                 ("TIMEOUT" if "TIMEOUT" in l else "DIFF"))
+    # S0：原始 90 字节 vs golden（整图 ORT raw 量化到 NPU 输出网格）
+    for l in hits:
+        if l.startswith("RS-S0 raw="):
+            try:
+                got = np.array([int(x) for x in l.split("raw=")[1].rstrip(",").split(",")],
+                               dtype=int)
+                S, ZP = 3.608830451965332, -128
+                expb = np.clip(np.rint(z["full_out"].reshape(-1) / S) + ZP, -128, 127).astype(int)
+                m = int(np.sum(got[:90] == expb[:90]))
+                verdicts["S0"] = f"match={m}/90 " + ("PASS" if m >= 88 else "DIFF")
+                print(f"    S0 golden 前 6 码: {expb[:6].tolist()}  板上前 6 码: {got[:6].tolist()}")
+            except Exception as e:
+                verdicts["S0"] = f"解析失败 {e}"
+            break
     if any("out=[-128 -100 -1 0 1 50 100 127]" in l for l in hits):
         verdicts["SELF"] = "PASS"
     else:
@@ -123,7 +139,7 @@ def main() -> int:
     nor_ok = ("n2=5d079aec" in txt and "sf=6ff8c563" in txt
               and "wc=f916d5f5" in txt)
     verdicts["NOR"] = "PASS" if nor_ok else "FAIL"
-    for k in ("NOR", "SELF", "L1", "L2", "L3", "L4", "F1"):
+    for k in ("NOR", "SELF", "S0", "L1", "L2", "L3", "L4", "F1"):
         print(f"    {k:4s}: {verdicts.get(k, '（无输出）')}")
 
     print("---- 结论 ----")

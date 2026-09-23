@@ -256,39 +256,19 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
 
 void ems_diag_ladder_run(void)
 {
-    /* F1 整图 --Ono-clone-dma 消融（golden kf + h_past） */
+    /* S0：服务生命周期跑 reattn2n + golden 输入（最高价值判别，最先执行） */
     {
-        const float *ins[] = { dl_f1_in0, dl_f1_in1 };
-        const uint32_t ne[] = { (uint32_t)(sizeof(dl_f1_in0) / sizeof(float)),
-                                (uint32_t)(sizeof(dl_f1_in1) / sizeof(float)) };
-        (void)dl_run_stage_impl("F1", dl_ctx_dlf1, stai_dlf1_init, stai_dlf1_get_info,
-                                stai_dlf1_get_inputs, stai_dlf1_get_outputs,
-                                stai_ext_dlf1_get_nn_run_status,
-                                stai_dlf1_run, stai_ext_dlf1_run_continue,
-                                stai_ext_dlf1_new_inference,
-                                ins, ne, dl_f1_exp);
-    }
-    /* L1 kf → fut_proj+位置 */
-    {
-        const float *ins[] = { dl_l1_in0 };
-        const uint32_t ne[] = { (uint32_t)(sizeof(dl_l1_in0) / sizeof(float)) };
-        (void)dl_run_stage_impl("L1", dl_ctx_dl1, stai_dl1_init, stai_dl1_get_info,
-                                stai_dl1_get_inputs, stai_dl1_get_outputs,
-                                stai_ext_dl1_get_nn_run_status,
-                                stai_dl1_run, stai_ext_dl1_run_continue,
-                                stai_ext_dl1_new_inference,
-                                ins, ne, dl_l1_exp);
-    }
-    /* L2 单块 attention */
-    {
-        const float *ins[] = { dl_l2_in0 };
-        const uint32_t ne[] = { (uint32_t)(sizeof(dl_l2_in0) / sizeof(float)) };
-        (void)dl_run_stage_impl("L2", dl_ctx_dl2, stai_dl2_init, stai_dl2_get_info,
-                                stai_dl2_get_inputs, stai_dl2_get_outputs,
-                                stai_ext_dl2_get_nn_run_status,
-                                stai_dl2_run, stai_ext_dl2_run_continue,
-                                stai_ext_dl2_new_inference,
-                                ins, ne, dl_l2_exp);
+        extern int ems_reatt_n2_golden_probe(const float *, const float *, int8_t *);
+        extern const float dl_f1_in0[];   /* kf 归一化 f32 (180) */
+        extern const float dl_f1_in1[];   /* h_past f32 (96) */
+        int8_t raw[90];
+        if (ems_reatt_n2_golden_probe(dl_f1_in0, dl_f1_in1, raw) == 0) {
+            printf("RS-S0 raw=");
+            for (uint32_t e = 0u; e < 90u; e++) {
+                printf("%d,", (int)raw[e]);
+            }
+            printf("\r\n");
+        }
     }
     /* L3 h_past → Tile（头号嫌疑） */
     {
@@ -301,6 +281,19 @@ void ems_diag_ladder_run(void)
                                 stai_ext_dl3_new_inference,
                                 ins, ne, dl_l3_exp);
     }
+
+    /* L2 单块 attention */
+    {
+        const float *ins[] = { dl_l2_in0 };
+        const uint32_t ne[] = { (uint32_t)(sizeof(dl_l2_in0) / sizeof(float)) };
+        (void)dl_run_stage_impl("L2", dl_ctx_dl2, stai_dl2_init, stai_dl2_get_info,
+                                stai_dl2_get_inputs, stai_dl2_get_outputs,
+                                stai_ext_dl2_get_nn_run_status,
+                                stai_dl2_run, stai_ext_dl2_run_continue,
+                                stai_ext_dl2_new_inference,
+                                ins, ne, dl_l2_exp);
+    }
+
     /* L4 fusion+decoder（golden fut_seq + h_tile） */
     {
         const float *ins[] = { dl_l4_in0, dl_l4_in1 };
@@ -313,6 +306,32 @@ void ems_diag_ladder_run(void)
                                 stai_ext_dl4_new_inference,
                                 ins, ne, dl_l4_exp);
     }
+
+    /* L1 kf → fut_proj+位置 */
+    {
+        const float *ins[] = { dl_l1_in0 };
+        const uint32_t ne[] = { (uint32_t)(sizeof(dl_l1_in0) / sizeof(float)) };
+        (void)dl_run_stage_impl("L1", dl_ctx_dl1, stai_dl1_init, stai_dl1_get_info,
+                                stai_dl1_get_inputs, stai_dl1_get_outputs,
+                                stai_ext_dl1_get_nn_run_status,
+                                stai_dl1_run, stai_ext_dl1_run_continue,
+                                stai_ext_dl1_new_inference,
+                                ins, ne, dl_l1_exp);
+    }
+
+    /* F1 整图 --Ono-clone-dma 消融（golden kf + h_past） */
+    {
+        const float *ins[] = { dl_f1_in0, dl_f1_in1 };
+        const uint32_t ne[] = { (uint32_t)(sizeof(dl_f1_in0) / sizeof(float)),
+                                (uint32_t)(sizeof(dl_f1_in1) / sizeof(float)) };
+        (void)dl_run_stage_impl("F1", dl_ctx_dlf1, stai_dlf1_init, stai_dlf1_get_info,
+                                stai_dlf1_get_inputs, stai_dlf1_get_outputs,
+                                stai_ext_dlf1_get_nn_run_status,
+                                stai_dlf1_run, stai_ext_dlf1_run_continue,
+                                stai_ext_dlf1_new_inference,
+                                ins, ne, dl_f1_exp);
+    }
+
 }
 
 #endif /* EMS_REATT_SERVICE */
