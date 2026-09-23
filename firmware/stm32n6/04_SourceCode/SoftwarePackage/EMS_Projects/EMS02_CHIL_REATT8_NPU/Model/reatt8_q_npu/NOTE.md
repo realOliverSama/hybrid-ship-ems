@@ -204,3 +204,36 @@ selftest 0x703E0000；workclf 0x70400000（未动）；dl1/dl2/dl4/dlfut/dlf1 �
 **判决树**：F1 PASS ⇒ clone_dma 即根因（服务 N2 重编译加选项即修）；首个 DIFF 级 =
 首个坏段 ⇒ 该段退 CPU 形态（dl2c/dl4c/dlfutc 已备），其余留 NPU；L1-L4 全 PASS 而
 F1 DIFF ⇒ 图结构无错，第二轮编译选项消融。
+
+---
+
+## 2026-09-23（终）— 阶梯判决闭合：S0（golden 输入 → 服务 reattn2n）0/90 逐字节一致 ⇒ REATT 图本身在 NPU 上算错；切子图（dl3 全 f32、仅 Tile）stall 于 run_continue ⇒ 分区验证路线被堵死
+
+**晨间第二轮（官方绑定流修复后）全部结果**：
+
+| 实验 | 结果 | 含义 |
+|---|---|---|
+| RS-SELF | 输出=输入 逐字节 ✓ | NPU 执行链路正常 |
+| workclf | 40/40 ✓ | 同上（简单 Dense 图） |
+| **RS-S0**（golden 输入 → 服务 reattn2n，服务生命周期） | **0/90 逐字节一致**（m 通道恒 −128 单值 vs golden 7 个唯一值） | **REATT 图自身在 NPU 上算错**，与 N1 的 h_past 无关（输入毒化假设排除） |
+| L3（h_past→Tile，全 f32、无权重、无 MatMul） | **stall 于 run_continue**（@run 后无输出，挂死） | **切子图根本不执行** ⇒"已验证分区"策略不可实现 |
+| L1/L2/L4/F1 | 同样 stall（被 L3 挡住未到，前轮亦 stall） | 同上 |
+
+**三级最终定性**：
+1. NPU 正常（自检图/workclf）；
+2. REATT 整图 NPU（reattn2n）：可启动（175 ms）、可 DONE，但**计算结果错误**（golden 输入下 0/90）；
+3. REATT 切子图：**无法执行**（run_continue 内部停滞）。
+
+⇒ **REATT-on-NPU 于 ST Edge AI 4.0.1 = NO-GO（证据链闭合）**。与简单图（workclf/selftest）
+可执行形成对照：失败特定于 REATT 级图的规模/结构（多 epoch/attention/Tile 组合），
+而非 NPU 集成或量化口径。分区计算（把已验证正确的段放 NPU）在"切子图不执行"面前
+不可实施。
+
+**可递交 ST 支持的取证包**：① S0 golden 输入 + 0/90 输出（部署口径）；② 切子图
+（dl3，全 f32 仅 Tile）run_continue 停滞复现步骤；③ workclf 同板 100% 对照；
+④ 整图与切图的 analyze/generate 报告与 OE ONNX。
+
+**交付结论**：最快可用形态 = **整图 CPU**（EMS02_CHIL_REATT8_CPU，0.8 s/窗，已验收）。
+后续可选：① N1 CPU 形态改从 TFLite 原生 int8 图编译（当前 ONNX-QDQ 图 967 ms/56.7M MACs
+显著慢于整图 800 ms/192.9M，存在数倍优化空间）；② 新版 STEdgeAI 重试本阶梯全套工具；
+③ ST 支持取证包递交。
