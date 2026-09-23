@@ -103,7 +103,10 @@ RSP  [seq u32][q 30×3 f32 kW（[q10,q50,q90]）][infer_us u32]      = 368 B
 | L0 | host int8 vs keras（64 参考窗，整图形态） | **PASS**（q50 MAE 23.5 kW ≤25 / corr 0.981 ≥0.98 / 有限 100%；`Host/results/reatt_board/quant_report.json`） |
 | L0′ | 拆分链 int8 vs keras（同 64 窗） | 报告性：q50 MAE 29.6 kW / corr 0.981（**超整图 int8 的 25 kW 门**，如实登记不放宽；归因见 §NPU 线） |
 | L1 | 板 vs host int8（64 向量） | **FAIL**：整图 NPU 形态 MAE 347.5 kW（`board_parity_report.json`）；拆分形态 MAE 288.1 kW（`board_parity_split_report.json`）——两形态同为"输出与输入无关"退化 |
-| L1b | workclf 简单图板上判别（200 向量） | **FAIL**：CMD_WC_TEST 全 NACK ERR_INFER（`wc_test_report.json`）→ 共享 NPU 集成可疑，非图复杂度 |
+| L1b | workclf 简单图板上判别（200 向量） | ~~FAIL~~ → 生命周期修复后 **40/40 = 100%**（归一化口径）⇒ NPU 通路正常 |
+| L1c | S0 判别（golden 输入 → 服务 reattn2n，服务生命周期） | **0/90 逐字节一致失败**（m 恒 −128 单值 vs golden 7 唯一值）⇒ **REATT 图自身在 NPU 上算错**，与输入无关 |
+| L1d | 切子图（dl1..dl4/dlf1，含全 f32 仅 Tile 的 dl3） | **全部 stall 于 run_continue**（不报错、不 DONE）⇒ 切子图不可执行，分区验证策略不可实施 |
+| 终局 | **REATT-on-NPU NO-GO（ST Edge AI 4.0.1）** | 证据链闭合（NOTE.md 终章 + `NPU_ISSUE_HANDOFF_PROMPT.md` 移交提示词）；交付形态 = 整图 CPU（`../EMS02_CHIL_REATT8_CPU/`） |
 | L2 | 板 vs keras fp32 | 同 L1（报告性，退化） |
 | L3 | soft-HIL 闭环 6 航次（C2-board vs 冻结 C2-host 配对） | 不执行（无可用 NPU 形态；CPU 形态为验收交付形态，见 `../EMS02_CHIL_REATT8_CPU/`） |
 | 时延 | CMD_REATT infer_us + 往返 | 拆分形态：N1 CPU ≈944 ms + N2 NPU ≈175 ms（RS-T 诊断行）；infer_us 统计受 DWT 计数回绕污染，待修 |

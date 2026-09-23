@@ -287,6 +287,16 @@ if(EMS_FW_MODE STREQUAL "NPU")
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},OFF>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},OFF>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"
         )
+        # phase4-g CPU 时延优化（2026-09-23）：reatt8 CPU 形态的 Lite 内核执行体
+        # forward_lite_* 定义在生成代码 TU 内（非预编译库），Release 默认优化档
+        # 之下内核热点不受益——对模型 TU + 服务 TU 单独提 -O3（实测待板上复测；
+        # 依据：56.7M MACs 的 N1(ONNX-QDQ 图) 967ms vs 192.9M MACs 的整图
+        # (TFLite 原生图) 800ms，内核执行效率是主要自由度）。
+        set_source_files_properties(
+            "${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8.c"
+            "${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c"
+            "${EMS01_APP_DIR}/ems_reatt.c"
+            PROPERTIES COMPILE_OPTIONS "-O3")
         target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
             $<$<CONFIG:Release>:EMS_REATT_SERVICE=1>
             $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_NPU},ON>>:EMS_REATT_NPU=1>

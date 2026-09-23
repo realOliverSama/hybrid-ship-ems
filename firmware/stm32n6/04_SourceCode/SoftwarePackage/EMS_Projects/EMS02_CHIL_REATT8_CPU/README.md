@@ -87,6 +87,15 @@ RSP  [seq u32][q 30×3 f32 kW（[q10,q50,q90]）][infer_us u32]      = 368 B
 | L3 | soft-HIL 闭环 6 航次（C2-board vs 冻结 C2-host 配对） | 待板 |
 | 时延 | CMD_REATT infer_us + 往返 | 待板 |
 
+## 时延优化（phase4-g，2026-09-23）
+
+- REATT 模型 TU（reatt8.c/reatt8_data.c，Lite 内核执行体 forward_lite_* 所在）与服务
+  TU 在 Release 下定向 `-O3`（CMake `set_source_files_properties`）——依据：56.7M MACs
+  的 ONNX-QDQ 图 967ms vs 192.9M MACs 的 TFLite 原生图 800ms，内核执行效率是主要
+  自由度；板上复测待下轮验证。
+- 编译源原则（实测教训）：CPU 形态必须用 **TFLite 原生 int8 图**（现状 ✓）——ONNX-QDQ
+  图逐算子显式 requantize，Lite 内核执行效率显著更低。
+
 ## 构建 / 门禁入口
 
 ```text
