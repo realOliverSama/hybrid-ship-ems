@@ -53,6 +53,7 @@ STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dlf1, STAI_DLF1_CONTEXT_SIZE)
 typedef stai_return_code (*dl_fn_simple)(stai_network *);
 typedef stai_return_code (*dl_fn_info)(stai_network *, stai_network_info *);
 typedef stai_return_code (*dl_fn_io)(stai_network *, const stai_ptr *, stai_size);
+typedef stai_return_code (*dl_fn_getio)(stai_network *, stai_ptr *, stai_size *);
 typedef stai_return_code (*dl_fn_run)(stai_network *, const stai_run_mode);
 
 static int8_t dl_i8_in[DL_MAX_INS][DL_MAX_ELEMS];
@@ -87,7 +88,8 @@ static int dl_wait_done(stai_network *ctx, stai_return_code rc,
 
 static int dl_run_stage_impl(const char *tag, stai_network *ctx,
                              dl_fn_simple init, dl_fn_info get_info,
-                             dl_fn_io set_inputs, dl_fn_io set_outputs,
+                             dl_fn_getio get_inputs, dl_fn_getio get_outputs,
+                             dl_fn_simple get_status,
                              dl_fn_run run, dl_fn_simple cont,
                              dl_fn_simple new_inf,
                              const float * const *ins, const uint32_t *in_elems,
@@ -95,8 +97,9 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
 {
     stai_network_info info;
     stai_ptr in_ptrs[DL_MAX_INS], out_ptrs[1];
+    stai_size n_in = 0u, n_out = 0u;
     stai_return_code rc;
-    uint32_t n_in;
+
     float tol, maxd = 0.0f, out_scale = 1.0f;
     int32_t out_zp = 0;
     uint32_t out_elems, match = 0;
@@ -113,6 +116,14 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
         return 1;
     }
     n_in = info.n_inputs;
+    /* 官方流（hello_world/main_stai.c）：get_inputs/get_outputs 取运行时
+     * **自分配**缓冲指针，应用直接写入/读取——不调 set_inputs/set_outputs
+     * （对含非用户分配缓冲的图，set_inputs 会以 INVALID_IN_PTR 拒绝外部指针）。 */
+    rc = get_inputs(ctx, in_ptrs, &n_in);
+    if (rc != STAI_SUCCESS || n_in != info.n_inputs) {
+        printf("RS-%s FAIL getin rc=%d\r\n", tag, (int)rc);
+        return 1;
+    }
     for (stai_size i = 0u; i < n_in; i++) {
         const stai_tensor *t = &info.inputs[i];
         int is_f32 = (t->format == STAI_FORMAT_FLOAT32);
@@ -131,21 +142,17 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
             return 1;
         }
         if (is_f32) {
-            memcpy(dl_f32_in[i], ins[j], elems * sizeof(float));
-            in_ptrs[i] = (stai_ptr)dl_f32_in[i];
+            memcpy((void *)in_ptrs[i], ins[j], elems * sizeof(float));
         } else {
             float s = (t->scale.size == 1u) ? t->scale.data[0] : 1.0f;
             int32_t zp = (t->zeropoint.size == 1u) ? (int32_t)t->zeropoint.data[0] : 0;
+            int8_t *q8 = (int8_t *)in_ptrs[i];
             for (uint32_t e = 0u; e < elems; e++) {
-                dl_i8_in[i][e] = dl_quant(ins[j][e], s, zp);
+                q8[e] = dl_quant(ins[j][e], s, zp);
             }
-            in_ptrs[i] = (stai_ptr)dl_i8_in[i];
         }
-    }
-    rc = set_inputs(ctx, in_ptrs, n_in);
-    if (rc != STAI_SUCCESS) {
-        printf("RS-%s FAIL setin rc=%d\r\n", tag, (int)rc);
-        return 1;
+        SCB_CleanDCache_by_Addr((uint32_t *)in_ptrs[i],
+                                (int32_t)(is_f32 ? elems * 4u : elems));
     }
     /* 输出契约：f32 → 元素数 = bytes/4；S8 → 元素数 = bytes，反量化后比对 */
     rc = get_info(ctx, &info);
@@ -154,8 +161,7 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
         out_is_f32 = 1;
         out_elems = (uint32_t)(info.outputs[0].size_bytes / 4u);
         /* f32 输出用相对容差：板上输入经 S8 量化（≤0.5 LSB）传播的偏差可到
-         * 百分之几量级；结构化坏段（常数输出/通道错位）偏差为 100%+ 量级，
-         * 5% 阈值足以区分，maxd 一并打印供人工复核 */
+         * 百分之几量级；结构化坏段（常数输出/通道错位）偏差为 100%+ 量级 */
         float mabs = 0.0f;
         for (uint32_t e = 0u; e < out_elems && e < DL_MAX_ELEMS; e++) {
             float a = exp[e] < 0.0f ? -exp[e] : exp[e];
@@ -173,35 +179,54 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
                  ? (int32_t)info.outputs[0].zeropoint.data[0] : 0;
         tol = 2.0f * out_scale;
     }
-    SCB_CleanDCache_by_Addr((uint32_t *)dl_f32_in, (int32_t)sizeof(dl_f32_in));
-    SCB_CleanDCache_by_Addr((uint32_t *)dl_i8_in, (int32_t)sizeof(dl_i8_in));
-    SCB_InvalidateDCache_by_Addr(dl_out_raw, (int32_t)sizeof(dl_out_raw));
-    out_ptrs[0] = (stai_ptr)dl_out_raw;
-    rc = set_outputs(ctx, out_ptrs, info.n_outputs);
+    rc = get_outputs(ctx, out_ptrs, &n_out);
     if (rc != STAI_SUCCESS) {
-        printf("RS-%s FAIL setout rc=%d\r\n", tag, (int)rc);
+        printf("RS-%s FAIL getout rc=%d\r\n", tag, (int)rc);
         return 1;
     }
+    SCB_InvalidateDCache_by_Addr((uint32_t *)out_ptrs[0],
+                                 (int32_t)info.outputs[0].size_bytes);
     rc = new_inf(ctx);
     if (rc != STAI_SUCCESS && rc != STAI_ERROR_NETWORK_STILL_RUNNING) {
         printf("RS-%s FAIL newinf rc=%d\r\n", tag, (int)rc);
         return 1;
     }
     rc = run(ctx, STAI_MODE_ASYNC);
-    if (dl_wait_done(ctx, rc, cont) != 0) {
-        printf("RS-%s FAIL run rc=%d\r\n", tag, (int)rc);
-        return 1;
+    /* 官方等待：RUNNING_* → wfe/run_continue，轮询 get_nn_run_status 至 DONE */
+    {
+        stai_return_code st = rc;
+        uint32_t guard = 0u;
+        while (st != STAI_DONE) {
+            if ((uint32_t)st >= (uint32_t)STAI_ERROR_GENERIC) {
+                printf("RS-%s FAIL run rc=%d\r\n", tag, (int)st);
+                return 1;
+            }
+            if (st == STAI_RUNNING_WFE) {
+                stai_ext_wfe();
+            }
+            if (st == STAI_RUNNING_WFE || st == STAI_RUNNING_NO_WFE) {
+                (void)cont(ctx);
+            }
+            st = get_status(ctx);
+            if (++guard > 100000000u) {
+                printf("RS-%s FAIL run timeout\r\n", tag);
+                return 1;
+            }
+        }
     }
-    SCB_InvalidateDCache_by_Addr(dl_out_raw, (int32_t)sizeof(dl_out_raw));
+    SCB_InvalidateDCache_by_Addr((uint32_t *)out_ptrs[0],
+                                 (int32_t)info.outputs[0].size_bytes);
     if (out_elems > DL_MAX_ELEMS) {
         out_elems = DL_MAX_ELEMS;
     }
+    {
+        const uint8_t *ob = (const uint8_t *)out_ptrs[0];
     for (uint32_t e = 0u; e < out_elems; e++) {
         float v;
         if (out_is_f32) {
-            memcpy(&v, &dl_out_raw[e * 4u], 4u);   /* little-endian f32 直读 */
+            memcpy(&v, &ob[e * 4u], 4u);   /* little-endian f32 直读 */
         } else {
-            v = ((float)((int8_t)dl_out_raw[e]) - (float)out_zp) * out_scale;
+            v = ((float)((int8_t)ob[e]) - (float)out_zp) * out_scale;
         }
         float d = fabsf(v - exp[e]);
         if (d > maxd) {
@@ -210,6 +235,7 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
         if (d <= tol) {
             match++;
         }
+    }
     }
     printf("RS-%s match=%u/%u maxd=%.4g tol=%.4g %s\r\n", tag,
            (unsigned)match, (unsigned)out_elems,
@@ -224,7 +250,8 @@ void ems_diag_ladder_run(void)
         const float *ins[] = { dl_l1_in0 };
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l1_in0) / sizeof(float)) };
         (void)dl_run_stage_impl("L1", dl_ctx_dl1, stai_dl1_init, stai_dl1_get_info,
-                                stai_dl1_set_inputs, stai_dl1_set_outputs,
+                                stai_dl1_get_inputs, stai_dl1_get_outputs,
+                                stai_ext_dl1_get_nn_run_status,
                                 stai_dl1_run, stai_ext_dl1_run_continue,
                                 stai_ext_dl1_new_inference,
                                 ins, ne, dl_l1_exp);
@@ -234,7 +261,8 @@ void ems_diag_ladder_run(void)
         const float *ins[] = { dl_l2_in0 };
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l2_in0) / sizeof(float)) };
         (void)dl_run_stage_impl("L2", dl_ctx_dl2, stai_dl2_init, stai_dl2_get_info,
-                                stai_dl2_set_inputs, stai_dl2_set_outputs,
+                                stai_dl2_get_inputs, stai_dl2_get_outputs,
+                                stai_ext_dl2_get_nn_run_status,
                                 stai_dl2_run, stai_ext_dl2_run_continue,
                                 stai_ext_dl2_new_inference,
                                 ins, ne, dl_l2_exp);
@@ -244,7 +272,8 @@ void ems_diag_ladder_run(void)
         const float *ins[] = { dl_l3_in0 };
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l3_in0) / sizeof(float)) };
         (void)dl_run_stage_impl("L3", dl_ctx_dl3, stai_dl3_init, stai_dl3_get_info,
-                                stai_dl3_set_inputs, stai_dl3_set_outputs,
+                                stai_dl3_get_inputs, stai_dl3_get_outputs,
+                                stai_ext_dl3_get_nn_run_status,
                                 stai_dl3_run, stai_ext_dl3_run_continue,
                                 stai_ext_dl3_new_inference,
                                 ins, ne, dl_l3_exp);
@@ -255,7 +284,8 @@ void ems_diag_ladder_run(void)
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l4_in0) / sizeof(float)),
                                 (uint32_t)(sizeof(dl_l4_in1) / sizeof(float)) };
         (void)dl_run_stage_impl("L4", dl_ctx_dl4, stai_dl4_init, stai_dl4_get_info,
-                                stai_dl4_set_inputs, stai_dl4_set_outputs,
+                                stai_dl4_get_inputs, stai_dl4_get_outputs,
+                                stai_ext_dl4_get_nn_run_status,
                                 stai_dl4_run, stai_ext_dl4_run_continue,
                                 stai_ext_dl4_new_inference,
                                 ins, ne, dl_l4_exp);
@@ -266,7 +296,8 @@ void ems_diag_ladder_run(void)
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_f1_in0) / sizeof(float)),
                                 (uint32_t)(sizeof(dl_f1_in1) / sizeof(float)) };
         (void)dl_run_stage_impl("F1", dl_ctx_dlf1, stai_dlf1_init, stai_dlf1_get_info,
-                                stai_dlf1_set_inputs, stai_dlf1_set_outputs,
+                                stai_dlf1_get_inputs, stai_dlf1_get_outputs,
+                                stai_ext_dlf1_get_nn_run_status,
                                 stai_dlf1_run, stai_ext_dlf1_run_continue,
                                 stai_ext_dlf1_new_inference,
                                 ins, ne, dl_f1_exp);

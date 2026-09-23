@@ -88,7 +88,7 @@ static uint32_t rs_nor_sum(const volatile uint8_t *p, uint32_t n)
 
 static void rs_nor_probe(void)
 {
-    const volatile uint8_t *n2 = (const volatile uint8_t *)0x70300000u; /* N2 权重 */
+    const volatile uint8_t *n2 = (const volatile uint8_t *)0x70A00000u; /* N2 权重（池已迁 0x70A00000） */
     const volatile uint8_t *sf = (const volatile uint8_t *)0x703E0000u; /* 自检图权重 */
     const volatile uint8_t *wc = (const volatile uint8_t *)0x70400000u; /* workclf 权重 */
     printf("RS-NOR n2=%08lx,%02x%02x%02x%02x sf=%08lx,%02x%02x%02x%02x wc=%08lx,%02x%02x%02x%02x\r\n",
