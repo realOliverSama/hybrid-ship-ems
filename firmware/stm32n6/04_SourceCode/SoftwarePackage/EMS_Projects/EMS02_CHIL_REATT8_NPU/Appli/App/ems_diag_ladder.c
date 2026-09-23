@@ -60,6 +60,8 @@ static int8_t dl_i8_in[DL_MAX_INS][DL_MAX_ELEMS];
 static float dl_f32_in[DL_MAX_INS][DL_MAX_ELEMS];
 static uint8_t dl_out_raw[DL_MAX_BYTES];
 
+#define DL_MARK(tag, step) printf("RS-%s @%s\r\n", tag, step)
+
 static int8_t dl_quant(float x, float s, int32_t zp)
 {
     int32_t q = (int32_t)lrintf(x / s) + zp;
@@ -107,10 +109,12 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
     uint32_t used[DL_MAX_INS] = { 0u, 0u };
 
     ems_stai_rt_init_once();
+    DL_MARK(tag, "init");
     if (init(ctx) != STAI_SUCCESS) {
         printf("RS-%s FAIL init\r\n", tag);
         return 1;
     }
+    DL_MARK(tag, "getinfo");
     if (get_info(ctx, &info) != STAI_SUCCESS || info.n_inputs > DL_MAX_INS) {
         printf("RS-%s FAIL info\r\n", tag);
         return 1;
@@ -119,6 +123,7 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
     /* 官方流（hello_world/main_stai.c）：get_inputs/get_outputs 取运行时
      * **自分配**缓冲指针，应用直接写入/读取——不调 set_inputs/set_outputs
      * （对含非用户分配缓冲的图，set_inputs 会以 INVALID_IN_PTR 拒绝外部指针）。 */
+    DL_MARK(tag, "getin");
     rc = get_inputs(ctx, in_ptrs, &n_in);
     if (rc != STAI_SUCCESS || n_in != info.n_inputs) {
         printf("RS-%s FAIL getin rc=%d\r\n", tag, (int)rc);
@@ -154,6 +159,7 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
         SCB_CleanDCache_by_Addr((uint32_t *)in_ptrs[i],
                                 (int32_t)(is_f32 ? elems * 4u : elems));
     }
+    DL_MARK(tag, "filled");
     /* 输出契约：f32 → 元素数 = bytes/4；S8 → 元素数 = bytes，反量化后比对 */
     rc = get_info(ctx, &info);
     (void)rc;
@@ -179,6 +185,7 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
                  ? (int32_t)info.outputs[0].zeropoint.data[0] : 0;
         tol = 2.0f * out_scale;
     }
+    DL_MARK(tag, "getout");
     rc = get_outputs(ctx, out_ptrs, &n_out);
     if (rc != STAI_SUCCESS) {
         printf("RS-%s FAIL getout rc=%d\r\n", tag, (int)rc);
@@ -186,11 +193,13 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
     }
     SCB_InvalidateDCache_by_Addr((uint32_t *)out_ptrs[0],
                                  (int32_t)info.outputs[0].size_bytes);
+    DL_MARK(tag, "newinf");
     rc = new_inf(ctx);
     if (rc != STAI_SUCCESS && rc != STAI_ERROR_NETWORK_STILL_RUNNING) {
         printf("RS-%s FAIL newinf rc=%d\r\n", tag, (int)rc);
         return 1;
     }
+    DL_MARK(tag, "run");
     rc = run(ctx, STAI_MODE_ASYNC);
     /* 官方等待：RUNNING_* → wfe/run_continue，轮询 get_nn_run_status 至 DONE */
     {
@@ -208,7 +217,10 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
                 (void)cont(ctx);
             }
             st = get_status(ctx);
-            if (++guard > 100000000u) {
+            if ((guard & 0xFFFFFFu) == 0u) {
+                printf("RS-%s poll=%lu st=%d\r\n", tag, (unsigned long)guard, (int)st);
+            }
+            if (++guard > 2000000000u) {
                 printf("RS-%s FAIL run timeout\r\n", tag);
                 return 1;
             }
