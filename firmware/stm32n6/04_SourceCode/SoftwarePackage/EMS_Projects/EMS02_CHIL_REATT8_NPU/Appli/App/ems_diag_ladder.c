@@ -201,29 +201,28 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
     }
     DL_MARK(tag, "run");
     rc = run(ctx, STAI_MODE_ASYNC);
-    /* 官方等待：RUNNING_* → wfe/run_continue，轮询 get_nn_run_status 至 DONE */
+    /* 判别式等待：**不调 stai_ext_wfe**（L1 实测第二次 wfe 永久睡死），改为
+     * run_continue + get_nn_run_status 忙轮询，DWT 5 秒超时——单级挂起不再
+     * 拖死整个板子，TIMEOUT 本身即该级执行停滞的判据。 */
     {
         stai_return_code st = rc;
+        uint32_t t0 = (uint32_t)DWT->CYCCNT;
+        uint32_t budget = (uint32_t)(SystemCoreClock * 5u);
         uint32_t guard = 0u;
         while (st != STAI_DONE) {
             if ((uint32_t)st >= (uint32_t)STAI_ERROR_GENERIC) {
                 printf("RS-%s FAIL run rc=%d\r\n", tag, (int)st);
                 return 1;
             }
-            if (st == STAI_RUNNING_WFE) {
-                stai_ext_wfe();
-            }
             if (st == STAI_RUNNING_WFE || st == STAI_RUNNING_NO_WFE) {
                 (void)cont(ctx);
             }
             st = get_status(ctx);
-            if ((guard & 0xFFFFFFu) == 0u) {
-                printf("RS-%s poll=%lu st=%d\r\n", tag, (unsigned long)guard, (int)st);
+            if ((uint32_t)(DWT->CYCCNT - t0) > budget) {
+                printf("RS-%s TIMEOUT st=%d\r\n", tag, (int)st);
+                return 3;
             }
-            if (++guard > 2000000000u) {
-                printf("RS-%s FAIL run timeout\r\n", tag);
-                return 1;
-            }
+            if (++guard == 0u) { /* wrap 无所谓 */ }
         }
     }
     SCB_InvalidateDCache_by_Addr((uint32_t *)out_ptrs[0],
@@ -257,6 +256,18 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
 
 void ems_diag_ladder_run(void)
 {
+    /* F1 整图 --Ono-clone-dma 消融（golden kf + h_past） */
+    {
+        const float *ins[] = { dl_f1_in0, dl_f1_in1 };
+        const uint32_t ne[] = { (uint32_t)(sizeof(dl_f1_in0) / sizeof(float)),
+                                (uint32_t)(sizeof(dl_f1_in1) / sizeof(float)) };
+        (void)dl_run_stage_impl("F1", dl_ctx_dlf1, stai_dlf1_init, stai_dlf1_get_info,
+                                stai_dlf1_get_inputs, stai_dlf1_get_outputs,
+                                stai_ext_dlf1_get_nn_run_status,
+                                stai_dlf1_run, stai_ext_dlf1_run_continue,
+                                stai_ext_dlf1_new_inference,
+                                ins, ne, dl_f1_exp);
+    }
     /* L1 kf → fut_proj+位置 */
     {
         const float *ins[] = { dl_l1_in0 };
@@ -301,18 +312,6 @@ void ems_diag_ladder_run(void)
                                 stai_dl4_run, stai_ext_dl4_run_continue,
                                 stai_ext_dl4_new_inference,
                                 ins, ne, dl_l4_exp);
-    }
-    /* F1 整图 --Ono-clone-dma 消融（golden kf + h_past） */
-    {
-        const float *ins[] = { dl_f1_in0, dl_f1_in1 };
-        const uint32_t ne[] = { (uint32_t)(sizeof(dl_f1_in0) / sizeof(float)),
-                                (uint32_t)(sizeof(dl_f1_in1) / sizeof(float)) };
-        (void)dl_run_stage_impl("F1", dl_ctx_dlf1, stai_dlf1_init, stai_dlf1_get_info,
-                                stai_dlf1_get_inputs, stai_dlf1_get_outputs,
-                                stai_ext_dlf1_get_nn_run_status,
-                                stai_dlf1_run, stai_ext_dlf1_run_continue,
-                                stai_ext_dlf1_new_inference,
-                                ins, ne, dl_f1_exp);
     }
 }
 
