@@ -1,0 +1,9 @@
+{
+    "Globals": {},
+    "Profiles": {
+        "nofloat": {
+            "memory_pool": "./my_mpools/service_n2_safe.mpool",
+            "options": "--all-buffers-info --no-hw-sw-parallelism --cache-maintenance --optimization 1 --Os"
+        }
+    }
+}

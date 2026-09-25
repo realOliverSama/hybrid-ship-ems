@@ -1,0 +1,42 @@
+{
+ "task": "T-607",
+ "spec": "ems01-chil-v3-closedloop (FR-606/FR-607/NFR-602/AC-603)",
+ "generated": "2026-09-02 13:54:53",
+ "scenario": "S20",
+ "image": "ref",
+ "mode": "board",
+ "backend": "ctypes",
+ "plantstep": {
+  "backend": "ctypes",
+  "dylib": "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/S20/libplantstep_S20.dylib",
+  "dylib_sha256": "9476428b840b3534800209b061272d727f050ca3e27e8f9b1b285f404f1dacc3",
+  "build_manifest": "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/plantstep/S20/build_manifest.json"
+ },
+ "ref_csv": "/Users/oliverlyu/Projects/hybrid-ship-ems/model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv",
+ "out_csv": "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS/Host/results/closedloop/S20/closedloop_S20_ref.csv",
+ "start_ic": {
+  "t": 0.0,
+  "P_load_kW": 100.0,
+  "SOC": 0.6,
+  "v_cmd_mps": 1.543,
+  "v_ship_mps": 0.0,
+  "accel_mps2": 0.0,
+  "x_ship_m": 0.0,
+  "fuel_total_kg": 0.0
+ },
+ "tick_time": {
+  "mean": 0.023422171024543765,
+  "p50": 0.02281829099956667,
+  "p95": 0.024614500005554873,
+  "max": 0.2262099590006983,
+  "unit": "s",
+  "n": 5521
+ },
+ "termination_reason": "tick_count_reached",
+ "events": [],
+ "status": "completed",
+ "rows": 5521,
+ "n_ticks_planned": 5521,
+ "rsp_timeout_ms": 500,
+ "error": ""
+}

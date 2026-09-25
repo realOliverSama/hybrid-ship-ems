@@ -1,0 +1,155 @@
+{
+    "version": "4.0",
+    "environment": {
+        "generated_model": {
+            "model_files": [
+                {
+                    "name": "dl3_OE_3_3_1.onnx",
+                    "signature": "0x9a777315caf00d193d8e47d7b314f465"
+                }
+            ],
+            "name": "network",
+            "generated_time": "2026-09-23T01:52:04+0800"
+        },
+        "tools": [
+            {
+                "name": "ST.EdgeAI.Core",
+                "version": "4.0.1-20581 7ed50de05",
+                "arguments": "generate --no-inputs-allocation --no-outputs-allocation --model dl3.onnx --target stm32n6 --st-neural-art default@user_neuralart.json --name dl3",
+                "environment": [],
+                "input_model": {
+                    "model_files": [
+                        {
+                            "name": "dl3.onnx",
+                            "signature": "0xbdfc9a084aaaac31534b797b61f8c8c2"
+                        }
+                    ],
+                    "name": "dl3",
+                    "type": "onnx",
+                    "size": 0,
+                    "n_params": 0
+                }
+            }
+        ],
+        "test_name": "",
+        "network_signature": "0x7888dd6da7d8b74a"
+    },
+    "model_info": {
+        "original_inputs": [
+            {
+                "name": "h_past_input",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    96
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "CH"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "CH"
+                ]
+            }
+        ],
+        "original_outputs": [
+            {
+                "name": "reatt_n2_1_h_tile_1_Tile0",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    30,
+                    96
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "H",
+                    "CH"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "H",
+                    "CH"
+                ]
+            }
+        ]
+    },
+    "tensors": {
+        "Input_0_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            },
+            "data_channel_position": "CHLAST",
+            "data_channel_batch": 1,
+            "user_allocated": true
+        },
+        "Reshape_1_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Slice_2_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        },
+        "Tile_3_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            },
+            "data_channel_position": "CHLAST",
+            "data_channel_batch": 1,
+            "user_allocated": true
+        }
+    },
+    "nodes": {
+        "Reshape_1": {
+            "names": [
+                "Unsqueeze__3800"
+            ]
+        },
+        "Slice_2": {
+            "names": [
+                "reatt_n2_1_h_tile_1_strided_slice0"
+            ]
+        },
+        "Tile_3": {
+            "names": [
+                "reatt_n2_1_h_tile_1_Tile0"
+            ]
+        }
+    }
+}

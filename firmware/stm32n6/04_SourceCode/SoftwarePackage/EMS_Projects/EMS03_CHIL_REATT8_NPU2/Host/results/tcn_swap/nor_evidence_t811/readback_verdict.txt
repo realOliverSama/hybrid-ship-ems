@@ -1,0 +1,5 @@
+T-811 readback verdict
+byte-map compare (165137 bytes): PASS
+tail beyond byte map: all 0xFF (erased state)
+TCN weights CRC32 = 0x47191C22
+vendor verify: PASS (STM32_Programmer_CLI -v)

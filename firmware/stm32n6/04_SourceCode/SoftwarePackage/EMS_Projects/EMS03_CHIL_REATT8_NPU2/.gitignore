@@ -1,0 +1,21 @@
+build
+mx.scratch
+!.settings
+
+# STEdgeAI 工具工作区缓存（analyze/generate 自产，不入库；生成码与权重 raw 已搬模型根目录）
+# 注：原继承自 EMS02 的版本此处注释与 `st_ai_ws/` 同行（缺换行）导致该行失效，2026-09-25 修复。
+st_ai_ws/
+st_ai_output/
+ws/
+
+# Python 缓存
+__pycache__/
+
+# 机器本地 agent 配置与 spec 符号链接（不入库；仓库根 .specs 已单独跟踪）
+.pi/
+.specs/
+
+# v3 codegen 被控对象产物（§13 codegen 永不入库；manifest 指纹与 dylib sha256 记录入库）
+Host/plantstep/**/*_rtw/
+Host/plantstep/**/*.dylib
+Host/plantstep/**/*.slxc

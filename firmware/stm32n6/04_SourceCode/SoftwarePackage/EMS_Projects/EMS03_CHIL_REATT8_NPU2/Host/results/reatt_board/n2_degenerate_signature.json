@@ -1,0 +1,141 @@
+{
+  "schema": "phase4g_reatt_split_n2_signature_v1",
+  "window": 5,
+  "reps": 6,
+  "distinct_triples": 2,
+  "all_leads_identical_within_call": false,
+  "observed_triples_history": [
+    [
+      -128,
+      -128,
+      14
+    ],
+    [
+      -128,
+      -128,
+      15
+    ],
+    [
+      -128,
+      -128,
+      14
+    ],
+    [
+      -128,
+      -128,
+      15
+    ],
+    [
+      -128,
+      -128,
+      15
+    ],
+    [
+      -128,
+      -128,
+      15
+    ]
+  ],
+  "cross_call_history": [
+    [
+      -128,
+      -28,
+      12
+    ],
+    [
+      -128,
+      -111,
+      -111
+    ],
+    [
+      -128,
+      -128,
+      14
+    ],
+    [
+      -128,
+      -128,
+      15
+    ]
+  ],
+  "host_reference_lead0_code": [
+    -109,
+    -103,
+    -99
+  ],
+  "verdict": "N2 输出 = 每次调用单一常数三元组（30 lead 全同）；跨调用漂移；与输入无关",
+  "rows": [
+    {
+      "rep": 0,
+      "lead0_code": [
+        -128,
+        -128,
+        14
+      ],
+      "uniq_m": 1,
+      "uniq_a": 1,
+      "uniq_b": 7,
+      "infer_us": 4288911646
+    },
+    {
+      "rep": 1,
+      "lead0_code": [
+        -128,
+        -128,
+        15
+      ],
+      "uniq_m": 1,
+      "uniq_a": 1,
+      "uniq_b": 8,
+      "infer_us": 1103863
+    },
+    {
+      "rep": 2,
+      "lead0_code": [
+        -128,
+        -128,
+        14
+      ],
+      "uniq_m": 1,
+      "uniq_a": 1,
+      "uniq_b": 8,
+      "infer_us": 1103161
+    },
+    {
+      "rep": 3,
+      "lead0_code": [
+        -128,
+        -128,
+        15
+      ],
+      "uniq_m": 1,
+      "uniq_a": 1,
+      "uniq_b": 8,
+      "infer_us": 1103165
+    },
+    {
+      "rep": 4,
+      "lead0_code": [
+        -128,
+        -128,
+        15
+      ],
+      "uniq_m": 1,
+      "uniq_a": 1,
+      "uniq_b": 7,
+      "infer_us": 1104096
+    },
+    {
+      "rep": 5,
+      "lead0_code": [
+        -128,
+        -128,
+        15
+      ],
+      "uniq_m": 1,
+      "uniq_a": 1,
+      "uniq_b": 8,
+      "infer_us": 1104550
+    }
+  ]
+}

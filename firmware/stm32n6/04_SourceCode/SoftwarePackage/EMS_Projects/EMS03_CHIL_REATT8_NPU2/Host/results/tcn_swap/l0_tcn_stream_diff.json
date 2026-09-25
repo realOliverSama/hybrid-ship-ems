@@ -1,0 +1,103 @@
+{
+  "task": "tcn64-swap-l0-stream-diff",
+  "spec": "ems01-chil-tcn64-swap",
+  "predictor": "tcnq",
+  "backend": "ems_infer_tcn.c closure 精确增量（依赖闭包，无跨拍状态；plain 流式 fast/cold 经 L0 数值实验否决后主 Agent 裁决方案）",
+  "batch_reference": "同文件 -DEMS_TCN_BATCH_REF 测试专用 T-804 batch 前向（位级基准；固件构建编译剔除）",
+  "bitexact_method": "驱动 %.17g 响应行逐字节相等（round-trip 无损 = IEEE754 double 位级等价；非容差）",
+  "bitexact": {
+    "val200": {
+      "n": 200,
+      "n_bitexact": 200,
+      "n_mismatch": 0,
+      "max_abs_dq50_kwh": 0.0,
+      "first_mismatch": -1,
+      "bitexact": true
+    },
+    "random32": {
+      "n": 32,
+      "n_bitexact": 32,
+      "n_mismatch": 0,
+      "max_abs_dq50_kwh": 0.0,
+      "first_mismatch": -1,
+      "bitexact": true
+    },
+    "S20": {
+      "n": 5521,
+      "n_bitexact": 5521,
+      "n_mismatch": 0,
+      "max_abs_dq50_kwh": 0.0,
+      "first_mismatch": -1,
+      "bitexact": true
+    },
+    "voyage002": {
+      "n": 4212,
+      "n_bitexact": 4212,
+      "n_mismatch": 0,
+      "max_abs_dq50_kwh": 0.0,
+      "first_mismatch": -1,
+      "bitexact": true
+    }
+  },
+  "gate_bitexact": true,
+  "vs_keras": {
+    "source": "test_tcnq_l0_diff（同会话，l0_tcn_diff.json 同源结果）",
+    "gate_abs_dq50_kwh": 0.266214,
+    "datasets": {
+      "val200": {
+        "n": 200,
+        "max_abs_dq10_kwh": 3.862886467231874e-05,
+        "max_abs_dq50_kwh": 3.0029587698265914e-05,
+        "max_abs_dq90_kwh": 2.1034998340496713e-05,
+        "mean_abs_dq50_kwh": 3.3252796784477568e-06,
+        "p99_abs_dq50_kwh": 2.2778460045245162e-05,
+        "worst_row": 40,
+        "gate_pass": true
+      },
+      "random32": {
+        "n": 32,
+        "max_abs_dq10_kwh": 2.7154851537147806e-05,
+        "max_abs_dq50_kwh": 4.504902432245217e-05,
+        "max_abs_dq90_kwh": 4.7286993464012994e-05,
+        "mean_abs_dq50_kwh": 9.673030582509209e-06,
+        "p99_abs_dq50_kwh": 3.7928081180496096e-05,
+        "worst_row": 6,
+        "gate_pass": true
+      },
+      "S20": {
+        "trace": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv",
+        "n_ticks": 5521,
+        "max_abs_dq10_kwh": 0.00010950568214695977,
+        "max_abs_dq50_kwh": 4.425106232375242e-05,
+        "max_abs_dq90_kwh": 0.00015627954718411274,
+        "mean_abs_dq50_kwh": 3.906832974036743e-06,
+        "p99_abs_dq50_kwh": 1.9339455400313504e-05,
+        "worst_tick": 5349,
+        "grid_consistency": 1.0,
+        "n_grid_cmp": 5521,
+        "n_grid_mismatch": 0,
+        "fallback_ticks": 0,
+        "illegal_pgen": 0,
+        "gate_pass": true
+      },
+      "voyage002": {
+        "trace": "model/simulink_modelD_(EMS_NN_AECMS)/results/ecms_phase25/fw_reference/ref_G2_test_voyage_002_v2.csv",
+        "n_ticks": 4212,
+        "max_abs_dq10_kwh": 7.09089344255176e-05,
+        "max_abs_dq50_kwh": 3.738351025361908e-05,
+        "max_abs_dq90_kwh": 9.080595855692764e-05,
+        "mean_abs_dq50_kwh": 3.963419322306845e-06,
+        "p99_abs_dq50_kwh": 1.9574999518710023e-05,
+        "worst_tick": 2038,
+        "grid_consistency": 1.0,
+        "n_grid_cmp": 4212,
+        "n_grid_mismatch": 0,
+        "fallback_ticks": 0,
+        "illegal_pgen": 0,
+        "gate_pass": true
+      }
+    },
+    "overall": true
+  },
+  "overall": true
+}

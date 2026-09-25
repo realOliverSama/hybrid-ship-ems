@@ -1,0 +1,231 @@
+ST Edge AI Core v4.0.1-20581 7ed50de05
+PASS:   0%|          | 0/104 [00:00<?, ?it/s]PASS:  11%|█         | 11/104 [00:01<00:14,  6.62it/s]PASS:  16%|█▋        | 17/104 [00:01<00:08, 10.70it/s]PASS:  20%|██        | 21/104 [00:02<00:07, 10.87it/s]PASS:  23%|██▎       | 24/104 [00:02<00:06, 12.32it/s]PASS:  28%|██▊       | 29/104 [00:02<00:04, 16.78it/s]PASS:  32%|███▏      | 33/104 [00:02<00:03, 18.69it/s]PASS:  38%|███▊      | 39/104 [00:02<00:02, 24.86it/s]PASS:  43%|████▎     | 45/104 [00:02<00:01, 31.13it/s]PASS:  49%|████▉     | 51/104 [00:02<00:01, 36.60it/s]PASS:  55%|█████▍    | 57/104 [00:02<00:01, 40.86it/s]PASS:  63%|██████▎   | 66/104 [00:03<00:00, 49.74it/s]PASS:  69%|██████▉   | 72/104 [00:03<00:00, 51.40it/s]PASS:  78%|███████▊  | 81/104 [00:03<00:00, 58.78it/s]PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1000 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1620 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1130 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1660 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1220 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1700 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1350 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]                                                      WARNING: Transpose__1740 is not quantized
+PASS:  85%|████████▍ | 88/104 [00:03<00:00, 57.71it/s]PASS:  91%|█████████▏| 95/104 [00:04<00:00, 26.10it/s]                                                       >>>> EXECUTING NEURAL ART COMPILER
+PASS:  91%|█████████▏| 95/104 [00:04<00:00, 26.10it/s]                                                         /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/macarm/atonn -i "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_OE_3_3_1.onnx" --json-quant-file "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_OE_3_3_1_Q.json" -g "n1l4.c" --load-mdesc "/Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/stm32n6.mdesc" --load-mpool "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/mpool.mpool" --load-cdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/cortex-m55.cdesc --save-mpool-file "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_ws/neural_art__n1l4/mpool.mpool" --out-dir-prefix "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_ws/neural_art__n1l4/" --network-name "n1l4" --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file "c_info.json" --generate-stai
+PASS:  91%|█████████▏| 95/104 [00:04<00:00, 26.10it/s]                                                       <<<< DONE EXECUTING NEURAL ART COMPILER
+PASS:  91%|█████████▏| 95/104 [00:04<00:00, 26.10it/s]                                                       >>>> EXECUTING EPOCH_CONTROLLER POST_PROCESSING
+PASS:  91%|█████████▏| 95/104 [00:04<00:00, 26.10it/s]                                                       <<<< DONE EXECUTING EPOCH_CONTROLLER POST_PROCESSING
+PASS:  91%|█████████▏| 95/104 [00:07<00:00, 26.10it/s]                                                       
+ Exec/report summary (generate)
+ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ model file         :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/n1l4.onnx      
+ type               :   onnx                                                                                                                                                                              
+ c_name             :   n1l4                                                                                                                                                                              
+ compression        :   lossless                                                                                                                                                                          
+ options            :   use-lite-runtime, use-st-ai                                                                                                                                                       
+ optimization       :   balanced                                                                                                                                                                          
+ target/series      :   stm32n6npu                                                                                                                                                                        
+ workspace dir      :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_ws       
+ output dir         :   /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output   
+ model_fmt          :   sa/sa per tensor                                                                                                                                                                  
+ model_name         :   n1l4                                                                                                                                                                              
+ model_hash         :   0x3ebb5b77d7d74e29d4a457e1675878df                                                                                                                                                
+ params #           :   112,903 items (441.03 KiB)                                                                                                                                                        
+ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ input 1/1          :   'Input_20_out_0', f32(1x300x11), 12.89 KBytes, user                                                                                                                               
+ output 1/1         :   'Add_301_out_0', f32(1x300x96), 112.50 KBytes, user                                                                                                                               
+ macc               :   34,147,588                                                                                                                                                                        
+ weights (ro)       :   113,585 B (110.92 KiB) (1 segment) / -338,027(-74.8%) vs float model                                                                                                              
+ activations (rw)   :   403,200 B (393.75 KiB) (3 segments)                                                                                                                                               
+ ram (total)        :   531,600 B (519.14 KiB) = 403,200 + 13,200 + 115,200                                                                                                                               
+ ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PASS:  91%|█████████▏| 95/104 [00:07<00:00, 26.10it/s]PASS:  96%|█████████▌| 100/104 [00:07<00:00,  5.71it/s]                                                       
+Computing AI RT data/code size (target=stm32n6npu)..
+PASS:  96%|█████████▌| 100/104 [00:07<00:00,  5.71it/s]                                                       
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Compilation details
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                          ---------------------------------------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Compiler version: 1.1.3-275
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_OE_3_3_1.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_OE_3_3_1_Q.json -g n1l4.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/mpool.mpool --load-cdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/cortex-m55.cdesc --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_ws/neural_art__n1l4/mpool.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_ws/neural_art__n1l4/ --network-name n1l4 --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --output-info-file c_info.json --generate-stai
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       ====================================================================================
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Memory usage information
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                          ---------------------------------------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	npuRAM3    [0x34200000 - 0x3426FC00]:          0  B /    447.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	npuRAM4    [0x34270000 - 0x342DFC00]:          0  B /    447.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	npuRAM5    [0x342E0000 - 0x3434FC00]:          0  B /    447.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	npuRAM6    [0x34350000 - 0x343BFC00]:    393.750 kB /    447.000 kB  ( 88.09 % used) -- weights:          0  B (  0.00 % used)  activations:    393.750 kB ( 88.09 % used)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	octoFlash  [0x70C20000 - 0x70C40000]:    110.923 kB /    128.000 kB  ( 86.66 % used) -- weights:    110.923 kB ( 86.66 % used)  activations:          0  B (  0.00 % used)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Total:                                           504.673 kB                                  -- weights:    110.923 kB                  activations:    393.750 kB
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       ====================================================================================
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Memory to be allocated by the user: inputs (12.906 kB), outputs (112.500 kB)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	Input [0]:     12.906 kB
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	Output[0]:    112.500 kB
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       ====================================================================================
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Used memory ranges
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                          ---------------------------------------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	npuRAM6    [0x34350000 - 0x343BFC00]: 0x34350000-0x343B2700
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       	octoFlash  [0x70C20000 - 0x70C40000]: 0x70C20000-0x70C3BBC0
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       ====================================================================================
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Epochs details
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                          ---------------------------------------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       Total number of epochs                               163
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       >> pure software (SW) epochs                          60
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       >> hybrid epochs (using both software and hardware)   18
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       >> pure hardware (HW or EC) epochs                    85  (implemented in 30 epoch controller blobs/meta epochs)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       +----------------------+--------+--------------------------+
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch ID             |  Type  |         Details          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       +----------------------+--------+--------------------------+
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_1              |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs    3 -> 5     |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_6              | Hybrid |          Slice           |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs    7 -> 7     |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_8              | Hybrid |          Concat          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   10 -> 13    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_14             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_15             | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   16 -> 16    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_17             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_18             |   SW   | GlobalAveragePool(float) |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | <no executed epochs> |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_20             |   SW   |        Sub(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_21             |   SW   |        Mul(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_22             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_23             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_24             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   25 -> 25    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_26             | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   27 -> 27    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_28             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_29             |   SW   |       Sqrt(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_30             |   SW   |    Reciprocal(float)     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_31             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_32             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_33             |   SW   |           Mul            |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   34 -> 47    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_48             | Hybrid |       SpaceToDepth       |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   49 -> 50    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_51             | Hybrid |       DepthToSpace       |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   52 -> 54    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_55             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_56             | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   57 -> 57    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_58             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_59             |   SW   | GlobalAveragePool(float) |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | <no executed epochs> |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_61             |   SW   |        Sub(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_62             |   SW   |        Mul(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_63             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_64             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_65             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   66 -> 66    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_67             | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   68 -> 68    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_69             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_70             |   SW   |       Sqrt(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_71             |   SW   |    Reciprocal(float)     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_72             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_73             |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_74             |   SW   |           Mul            |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   75 -> 88    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_89             | Hybrid |       SpaceToDepth       |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   90 -> 91    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_92             | Hybrid |       DepthToSpace       |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   93 -> 95    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_96             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_97             | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs   98 -> 98    |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_99             |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_100            |   SW   | GlobalAveragePool(float) |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | <no executed epochs> |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_102            |   SW   |        Sub(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_103            |   SW   |        Mul(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_104            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_105            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_106            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  107 -> 107   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_108            | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  109 -> 109   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_110            |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_111            |   SW   |       Sqrt(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_112            |   SW   |    Reciprocal(float)     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_113            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_114            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_115            |   SW   |           Mul            |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  116 -> 125   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_126            |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  127 -> 130   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_131            | Hybrid |           Pad            |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_132            | Hybrid |       SpaceToDepth       |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  133 -> 134   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_135            | Hybrid |       DepthToSpace       |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_136            | Hybrid |           Pad            |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  137 -> 139   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_140            |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_141            | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  142 -> 142   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_143            |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_144            |   SW   | GlobalAveragePool(float) |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | <no executed epochs> |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_146            |   SW   |        Sub(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_147            |   SW   |        Mul(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_148            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_149            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_150            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  151 -> 151   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_152            | Hybrid |        Transpose         |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  153 -> 153   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_154            |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_155            |   SW   |       Sqrt(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_156            |   SW   |    Reciprocal(float)     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_157            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_158            |   SW   |      QuantizeLinear      |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_159            |   SW   |           Mul            |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epochs  160 -> 168   |   EC   |                          |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_169            |   SW   |     DequantizeLinear     |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       | epoch_170            |   SW   |        Add(float)        |
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       +----------------------+--------+--------------------------+
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       ====================================================================================
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        Requested memory size by section - "stm32n6npu" target
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ------------------------------- -------- --------- ------ ---------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        module                              text    rodata   data       bss
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ------------------------------- -------- --------- ------ ---------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        EC Blobs                              52    81,792      0         0
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        n1l4.o                             8,552    43,597      0         8
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        NetworkRuntime1201_CM55_GCC.a     21,388         0      0         0
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        stai_n1l4.o                            0         0      0         0
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        lib (toolchain)*                  12,404     2,262      0         0
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ll atonn runtime                  17,738    25,549    232     1,741
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ------------------------------- -------- --------- ------ ---------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        RT total**                        60,134   153,200    232     1,749
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ------------------------------- -------- --------- ------ ---------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        weights                                0   113,585      0         0
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        activations                            0         0      0   403,200
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        io                                     0         0      0   128,400
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ------------------------------- -------- --------- ------ ---------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        TOTAL                             60,134   266,785    232   533,349
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ------------------------------- -------- --------- ------ ---------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        *  toolchain objects (libm/libgcc*)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        ** RT AI runtime objects (kernels+infrastructure)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         Summary - "stm32n6npu" target
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         --------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                                      FLASH (ro)      %*   RAM (rw)      %
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         --------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         RT total        213,566   65.3%      1,981   0.4%
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         --------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         TOTAL           327,151            533,581
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         --------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                         *  rt/total
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        Generated files (9)
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_OE_3_3_1.onnx
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_OE_3_3_1_Q.json
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4.c
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_c_info.json
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/stai_n1l4.h
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/stai_n1l4.c
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_atonbuf.xSPI2.raw
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4.h
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                        /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_ecblobs.h
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]                                                       
+Creating txt report file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1l4/st_ai_output/n1l4_generate_report.txt
+PASS:  96%|█████████▌| 100/104 [00:08<00:00,  5.71it/s]PASS:  96%|█████████▌| 100/104 [00:19<00:00,  5.71it/s]PASS: 100%|██████████| 104/104 [00:25<00:00,  1.09s/it]                                                       elapsed time (GENERATE): 28.854s
