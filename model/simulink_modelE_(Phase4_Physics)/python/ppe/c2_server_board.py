@@ -1,8 +1,10 @@
 """C2 inference file-bridge server — BOARD backend (phase4-g soft-HIL).
 
 与冻结件 ppe/c2_server.py 同文件协议（req/resp .mat 目录轮询，fail-closed）；
-唯一差异 = 推理不在本进程（keras），而是转发到 EMS02_CHIL_REATT8_CPU 固件板的
-CMD_REATT 服务（int8 全 CPU 形态，原始域 hist/kf 上板、归一化在固件内）。
+唯一差异 = 推理不在本进程（keras），而是转发到固件板的 CMD_REATT 服务（原始域
+hist/kf 上板、归一化在固件内）：默认 EMS02_CHIL_REATT8_CPU（int8 全 CPU 形态）；
+EMS03（N1 段链 + N2 NPU，Flash-boot XIP）形态经 --fw-project/--fw-tag 指定
+（固件身份仅随 provenance 记录，协议不变）。
 
 - 科学变换（H1 聚合 / kf 快照取行）复用冻结件只读导入：
   ppe.c2_server.kf_row_for + ppe.h1_assembly.h1_from_raw_logs（零复制零改动）；
@@ -134,9 +136,9 @@ class BoardLink:
 class MockBoard:
     """host TFLite int8 板模拟器（联调用；产物必须标 MOCK）。"""
 
-    def __init__(self):
+    def __init__(self, tflite_path: str = FW_TFLITE):
         import tensorflow as tf  # noqa: 延迟导入（仅 mock 模式需要）
-        tfl = open(FW_TFLITE, "rb").read()
+        tfl = open(tflite_path, "rb").read()
         self.inter = tf.lite.Interpreter(model_content=tfl)
         self.inter.allocate_tensors()
         self.ind = self.inter.get_input_details()
@@ -193,11 +195,34 @@ def main(argv=None) -> int:
     ap.add_argument("--max-requests", type=int, default=0)
     ap.add_argument("--mock", action="store_true",
                     help="无板联调：host int8 模拟板（产物标 MOCK，非证据）")
+    ap.add_argument("--fw-project", default="",
+                    help="固件工程目录（缺省=内置 EMS02_CHIL_REATT8_CPU 常量；"
+                         "EMS03 给该工程路径，quant_report/tflite 缺失则留空继续）")
+    ap.add_argument("--fw-tag", default="",
+                    help="固件形态标签（自由文本，如 ems03_split_npu_flash_xip）")
+    ap.add_argument("--fw-hex-sha256", default="",
+                    help="烧录镜像 HEX 的 sha256（仅随 provenance 记录，不校验）")
     args = ap.parse_args(argv)
+
+    # 固件身份（provenance）：默认 EMS02 常量；--fw-project 给定时替换推导，
+    # 两个产物文件允许缺失（取不到留空继续，不阻断服务）。
+    fw_project = (os.path.normpath(args.fw_project) if args.fw_project
+                  else FW_PROJECT)
+    fw_quant_report = os.path.join(
+        fw_project, "Host", "results", "reatt_board", "quant_report.json")
+    fw_tflite = os.path.join(
+        fw_project, "Model", "reatt8_q", "reatt_raw_int8.tflite")
+    fw_prov = {}
+    if args.fw_project:
+        fw_prov["fw_project"] = os.path.basename(fw_project)
+    if args.fw_tag:
+        fw_prov["fw_tag"] = args.fw_tag
+    if args.fw_hex_sha256:
+        fw_prov["fw_hex_sha256"] = args.fw_hex_sha256
 
     os.makedirs(args.respdir, exist_ok=True)
     if args.mock:
-        board = MockBoard()
+        board = MockBoard(fw_tflite)
         normalizer = board_normalizer()
         backend = "mock_host_int8"
     else:
@@ -213,16 +238,25 @@ def main(argv=None) -> int:
         # 板交互完全延迟到首个请求（worker 内含 ping+重试，fail-closed 每请求）。
 
     tfl_sha = ""
-    if os.path.isfile(FW_QUANT_REPORT):
-        qr = json.load(open(FW_QUANT_REPORT))
-        tfl_sha = qr["provenance"]["tflite_int8_sha256"]
+    try:  # EMS03 形态下报告可能缺失/不完整：取不到留空继续
+        if os.path.isfile(fw_quant_report):
+            qr = json.load(open(fw_quant_report))
+            tfl_sha = qr["provenance"]["tflite_int8_sha256"]
+    except (OSError, ValueError, KeyError):
+        tfl_sha = ""
 
+    fw_note = ""
+    if fw_prov:
+        fw_note = (f" fw_project={fw_prov.get('fw_project', '')}"
+                   f" fw_tag={fw_prov.get('fw_tag', '')}"
+                   f" fw_hex_sha256={fw_prov.get('fw_hex_sha256', '')[:12]}")
     ledger.log_access(
         artifact="c2_server_board", purpose="QUALIFICATION",
         split_contact="none",
         note=f"phase4-g soft-HIL board backend start "
              f"reqdir={os.path.basename(args.reqdir)} "
-             f"backend={backend} tflite={tfl_sha[:12]}（非正式；purpose 枚举为"
+             f"backend={backend} tflite={tfl_sha[:12]}"
+             f"{fw_note}（非正式；purpose 枚举为"
              f"冻结件 ppe/ledger.py 封闭集，借 QUALIFICATION 槽位 + note 区分）")
 
     # 每 token 一份查询日志：artifacts/ppe_softhil/<token>/board_queries.jsonl
@@ -298,7 +332,8 @@ def main(argv=None) -> int:
                         np.ascontiguousarray(kf_raw, dtype="<f4").tobytes()
                     ).hexdigest(),
                 }
-                logf.write(json.dumps({
+                prov.update(fw_prov)  # EMS03 固件身份（缺省为空 → 输出不变）
+                rec = {
                     "voyage_id": vid, "t0": t0, "backend": backend,
                     "board_infer_us": int(us), "roundtrip_ms": round(dt_ms, 1),
                     "hist_raw_hex": np.ascontiguousarray(
@@ -306,7 +341,9 @@ def main(argv=None) -> int:
                     "kf_raw_hex": np.ascontiguousarray(
                         kf_raw, dtype="<f4").tobytes().hex(),
                     "q50": q50.tolist(),
-                }) + "\n")
+                }
+                rec.update(fw_prov)
+                logf.write(json.dumps(rec) + "\n")
                 logf.flush()
                 savemat(resp_path, {"Pbar_q50": q50.reshape(-1, 1),
                                     "provenance": prov})
@@ -318,7 +355,8 @@ def main(argv=None) -> int:
                 return 0
         time.sleep(args.poll_s)
     logf.close()
-    board.close()
+    if board is not None:  # 真板模式 board=None（交互延迟到 worker），防御 stop-file 退出
+        board.close()
     return 0
 
 
