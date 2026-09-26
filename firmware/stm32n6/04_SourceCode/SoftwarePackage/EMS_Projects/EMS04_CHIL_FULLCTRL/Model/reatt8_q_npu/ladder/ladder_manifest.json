@@ -1,0 +1,166 @@
+[
+  {
+    "stage": "l1",
+    "net": "dl1",
+    "n_in": 1,
+    "out_bytes": 15360,
+    "bounds": {
+      "Input_1_out_0": {
+        "params": [
+          [
+            0.022380275651812553
+          ],
+          [
+            -19
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      },
+      "Add_8_out_0": {
+        "params": [
+          null,
+          null
+        ],
+        "class": "float32",
+        "type": "FLOAT32"
+      }
+    }
+  },
+  {
+    "stage": "l2",
+    "net": "dl2",
+    "n_in": 1,
+    "out_bytes": 3840,
+    "bounds": {
+      "Input_5_out_0": {
+        "params": [
+          [
+            0.028821656480431557
+          ],
+          [
+            5
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      },
+      "Quantize_52_out_0": {
+        "params": [
+          [
+            0.16095532476902008
+          ],
+          [
+            -14
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      }
+    }
+  },
+  {
+    "stage": "l3",
+    "net": "dl3",
+    "n_in": 1,
+    "out_bytes": 11520,
+    "bounds": {
+      "Input_0_out_0": {
+        "params": [
+          null,
+          null
+        ],
+        "class": "float32",
+        "type": "FLOAT32"
+      },
+      "Tile_3_out_0": {
+        "params": [
+          null,
+          null
+        ],
+        "class": "float32",
+        "type": "FLOAT32"
+      }
+    }
+  },
+  {
+    "stage": "l4",
+    "net": "dl4f",
+    "n_in": 2,
+    "out_bytes": 360,
+    "bounds": {
+      "Input_11_out_0": {
+        "params": [
+          [
+            0.09916097670793533
+          ],
+          [
+            -100
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      },
+      "Input_13_out_0": {
+        "params": [
+          [
+            0.5137559175491333
+          ],
+          [
+            -9
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      },
+      "Add_96_out_0": {
+        "params": [
+          null,
+          null
+        ],
+        "class": "float32",
+        "type": "FLOAT32"
+      }
+    }
+  },
+  {
+    "stage": "f1",
+    "net": "dlf1",
+    "n_in": 2,
+    "out_bytes": 90,
+    "bounds": {
+      "Input_53_out_0": {
+        "params": [
+          null,
+          null
+        ],
+        "class": "float32",
+        "type": "FLOAT32"
+      },
+      "Input_59_out_0": {
+        "params": [
+          [
+            0.022380275651812553
+          ],
+          [
+            -19
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      },
+      "Quantize_768_out_0": {
+        "params": [
+          [
+            3.608830451965332
+          ],
+          [
+            -128
+          ]
+        ],
+        "class": "integer",
+        "type": "S8"
+      }
+    }
+  }
+]

@@ -1,0 +1,9 @@
+{
+    "Globals": {},
+    "Profiles": {
+        "safe": {
+            "memory_pool": "./my_mpools/ladder_dl1.mpool",
+            "options": "--all-buffers-info --no-hw-sw-parallelism --cache-maintenance --native-float --optimization 1 --Os"
+        }
+    }
+}

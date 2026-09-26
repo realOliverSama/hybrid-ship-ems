@@ -1,0 +1,10 @@
+{
+  "generator": "gen_ems04_tables.py",
+  "exported_dir": "experiments/softhil_ems03_2026-09-25/ems04_s1/exported",
+  "palette_n": 51,
+  "pg_elems": 597960,
+  "palette_bytes": 408,
+  "index_bytes": 597960,
+  "small_tables_bytes": 4704,
+  "bit_exact_gate": "pre-emit reconstruction check passed"
+}

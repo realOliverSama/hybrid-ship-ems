@@ -1,0 +1,42 @@
+{
+  "overall": true,
+  "project": "/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS01_CHIL_ECMS_TCN64",
+  "timestamp": "2026-09-02T18:00:08+00:00",
+  "checks": [
+    {
+      "check": "debug_build",
+      "pass": true,
+      "detail": "exit=0; Verified Debug ELF address: 0x34000400 / Build type: Debug"
+    },
+    {
+      "check": "release_build",
+      "pass": true,
+      "detail": "exit=0; Verified Release HEX address: 0x70100400 / Build type: Release"
+    },
+    {
+      "check": "debug_layout",
+      "pass": true,
+      "detail": "EMS01_CHIL_ECMS_Appli.elf 11 个 ALLOC 段均在 [0x34000400,0x34200000) 内，.isr_vector=0x34000400"
+    },
+    {
+      "check": "release_layout",
+      "pass": true,
+      "detail": "EMS01_CHIL_ECMS_Appli.elf 11 个 ALLOC 段均在 [0x70100400,0x72000000) ∪ [0x34000000,0x34200000) 内，.isr_vector=0x70100400"
+    },
+    {
+      "check": "ioc_unchanged",
+      "pass": true,
+      "detail": "FW_GATE_ALLOW_IOC=1，用户已授权 .ioc 修改"
+    },
+    {
+      "check": "no_forbidden_copy",
+      "pass": true,
+      "detail": "无 prepare 脚本 / BSP 副本"
+    },
+    {
+      "check": "warnings",
+      "pass": true,
+      "detail": "4 个警告（仅记录，未设上限）"
+    }
+  ]
+}

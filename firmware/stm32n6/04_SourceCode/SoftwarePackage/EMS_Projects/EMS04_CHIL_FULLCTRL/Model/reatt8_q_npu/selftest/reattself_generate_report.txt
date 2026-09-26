@@ -1,0 +1,116 @@
+ST Edge AI Core v4.0.1-20581 7ed50de05
+Created date          : 2026-09-23 01:06:30
+Parameters            : generate --no-inputs-allocation --no-outputs-allocation --model reatt_selftest_int8.onnx --target stm32n6 --st-neural-art default@user_neuralart_selftest.json --name reattself
+
+Model name - reatt_selftest_int8
+------ -------------------------------- ----------- ------------ ------ -------------- 
+m_id   layer (original)                 oshape      param/size     macc   connected to 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+0      x ()                             [b:1,c:8]                                      
+------ -------------------------------- ----------- ------------ ------ -------------- 
+1      x_q (QuantizeLinear)             [b:1,c:8]                    16              x 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+2      x_dq (DequantizeLinear)          [b:1,c:8]                    16            x_q 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+3      W1_dq_const (DequantizeLinear)   [b:8,c:8]   64/256                             
+------ -------------------------------- ----------- ------------ ------ -------------- 
+4      m1 (MatMul)                      [b:1,c:8]                    72           x_dq 
+                                                                           W1_dq_const 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+5      m1_q (QuantizeLinear)            [b:1,c:8]                    16             m1 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+6      m1_dq (DequantizeLinear)         [b:1,c:8]                    16           m1_q 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+7      W2_dq_const (DequantizeLinear)   [b:8,c:8]   64/256                             
+------ -------------------------------- ----------- ------------ ------ -------------- 
+8      m2 (MatMul)                      [b:1,c:8]                    72          m1_dq 
+                                                                           W2_dq_const 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+9      y_q (QuantizeLinear)             [b:1,c:8]                    16             m2 
+------ -------------------------------- ----------- ------------ ------ -------------- 
+model: macc=224 weights=512 activations=-- io=--
+
+
+
+
+
+Compilation details
+------------------------------------------------------------------------------------
+Compiler version: 1.1.3-275
+Compiler arguments:  -i /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/selftest/st_ai_output/reatt_selftest_int8_OE_3_3_1.onnx --json-quant-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/selftest/st_ai_output/reatt_selftest_int8_OE_3_3_1_Q.json -g reattself.c --load-mdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/stm32n6.mdesc --load-mpool /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/my_mpools/selftest_nor.mpool --load-cdesc /Users/oliverlyu/ST/STEdgeAI_4.0.1/4.0/Utilities/configs/cortex-m55.cdesc --save-mpool-file /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/selftest/st_ai_ws/neural_art__reattself/selftest_nor.mpool --out-dir-prefix /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS02_CHIL_REATT8_NPU/Model/reatt8_q_npu/selftest/st_ai_ws/neural_art__reattself/ --network-name reattself --enable-epoch-controller --all-buffers-info --no-hw-sw-parallelism --cache-maintenance --enable-virtual-mem-pools --native-float --optimization 3 --Os --Omax-ca-pipe 4 --Ocache-opt --expand-softmax --output-info-file c_info.json --generate-stai
+====================================================================================
+
+Memory usage information 
+------------------------------------------------------------------------------------
+	npuRAM3    [0x34200000 - 0x34270000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM4    [0x34270000 - 0x342E0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	npuRAM5    [0x342E0000 - 0x34350000]:        320  B /    448.000 kB  (  0.07 % used) -- weights:          0  B (  0.00 % used)  activations:        320  B (  0.07 % used)
+	npuRAM6    [0x34350000 - 0x343C0000]:          0  B /    448.000 kB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+	octoFlash  [0x703E0000 - 0x70420000]:        145  B /    256.000 kB  (  0.06 % used) -- weights:        145  B (  0.06 % used)  activations:          0  B (  0.00 % used)
+	hyperRAM   [0x90000000 - 0x91000000]:          0  B /     16.000 MB  (  0.00 % used) -- weights:          0  B (  0.00 % used)  activations:          0  B (  0.00 % used)
+---
+Total:                                               465  B                                  -- weights:        145  B                  activations:        320  B                   
+====================================================================================
+
+Memory to be allocated by the user: inputs (32  B), outputs (32  B)
+	Input [0]:         32  B
+	Output[0]:         32  B
+====================================================================================
+
+
+Used memory ranges
+------------------------------------------------------------------------------------
+	npuRAM5    [0x342E0000 - 0x34350000]: 0x342E0000-0x342E0140
+	octoFlash  [0x703E0000 - 0x70420000]: 0x703E0000-0x703E00A0
+====================================================================================
+
+Epochs details
+------------------------------------------------------------------------------------
+Total number of epochs                               5
+>> pure software (SW) epochs                         4
+>> hybrid epochs (using both software and hardware)  0
+>> pure hardware (HW or EC) epochs                   1  (implemented in 2 epoch controller blobs/meta epochs)
+---
++----------------------+------+------------------+
+| epoch ID             | Type |     Details      |
++----------------------+------+------------------+
+| epoch_1              |  SW  | DequantizeLinear |
+| epochs    2 -> 2     |  EC  |                  |
+| epoch_3              |  SW  | DequantizeLinear |
+| epoch_4              |  SW  |   Conv(float)    |
+| <no executed epochs> |  EC  |                  |
+| epoch_6              |  SW  |  QuantizeLinear  |
++----------------------+------+------------------+
+==================================================================================== 
+ Requested memory size by section - "stm32n6npu" target
+ ------------------------------- -------- -------- ------ ------- 
+ module                              text   rodata   data     bss 
+ ------------------------------- -------- -------- ------ ------- 
+ NetworkRuntime1201_CM55_GCC.a      4,496        0      0       0 
+ reattself.o                          720    1,903      0       8 
+ EC Blobs                               2      896      0     772 
+ stai_reattself.o                       0        0      0       0 
+ lib (toolchain)*                     988      624      0       0 
+ ll atonn runtime                   4,356    2,424      0      13 
+ ------------------------------- -------- -------- ------ ------- 
+ RT total**                        10,562    5,847      0     793 
+ ------------------------------- -------- -------- ------ ------- 
+ weights                                0      145      0       0 
+ activations                            0        0      0     320 
+ io                                     0        0      0      16 
+ ------------------------------- -------- -------- ------ ------- 
+ TOTAL                             10,562    5,992      0   1,129 
+ ------------------------------- -------- -------- ------ ------- 
+ *  toolchain objects (libm/libgcc*)
+ ** RT AI runtime objects (kernels+infrastructure)
+  
+  Summary - "stm32n6npu" target
+  ---------------------------------------------------
+               FLASH (ro)      %*   RAM (rw)       % 
+  ---------------------------------------------------
+  RT total         16,409   99.1%        793   70.2% 
+  ---------------------------------------------------
+  TOTAL            16,554              1,129         
+  ---------------------------------------------------
+  *  rt/total
+

@@ -1,0 +1,67 @@
+{
+  "task": "T-602",
+  "spec": "ems01-chil-v3-closedloop (FR-604/AC-601)",
+  "generated": "2026-09-02 11:49:29",
+  "matlab_version": "R2026a",
+  "scenario": "S20",
+  "plantstep_model": "model/HybridShip_ModelD_PlantStep.slx",
+  "ref_csv": "results/ecms_phase25/fw_reference/ref_G2_S20_composite_voyage_matrix.csv",
+  "thresholds": {
+    "SOC_max_abs": 1E-6,
+    "v_ship_max_abs": 1E-6,
+    "x_ship_max_abs": 1E-6,
+    "P_load_max_abs": 1E-6,
+    "fuel_rel": 1E-6,
+    "numerical_health": true
+  },
+  "metrics": {
+    "SOC_max_abs": 0,
+    "v_ship_max_abs": 0,
+    "x_ship_max_abs": 0,
+    "P_load_max_abs": 0,
+    "fuel_rel": 0,
+    "fuel_ref": 328.094641944243,
+    "fuel_sim": 328.094641944243,
+    "rows_cmp": 5521,
+    "numerical_health": true
+  },
+  "items": [
+    {
+      "metric": "SOC_max_abs",
+      "value": 0,
+      "threshold": 1E-6,
+      "pass": true
+    },
+    {
+      "metric": "v_ship_max_abs",
+      "value": 0,
+      "threshold": 1E-6,
+      "pass": true
+    },
+    {
+      "metric": "x_ship_max_abs",
+      "value": 0,
+      "threshold": 1E-6,
+      "pass": true
+    },
+    {
+      "metric": "P_load_max_abs",
+      "value": 0,
+      "threshold": 1E-6,
+      "pass": true
+    },
+    {
+      "metric": "fuel_rel",
+      "value": 0,
+      "threshold": 1E-6,
+      "pass": true
+    },
+    {
+      "metric": "numerical_health",
+      "value": true,
+      "threshold": true,
+      "pass": true
+    }
+  ],
+  "overall": true
+}

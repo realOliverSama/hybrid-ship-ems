@@ -1,0 +1,30 @@
+{
+  "schema": "ems04_tables_check_v1",
+  "c_source": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Appli/App/ems04_tables_gen.c",
+  "exported_dir": "experiments/softhil_ems03_2026-09-25/ems04_s1/exported",
+  "ems04_bsfc_lut": {
+    "elems": 376,
+    "bit_exact": true,
+    "n_bitdiff": 0
+  },
+  "ems04_soc_grid": {
+    "elems": 171,
+    "bit_exact": true,
+    "n_bitdiff": 0
+  },
+  "ems04_dlam_grid": {
+    "elems": 41,
+    "bit_exact": true,
+    "n_bitdiff": 0
+  },
+  "ems04_pg_palette_path": {
+    "pg_elems": 597960,
+    "palette_n": 51,
+    "palette_unique_bit_level": true,
+    "index_elems": 597960,
+    "bit_exact": true,
+    "n_bitdiff": 0,
+    "verdict": "palette[idx[i]] == policy_table_Pg.f64[i] for 597960/597960 elements"
+  },
+  "overall": true
+}

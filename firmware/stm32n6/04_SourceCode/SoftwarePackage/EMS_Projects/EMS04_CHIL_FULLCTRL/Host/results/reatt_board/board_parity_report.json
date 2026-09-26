@@ -1,0 +1,27 @@
+{
+  "schema": "phase4g_reatt_board_parity_v1",
+  "n": 64,
+  "baud": 115200,
+  "l1_board_vs_hostint8": {
+    "q50_mae_kW_mean": 347.4999910593033,
+    "q50_max_kW": 897.7959594726562,
+    "gate": {
+      "q50_mae_mean_max": 0.5,
+      "q50_max_max": 5.0
+    },
+    "pass": false
+  },
+  "l2_board_vs_keras_report": {
+    "q50_mae_kW_mean": 351.74176001548767,
+    "q50_max_kW": 897.7664794921875
+  },
+  "latency": {
+    "infer_us_mean": 134290489.734375,
+    "infer_us_p50": 296555.0,
+    "infer_us_max": 4288106005.0,
+    "rtt_ms_mean": 5026.430021971464,
+    "rtt_ms_max": 5037.783145904541
+  },
+  "finite_rate": 1.0,
+  "total_wall_s": 321.71501302719116
+}

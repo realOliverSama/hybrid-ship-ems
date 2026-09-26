@@ -1,0 +1,426 @@
+{
+    "version": "4.0",
+    "environment": {
+        "generated_model": {
+            "model_files": [
+                {
+                    "name": "n1g7_OE_3_3_1.onnx",
+                    "signature": "0x8b2caa7746862fb829a01cc19f4ed309"
+                }
+            ],
+            "name": "network",
+            "generated_time": "2026-09-25T01:51:13+0800"
+        },
+        "tools": [
+            {
+                "name": "ST.EdgeAI.Core",
+                "version": "4.0.1-20581 7ed50de05",
+                "arguments": "generate --no-inputs-allocation --no-outputs-allocation --model /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g7/n1g7.onnx --target stm32n6 --st-neural-art default@/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g7/user_neuralart.json --name n1g7 --output /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g7/st_ai_output --workspace /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g7/st_ai_ws",
+                "environment": [],
+                "input_model": {
+                    "model_files": [
+                        {
+                            "name": "n1g7.onnx",
+                            "signature": "0xe7b3b6577d9cf481f5d1876820bc3002"
+                        }
+                    ],
+                    "name": "n1g7",
+                    "type": "onnx",
+                    "size": 384,
+                    "n_params": 96
+                }
+            }
+        ],
+        "test_name": "",
+        "network_signature": "0xc0a4ad82f131370c"
+    },
+    "model_info": {
+        "original_inputs": [
+            {
+                "name": "reatt_n1_1_past_add5_1_Add0",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    300,
+                    96
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "H",
+                    "CH"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "H",
+                    "CH"
+                ]
+            }
+        ],
+        "original_outputs": [
+            {
+                "name": "past_pool",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    1,
+                    96
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "H",
+                    "CH"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "H",
+                    "CH"
+                ]
+            }
+        ]
+    },
+    "tensors": {
+        "Input_0_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.10051041841506958
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            },
+            "data_channel_position": "CHLAST",
+            "data_channel_batch": 1,
+            "user_allocated": true
+        },
+        "Dequantize_1_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.10051041841506958
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_2_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.10051041841506958
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_3_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.10051041841506958
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Reshape_4_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.10051041841506958
+                    ],
+                    [
+                        -96
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Gemm_5_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.4802679419517517
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Gemm_5_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.007381719537079334
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_6_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.4802679419517517
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_7_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.4802679419517517
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Reshape_8_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.4802679419517517
+                    ],
+                    [
+                        6
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Softmax_9_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003921568859368563
+                    ],
+                    [
+                        -128
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Reshape_10_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.003921568859368563
+                    ],
+                    [
+                        -128
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Mul_11_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.06137390807271004
+                    ],
+                    [
+                        -99
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_12_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.06137390807271004
+                    ],
+                    [
+                        -99
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_13_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.06137390807271004
+                    ],
+                    [
+                        -99
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "ReduceSum_14_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            },
+            "data_channel_position": "CHLAST",
+            "data_channel_batch": 1,
+            "user_allocated": true
+        },
+        "Reshape_15_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            }
+        }
+    },
+    "nodes": {
+        "Dequantize_1": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Quantize_2": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_3": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Reshape_4": {
+            "names": [
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot_Reshape0",
+                "reatt_n1_1_past_add5_1_Add0_DequantizeLinear_Output",
+                "reatt_n1_1_past_add5_1_Add0_QuantizeLinear_Output"
+            ]
+        },
+        "Gemm_5": {
+            "names": [
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot_MatMul0",
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot_Reshape0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot_Reshape0_QuantizeLinear_Output"
+            ]
+        },
+        "Quantize_6": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_7": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Reshape_8": {
+            "names": [
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot0",
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot_MatMul0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot_MatMul0_QuantizeLinear_Output"
+            ]
+        },
+        "Softmax_9": {
+            "names": [
+                "reatt_n1_1_past_pool_1_Softmax0",
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_dense_1_1_Tensordot0_QuantizeLinear_Output"
+            ]
+        },
+        "Reshape_10": {
+            "names": [
+                "reatt_n1_1_past_pool_1_transpose_10",
+                "reatt_n1_1_past_pool_1_Softmax0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_Softmax0_QuantizeLinear_Output"
+            ]
+        },
+        "Mul_11": {
+            "names": [
+                "reatt_n1_1_past_pool_1_mul0",
+                "reatt_n1_1_past_add5_1_Add0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_transpose_10_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_transpose_10_QuantizeLinear_Output",
+                "reatt_n1_1_past_add5_1_Add0_QuantizeLinear_Output"
+            ]
+        },
+        "Quantize_12": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_13": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "ReduceSum_14": {
+            "names": [
+                "past_pool",
+                "reatt_n1_1_past_pool_1_mul0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_mul0_QuantizeLinear_Output"
+            ]
+        },
+        "Reshape_15": {
+            "names": [
+                "past_pool",
+                "reatt_n1_1_past_pool_1_mul0_DequantizeLinear_Output",
+                "reatt_n1_1_past_pool_1_mul0_QuantizeLinear_Output"
+            ]
+        }
+    }
+}

@@ -1,0 +1,649 @@
+{
+    "version": "4.0",
+    "environment": {
+        "generated_model": {
+            "model_files": [
+                {
+                    "name": "n1g4_OE_3_3_1.onnx",
+                    "signature": "0xc42fe5a4263d36e49be20a2b747e6784"
+                }
+            ],
+            "name": "network",
+            "generated_time": "2026-09-25T01:50:09+0800"
+        },
+        "tools": [
+            {
+                "name": "ST.EdgeAI.Core",
+                "version": "4.0.1-20581 7ed50de05",
+                "arguments": "generate --no-inputs-allocation --no-outputs-allocation --model /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g4/n1g4.onnx --target stm32n6 --st-neural-art default@/Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g4/user_neuralart.json --name n1g4 --output /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g4/st_ai_output --workspace /Users/oliverlyu/Projects/hybrid-ship-ems/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS03_CHIL_REATT8_NPU2/Model/reatt8_q_npu/npu_n1/ladder/n1g4/st_ai_ws",
+                "environment": [],
+                "input_model": {
+                    "model_files": [
+                        {
+                            "name": "n1g4.onnx",
+                            "signature": "0xa8dbf4ce6619ee74d43634eb3c2ca2ba"
+                        }
+                    ],
+                    "name": "n1g4",
+                    "type": "onnx",
+                    "size": 110980,
+                    "n_params": 27745
+                }
+            }
+        ],
+        "test_name": "",
+        "network_signature": "0x51915be89178ed6e"
+    },
+    "model_info": {
+        "original_inputs": [
+            {
+                "name": "reatt_n1_1_past_add2_1_Add0",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    300,
+                    96
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "CH",
+                    "H"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "CH",
+                    "H"
+                ]
+            }
+        ],
+        "original_outputs": [
+            {
+                "name": "reatt_n1_1_past_dil3_1_BiasAdd0",
+                "data_format": {
+                    "type": "FLOAT",
+                    "size": 32,
+                    "scale": [],
+                    "zero": [],
+                    "quantizer": "NONE"
+                },
+                "shape": [
+                    1,
+                    96,
+                    300
+                ],
+                "shape_map": [
+                    "BATCH",
+                    "CH",
+                    "H"
+                ],
+                "c_shape_map": [
+                    "BATCH",
+                    "CH",
+                    "H"
+                ]
+            }
+        ]
+    },
+    "tensors": {
+        "Constant_0_out_0": {
+            "format": {
+                "params": [
+                    [
+                        1.0
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Constant_1_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0006219926872290671
+                    ],
+                    [
+                        -20
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Input_2_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0630774274468422
+                    ],
+                    [
+                        -84
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            },
+            "data_channel_position": "CHFIRST",
+            "data_channel_batch": 1,
+            "user_allocated": true
+        },
+        "Dequantize_3_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0630774274468422
+                    ],
+                    [
+                        -84
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Slice_4_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0630774274468422
+                    ],
+                    [
+                        -84
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Mul_5_out_0": {
+            "format": {
+                "params": [
+                    [
+                        1.0
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Mul_5_param1": {
+            "format": {
+                "params": [
+                    [
+                        1.0
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_6_out_0": {
+            "format": {
+                "params": [
+                    [
+                        1.0
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_7_out_0": {
+            "format": {
+                "params": [
+                    [
+                        1.0
+                    ],
+                    [
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Concat_8_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0630774274468422
+                    ],
+                    [
+                        -84
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Reshape_9_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0630774274468422
+                    ],
+                    [
+                        -84
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Transpose_10_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.0630774274468422
+                    ],
+                    [
+                        -84
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_11_weights": {
+            "format": {
+                "params": [
+                    [
+                        0.0018518605502322316,
+                        0.002551167970523238,
+                        0.001741161453537643,
+                        0.002004272071644664,
+                        0.0015978204319253564,
+                        0.002007102593779564,
+                        0.0013903399230912328,
+                        0.0012664494570344687,
+                        0.0016784219769760966,
+                        0.0019832432735711336,
+                        0.0023570421617478132,
+                        0.0025349275674670935,
+                        0.0017853755271062255,
+                        0.0019705535378307104,
+                        0.0014084776630625129,
+                        0.0025098526384681463,
+                        0.0026719290763139725,
+                        0.0014035232597962022,
+                        0.0025134356692433357,
+                        0.0016421101754531264,
+                        0.0022168902214616537,
+                        0.002023866167291999,
+                        0.001406084164045751,
+                        0.0017127961618825793,
+                        0.0017442437820136547,
+                        0.0014753362629562616,
+                        0.00218381080776453,
+                        0.0018235764000564814,
+                        0.001396463019773364,
+                        0.0017960135592147708,
+                        0.002331045689061284,
+                        0.0019087216351181269,
+                        0.0012059820583090186,
+                        0.0021649685222655535,
+                        0.0021526296623051167,
+                        0.0017076792428269982,
+                        0.0016736900433897972,
+                        0.0016282929573208094,
+                        0.00140588846988976,
+                        0.002084885025396943,
+                        0.0019897064194083214,
+                        0.0035931714810431004,
+                        0.001944763120263815,
+                        0.0018586565274745226,
+                        0.0024305270053446293,
+                        0.0018474629614502192,
+                        0.0021564944181591272,
+                        0.001620566239580512,
+                        0.0014612148515880108,
+                        0.002501114271581173,
+                        0.0019677712116390467,
+                        0.002350431866943836,
+                        0.0029013417661190033,
+                        0.0017578696133568883,
+                        0.002006243448704481,
+                        0.0020779562182724476,
+                        0.002213836880400777,
+                        0.002410578541457653,
+                        0.0015918833669275045,
+                        0.0019955281168222427,
+                        0.003263273509219289,
+                        0.0013450512196868658,
+                        0.0017868500435724854,
+                        0.0015476772096008062,
+                        0.0015069304499775171,
+                        0.0014330674894154072,
+                        0.00175135163590312,
+                        0.0015738570364192128,
+                        0.0013946779072284698,
+                        0.00167702860198915,
+                        0.001911297207698226,
+                        0.002910730428993702,
+                        0.0024890219792723656,
+                        0.001976900966838002,
+                        0.003109388053417206,
+                        0.0029275098349899054,
+                        0.0019413698464632034,
+                        0.0018039247952401638,
+                        0.0018877581460401416,
+                        0.0017400652868673205,
+                        0.001875299378298223,
+                        0.0015758854569867253,
+                        0.002178083173930645,
+                        0.0021371592301875353,
+                        0.002492738189175725,
+                        0.0019255041843280196,
+                        0.0022895631846040487,
+                        0.0020536549855023623,
+                        0.00137631269171834,
+                        0.001825655926950276,
+                        0.004724178928881884,
+                        0.002420640317723155,
+                        0.001579291420057416,
+                        0.0021120072342455387,
+                        0.001700314343906939,
+                        0.0013966523110866547
+                    ],
+                    [
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0,
+                        0
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Conv2D_11_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.2866164743900299
+                    ],
+                    [
+                        -11
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Quantize_12_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.2866164743900299
+                    ],
+                    [
+                        -11
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Dequantize_13_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.2866164743900299
+                    ],
+                    [
+                        -11
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Reshape_14_out_0": {
+            "format": {
+                "params": [
+                    [
+                        0.2866164743900299
+                    ],
+                    [
+                        -11
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        },
+        "Add_15_out_0": {
+            "format": {
+                "params": [
+                    null,
+                    null
+                ],
+                "class": "float32",
+                "type": "FLOAT32"
+            },
+            "data_channel_position": "CHFIRST",
+            "data_channel_batch": 1,
+            "user_allocated": true
+        },
+        "Add_15_param1": {
+            "format": {
+                "params": [
+                    [
+                        0.0006219926872290671
+                    ],
+                    [
+                        -20
+                    ]
+                ],
+                "class": "integer",
+                "type": "S8"
+            }
+        }
+    },
+    "nodes": {
+        "Constant_0": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Constant_1": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_3": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Slice_4": {
+            "names": [
+                "reatt_n1_1_past_zpad3_1_strided_slice0",
+                "reatt_n1_1_past_add2_1_Add0_DequantizeLinear_Output",
+                "reatt_n1_1_past_add2_1_Add0_QuantizeLinear_Output"
+            ]
+        },
+        "Mul_5": {
+            "names": [
+                "reatt_n1_1_past_zpad3_1_mul0",
+                "reatt_n1_1_past_zpad3_1_strided_slice0_DequantizeLinear_Output",
+                "reatt_n1_1_past_zpad3_1_strided_slice0_QuantizeLinear_Output"
+            ]
+        },
+        "Quantize_6": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_7": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Concat_8": {
+            "names": [
+                "reatt_n1_1_past_ccat3_1_concat0",
+                "reatt_n1_1_past_add2_1_Add0_DequantizeLinear_Output",
+                "reatt_n1_1_past_zpad3_1_mul0_DequantizeLinear_Output",
+                "reatt_n1_1_past_zpad3_1_mul0_QuantizeLinear_Output",
+                "reatt_n1_1_past_add2_1_Add0_QuantizeLinear_Output"
+            ]
+        },
+        "Reshape_9": {
+            "names": [
+                "reatt_n1_1_past_dil3_1_convolution_ExpandDims0",
+                "reatt_n1_1_past_ccat3_1_concat0_DequantizeLinear_Output",
+                "reatt_n1_1_past_ccat3_1_concat0_QuantizeLinear_Output"
+            ]
+        },
+        "Transpose_10": {
+            "names": [
+                "reatt_n1_1_past_dil3_1_convolution__510",
+                "reatt_n1_1_past_dil3_1_convolution_ExpandDims0_DequantizeLinear_Output",
+                "reatt_n1_1_past_dil3_1_convolution_ExpandDims0_QuantizeLinear_Output"
+            ]
+        },
+        "Conv2D_11": {
+            "names": [
+                "reatt_n1_1_past_dil3_1_convolution0",
+                "reatt_n1_1_past_dil3_1_convolution_ExpandDims_10_DequantizeLinear_Output",
+                "reatt_n1_1_past_dil3_1_convolution__510_DequantizeLinear_Output",
+                "reatt_n1_1_past_dil3_1_convolution__510_QuantizeLinear_Output"
+            ]
+        },
+        "Quantize_12": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Dequantize_13": {
+            "names": [
+                "__FE_GENERATED__"
+            ]
+        },
+        "Reshape_14": {
+            "names": [
+                "reatt_n1_1_past_dil3_1_convolution_Squeeze0",
+                "reatt_n1_1_past_dil3_1_convolution0_DequantizeLinear_Output",
+                "reatt_n1_1_past_dil3_1_convolution0_QuantizeLinear_Output"
+            ]
+        },
+        "Add_15": {
+            "names": [
+                "reatt_n1_1_past_dil3_1_BiasAdd0",
+                "reatt_n1_1_past_dil3_1_convolution_Squeeze0_DequantizeLinear_Output",
+                "reatt_n1_1_past_dil3_1_convolution_Squeeze0_QuantizeLinear_Output"
+            ]
+        }
+    }
+}

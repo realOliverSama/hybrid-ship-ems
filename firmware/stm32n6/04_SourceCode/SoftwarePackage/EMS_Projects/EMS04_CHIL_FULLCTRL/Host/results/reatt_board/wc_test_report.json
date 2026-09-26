@@ -1,0 +1,10 @@
+{
+  "schema": "phase4g_workclf_board_wctest_v1",
+  "n": 40,
+  "cls_match_rate": 0.0,
+  "reference": "reference_int8_val200.csv cls_norm（固件口径）",
+  "wc_us_median": 0.0,
+  "wc_us_max": 0.0,
+  "total_wall_s": 200.30763816833496,
+  "verdict": "workclf 亦退化 ⇒ 共享集成可疑"
+}
