@@ -223,10 +223,15 @@ int main(void)
    * 有效波特率随 CLKP 漂移（实测 115200 配置全线乱码）。此处显式补调，
    * 任何 boot 模式下内核时钟确定 = HSI 64MHz。 */
   PeriphCommonClock_Config();
-#if defined(DEBUG) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+#if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
   MX_XSPI1_Init();
   HyperRAM_Init(&HyperRAMObject, &hxspi1);
   HyperRAM_EnableMemoryMappedMode(&HyperRAMObject);
+  /* EMS04-S3-C（用户批准 2026-09-26，仅 PRED_PARITY 形态生效）：Release 下
+   * HyperRAM/XSPI1 使能——s_svc（485,832 B）经 .hyperram_bss (NOLOAD) 摆放于
+   * HyperRAM（RAM1-2 窗溢出 + AXISRAM3-6 被 NPU arena 占用，见链接脚本
+   * PREDPARITY 注释）。顺序契约：本初始化 < ems04_fp_board_init() 内
+   * ems04_fp_svc_init() 的 memset 全量清零 < 首次 s_svc 使用。 */
   /* NPU 模式的 XSPI2 初始化 + NOR memory-mapped（991 main.c:701-724 序列的
    * NOR 部分）在 USER CODE 2 段执行：MX_XSPI2_Init 为 CubeMX 生成版、
    * 由生成序列调用，NOR 只需在其后使能（生成代码见 "Initialize all
@@ -261,12 +266,15 @@ int main(void)
   DWT->CYCCNT = 0;
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
-#if defined(DEBUG) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+#if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 #if (EMS_FW_MODE == EMS_FW_MODE_NPU)
   /* 991 main.c:701-723 序列的 NOR 部分（SystemIsolation_Config 之后）：
    * MX_XSPI2_Init（CubeMX 生成版，调用不落自动区，与 991 main.c:701 同由应用显式调用）
    * → NOR 读权重（0x70200000/0x70400000）前提的 memory-mapped 使能。
-   * Release（ROMxspi2）由 boot 链完成 XSPI2 memory-mapped，不入此分支。 */
+   * Release（ROMxspi2）由 boot 链完成 XSPI2 memory-mapped，不入此分支。
+   * EMS04-S3-C（用户批准 2026-09-26，仅 PRED_PARITY 形态生效）：SRAM 直载
+   * Release 形态需 NOR 只读权重池 N1@0x70B00000 / N2@0x70A00000——顺序契约：
+   * 本 memory-mapped 使能 < 首次 NPU 权重访问（ems_reatt_split 首查询）。 */
   MX_XSPI2_Init();
   if (NORFlash_Init(&NORFlashObject, &hxspi2,
                     HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_XSPI2)) != NORFlash_OK)

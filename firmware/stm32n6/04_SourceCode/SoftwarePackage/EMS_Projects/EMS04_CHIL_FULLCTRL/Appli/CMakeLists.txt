@@ -68,6 +68,31 @@ if(EMS04_FP_PARITY)
     endif()
     set(EMS04_S2_PARITY "1")
 endif()
+# EMS04-S3-C：预测器板级 parity 形态（2026-09-26 主 Agent 立项；S3C_CONSTRUCTION_SPEC §2）。
+# Release + FP 服务 + REATT SPLIT 同载：编入 FP 六源 + 定义 EMS04_FP_PARITY=1（0x20..0x26
+# 路由照常挂载，S3-A2 合成微测通道），但【不置】EMS04_S2_PARITY——REATT 载荷保持编入
+# （EMS_REATT_FORM=SPLIT，CMD_REATT 走 ems_reatt_split.c 真实服务）。诊断大载荷
+# （reattself / ems_diag_ladder / dl1s/dl2/dl3/dl4f/dlf1）经下方源集 genex 显式排除。
+# 摆放裁决（2026-09-26 实测修订，替代 SPEC §1 的 RAM3 扩窗候选）：SRAM1-2 2047K 窗在
+# FP+REATT 同载下溢出 278,104 B（build/PredParity 首次链接实测）；s_svc(485,832 B)
+# 放不进 AXISRAM3 空池(457,720 B)，且 NPU arena（reattn1n/reattn2l 生成码 mpool）
+# 已编译期占用 AXISRAM4/5/6——SRAM3-6 窗无 .sram3 NOLOAD 可用区。故 s_svc 走
+# HyperRAM：链接脚本变体 PREDPARITY 把 ems04_fp_board.o BSS 定向 .hyperram_bss
+# (NOLOAD) >EXTRAM（加载器对 filesz=0 段跳过，mcp-contract 同款语义）；HyperRAM
+# init 由 main.c SysInit 的 EMS04_PRED_PARITY 条件承担（fp_board.c 源零改动）。
+# 既有 EMS04_FP_PARITY/EMS04_S2_PARITY/Debug/Release 分支行为零改动。
+if(NOT DEFINED EMS04_PRED_PARITY)
+    set(EMS04_PRED_PARITY "0")
+endif()
+set(EMS04_PRED_PARITY "${EMS04_PRED_PARITY}" CACHE STRING "1=EMS04 S3-C predictor parity build (Release+FP service+REATT SPLIT, s_svc on HyperRAM)")
+if(EMS04_PRED_PARITY)
+    if(NOT ATK_BUILD_TYPE_LOWER STREQUAL "release")
+        message(FATAL_ERROR "EMS04_PRED_PARITY=1 requires CMAKE_BUILD_TYPE=Release (S3-C form)")
+    endif()
+    set(STM32_LINKER_SCRIPT "STM32N647XX_LRUN_RAMxspi1_PREDPARITY.ld")
+    # EMS04_PRED_PARITY 编译定义在 target 创建后统一追加（见 FP 源集块下方）；
+    # 此处 target 尚未 add_executable，不得调用 target_* 。
+endif()
 # EMS04 S2-PARITY（2026-09-25 主 Agent 裁决方案 c）：RamRel 精简形态。Release
 # 配置 + LRUN_RAMxspi1（SRAM 直载 [0x34000000,0x34200000)），排除 REATT 段链/
 # ladder/selftest/diag 大载荷（下方源集 genex 消费本开关）——law6 + tables +
@@ -283,7 +308,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
 #   ems04_sha256/fp_proto/h1win/kftable/fp_svc = B 阶段模块由 b/ 逐字节拷入
 #   （溯源 sha256 见 experiments/softhil_ems03_2026-09-25/ems04_s2/c/C_FW_REPORT.json）；
 #   ems04_fp_board.c = 本工程新写的 UART 胶水（ems_proto ↔ FP 服务）。
-if(EMS04_FP_PARITY)
+if(EMS04_FP_PARITY OR EMS04_PRED_PARITY)
     target_sources(${CMAKE_PROJECT_NAME} PRIVATE
         "${EMS01_APP_DIR}/ems04_sha256.c"
         "${EMS01_APP_DIR}/ems04_fp_proto.c"
@@ -293,6 +318,10 @@ if(EMS04_FP_PARITY)
         "${EMS01_APP_DIR}/ems04_fp_board.c"
     )
     target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_FP_PARITY=1)
+endif()
+# EMS04-S3-C：形态标识宏（main.c SysInit 条件消费：HyperRAM/NOR init 使能）。
+if(EMS04_PRED_PARITY)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_PRED_PARITY=1)
 endif()
 # ems_app 轮询接收（HAL_UART_Receive timeout=0）与 BSP RX 中断冲突 → 关停 BSP RX
 # （uart.c 编译开关，991 同款；main.c 已含同款约定）。
@@ -469,25 +498,25 @@ if(EMS_FW_MODE STREQUAL "NPU")
             # —— D2 判别实验（phase4-g，2026-09-23）：NPU 平凡自检图（双恒等 MatMul，
             #    权重 145 B 落 NOR 0x703E0000；hex = Binary/network-data-reattself.hex）。
             #    Release 全形态编入（诊断用，仅首次 REATT query 触发）。
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${EMS01_APP_DIR}/ems_npu_reattself.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/reattself.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/stai_reattself.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${EMS01_APP_DIR}/ems_npu_reattself.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/reattself.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/stai_reattself.c>"
             # —— phase4-g 夜备（2026-09-23）：N2 逐级 bisection 阶梯（dl1..dl3 子图
             #    + dl4f（L4 float-LN 部署变体，2026-09-24 替换 int8-LN 版 dl4）
             #    + dlf1 整图 --Ono-clone-dma 消融；权重 hex 各自独立 NOR 池
             #    0x70410000/0x70420000/0x70440000/0x70680000/0x70800000）。
             #    仅 Release；首次 REATT query 由 ems_reatt_split.c 触发一次。
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${EMS01_APP_DIR}/ems_diag_ladder.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/dl1s/dl1.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/dl1s/stai_dl1.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/dl2.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/stai_dl2.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/dl3.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/stai_dl3.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/dl4f.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/stai_dl4f.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/dlf1.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/stai_dlf1.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${EMS01_APP_DIR}/ems_diag_ladder.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/dl1s/dl1.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/dl1s/stai_dl1.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/dl2.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/stai_dl2.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/dl3.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/stai_dl3.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/dl4f.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/stai_dl4f.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/dlf1.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/stai_dlf1.c>"
             # —— 整图 CPU 形态（EMS_REATT_FORM=CPU）
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"
