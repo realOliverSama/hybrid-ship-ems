@@ -1,0 +1,23 @@
+{
+  "schema": "s3c_provenance_v1",
+  "note": "S3-C host tooling / frozen artifacts SHA manifest. experiments/ 侧产物不入库，以本清单 SHA 绑定。",
+  "generated_utc": "2026-09-27T00:00:00Z",
+  "experiments_artifacts": {
+    "s3c_host_ref.py": "ee50db1c43e5088bf32824c540c6b1bce1f52bb0d0208b814259de6081cf3a51",
+    "s3a2_synth.py": "f05496b994fd738380c4e82d70bee3d9273cd4a6c0c0829dbcca5ce0f14573d0",
+    "gen_ref_split_v2.py(禁改,上游)": "8e46542a10a98655d140f6e003e254ab90fcc65ac73a0f706800efad3acf86f0",
+    "S3C_PILOT_FREEZE_MANIFEST.json": "f693ee4d93169a1a3d225b68ee6e108a07486b22e4123ca940437aaadb3ea602",
+    "S3C_ELF_LOCK_FIX2.json": "cf9f4f0e6c348b01370c9f3d029a758f0d6cfda511c54e28c51a938a63974814",
+    "S3C_BOARD_PREFLIGHT_FAIL.md(RCA)": "9473cb84d4d4c5c8b67d1d1c4d1ac910e6cef529f125f6bad0f8d7bfe942476e",
+    "S3C_PRECHANGE_DIRTY_MANIFEST.txt": "d43b28e688d6cb9872e7a97e0e392579ed4c97f020d38d35d77bf4679fb8dffe",
+    "S3C_AUTHORIZED_DIFF_MANIFEST.txt": "e13c8e1eef36294d6c9366a989c28bcfa157ef14fab3a6a2d2ba722a81e78789",
+    "S3A2_SYNTH_script_s3a2.bin": "545cafedc499ae39af5beca0decd0c389bb099c4d4ee2478a2633933d3a61a36",
+    "S3A2_SYNTH_asserts.json": "e63f5a32e6575b6e65b0e358d9218cfab8db61d4ca3fd3556d7b1a297c1292ab",
+    "S3C_HOST_REF_npz_count": 755
+  },
+  "board_evidence": {
+    "fix2_elf_sha256": "a4eff5bd09c18aad84cec8fcff6cbf9e169e8b336513f8512ec1b0670ca94c41",
+    "fix2_load_plan_readback_sha256": "1c0565f93281f9ed78a021900e4b3488c9e7862ac60f0b47c3ac09de9138beef",
+    "kf_boundary_firstgate": "180/180 bitwise == HOST_B (FLTA_S1_D00000_M2 t0=300)"
+  }
+}
