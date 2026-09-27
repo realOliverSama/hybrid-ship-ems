@@ -629,3 +629,56 @@ else()
     endif()
 endif()
 # <<< EMS01 AI 接线（T-505）END <<<
+
+# >>> EMS04 S3-C Q27 影子拷贝诊断（qualification-only，用户裁决 §1-§4 APPROVED，
+#     2026-09-26）BEGIN >>>
+# 独立追加块：不改动上方任何既有块。诊断构建流程：
+#   1) python3 Host/tools/patch_reattn1n_q27shadow.py
+#      （生成码 reattn1n.c 单一锚点插入 shadow capture 调用 + provenance json）
+#   2) cmake -S Appli -B Appli/build/Q27Shadow -G Ninja \
+#        -DCMAKE_TOOLCHAIN_FILE=$PWD/gcc-arm-none-eabi.cmake \
+#        -DCMAKE_BUILD_TYPE=Release -DEMS04_PRED_PARITY=1 -DEMS04_Q27_SHADOW=1
+#   3) cmake --build Appli/build/Q27Shadow
+# 生成码侧不换文件（原地补丁）：reattn1n.c 的插入调用**不条件编译**——若生成码
+# 已补丁而本开关为 0，reattn1n.c 引用的 ems04_s3c_q27_shadow_capture 无实现，
+# 链接报 undefined reference；此时须先
+#   python3 Host/tools/patch_reattn1n_q27shadow.py --restore
+# （见下方 else 分支 STATUS 提示）。
+# 默认 0 ⇒ 零源文件/零编译定义；ems04_s3c_q27_shadow.c 实现整体被
+# EMS04_Q27_SHADOW 宏包裹，非影子构建零符号零体积。
+set(EMS04_Q27_SHADOW "0" CACHE STRING "1=S3-C Q27 shadow-capture diagnostic build (requires patched reattn1n.c via Host/tools/patch_reattn1n_q27shadow.py)")
+if(EMS04_Q27_SHADOW)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_Q27_SHADOW=1)
+    target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+        "${EMS01_APP_DIR}/ems04_s3c_q27_shadow.c"
+    )
+else()
+    message(STATUS "EMS04_Q27_SHADOW=0: if Model/reatt8_q_npu/npu_n1/gen/reattn1n.c carries the q27 shadow patch, run 'python3 Host/tools/patch_reattn1n_q27shadow.py --restore' first (or rebuild with -DEMS04_Q27_SHADOW=1), otherwise linking reattn1n.c fails with undefined ems04_s3c_q27_shadow_capture")
+endif()
+# <<< EMS04 S3-C Q27 影子拷贝诊断 END <<<
+
+# >>> EMS04-S3-A2 DUMP 分块诊断传输 BEGIN >>>
+# RSP_FP_DUMP(0x26) 单帧 13939 B 在 115200 UART 长流丢帧头（板上 rsp_dump=1、
+# 主机 capture 丢帧）。EMS04_DUMP_CHUNK=1 时新增工程自有诊断 TU
+# ems04_fp_dumpchunk.c（TYPE 0x27 = RSP_FP_DUMP_CHUNK 分块帧直发；帧/载荷格式与
+# seq 语义见 App/ems04_fp_dumpchunk.h 文件头注释；主机重组工具
+# Host/tools/s3a2_dump_reasm.py）。仅修诊断传输，不改特征/预测语义：S2 冻结
+# 六模块零改动，DUMP 查询（0x25）行为不变；ems_app.c 挂载点以
+# #if defined(EMS04_DUMP_CHUNK)&&EMS04_DUMP_CHUNK 包裹（单处受控区域）。
+# 依赖 FP 服务形态（复用 ems04_fp_proto.c 冻结编码器）：须与 EMS04_FP_PARITY=1
+# 或 EMS04_PRED_PARITY=1 同传。默认 0 ⇒ 零源文件/零编译定义/零体积。
+if(NOT DEFINED EMS04_DUMP_CHUNK)
+    set(EMS04_DUMP_CHUNK "0")
+endif()
+set(EMS04_DUMP_CHUNK "${EMS04_DUMP_CHUNK}" CACHE STRING "1=RSP_FP_DUMP chunked via TYPE 0x27 diagnostic frames (requires FP service form)")
+if(EMS04_DUMP_CHUNK)
+    if(NOT (EMS04_FP_PARITY OR EMS04_PRED_PARITY))
+        message(FATAL_ERROR "EMS04_DUMP_CHUNK=1 requires EMS04_FP_PARITY=1 or EMS04_PRED_PARITY=1 (FP service form)")
+    endif()
+    target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+        "${EMS01_APP_DIR}/ems04_fp_dumpchunk.c"
+    )
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_DUMP_CHUNK=1)
+endif()
+# <<< EMS04-S3-A2 DUMP 分块诊断传输 END <<<
+

@@ -1,0 +1,13 @@
+{
+  "ORIGINAL_REATTN1N_SHA": "0c3e7ad293519b3a8a9e76ea5431f20af424ddd5ac0d18c76e05fcc4b2d53b51",
+  "PATCH_SCRIPT_SHA": "e15ea55cb1b1bbdeaef640d61083f921e66daccdb3342e86d59f5a3245206d10",
+  "PATCHED_REATTN1N_SHA": "dd73b3f07a7f2a1f71eb5668f167a59d2e69a70e12b82d8d5be31c4c85ce46a8",
+  "TARGET_FILE": "Model/reatt8_q_npu/npu_n1/gen/reattn1n.c",
+  "BACKUP_FILE": "Model/reatt8_q_npu/npu_n1/gen/reattn1n.c.orig_q27",
+  "ANCHOR_LINE": "  LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 28800))) /* Equivalent hex address = 0x34357080UL */, 3328);",
+  "INSERT_LINE": "  ems04_s3c_q27_shadow_capture((const void *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 28800))); /* S3-C Q27 diagnostic shadow (qualification-only, see Host/tools/patch_reattn1n_q27shadow.py) */",
+  "INCLUDE_ANCHOR_LINE": "#include \"ll_aton.h\"",
+  "INCLUDE_INSERT_LINE": "#include \"ems04_s3c_q27_shadow.h\"",
+  "TIMESTAMP_UTC": "2026-09-27T00:10:00Z",
+  "NOTE": "S3-C Q27 shadow capture (qualification-only); restore with: python3 Host/tools/patch_reattn1n_q27shadow.py --restore"
+}

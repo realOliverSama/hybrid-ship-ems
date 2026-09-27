@@ -46,6 +46,7 @@
 
 #include "ll_aton_NN_interface.h"
 #include "ll_aton.h"
+#include "ems04_s3c_q27_shadow.h"
 #include "ll_aton_lib.h"
 #include "ll_aton_version.h"
 #include "ll_sw.h"
@@ -307,6 +308,7 @@ static void LL_ATON_End_EpochBlock_2(const LL_ATON_RT_EpochBlockItem_t *epoch_bl
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 28800))) */
   /*     end:   ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 32128))) */
   LL_ATON_Cache_MCU_Clean_Range(((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 28800))) /* Equivalent hex address = 0x34357080UL */, 3328);
+  ems04_s3c_q27_shadow_capture((const void *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 28800))); /* S3-C Q27 diagnostic shadow (qualification-only, see Host/tools/patch_reattn1n_q27shadow.py) */
 
 
 }
