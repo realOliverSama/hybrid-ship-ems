@@ -657,6 +657,23 @@ else()
 endif()
 # <<< EMS04 S3-C Q27 影子拷贝诊断 END <<<
 
+# >>> EMS04 S3-C BD 腿批量诊断回传 BEGIN >>>
+# S3-C V2 holdout/755 的 BD 腿需逐锚取 h_past/n2out/Q27-CRC；逐锚 halt+调试
+# 读在大规模下不可行。EMS04_BDDIAG_UART=1 时新增工程自有诊断 TU
+# ems04_s3c_bddiag.c（CMD_BDDIAG 0x0C → RSP_BDDIAG 0x0D，666 B；布局见
+# App/ems04_s3c_bddiag.h），主机客户端 Host/tools/s3c_bddiag_client.py。
+# 只读边界缓冲（ems_reatt_split.c 尾部同开关包裹的只读访问器）与 Q27 影子头
+# （EMS04_Q27_SHADOW=1 时取真实 CRC，否则 0）；不改推理数学/控制流/既有命令。
+# 默认 0 ⇒ 零源文件/零编译定义/零体积。非交付件（qualification-only）。
+set(EMS04_BDDIAG_UART "0" CACHE STRING "1=S3-C BD-leg batch diagnostic UART return build (qualification-only; pairs with EMS04_PRED_PARITY/EMS04_Q27_SHADOW)")
+if(EMS04_BDDIAG_UART)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_BDDIAG_UART=1)
+    target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+        "${EMS01_APP_DIR}/ems04_s3c_bddiag.c"
+    )
+endif()
+# <<< EMS04 S3-C BD 腿批量诊断回传 END <<<
+
 # >>> EMS04-S3-A2 DUMP 分块诊断传输 BEGIN >>>
 # RSP_FP_DUMP(0x26) 单帧 13939 B 在 115200 UART 长流丢帧头（板上 rsp_dump=1、
 # 主机 capture 丢帧）。EMS04_DUMP_CHUNK=1 时新增工程自有诊断 TU

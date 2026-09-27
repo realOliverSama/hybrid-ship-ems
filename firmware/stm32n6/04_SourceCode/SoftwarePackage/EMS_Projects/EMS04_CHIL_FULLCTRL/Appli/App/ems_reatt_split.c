@@ -739,4 +739,12 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
     return 0;
 }
 
+#if defined(EMS04_BDDIAG_UART) && EMS04_BDDIAG_UART
+/* S3-C BD 腿批量诊断（qualification-only，开关默认 0）：只读访问器，
+ * 供 ems04_s3c_bddiag.c 打包 UART 回传。不改本文件任何既有行为。 */
+const float       *ems04_s3c_bddiag_hpast(void) { return rs_n1_hpast; }
+const signed char *ems04_s3c_bddiag_n2out(void) { return rs_n2_out; }
+const signed char *ems04_s3c_bddiag_n2kf(void)  { return rs_n2_kf; }
+#endif
+
 #endif /* EMS_REATT_SPLIT && EMS_REATT_SERVICE && NPU && tcnq */

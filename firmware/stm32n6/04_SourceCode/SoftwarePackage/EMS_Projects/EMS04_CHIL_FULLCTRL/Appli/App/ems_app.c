@@ -58,6 +58,10 @@
 #include "ems04_fp_board.h" /* EMS04-S2 C-fw：特征面板服务（0x20..0x26）UART 胶水 */
 #endif
 
+#if defined(EMS04_BDDIAG_UART) && EMS04_BDDIAG_UART
+#include "ems04_s3c_bddiag.h" /* S3-C BD 腿批量诊断回传（qualification-only，开关默认 0） */
+#endif
+
 extern UART_HandleTypeDef huart1; /* CubeMX 生成（main.c），BSP/it.c 同款引用 */
 
 static ems_proto_t ems_proto_st; /* 协议会话（单实例：解析/会话/事件环） */
@@ -249,6 +253,27 @@ static void ems_handle_cmd_reatt(const uint8_t *payload, uint16_t len)
                                EMS_PROTO_RSP_REATT_LEN);
 }
 
+#if defined(EMS04_BDDIAG_UART) && EMS04_BDDIAG_UART
+/* ---- CMD_BDDIAG（0x0C）：BD 腿批量诊断回传（S3-C，qualification-only） ----
+ * 载荷 [seq u32]；回 RSP_BDDIAG（666 B，布局见 ems04_s3c_bddiag.h）。
+ * 只读最近一次 CMD_REATT 的边界缓冲 + Q27 影子头；不改任何既有命令行为。 */
+static void ems_handle_cmd_bddiag(const uint8_t *payload, uint16_t len)
+{
+    uint32_t seq = 0u;
+    uint8_t rsp[EMS_PROTO_RSP_BDDIAG_LEN];
+
+    if (len < EMS_PROTO_CMD_BDDIAG_LEN) {
+        ems_proto_send_nack(&ems_proto_st, EMS_PROTO_CMD_BDDIAG,
+                            EMS_PROTO_ERR_LEN);
+        return;
+    }
+    seq = ems_proto_rd_u32(&payload[0]);
+    ems04_s3c_bddiag_fill(rsp, seq);
+    (void)ems_proto_send_frame(&ems_proto_st, EMS_PROTO_RSP_BDDIAG, rsp,
+                               EMS_PROTO_RSP_BDDIAG_LEN);
+}
+#endif
+
 /* ---- CMD_TICK（0x02）：一个控制拍（T-506 接管；STALE 拍保持 Pheld） ----
  * 会话/STALE 判定已在 ems_proto 解析面完成（合法 CMD_TICK 间隔 >2 s →
  * 置位 + 事件，见 ems_proto.c），此处读会话标志决定"保持"路径。 */
@@ -376,6 +401,11 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
     case EMS_PROTO_CMD_REATT:
         ems_handle_cmd_reatt(payload, len);
         break;
+#if defined(EMS04_BDDIAG_UART) && EMS04_BDDIAG_UART
+    case EMS_PROTO_CMD_BDDIAG:
+        ems_handle_cmd_bddiag(payload, len);
+        break;
+#endif
     case EMS_PROTO_CMD_PING:
         (void)ems_proto_send_ack(&ems_proto_st, type);
         break;

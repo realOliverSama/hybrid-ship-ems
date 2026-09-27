@@ -49,6 +49,10 @@ extern "C" {
 #define EMS_PROTO_CMD_REATT      0x0Au  /* H→F [seq u32][hist 300×11 f32][kf 30×6 f32]（REAT-T 查询，
                                            * 原始域，t/k 主序 × 通道序 = registry H1 / K+F；phase4-g） */
 #define EMS_PROTO_RSP_REATT      0x0Bu  /* F→H [seq u32][q 30×3 f32 kW][infer_us u32]（失败 NACK ERR_INFER） */
+#define EMS_PROTO_CMD_BDDIAG     0x0Cu  /* H→F [seq u32] → RSP_BDDIAG（S3-C BD 腿诊断，仅
+                                           * -DEMS04_BDDIAG_UART=1 构建注册；默认构建不识别） */
+#define EMS_PROTO_RSP_BDDIAG     0x0Du  /* F→H [seq u32][q27_crc32 u32][q27_valid u8+3R]
+                                           * [hpast 96×f32][n2out 90×i8][n2kf 180×i8] = 666 B */
 #define EMS_PROTO_ACK            0x7Fu  /* F→H echo TYPE u8 */
 #define EMS_PROTO_NACK           0x7Eu  /* F→H echo TYPE u8 + err u8 */
 
@@ -75,6 +79,9 @@ extern "C" {
 #define EMS_PROTO_REATT_Q_FLT    90u    /* 30 lead × {q10,q50,q90} */
 #define EMS_PROTO_CMD_REATT_LEN  (4u + (EMS_PROTO_REATT_HIST_FLT + EMS_PROTO_REATT_KF_FLT) * 4u)
 #define EMS_PROTO_RSP_REATT_LEN  (4u + EMS_PROTO_REATT_Q_FLT * 4u + 4u)
+/* BDDIAG（+S3-C 诊断，仅开关构建）：[seq u32][crc u32][valid u8+3R][96×f32][90×i8][180×i8] */
+#define EMS_PROTO_CMD_BDDIAG_LEN 4u
+#define EMS_PROTO_RSP_BDDIAG_LEN (4u + 4u + 4u + 96u * 4u + 90u + 180u) /* = 666 */
 #define EMS_PROTO_ACK_LEN       1u
 #define EMS_PROTO_NACK_LEN      2u
 #if EMS_PROTO_CMD_REATT_LEN > EMS_PROTO_CMD_INFER_LEN

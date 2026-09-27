@@ -8,6 +8,6 @@
   "INSERT_LINE": "  ems04_s3c_q27_shadow_capture((const void *)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x34350000UL + 28800))); /* S3-C Q27 diagnostic shadow (qualification-only, see Host/tools/patch_reattn1n_q27shadow.py) */",
   "INCLUDE_ANCHOR_LINE": "#include \"ll_aton.h\"",
   "INCLUDE_INSERT_LINE": "#include \"ems04_s3c_q27_shadow.h\"",
-  "TIMESTAMP_UTC": "2026-09-27T00:10:00Z",
+  "TIMESTAMP_UTC": "2026-09-27T16:23:06Z",
   "NOTE": "S3-C Q27 shadow capture (qualification-only); restore with: python3 Host/tools/patch_reattn1n_q27shadow.py --restore"
 }

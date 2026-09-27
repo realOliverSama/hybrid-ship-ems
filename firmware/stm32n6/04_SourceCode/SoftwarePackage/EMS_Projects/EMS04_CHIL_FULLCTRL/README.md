@@ -42,7 +42,9 @@
 |---|---|
 | `Appli/App/ems04_fp_dumpchunk.c/.h` | 【诊断形态，`-DEMS04_DUMP_CHUNK=1`，默认 0 零体积】RSP_FP_DUMP(0x26) 13939 B 单帧在 115200 长流丢帧头（用户裁决 2026-09-26 §14"Repair only the diagnostic transport"），改为 TYPE 0x27 分块直发（块头 18 B：seq/idx/total/data_len/last/rsv，数据 ≤494 B/帧，13932 B → 29 帧）；DUMP 查询（0x25）与载荷字节不变，主机收齐 total_chunks 自行重组 |
 | `Appli/App/ems04_s3c_q27_shadow.c/.h` | 【qualification-only，`-DEMS04_Q27_SHADOW=1`】N1 生成码 `LL_ATON_End_EpochBlock_2` 内 Q27（int8[1,300,11]=3300 B @0x34357080）clean 之后插入一次影子 memcpy + CRC32 头（SEQ 自增、fail-closed valid 位），使 Q27 在 arena 复用前留证；插桩经 Host/tools/patch_reattn1n_q27shadow.py（patch/--restore 两向），非干预性见 `s3c_provenance.json` |
+| `Appli/App/ems04_s3c_bddiag.c/.h` | 【qualification-only，`-DEMS04_BDDIAG_UART=1`，默认 0 零体积】S3-C BD 腿批量诊断回传：CMD_BDDIAG(0x0C) → RSP_BDDIAG(0x0D, 666 B = seq + Q27 影子 CRC/valid + h_past 96×f32 + n2out 90×i8 + n2kf 180×i8)；只读边界缓冲（`ems_reatt_split.c` 尾部同开关 accessor）与 Q27 影子头，不改推理数学/既有命令；主机客户端 `Host/tools/s3c_bddiag_client.py`（纯 UART 批量，无需 halt）；构建记录 `experiments/…/tmp_rescue_20260927/T8_BDDIAG_BUILD_PROVENANCE.md` |
 | `tools/s3c_reatt_replay.py` | CMD_REATT 回放客户端（S2 真值包 canonical hist/kf + sha256 校验）→ q30×3 raw f32 + infer_us capture |
+| `tools/s3c_bddiag_client.py` | BD 腿批量诊断客户端（BdDiagUart 形态）：逐锚 CMD_REATT→CMD_BDDIAG，落盘 `.672.bin`（n2out/n2kf/hpast 重排布局）+ `.meta.json`（seq/q27_crc32/valid/q30×3/infer_us）+ `BDLEG_MANIFEST.json` |
 | `tools/s3c_verify.py` | S3-C 边界逐位核验器（A/B/C/D 边界） |
 | `tools/s3c_pilot_batch.py` | 六锚批式驱动（复用 reatt_replay 的 Board/锚加载）+ `--shadow-dump` 离线校验 Q27 影子缓冲镜像（magic/hdr_len/len/valid/CRC fail-closed） |
 | `tools/s3a2_board_test.py` | S3-A2 分块 DUMP 板测驱动：VOYAGE_INIT + 29×KF_CHUNK + 301×TICK2 + QUERY + DUMP，收 0x27 流重组 13932 B；断言块连续性/last_flag/长度/零坏帧/零 NACK（`--dry-run`/`--selftest` host 自测） |
