@@ -90,7 +90,7 @@
       "M1": 27,
       "M2": 21
     },
-    "exclusion_ledger_sha256": "2e81a93f7ef5de92d0f0e4a5b0e0c3f6b1a1c3d4e5f60718293a4b5c6d7e8f90",
-    "note": "ledger sha \u4ee5\u4e0a\u6587\u8d26\u672c md/json \u5b9e\u6d4b\u4e3a\u51c6\uff08\u672c\u5b57\u6bb5\u4ec5\u7d22\u5f15\uff1b\u89c1 V2_EXCLUSION_LEDGER.json\uff09"
+    "exclusion_ledger_sha256": "2e81a93f7ef5de9221e5b3d2c9f06402cc81ff93fb90981a0541c8ea8bd0c52a",
+    "note": "exclusion ledger sha = \u5b9e\u6d4b\u503c\uff082026-09-27 \u4fee\u6b63\uff1a\u521d\u7248\u8bef\u586b\u5360\u4f4d\u63a8\u6d4b\u503c\uff0c\u5df2\u6309\u5b9e\u6d4b\u66ff\u6362\uff09"
   }
 }
