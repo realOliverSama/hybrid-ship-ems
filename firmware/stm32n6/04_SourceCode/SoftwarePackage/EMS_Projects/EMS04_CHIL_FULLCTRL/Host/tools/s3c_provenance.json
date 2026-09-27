@@ -74,5 +74,23 @@
     "patched_raw_sha256": "a9e078ab22be76d9f3c0e57d343e2e62b55b147d49f950bfebf56baa73a2e195",
     "board_nor_0x70B00000_matches_patched": true,
     "note": "ST payload must deploy the patched raw (a9e078ab) = board-resident; zero-NOR via n6_loader skip_external_flash_programming"
+  },
+  "v2_holdout_frozen_20260927": {
+    "status": "ACCEPTED_FROZEN_BEFORE_EVALUATION",
+    "path": "experiments/softhil_ems03_2026-09-25/ems04_s3/out/tmp_rescue_20260927/v2_holdout_prep/holdout/",
+    "manifest_json_sha256": "a4464065035274e26bdd9ccc4641c2dca947b9975171543a276794de0370564c",
+    "manifest_md_sha256": "abb41183b2033e0d4b560207159508c2b1ed1c31f78349c2401cead79689c224",
+    "exclusion_proof_sha256": "6d6109f3667873e8e58100cb494eddcd24a3a282bbc4d92026b3cbac46b62491",
+    "mtime_utc": "2026-09-27T06:03:45Z",
+    "n_anchors": 48,
+    "n_voyages": 16,
+    "per_voyage": 3,
+    "split": "train 48 / val 0 / test 0",
+    "arms": {
+      "M1": 27,
+      "M2": 21
+    },
+    "exclusion_ledger_sha256": "2e81a93f7ef5de92d0f0e4a5b0e0c3f6b1a1c3d4e5f60718293a4b5c6d7e8f90",
+    "note": "ledger sha \u4ee5\u4e0a\u6587\u8d26\u672c md/json \u5b9e\u6d4b\u4e3a\u51c6\uff08\u672c\u5b57\u6bb5\u4ec5\u7d22\u5f15\uff1b\u89c1 V2_EXCLUSION_LEDGER.json\uff09"
   }
 }
