@@ -403,7 +403,39 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
         if (ems04_fp_board_handle(type, payload, len, ems_fp_rsp,
                                   &ems_fp_rsp_len) == EMS04_FP_BOARD_OK &&
             ems_fp_rsp_len > 0u) {
-            (void)HAL_UART_Transmit(&huart1, ems_fp_rsp, ems_fp_rsp_len, 0xFFFFu);
+#if defined(EMS04_DUMP_CHUNK) && EMS04_DUMP_CHUNK
+            /* S3-A2 RSP_FP_DUMP 分块诊断传输（用户裁决 2026-09-26 §14
+             * APPROVED："Repair only the diagnostic transport"）：13939 B 单帧
+             * 在 115200 UART 长流丢帧头（板上 rsp_dump=1、主机 capture 丢帧），
+             * 故 TYPE=0x26 的响应改走 0x27 分块帧直发；其余响应（ACK/NACK/
+             * RSP_FP_QUERY）维持原直发路径。语义零改动：DUMP 查询（0x25）与
+             * DUMP 载荷内容不变（冻结六模块零改动），主机收齐 total_chunks
+             * 自行重组（Host/tools/s3a2_dump_reasm.py）。默认
+             * （EMS04_DUMP_CHUNK=0/未定义）本分支不编入，行为与既有逐字节一致。
+             * seq 来源：CMD_FP_DUMP(0x25) 载荷为 [f64 t0]（PROTOCOL_FP §5），
+             * 无 CMD_REATT 式载荷头 seq，故用静态自增计数器（同一次 DUMP 的
+             * 全部分块帧共用同一 seq）。extern 声明就地给出，保持 ems_app.c
+             * 改动仅此一处受控区域。 */
+            extern int ems04_fp_dumpchunk_uart_dump(const uint8_t *dump_payload,
+                                                    uint32_t len, uint32_t seq);
+            /* 载荷起点 = 帧头长 5 B（2 sync + 1 type + 2 len）。EMS04_FP_FRAME_OVERHEAD
+             * (=7) 是「头 5 + CRC 2」总开销，只能用于长度换算，不可当帧头长——
+             * 2026-09-27 S3-A2 断言机 A5 抓出：误用 +7 使分块载荷整体前移 2 B、
+             * 末尾混入 2 B CRC16（kf 行签名 13210 vs 应有 13212）。故此处用
+             * FRAME_OVERHEAD - 2。 */
+            if (ems_fp_rsp[2] == EMS04_FP_RSP_FP_DUMP) {
+                static uint32_t ems_fp_dump_seq;
+                (void)ems04_fp_dumpchunk_uart_dump(
+                    ems_fp_rsp + (EMS04_FP_FRAME_OVERHEAD - 2u),
+                    (uint32_t)ems_fp_rsp_len - EMS04_FP_FRAME_OVERHEAD,
+                    ems_fp_dump_seq++);
+            }
+            else
+#endif
+            {
+                (void)HAL_UART_Transmit(&huart1, ems_fp_rsp, ems_fp_rsp_len,
+                                        0xFFFFu);
+            }
         }
         break;
     }
