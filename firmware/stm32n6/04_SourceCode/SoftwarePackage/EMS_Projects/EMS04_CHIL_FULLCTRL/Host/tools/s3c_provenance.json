@@ -1,11 +1,11 @@
 {
   "schema": "s3c_provenance_v1",
-  "note": "S3-C host tooling / frozen artifacts SHA manifest. experiments/ 侧产物不入库，以本清单 SHA 绑定。",
+  "note": "S3-C host tooling / frozen artifacts SHA manifest. experiments/ \u4fa7\u4ea7\u7269\u4e0d\u5165\u5e93\uff0c\u4ee5\u672c\u6e05\u5355 SHA \u7ed1\u5b9a\u3002",
   "generated_utc": "2026-09-27T00:00:00Z",
   "experiments_artifacts": {
     "s3c_host_ref.py": "ee50db1c43e5088bf32824c540c6b1bce1f52bb0d0208b814259de6081cf3a51",
     "s3a2_synth.py": "f05496b994fd738380c4e82d70bee3d9273cd4a6c0c0829dbcca5ce0f14573d0",
-    "gen_ref_split_v2.py(禁改,上游)": "8e46542a10a98655d140f6e003e254ab90fcc65ac73a0f706800efad3acf86f0",
+    "gen_ref_split_v2.py(\u7981\u6539,\u4e0a\u6e38)": "8e46542a10a98655d140f6e003e254ab90fcc65ac73a0f706800efad3acf86f0",
     "S3C_PILOT_FREEZE_MANIFEST.json": "f693ee4d93169a1a3d225b68ee6e108a07486b22e4123ca940437aaadb3ea602",
     "S3C_ELF_LOCK_FIX2.json": "cf9f4f0e6c348b01370c9f3d029a758f0d6cfda511c54e28c51a938a63974814",
     "S3C_BOARD_PREFLIGHT_FAIL.md(RCA)": "9473cb84d4d4c5c8b67d1d1c4d1ac910e6cef529f125f6bad0f8d7bfe942476e",
@@ -18,6 +18,50 @@
   "board_evidence": {
     "fix2_elf_sha256": "a4eff5bd09c18aad84cec8fcff6cbf9e169e8b336513f8512ec1b0670ca94c41",
     "fix2_load_plan_readback_sha256": "1c0565f93281f9ed78a021900e4b3488c9e7862ac60f0b47c3ac09de9138beef",
-    "kf_boundary_firstgate": "180/180 bitwise == HOST_B (FLTA_S1_D00000_M2 t0=300)"
+    "kf_boundary_firstgate": "180/180 bitwise == HOST_B (FLTA_S1_D00000_M2 t0=300)",
+    "dumpchunkfix_elf_sha256": "6d198235a062ae7475e790ccce03d6c72d9e34ee7579fc343065a07e57919e5a",
+    "dumpchunkfix_load_plan_readback_sha256": "b77d64c80fe4f7d582e6e0f54a155ec304f64d2677f6d504d16ed694b5e0f80c",
+    "dumpchunkfix_build": "Release + -DEMS04_PRED_PARITY=1 -DEMS04_DUMP_CHUNK=1 (no Q27 shadow; D1 payload-offset fix)",
+    "fw_gate": "7/7 PASS exit=0 (2026-09-27, after ems_app.c D1 fix)",
+    "q27_shadow_crc_6of6": {
+      "M2_t0_300": "0xF42033C1",
+      "M2_t0_2180": "0x94C83450",
+      "M2_t0_4070": "0x4BCBE29B",
+      "M1_t0_300": "0xEE112755",
+      "M1_t0_2180": "0x5756AD83",
+      "M1_t0_4060": "0x8DD80C65"
+    },
+    "shadow_elf_sha256": "687ed86b83bec9eb03efaee36d871c9bb90be9ee4a6794287c264ce4bc6863cb"
+  },
+  "updated_utc": "2026-09-27T05:40:00Z",
+  "tooling_sha256_new_20260927": {
+    "s3a2_check.py": "4a466863a8a08b5303ae6c691991add0003b201b6471bd635a9733585311d610",
+    "fp_replay_client.py": "c00c909e8f6592cf96d63e6f5efae30dff71e86f50e6f022ba82ae802f481860",
+    "s3a2_chunk_to_frame.py": "b93c17ef1ec44a26d3bec22ab2499a40aa522427227c0f223d271430d4d39a0d",
+    "s3a2_board_test.py": "5299b720616b191dae625fb5104374bf27b07cf74244cb991d0fd6ff2b617b39",
+    "s3a2_dump_reasm.py": "feb0184eb1fc6bae066b746e842f5f2724a7eb35cf6ae2913fb8ee36c456ba5f",
+    "s3c_pilot_batch.py": "122a33d427a3a34e15cdb359527ab912f7d19551e4f6bdc5462b94813dd1e281",
+    "Appli/App/ems04_fp_dumpchunk.c": "1012950c5243bd60d6f5d467bf72e02e8b886050cf1afa9a9dd3175d7e415efe",
+    "Appli/App/ems04_fp_dumpchunk.h": "7077820eb56f68f884cca831a4e72d170070b326d3570a7963f2336648b183e7"
+  },
+  "verdicts_20260927": {
+    "PILOT_Q27_PARITY": "PASS",
+    "PILOT_FIRST_DIVERGENCE_LAYER": "N1_TARGET_EXECUTION",
+    "PILOT_SCOPE": "6/6 predeclared pilot anchors (GOOD M2 + DEGRADED M1 x 3 operating points) \u2014 \u4e0d\u5916\u63a8\u81f3 755 \u8bed\u6599",
+    "SHADOW_CAPTURE_NONINTERFERENCE": "PASS_ON_PILOT",
+    "S3_A2": "PARTIAL_PASS_DIAGNOSTIC_CLOSURE_PENDING (A1-A4 PASS; U1 OPEN; U2 OPEN)",
+    "U1": "DIAGNOSTIC_RESPONSE_BUFFER_INTEGRITY_DEFECT (OPEN)",
+    "U2": "DIAGNOSTIC_HIST_DUMP_SEMANTIC_DEFECT (OPEN)",
+    "S3A2_DIAGNOSTIC_PLANE_OPEN_ITEMS": [
+      "U1",
+      "U2"
+    ]
+  },
+  "experiments_artifacts_new_20260927": {
+    "S3C_Q27_SHADOW_RESULT.md": "b7c8b2a0ee5e6e31f4a920ae65f7e1fed50d6d7ba6056c4091c57bd3f0abbfa7",
+    "S3A2_BOARD_RCA.md": "1c5de99705a85f2b54c82aaf1cef2ef46bd86df1c7f98f939f0c14d7e6a976e5",
+    "st_val_prep/RUNBOOK.md": "ef506f19cf86569cd11823c1dc3c13bb0ade968e1e16ed429b8e5f070bccef8d",
+    "st_val_prep/val_n1_int.mpool": "b596de011d98108d7d3c74cb0cf3d1c5e13ebc335a54002f25be93080e5ce2fb",
+    "R2_WORKERS_ACCEPTANCE.md": "c71eb0dbef645aee3dc69b83dc0634c25fa69d72dccfc3802c9cf4cac953a327"
   }
 }

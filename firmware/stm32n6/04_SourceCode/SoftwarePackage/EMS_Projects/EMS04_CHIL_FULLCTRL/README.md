@@ -34,7 +34,22 @@
 | `tools/gen_ems04_tables.py` | 常数表生成器（`.venv_tf` python）：从 S1 `exported/` 的 f64 冻结表生成 `ems04_tables_gen.c/.h`；Pg 唯一值 >256 时拒绝生成（palette 无损前提破坏告警） |
 | `tools/check_ems04_tables.py` | **位级自校验**：独立重解析生成的 C 数组（十六进制浮点字面量精确回读）与 S1 f64 冻结表逐元素位型比对。结果：**376/376 + 171/171 + 41/41 + 597960/597960 全部位级一致**（机器可读：`results/ems04_tables/tables_check_report.json`） |
 | `results/ems04_tables/` | `tables_gen_manifest.json`（生成清单）、`tables_check_report.json`（自校验报告） |
-| `tools/fp_replay_client.py` | 【C-fw，2026-09-26】EMS04-S2 特征面板串口回放客户端（`.venv_tf` python + pyserial）：`--list-ports` / `ping`（CMD_PING 0x06）/ `replay --scripts <b/vectors_b2/script_B2_*.bin…> --capture <out.bin> --baud 115200 [--batch 512] [--progress 50]` / `--dry-run`（不连板自检）。B2V1 脚本束解析后**帧字节原样透传**，按脚本自带 EXPECT 做响应级流控（板侧 RX 环 1024 B vs DUMP 单帧 13939 B），`in_waiting` 排水 + 超时/零进展保护 + 异常时报告已发送字节数 + summary JSON |
+| `tools/fp_replay_client.py` | 【C-fw，2026-09-26】EMS04-S2 特征面板串口回放客户端（`.venv_tf` python + pyserial）：`--list-ports` / `ping`（CMD_PING 0x06）/ `replay --scripts <b/vectors_b2/script_B2_*.bin…> --capture <out.bin> --baud 115200 [--batch 512] [--progress 50]` / `--dry-run`（不连板自检）。B2V1 脚本束解析后**帧字节原样透传**，按脚本自带 EXPECT 做响应级流控（板侧 RX 环 1024 B vs DUMP 单帧 13939 B），`in_waiting` 排水 + 超时/零进展保护 + 异常时报告已发送字节数 + summary JSON。**2026-09-27 增 `--tail-drain SEC`（默认 0=行为不变）**：分块诊断传输（TYPE 0x27）下一个 DUMP 产生 29 条响应帧、超出脚本 EXPECT 计数，按计数停读会截断 capture（实测丢尾部 4 块 + 2 个 NACK）；给定该项后脚本跑完继续排空至线路静默 |
+
+### S3-A2 / S3-C 资格与诊断工具（2026-09-27 新线）
+
+| 路径 | 内容 |
+|---|---|
+| `Appli/App/ems04_fp_dumpchunk.c/.h` | 【诊断形态，`-DEMS04_DUMP_CHUNK=1`，默认 0 零体积】RSP_FP_DUMP(0x26) 13939 B 单帧在 115200 长流丢帧头（用户裁决 2026-09-26 §14"Repair only the diagnostic transport"），改为 TYPE 0x27 分块直发（块头 18 B：seq/idx/total/data_len/last/rsv，数据 ≤494 B/帧，13932 B → 29 帧）；DUMP 查询（0x25）与载荷字节不变，主机收齐 total_chunks 自行重组 |
+| `Appli/App/ems04_s3c_q27_shadow.c/.h` | 【qualification-only，`-DEMS04_Q27_SHADOW=1`】N1 生成码 `LL_ATON_End_EpochBlock_2` 内 Q27（int8[1,300,11]=3300 B @0x34357080）clean 之后插入一次影子 memcpy + CRC32 头（SEQ 自增、fail-closed valid 位），使 Q27 在 arena 复用前留证；插桩经 Host/tools/patch_reattn1n_q27shadow.py（patch/--restore 两向），非干预性见 `s3c_provenance.json` |
+| `tools/s3c_reatt_replay.py` | CMD_REATT 回放客户端（S2 真值包 canonical hist/kf + sha256 校验）→ q30×3 raw f32 + infer_us capture |
+| `tools/s3c_verify.py` | S3-C 边界逐位核验器（A/B/C/D 边界） |
+| `tools/s3c_pilot_batch.py` | 六锚批式驱动（复用 reatt_replay 的 Board/锚加载）+ `--shadow-dump` 离线校验 Q27 影子缓冲镜像（magic/hdr_len/len/valid/CRC fail-closed） |
+| `tools/s3a2_board_test.py` | S3-A2 分块 DUMP 板测驱动：VOYAGE_INIT + 29×KF_CHUNK + 301×TICK2 + QUERY + DUMP，收 0x27 流重组 13932 B；断言块连续性/last_flag/长度/零坏帧/零 NACK（`--dry-run`/`--selftest` host 自测） |
+| `tools/s3a2_dump_reasm.py` | 0x27 capture 重组工具（独立实现，按 seq 分组，fail-closed） |
+| `tools/s3a2_chunk_to_frame.py` | **传输适配器**：0x27 分块流原位替换为 0x26 单帧（载荷 = 板侧重组字节），使按 0x26 语义编写的 A1-A8 断言机可直接消费分块形态；fail-closed（连续性/last_flag/CRC/长度/单 seq）。往返自测：0x26 载荷切块再适配 ≡ 原 capture |
+| `tools/s3a2_check.py` | S3-A2 时序语义断言机 A1-A8（capture 离线核验器）。**2026-09-27 勘误 3**：负路径期望值对齐冻结固件 gate 序（QUERY(299)→0x43 范围门、QUERY(300.5)→0x40 锁存；原稿 0x45/0x43 与冻结固件/冻结脚本/板级先例三方矛盾），`simulate_capture` 同步实现锁存语义 |
+| `tools/s3c_provenance.json` | S3-C 工具链/冻结制品 SHA 清单（experiments 侧产物以 SHA 绑定；含板级证据 ELF 身份） |
 
 ## 拍回放服务线格式（RTT 通道 0，字节序 LE）
 

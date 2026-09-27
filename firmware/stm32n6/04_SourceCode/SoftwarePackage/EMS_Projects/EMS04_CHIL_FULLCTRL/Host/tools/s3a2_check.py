@@ -10,8 +10,10 @@
 断言（A1..A8，机械执行，全部字节级）：
   A1 会话帧    ：VOYAGE_INIT / KF_CHUNK×n / TICK2×301 逐一 ACK 且 echo 对应；
                  capture 帧全部被配对消费（无多余帧）、零垃圾字节、零 CRC 错。
-  A2 负路径 1  ：QUERY t0=299  → NACK(cmd=0x23, err=0x45)
-  A3 负路径 2  ：QUERY t0=300.5 → NACK(cmd=0x23, err=0x43)
+  A2 负路径 1  ：QUERY t0=299  → NACK(cmd=0x23, err=0x43)（窗满后命中范围门，
+                 冻结 gate 序「范围[300,tick_last]」；非整数 t0 同码，见勘误 3）
+  A3 负路径 2  ：QUERY t0=300.5 → NACK(cmd=0x23, err=0x40)（前帧 NACK 已置会话锁存，
+                 锁存态仅 VOYAGE_INIT 可解；同源 PROTOCOL_FP §6 fail-closed）
   A4           ：QUERY t0=300  → RSP_FP_QUERY(0x24, 76 B)，t0 回显 f64 位级 == 300.0。
   A5           ：DUMP  t0=300  → RSP_FP_DUMP(0x26, 13932 B)，t0 回显 f64 位级。
   A6 窗右端点=t0（核心）：RSP_FP_DUMP hist 13200 B = (300,11) f32 LE C 序 t-major，
@@ -52,10 +54,19 @@
      P_load 为 time_mean 中点行，故 row299 = f32((7777+8888)*0.5) = f32(8332.5)、
      row298 = f32((1298+7777)*0.5) = f32(4537.5)，而非 8888/7777 的直接归一化。
      A6 的位级复算按冻结语义实现，排序断言（max 在末行）与生成器 asserts.json 叙事一致。
-  3) A2 期望 err=0x45 按任务/生成器规格实现；注意冻结固件（B1 b/ems04_fp_svc.c 与
-     C 阶段 Appli/App/ems04_fp_svc.c 同源）的 QUERY 检查序为
-     状态→整数→窗满→范围[300,tick_last]→锚点齐备，窗满后 QUERY(299) 命中范围门
-     返回 0x43——该规格与固件实现的冲突不在本核验器内裁决（升级主 Agent）。
+  3) 负路径期望值勘误（主 Agent 裁决 2026-09-27，依据三方一致）：
+     原稿 A2=0x45 / A3=0x43 与另两处权威互相矛盾——
+       (a) 冻结固件 Appli/App/ems04_fp_svc.c（与 B1 b/ems04_fp_svc.c 同源）：
+           QUERY 检查序 状态→整数性→未满301拍→范围[300,tick_last]→锚点齐备，
+           非整数与越界**同返 ERR_TICK_T=0x43**（svc_fp_query 两处 return）；
+           NACK 即置会话锁存（svc_emit_nack → s->latched），锁存态除 VOYAGE_INIT
+           外一律 ERR_STATE=0x40；
+       (b) 冻结生成脚本 S3A2_SYNTH/script_s3a2.bin 内嵌 EXPECT 即 0x43 / 0x40
+           （unit#333/#334，NACK 期望载荷逐字节）；
+       (c) 板级先例实证（S3C_BOARD_PREFLIGHT_FAIL.md §10.2）与上述一致。
+     故本核验器 NEG1_ERR/NEG2_ERR 修正为 0x43 / 0x40（0x45 仅适用于**窗未满**
+     时对未就绪锚点的应答，本会话脚本窗满，不适用）。修正只对齐权威期望值，
+     不放宽任何判据。
 
 自测辅助（仅写调用方指定路径，不在仓库内产生文件）：
   --emit-sim-capture PATH   按 B2V1 帧序离线构造「模拟 capture」（期望响应字节流：
@@ -134,8 +145,8 @@ REQUIRED_H1_COLS = ["P_load_total_kW", "v_ship_mps", "acceleration_mps2", "n_pro
 P_LOAD_COL = REQUIRED_H1_COLS.index("P_load_total_kW")   # = 0（勘误见模块 docstring）
 
 # A2/A3 期望（任务/生成器规格；A2 与冻结固件 gate 序的冲突见 docstring 勘误 3）
-NEG1_T0, NEG1_ERR = 299.0, ERR_NOT_READY     # 0x45
-NEG2_T0, NEG2_ERR = 300.5, ERR_TICK_T        # 0x43
+NEG1_T0, NEG1_ERR = 299.0, ERR_TICK_T        # 0x43（窗满后范围门；勘误 3）
+NEG2_T0, NEG2_ERR = 300.5, ERR_STATE         # 0x40（前帧 NACK 置锁存；勘误 3）
 
 QUERY_KIND_NEG1, QUERY_KIND_NEG2, QUERY_KIND_POS = "neg1", "neg2", "pos"
 
@@ -452,8 +463,9 @@ def kf_lookup_sim(plan: SessionPlan, t0: float):
 def simulate_capture(plan: SessionPlan, break_a6: bool = False) -> bytes:
     """按脚本帧序构造期望响应字节流（喂核验器应 overall=pass）。
 
-    负路径按 S3-A2 脚本期望应答（neg1 → 0x45）。注意：冻结固件 gate 序在窗满后对
-    QUERY(299) 回 0x43（范围门）——本模拟按脚本期望语义实现，冲突已升级（docstring 勘误 3）。
+    负路径按**冻结固件 gate 序**应答（勘误 3）：QUERY 检查序 状态→整数性→未满301拍
+    →范围[300,tick_last]→锚点齐备；任一 NACK 置会话锁存，其后非 VOYAGE_INIT 命令
+    一律 ERR_STATE。窗满后 QUERY(299) → 0x43（范围门），紧随 QUERY(300.5) → 0x40（锁存）。
     break_a6=True 时在构造后、锁存前把 hist 末行 P_load 改为
     f32(transform_h1(1298.0))（锁存域注入，QUERY sha 随之一致，A6 单点失败）。
     """
@@ -473,9 +485,12 @@ def simulate_capture(plan: SessionPlan, break_a6: bool = False) -> bytes:
     table_ready = False
     latched = None            # (t0, hist_bytes, kf_seg)
     last_query_t0 = None
+    state = {"latched_err": False}   # 会话锁存（frozen：NACK 后除 VOYAGE_INIT 外一律 ERR_STATE）
 
-    def nack(cmd, err):
+    def nack(cmd, err, latch=True):
         out.extend(enc_frame(T_NACK, bytes([cmd, err])))
+        if latch:
+            state["latched_err"] = True
 
     def ack(cmd):
         out.extend(enc_frame(T_ACK, bytes([cmd])))
@@ -488,7 +503,10 @@ def simulate_capture(plan: SessionPlan, break_a6: bool = False) -> bytes:
             inited = True
             table_ready = False
             latched = None
+            state["latched_err"] = False
             ack(ftype)
+        elif state["latched_err"]:
+            nack(ftype, ERR_STATE, latch=False)   # 锁存态：仅 VOYAGE_INIT 可续
         elif ftype == T_KFC:
             if not inited:
                 nack(ftype, ERR_STATE)
@@ -507,10 +525,13 @@ def simulate_capture(plan: SessionPlan, break_a6: bool = False) -> bytes:
             if not inited or not table_ready:
                 nack(ftype, ERR_STATE)
             elif not math.isfinite(t0) or t0 != math.floor(t0):
-                nack(ftype, ERR_TICK_T)
+                nack(ftype, ERR_TICK_T)               # 非整数锚点（frozen gate 3）
+            elif plan.max_tick() < HIST_ROWS:
+                nack(ftype, ERR_NOT_READY)            # 窗未满 301 拍（frozen gate 4）
+            elif t0 < float(HIST_ROWS) or t0 > float(plan.max_tick()):
+                nack(ftype, ERR_TICK_T)               # 范围 [300, tick_last]（frozen gate 5）
             elif t0 != float(plan.max_tick()):
-                # S3-A2 锚点语义（PROTOCOL_FP §4 冻结补充）：非当前拍 → NOT_READY
-                nack(ftype, ERR_NOT_READY)
+                nack(ftype, ERR_NOT_READY)            # 锚点样本尚未到齐（frozen gate 6）
             else:
                 hist = construct_hist_sim(plan, int(t0))
                 kf_seg = kf_lookup_sim(plan, t0)
@@ -606,10 +627,8 @@ def run_checks(script: Script, cap: Capture, plan: SessionPlan, asserts: dict):
             elif len(p) != 2 or p[0] != T_QUERY:
                 results[akey] = "FAIL: %s NACK 载荷异常 %s（期望 [cmd=0x23,err]）" % (label, p.hex())
             elif p[1] != want_err:
-                msg = "FAIL: %s 期望 err=0x%02X 得 0x%02X" % (label, want_err, p[1])
-                if key == QUERY_KIND_NEG1 and p[1] == ERR_TICK_T:
-                    msg += "（冻结固件 gate 序对窗满后 QUERY(299) 回范围门 0x43——与脚本/规格期望 0x45 冲突，需主 Agent 裁决，见模块 docstring 勘误 3）"
-                results[akey] = msg
+                results[akey] = "FAIL: %s 期望 err=0x%02X 得 0x%02X（期望值口径见勘误 3）" % (
+                    label, want_err, p[1])
             elif not ok:
                 results[akey] = "FAIL: %s NACK 帧 CRC 错" % label
             else:
@@ -815,7 +834,7 @@ def dry_run(script: Script, plan: SessionPlan, asserts: dict) -> int:
     print("    [..%d]    TICK2×%d          -> ACK(0x22)×%d"
           % (plan.counts[T_KFC] + plan.counts[T_TICK2], plan.counts[T_TICK2],
              plan.counts[T_TICK2]))
-    print("    [..]     QUERY t0=299/300.5/300 -> NACK 0x45 / NACK 0x43 / RSP_FP_QUERY")
+    print("    [..]     QUERY t0=299/300.5/300 -> NACK 0x43 / NACK 0x40 / RSP_FP_QUERY")
     print("    [末]     DUMP t0=300        -> RSP_FP_DUMP(13932 B 载荷)")
     sha_ok = asserts.get("script_sha256") == script.sha256
     print("    asserts.json script_sha256 比对: %s" % ("一致" if sha_ok else "不一致"))
@@ -873,8 +892,8 @@ def main(argv=None) -> int:
     results, first_failure, details = run_checks(script, cap, plan, asserts)
 
     labels = {
-        "A1": "会话帧 ACK 对应", "A2": "负路径1 QUERY t0=299 → NACK 0x45",
-        "A3": "负路径2 QUERY t0=300.5 → NACK 0x43", "A4": "QUERY t0=300 → RSP_QUERY t0 位级回显",
+        "A1": "会话帧 ACK 对应", "A2": "负路径1 QUERY t0=299 → NACK 0x43（范围门）",
+        "A3": "负路径2 QUERY t0=300.5 → NACK 0x40（锁存）", "A4": "QUERY t0=300 → RSP_QUERY t0 位级回显",
         "A5": "DUMP t0=300 → RSP_DUMP t0 回显", "A6": "窗右端点=t0（hist P_load 列位级+排序+归一化期望）",
         "A7": "kf 行签名 row0 全 10.0", "A8": "QUERY↔DUMP sha256 一致",
     }

@@ -579,6 +579,22 @@ def cmd_replay(args) -> int:
         return 4 if isinstance(exc, TimeoutError) else 5
 
     link.drain_idle()
+    if args.tail_drain > 0:
+        # 追加排水（默认关）：分块诊断传输（TYPE 0x27，用户裁决 2026-09-26 §14）下
+        # 单个 DUMP 产生 29 条响应帧，超出脚本 EXPECT 计数——按期望计数停读会截断
+        # capture。给定本项时，脚本跑完后继续排空串口至线路静默，保证 capture 完整。
+        # 不改任何期望判定（mismatch 仍按原规则记录）。
+        t_tail = time.time()
+        total_tail = 0
+        while time.time() - t_tail < args.tail_drain:
+            n = link.drain()
+            total_tail += n
+            if n == 0:
+                time.sleep(0.05)
+                if link.drain() == 0:
+                    break
+        print("[replay] tail-drain %.1fs：追加读取 %d B（capture 已补全）"
+              % (args.tail_drain, total_tail))
     elapsed = time.time() - t_start
     progress_report(final=True)
     ok = (link.nack == 0 and link.crc_bad == 0 and not mismatches
@@ -661,6 +677,10 @@ def main(argv=None) -> int:
     p_rep.add_argument("--on-mismatch", choices=("stop", "continue"), default="stop")
     p_rep.add_argument("--expected-anchors", type=int, default=0,
                        help="仅用于进度显示（默认 0=不显示分母）")
+    p_rep.add_argument("--tail-drain", type=float, default=0.0,
+                       help="秒：脚本跑完后追加排水上限（默认 0=关）。分块诊断传输"
+                            "（TYPE 0x27，裁决 2026-09-26 §14）会话必设，否则 capture "
+                            "会被脚本期望计数提前截断（丢尾部块与后续 NACK）")
 
     args = ap.parse_args(argv)
     if args.list_ports:
