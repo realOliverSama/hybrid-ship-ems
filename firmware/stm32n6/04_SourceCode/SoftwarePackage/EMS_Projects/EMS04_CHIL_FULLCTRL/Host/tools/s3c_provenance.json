@@ -62,6 +62,17 @@
     "S3A2_BOARD_RCA.md": "1c5de99705a85f2b54c82aaf1cef2ef46bd86df1c7f98f939f0c14d7e6a976e5",
     "st_val_prep/RUNBOOK.md": "ef506f19cf86569cd11823c1dc3c13bb0ade968e1e16ed429b8e5f070bccef8d",
     "st_val_prep/val_n1_int.mpool": "b596de011d98108d7d3c74cb0cf3d1c5e13ebc335a54002f25be93080e5ce2fb",
-    "R2_WORKERS_ACCEPTANCE.md": "c71eb0dbef645aee3dc69b83dc0634c25fa69d72dccfc3802c9cf4cac953a327"
+    "R2_WORKERS_ACCEPTANCE.md": "c71eb0dbef645aee3dc69b83dc0634c25fa69d72dccfc3802c9cf4cac953a327",
+    "ST_VAL_MUTATION_PREFLIGHT.md": "a2d1d4984bb04da5b23f3e7d62906233fdbf0a89a2b4821c81f1a03fe66bac3f",
+    "ST_VAL_EXEC_STATUS.md": "eeb724ddb491e068bffb3ae0681fab4009db46f141bba10bf1415444902fd2bf",
+    "v2_holdout_prep/V2_EXCLUSION_LEDGER.json": "2e81a93f7ef5de9221e5b3d2c9f06402cc81ff93fb90981a0541c8ea8bd0c52a"
+  },
+  "st_line_provenance_20260927": {
+    "generate_onnx_sha256": "38d9a4d48572b29d213b1b1544a4e9b3d127aa26e4ff8113551672d7265ec184",
+    "generate_raw_unpatched_sha256": "ed70898fb8b760358ab3ab737dfce84255c3d7a7fdf751928513c7e83ffec3ff",
+    "bug1_patch_tool": "experiments/npu_rca_2026-09-23/tools/patch_blob_weights.py (6/14 tensors, re-audit 0 mismatch)",
+    "patched_raw_sha256": "a9e078ab22be76d9f3c0e57d343e2e62b55b147d49f950bfebf56baa73a2e195",
+    "board_nor_0x70B00000_matches_patched": true,
+    "note": "ST payload must deploy the patched raw (a9e078ab) = board-resident; zero-NOR via n6_loader skip_external_flash_programming"
   }
 }
