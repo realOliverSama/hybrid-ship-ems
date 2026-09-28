@@ -19,9 +19,10 @@ import os
 from docx import Document
 from docx.enum.text import WD_ALIGN_PARAGRAPH
 from docx.oxml.ns import qn
-from docx.shared import Pt, RGBColor
+from docx.shared import Inches, Pt, RGBColor
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+FIGDIR = os.path.join(HERE, "figures_phase4")
 ROOT = os.path.dirname(os.path.dirname(HERE))
 FW4 = os.path.join(ROOT, "firmware", "stm32n6", "04_SourceCode", "SoftwarePackage",
                    "EMS_Projects", "EMS04_CHIL_FULLCTRL")
@@ -142,6 +143,21 @@ def table(doc, headers, rows, widths=None):
     return t
 
 
+def figure(doc, fname, caption, width=5.9):
+    """插图 + 图注（居中；缺图时打警告不中断，manifest 登记跳过项）。"""
+    path = os.path.join(FIGDIR, fname)
+    if not os.path.isfile(path):
+        print("WARN: 缺图 %s（跳过）" % fname)
+        return
+    p = doc.add_paragraph()
+    p.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    p.add_run().add_picture(path, width=Inches(width))
+    cap = doc.add_paragraph()
+    cap.alignment = WD_ALIGN_PARAGRAPH.CENTER
+    r = cap.add_run(caption)
+    set_run_font(r, size=9, east="黑体")
+
+
 # ---------------------------------------------------------------- 正文组装
 
 def build():
@@ -185,6 +201,7 @@ def build():
 
     # ---- 1 背景与问题定义 ----
     heading(doc, "1  研究背景与问题定义", 1)
+    figure(doc, "r_fig1_1_tech_route.png", "图 1-1  Phase 4 技术路线（复用论文草稿 Visio 图 1-1）")
     heading(doc, "1.1  承接 Phase 3：从 Model D/CHIL 到 Model E/整机 soft-HIL", 2)
     para(doc, "Phase 3（EMS01）在 Model D 平台上完成四臂×两场景 soft-HIL 真闭环：仪器级①②全 PASS，"
               "NN 闭环增益 S20 带内 −2.25~−2.65 kg（≈0.68~0.80%）。其边界同样明确：物理模型为简化"
@@ -206,6 +223,7 @@ def build():
 
     # ---- 2 方法与技术路线 ----
     heading(doc, "2  研究方法与技术路线", 1)
+    figure(doc, "r_fig2_1_system_arch.png", "图 2-1  系统总体架构（复用论文草稿 Visio 图 2-1）")
     heading(doc, "2.1  A1：Model D→E 建模与参数真实性审计", 2)
     para(doc, "零施工纯审计：对 Model D 的 14 个 subsystem 逐个给出 KEEP/REFINE/REPLACE/ADD/REJECT "
               "处置与双等级打分；参数总表 210 行（parameter×module），按五级来源（drawing/vendor/"
@@ -228,6 +246,9 @@ def build():
               "正确检出。螺旋桨 ±20% OAT 敏感性 15 例零失败：K_Fw（功率 −29%/+49%）≫ K_Qw（±27%）"
               "> K_Fv（±20%）≫ K_Qv（±7%）> 水深（±2.6%），速度闭环锁 11 kn 下航速不敏感——"
               "油耗方向性结论对螺旋桨摄动全域稳健。")
+    figure(doc, "r_fig2_2_model_top.png", "图 2-2  Model E 顶层结构（复用论文草稿 Visio 图 2-2）")
+    figure(doc, "r_fig2_5_bsfc.png", "图 2-3  双机组 BSFC 曲线（PCHIP 五锚点，复用论文草稿图）")
+    figure(doc, "r_fig2_6_battery.png", "图 2-4  电池 LFP 1RC 等效电路特性（复用论文草稿图）")
     heading(doc, "2.3  B：PMS v2 + Safety-Interlock（模型层）", 2)
     para(doc, "07_PMS_v2 四层结构：Demand_Policy（LPF τ=60 s + SOC 滞回 0.55/0.60 + 恢复偏置 100 kW）"
               "→ Source_Selector → Commitment_Supervisor（Stateflow 图，0.01 s 离散步，整数 tick 仲裁，"
@@ -235,23 +256,26 @@ def build():
               "clamp[125,500] kW）。16_Safety_Interlock 恰五条执行性 override（S1a/S1b/S2/S3+S4/S5），"
               "经 UnitDelay 回 07、不直写 Plant——安全规则与 EMS 优化分离，先进控制不可绕过。"
               "三臂验证（R0/R5/P2）+ 注入 S1~S5 全过；控制 Gate 机读 134/0，负向 7 缺陷全检出。")
+    figure(doc, "r_fig2_3_pms_safety.png", "图 2-5  PMS v2 四层 + Safety-Interlock 结构（复用论文草稿 Visio 图 2-5）")
     heading(doc, "2.4  C：Mission Generator v3", 2)
     para(doc, "按 Route→Environment→Navigation Constraint→Operator→Plant 生成真实内河航次：九件机器"
               "注册表 + 14 节点 DAG + 三层分层生成语义（L0 template→L1 regime→L2 operator→L3 "
               "realization→BASE DRAW 先落盘后 L4 intervention）；seed 树 SHA256 全血统（Threefry4x64）。"
               "无旁路边界：下游不得对 simulator 内部建独立 predictor 接口，forecast_issue 只接受 t≤t₀ "
               "截断切片（AC-436）。预资格 108 航次（27 族×M1~M4）全 ACCEPT、双跑零 mismatch。"
-              "T-429 可辨识性审计 FINAL FAIL 如实登记（见 7.1）。")
+              "T-429 可辨识性审计 FINAL FAIL 如实登记（见 8.1）。")
+    figure(doc, "r_fig2_4_mission_gen.png", "图 2-6  Mission Generator v3 架构（复用论文草稿 Visio 图 2-6）")
     heading(doc, "2.5  D：Dataset v3", 2)
     bullets(doc, [
         "四契约：observation（H1 11 通道 1 Hz）+ future_information（Known/Forecast/Unknown 三分，"
         "K 通道 4 + F 通道 2）+ producer 接口（十一项能力）+ schema；ORACLE 与因果面物理分离。",
         "窗口化：History 300 s@1 Hz × Future 300 s（30×10 s，q10/q50/q90 目标 [30,3]，kW 域）。",
         "formal 冻结（2026-09-11）：576 IID（FLTA）+ 200 OOD（FLTB）= 776 航次、0 拒收、197,448 窗"
-        "（train 136,052 / val 36,160 / test 25,236）；双跑零 mismatch；能量交叉核对 max_rel=3.8e-14；"
-        "归一化 fit_on=train_only。",
-        "pilot 家族 19 航次（含 S20 复合航次），作为部署侧（EMS04）soft-HIL 的植物场景域。",
-    ])
+              "（train 136,052 / val 36,160 / test 25,236）；双跑零 mismatch；能量交叉核对 max_rel=3.8e-14；"
+              "归一化 fit_on=train_only。",
+              "pilot 家族 19 航次（含 S20 复合航次），作为部署侧（EMS04）soft-HIL 的植物场景域。",
+           ])
+    figure(doc, "g_fig3_6_dataset_v3.png", "图 2-7  Dataset v3 航次族与窗口划分（数据源 formal_freeze_result.json）")
     heading(doc, "2.6  E：predictor_v3 / REAT-T", 2)
     para(doc, "五候选公平对比（MLP-Q-v3/TCN-Q/Transformer/TFT/REAT-T），单向证据流 TRAIN→VAL HPO→"
               "CONFIG FREEZE→3-SEED CONFIRM→VAL-ONLY WINNER→PRETERMINAL FREEZE→TEST/OOD UNSEAL→"
@@ -262,6 +286,12 @@ def build():
               "h1k-only 3.8）——K/F 未来信息通道为主要增益来源。test 集（25,236 窗）E300 kWh "
               "MAE=0.746、R²=0.9931、80% 区间覆盖误差 0.202、分位交叉率 0；OOD（A1）MAE=3.91、"
               "R²=0.9143。FR-836 冻结 C2=REATT seed0（winner_identity_sha256 832720b0…）。")
+    figure(doc, "r_fig3_1_problem.png", "图 2-8  预测问题定义（复用论文草稿 Visio 图 3-1）")
+    figure(doc, "r_fig3_2_archs.png", "图 2-9  五候选预测器架构对比（复用论文草稿 Visio 图 3-2）")
+    figure(doc, "g_fig3_5_pred_benchmark.png",
+           "图 2-10  五候选基准：验证集 pinball（3 种子）与 test 25,236 窗终评"
+           "（数据源 ME/results/predictor_v3 confirm/terminal JSON；消融证实 K/F 未来信息为主要增益）")
+    figure(doc, "r_fig3_4_segment_mae.png", "图 2-11  REAT-T 分段误差（复用论文草稿图）")
     heading(doc, "2.7  EMS04：板上全控制器与三链 soft-HIL 方法学", 2)
     heading(doc, "2.7.1  时间尺度设计（10 s 决策拍的出处）", 3)
     para(doc, "整机 soft-HIL 的拍周期不是实现权宜，而是模型层设计的直接映射：EMS 决策周期 "
@@ -279,6 +309,7 @@ def build():
               "（零 NACK/超时、SOC∈[0.15,0.95]、无板振荡）、action 一致性档案面、同档 P_gen_ref 发散"
               "硬面、事件冻结清单面；判据语义的两次演化均由运行证据 + 用户裁决驱动并全量归档"
               "（run1/run2 原始记录随仓库入库）。")
+    figure(doc, "r_fig3_3_control_law.png", "图 2-12  law6 控制律结构（λ_eff=λ₀+K_soc·e_SOC+Δλ，下限 0.43；复用论文草稿 Visio 图 3-5）")
 
     # ---- 3 分阶段结果（六线） ----
     heading(doc, "3  分阶段实验结果（A/B/C/D/E 六线）", 1)
@@ -290,8 +321,20 @@ def build():
            ["D", "Dataset v3", "formal 776 航次 / 197,448 窗冻结；双跑零 mismatch；能量核对 3.8e-14", "完成"],
            ["E", "REAT-T 预测器", "五候选 Winner；test E300 R²=0.9931 / MAE=0.746 kWh；OOD R²=0.9143", "完成"]])
 
-    # ---- 4 EMS04 板级逐层验证 ----
-    heading(doc, "4  EMS04 板级逐层位级验证（S1→G1）", 1)
+    # ---- 4 F 线：practical predictive-EMS 预注册对照与前期 soft-HIL ----
+    heading(doc, "4  F 线：practical predictive-EMS 预注册对照实验（论文第 4 章域）", 1)
+    para(doc, "T-445 Oracle Gate 判 GATE_VALIDITY_FAIL 后，F 包转向 practical predictive-EMS：以"
+              "冻结 REAT-T（FR-836）为 C2 的预注册对照实验（论文第 4 章）。本报告不重抄其全部分析，"
+              "仅以两幅代表图衔接；完整实验数据、统计结论与公平性口径见论文草稿第 4 章。前期 "
+              "soft-HIL（MLP 部署链路）作为第 5 章对象留档于论文图 5-1，与本文 EMS04 整机 soft-HIL"
+              "（REAT-T 板端）严格区分口径。")
+    figure(doc, "r_fig4_1_prior_softhil.png",
+           "图 4-1  前期 soft-HIL 链（MLP 口径，论文第 5 章；REAT-T 板端验证由本文第 5 章补齐）")
+    figure(doc, "r_fig4_2_paired.png", "图 4-2  预注册配对对照（复用论文草稿图 4-1）")
+    figure(doc, "r_fig4_3_dlambda.png", "图 4-3  Δλ 决策面对照（复用论文草稿图 4-4）")
+
+    # ---- 5 EMS04 板级逐层验证 ----
+    heading(doc, "5  EMS04 板级逐层位级验证（S1→G1）", 1)
     table(doc, ["层", "内容", "板上/移植证据"],
           [["S1", "law6 C 移植 + 冻结表（palette 584.3 KiB）", "377/377 拍 Δλ 位级一致"],
            ["S2", "特征面板服务（VOYAGE_INIT/KF_CHUNK/TICK2/QUERY，H1 板侧构造）", "755/755 逐字节 parity"],
@@ -302,12 +345,12 @@ def build():
               "reason=4 为 S2 realized-gap 声明事件、P_DG_ref clamp 形态正确、λ 随 SOC 线性）。已知项："
               "S4Smoke 形态 DWT 未使能，infer_us/ctrl_us 遥测恒 0（非控制面）。")
 
-    # ---- 5 整机 soft-HIL ----
-    heading(doc, "5  整机 soft-HIL 验证（C1→C4）", 1)
-    heading(doc, "5.1  C1：纯 host 双臂闭环（G-P2E + 双臂对拍）", 2)
+    # ---- 6 整机 soft-HIL ----
+    heading(doc, "6  整机 soft-HIL 验证（C1→C4）", 1)
+    heading(doc, "6.1  C1：纯 host 双臂闭环（G-P2E + 双臂对拍）", 2)
     para(doc, "PlantStepE codegen 门（G-P2E）719/719 拍 X 直读 4 状态位级一致（worst=3.64e-12）；"
               "A2/B 双臂整航次决策对拍按 G6-2 档案语义完成。")
-    heading(doc, "5.2  C3：单航次板在环闭环（S20 复合航次，541 拍）", 2)
+    heading(doc, "6.2  C3：单航次板在环闭环（S20 复合航次，541 拍）", 2)
     para(doc, "形态：PC 侧 PlantStepE GRT 植物以 10 s 拍（1000×0.01 s 子步）推进；每拍先由第 1 个子步"
               "闭合 A2 特征窗与 H1 环边界（ERT pre-integration 写出语义），再经 TICK_CTRL 下行"
               "（seq+tick+8×f32 状态+hist 300×11+kf 30×6），板上全链计算后回 P_gen_ref 馈回植物。"
@@ -337,7 +380,12 @@ def build():
     para(doc, "每拍耗时实测（10 s 决策拍）：下行 UART 13960 B@115200 ≈1.49 s；板内处理 ≈6.83 s"
               "（REATT ≈0.3 s，law6 DP 21 万次转移/拍为主要项——DWT 遥测缺失，分账待补）；host 三链 "
               "中位 0.64 s；合计 ≈9.1 s/拍，约 1.1 倍物理实时。")
-    heading(doc, "5.3  C4：冻结电池 3 航次（元数据规则选样）", 2)
+    figure(doc, "g_fig5_2_c3_overview.png",
+           "图 6-1  C3 单航次闭环总览：SOC（界内）/ 植物 P_load 与三链 P_gen_ref / 三链 Δλ（橙底=漂移档案窗）。"
+           "0↔800 kW 方波段为执行层在 λ 下限处充-放电经济性近平的逐拍 argmin 切换，植物侧机组惯性吸收，无发散振荡")
+    figure(doc, "g_fig5_3_c3_drift.png",
+           "图 6-2  C3 漂移档案时间线：59 拍三子类（host 共识/板随 canonical/三互异）与 P_gen_ref 偏差幅值（全部逐拍在库可重判）")
+    heading(doc, "6.3  C4：冻结电池 3 航次（元数据规则选样）", 2)
     para(doc, "选样规则先冻结后执行（dur≥600 s 域内按 P_load 均值取低/中/高三分位，中位平局取 "
               "voyage_id 字典序）：S02_downstream（R_low）/ S08_resistance_bands（R_mid）/ "
               "S03_upstream（R_high）。逐航次独立复位闭环结果：")
@@ -356,7 +404,11 @@ def build():
             GATE_S03.get("overall")]])
     para(doc, "电池合取 overall=%s（wall 835 s）。S20 刀锋漂移为复合航次瞬态窗特有，短航次不触及——"
               "这一对照本身即漂移机制的定位证据。" % bat("overall"))
-    heading(doc, "5.4  验收边界（三项登记偏差）", 2)
+    figure(doc, "g_fig5_4_c4_battery.png",
+           "图 6-3  C4 电池三航次：SOC 与三链 P_gen_ref（逐航次独立复位；三航次板与 B_HOST 全等值）")
+    heading(doc, "6.4  每拍时序预算", 2)
+    figure(doc, "g_fig5_5_timing.png", "图 6-4  每拍墙钟分解（对 10 s 决策拍，占用率约 90%）")
+    heading(doc, "6.5  验收边界（三项登记偏差）", 2)
     bullets(doc, [
         "推理后端跨域漂移：C3 的 59 拍 action 差异经用户裁决（G6 §4 承接点）认定为 S3-C 已登记 "
         "REATT 后端数值漂移传播，降级为 CLOSED_LOOP_BACKEND_DRIFT 档案（逐拍全量 CSV 在库，"
@@ -368,8 +420,8 @@ def build():
         "（黑屏停 boot ROM 0x1800350E）独立立项，修复后补产品形态等价性冒烟。",
     ])
 
-    # ---- 6 结论与贡献 ----
-    heading(doc, "6  结论与贡献", 1)
+    # ---- 7 结论与贡献 ----
+    heading(doc, "7  结论与贡献", 1)
     bullets(doc, [
         "可信物理平台：Model E 以全脚本驱动 + 参数证据链 + 物理/负向双 Gate 建成（920 blocks），"
         "敏感性与可区分性验证支撑结论稳健性。",
@@ -383,9 +435,9 @@ def build():
         "过程本身作为可审计证据入库。",
     ])
 
-    # ---- 7 局限与展望 ----
-    heading(doc, "7  局限与展望", 1)
-    heading(doc, "7.1  局限（如实登记）", 2)
+    # ---- 8 局限与展望 ----
+    heading(doc, "8  局限与展望", 1)
+    heading(doc, "8.1  局限（如实登记）", 2)
     bullets(doc, [
         "C 线 T-429 可辨识性审计 FINAL FAIL（0/6 必需对比 PASS）：预配准盲区间歇性不可辨识，"
         "formal 以 amendment 放行——语料对比力证据存在缺口。",
@@ -398,7 +450,7 @@ def build():
         "S4Smoke 形态 DWT 遥测缺失（infer_us/ctrl_us 恒 0）；Model E 绝对量为 representative hull "
         "（target_vessel_confirmed=false），绝对油耗数值不具备实船对标意义。",
     ])
-    heading(doc, "7.2  展望（另立项）", 2)
+    heading(doc, "8.2  展望（另立项）", 2)
     bullets(doc, [
         "XIP/flash boot 启动 RCA 与 release 启动修复（含产品形态等价性冒烟）。",
         "formal 臂覆盖：FLTA 族 PlantStepE 植物化 → M1/M2 臂 soft-HIL 电池。",

@@ -1,0 +1,87 @@
+{
+ "reused": [
+  {
+   "file": "r_fig1_1_tech_route.png",
+   "origin": "论文草稿 Visio fig1_1（技术路线）"
+  },
+  {
+   "file": "r_fig2_1_system_arch.png",
+   "origin": "论文草稿 Visio fig2_1（系统总体架构）"
+  },
+  {
+   "file": "r_fig2_2_model_top.png",
+   "origin": "论文草稿 Visio fig2_2（Model E 顶层结构）"
+  },
+  {
+   "file": "r_fig2_3_pms_safety.png",
+   "origin": "论文草稿 Visio fig2_5（PMS v2/Safety 结构）"
+  },
+  {
+   "file": "r_fig2_4_mission_gen.png",
+   "origin": "论文草稿 Visio fig2_6（Mission Generator v3）"
+  },
+  {
+   "file": "r_fig3_1_problem.png",
+   "origin": "论文草稿 Visio fig3_1（预测问题定义）"
+  },
+  {
+   "file": "r_fig3_2_archs.png",
+   "origin": "论文草稿 Visio fig3_2（五候选架构对比）"
+  },
+  {
+   "file": "r_fig3_3_control_law.png",
+   "origin": "论文草稿 Visio fig3_5（law6 控制律结构）"
+  },
+  {
+   "file": "r_fig4_1_prior_softhil.png",
+   "origin": "论文草稿 Visio fig5_1（前期 MLP soft-HIL 链，口径见映射文档）"
+  },
+  {
+   "file": "r_fig2_5_bsfc.png",
+   "origin": "论文草稿 figures/data（机组 BSFC 曲线）"
+  },
+  {
+   "file": "r_fig2_6_battery.png",
+   "origin": "论文草稿 figures/data（电池 1RC 特性）"
+  },
+  {
+   "file": "r_fig3_4_segment_mae.png",
+   "origin": "论文草稿 figures/data（REAT-T 分段误差）"
+  },
+  {
+   "file": "r_fig4_2_paired.png",
+   "origin": "论文草稿 figures/data（预注册配对对照）"
+  },
+  {
+   "file": "r_fig4_3_dlambda.png",
+   "origin": "论文草稿 figures/data（Δλ 决策面）"
+  }
+ ],
+ "generated": [
+  {
+   "file": "g_fig3_5_pred_benchmark.png",
+   "origin": "ME/results/predictor_v3/{confirm,terminal}（test 25,236 窗；消融 9 arm-seed）"
+  },
+  {
+   "file": "g_fig3_6_dataset_v3.png",
+   "origin": "ME/results/dataset_v3/formal/formal_freeze_result.json（双跑零 mismatch）"
+  },
+  {
+   "file": "g_fig5_2_c3_overview.png",
+   "origin": "EMS04 Host/results/s4_c3/s4_c3_closedloop.csv（run3，541 拍，gate v2_1 overall=True）"
+  },
+  {
+   "file": "g_fig5_3_c3_drift.png",
+   "origin": "EMS04 Host/results/s4_c3/s4_c3_closedloop.csv（bb_bh_attr/bb_bh_sub 逐拍）"
+  },
+  {
+   "file": "g_fig5_4_c4_battery.png",
+   "origin": "EMS04 Host/results/s4_c4/s4_c4_<vid>.csv（S02/S08/S03，gate 均 overall=True）"
+  },
+  {
+   "file": "g_fig5_5_timing.png",
+   "origin": "分相位探针（2026-09-29 实测）+ s4_c3_closedloop.csv host_ms/board_ms"
+  }
+ ],
+ "skipped": []
+}
