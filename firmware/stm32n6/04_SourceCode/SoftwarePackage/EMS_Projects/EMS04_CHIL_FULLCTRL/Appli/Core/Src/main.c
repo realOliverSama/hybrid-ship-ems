@@ -23,7 +23,7 @@
 /* USER CODE BEGIN Includes */
 /* EMS_N1_LADDER（SRAM 直载 RAM-Release）同 DEBUG：绕过 FSBL，需自配时钟与
  * HyperRAM/LCD fb（缺后者 = LCD 首帧写 0x90000000 BusFault→lockstop，板上实锤） */
-#if defined(DEBUG) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+#if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 #include "../../../../../Drivers/BSP/SYS/sys.h"
 #include "../../../../../Drivers/BSP/HyperRAM/hyperram.h"
 #endif
@@ -38,7 +38,7 @@
 /* LL EnableClockLowPower 三族（LL_BUS/LL_MEM/LL_AHB/LL_APB/LL_MISC，同文件内定义），
  * npu_low_power_clock_config()（991 low_power_clock_config 移植，T-507 根因②）依赖 */
 #include "stm32n6xx_ll_bus.h"
-#if defined(DEBUG) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+#if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 /* bare 名 include：有意不用相对路径，避免 prepare 误检 NORFlash 组件并
  * 把 ExtMem loader 胶水（extmem_user_driver.c）混入 AUTO BSP 块；NORFlash BSP
  * 源文件与包含路径由 Appli/CMakeLists.txt 的 EMS01 AI 块显式接线（991 同款 4 文件）。
@@ -72,7 +72,7 @@ XSPI_HandleTypeDef hxspi1;
 XSPI_HandleTypeDef hxspi2;
 
 /* USER CODE BEGIN PV */
-#if defined(DEBUG) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+#if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 static HyperRAM_ObjectTypeDef HyperRAMObject = {0};
 #if (EMS_FW_MODE == EMS_FW_MODE_NPU)
 static NORFlash_ObjectTypeDef NORFlashObject = {0};

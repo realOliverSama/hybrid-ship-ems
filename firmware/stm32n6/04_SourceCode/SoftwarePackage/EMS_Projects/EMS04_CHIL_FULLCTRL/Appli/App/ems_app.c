@@ -53,6 +53,9 @@
 #include "ems_params.h"
 #include "ems_proto.h"
 #include "ems_reatt.h" /* phase4-g：CMD_REATT REAT-T 板上预测服务 */
+#if defined(EMS04_S4_FULLCTRL) && EMS04_S4_FULLCTRL
+#include "ems04_tick_ctrl.h" /* S4-G4：全控制器 TICK_CTRL 服务 */
+#endif
 
 #if defined(EMS04_FP_PARITY) && EMS04_FP_PARITY
 #include "ems04_fp_board.h" /* EMS04-S2 C-fw：特征面板服务（0x20..0x26）UART 胶水 */
@@ -387,6 +390,9 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
     case EMS_PROTO_CMD_RESET:
         ems_ctrl_init(&ems_ctrl_st);            /* 下一 tick 平 fill（EML:27-35） */
         ems_proto_session_reset(&ems_proto_st); /* 会话/STALE/事件环清零 */
+#if defined(EMS04_S4_FULLCTRL) && EMS04_S4_FULLCTRL
+        ems04_tick_ctrl_reset();                /* S4：PMS/Safety/law6 状态复位 */
+#endif
         (void)ems_proto_send_ack(&ems_proto_st, type);
         break;
     case EMS_PROTO_CMD_TICK:
@@ -405,6 +411,22 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
     case EMS_PROTO_CMD_BDDIAG:
         ems_handle_cmd_bddiag(payload, len);
         break;
+#endif
+#if defined(EMS04_S4_FULLCTRL) && EMS04_S4_FULLCTRL
+    case EMS04_TICK_CTRL_CMD: {
+        /* S4-G4：全控制器拍（REATT→law6→PMS/Safety 全链板上；见 ems04_tick_ctrl.c） */
+        static uint8_t s4_rsp[EMS04_TICK_CTRL_RSP_LEN];
+        uint16_t n = ems04_tick_ctrl_handle(payload, len, s4_rsp, NULL);
+        if (n == 0u) {
+            ems_proto_send_nack(&ems_proto_st, (uint8_t)EMS04_TICK_CTRL_CMD,
+                                EMS_PROTO_ERR_LEN);
+        } else {
+            (void)ems_proto_send_frame(&ems_proto_st,
+                                       (uint8_t)EMS04_TICK_CTRL_RSP,
+                                       s4_rsp, n);
+        }
+        break;
+    }
 #endif
     case EMS_PROTO_CMD_PING:
         (void)ems_proto_send_ack(&ems_proto_st, type);

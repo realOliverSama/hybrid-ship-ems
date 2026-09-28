@@ -85,6 +85,7 @@ if(NOT DEFINED EMS04_PRED_PARITY)
     set(EMS04_PRED_PARITY "0")
 endif()
 set(EMS04_PRED_PARITY "${EMS04_PRED_PARITY}" CACHE STRING "1=EMS04 S3-C predictor parity build (Release+FP service+REATT SPLIT, s_svc on HyperRAM)")
+set(EMS04_S4_FULLCTRL "${EMS04_S4_FULLCTRL}" CACHE STRING "1=EMS04 S4 full-controller build (REATT+law6+PMS/Safety, TICK_CTRL UART service)")
 if(EMS04_PRED_PARITY)
     if(NOT ATK_BUILD_TYPE_LOWER STREQUAL "release")
         message(FATAL_ERROR "EMS04_PRED_PARITY=1 requires CMAKE_BUILD_TYPE=Release (S3-C form)")
@@ -327,6 +328,20 @@ endif()
 # EMS04-S3-C：形态标识宏（main.c SysInit 条件消费：HyperRAM/NOR init 使能）。
 if(EMS04_PRED_PARITY)
     target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_PRED_PARITY=1)
+endif()
+# EMS04-S4：全控制器形态（REATT + law6 全表 + PMS/Safety + TICK_CTRL 服务）。
+# 依赖 PRED_PARITY 的 REATT 分裂推理链与表资产，恒与 EMS04_PRED_PARITY=1 同用。
+if(EMS04_S4_FULLCTRL)
+    # S4 形态语义上要求 PRED_PARITY=1（REATT 分裂链 + HyperRAM/NOR init 分支）：
+    # 强制置 CACHE，令 main.c/链接脚本选择等所有消费点一致生效。
+    set(EMS04_PRED_PARITY "1" CACHE STRING "forced by EMS04_S4_FULLCTRL" FORCE)
+    target_sources(${CMAKE_PROJECT_NAME} PRIVATE
+        "${EMS01_APP_DIR}/ems04_pms_safety.c"
+        "${EMS01_APP_DIR}/ems04_tick_ctrl.c"
+    )
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
+        EMS04_S4_FULLCTRL=1
+        EMS04_PRED_PARITY=1)
 endif()
 # ems_app 轮询接收（HAL_UART_Receive timeout=0）与 BSP RX 中断冲突 → 关停 BSP RX
 # （uart.c 编译开关，991 同款；main.c 已含同款约定）。
