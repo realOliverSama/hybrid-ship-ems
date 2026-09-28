@@ -115,6 +115,10 @@ C2 臂推理经板后端复跑（预测器在环 soft-HIL）。本工作区新�
 | `artifacts/t445/` | **F-owned 本地产物**（SimState checkpoint / 段日志，不入库；父目录 `artifacts/` 已 gitignore） |
 | `predictor_v3/` | ★ **E 包 predictor-v3 Python 包**（T-002 `data_access.py` sealed 访问门；T-003 `ood_materialize.py` OOD 窗口物化薄驱动；T-004 `norm_ext.py`；T-005 `features/quantile/metrics/inference_stats/seeds/train/registry.py` 统一 harness；`tests/` 45 例全绿；详见该目录 README.md。**预测模型：施工作业中，截至 T-005 无已训练模型工件**） |
 | `reports/parameter_audit.csv` | builder 生成的参数审计（ParamMeta，40 项） |
+| `scripts/20E_build_plantstepE_model.m` | ★ **S4-G2 PlantStepE 构建**（2026-09-28）：装载 ModelE → SaveAs 副本原位变换（删 05/12、根 Inport=P_gen_ref_kW 续接 07/16 消费者、根 Outport 16 项按名映射、11 内删 Stop 块）；主模型哈希零改动门禁 + 审计 JSON（SA-1 修正：07/16 保留于植物子集，C3 变体待 S4-G1 后） |
+| `scripts/23E_codegen_plantstepE.m` | ★ **S4-G2 PlantStepE codegen**（S20 烘焙，GRT 主案——Model D 先例：ERT 拒连续状态；base 注入 + Inlined；manifest + 双哈希零改动门禁）→ `EMS04_CHIL_FULLCTRL/Host/plantstep_e/<scenario>/` |
+| `model/HybridShip_ModelE_PlantStepE.slx` | 20E 产物（S4 线 plant-only 变体；脚本驱动生成） |
+| `results/s4/plantstepE/plantstepE_build_audit.json` | 20E 审计（根面 In=1/Out=16、接线画像、编译、主模型零改动） |
 
 ## Legacy / Superseded（FR-492/493：不删不搬不改行为，仅 README 标记）
 

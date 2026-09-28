@@ -53,6 +53,17 @@
 | `tools/s3a2_check.py` | S3-A2 时序语义断言机 A1-A8（capture 离线核验器）。**2026-09-27 勘误 3**：负路径期望值对齐冻结固件 gate 序（QUERY(299)→0x43 范围门、QUERY(300.5)→0x40 锁存；原稿 0x45/0x43 与冻结固件/冻结脚本/板级先例三方矛盾），`simulate_capture` 同步实现锁存语义 |
 | `tools/s3c_provenance.json` | S3-C 工具链/冻结制品 SHA 清单（experiments 侧产物以 SHA 绑定；含板级证据 ELF 身份） |
 
+### S4 线新增（2026-09-28，C1 纯 host 段）
+
+| 路径 | 内容 |
+|---|---|
+| `Host/plantstep_e/<scenario>/` | 23E 生成码 + `build_manifest.json` + `libplantstepE_<scenario>.dylib`（GRT，MATLAB 安装树头文件经 `EMS_MATLAB_ROOT` 注入编译；`MAT_FILE=0` 绕缺失的 `builtin_typeid_types.h`）。场景 `S20_composite_voyage`（dylib sha256 `df81b23f…`） |
+| `tools/plantstep_e_shim.c` | PlantStepE GRT 接口 shim（16 输出/10 状态直读 API，Model D shim 同形扩口） |
+| `tools/build_plantstep_e.sh` | shim + 生成码 → dylib 编译脚本（`EMS_MATLAB_ROOT` 必填） |
+| `tools/run_gp2e_gate.py` | **G-P2E 门**（S4-C1 门①②）：codegen dylib vs 解释执行参考逐拍对照；X 直读 4 状态（x/v/SOC/V_dc）1e-6 门禁；参考 = `reference/s4_gp2e_<scenario>_simref.csv`（MATLAB 解释执行、根 Inport 外部驱动 300 kW 恒值、拍相位=dylib tick m ↔ MATLAB index m*1000+1，一处一拍采样对齐依 Model D G-P2 §4.4a 同法核实）。**结果：全量 719/719 PASS，worst=3.64e-12（机器精度）**；产物 `reference/s4_gp2e_*_gate.json` + `_compare.csv` |
+| `tools/s4_c1_modelE_selftest.py` | S4-C1 门③：modelE 后端扩展 selftest（M1 加载/校验、M2 IC、M3 推进健康、M4 G-P2E 证据引用、M5 双臂报告引用）。**10/10 PASS** |
+| `reference/s4_gp2e_S20_composite_voyage_simref.csv` | 解释执行参考逐拍基准（720 拍 × 20 列，X 直读 + Y 报告面） |
+
 ## 拍回放服务线格式（RTT 通道 0，字节序 LE）
 
 下行（host → 板）`EMS04_BEAT_FRAME_LEN = 312` B：

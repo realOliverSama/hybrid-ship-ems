@@ -1,0 +1,58 @@
+{
+  "schema": "s4_plantstepE_build_audit_v1",
+  "created_utc": "2026-09-28T07:13:09Z",
+  "main_model": "HybridShip_ModelE",
+  "plantstep_model": "HybridShip_ModelE_PlantStepE",
+  "main_sha256_before": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "main_sha256_after": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "main_unchanged": true,
+  "prior_ps_existed": true,
+  "removed_subsystems": [
+    [
+      "05_EMS_Controller",
+      "12_Data_Logging"
+    ]
+  ],
+  "retained_pms_safety": true,
+  "spec_amendment_SA1": "07_PMS_v2/16_Safety_Interlock retained in plant subset: P_gen_ref has no direct plant consumer; plant physics consumes 07 outputs (DG enables/refs). 07/16-deletion variant deferred to C3 after S4-G1 board port. See header SA-1.",
+  "ems_input_sources": [
+    "04_Load_Measurement/P_load_total_kW",
+    "14_Battery_Converter/SOC",
+    "03_Propulsion_Plant/acceleration_mps2",
+    "t/",
+    "01_Operator_Interface/v_ref_mps",
+    "03_Propulsion_Plant/v_ship_mps",
+    "03_Propulsion_Plant/x_ship_m"
+  ],
+  "pgen_ref_consumers": [
+    "07_PMS_v2/in1",
+    "16_Safety_Interlock/in18"
+  ],
+  "root_inports": [
+    "P_gen_ref_kW"
+  ],
+  "root_outports": [
+    [
+      "t_s",
+      "P_load_total_kW",
+      "SOC",
+      "v_cmd_mps",
+      "v_ship_mps",
+      "acceleration_mps2",
+      "x_ship_m",
+      "fuel_total_kg",
+      "P_bat_kW",
+      "P_prop_kW",
+      "voyage_stop",
+      "state_DG1",
+      "state_DG2",
+      "P_DG1_kW",
+      "P_DG2_kW",
+      "V_dc_V"
+    ]
+  ],
+  "compile_ok": true,
+  "compile_msg": "update OK",
+  "solver": "ode3 @ 0.01 s (inherited, unchanged)",
+  "stop_block_removed": "11_Voyage_Stop_Logic/stop removed in PS copy only; ERT unsupported; harness stops via voyage_stop outport (Model D G-P2 precedent)"
+}

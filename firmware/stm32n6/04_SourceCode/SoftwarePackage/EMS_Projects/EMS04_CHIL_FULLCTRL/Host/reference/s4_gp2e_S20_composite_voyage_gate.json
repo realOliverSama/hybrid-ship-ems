@@ -1,0 +1,39 @@
+{
+ "schema": "s4_gp2e_gate_v1",
+ "scenario": "S20_composite_voyage",
+ "backend": "modelE (GRT dylib)",
+ "p_gen_const_kw": 300.0,
+ "tick_s": 10.0,
+ "threshold": 1e-06,
+ "gate_keys": [
+  "x_ship_m",
+  "v_ship_mps",
+  "SOC",
+  "V_dc_V"
+ ],
+ "n_ticks": 719,
+ "ic_diff": {
+  "x_ship_m": 0.0,
+  "v_ship_mps": 0.0,
+  "SOC": 0.0,
+  "V_dc_V": 0.0
+ },
+ "n_pass": 719,
+ "n_fail": 0,
+ "worst_abs_diff": {
+  "x_ship_m": 3.637978807091713e-12,
+  "v_ship_mps": 1.7763568394002505e-15,
+  "SOC": 1.1102230246251565e-16,
+  "V_dc_V": 1.1368683772161603e-13
+ },
+ "worst_tick": {
+  "x_ship_m": 406,
+  "v_ship_mps": 291,
+  "SOC": 453,
+  "V_dc_V": 7
+ },
+ "dylib_sha256": "df81b23f1e7423da8ce41b86856e0cb3b4090c080db22ffa92771f4b58627f2c",
+ "ref_sha256": "ab6ed10ff0d6b5c664c075a6e70c9f4447ab05cfb9e2ee5229bb45ccfaec9648",
+ "overall": true,
+ "note": "X \u76f4\u8bfb 4 \u72b6\u6001\u95e8\u7981\uff08Model D G-P2 \u540c\u6cd5 1e-6 \u4e0d\u653e\u5bbd\uff09\uff1bModel E fuel \u4e09\u79ef\u5206\u5668\u5408\u6210\u3001t_s \u91c7\u6837\u65f6\u5e8f\u4e3a\u62a5\u544a\u9879\u3002"
+}

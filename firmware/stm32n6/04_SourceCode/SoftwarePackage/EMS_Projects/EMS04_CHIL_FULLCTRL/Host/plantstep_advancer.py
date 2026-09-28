@@ -55,6 +55,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))          # .../EMS01_CHIL_ECMS/Host
 PLANTSTEP_DIR = os.path.join(HERE, "plantstep")
+PLANTSTEP_DIR_E = os.path.join(HERE, "plantstep_e")
 SUBSTEPS_PER_TICK = 100                                    # 1 s 控制拍 = 100×0.01 s（FD5）
 DT_SUBSTEP = 0.01
 
@@ -67,6 +68,18 @@ OUT_KEYS = (
 # 前 7 键 = CMD_TICK 载荷（design §3.3）
 STATE_KEYS = OUT_KEYS[:7]
 SCENARIOS = ("S20", "voyage002")
+
+# ---- S4-G2（backend='modelE'）：PlantStepE 场景注册与 16 键输出 ----
+SCENARIOS_E = ("S20_composite_voyage",)
+OUT_KEYS_E = (
+    "t_s", "P_load_total_kW", "SOC", "v_cmd_mps", "v_ship_mps",
+    "acceleration_mps2", "x_ship_m", "fuel_total_kg", "P_bat_kW",
+    "P_prop_kW", "state_DG1", "state_DG2", "P_DG1_kW", "P_DG2_kW",
+    "V_dc_V", "voyage_stop",
+)
+STATE_KEYS_E = OUT_KEYS_E[:7]     # 同 CMD_TICK 语义（按名映射，20E SA-2）
+SUBSTEPS_PER_TICK_E = 1000        # 10 s 控制拍 = 1000 × 0.01 s（Model E 拍周期）
+DT_SUBSTEP_E = 0.01
 
 # stub 后端常数（粗糙物理，selftest 专用；数值来源同 Model_Parameters 概念口径）
 STUB_HOTEL_KW = 100.0
@@ -271,6 +284,130 @@ class CtypesBackend(object):
         return _as_out_dict(tuple(buf))
 
 
+class ModelEBackend(object):
+    """S4-G2：ctypes 加载 libplantstepE_<scenario>.dylib 的 Model E 推进器
+    （10 s 控制拍 = 1000 × 0.01 s 子步；GRT 产物，Model D 先例同路径）。
+    接口与 CtypesBackend 一致：init/step/state/states/fuel/voyage_stop/close。
+    states() 键序 = shim plantstep_get_states（V_dc/SOC/DriveLag/Ki/v/x/omega/
+    int_3/int_1/int_2，与生成头 X 定义序一致）。"""
+
+    def __init__(self):
+        self._lib = None
+        self._lib_path = None
+        self._scenario = None
+        self._initialized = False
+        self._tick = 0
+
+    def init(self, scenario):
+        if scenario not in SCENARIOS_E:
+            raise PlantStepError(
+                "modelE: scenario 必须为 %s 之一，实际 %r" % (SCENARIOS_E, scenario))
+        lib_path = os.path.join(
+            PLANTSTEP_DIR_E, scenario, "libplantstepE_%s.dylib" % scenario)
+        if not os.path.isfile(lib_path):
+            raise PlantStepError(
+                "dylib 不存在: %s（先跑模型工作区 scripts/23E_codegen_plantstepE.m，"
+                "再跑 Host/tools/build_plantstep_e.sh %s）" % (lib_path, scenario))
+        try:
+            lib = ctypes.CDLL(lib_path)
+        except OSError as exc:
+            raise PlantStepError("dylib 加载失败 %s: %s" % (lib_path, exc))
+        lib.plantstep_init.argtypes = [ctypes.c_char_p]
+        lib.plantstep_init.restype = ctypes.c_int
+        lib.plantstep_set_pgen.argtypes = [ctypes.c_double]
+        lib.plantstep_set_pgen.restype = None
+        lib.plantstep_step.argtypes = []
+        lib.plantstep_step.restype = None
+        lib.plantstep_get_outputs.argtypes = [ctypes.POINTER(ctypes.c_double)]
+        lib.plantstep_get_outputs.restype = ctypes.c_int
+        lib.plantstep_get_fuel.argtypes = []
+        lib.plantstep_get_fuel.restype = ctypes.c_double
+        lib.plantstep_get_voyage_stop.argtypes = []
+        lib.plantstep_get_voyage_stop.restype = ctypes.c_int
+        lib.plantstep_get_states.argtypes = [ctypes.POINTER(ctypes.c_double)]
+        lib.plantstep_get_states.restype = ctypes.c_int
+        rc = lib.plantstep_init(scenario.encode("utf-8"))
+        if rc != 0:
+            raise PlantStepError(
+                "plantstep_init('%s') 失败 rc=%d（-2 = 与 dylib 烘焙场景不符）"
+                % (scenario, rc))
+        self._lib = lib
+        self._lib_path = lib_path
+        self._scenario = scenario
+        self._tick = 0
+        self._initialized = True
+
+    def step(self, p_gen_kw):
+        self._require_init()
+        p = float(p_gen_kw)
+        if not math.isfinite(p):
+            raise PlantStepError("modelE: P_gen 非有限")
+        self._lib.plantstep_set_pgen(p)
+        for _ in range(SUBSTEPS_PER_TICK_E):
+            self._lib.plantstep_step()
+        self._tick += 1
+        return self._read_outputs()
+
+    def state(self):
+        self._require_init()
+        outs = self._read_outputs()
+        return {k: outs[k] for k in STATE_KEYS_E}
+
+    def states(self):
+        """连续状态直读（拍边界真值；keys 与 shim X 顺序一致）。"""
+        self._require_init()
+        buf = (ctypes.c_double * 10)()
+        rc = self._lib.plantstep_get_states(buf)
+        if rc != 0:
+            raise PlantStepError("plantstep_get_states 失败 rc=%d" % rc)
+        vals = [float(x) for x in buf]
+        for x in vals:
+            if not math.isfinite(x):
+                raise PlantStepError("PLANT_STEP_ABNORMAL: 连续状态非有限")
+        keys = ("V_dc_V", "SOC", "drive_lag_s", "ki_integrator",
+                "v_ship_mps", "x_ship_m", "omega_prop_radps",
+                "fuel_int_3", "fuel_int_1", "fuel_int_2")
+        return dict(zip(keys, vals))
+
+    def fuel(self):
+        self._require_init()
+        v = float(self._lib.plantstep_get_fuel())
+        if not math.isfinite(v):
+            raise PlantStepError("PLANT_STEP_ABNORMAL: fuel 非有限")
+        return v
+
+    def voyage_stop(self):
+        self._require_init()
+        return bool(self._lib.plantstep_get_voyage_stop())
+
+    def close(self):
+        if self._lib is not None:
+            try:
+                ctypes.CDLL(None).dlclose(self._lib._handle)
+            except Exception:
+                pass
+            self._lib = None
+            self._lib_path = None
+            self._scenario = None
+            self._initialized = False
+            self._tick = 0
+
+    def _require_init(self):
+        if not self._initialized:
+            raise PlantStepError("modelE: 先 init(scenario)")
+
+    def _read_outputs(self):
+        buf = (ctypes.c_double * len(OUT_KEYS_E))()
+        rc = self._lib.plantstep_get_outputs(buf)
+        if rc != 0:
+            raise PlantStepError("plantstep_get_outputs 失败 rc=%d" % rc)
+        d = {k: float(v) for k, v in zip(OUT_KEYS_E, buf)}
+        bad = [k for k, v in d.items() if not math.isfinite(v)]
+        if bad:
+            raise PlantStepError("PLANT_STEP_ABNORMAL: 非有限数值 %s" % bad)
+        return d
+
+
 def make_advancer(backend="stub", scenario="S20"):
     """工厂函数（design §4.1）：backend='ctypes'|'stub'；返回已 init 的推进器。
     init(scenario) 可再次调用以复位 IC（= model_initialize / stub 重置）。"""
@@ -278,8 +415,10 @@ def make_advancer(backend="stub", scenario="S20"):
         adv = CtypesBackend()
     elif backend == "stub":
         adv = StubBackend()
+    elif backend == "modelE":
+        adv = ModelEBackend()
     else:
-        raise PlantStepError("backend 必须为 'ctypes'|'stub'，实际 %r" % backend)
+        raise PlantStepError("backend 必须为 'ctypes'|'stub'|'modelE'，实际 %r" % backend)
     adv.init(scenario)
     return adv
 
@@ -317,8 +456,8 @@ def _smoke(backend, scenario, ticks, p_gen):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="plantstep advancer 冒烟（T-604）")
-    ap.add_argument("--backend", choices=("stub", "ctypes"), default="stub")
-    ap.add_argument("--scenario", choices=SCENARIOS, default="S20")
+    ap.add_argument("--backend", choices=("stub", "ctypes", "modelE"), default="stub")
+    ap.add_argument("--scenario", choices=SCENARIOS + SCENARIOS_E, default="S20")
     ap.add_argument("--ticks", type=int, default=3)
     ap.add_argument("--pgen", type=float, default=20.0)
     args = ap.parse_args(argv)
