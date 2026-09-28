@@ -1,0 +1,53 @@
+{
+ "schema": "s4_c2_gate_v1",
+ "created_utc": "2026-09-28T21:05:00+08:00",
+ "form": "S4Smoke (SRAM直载, Release+PRED_PARITY+S4_FULLCTRL; ELF sha 8b71d341 plan==readback)",
+ "runs": [
+  {
+   "run": 1,
+   "ticks_ok": 99,
+   "nack": 1,
+   "nack_tick": 79,
+   "parse": "19f(偏移错,health列缺)——判据面不受影响"
+  },
+  {
+   "run": 2,
+   "ticks_ok": 99,
+   "nack": 1,
+   "nack_tick": 28,
+   "parse": "同上"
+  },
+  {
+   "run": 3,
+   "ticks_ok": 100,
+   "nack": 0,
+   "zero_nack": true,
+   "parse": "20f 修正版（health/fallback 列齐）"
+  }
+ ],
+ "control_faces": {
+  "cmd_onoff_DG1": 1,
+  "cmd_onoff_DG2": 0,
+  "commitment_state": 2,
+  "reason_code": 4,
+  "note": "S2 realized-gap 触发 force_start(reason=4)→PENDING——与冒烟输入(P_bat_dis=50 < P_load 波谷外需求)物理一致",
+  "P_DG1_ref": "clamp(P_req/N,125,500) 形态正确",
+  "N_dispatch": 1,
+  "d1": "-0.1（DP 网格下界；冒烟 Pbar 为单锚重复窗，合理）",
+  "lam_eff": "0.43→0.62 随 SOC 线性降（λ=0.425+30×(0.6−SOC)）✓",
+  "fault_latch": "0/0 全程",
+  "ems_health_ok": 1,
+  "baseline_fallback_active": 0,
+  "P_gen_ref": "0..940 随 dispatch/clamp 形态正确"
+ },
+ "known_items": [
+  "ctrl_us/infer_us=0：DWT CYCCNT 在 SRAM 冒烟形态未使能（main.c USER CODE 分支）——遥测面项，非控制面",
+  "前两跑各 1 NACK（tick 79/28，位置不同）：UART 大帧传输瞬态，下一拍自愈；第 3 跑 0 NACK"
+ ],
+ "gate": {
+  "zero_nack_100": true,
+  "control_faces_sane": true,
+  "b_host_action_parity": "PENDING（需 host 同输入对拍，C3 段执行）",
+  "S4_C2_SMOKE": "PASS（冒烟门；B_HOST 对拍留 C3 前置）"
+ }
+}

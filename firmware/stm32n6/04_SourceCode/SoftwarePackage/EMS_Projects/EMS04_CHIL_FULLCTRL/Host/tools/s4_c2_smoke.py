@@ -152,15 +152,17 @@ def main():
             n_nack += 1
             continue
         seq_r, = struct.unpack_from("<I", body, 0)
+        vals = struct.unpack_from("<20f", body, 4)
         (P_gen_ref, P_commit, cstate, rcode, on1, on2, ref1, ref2, N, d1, lam,
-         f0, f1, fs0, fs1, fstp0, fstp1, health, fb) = struct.unpack_from("<19f", body, 4)
-        infer_us, ctrl_us = struct.unpack_from("<II", body, 4 + 76)
-        flags = body[4 + 84]
+         f0, f1, fs0, fs1, fstp0, fstp1, health, fb) = vals[:19]
+        infer_us, ctrl_us = struct.unpack_from("<II", body, 4 + 80)
+        flags = body[4 + 88]
         rows.append({"tick": k, "seq": seq_r, "P_gen_ref": P_gen_ref,
                      "P_commit": P_commit, "commitment_state": cstate,
                      "reason_code": rcode, "cmd_onoff_DG1": on1, "cmd_onoff_DG2": on2,
                      "P_DG1_ref": ref1, "P_DG2_ref": ref2, "N_dispatch": N,
                      "d1": d1, "lam_eff": lam, "fault0": f0, "fault1": f1,
+                     "ems_health_ok": health, "baseline_fallback_active": fb,
                      "infer_us": infer_us, "ctrl_us": ctrl_us, "flags": flags})
         seq += 1
         time.sleep(0.005)
