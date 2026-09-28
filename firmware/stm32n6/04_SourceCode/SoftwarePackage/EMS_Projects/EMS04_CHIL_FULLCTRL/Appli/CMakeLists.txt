@@ -302,6 +302,11 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
                                             #   check_ems04_tables.py 位级自校验 597960/597960）
     "${EMS01_APP_DIR}/ems04_rtt_min.c"      # SEGGER-RTT 线格式最小实现（vendor 无 RTT；仅 S2 对拍通道）
     "${EMS01_APP_DIR}/ems04_beat_svc.c"     # 拍回放服务（RTT ch0：312B 下行帧 → ems04_dp_tick → 16B 回帧）
+    # ---- EMS04-S4（全控制器闭环）：PMS v2 + Safety Interlock C 移植（S4-G1）----
+    "${EMS01_APP_DIR}/ems04_pms_safety.c"   # 07/16 四块 C 移植（Demand Policy/Commitment
+                                            #   chart/Dispatch/Safety；S4-G1 host 对拍
+                                            #   6001/6001 逐位 PASS，证据
+                                            #   Host/reference/s4_g1_pms_gate.json）
 )
 # ---- EMS04-S2 C-fw：FP 服务模块（2026-09-26）----
 # 仅 EMS04_FP_PARITY=1 时编入（默认 0 ⇒ 零源文件/零编译定义/零体积）：
