@@ -27,11 +27,23 @@ import numpy as np
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 HOST = os.path.dirname(HERE)
-REPO = os.path.abspath(os.path.join(HOST, "..", "..", "..", "..", "..", "..", "..", "..", ".."))
+def _find_repo_root(start):
+    d = os.path.abspath(start)
+    while True:
+        if (os.path.isfile(os.path.join(d, "AGENTS.md"))
+                and os.path.isdir(os.path.join(d, "model"))
+                and os.path.isdir(os.path.join(d, "firmware"))):
+            return d
+        parent = os.path.dirname(d)
+        if parent == d:
+            raise RuntimeError("repo root not found")
+        d = parent
+
+
+REPO = _find_repo_root(HOST)
 sys.path.insert(0, os.path.join(HOST, "tools"))
-from s3c_reatt_replay import enc_frame, SYNC0, SYNC1  # noqa: E402  (成熟帧编码)
+from s3c_reatt_replay import enc_frame, crc16_ccitt, SYNC0, SYNC1  # noqa: E402
 import serial  # noqa: E402
-from ems04_law6_c2 import dp_tick_py  # placeholder, not used (dylib below)
 
 CMD_PING = 0x06
 CMD_RESET = 0x01
@@ -53,7 +65,7 @@ def load_truth_anchor(vid, t0):
 
 
 def enc_tick_ctrl(seq, tick, P_load, SOC, Vdc, dis, chg, prop, hotel, hist, kf):
-    b = struct.pack("<II8f", seq, tick, P_load, SOC, Vdc, dis, chg, prop, hotel)
+    b = struct.pack("<II", seq, tick) + struct.pack("<8f", P_load, SOC, Vdc, dis, chg, prop, hotel, 0.0)
     return b + hist.astype("<f4").tobytes() + kf.astype("<f4").tobytes()
 
 
@@ -71,48 +83,42 @@ def main():
         ser.write(enc_frame(ftype, payload)); ser.flush()
 
     def wait(ftype, timeout_ms=8000):
-        """等一帧 ftype；返回 payload 或 None（简单状态机扫 SYNC+type+len+CRC）。"""
-        import time as _t
-        deadline = _t.monotonic() + timeout_ms / 1000.0
+        """等一帧 ftype；返回 (ftype, payload) 或 None。扫 SYNC+len+CRC。"""
+        deadline = time.monotonic() + timeout_ms / 1000.0
         buf = b""
-        while _t.monotonic() < deadline:
-            buf += ser.read(ser.in_waiting or 1)
+        while time.monotonic() < deadline:
+            chunk = ser.read(ser.in_waiting or 1)
+            if chunk:
+                buf += chunk
+                if os.environ.get("S4_DEBUG"):
+                    sys.stderr.write(f"[rx] {chunk.hex()}\n")
             while True:
                 i = buf.find(bytes([SYNC0, SYNC1]))
                 if i < 0:
                     buf = buf[-1:]
                     break
-                if len(buf) < i + 4:
+                if len(buf) < i + 6:
                     break
-                ftype = buf[i + 2]
+                rtype = buf[i + 2]
                 ln = struct.unpack_from("<H", buf, i + 3)[0]
-                if len(buf) < i + 6 + ln + 2:
+                if len(buf) < i + 5 + ln + 2:
                     break
-                frame = buf[i:i + 6 + ln + 2]
-                # CRC 校验（复用 s3c_reatt_replay 的 crc16）
-                from s3c_reatt_replay import crc16_ccitt
+                frame = buf[i:i + 5 + ln + 2]
                 body = frame[2:-2]
                 if struct.unpack("<H", frame[-2:])[0] != crc16_ccitt(body):
                     buf = buf[i + 2:]
                     continue
-                if ftype == ftype:
-                    payload = frame[6:6 + ln]
-                    if ftype == ftype:
-                        buf = buf[i + 6 + ln + 2:]
-                        if ftype == RSP_TICK_CTRL or ftype == 0x00:
-                            return (ftype, payload)
-                        return (ftype, payload)
-                break
+                payload = frame[5:5 + ln]
+                buf = buf[i + 5 + ln + 2:]
+                if rtype == ftype:
+                    return (rtype, payload)
+                # 其它类型帧（如首帧 NACK）丢弃继续等
         return None
-
-    def wait_ack(ftype, timeout_ms):
-        r = wait(ftype, timeout_ms)
-        return r
 
     ok = False
     for _ in range(5):
         send(CMD_PING)
-        r = wait(0x00, 400)
+        r = wait(0x7F, 400)          # ACK=0x7F（echo TYPE 载荷）
         if r is not None:
             ok = True
             break
@@ -120,7 +126,7 @@ def main():
         print("PING_FAIL", file=sys.stderr)
         return 2
     send(CMD_RESET)
-    if wait(0x00, 500) is None:
+    if wait(0x7F, 500) is None:
         print("RESET_FAIL", file=sys.stderr)
         return 2
 
