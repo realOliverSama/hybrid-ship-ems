@@ -64,6 +64,25 @@
 | `tools/s4_c1_modelE_selftest.py` | S4-C1 门③：modelE 后端扩展 selftest（M1 加载/校验、M2 IC、M3 推进健康、M4 G-P2E 证据引用、M5 双臂报告引用）。**10/10 PASS** |
 | `reference/s4_gp2e_S20_composite_voyage_simref.csv` | 解释执行参考逐拍基准（720 拍 × 20 列，X 直读 + Y 报告面） |
 
+### S4-C2/C3 线新增（2026-09-28/29，板级冒烟与闭环段；含前序补登）
+
+| 路径 | 内容 |
+|---|---|
+| `tools/run_g1_pms_gate.py` | 【补登】S4-G1 门：PMS/Safety C 移植 vs Simulink 参考逐拍对拍（6001/6001 位级）；State 布局权威副本 |
+| `tools/s4_c2_smoke.py` | 【补登】S4-C2 门：TICK_CTRL 板级冒烟客户端（合成状态 + S2 真值包 hist/kf，100 拍零 NACK） |
+| `tools/s4_c3_preamble.py` | 【补登】C3 前置：B_HOST 同输入对拍（板 vs host 同链 100 拍；执行层 100/100 一致，11 拍 d1 差=后端漂移传递已登记） |
+| `tools/s4_c3_pack_kf_table.py` | C3-①：S20 kf 表打包器（EMS04KFT v1，profile_code=3=PILOT_FIXTURE；白名单取材 `datasets_v3/pilot/S20_composite.mat` 的 `kf.*`，禁触 stream 真值列；AST 静态自查） |
+| `tools/s4_c3_h1win_host.py` | C3-②：H1 特征窗 host 版（`ems04_h1win.c` 语义逐位复刻：301 环/11 列冻结序/f64 构造域/f32 RNE 出口/fail-closed；37 项自检） |
+| `tools/s4_c3_closedloop.py` | C3-③：闭环 runner——plantE↔board 实时闭环单航次 + 三链同录（A2_CANONICAL_HOST=C2Predictor canonical 域 / B_HOST=Chain 板源 OE 代理 / B_BOARD=板 RSP）→ G6 判据机械化 → `results/s4_c3/s4_c3_gate.json`；口径登记 `results/s4_c3/s4_c3_design_notes.md` |
+| `tools/s4_c4_battery.py` | C4：多航次电池闭环 runner（冻结电池 S02_downstream/S08_resistance_bands/S03_upstream，一次板会话顺序跑、每航次独立复位与 gate，电池级合取 → `results/s4_c4/s4_c4_gate.json`；复用 C3 组件与 v2.1 归因口径） |
+| `plantstep_advancer.py`（改） | SCENARIOS_E 注册表扩 S02_downstream/S08_resistance_bands/S03_upstream（C4 电池 dylib） |
+| `results/s4_c2/` | C2 冒烟与 C3 前置产物（`s4_c2_gate.json`/`s4_c2_smoke_report.json`/`s4_c3_preamble_report.json`/`libems04_pms_safety.dylib`） |
+| `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档） |
+| `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`） |
+
+> C3 的 kf 表与自校验 JSON 落 `experiments/softhil_ems03_2026-09-25/results/s4_c3/`
+> （任务书指定路径；该目录属 experiments 结果区）。
+
 ## 拍回放服务线格式（RTT 通道 0，字节序 LE）
 
 下行（host → 板）`EMS04_BEAT_FRAME_LEN = 312` B：

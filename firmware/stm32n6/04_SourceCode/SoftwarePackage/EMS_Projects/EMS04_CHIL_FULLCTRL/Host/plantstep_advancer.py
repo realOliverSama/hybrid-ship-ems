@@ -70,7 +70,9 @@ STATE_KEYS = OUT_KEYS[:7]
 SCENARIOS = ("S20", "voyage002")
 
 # ---- S4-G2（backend='modelE'）：PlantStepE 场景注册与 16 键输出 ----
-SCENARIOS_E = ("S20_composite_voyage",)
+# C4 电池（2026-09-29）：新增 S02/S08/S03 三航次烘焙 dylib（23E + build_plantstep_e.sh）
+SCENARIOS_E = ("S20_composite_voyage", "S02_downstream", "S08_resistance_bands",
+               "S03_upstream")
 OUT_KEYS_E = (
     "t_s", "P_load_total_kW", "SOC", "v_cmd_mps", "v_ship_mps",
     "acceleration_mps2", "x_ship_m", "fuel_total_kg", "P_bat_kW",

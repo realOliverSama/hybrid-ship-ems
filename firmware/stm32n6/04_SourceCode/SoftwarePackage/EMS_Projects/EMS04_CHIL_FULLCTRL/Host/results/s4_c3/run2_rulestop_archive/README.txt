@@ -1,0 +1,1 @@
+run2（2026-09-29）：v2 归因规则的盲区停机——t0=2260/2270/2280 连续 3 拍 board==canonical（-20）而 B_HOST 偏离（-17/-16/-14），被 v2 误判 unattributed 触发停机；随后 gate 崩溃（build_gate 引用未入参 consec_drift 的实现 bug）。两问题均由 v2.1 修正。CSV 为原始记录。

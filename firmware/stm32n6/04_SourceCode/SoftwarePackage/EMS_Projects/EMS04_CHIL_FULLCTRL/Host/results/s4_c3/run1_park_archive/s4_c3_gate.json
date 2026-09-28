@@ -1,0 +1,484 @@
+{
+ "schema": "s4_c3_gate_v1",
+ "created_utc": "2026-09-28T15:00:56.640198+00:00",
+ "mode": "board",
+ "dry_note": null,
+ "stop_reason": "STOP: B_BOARD vs B_HOST 连续 3 拍 action 不一致",
+ "domain": {
+  "warmup_ticks": 30,
+  "formal_ticks": 541,
+  "formal_done": 62,
+  "t0_first": 300.0,
+  "decision_period_s": 10.0,
+  "is_formal_rule": "预热段 is_formal=0 不入判据域（G6-5）；正式段=kf issue 网格 300..5700"
+ },
+ "form": {
+  "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=df81b23f1e74…",
+  "board": "S4Smoke SRAM 直载（ELF 8b71d341 plan==readback，前会话载入；本会话 PING 探活 + CMD_RESET 后闭环）",
+  "pms_lib_sha": "3d2ec94fb575",
+  "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
+  "b_host_chain": "gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）",
+  "a2_chain": "ppe.c2_inference.C2Predictor（FR836 float keras，q50 kW 域）",
+  "kf_table": {
+   "path": "experiments/softhil_ems03_2026-09-25/results/s4_c3/S20_composite.kf_table.bin",
+   "sha256": "8a1f597e527ef0f242eedb6e7adcd18a62b1e0da5e9671506765456daf7068c0",
+   "n_rows": 541,
+   "voyage_id": "S20_composite",
+   "profile_code": 3,
+   "profile_meaning": "PILOT_FIXTURE"
+  },
+  "constants": "experiments/softhil_ems03_2026-09-25/ems04_s1/exported/constants.json",
+  "s20_mat": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/pilot/S20_composite.mat",
+  "s20_mat_fixture_kind": "PILOT_ONLY",
+  "scenario_side_cols": [
+   "v_ref_mps",
+   "P_hotel_kW",
+   "v_current_mps",
+   "P_prop_demand_kW",
+   "water_depth_m"
+  ],
+  "col_provenance": {
+   "live(P_load/v_ship/accel/n_prop)": "plantE 子步读数（OUT pre-integration stamp 自洽；omega=states() X 读 ×30/π）",
+   "scenario(v_ref/P_hotel/v_current/P_prop_demand)": "S20 pilot stream 时间表（t≤t0 因果切片）",
+   "const(water_depth/ctrl_mode/manual)": "20.0 / 0.0 / 0.0"
+  },
+  "sampling_grid": "A2=0.01 s stamps 全样本冻结管线聚合（右端点 t0 不采样）；B 环边界=秒边界前最后 stamp（v[0]=名义整秒）；下行 SOC/Vdc=X 边界真值、P_load/P_bat=OUT 读点",
+  "warmup_policy": "law6 冷启动（d1=0，λ=SOC 律，执行层网格）；板不参与",
+  "downlink_dis_chg": "P_bat_actual 符号拆分（G1 *_avail 能力信号不在 PlantStepE 出口；C3 口径登记）",
+  "known_items": [
+   "S4Smoke 形态 ctrl/infer_us=0（DWT 未使能）——遥测面项"
+  ]
+ },
+ "wall_s": 565.8,
+ "seq_final": 62,
+ "runnability_G6_1": {
+  "n_ticks": 62,
+  "nack_n": 0,
+  "retry_n": 0,
+  "timeout_or_lost": false,
+  "flags_nonzero_n": 0,
+  "soc_min": 0.5958869076692576,
+  "soc_max": 0.601842804340746,
+  "soc_bounds": [
+   0.15,
+   0.95
+  ],
+  "soc_ok": true,
+  "pgen_ramp_bound_kw_per_tick": 200.0,
+  "pgen_ramp_param": "constants.ramp=20 kW/s × dt=10 s（law6 发电机组斜率参数按控制拍折算；执行层输出无斜坡限制，见 LAW6_C2_CONSUMPTION_CONTRACT §4.3）",
+  "pgen_step_max_kw": {
+   "bb": 800.0,
+   "bh": 800.0,
+   "a2": 800.0
+  },
+  "pgen_ramp_ok": {
+   "bb": false,
+   "bh": false,
+   "a2": false
+  },
+  "voyage_stop_tick": null
+ },
+ "g6_1_pass": false,
+ "transform_archive_G6_2": {
+  "action_diff_n": 3,
+  "pgen_gt1grid_n": 1,
+  "grid_kw": 20.0,
+  "classification": "CLOSED_LOOP_TRANSFORM_EFFECT（基线档案，非 FAIL；A2 canonical 域 vs B 部署同形域的已登记部署变换效应）"
+ },
+ "board_parity_G6_3": {
+  "action_equal_n": 59,
+  "action_diff_n": 3,
+  "first_action_diff_t0": 890.0,
+  "pgen_gt1grid_n": 3,
+  "first_pgen_diff_t0": 890.0,
+  "note": "action 差拍若伴随 P_gen_ref ≤1 网格，归因=已登记 REATT 后端数值漂移传递（S3-C V2 契约覆盖，KNOWN_TARGET_BACKEND_NUMERICAL_DRIFT=true）；连续 ≥3 拍触发 STOP 供用户复核。"
+ },
+ "g6_3_strict_pass": false,
+ "frequency_G6_4": {
+  "n_formal": 62,
+  "max_action_diff_allowed": 1,
+  "action_diff_n": 3,
+  "max_consec_action_diff": 3,
+  "max_pgen_gt1_allowed": 1,
+  "pgen_gt1_n": 3
+ },
+ "g6_4_pass": false,
+ "is_formal_G6_5": {
+  "is_formal_only": true,
+  "warmup_excluded": true
+ },
+ "events_G6_6": {
+  "declared_events": {
+   "force_start_reason": "4（S2 realized-gap，C2 冒烟已声明）",
+   "flags_nonzero": "0（infer/DP fail）",
+   "fault_latch": "0/0",
+   "baseline_fallback": "0"
+  },
+  "undeclared_events": [
+   {
+    "t0": 300.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 310.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 320.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 330.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 340.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 350.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 360.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 370.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 380.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 390.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 400.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 410.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 420.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 430.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 440.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 450.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 460.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 470.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 480.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   },
+   {
+    "t0": 490.0,
+    "chain": "bb",
+    "fault": [
+     0.0,
+     0.0
+    ],
+    "fs": [
+     0.0,
+     1.0
+    ],
+    "fstp": [
+     0.0,
+     0.0
+    ],
+    "health": 1.0,
+    "fb": 0.0
+   }
+  ],
+  "undeclared_n": 62
+ },
+ "g6_6_pass": false,
+ "overall": false,
+ "overall_note": "G6-2 差异为基线档案语义（非 FAIL）；overall=G6-1∧G6-4∧G6-6∧全拍完成∧无停机∧非干跑。G6-3 逐拍严格值另行给出：违例伴随 P_gen_ref ≤1 网格时=已登记后端漂移传递（S3-C 覆盖），最终归因由用户裁决。"
+}
