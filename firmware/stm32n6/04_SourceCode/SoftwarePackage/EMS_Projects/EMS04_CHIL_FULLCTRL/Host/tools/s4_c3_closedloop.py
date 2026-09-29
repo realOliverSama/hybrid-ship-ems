@@ -476,9 +476,9 @@ class PmsHost:
 
 # ---------------------------------------------------------------- 板客户端
 class BoardClient:
-    def __init__(self, port):
+    def __init__(self, port, baud=115200):
         import serial
-        self.ser = serial.Serial(port, 115200, timeout=0.1)
+        self.ser = serial.Serial(port, baud, timeout=0.1)
         self.nack_n = 0
         self.retry_n = 0
 
@@ -773,6 +773,8 @@ def _fmt(v):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", default="/dev/cu.usbserial-1120")
+    ap.add_argument("--baud", type=int, default=115200,
+                    help="板串口波特率（默认 115200=板当前固件口径；UART 提速切换时改此参数）")
     ap.add_argument("--dry", action="store_true", help="无板干跑（不出正式 gate）")
     ap.add_argument("--formal-ticks", type=int, default=FORMAL_TICKS)
     ap.add_argument("--exec-period", type=int, default=10,
@@ -829,7 +831,7 @@ def main():
 
     board = None
     if not args.dry:
-        board = BoardClient(args.port)
+        board = BoardClient(args.port, args.baud)
         if not board.ping():
             print("[c3] PARK: PING 失败（板失联；需按加载通道重载后重跑）")
             return 2

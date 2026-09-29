@@ -15,7 +15,7 @@ host 同链（Python，与固件逐位同构）：
 注意：host REATT 走 ORT（host keras/OE 链）；板走 int8 NPU 链——若 q50 存在已知
   量化差，d1 可能差档；本对拍同时记录 q50 差以区分"输入差"与"逻辑差"。
 """
-import csv, ctypes, json, math, os, struct, sys, time
+import argparse, csv, ctypes, json, math, os, struct, sys, time
 from datetime import datetime, timezone
 
 import numpy as np
@@ -227,8 +227,14 @@ def host_chain_tick(hist, kf, P_load, SOC, Vdc, dis, chg, prop, hotel):
 
 
 def main():
-    ticks = int(sys.argv[1]) if len(sys.argv) > 1 else 100
-    ser = serial.Serial("/dev/cu.usbserial-1120", 115200, timeout=0.1)
+    ap = argparse.ArgumentParser()
+    ap.add_argument("ticks", nargs="?", type=int, default=100,
+                    help="拍数（位置参数，兼容旧用法 `s4_c3_preamble.py 100`）")
+    ap.add_argument("--baud", type=int, default=115200,
+                    help="板串口波特率（默认 115200=板当前固件口径）")
+    args = ap.parse_args()
+    ticks = args.ticks
+    ser = serial.Serial("/dev/cu.usbserial-1120", args.baud, timeout=0.1)
     def send(ft, pl=b""): ser.write(enc_frame(ft, pl)); ser.flush()
     def wait(ft, ms=20000):
         dl = time.monotonic() + ms/1000; buf = b""

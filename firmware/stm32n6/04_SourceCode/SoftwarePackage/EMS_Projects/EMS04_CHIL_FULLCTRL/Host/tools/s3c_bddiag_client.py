@@ -71,6 +71,8 @@ def main() -> int:
     ap.add_argument("--anchors-dir", required=True)
     ap.add_argument("--outdir", required=True)
     ap.add_argument("--port", default="/dev/cu.usbserial-1120")
+    ap.add_argument("--baud", type=int, default=115200,
+                    help="板串口波特率（默认 115200=板当前固件口径）")
     ap.add_argument("--one", default=None, help="VID:T0 单锚模式")
     ap.add_argument("--limit", type=int, default=0)
     args = ap.parse_args()
@@ -86,7 +88,7 @@ def main() -> int:
         anchors = anchors[: args.limit]
     print("anchors:", len(anchors))
 
-    b = cl.Board(args.port, 115200)
+    b = cl.Board(args.port, args.baud)
     b.ser.reset_input_buffer()
     ok = False
     for _ in range(12):

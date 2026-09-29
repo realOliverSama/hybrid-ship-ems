@@ -328,6 +328,61 @@ uint16_t ems04_tick_ctrl_prof(uint8_t out[EMS04_TICK_CTRL_PROF_RSP_LEN])
     return (uint16_t)EMS04_TICK_CTRL_PROF_RSP_LEN;
 }
 
+/* S4 偏差④遗留①取证通道（附加命令，qual/debug 用途）：CMD_DPDBG(0x14) 载荷
+ * [seq u32][SOC f64][N0 f64][q50 30×f64]（260B）→ 板直调 ems04_dp_tick
+ * （表 = m_tbl，gen state 与 TICK_CTRL 拍内同构），RSP_DPDBG(0x15) 全量回传
+ * TickResult（d1/J/soc_end/fuel/oob/fallback_n/n_fb/dlambda_all/soc_path/
+ * N_path）。跳过推理——q50 由 host 注入，用于板 vs host DP 的逐字段对照。
+ * 只读既有表与实现，不改任何控制路径数值语义。 */
+uint16_t ems04_dpdbg_handle(const uint8_t *payload, uint16_t len,
+                            uint8_t out[EMS04_DPDBG_RSP_LEN])
+{
+    if (len != EMS04_DPDBG_CMD_LEN) return 0u;
+    if (!m_tbl_ok) s4_exec_init();
+    if (!m_tbl_ok) return 0u;
+
+    const uint8_t *p = payload;
+    uint32_t seq = rd_u32(p); p += 4;
+    double SOC, N0;
+    memcpy(&SOC, p, 8); p += 8;
+    memcpy(&N0, p, 8); p += 8;
+    double Pbar[EMS04_K_MAX];
+    for (int i = 0; i < EMS04_K_MAX; i++) {
+        memcpy(&Pbar[i], p, 8); p += 8;
+    }
+
+    ems04_gen_state g;
+    g.st[0] = g.st[1] = 3.0;
+    g.P_ramp[0] = g.P_ramp[1] = 0.0;
+    g.P_lag[0] = g.P_lag[1] = 0.0;
+    g.t_dwell[0] = g.t_dwell[1] = 0.0;
+    ems04_tick_result tr;
+    memset(&tr, 0, sizeof(tr));
+    int rc = ems04_dp_tick(&m_tbl, Pbar, EMS04_K_MAX, SOC, N0, &g, &tr);
+
+    uint8_t *o = out;
+    wr_u32(o, seq); o += 4;
+    memcpy(o, &rc, 4); o += 4;
+    memcpy(o, &tr.dlambda_first, 8); o += 8;
+    memcpy(o, &tr.J_window_kg, 8); o += 8;
+    memcpy(o, &tr.soc_end, 8); o += 8;
+    memcpy(o, &tr.fuel_proxy_kg, 8); o += 8;
+    memcpy(o, &tr.oob_query_count, 8); o += 8;
+    memcpy(o, &tr.infeasible_fallback_n, 8); o += 8;
+    memcpy(o, &tr.n_fallback_steps, 4); o += 4;
+    memset(o, 0, 4); o += 4;
+    for (int i = 0; i < EMS04_K_MAX; i++) {
+        memcpy(o, &tr.dlambda_all[i], 8); o += 8;
+    }
+    for (int i = 0; i <= EMS04_K_MAX; i++) {
+        memcpy(o, &tr.soc_path[i], 8); o += 8;
+    }
+    for (int i = 0; i <= EMS04_K_MAX; i++) {
+        memcpy(o, &tr.N_path[i], 8); o += 8;
+    }
+    return (uint16_t)EMS04_DPDBG_RSP_LEN;
+}
+
 /* 执行层 1 s 门控（口径 v2，契约 §4.3）：与 TICK_CTRL 拍内执行层逐字同式——
  * soc_ref_eff = SOC_ref + K_S·d1；λ = λ0 + K_soc·(soc_ref_eff − SOC)，floor 门控；
  * P_gen_ref = s4_exec_grid(P_load, SOC, λ)。SOC/P_load/v_ship 为植物实测

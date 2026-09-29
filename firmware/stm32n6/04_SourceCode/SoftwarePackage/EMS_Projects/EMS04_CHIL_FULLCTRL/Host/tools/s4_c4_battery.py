@@ -819,6 +819,8 @@ def _selftest():
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", default="/dev/cu.usbserial-1120")
+    ap.add_argument("--baud", type=int, default=115200,
+                    help="板串口波特率（默认 115200=板当前固件口径）")
     ap.add_argument("--voyages", default=None,
                     help="逗号分隔 voyage_id（默认按冻结 battery 顺序）")
     ap.add_argument("--dry", action="store_true", help="无板干跑（overall 恒 false）")
@@ -917,7 +919,7 @@ def main():
 
     board = None
     if not args.dry:
-        board = BoardClient(args.port)
+        board = BoardClient(args.port, args.baud)
         if not board.ping():
             board.close()
             stopped = {"reason": "PING 失败（板失联；需按加载通道重载后重跑）",

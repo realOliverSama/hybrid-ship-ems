@@ -31,6 +31,15 @@ extern "C" {
 #define EMS04_EXEC_REFRESH_CMD_LEN 16u
 #define EMS04_EXEC_REFRESH_RSP_LEN 12u
 
+/* S4 偏差④遗留①取证通道（附加命令，debug 用途，不动任何既有契约）：
+ * CMD_DPDBG(0x14, 260B = seq+SOC f64+N0 f64+q50 30×f64) → 板直调 ems04_dp_tick
+ * （跳过推理），RSP_DPDBG(0x15) 全量回传 TickResult（800B：rc+d1/J/soc_end/
+ * fuel/oob/fallback_n/n_fb + dlambda_all/soc_path/N_path 全量 f64）。 */
+#define EMS04_DPDBG_CMD 0x14u
+#define EMS04_DPDBG_RSP 0x15u
+#define EMS04_DPDBG_CMD_LEN 260u
+#define EMS04_DPDBG_RSP_LEN 800u
+
 /* reset controller state (CMD_RESET path) */
 void ems04_tick_ctrl_reset(void);
 
@@ -42,6 +51,11 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
 
 /* 回放最近一次 TICK_CTRL 的段级分账（µs；CYCCNT 周期域差值、回绕安全）。 */
 uint16_t ems04_tick_ctrl_prof(uint8_t out[EMS04_TICK_CTRL_PROF_RSP_LEN]);
+
+/* S4 偏差④遗留①取证（CMD_DPDBG 0x14 → RSP_DPDBG 0x15）：q50 注入式
+ * 板 DP 直调 + TickResult 全量回传；len 非契约返回 0 → 调用方 NACK。 */
+uint16_t ems04_dpdbg_handle(const uint8_t *payload, uint16_t len,
+                            uint8_t out[EMS04_DPDBG_RSP_LEN]);
 
 /* 执行层 1 s 门控（口径 v2）：以 (SOC, P_load, 上拍 d1) 重算 grid → P_gen_ref，
  * 同帧刷新 LCD。返回 RSP 载荷长度（12）；无 TICK_CTRL 历史（d1 未初始化）时

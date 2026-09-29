@@ -171,7 +171,9 @@ class Board:
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--port", help="串口设备（--dry-run 时可省略）")
-    ap.add_argument("--baud", type=int, default=921600)
+    ap.add_argument("--baud", type=int, default=115200,
+                    help="板串口波特率（默认 115200=板当前固件口径；与其它 s3/s4 "
+                         "工具默认统一，原 921600 缺省与板实态不符，登记）")
     ap.add_argument("--ping", action="store_true")
     ap.add_argument("--dry-run", action="store_true",
                     help="不开串口：帧构造 + 输入 sha 清单 + CRC 自检")

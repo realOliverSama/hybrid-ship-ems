@@ -450,6 +450,21 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
         }
         break;
     }
+    case EMS04_DPDBG_CMD: {
+        /* S4 偏差④遗留①取证（附加通道）：q50 注入式板 DP 直调 +
+         * TickResult 全量回传（debug 用途，不动任何既有契约/数值语义） */
+        static uint8_t s4_dpdbg_rsp[EMS04_DPDBG_RSP_LEN];
+        uint16_t n = ems04_dpdbg_handle(payload, len, s4_dpdbg_rsp);
+        if (n == 0u) {
+            ems_proto_send_nack(&ems_proto_st, (uint8_t)EMS04_DPDBG_CMD,
+                                EMS_PROTO_ERR_LEN);
+        } else {
+            (void)ems_proto_send_frame(&ems_proto_st,
+                                       (uint8_t)EMS04_DPDBG_RSP,
+                                       s4_dpdbg_rsp, n);
+        }
+        break;
+    }
 #endif
     case EMS_PROTO_CMD_PING:
         (void)ems_proto_send_ack(&ems_proto_st, type);

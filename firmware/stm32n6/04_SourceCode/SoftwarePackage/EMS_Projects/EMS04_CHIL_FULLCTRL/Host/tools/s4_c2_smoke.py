@@ -72,12 +72,14 @@ def enc_tick_ctrl(seq, tick, P_load, SOC, Vdc, dis, chg, prop, hotel, hist, kf):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--port", default="/dev/cu.usbserial-1120")
+    ap.add_argument("--baud", type=int, default=115200,
+                    help="板串口波特率（默认 115200=板当前固件口径）")
     ap.add_argument("--ticks", type=int, default=100)
     ap.add_argument("--vid", default="FLTA_S1_D00000_M2")
     ap.add_argument("--t0", type=int, default=300)
     args = ap.parse_args()
 
-    ser = serial.Serial(args.port, 115200, timeout=0.1)
+    ser = serial.Serial(args.port, args.baud, timeout=0.1)
 
     def send(ftype, payload=b""):
         ser.write(enc_frame(ftype, payload)); ser.flush()
