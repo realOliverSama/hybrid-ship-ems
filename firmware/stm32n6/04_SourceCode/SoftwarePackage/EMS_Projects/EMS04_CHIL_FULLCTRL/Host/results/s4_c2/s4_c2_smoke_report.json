@@ -1,6 +1,6 @@
 {
  "schema": "s4_c2_smoke_v1",
- "created_utc": "2026-09-28T13:15:11.161215+00:00",
+ "created_utc": "2026-09-29T09:40:58.228147+00:00",
  "port": "/dev/cu.usbserial-1120",
  "ticks_requested": 100,
  "ticks_ok": 100,
@@ -25,8 +25,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 309638,
+   "ctrl_us": 3914,
    "flags": 0
   },
   {
@@ -47,8 +47,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 313096,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -69,8 +69,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 291409,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -91,8 +91,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 288352,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -113,8 +113,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 300262,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -135,8 +135,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296126,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -157,8 +157,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289955,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -179,8 +179,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 297724,
+   "ctrl_us": 3917,
    "flags": 0
   },
   {
@@ -201,8 +201,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 290540,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -223,8 +223,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 291833,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -245,8 +245,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292601,
+   "ctrl_us": 3917,
    "flags": 0
   },
   {
@@ -267,8 +267,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295345,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -289,8 +289,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 298406,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -311,8 +311,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292699,
+   "ctrl_us": 3917,
    "flags": 0
   },
   {
@@ -333,8 +333,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295374,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -355,8 +355,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293052,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -377,8 +377,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289278,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -399,8 +399,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292470,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -421,8 +421,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296023,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -443,8 +443,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294994,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -465,8 +465,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 291732,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -487,8 +487,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295562,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -509,8 +509,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292596,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -531,8 +531,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295285,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -553,8 +553,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 300077,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -575,8 +575,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 291833,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -597,8 +597,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289356,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -619,8 +619,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295767,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -641,8 +641,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 286581,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -663,8 +663,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 287461,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -685,8 +685,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299285,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -707,8 +707,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 298575,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -729,8 +729,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 290811,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -751,8 +751,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 288410,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -773,8 +773,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 297889,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -795,8 +795,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 300316,
+   "ctrl_us": 3917,
    "flags": 0
   },
   {
@@ -817,8 +817,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294323,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -839,8 +839,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295805,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -861,8 +861,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299978,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -883,8 +883,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299395,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -905,8 +905,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 302362,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -927,8 +927,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 290951,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -949,8 +949,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 297315,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -971,8 +971,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289724,
+   "ctrl_us": 3917,
    "flags": 0
   },
   {
@@ -993,8 +993,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295651,
+   "ctrl_us": 3919,
    "flags": 0
   },
   {
@@ -1015,8 +1015,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 298870,
+   "ctrl_us": 3918,
    "flags": 0
   },
   {
@@ -1037,8 +1037,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293987,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1059,8 +1059,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 298165,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1081,8 +1081,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 298272,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1103,8 +1103,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 288927,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1125,8 +1125,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294884,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1147,8 +1147,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 297925,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1169,8 +1169,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292375,
+   "ctrl_us": 3963,
    "flags": 0
   },
   {
@@ -1191,8 +1191,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294872,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1213,8 +1213,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 288691,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1235,8 +1235,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296029,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1257,8 +1257,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294758,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1279,8 +1279,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 297670,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1301,8 +1301,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 288407,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1323,8 +1323,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 300115,
+   "ctrl_us": 3963,
    "flags": 0
   },
   {
@@ -1345,8 +1345,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 290248,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1367,8 +1367,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 297558,
+   "ctrl_us": 3960,
    "flags": 0
   },
   {
@@ -1389,8 +1389,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 290217,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1411,8 +1411,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289568,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1433,8 +1433,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299000,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1455,8 +1455,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296094,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1477,8 +1477,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295409,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1499,8 +1499,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299401,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1521,8 +1521,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 301107,
+   "ctrl_us": 3963,
    "flags": 0
   },
   {
@@ -1543,8 +1543,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 287362,
+   "ctrl_us": 3960,
    "flags": 0
   },
   {
@@ -1565,8 +1565,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293092,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1587,8 +1587,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294483,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1609,8 +1609,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299791,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1631,8 +1631,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292944,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1653,8 +1653,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289745,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1675,8 +1675,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 291828,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1697,8 +1697,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296803,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1719,8 +1719,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 287843,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1741,8 +1741,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293813,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1763,8 +1763,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296091,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1785,8 +1785,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 291962,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1807,8 +1807,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299291,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1829,8 +1829,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 298438,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1851,8 +1851,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294969,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1873,8 +1873,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293355,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1895,8 +1895,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296418,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -1917,8 +1917,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293202,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1939,8 +1939,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293331,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1961,8 +1961,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299012,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -1983,8 +1983,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299331,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2005,8 +2005,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294419,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2027,8 +2027,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 289548,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2049,8 +2049,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 299967,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2071,8 +2071,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295489,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2093,8 +2093,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 290553,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2115,8 +2115,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 292539,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -2137,8 +2137,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 296929,
+   "ctrl_us": 3961,
    "flags": 0
   },
   {
@@ -2159,8 +2159,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 293464,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2181,8 +2181,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 294007,
+   "ctrl_us": 3962,
    "flags": 0
   },
   {
@@ -2203,8 +2203,8 @@
    "fault1": 0.0,
    "ems_health_ok": 1.0,
    "baseline_fallback_active": 0.0,
-   "infer_us": 0,
-   "ctrl_us": 0,
+   "infer_us": 295470,
+   "ctrl_us": 3961,
    "flags": 0
   }
  ]

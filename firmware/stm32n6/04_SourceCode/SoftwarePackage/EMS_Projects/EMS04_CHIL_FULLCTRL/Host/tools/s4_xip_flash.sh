@@ -5,7 +5,8 @@
 # 红线: 0x70A/0x70B/0x703 禁碰（本脚本只写 0x70100400 起的镜像段）；OB/OTP 零触碰
 set -euo pipefail
 
-REPO="$(cd "$(dirname "$0")" && while [ ! -f AGENTS.md ]; do cd ..; done && pwd)"
+REPO="$(cd "$(dirname "$0")/../../../../../../../.." && pwd)"   # tools→Host→EMS04→EMS_Projects→SoftwarePackage→04_SourceCode→stm32n6→firmware→repo
+if [ ! -f "$REPO/AGENTS.md" ] || [ ! -d "$REPO/model" ]; then echo "REPO 推导失败: $REPO" >&2; exit 2; fi
 E04="$REPO/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL"
 CLI="/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.macos64_2.2.200.202503041107/tools/bin/STM32_Programmer_CLI"
 STLDR="$REPO/firmware/stm32n6/04_SourceCode/SoftwarePackage/External_Loader/MX25UM25645G_ATK-CNN647B/Binary/MX25UM25645G_ATK-CNN647B_ExtMemLoader.stldr"

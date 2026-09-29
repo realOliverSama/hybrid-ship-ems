@@ -1,0 +1,13 @@
+{
+ "schema": "s4_c2_smoke_gate_v1_xip",
+ "form": "flash boot XIP @0x70100400（产品形态；hex sha 56d41ba4…，FULLCTRL+LCD 接线）",
+ "created_utc": "2026-09-29T09:42:26.812998+00:00",
+ "smoke_report_sha256": "2123a2bfc09ab1136ff7058ab4885ea4edaef384eebf92413b723f668762d515",
+ "verdict": {
+  "ticks_ok": 100,
+  "n_nack": 0,
+  "zero_nack": true,
+  "product_form_equivalence": true,
+  "note": "拨 flash boot 冒烟 100/100 零 NACK = 产品形态等价证据（P4 RCA §5 ⑥）；infer_us 中位 294926（NPU 从 NOR 权重池 0x70A/0x70B 推理成功 = 窗口可读运行时实证）；flags 全零、cstate=2/rcode=4、health=1（控制面形态正确）"
+ }
+}
