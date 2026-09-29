@@ -52,6 +52,12 @@ f64→f32 统一 numpy astype('<f4')（RNE）。
       --voyage-id <vid>
   PYTHONDONTWRITEBYTECODE=1 .venv_tf/bin/python <本脚本> --selfcheck \
       --mat ... --voyage-id <vid>
+S4-P3 formal 臂（2026-09-29 参数化，向后兼容扩展；缺省行为逐字节不变）：
+  forecast_profile_code 1=GOOD_V1 / 2=DEGRADED_V1 / 3=PILOT_FIXTURE（登记表见
+  FORECAST_PROFILE_CODES）；formal 航次示例（M1 臂→1，M2 臂→2）：
+  PYTHONDONTWRITEBYTECODE=1 .venv_tf/bin/python <本脚本> --pack \
+      --mat "model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/<vid>.mat" \
+      --voyage-id <vid> --profile-code 1
 泛化产物：results/s4_c3/<vid>.kf_table.bin 与
 s4_c3_kf_table_selfcheck_<vid>.json（缺省两参数时 = S20 既有路径与既有文件名，
 行为与历史版本逐字节一致）。
@@ -74,7 +80,8 @@ from scipy.io import loadmat
 MAGIC = b"EMS04KFT"
 FORMAT_VERSION = 1
 CONTRACT_VERSION = 0x00010000
-FORECAST_PROFILE_CODES = {3: "PILOT_FIXTURE"}
+FORECAST_PROFILE_CODES = {1: "GOOD_V1", 2: "DEGRADED_V1",
+                          3: "PILOT_FIXTURE"}
 HEADER_BYTES = 216
 ROW_BYTES = 8 + 30 * 6 * 4
 KF_COLS = ("v_plan_mps", "s_plan_m", "h_chart_m", "P_hotel_plan_kW",
@@ -332,7 +339,8 @@ READBACK_BOOL_KEYS = ("magic_ok", "format_version_ok", "contract_version_ok",
 
 
 def run(mode: str, mat_rel: str = SRC_MAT_REL, table_name: str = TABLE_NAME,
-        expect_voyage_id: str | None = None) -> dict:
+        expect_voyage_id: str | None = None,
+        profile_code: int = 3) -> dict:
     audit = _static_whitelist_audit()  # 违者 FAIL，不出表
     mat_path = os.path.join(REPO, mat_rel)
     if not os.path.isfile(mat_path):
@@ -350,7 +358,7 @@ def run(mode: str, mat_rel: str = SRC_MAT_REL, table_name: str = TABLE_NAME,
     if not hdr_len_ok:
         raise KFError("header 字段 ASCII 编码后超长")
 
-    header = {"forecast_profile_code": 3,
+    header = {"forecast_profile_code": profile_code,
               "issue_first": float(issue[0]), "issue_step": issue_step,
               "voyage_id": d["voyage_id"],
               "forecast_generator_id": prov["forecast_generator_id"],
@@ -381,7 +389,7 @@ def run(mode: str, mat_rel: str = SRC_MAT_REL, table_name: str = TABLE_NAME,
         "contract_version_ok":
             bool(parsed["contract_version"] == CONTRACT_VERSION),
         "profile_code_ok":
-            bool(parsed["forecast_profile_code"] == 3),
+            bool(parsed["forecast_profile_code"] == profile_code),
         "n_rows_ok": bool(parsed["n_rows"] == issue.size),
         "issue_first_bitwise":
             bool(struct.pack("<d", parsed["issue_first"])
@@ -439,7 +447,7 @@ def run(mode: str, mat_rel: str = SRC_MAT_REL, table_name: str = TABLE_NAME,
             "magic": MAGIC.decode("ascii"),
             "format_version": FORMAT_VERSION,
             "contract_version": "0x%08x" % CONTRACT_VERSION,
-            "forecast_profile_code": 3,
+            "forecast_profile_code": profile_code,
             "forecast_profile_code_meaning":
                 {str(k): v for k, v in FORECAST_PROFILE_CODES.items()},
             "n_rows": int(issue.size),
@@ -491,9 +499,16 @@ def main(argv=None) -> int:
                     help="航次 id（须与 mat 内 meta.voyage_id 一致）；产物命名 "
                          "<id>.kf_table.bin / s4_c3_kf_table_selfcheck_<id>"
                          ".json；缺省 = S20 既有文件名")
+    ap.add_argument("--profile-code", type=int, choices=(1, 2, 3), default=3,
+                    help="forecast_profile_code（S4-P3 参数化；默认 3=PILOT_"
+                         "FIXTURE 与历史行为一致；formal 臂：1=GOOD_V1 / "
+                         "2=DEGRADED_V1，须与 --mat/--voyage-id 泛化模式同用）")
     args = ap.parse_args(argv)
     if (args.mat is None) != (args.voyage_id is None):
         ap.error("--mat 与 --voyage-id 必须同时给出或同时缺省")
+    if args.profile_code != 3 and args.mat is None:
+        ap.error("--profile-code 非默认值 3 时须与 --mat/--voyage-id 泛化模式同用"
+                 "（缺省 S20 路径冻结为 3=PILOT_FIXTURE）")
     if args.voyage_id is None:
         mat_rel, table_name = SRC_MAT_REL, TABLE_NAME
         json_name, expect_vid = SELFCHECK_NAME, None
@@ -512,7 +527,8 @@ def main(argv=None) -> int:
     json_path = os.path.join(REPO, OUT_DIR_REL, json_name)
     try:
         payload = run(mode, mat_rel=mat_rel, table_name=table_name,
-                      expect_voyage_id=expect_vid)
+                      expect_voyage_id=expect_vid,
+                      profile_code=args.profile_code)
     except (KFError, SystemExit) as e:
         fail = {"schema": SELFCHECK_SCHEMA, "created_utc": utc_now(),
                 "mode": mode, "driver": rel(os.path.abspath(__file__)),

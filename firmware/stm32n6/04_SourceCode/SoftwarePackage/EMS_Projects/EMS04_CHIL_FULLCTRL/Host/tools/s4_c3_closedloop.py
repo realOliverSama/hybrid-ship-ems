@@ -162,7 +162,9 @@ def load_kf_table(path):
     magic, fv, cv, code, n = struct.unpack_from("<8sIIII", blob, 0)
     issue_first, issue_step = struct.unpack_from("<dd", blob, 24)
     assert magic == b"EMS04KFT" and fv == 1, "kf 表 magic/版本不符"
-    assert code == 3, "kf 表 profile_code != 3 (PILOT_FIXTURE)"
+    # S4-P3 B1（2026-09-29 向后兼容扩展）：放宽为登记过的 profile 域
+    # {1=GOOD_V1, 2=DEGRADED_V1, 3=PILOT_FIXTURE}；S20 默认路径（code=3）行为不变。
+    assert code in (1, 2, 3), "kf 表 profile_code 非法: %r" % (code,)
     payload = blob[216:]
     assert len(payload) == n * 728, "kf 表 payload 长度不符"
     rows = {}

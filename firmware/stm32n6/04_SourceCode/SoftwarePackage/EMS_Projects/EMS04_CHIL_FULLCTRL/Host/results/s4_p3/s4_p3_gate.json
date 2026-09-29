@@ -1,0 +1,55 @@
+{
+ "schema": "s4_p3_formal_battery_gate_v1",
+ "created_utc": "2026-09-29T04:53:55.528171+00:00",
+ "mode": "dry",
+ "status": "PLANTSTEP_DYLIB_PENDING",
+ "status_note": "streamE dylib 尚未产出（B2 未放行）；本门为 B1 装配就绪检查记录（freeze/stream bin/kf 表已就绪面），overall 恒 false，非正式验收产物",
+ "battery_freeze": {
+  "path": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json",
+  "sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f",
+  "schema": "s4_p3_formal_arm_freeze_v1",
+  "battery_order": [
+   {
+    "role": "M1_R_low",
+    "voyage_id": "FLTA_S2_D01006_M1"
+   },
+   {
+    "role": "M2_R_low",
+    "voyage_id": "FLTA_S2_D01006_M2"
+   },
+   {
+    "role": "M1_R_high",
+    "voyage_id": "FLTA_S6_D05003_M1"
+   },
+   {
+    "role": "M2_R_high",
+    "voyage_id": "FLTA_S6_D05003_M2"
+   }
+  ]
+ },
+ "planned_voyages": [
+  "FLTA_S2_D01006_M1",
+  "FLTA_S2_D01006_M2",
+  "FLTA_S6_D05003_M1",
+  "FLTA_S6_D05003_M2"
+ ],
+ "voyages": [],
+ "skipped_voyages": [
+  "FLTA_S2_D01006_M1",
+  "FLTA_S2_D01006_M2",
+  "FLTA_S6_D05003_M1",
+  "FLTA_S6_D05003_M2"
+ ],
+ "stopped_global": {
+  "reason": "PLANTSTEP_DYLIB_PENDING",
+  "at_voyage": null
+ },
+ "missing_dylib": [
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/FLTA_S2_D01006_M1/libplantstepE_stream.dylib",
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/FLTA_S2_D01006_M2/libplantstepE_stream.dylib",
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/FLTA_S6_D05003_M1/libplantstepE_stream.dylib",
+  "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/FLTA_S6_D05003_M2/libplantstepE_stream.dylib"
+ ],
+ "overall": false,
+ "overall_note": "PENDING 门：B2 补齐 dylib 后重跑覆盖；dry 语义下同样不出正式 gate（overall 恒 false）"
+}

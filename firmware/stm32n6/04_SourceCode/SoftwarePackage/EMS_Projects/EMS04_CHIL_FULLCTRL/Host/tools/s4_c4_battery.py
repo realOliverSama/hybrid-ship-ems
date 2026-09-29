@@ -53,6 +53,15 @@
   --dry                                    # 无板干跑（不出正式 gate，overall 恒 false）
 自检（无板无植物；import C3 模块 + 冻结件/结构校验，不初始化任何 dylib/keras/ORT）：
   PYTHONDONTWRITEBYTECODE=1 .venv_tf/bin/python tools/s4_c4_battery.py --selftest
+
+S4-P3 B1 扩展（2026-09-29，向后兼容；默认 pilot/modelE 路径行为零改动）：
+  --plant-backend streamE --data-root <formal/iid 目录>
+    装配 P3 formal 臂电池（冻结件 Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json，
+    schema s4_p3_formal_arm_freeze_v1）：植物 = streamE 流驱动 dylib
+    （Host/plantstep_e_stream/<vid>/libplantstepE_stream.dylib），stream 数据源 =
+    --data-root/<vid>.mat；产物目录改 Host/results/s4_p3/（不与 pilot 产物混写）。
+    dylib 缺席（B2 未放行）时启动即写 PLANTSTEP_DYLIB_PENDING 门
+    （results/s4_p3/s4_p3_gate.json，overall 恒 false，rc=3），不做任何重初始化。
 """
 from __future__ import annotations
 
@@ -87,6 +96,12 @@ SCENARIO = c3.SCENARIO                     # PlantStepE 场景（与 C3 同一 d
 BATTERY_DOC_ORDER = ("S02_downstream", "S08_resistance_bands", "S03_upstream")
 BATTERY_DOC_ROLES = ("R_low", "R_mid", "R_high")
 
+# ---- S4-P3 B1（2026-09-29）：streamE 变体装配（默认 modelE/pilot 零改动）----
+PLANT_BACKENDS = ("modelE", "streamE")
+FREEZE_P3_PATH = os.path.join(c3.HOST, "results", "s4_c4",
+                              "S4_P3_FORMAL_ARM_FREEZE.json")
+RESULTS_P3 = os.path.join(c3.HOST, "results", "s4_p3")
+
 # 结构键完整性契约（selftest 自检面）
 BATTERY_GATE_KEYS = ("schema", "created_utc", "mode", "dry_note",
                      "battery_freeze", "voyages", "skipped_voyages",
@@ -102,8 +117,16 @@ def kf_table_path(vid):
     return os.path.join(c3.EXP, "results", "s4_c3", vid + ".kf_table.bin")
 
 
-def stream_path(vid):
-    return os.path.join(c3.MODELE, "datasets_v3", "pilot", vid + ".mat")
+def stream_path(vid, data_root=None):
+    """stream .mat 路径（默认 pilot 目录 = 冻结行为；streamE 模式 = --data-root）。"""
+    root = data_root or os.path.join(c3.MODELE, "datasets_v3", "pilot")
+    return os.path.join(root, vid + ".mat")
+
+
+def stream_bin_path(vid):
+    """streamE 变体流回放 bin（tools/s4_p3_pack_stream.py 产物）。"""
+    return os.path.join(c3.HOST, "plantstep_e_stream", vid,
+                        vid + ".stream.f64.bin")
 
 
 def load_freeze():
@@ -124,12 +147,36 @@ def load_freeze():
     return freeze
 
 
+def load_freeze_p3(path=None):
+    """P3 formal 臂冻结件读取（streamE 模式；fail-closed，schema/status 校验）。"""
+    p = path or FREEZE_P3_PATH
+    if not os.path.isfile(p):
+        raise RuntimeError("P3 冻结件缺失: %s" % os.path.relpath(p, c3.REPO))
+    freeze = json.load(open(p))
+    if (freeze.get("schema") != "s4_p3_formal_arm_freeze_v1"
+            or freeze.get("status") != "FROZEN"):
+        raise RuntimeError(
+            "P3 冻结件 schema/status 异常: %r/%r"
+            % (freeze.get("schema"), freeze.get("status")))
+    battery = freeze.get("battery")
+    if not isinstance(battery, list) or not battery:
+        raise RuntimeError("P3 冻结件 battery 结构异常（需非空 list）")
+    for e in battery:
+        for k in ("role", "voyage_id", "arm"):
+            if not isinstance(e.get(k), str) or not e[k]:
+                raise RuntimeError("P3 冻结件条目缺 %s: %r" % (k, e))
+    return freeze
+
+
 def resolve_voyages(args, freeze):
     """航次顺序：默认冻结 battery 顺序；--voyages 子集/顺序（校验属于冻结集合）。"""
     battery = freeze["battery"]
     ids = [e["voyage_id"] for e in battery]
     role_of = {e["voyage_id"]: e["role"] for e in battery}
-    scen_of = {e["voyage_id"]: e.get("scenario_id") for e in battery}
+    # P3 冻结件条目无 scenario_id 键 → 回退 voyage_id（mission_v3 航次自为场景）；
+    # C4 冻结件条目有 scenario_id → 行为与原实现逐字段一致。
+    scen_of = {e["voyage_id"]: (e.get("scenario_id") or e["voyage_id"])
+               for e in battery}
     if args.voyages:
         req = [v.strip() for v in args.voyages.split(",") if v.strip()]
         unknown = [v for v in req if v not in ids]
@@ -147,10 +194,10 @@ def check_kf_tables(vids):
     return [kf_table_path(v) for v in vids if not os.path.isfile(kf_table_path(v))]
 
 
-def load_stream(vid):
-    """pilot stream 装载（只取 SCENARIO_COLS+time_s；结构 fail-closed）。"""
+def load_stream(vid, data_root=None):
+    """stream 装载（只取 SCENARIO_COLS+time_s；结构 fail-closed）。"""
     from scipy.io import loadmat
-    spath = stream_path(vid)
+    spath = stream_path(vid, data_root)
     if not os.path.isfile(spath):
         raise RuntimeError("pilot stream 缺失: %s" % os.path.relpath(spath, REPO))
     mat = loadmat(spath, simplify_cells=True)
@@ -166,6 +213,30 @@ def load_stream(vid):
             "fixture_kind": str(mat["meta"]["fixture_kind"])}
     del mat
     return spath, stream, meta
+
+
+class PlantEStreamE(c3.PlantE):
+    """S4-P3 B1：streamE 流驱动植物（Path S″）。子步推进/读数语义与 C3 PlantE
+    完全同构（step_substep/close 继承），仅 advancer 装配后端不同
+    （streamE = Host/plantstep_e_stream/<vid>/libplantstepE_stream.dylib）。"""
+
+    def __init__(self, scenario):
+        from plantstep_advancer import make_advancer
+        self.adv = make_advancer(backend="streamE", scenario=scenario)
+        self._lib = self.adv._lib
+        self.t = 0.0                          # 已推进到的模型时刻（子步末）
+        self.last_out = None
+        self.last_states = None
+
+
+def make_plant(backend, scenario):
+    """植物装配（modelE = 冻结默认路径零改动；streamE = P3 B1 扩展）。"""
+    if backend == "streamE":
+        return PlantEStreamE(scenario)
+    if backend == "modelE":
+        return c3.PlantE(scenario)
+    raise RuntimeError("plant-backend 必须为 %s，实际 %r"
+                       % (PLANT_BACKENDS, backend))
 
 
 def finalize_voyage_gate(gate, vid, role, kf_path, freeze_sha, spath):
@@ -211,10 +282,45 @@ def build_battery_gate(planned, entries, dry, stopped_global, freeze, freeze_sha
     }
 
 
+def build_pending_gate(planned, dry, freeze, freeze_sha, missing):
+    """S4-P3 B1：PLANTSTEP_DYLIB_PENDING 门（streamE dylib 缺席，待 B2 codegen
+    +build 放行）。fail-closed 记录产物：overall 恒 false，不做任何重初始化/写航次
+    产物；B2 补齐 dylib 后须以正式 4/4 合取门覆盖本文件。"""
+    return {
+        "schema": "s4_p3_formal_battery_gate_v1",
+        "created_utc": datetime.now(timezone.utc).isoformat(),
+        "mode": "dry" if dry else "board",
+        "status": "PLANTSTEP_DYLIB_PENDING",
+        "status_note": "streamE dylib 尚未产出（B2 未放行）；本门为 B1 装配"
+                       "就绪检查记录（freeze/stream bin/kf 表已就绪面），"
+                       "overall 恒 false，非正式验收产物",
+        "battery_freeze": {
+            "path": os.path.relpath(FREEZE_P3_PATH, c3.REPO),
+            "sha256": freeze_sha,
+            "schema": freeze["schema"],
+            "battery_order": [{"role": e["role"], "voyage_id": e["voyage_id"]}
+                              for e in freeze["battery"]],
+        },
+        "planned_voyages": list(planned),
+        "voyages": [],
+        "skipped_voyages": list(planned),
+        "stopped_global": {"reason": "PLANTSTEP_DYLIB_PENDING",
+                           "at_voyage": None},
+        "missing_dylib": missing,
+        "overall": False,
+        "overall_note": "PENDING 门：B2 补齐 dylib 后重跑覆盖；dry 语义下同样"
+                        "不出正式 gate（overall 恒 false）",
+    }
+
+
 def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
-               board, law, pms_bh, pms_a2, chain, dry, freeze_sha):
+               board, law, pms_bh, pms_a2, chain, dry, freeze_sha,
+               plant_backend="modelE", results_dir=None):
     """单航次闭环（与 C3 main 逐拍同构；差异仅：产物路径、正式拍数=该航次 kf 行数、
-    正式段前板复位失败 → 全局停机语义、航次级产物）。返回结果 dict（含 gate）。"""
+    正式段前板复位失败 → 全局停机语义、航次级产物）。返回结果 dict（含 gate）。
+    S4-P3 B1：plant_backend='streamE' 时植物走流驱动 dylib、场景=voyage_id；
+    results_dir 缺省回落模块级 RESULTS（pilot 行为零改动）。"""
+    res_dir = results_dir or RESULTS
     t_v0 = time.time()
     n_formal = kft["n"]
     print("[c4:%s] kf 表: n=%d issue=%g..%g step=%g vid=%s sha=%s…"
@@ -222,7 +328,8 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
              kft["issue_first"] + (n_formal - 1) * kft["issue_step"],
              kft["issue_step"], kft["voyage_id"], kft["sha256"][:12]))
 
-    plant = PlantE(SCENARIO)                 # IC 复位（每航次全新实例）
+    plant = make_plant(plant_backend,
+                       vid if plant_backend == "streamE" else SCENARIO)
     try:
         ring = c3.H1WindowHost()
         ring.begin(0, float(stream["water_depth_m"][0]), 0.0, 0)
@@ -247,7 +354,7 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
             return out, st, st_prev
 
         # ---- 预热段（is_formal=0；板不参与；law6 冷启动）----
-        warm_path = os.path.join(RESULTS, "s4_c4_%s_warmup.csv" % vid)
+        warm_path = os.path.join(res_dir, "s4_c4_%s_warmup.csv" % vid)
         f_warm = open(warm_path, "w")
         f_warm.write("tick,t_end,pgen_cold_kw,P_load,SOC,Vdc,voyage_stop\n")
         pgen_next = 0.0
@@ -281,7 +388,7 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
                 pms_bh.init()
                 pms_a2.init()
 
-        csv_path = os.path.join(RESULTS, "s4_c4_%s.csv" % vid)
+        csv_path = os.path.join(res_dir, "s4_c4_%s.csv" % vid)
         f_csv = open(csv_path, "w")
         f_csv.write(",".join(CSV_COLS) + "\n")
         rows = []
@@ -457,7 +564,7 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
             first_unattr_pgen, drift_ticks, {}, voyage_stop_tick,
             board, seq, t_v0, meta)
         gate = finalize_voyage_gate(gate, vid, role, kf_path, freeze_sha, spath)
-        gate_path = os.path.join(RESULTS, "s4_c4_%s_gate.json" % vid)
+        gate_path = os.path.join(res_dir, "s4_c4_%s_gate.json" % vid)
         json.dump(gate, open(gate_path, "w"), indent=1, ensure_ascii=False)
         print("[c4:%s] 完成 %d/%d 拍；stop=%s" % (vid, n_done, n_formal, stop_reason))
         print("[c4:%s] G6 overall: %s -> %s" % (vid, gate["overall"],
@@ -635,26 +742,72 @@ def main():
     ap.add_argument("--dry", action="store_true", help="无板干跑（overall 恒 false）")
     ap.add_argument("--selftest", action="store_true",
                     help="无板无植物自检（不写盘）")
+    ap.add_argument("--plant-backend", choices=PLANT_BACKENDS, default="modelE",
+                    help="modelE=默认冻结路径（pilot 烘焙 dylib）；streamE="
+                         "S4-P3 流驱动变体（P3 冻结件 + --data-root，B1）")
+    ap.add_argument("--data-root", default=None,
+                    help="streamE 模式 formal .mat 目录（如 model/.../datasets_v3"
+                         "/formal/iid）；modelE 默认路径忽略")
     args = ap.parse_args()
 
     if args.selftest:
         return 0 if _selftest() else 1
 
-    os.makedirs(RESULTS, exist_ok=True)
+    # ---- S4-P3 B1：streamE 装配分支（默认 modelE 路径全部行为不变）----
+    if args.plant_backend == "streamE":
+        if not args.data_root:
+            print("[p3] FAIL-CLOSED: --plant-backend streamE 需要显式 "
+                  "--data-root（formal .mat 目录）")
+            return 2
+        results_dir = RESULTS_P3
+        freeze_path = FREEZE_P3_PATH
+        try:
+            freeze = load_freeze_p3(freeze_path)
+        except RuntimeError as e:
+            print("[p3] FAIL-CLOSED: %s" % e)
+            return 2
+    else:
+        results_dir = RESULTS
+        freeze_path = FREEZE_PATH
+        freeze = load_freeze()
+    os.makedirs(results_dir, exist_ok=True)
     t_start_wall = time.time()
 
     # ---- 冻结件 + 航次顺序 + kf 表就绪（全部先于任何重初始化）----
-    freeze = load_freeze()
-    freeze_sha = c3.sha256_file(FREEZE_PATH)
+    freeze_sha = c3.sha256_file(freeze_path)
     planned, role_of, scen_of = resolve_voyages(args, freeze)
-    print("[c4] 冻结电池 sha=%s… 航次顺序=%s"
-          % (freeze_sha[:12], planned))
+    print("[p3/c4] plant-backend=%s 冻结件=%s sha=%s… 航次顺序=%s"
+          % (args.plant_backend, os.path.relpath(freeze_path, c3.REPO),
+             freeze_sha[:12], planned))
     kf_missing = check_kf_tables(planned)
     if kf_missing:
         for p in kf_missing:
-            print("[c4] FAIL-CLOSED: kf 表缺失: %s（并行 worker 产出后重跑）"
-                  % os.path.relpath(p, REPO))
+            print("[p3/c4] FAIL-CLOSED: kf 表缺失: %s（并行 worker 产出后重跑）"
+                  % os.path.relpath(p, c3.REPO))
         return 2
+    if args.plant_backend == "streamE":
+        stream_missing = [stream_bin_path(v) for v in planned
+                          if not os.path.isfile(stream_bin_path(v))]
+        if stream_missing:
+            for p in stream_missing:
+                print("[p3] FAIL-CLOSED: stream bin 缺失: %s"
+                      "（tools/s4_p3_pack_stream.py 产出后重跑）"
+                      % os.path.relpath(p, c3.REPO))
+            return 2
+        from plantstep_advancer import streamE_dylib_path
+        dylib_missing = [streamE_dylib_path(v) for v in planned
+                         if not os.path.isfile(streamE_dylib_path(v))]
+        if dylib_missing:
+            gate = build_pending_gate(planned, args.dry, freeze, freeze_sha,
+                                      [os.path.relpath(p, c3.REPO)
+                                       for p in dylib_missing])
+            gate_path = os.path.join(results_dir, "s4_p3_gate.json")
+            json.dump(gate, open(gate_path, "w"), indent=1, ensure_ascii=False)
+            print("[p3] PENDING: PLANTSTEP_DYLIB_PENDING（%d/%d 航次 dylib 缺席，"
+                  "待 B2 codegen+build 放行）-> %s"
+                  % (len(dylib_missing), len(planned),
+                     os.path.relpath(gate_path, c3.REPO)))
+            return 3
 
     print("[c4] 初始化 law6/PMS host/B 链（law6 dylib + ORT 首载；"
           "keras 经首航次 A2 装配器载入）…")
@@ -674,7 +827,8 @@ def main():
             entries = []
             gate = build_battery_gate(planned, entries, args.dry, stopped,
                                       freeze, freeze_sha)
-            json.dump(gate, open(os.path.join(RESULTS, "s4_c4_gate.json"), "w"),
+            json.dump(gate, open(os.path.join(results_dir, "s4_c4_gate.json"),
+                                 "w"),
                       indent=1, ensure_ascii=False)
             print("[c4] PARK: PING 失败（板失联）-> 电池 gate（overall=false）已写")
             return 2
@@ -687,7 +841,7 @@ def main():
     for vid in planned:
         print("[c4] ===== 航次 %s（role=%s，%d/%d）====="
               % (vid, role_of[vid], len(entries) + 1, len(planned)))
-        spath, stream, meta = load_stream(vid)
+        spath, stream, meta = load_stream(vid, args.data_root)
         if a2 is None:
             a2 = A2Assembler(stream)
         else:
@@ -713,7 +867,9 @@ def main():
             break
 
         res = run_voyage(vid, role_of[vid], spath, stream, meta, a2, kft, kf_path,
-                         board, law, pms_bh, pms_a2, chain, args.dry, freeze_sha)
+                         board, law, pms_bh, pms_a2, chain, args.dry, freeze_sha,
+                         plant_backend=args.plant_backend,
+                         results_dir=results_dir)
         res["scenario_id"] = scen_of[vid]    # 冻结件元数据（权威）覆盖 mat meta
         entries.append({k: res[k] for k in VOYAGE_ENTRY_KEYS})
 
@@ -727,7 +883,7 @@ def main():
 
     gate = build_battery_gate(planned, entries, args.dry, stopped_global,
                               freeze, freeze_sha)
-    gate_path = os.path.join(RESULTS, "s4_c4_gate.json")
+    gate_path = os.path.join(results_dir, "s4_c4_gate.json")
     json.dump(gate, open(gate_path, "w"), indent=1, ensure_ascii=False)
     print("[c4] 电池完成 %d/%d 航次；stopped_global=%s"
           % (len(entries), len(planned), stopped_global))

@@ -3,8 +3,9 @@
 """plantstep_advancer.py — T-604 交付物：被控对象推进器（plant advancer）统一封装
 （spec: ems01-chil-v3-closedloop，FR-602 / NFR-601 / AC-602；design §4.1/§6.5）。
 
-统一 API（两后端一致，闭环 harness ems_closedloop.py 与 G-P2 门禁均经本模块驱动）:
-    make_advancer(backend='stub'|'ctypes', scenario='S20'|'voyage002')
+统一 API（各后端一致，闭环 harness ems_closedloop.py 与 G-P2 门禁均经本模块驱动）:
+    make_advancer(backend='stub'|'ctypes'|'modelE'|'streamE',
+                  scenario='S20'|'voyage002'|<SCENARIOS_E/SCENARIOS_E_STREAM 成员>)
     adv.init(scenario)     # 加载对应 dylib（ctypes）+ model_initialize 复位 IC；
                            #   可重复调用 = 重置到模型初始条件（SOC=0.60 等）
     d = adv.step(p_gen_kw) # 写入 P_gen（本拍 ZOH）→ 推进 100×0.01 s 子步 →
@@ -71,8 +72,17 @@ SCENARIOS = ("S20", "voyage002")
 
 # ---- S4-G2（backend='modelE'）：PlantStepE 场景注册与 16 键输出 ----
 # C4 电池（2026-09-29）：新增 S02/S08/S03 三航次烘焙 dylib（23E + build_plantstep_e.sh）
-SCENARIOS_E = ("S20_composite_voyage", "S02_downstream", "S08_resistance_bands",
-               "S03_upstream")
+SCENARIOS_E_MODEL = ("S20_composite_voyage", "S02_downstream",
+                     "S08_resistance_bands", "S03_upstream")
+# ---- S4-P3 B1（backend='streamE'，2026-09-29）：流驱动植物变体注册 ----
+# 冻结来源 Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json（Path S″）；
+# SCENARIOS_E = 追加 4 航次名（既有 4 项位置不动）；dylib 模式
+# Host/plantstep_e_stream/<vid>/libplantstepE_stream.dylib（每航次目录一份 +
+# 同目录 <vid>.stream.f64.bin，由 tools/s4_p3_pack_stream.py 产出）。
+SCENARIOS_E_STREAM = ("FLTA_S2_D01006_M1", "FLTA_S2_D01006_M2",
+                      "FLTA_S6_D05003_M1", "FLTA_S6_D05003_M2")
+SCENARIOS_E = SCENARIOS_E_MODEL + SCENARIOS_E_STREAM
+PLANTSTEP_DIR_E_STREAM = os.path.join(HERE, "plantstep_e_stream")
 OUT_KEYS_E = (
     "t_s", "P_load_total_kW", "SOC", "v_cmd_mps", "v_ship_mps",
     "acceleration_mps2", "x_ship_m", "fuel_total_kg", "P_bat_kW",
@@ -291,7 +301,18 @@ class ModelEBackend(object):
     （10 s 控制拍 = 1000 × 0.01 s 子步；GRT 产物，Model D 先例同路径）。
     接口与 CtypesBackend 一致：init/step/state/states/fuel/voyage_stop/close。
     states() 键序 = shim plantstep_get_states（V_dc/SOC/DriveLag/Ki/v/x/omega/
-    int_3/int_1/int_2，与生成头 X 定义序一致）。"""
+    int_3/int_1/int_2，与生成头 X 定义序一致）。
+
+    S4-P3 B1（2026-09-29）：注册表/lib 目录/文件名模式提为类属性（REGISTRY/
+    LIB_DIR/LIB_NAME/TAG/BUILD_HINT），供 streamE 子类覆盖；本类默认值 =
+    原冻结行为（modelE 后端零改动）。"""
+
+    REGISTRY = SCENARIOS_E_MODEL     # 校验注册表（modelE 只认自己烘焙的 4 场景，语义不变）
+    LIB_DIR = PLANTSTEP_DIR_E
+    LIB_NAME = "libplantstepE_%s.dylib"
+    TAG = "modelE"
+    BUILD_HINT = ("先跑模型工作区 scripts/23E_codegen_plantstepE.m，"
+                  "再跑 Host/tools/build_plantstep_e.sh %s")
 
     def __init__(self):
         self._lib = None
@@ -301,15 +322,17 @@ class ModelEBackend(object):
         self._tick = 0
 
     def init(self, scenario):
-        if scenario not in SCENARIOS_E:
+        if scenario not in self.REGISTRY:
             raise PlantStepError(
-                "modelE: scenario 必须为 %s 之一，实际 %r" % (SCENARIOS_E, scenario))
-        lib_path = os.path.join(
-            PLANTSTEP_DIR_E, scenario, "libplantstepE_%s.dylib" % scenario)
+                "%s: scenario 必须为 %s 之一，实际 %r"
+                % (self.TAG, self.REGISTRY, scenario))
+        lib_name = (self.LIB_NAME % scenario
+                    if "%s" in self.LIB_NAME else self.LIB_NAME)
+        lib_path = os.path.join(self.LIB_DIR, scenario, lib_name)
         if not os.path.isfile(lib_path):
             raise PlantStepError(
-                "dylib 不存在: %s（先跑模型工作区 scripts/23E_codegen_plantstepE.m，"
-                "再跑 Host/tools/build_plantstep_e.sh %s）" % (lib_path, scenario))
+                "dylib 不存在: %s（%s）"
+                % (lib_path, self.BUILD_HINT % scenario))
         try:
             lib = ctypes.CDLL(lib_path)
         except OSError as exc:
@@ -396,7 +419,7 @@ class ModelEBackend(object):
 
     def _require_init(self):
         if not self._initialized:
-            raise PlantStepError("modelE: 先 init(scenario)")
+            raise PlantStepError("%s: 先 init(scenario)" % self.TAG)
 
     def _read_outputs(self):
         buf = (ctypes.c_double * len(OUT_KEYS_E))()
@@ -410,6 +433,36 @@ class ModelEBackend(object):
         return d
 
 
+class StreamEBackend(ModelEBackend):
+    """S4-P3 B1（2026-09-29）：流驱动植物变体推进器（Path S″，规格
+    S4_P3_STREAM_PLANT_SPEC.md）。ctypes 装配/16 键输出/1000 子步拍与 modelE
+    完全同形（继承 ModelEBackend，零新语义）；差异仅注册表与 dylib 路径模式：
+    Host/plantstep_e_stream/<vid>/libplantstepE_stream.dylib（每航次目录一份，
+    同目录 <vid>.stream.f64.bin 由 tools/s4_p3_pack_stream.py 产出、由 shim 在
+    plantstep_init 时读取）。"""
+
+    REGISTRY = SCENARIOS_E_STREAM
+    LIB_DIR = PLANTSTEP_DIR_E_STREAM
+    LIB_NAME = "libplantstepE_stream.dylib"     # 固定名（%s 模式不消费 scenario）
+    TAG = "streamE"
+    BUILD_HINT = ("先跑模型工作区 scripts/23S_codegen_plantstepE_stream.m 与 "
+                  "Host/tools/build_plantstep_e_stream.sh %s（B2），并确认 "
+                  "tools/s4_p3_pack_stream.py 已产出该航次 stream bin")
+
+    def init(self, scenario):
+        super(StreamEBackend, self).init(scenario)
+
+    def states(self):
+        """连续状态直读（与 modelE 同键序；显式重声明仅为可读性）。"""
+        return super(StreamEBackend, self).states()
+
+
+def streamE_dylib_path(scenario):
+    """streamE 变体 dylib 路径（runner/工具做就绪检查用，不加载）。"""
+    return os.path.join(PLANTSTEP_DIR_E_STREAM, scenario,
+                        "libplantstepE_stream.dylib")
+
+
 def make_advancer(backend="stub", scenario="S20"):
     """工厂函数（design §4.1）：backend='ctypes'|'stub'；返回已 init 的推进器。
     init(scenario) 可再次调用以复位 IC（= model_initialize / stub 重置）。"""
@@ -419,8 +472,11 @@ def make_advancer(backend="stub", scenario="S20"):
         adv = StubBackend()
     elif backend == "modelE":
         adv = ModelEBackend()
+    elif backend == "streamE":
+        adv = StreamEBackend()
     else:
-        raise PlantStepError("backend 必须为 'ctypes'|'stub'|'modelE'，实际 %r" % backend)
+        raise PlantStepError("backend 必须为 'ctypes'|'stub'|'modelE'|'streamE'，"
+                             "实际 %r" % backend)
     adv.init(scenario)
     return adv
 
@@ -458,7 +514,8 @@ def _smoke(backend, scenario, ticks, p_gen):
 
 def main(argv=None):
     ap = argparse.ArgumentParser(description="plantstep advancer 冒烟（T-604）")
-    ap.add_argument("--backend", choices=("stub", "ctypes", "modelE"), default="stub")
+    ap.add_argument("--backend", choices=("stub", "ctypes", "modelE", "streamE"),
+                    default="stub")
     ap.add_argument("--scenario", choices=SCENARIOS + SCENARIOS_E, default="S20")
     ap.add_argument("--ticks", type=int, default=3)
     ap.add_argument("--pgen", type=float, default=20.0)

@@ -80,6 +80,18 @@
 | `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档） |
 | `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`）；另含 P3 冻结件 `S4_P3_FORMAL_ARM_FREEZE.json`（formal 臂电池覆盖 4 航次，主 Agent 定稿）与 worker 草案/Phase A 报告 |
 
+### S4-P3 B1 段新增（2026-09-29，formal 臂流驱动植物变体 host 装配；冻结件 `results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json`，规格 `experiments/softhil_ems03_2026-09-25/S4_P3_STREAM_PLANT_SPEC.md`）
+
+| 路径 | 内容 |
+|---|---|
+| `tools/s4_p3_pack_stream.py` | P3-B1①：formal 航次 stream bin 打包器（EMS04STM v1，规格 §3 冻结格式：20 B 头 + f64×4 行 [t_s, P_prop_realized=P_load_total−P_hotel, P_hotel_kW, v_ship_mps]；源列白名单 4 列 + AST 禁读闭环响应列自查；自校验 = bin sha256 / n_rows==duration_s+1 / 首末行 float.hex 指纹 / 派生恒等式独立第二路径逐位复算 → `plantstep_e_stream/<vid>/stream_check.json`）。冻结 4 航次 4/4 PASS |
+| `plantstep_e_stream/<vid>/` | P3-B1①产物：每航次 `<vid>.stream.f64.bin` + `stream_check.json`（S2_D01006_M1/M2 = 4680 行 sha `8c854f4a…`；S6_D05003_M1/M2 = 3791 行 sha `fbb64959…`；同族两臂共享回放流——臂差异只走 kf 表，不进植物） |
+| `tools/s4_c3_pack_kf_table.py`（改） | P3-B1②：参数化 `--profile-code`（1=GOOD_V1/2=DEGRADED_V1/3=PILOT_FIXTURE；默认 3 行为逐字节不变——S20 selfcheck 回归表 sha `8a1f597e…` 与改前一致）；formal 4 航次出表（M1→1/M2→2）落 `experiments/softhil_ems03_2026-09-25/results/s4_c3/` |
+| `tools/s4_c3_closedloop.py`（改） | P3-B1②：`load_kf_table` profile 断言放宽为登记域 {1,2,3}（S20 默认路径 code=3 行为不变，5 表装载回归通过） |
+| `plantstep_advancer.py`（改） | P3-B1③：backend='streamE'（ModelEBackend 注册表/库目录/文件名/提示提为类属性——modelE 默认行为零改动；SCENARIOS_E 追加 4 冻结航次名、既有 4 项不动；dylib 模式 `plantstep_e_stream/<vid>/libplantstepE_stream.dylib`；新增 `streamE_dylib_path()` 就绪检查助手）。closedloop_selftest 回归 PASS=10 SKIP=0 FAIL=0 与改前一致 |
+| `tools/s4_c4_battery.py`（改） | P3-B1④：`--plant-backend streamE` + `--data-root`（装配 P3 冻结件 schema `s4_p3_formal_arm_freeze_v1`；stream 数据源 = formal .mat；产物目录改 `results/s4_p3/`；kf 表/stream bin/dylib 三级启动就绪检查，dylib 缺席 → `s4_p3_gate.json` PLANTSTEP_DYLIB_PENDING 门 rc=3 待 B2）。默认 pilot/modelE 路径零改动，selftest 20/20 保持 |
+| `results/s4_p3/` | P3-B1④产物：`s4_p3_gate.json`（PLANTSTEP_DYLIB_PENDING 门，overall 恒 false，B2 以正式 4/4 合取门覆盖） |
+
 ### P1/P2/P4 段新增（2026-09-29，Phase 4 收官续）
 
 | 路径 | 内容 |
