@@ -75,6 +75,10 @@ static ems04_tables m_tbl;
 static int m_tbl_ok;
 static uint8_t m_last_flags;
 
+/* S4-P2 段级分账（µs，周期域差值；ems04_tick_ctrl_prof 回放） */
+static uint32_t m_prof_seq, m_prof_tick;
+static uint32_t m_prof_reatt_us, m_prof_dp_us, m_prof_grid_us, m_prof_pms_us;
+
 /* 1 s-grid exhaustive search (contract §4.3 verbatim). */
 static double s4_exec_grid(double p_load_kw, double soc, double lam)
 {
@@ -225,11 +229,14 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     g.t_dwell[0] = g.t_dwell[1] = 0.0;
 
     ems04_tick_result tr;
+    const uint32_t cdp0 = DWT->CYCCNT;
     if (ems04_dp_tick(&m_tbl, Pbar, EMS04_K_MAX, (double)SOC, n0, &g, &tr) != 0) {
         m_last_flags = 2u;  /* DP fail */
         return 0;
     }
     double e_hat = tr.dlambda_first;
+    const uint32_t dp_us = (uint32_t)(DWT->CYCCNT - cdp0) /
+                           (uint32_t)(SystemCoreClock / 1000000u);
 
     /* 3) execution layer */
     const uint32_t c0 = DWT->CYCCNT;
@@ -258,6 +265,9 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     uint32_t ctrl_pms_us = (uint32_t)((DWT->CYCCNT - c1) / (SystemCoreClock / 1000000u));
 
     /* encode RSP */
+    m_prof_seq = seq; m_prof_tick = tick;
+    m_prof_reatt_us = infer_us; m_prof_dp_us = dp_us;
+    m_prof_grid_us = ctrl_grid_us; m_prof_pms_us = ctrl_pms_us;
     uint8_t *o = out;
     wr_u32(o, seq); o += 4;
     wr_f32(o, (float)P_gen_ref); o += 4;
@@ -284,5 +294,17 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     wr_u32(o, ctrl_grid_us + ctrl_pms_us); o += 4;
     *o = m_last_flags;
     return (uint16_t)S4_RSP_LEN;
+}
+
+uint16_t ems04_tick_ctrl_prof(uint8_t out[EMS04_TICK_CTRL_PROF_RSP_LEN])
+{
+    uint8_t *o = out;
+    wr_u32(o, m_prof_seq); o += 4;
+    wr_u32(o, m_prof_tick); o += 4;
+    wr_u32(o, m_prof_reatt_us); o += 4;
+    wr_u32(o, m_prof_dp_us); o += 4;
+    wr_u32(o, m_prof_grid_us); o += 4;
+    wr_u32(o, m_prof_pms_us); o += 4;
+    return (uint16_t)EMS04_TICK_CTRL_PROF_RSP_LEN;
 }
 

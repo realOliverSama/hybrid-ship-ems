@@ -427,6 +427,15 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
         }
         break;
     }
+    case EMS04_TICK_CTRL_PROF_CMD: {
+        /* S4-P2：段级分账回放（reatt/dp/grid/pms µs；附加通道，不动 0x0F 契约） */
+        static uint8_t s4_prof_rsp[EMS04_TICK_CTRL_PROF_RSP_LEN];
+        uint16_t n = ems04_tick_ctrl_prof(s4_prof_rsp);
+        (void)ems_proto_send_frame(&ems_proto_st,
+                                   (uint8_t)EMS04_TICK_CTRL_PROF_RSP,
+                                   s4_prof_rsp, n);
+        break;
+    }
 #endif
     case EMS_PROTO_CMD_PING:
         (void)ems_proto_send_ack(&ems_proto_st, type);

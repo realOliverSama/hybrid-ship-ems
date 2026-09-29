@@ -206,9 +206,13 @@ static void local_genset(ems04_gen_state *g, int u, double P_ref,
 static double local_realize(const ems04_tables *T, double Pd, double soc,
                             double N, const ems04_gen_state *gen_in,
                             double dlam, int64_t *oob,
-                            double *soc1, double *N1, ems04_gen_state *gen_out) {
+                            double *soc1, double *N1, ems04_gen_state *gen_out,
+                            double *raw_max_out) {
     double dt = EMS04_PHYS_DT;
     int nI = (int)lround(EMS04_PHYS_DT_BIN / EMS04_PHYS_DT); /* 10 */
+    /* J3：ip 与 Pd 越界位为 Pd 纯函数（子步循环不变量），表达式与求值序不变 */
+    const int pd_oob = (Pd < -1e-12 || Pd > EMS04_PBAR_MAX + 1e-12) ? 1 : 0;
+    const int ip = clampi((int)m_round(Pd / EMS04_PBAR_STEP) + 1, 1, EMS04_N_PBAR);
     ems04_gen_state g;
     int need_eq;
     if (gen_in) { g = *gen_in; need_eq = 0; }
@@ -216,16 +220,18 @@ static double local_realize(const ems04_tables *T, double Pd, double soc,
     double Ncur = m_max(1.0, m_min(2.0, m_round(N)));
     double fuel = 0.0;
     for (int i = 0; i < nI; i++) {
-        double lam_eff = m_max(EMS04_LAMBDA0 + EMS04_K_SOC * (EMS04_SOC_REF - soc) + dlam,
+        /* raw_base 拆分保持 (A+B)+dlam 左结合求值序——逐位等价原式 */
+        double raw_base = EMS04_LAMBDA0 + EMS04_K_SOC * (EMS04_SOC_REF - soc);
+        double lam_eff = m_max(raw_base + dlam,
                                EMS04_LAMBDA_FLOOR);
+        if (raw_max_out != NULL && raw_base > *raw_max_out) *raw_max_out = raw_base;
         int o1 = 0;
         if (lam_eff < EMS04_LAMBDA_TBL_MIN - 1e-12 ||
             lam_eff > EMS04_LAMBDA_TBL_MAX + 1e-12) o1 = 1;
-        if (Pd < -1e-12 || Pd > EMS04_PBAR_MAX + 1e-12) o1 = 1;
+        if (pd_oob) o1 = 1;
         *oob += o1;
         int il = clampi((int)m_round((lam_eff - EMS04_LAMBDA_TBL_MIN) / EMS04_LAMBDA_TBL_STEP) + 1,
                         1, EMS04_N_LAM);
-        int ip = clampi((int)m_round(Pd / EMS04_PBAR_STEP) + 1, 1, EMS04_N_PBAR);
         int ir;
         if (soc <= 0.105) ir = 2;
         else if (soc >= 0.945) ir = 3;
@@ -254,11 +260,33 @@ static double local_realize(const ems04_tables *T, double Pd, double soc,
         }
         Ncur = Nn;
         double P_act[2] = {0.0, 0.0};
-        for (int u = 0; u < 2; u++) {
-            double cmd_start = (u < nNi) ? 1.0 : 0.0;
-            double cmd_stop = (u < nNi) ? 0.0 : 1.0;
-            local_genset(&g, u, Pref[u], cmd_start, cmd_stop, dt, &P_act[u]);
-            fuel += local_fuel(T, P_act[u], g.st[u]) * dt;
+        /* J2 机组对对称崩塌（位级精确）：两机组四状态逐位相同（按位比较）且
+         * 本步指令/Pref 相同（nNi==2 ⇒ 双机 cmd=(1,0)、Pref[0]==Pref[1] 同一
+         * double 赋值）⇒ 演化逐位相同。只算机组 0 并镜像；fuel 两次累加同一
+         * double 与原"逐一累加"逐位一致。nNi!=2 或状态分叉时走原双机路径。 */
+        if (nNi == 2
+            && memcmp(&g.st[0], &g.st[1], sizeof(double)) == 0
+            && memcmp(&g.P_ramp[0], &g.P_ramp[1], sizeof(double)) == 0
+            && memcmp(&g.P_lag[0], &g.P_lag[1], sizeof(double)) == 0
+            && memcmp(&g.t_dwell[0], &g.t_dwell[1], sizeof(double)) == 0) {
+            double pa0;
+            local_genset(&g, 0, Pref[0], 1.0, 0.0, dt, &pa0);
+            double f0 = local_fuel(T, pa0, g.st[0]) * dt;
+            fuel += f0;
+            fuel += f0;
+            P_act[0] = pa0;
+            P_act[1] = pa0;
+            g.st[1] = g.st[0];
+            g.P_ramp[1] = g.P_ramp[0];
+            g.P_lag[1] = g.P_lag[0];
+            g.t_dwell[1] = g.t_dwell[0];
+        } else {
+            for (int u = 0; u < 2; u++) {
+                double cmd_start = (u < nNi) ? 1.0 : 0.0;
+                double cmd_stop = (u < nNi) ? 0.0 : 1.0;
+                local_genset(&g, u, Pref[u], cmd_start, cmd_stop, dt, &P_act[u]);
+                fuel += local_fuel(T, P_act[u], g.st[u]);
+            }
         }
         double P_gen = P_act[0] + P_act[1];
         double Pbat = Pd - EMS04_ETA_RECT * P_gen;
@@ -286,7 +314,8 @@ static double local_cost(const ems04_tables *T, double SOC, double N, double Pd,
                          int64_t *oob, double *socn_out, double *n2_out) {
     ems04_gen_state gtmp;
     double socn, n2, fuel;
-    fuel = local_realize(T, Pd, SOC, N, NULL, dlam_u, oob, &socn, &n2, &gtmp);
+    fuel = local_realize(T, Pd, SOC, N, NULL, dlam_u, oob, &socn, &n2, &gtmp,
+                         NULL);
     n2 = m_max(1.0, m_min(2.0, m_round(n2)));
     /* MATLAB: socn outside the grid (no 1e-12 slack in the comparison itself;
      * interp1 returns extrapval for xik>maxx / xik<minx) -> J = BIG */
@@ -300,15 +329,62 @@ static double local_cost(const ems04_tables *T, double SOC, double N, double Pd,
     return fuel + vn;
 }
 
-/* local_best: scan all 41 dlam levels, first-minimum wins with 1e-15 tol. */
+/* local_best: scan all 41 dlam levels, first-minimum wins with 1e-15 tol.
+ *
+ * J1 FLOOR 前缀合并（位级精确，P2 加速）：lam_eff = max(raw_j + dlam_u,
+ * FLOOR)，raw_j = LAMBDA0 + K_SOC*(SOC_REF − soc_j) 不含 dlam。dlam 网格升序
+ * 且 IEEE RN 加法对操作数单调 ⇒ {u : ∀j fl(raw_j + dlam_u) ≤ FLOOR} 是前缀；
+ * 前缀内所有 u 的 lam_eff≡FLOOR ⇒ il 序列相同 ⇒ 10 子步轨迹逐位相同 ⇒
+ * J(u) 全等。故先跑一次代表轨迹（dlam=-1e300 强制全夹）并记录 max_j raw_j，
+ * 组 J 一次求得；成员资格以 fl(max_raw + dlam_u) ≤ FLOOR 保守判定（单调蕴含，
+ * 误拒的 u 落入逐点扫描、结果不变）。first-min 语义：组等值不触发 1e-15
+ * 改进 ⇒ 组胜出时 bu=0（= 原扫描首个组元）；oob 计数按组大小整数倍补回
+ *（成员轨迹同代表 ⇒ 贡献相同）；前缀为空时回滚 rep 的 oob 增量并退化全扫。 */
 static void local_best(const ems04_tables *T, double SOC, double N, double Pd,
                        const double *dlam, const double *Vnext1,
                        const double *Vnext2, int izero, int64_t *oob,
+                       int dlam_asc,
                        double *bestJ, int *bestU, int *valid) {
     double bj = EMS04_BIG_M;
     int bu = izero;
     int v = 0;
-    for (int u = 0; u < EMS04_N_DLAM; u++) {
+    int u0 = 0;
+    if (dlam_asc) {
+        double raw_max = -1e300;
+        ems04_gen_state gF;
+        double socnF, n2F;
+        int64_t oob_mark = *oob;
+        double fuelF = local_realize(T, Pd, SOC, N, NULL, -1e300, oob,
+                                     &socnF, &n2F, &gF, &raw_max);
+        int64_t oob_rep = *oob - oob_mark;
+        int uf_end = -1;
+        for (int u = 0; u < EMS04_N_DLAM; u++) {
+            if (raw_max + dlam[u] <= EMS04_LAMBDA_FLOOR) uf_end = u;
+            else break;
+        }
+        if (uf_end >= 0) {
+            /* 组 J 与 local_cost 同序：n2 规整 → socn 网格闸 → interp → fuel+vn */
+            double n2F_c = m_max(1.0, m_min(2.0, m_round(n2F)));
+            double JF;
+            if (socnF < T->socx[0] || socnF > T->socx[EMS04_N_SOC - 1]) {
+                JF = EMS04_BIG_M;
+            } else {
+                const double *Vn = (n2F_c >= 1.5) ? Vnext2 : Vnext1;
+                JF = fuelF + interp_uniform(Vn, T->socx, EMS04_N_SOC, socnF,
+                                            EMS04_BIG_M);
+            }
+            if (JF < bj - 1e-15) {
+                bj = JF;
+                bu = 0;
+                v = isfinite(JF) && JF < EMS04_BIG_M * 0.5;
+            }
+            *oob += oob_rep * (int64_t)uf_end;
+            u0 = uf_end + 1;
+        } else {
+            *oob = oob_mark;
+        }
+    }
+    for (int u = u0; u < EMS04_N_DLAM; u++) {
         double socn_dummy, n2_dummy;
         double J = local_cost(T, SOC, N, Pd, dlam[u], Vnext1, Vnext2, oob,
                               &socn_dummy, &n2_dummy);
@@ -339,6 +415,11 @@ int ems04_dp_tick(const ems04_tables *T, const double *Pbar, int K,
     for (int u = 0; u < EMS04_N_DLAM; u++)
         if (fabs(dlam[u]) < 1e-12) { izero = u; break; }
     if (izero < 0) return -2;
+    /* J1 前缀性质以 dlam 严格升序为前提（冻结表离线校验已覆盖；此处每拍
+     * 41 次比较复核，失败则回退全扫描、结果不变） */
+    int dlam_asc = 1;
+    for (int u = 1; u < EMS04_N_DLAM; u++)
+        if (!(dlam[u] > dlam[u - 1])) { dlam_asc = 0; break; }
     const double *socx = T->socx;
     double soc_hi = socx[EMS04_N_SOC - 1];
 
@@ -366,7 +447,7 @@ int ems04_dp_tick(const ems04_tables *T, const double *Pbar, int K,
                 double SOC = socx[i];
                 double bestJ; int bestU, valid;
                 local_best(T, SOC, (double)(iN + 1), Pd, dlam, V0, V1,
-                           izero, &oob, &bestJ, &bestU, &valid);
+                           izero, &oob, dlam_asc, &bestJ, &bestU, &valid);
                 if (valid) step_infeas_all = 0.0;
                 if (!valid) {
                     double socn_d, n2_d;
@@ -396,7 +477,8 @@ int ems04_dp_tick(const ems04_tables *T, const double *Pbar, int K,
         const double *V0 = &V_all[(size_t)(k + 1) * 2 * EMS04_N_SOC + 0 * EMS04_N_SOC];
         const double *V1 = &V_all[(size_t)(k + 1) * 2 * EMS04_N_SOC + 1 * EMS04_N_SOC];
         double bestJ; int bestU, valid;
-        local_best(T, soc, N, Pd, dlam, V0, V1, izero, &oob, &bestJ, &bestU, &valid);
+        local_best(T, soc, N, Pd, dlam, V0, V1, izero, &oob, dlam_asc,
+                   &bestJ, &bestU, &valid);
         if (!valid || infeas_step[k] > 0.5) {
             bestU = izero;
             fallback_n += 1;
@@ -407,7 +489,7 @@ int ems04_dp_tick(const ems04_tables *T, const double *Pbar, int K,
         ems04_gen_state gnext;
         double socn, Nn;
         double fuel_k = local_realize(T, Pd, soc, N, &gen, dlam_k, &oob,
-                                      &socn, &Nn, &gnext);
+                                      &socn, &Nn, &gnext, NULL);
         soc = socn; N = Nn; gen = gnext;
         fuel_proxy += fuel_k;
         soc = m_min(m_max(soc, socx[0]), soc_hi);

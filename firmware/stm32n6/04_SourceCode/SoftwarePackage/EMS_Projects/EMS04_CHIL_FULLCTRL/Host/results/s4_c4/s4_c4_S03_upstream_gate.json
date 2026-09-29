@@ -1,6 +1,6 @@
 {
  "schema": "s4_c4_voyage_gate_v1",
- "created_utc": "2026-09-28T17:28:08.184894+00:00",
+ "created_utc": "2026-09-29T04:19:58.916038+00:00",
  "mode": "board",
  "dry_note": null,
  "adjudication": {
@@ -63,7 +63,7 @@
   ],
   "battery_freeze_sha256": "ae9a37b4e881792c5794a01f22fb9eee4214e4aef66e9aaa4abba0aa9f766577"
  },
- "wall_s": 278.6,
+ "wall_s": 240.3,
  "seq_final": 31,
  "runnability_G6_1": {
   "n_ticks": 31,

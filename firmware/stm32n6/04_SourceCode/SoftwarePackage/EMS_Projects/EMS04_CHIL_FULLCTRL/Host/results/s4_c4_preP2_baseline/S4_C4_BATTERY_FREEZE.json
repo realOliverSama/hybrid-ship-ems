@@ -1,0 +1,30 @@
+{
+  "schema": "s4_c4_battery_freeze_v1",
+  "created_utc": "2026-09-29T15:55:00+08:00",
+  "author": "main-agent (S4-C4, 用户今晚授权推进)",
+  "contract": "S4_G6_ACCEPTANCE.md §2（≥3 航次；选择只用航次元数据，冻结后执行，禁按结果挑样）",
+  "universe": {
+    "source": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/pilot/*.mat",
+    "n_voyages": 19,
+    "note": "PILOT_ONLY 家族（FIXTURE_CAUSAL_STUB persistence 预报）；formal FLTA 家族无 PlantStepE 植物，不在本电池域"
+  },
+  "selection_rule_frozen": [
+    "域：voyage_duration_s ≥ 600（保证 ≥30 个正式拍：kf issue 网格 300:10:(dur-300)）",
+    "排除 S20_composite（已由 S4-C3 单航次覆盖，避免同航次重复入电池）",
+    "R_low  = load_mean 最小者",
+    "R_mid  = |load_mean − median(load_mean)| 最小者（平局取 voyage_id 字典序小者）",
+    "R_high = load_mean 最大者",
+    "load_mean = stream.P_load_total_kW 全程均值（元数据面，与控制结果无关）"
+  ],
+  "arm_coverage_deviation": {
+    "status": "REGISTERED_DEVIATION",
+    "note": "G6 §2 要求覆盖 M1(DEGRADED)/M2(GOOD) 两臂；pilot 家族全部 fixture=PILOT_ONLY/forecast_provenance_class=FIXTURE_CAUSAL_STUB，无臂轴（臂属性仅存在于 formal FLTA 家族，后者无 PlantStepE 植物域）。本电池以低/中/高负荷 + 场景形状（顺流/阻力带/逆流）替代臂覆盖；臂覆盖需 formal 植物 pipeline，列为后续工作。已向用户报告。"
+  },
+  "battery": [
+    {"role": "R_low", "voyage_id": "S02_downstream", "scenario_id": "2_S02_downstream", "duration_s": 898.28, "load_mean_kw": 293.5, "kf_issues": 30, "shape": "顺流（current 辅助）"},
+    {"role": "R_mid", "voyage_id": "S08_resistance_bands", "scenario_id": "8_S08_resistance_bands", "duration_s": 900.85, "load_mean_kw": 441.6, "kf_issues": 31, "shape": "阻力带波动（中位平局胜出：|441.6-446.25|=4.65 = |450.9-446.25|，字典序 S08<S10）"},
+    {"role": "R_high", "voyage_id": "S03_upstream", "scenario_id": "3_S03_upstream", "duration_s": 905.38, "load_mean_kw": 601.8, "kf_issues": 31, "shape": "逆流（current 抵抗）+ C3 已覆盖 S20_composite（541 拍）"}
+  ],
+  "median_reference": {"load_median_kw": 446.25, "n_domain_voyages": 16},
+  "provenance_rule": "本文件为选择冻结记录；执行产物（gate）须引用本文件 sha256；禁在执行后修改 battery/rule 字段"
+}

@@ -78,7 +78,20 @@
 | `plantstep_advancer.py`（改） | SCENARIOS_E 注册表扩 S02_downstream/S08_resistance_bands/S03_upstream（C4 电池 dylib） |
 | `results/s4_c2/` | C2 冒烟与 C3 前置产物（`s4_c2_gate.json`/`s4_c2_smoke_report.json`/`s4_c3_preamble_report.json`/`libems04_pms_safety.dylib`） |
 | `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档） |
-| `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`） |
+| `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`）；另含 P3 冻结件 `S4_P3_FORMAL_ARM_FREEZE.json`（formal 臂电池覆盖 4 航次，主 Agent 定稿）与 worker 草案/Phase A 报告 |
+
+### P1/P2/P4 段新增（2026-09-29，Phase 4 收官续）
+
+| 路径 | 内容 |
+|---|---|
+| `Appli/App/ems04_tick_ctrl.c/.h`（改） | P1：TICK_CTRL handler 入口 DWT 自愈重武装（DEMCR.TRCENA/CYCCNTENA——boot 窗口 TRCENA 被清的冻结实测）+ RSP 补 reserved f32 占线（infer_us@84/ctrl_us@88/flags@92 与 host 三工具既有解析逐字节对齐，93 B 契约不变）；P2：DP 段 CYCCNT 夹 + CMD_PROF(0x10)/RSP_PROF(0x11) 24 B 段级分账回放（reatt/dp/grid/pms，附加命令，不动 TICK_CTRL 契约） |
+| `Appli/App/ems_reatt_split.c`（改） | P1：infer_us 改 CYCCNT 周期域差值再换算（u32 模算术吸收 7.16 s 回绕；755 战役"偶发 u32 溢出/0"伪值根因修复） |
+| `Appli/App/ems04_law6_c2.c`（改） | P2：DP 位级加速 J1（FLOOR 前缀合并，单调性剪枝）+J2（机组对对称崩塌，按位比较）+J3（内层查表前置）；验证=377/377 replay 逐拍位级 + 板级 100 拍逐拍同一性 + C4 3/3 零回归；板上 DP 6.39→5.23 s |
+| `Appli/App/ems_app.c`（改） | CMD_PROF 分发接线（EMS04_S4_FULLCTRL 守卫内） |
+| `S4_XIP_BOOT_RCA.md` | **P4：XIP/flash boot 不启动 RCA（D1 build/flash hex 被任意 Release 形态覆盖 + D2 PRED_PARITY 的 XSPI2 重初始化在 XIP 执行态自杀）+ F1-F4 修复方案——烧写/断电=用户批准点（park）** |
+| `results/s4_c2/s4_p2_dp_accel_memo.md` | P2 设计备忘：分账实测表、J1-J3 精确性论证、全部门禁证据、**小帧协议/1 s 拍可行性评估（结论：1 s 拍不可行，10 s 拍占空 67% 满足实时预算）** |
+| `results/s4_c2/s4_c3_preamble_report_preP2_baseline.json` | pre-P2 对拍基线封存（重跑逐拍同一性对照锚） |
+| `results/s4_c4_preP2_baseline/` | C4 冻结态封存（P2 重跑零回归对照锚） |
 
 > C3 的 kf 表与自校验 JSON 落 `experiments/softhil_ems03_2026-09-25/results/s4_c3/`
 > （任务书指定路径；该目录属 experiments 结果区）。
