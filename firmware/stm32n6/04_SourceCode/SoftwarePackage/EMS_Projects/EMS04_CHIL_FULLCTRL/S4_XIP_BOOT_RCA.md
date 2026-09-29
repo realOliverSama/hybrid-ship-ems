@@ -44,6 +44,7 @@
 | /tmp/nor_backup/post_verify2.bin（修正版读回 20:04） | Reset=**0x70107991**（XIP 布局）；与 S4Full ELF(18:40) 扁平化比对 65532/65536 匹配、全程仅 44B 差 | 修正版=S4Full 族 XIP 镜像（S4_FULLCTRL=1 → PRED_PARITY=1）→ 含自杀分支 |
 | 当前 build/flash hex | 首地址 0x34000400（SRAM 布局） | D1 实锤 |
 | EMS02 main.c 同款 NOR init | SRAM 形态下安全（NOR 未用于取指） | 自杀仅在 XIP 形态发生 |
+| **NOR 现场活读（2026-09-29，probe-rs AHB 后台读，无 extloader 会话）** | 0x70100400：MSP=0x34200000 Reset=**0x70107991** —— 与 post_verify2.bin 逐字节一致（修正版 S4Full XIP 镜像仍在 NOR 原位）；0x70000000：`STM2` boot 头完好 | 现场与读回档案闭合；FSBL 区完好 |
 
 「旧能跑新不能跑」完全解释：旧=默认 flags（无 PRED_PARITY 分支）；新=S4Full XIP
 （含自杀分支）。与擦除历史/FSBL 校验无关（②中 NOR 死态为独立的 loader 会话叠加
