@@ -657,12 +657,19 @@ CSV_COLS = (
 
 
 def _ring_v(sec, out, st, stream):
-    """环推样 v[0..10]（TICK2 载荷序；ems04_h1win.c TICK2_TO_RING 注释序）。
+    """环推样 v[0..10]（TICK2 载荷序 = 契约 §2.1 = 固件 ems04_h1win.c
+    TICK2_TO_RING 注释序：[0]t_s [1]P_load [2]SOC [3]v_ref [4]v_ship
+    [5]accel [6]x_ship [7]n_prop [8]P_hotel [9]v_current [10]P_prop_demand）。
     边界 stamp = 秒边界前最后子步读点（登记：OUT pre-integration 读点平移，
-    design notes §采样网格）；v[0]=名义整秒（环契约 v[0]==tick_idx）。"""
+    design notes §采样网格）；v[0]=名义整秒（环契约 v[0]==tick_idx）。
+
+    偏差④修复（2026-09-29）：v[1]/v[2]/v[3] 历史错误序 (SOC,v_ref,P_load)
+    更正为契约序 (P_load,SOC,v_ref)——旧序使环 P_load 通道≈SOC(0.6)、
+    v_ref 通道≈P_load（数百 m/s），S1~S4 判据盲区未覆盖（A2 vs B_HOST 差异
+    被归档为"变换效应"未逐通道核对）；RCA 见 S4_PRED_PHYSICS_RCA.md。"""
     idx = max(0, int(round(sec * 100)) - 1)
-    return (float(sec), float(st["SOC"]), float(stream["v_ref_mps"][idx]),
-            float(out["P_load_total_kW"]), float(out["v_ship_mps"]),
+    return (float(sec), float(out["P_load_total_kW"]), float(st["SOC"]),
+            float(stream["v_ref_mps"][idx]), float(out["v_ship_mps"]),
             float(out["acceleration_mps2"]), float(st["x_ship_m"]),
             float(st["omega_prop_radps"]) * RADPS2RPM,
             float(stream["P_hotel_kW"][idx]), float(stream["v_current_mps"][idx]),
@@ -882,6 +889,12 @@ def main():
           % (plant.t, st_prev["SOC"], WARMUP_TICKS * 10 + 1,
              os.path.basename(warm_csv)))
 
+    # ---- 偏差④治理（判据盲区，2026-09-29）：预热段植物 P_load 均值基线
+    # （环 sanity 在正式首拍环构造后执行——环契约要求 t0==last_tick≥300，
+    # 预热末 last_tick=299 不可构造）。
+    _warm_pl = float(np.mean([float(l.split(",")[3]) for l in
+                              open(warm_csv).read().splitlines()[2:]]))
+
     # ---- 正式段 ----
     if not args.dry:
         assert board.reset(), "板 CMD_RESET 失败"
@@ -941,6 +954,19 @@ def main():
 
         # 3) B hist（板算法 host 复刻）+ kf 行
         hist_b = ring.construct(int(t0))     # (300,11) f32
+        if kk == KK_FIRST:
+            # 偏差④治理（判据盲区）：环 P_load 通道 vs 植物实况量级 sanity
+            # （fail-closed）——_ring_v 字段序错位类缺陷在此拦截。容差
+            # [0.5×, 2×]：窗为 300 s 平滑 vs 段均值，正常差异远小于 2×。
+            _ring_pl = float(np.mean(np.asarray(hist_b[:, 0],
+                                                dtype=np.float64)))
+            if not (0.5 * _warm_pl <= _ring_pl <= 2.0 * _warm_pl):
+                stop_reason = ("ring_pl_sanity_fail: 环 P_load 均值 %.2f vs "
+                               "预热植物 %.2f（疑似 TICK2 字段序/通道源错位）"
+                               % (_ring_pl, _warm_pl))
+                break
+            print("[c3] 环 sanity OK：P_load 环窗均值 %.1f vs 预热植物 %.1f"
+                  % (_ring_pl, _warm_pl))
         kf_bytes, kf_f32 = kft["rows"][int(t0)]
 
         # 4) 板在环

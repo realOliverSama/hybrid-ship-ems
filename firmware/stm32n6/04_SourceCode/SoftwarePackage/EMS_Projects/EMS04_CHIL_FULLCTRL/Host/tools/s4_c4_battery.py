@@ -431,6 +431,12 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
         drift_ticks = []
         voyage_stop_tick = None
 
+        # ---- 偏差④治理（判据盲区，2026-09-29；与 C3 runner 同款 fail-closed）：
+        # 预热段植物 P_load 均值基线（环 sanity 在正式首拍环构造后执行——
+        # 环契约要求 t0==last_tick≥300，预热末 last_tick=299 不可构造）。
+        _warm_pl = float(np.mean([float(l.split(",")[3]) for l in
+                                  open(warm_path).read().splitlines()[2:]]))
+
         print("[c4:%s] 正式段 %d 拍（t0=%d..%d，is_formal=1）…"
               % (vid, n_formal, KK_FIRST * TICK_S,
                  (KK_FIRST + n_formal - 1) * TICK_S))
@@ -461,6 +467,18 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
 
             # 3) B hist（板算法 host 复刻）+ kf 行
             hist_b = ring.construct(int(t0))
+            if kk == KK_FIRST:
+                # 偏差④治理（判据盲区）：环 P_load 通道 vs 植物实况 sanity
+                # （fail-closed）——_ring_v 字段序错位类缺陷在此拦截
+                _ring_pl = float(np.mean(np.asarray(hist_b[:, 0],
+                                                    dtype=np.float64)))
+                if not (0.5 * _warm_pl <= _ring_pl <= 2.0 * _warm_pl):
+                    stop_reason = ("ring_pl_sanity_fail: 环 P_load 均值 %.2f vs "
+                                   "预热植物 %.2f（疑似 TICK2 字段序/通道源错位）"
+                                   % (_ring_pl, _warm_pl))
+                    break
+                print("[c4:%s] 环 sanity OK：P_load 环窗均值 %.1f vs 预热植物 %.1f"
+                      % (vid, _ring_pl, _warm_pl))
             kf_bytes, kf_f32 = kft["rows"][int(t0)]
 
             # 4) 板在环

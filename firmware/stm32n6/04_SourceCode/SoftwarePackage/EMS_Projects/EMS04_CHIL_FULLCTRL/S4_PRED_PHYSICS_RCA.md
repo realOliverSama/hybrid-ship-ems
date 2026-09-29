@@ -147,3 +147,66 @@ BH（466）= kf 垃圾 × int8 失真的复合；板（bb）再叠 NPU 段。
 ---
 
 *证据复算入口：`experiments/deviation4_rca/p1*.py`（.venv_tf，纯 host，只读冻结件）。*
+
+---
+
+## 附录 A（2026-09-29 深夜增补）：修复线实测 + 第四根因（_ring_v 字段序）
+
+### A.1 CPUF32 修复线板级实证（P3e 锚回放门）
+
+`EMS_REATT_FORM=CPUF32`（Model/reatt8_f32，fp32 全 CPU）XIP 镜像
+（sha256 `233982da79ab…`，三重校验烧录）flash boot 实跑，6 pilot 锚
+（S2 canonical 字节经 CMD_REATT 回放）：
+
+| 锚 | 真值 Y | keras | **板（修复前 SPLIT）** | **板（CPUF32）** | CPUF32 时延 |
+|---|---|---|---|---|---|
+| M2@300 | 168.4 | 164.0 | 67.0 | **163.96（diff 0.0）** | 1118 ms |
+| M2@2180 | 363.5 | 372.6 | 284.3 | **372.59（diff 0.0）** | 1127 ms |
+| M2@4070 | 92.8 | 97.7 | 54.7 | **97.69（diff 0.0）** | 1116 ms |
+| M1@300 | 139.9 | 140.3 | 51.6 | **140.27（diff 0.0）** | 1118 ms |
+| M1@2180 | 324.2 | 318.9 | 247.9 | **318.91（diff 0.0）** | 1125 ms |
+| M1@4060 | 92.7 | 91.3 | 41.9 | **91.27（diff 0.0）** | 1116 ms |
+
+⇒ 板 == keras（显示精度内逐位），单帧 ~1.12 s ≪ 10 s 控制拍（+DP 5.23 s 合计
+~6.4 s = 64% 占空，实时预算内）。**预测链物理保真在板恢复。**
+
+### A.2 第四根因 R4：闭环 runner `_ring_v` 字段序错位（TICK2 v[1]/v[2]/v[3]）
+
+CPUF32 上板后 C3 重跑首段暴露：BH（host 代理）≈20 kW 而 A2（keras）≈207 kW。
+定位：runner 环推样函数 `_ring_v`（`Host/tools/s4_c3_closedloop.py:659`）按
+`(t, SOC, v_ref, P_load, …)` 组帧，而 TICK2 契约（固件 `ems04_h1win.c`
+TICK2_TO_RING 注释 = host 复刻 `s4_c3_h1win_host.py` 头注）为
+`(t, P_load, SOC, v_ref, …)`——**v[1]/v[2]/v[3] 三字段旋转错位**，导致：
+
+- 环 P_load 通道 ← SOC ≈ 0.6（应为 100~600 kW）；
+- 环 v_ref 通道 ← P_load ≈ 数百（应为 1.5~5.7 m/s）；
+- 板与 BH 同吃环 ⇒ 同错（v2 的 "bb≈bh 一致性" 照样成立——一致性≠正确性的又一实例）。
+
+该错位自 C3 runner 诞生起存在（git HEAD 逐版本同序），v1/v2 闭环结论均被其
+污染（与 kf 垃圾、int8/NPU 失真三层叠加；v2 的 BH median 466 = 错误环 × 垃圾
+kf × int8 的复合）。**A2 链不吃环（子步流直构），故 A2 数值始终由真输入决定。**
+LCD「预测线画到绘图区底部以外」即此 bug 的可视化（预测 ~20 kW vs 实况
+数百 → 贴底出框），非显示层缺陷。
+
+修复：`_ring_v` 改回契约序；C3/C4 runner 新增 fail-closed sanity（正式首拍
+环 P_load 列均值 vs 预热植物均值，[0.5×, 2×] 带外拒绝进正式段）。
+验证：修复后 dry 跑 BH ≡ A2（167.2==167.2 逐拍），sanity 门 128.6 vs 117.5 过。
+
+### A.3 pilot 航次族 kf 审计（R3 影响面补全）
+
+S02/S03/S08（C4 电池）同病：s_plan 绝对坐标（1670→3311，部分越训练域）、
+wl_fcst=水深 20、h_chart=20；S20 另加 s_plan 跨 lead 常值（陈旧生成器产物，
+mat 记录 producer hash ≠ 现行脚本 sha256）。**C4 v2 三航次结论同样作废。**
+formal 臂（FLTA_*，mission_v3 生成）健康。S20 v2 修复件：kf 全语义重算
+（v_plan=v_ref 右端点、s_plan issue 相对累积、u=persistence、wl=0、
+h_chart=20 保持物理+OOD 登记），MAE 200.8→77.3 kW；残差经消融归因为
+water_depth=20 OOD（depth 8 输入下 MAE 0.7~23，仅最高速段 93）——
+深度域 OOD 属模型泛化边界，场景级修复（深度改到训练域内）需重建
+S20 场景+植物 dylib，列为后续项。
+
+### A.4 判据盲区清单（最终版）
+
+1. 部署形态验收缺「输出 vs 物理真值」门（S1~S4 全程）；
+2. A2 vs B_HOST 差异被归档为"变换效应基线"而未逐通道核对（环错位由此逃过）；
+3. 均值/相关性类指标掩盖锚级尾部失真（EMS02 L0：mean 19.88 放行 max 250）；
+4. 闭环 runner 缺输入侧 sanity（本轮已补：环 P_load 量级 fail-closed）。
