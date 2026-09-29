@@ -116,6 +116,7 @@
 | `results/s4_c2/s4_p2_dp_accel_memo.md` | P2 设计备忘：分账实测表、J1-J3 精确性论证、全部门禁证据、**小帧协议/1 s 拍可行性评估（结论：1 s 拍不可行，10 s 拍占空 67% 满足实时预算）** |
 | `results/s4_c2/s4_c3_preamble_report_preP2_baseline.json` | pre-P2 对拍基线封存（重跑逐拍同一性对照锚） |
 | `results/s4_c4_preP2_baseline/` | C4 冻结态封存（P2 重跑零回归对照锚） |
+| `Host/tools/s4_c3_closedloop.py`（改）+ `Host/tools/s4_c4_battery.py`（改） | **口径 v2**（2026-09-29 用户裁决：执行层 1 s 门控直接补齐，契约 §4.3）：`--exec-period`（默认 10=冻结 10 s 口径逐字节不变，基线回归锚不动；=1 时正式拍剩余 999 子步按整秒边界拆 99+9×100 段，每段前 `EXEC_REFRESH` CMD 0x12（16 B=[seq][SOC][v_ship][P_load] f32）→ RSP 0x13（12 B=[seq][P_gen_ref][lam_eff] f32，板侧 handler=`Appli/App/ems04_tick_ctrl.c` `ems04_exec_refresh`，λ 输入=板自持上拍 TICK_CTRL d1）三链同步刷新：bb_1s=板返回值、bh_1s/a2_1s=host `law.exec_layer/lam_eff` 用本拍 TICK_CTRL d1（段内 e_hat≡d1 恒定）、输入全 f32 线域；观测 CSV `s4_c3_exec1s.csv` / `s4_c4_<vid>_exec1s.csv`（t/soc/p_load/v_ship/bb_pg/lam_bb/bh_pg/a2_pg/diff_bb_bh/diff_a2_bh）；gate 增 `exec1s_observation` 观测面（exec1s_n/exec1s_diff_n/exec1s_max_diff，stop_face=false——观测轮不进 G6 停机面，diff 判据由主 Agent 看首轮板跑数据后定；板失联仍走 G6-1 运行性面）；dry：不发帧、无 bb_1s，bh_1s/a2_1s 照算，植物 pgen 刷新源=bh_1s；预热段 =1 时也逐 1 s 冷启动刷新（is_formal=0 不入判据域）。`BoardClient.exec_refresh` 在 C3 定义、C4 import 复用不复制。回归：C4 selftest 20/20、closedloop_selftest PASS=10 FAIL=0、两 runner dry 冒烟（默认 10 与 =1）PASS |
 
 > C3 的 kf 表与自校验 JSON 落 `experiments/softhil_ems03_2026-09-25/results/s4_c3/`
 > （任务书指定路径；该目录属 experiments 结果区）。

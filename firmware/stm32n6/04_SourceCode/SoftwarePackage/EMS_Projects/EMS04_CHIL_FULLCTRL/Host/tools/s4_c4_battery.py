@@ -54,6 +54,14 @@
 自检（无板无植物；import C3 模块 + 冻结件/结构校验，不初始化任何 dylib/keras/ORT）：
   PYTHONDONTWRITEBYTECODE=1 .venv_tf/bin/python tools/s4_c4_battery.py --selftest
 
+口径 v2（2026-09-29，与 C3 完全同构；逐拍机制/线格式/dry 语义见 C3 文件头）：
+  --exec-period（默认 10=冻结 10 s 口径逐字节不变；=1 时正式拍 999 子步拆
+  99+9×100 段、每整秒边界 EXEC_REFRESH 三链同步刷新，BoardClient.exec_refresh
+  复用 C3 定义不复制）；每航次独立观测 CSV s4_c4_<vid>_exec1s.csv（列=
+  C3 EXEC1S_COLS）；航次 gate 增 exec1s_observation 观测面（不进 G6 停机面，
+  判据由主 Agent 看首轮板跑数据后定）；预热段 =1 时也逐 1 s 冷启动刷新；
+  dry：不发帧、无 bb_1s，bh_1s/a2_1s 照算，植物 pgen 刷新源=bh_1s。
+
 S4-P3 B1 扩展（2026-09-29，向后兼容；默认 pilot/modelE 路径行为零改动）：
   --plant-backend streamE --data-root <formal/iid 目录>
     装配 P3 formal 臂电池（冻结件 Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json，
@@ -82,10 +90,11 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 import s4_c3_closedloop as c3  # noqa: E402
 from s4_c3_closedloop import (  # noqa: E402
     A2Assembler, BoardClient, Law6, PmsHost, PlantE,
-    CSV_COLS, CMD_PING, CMD_RESET, CMD_TICK_CTRL, GRID_DLAM, GRID_DP,
-    KK_FIRST, RADPS2RPM, RSP_LEN, RSP_TICK_CTRL, SCENARIO_COLS, SOC_HI, SOC_LO,
-    SUB_PER_SEC, SUB_PER_TICK, TICK_S, WARMUP_TICKS,
-    _fmt, _ring_v, f32, load_kf_table)
+    CSV_COLS, CMD_PING, CMD_RESET, CMD_TICK_CTRL, EXEC1S_COLS, GRID_DLAM,
+    GRID_DP, KK_FIRST, RADPS2RPM, RSP_LEN, RSP_TICK_CTRL, SCENARIO_COLS,
+    SOC_HI, SOC_LO, SUB_PER_SEC, SUB_PER_TICK, TICK_S, WARMUP_TICKS,
+    _fmt, _ring_v, exec1s_refresh, exec1s_stats, f32, load_kf_table,
+    warm_refresh_1s)
 
 REPO = c3.REPO
 FREEZE_PATH = os.path.join(c3.EXP, "results", "s4_c3", "S4_C4_BATTERY_FREEZE.json")
@@ -323,11 +332,12 @@ def build_pending_gate(planned, dry, freeze, freeze_sha, missing):
 
 def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
                board, law, pms_bh, pms_a2, chain, dry, freeze_sha,
-               plant_backend="modelE", results_dir=None):
+               plant_backend="modelE", results_dir=None, exec_period=10):
     """单航次闭环（与 C3 main 逐拍同构；差异仅：产物路径、正式拍数=该航次 kf 行数、
     正式段前板复位失败 → 全局停机语义、航次级产物）。返回结果 dict（含 gate）。
     S4-P3 B1：plant_backend='streamE' 时植物走流驱动 dylib、场景=voyage_id；
-    results_dir 缺省回落模块级 RESULTS（pilot 行为零改动）。"""
+    results_dir 缺省回落模块级 RESULTS（pilot 行为零改动）。
+    口径 v2：exec_period=1 时逐 1 s EXEC_REFRESH 三链刷新（同 C3 语义）。"""
     res_dir = results_dir or RESULTS
     t_v0 = time.time()
     n_formal = kft["n"]
@@ -377,7 +387,13 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
                 soc = st_prev["SOC"]
             lam_cold = law.lam_eff(0.0, soc)
             pg = law.exec_layer(p_load, soc, lam_cold)
-            out_last, _, st_prev = _run_substeps(SUB_PER_TICK, pg, st_prev)
+            if exec_period == 1:
+                # 口径 v2：预热段也逐 1 s 刷新（无板 → law6 冷启动执行层；
+                # 差异登记见 c3.warm_refresh_1s；is_formal=0 不入判据域）
+                out_last, st_prev, pg = warm_refresh_1s(law, _run_substeps, pg,
+                                                        out_last, st_prev)
+            else:
+                out_last, _, st_prev = _run_substeps(SUB_PER_TICK, pg, st_prev)
             pgen_next = pg
             f_warm.write("%d,%g,%.9g,%.9g,%.9g,%.9g,%d\n"
                          % (kk, plant.t, pg, p_load, soc, st_prev["V_dc_V"],
@@ -399,8 +415,15 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
         csv_path = os.path.join(res_dir, "s4_c4_%s.csv" % vid)
         f_csv = open(csv_path, "w")
         f_csv.write(",".join(CSV_COLS) + "\n")
+        exec_1s = exec_period == 1
+        exec1s_path = os.path.join(res_dir, "s4_c4_%s_exec1s.csv" % vid)
+        f_exec1s = open(exec1s_path, "w") if exec_1s else None
+        if f_exec1s is not None:
+            f_exec1s.write(",".join(EXEC1S_COLS) + "\n")
+        exec1s_rows = []                     # 观测面统计源（末两位=diff 列）
         rows = []
         seq = 0
+        exec_seq = 0                         # EXEC_REFRESH 独立序号（板回显不校验）
         consec_unattr_pgen = 0
         n_drift_action = n_unattr_pgen = n_drift_pgen = 0
         n_a2_action_diff = n_a2_pgen_gt1 = 0
@@ -541,9 +564,37 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
             f_csv.flush()
             seq += 1
 
-            # 8) 植物推进本拍剩余 999 子步（新板 P_gen_ref）
+            # 8) 植物推进本拍剩余 999 子步（新板 P_gen_ref）。默认 10 s 口径
+            #    单段 ZOH 不变；口径 v2 exec_period=1 拆 99+9×100 段（同 C3，
+            #    整秒边界 t0+j 段前 EXEC_REFRESH 三链刷新并切换植物 pgen）。
             new_pgen = (float(bb["P_gen_ref"]) if board is not None else pg_bh)
-            out, _, st_prev = _run_substeps(SUB_PER_TICK - 1, new_pgen, st_prev)
+            if exec_1s:
+                out, _, st_prev = _run_substeps(SUB_PER_SEC - 1, new_pgen,
+                                                st_prev)
+                for j in range(1, int(TICK_S)):
+                    r1s = exec1s_refresh(law, board, d1_bh, d1_a2, t0 + j, out,
+                                         st_prev, exec_seq)
+                    if not r1s["ok"]:
+                        stop_reason = "板失联（EXEC_REFRESH 重试后仍无 RSP）"
+                        board_lost = True
+                        break
+                    exec_seq += 1
+                    row1s = (r1s["t"], r1s["soc"], r1s["p_load"], r1s["v_ship"],
+                             r1s["bb_pg"], r1s["lam_bb"], r1s["bh_pg"],
+                             r1s["a2_pg"],
+                             abs(r1s["bb_pg"] - r1s["bh_pg"])
+                             if board is not None else float("nan"),
+                             abs(r1s["a2_pg"] - r1s["bh_pg"]))
+                    exec1s_rows.append(row1s)
+                    f_exec1s.write(",".join(_fmt(v) for v in row1s) + "\n")
+                    out, _, st_prev = _run_substeps(SUB_PER_SEC,
+                                                    r1s["pgen_next"], st_prev)
+                    new_pgen = r1s["pgen_next"]
+                if stop_reason is not None:
+                    break
+            else:
+                out, _, st_prev = _run_substeps(SUB_PER_TICK - 1, new_pgen,
+                                                st_prev)
             pgen_next = new_pgen
 
             # 停机条件（v2.1 硬面：同档执行层发散 / 运行性；action 差全归档）
@@ -562,15 +613,19 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
                          pg_a2, soc_x, time.time() - t_v0))
 
         f_csv.close()
+        if f_exec1s is not None:
+            f_exec1s.close()
         n_done = len(rows)
 
-        # ---- G6 机械化（复用 C3 build_gate，v2.1 口径）----
+        # ---- G6 机械化（复用 C3 build_gate，v2.1 口径；exec1s=观测面不进停机）----
         gate = c3.build_gate(
             rows, argparse.Namespace(formal_ticks=n_formal, dry=dry),
             kft, stop_reason, n_drift_action,
             n_unattr_pgen, n_drift_pgen, n_a2_action_diff, n_a2_pgen_gt1,
             first_unattr_pgen, drift_ticks, {}, voyage_stop_tick,
-            board, seq, t_v0, meta)
+            board, seq, t_v0, meta,
+            exec1s_stats=exec1s_stats(exec1s_rows, exec_period,
+                                      os.path.relpath(exec1s_path, REPO)))
         gate = finalize_voyage_gate(gate, vid, role, kf_path, freeze_sha, spath)
         gate_path = os.path.join(res_dir, "s4_c4_%s_gate.json" % vid)
         json.dump(gate, open(gate_path, "w"), indent=1, ensure_ascii=False)
@@ -594,11 +649,12 @@ def run_voyage(vid, role, spath, stream, meta, a2, kft, kf_path,
                     gate["backend_drift_archive"]["drift_action_diff_n"],
                 "undeclared_n": gate["events_G6_6"]["undeclared_n"],
             },
-            "artifacts": {
+            "artifacts": dict({
                 "csv": os.path.relpath(csv_path, REPO),
                 "warmup_csv": os.path.relpath(warm_path, REPO),
                 "gate": os.path.relpath(gate_path, REPO),
-            },
+            }, **({"exec1s_csv": os.path.relpath(exec1s_path, REPO)}
+                  if exec_1s else {})),
             "_gate": gate,
         }
     finally:
@@ -748,6 +804,9 @@ def main():
     ap.add_argument("--voyages", default=None,
                     help="逗号分隔 voyage_id（默认按冻结 battery 顺序）")
     ap.add_argument("--dry", action="store_true", help="无板干跑（overall 恒 false）")
+    ap.add_argument("--exec-period", type=int, default=10,
+                    help="执行层刷新周期 s（口径 v2；默认 10=冻结 10 s 口径逐字节"
+                         "不变；=1 每整秒边界 EXEC_REFRESH 三链同步刷新）")
     ap.add_argument("--selftest", action="store_true",
                     help="无板无植物自检（不写盘）")
     ap.add_argument("--plant-backend", choices=PLANT_BACKENDS, default="modelE",
@@ -760,6 +819,11 @@ def main():
 
     if args.selftest:
         return 0 if _selftest() else 1
+
+    if args.exec_period not in (1, 10):
+        print("[c4] FAIL-CLOSED: --exec-period 仅支持 1/10，实际 %r"
+              % (args.exec_period,))
+        return 2
 
     # ---- S4-P3 B1：streamE 装配分支（默认 modelE 路径全部行为不变）----
     if args.plant_backend == "streamE":
@@ -879,7 +943,8 @@ def main():
         res = run_voyage(vid, role_of[vid], spath, stream, meta, a2, kft, kf_path,
                          board, law, pms_bh, pms_a2, chain, args.dry, freeze_sha,
                          plant_backend=args.plant_backend,
-                         results_dir=results_dir)
+                         results_dir=results_dir,
+                         exec_period=args.exec_period)
         res["scenario_id"] = scen_of[vid]    # 冻结件元数据（权威）覆盖 mat meta
         entries.append({k: res[k] for k in VOYAGE_ENTRY_KEYS})
 

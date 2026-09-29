@@ -57,6 +57,21 @@ G6 机械化（S4_G6_ACCEPTANCE 定稿 v1.0）：
 host 干跑（无板，验证 runner 机制；不出正式 gate，overall 恒 false）：
   PYTHONDONTWRITEBYTECODE=1 .venv_tf/bin/python tools/s4_c3_closedloop.py --dry
 产物：Host/results/s4_c3/{s4_c3_closedloop.csv, s4_c3_warmup.csv, s4_c3_gate.json}
+
+口径 v2（2026-09-29 用户裁决：执行层 1 s 门控直接补齐，契约 §4.3）：
+  --exec-period（默认 10=冻结 10 s 口径，行为逐字节不变，基线回归锚不动）。=1 时：
+  正式拍剩余 999 子步按整秒边界拆 99+9×100 段（9×100≠999，规格以"整秒边界
+  t0+j, j=1..9"与固件"植物子步 100 边界"语义为准），每段前 EXEC_REFRESH
+  (0x12, 16B=[seq][SOC][v_ship][P_load] f32 → 0x13, 12B=[seq][P_gen_ref][lam_eff]
+  f32) 三链同步刷新：bb_1s=板返回值（板内 λ 输入=自持 m_last_d1=上拍 TICK_CTRL
+  d1）；bh_1s/a2_1s=host law.exec_layer/lam_eff 用本拍 TICK_CTRL 的 d1_bh/d1_a2
+  （段内 e_hat≡d1 恒定）；输入全 f32 线域（与 10 s 拍下行同口径）。观测 CSV
+  s4_c3_exec1s.csv（列见 EXEC1S_COLS）；gate 增 exec1s_observation 观测面
+  （exec1s_n/exec1s_diff_n/exec1s_max_diff）——观测轮，不进 G6 停机面，判据由
+  主 Agent 看首轮板跑数据后定。dry：不发 EXEC_REFRESH、无 bb_1s；bh_1s/a2_1s
+  照算并作为植物 pgen 刷新源（与 10 s 干跑 pgen 源=pg_bh 同构）。预热段 =1 时
+  也逐 1 s 刷新（无板 → law6 冷启动执行层；与既有 10 s 粒度差异登记于
+  warm_refresh_1s 注释，is_formal=0 不入判据域）。
 """
 from __future__ import annotations
 
@@ -121,6 +136,9 @@ FORMAL_TICKS = 541                           # t0=300..5700（kf issue 网格）
 KK_FIRST = 30                                # 正式首拍控制拍序号（查询 t0=300）
 RSP_LEN = 4 + 20 * 4 + 4 + 4 + 1
 CMD_PING, CMD_RESET, CMD_TICK_CTRL, RSP_TICK_CTRL = 0x06, 0x01, 0x0E, 0x0F
+# S4-P4 执行层 1 s 门控（口径 v2；线格式与 ems04_tick_ctrl.h EXEC_REFRESH 段同源）：
+CMD_EXEC_REFRESH, RSP_EXEC_REFRESH = 0x12, 0x13
+EXEC_REFRESH_CMD_LEN, EXEC_REFRESH_RSP_LEN = 16, 12   # [seq][SOC][v][P_load] / [seq][P_gen_ref][lam]
 
 # ---- 冻结常量（禁手打；全部自 constants.json 读出）----
 CONST = json.load(open(os.path.join(S1, "exported", "constants.json")))
@@ -499,6 +517,23 @@ class BoardClient:
         self.nack_n += 1
         return None
 
+    def exec_refresh(self, seq, soc_f32, v_ship_f32, p_load_f32):
+        """EXEC_REFRESH（口径 v2 执行层 1 s 门控）：下行 16 B = seq+SOC+v_ship+
+        P_load f32 → RSP 12 B = seq+P_gen_ref+lam_eff f32（ems04_exec_refresh
+        线格式）。超时同 seq 重试一次；仍失败返回 None（调用方 park——运行性
+        语义同 TICK_CTRL；nack/retry 计入同一计数面，G6-1 零 NACK 门覆盖）。"""
+        payload = struct.pack("<Ifff", int(seq), soc_f32, v_ship_f32, p_load_f32)
+        for attempt in (0, 1):
+            self._send(CMD_EXEC_REFRESH, payload)
+            pl = self._wait(RSP_EXEC_REFRESH, 2000)
+            if pl is not None and len(pl) >= EXEC_REFRESH_RSP_LEN:
+                pg, lam = struct.unpack_from("<2f", pl, 4)
+                return {"P_gen_ref": pg, "lam": lam}
+            if attempt == 0:
+                self.retry_n += 1
+        self.nack_n += 1
+        return None
+
     def close(self):
         try:
             self.ser.close()
@@ -611,6 +646,74 @@ def classify_action_face(a_bb, a_bh, a_a2):
     return "drift", "triple"
 
 
+# ---------------------------------------------------------------- 口径 v2（执行层 1 s 门控）
+EXEC1S_COLS = ("t", "soc", "p_load", "v_ship", "bb_pg", "lam_bb", "bh_pg",
+               "a2_pg", "diff_bb_bh", "diff_a2_bh")
+
+
+def exec1s_refresh(law, board, d1_bh, d1_a2, t_edge, out, st_prev, exec_seq):
+    """整秒边界 t_edge 的执行层三链同步刷新（口径 v2，契约 §4.3 1 s 门控）。
+    输入 = 植物当前读数 f32 线域（P_load=OUT 读点、SOC/v_ship=X 边界真值——
+    与 10 s 拍下行同采样口径）；e_hat 段内恒定：bh 用本拍 TICK_CTRL 的 d1_bh、
+    a2 用 d1_a2（板内同构 = 自持 m_last_d1）。板在环：EXEC_REFRESH 下行 →
+    bb_1s=板 P_gen_ref/lam；dry（board=None）：不发帧、无 bb_1s（NaN），
+    bh_1s/a2_1s 照算，植物 pgen 刷新源 = bh_1s（dry 语义，与 10 s 干跑
+    pgen 源=pg_bh 同构——登记）。返回 dict；ok=False = 板失联（调用方 park，
+    运行性语义同 TICK_CTRL 失联）。"""
+    p_load_f = f32(out["P_load_total_kW"])
+    soc_f = f32(st_prev["SOC"])
+    v_f = f32(st_prev["v_ship_mps"])
+    bh_pg = law.exec_layer(p_load_f, soc_f, law.lam_eff(d1_bh, soc_f))
+    a2_pg = law.exec_layer(p_load_f, soc_f, law.lam_eff(d1_a2, soc_f))
+    bb_pg = lam_bb = float("nan")
+    pgen_next = bh_pg                      # dry 兜底（板在环成功时被覆盖）
+    ok = True
+    if board is not None:
+        rsp = board.exec_refresh(exec_seq, soc_f, v_f, p_load_f)
+        if rsp is None:
+            ok = False
+        else:
+            bb_pg = float(rsp["P_gen_ref"])
+            lam_bb = float(rsp["lam"])
+            pgen_next = bb_pg
+    return {"t": float(t_edge), "soc": soc_f, "p_load": p_load_f, "v_ship": v_f,
+            "bb_pg": bb_pg, "lam_bb": lam_bb, "bh_pg": bh_pg, "a2_pg": a2_pg,
+            "pgen_next": pgen_next, "ok": ok}
+
+
+def warm_refresh_1s(law, run_fn, pg, out_last, st_prev):
+    """口径 v2 预热段 1 s 粒度推进（--exec-period 1 时调用）：首段沿用拍首
+    冷启动 pg；其后每 1 s 边界以当前植物读数重算冷启动执行层（无板无预测 →
+    d1=0 的 law6 冷启动律）。返回 (out_last, st_prev, pg 末值)。
+    与既有 10 s 粒度的差异登记：is_formal=0 预热控制粒度 10 s→1 s；输入用
+    植物 f64 原值（预热无板无对拍，与既有预热计算同域）；不入 G6 判据域。"""
+    out_last, _, st_prev = run_fn(SUB_PER_SEC, pg, st_prev)
+    for _ in range(SUB_PER_TICK // SUB_PER_SEC - 1):
+        pg = law.exec_layer(out_last["P_load_total_kW"], st_prev["SOC"],
+                            law.lam_eff(0.0, st_prev["SOC"]))
+        out_last, _, st_prev = run_fn(SUB_PER_SEC, pg, st_prev)
+    return out_last, st_prev, pg
+
+
+def exec1s_stats(rows, exec_period, csv_rel):
+    """exec1s 观测面统计（gate JSON exec1s_observation；观测轮——不进 G6 停机
+    面，判据由主 Agent 看首轮板跑数据后定）。rows = exec1s CSV 数据行元组
+    （末两位 = diff_bb_bh / diff_a2_bh）。"""
+    if exec_period != 1:
+        return None
+    diffs = [d for r in rows for d in (r[8], r[9]) if math.isfinite(d)]
+    return {
+        "exec_period_s": 1, "exec1s_n": len(rows),
+        "exec1s_diff_n": sum(1 for r in rows
+                             if (math.isfinite(r[8]) and r[8] > 1e-6)
+                             or (math.isfinite(r[9]) and r[9] > 1e-6)),
+        "exec1s_max_diff": (max(diffs) if diffs else 0.0),
+        "diff_def": "行级：|bb_pg−bh_pg| 或 |a2_pg−bh_pg| 任一有限值 >1e-6 计 1"
+                    "（NaN=干跑无 bb_1s，不参与）；max_diff 同域取最大",
+        "csv": csv_rel,
+    }
+
+
 def _fmt(v):
     if isinstance(v, (bool, np.bool_)):
         return str(int(v))
@@ -626,7 +729,14 @@ def main():
     ap.add_argument("--port", default="/dev/cu.usbserial-1120")
     ap.add_argument("--dry", action="store_true", help="无板干跑（不出正式 gate）")
     ap.add_argument("--formal-ticks", type=int, default=FORMAL_TICKS)
+    ap.add_argument("--exec-period", type=int, default=10,
+                    help="执行层刷新周期 s（口径 v2；默认 10=冻结 10 s 口径逐字节"
+                         "不变；=1 每整秒边界 EXEC_REFRESH 三链同步刷新）")
     args = ap.parse_args()
+    if args.exec_period not in (1, 10):
+        print("[c3] FAIL-CLOSED: --exec-period 仅支持 1/10，实际 %r"
+              % (args.exec_period,))
+        return 2
 
     os.makedirs(RESULTS, exist_ok=True)
     t_start_wall = time.time()
@@ -704,7 +814,13 @@ def main():
             soc = st_prev["SOC"]
         lam_cold = law.lam_eff(0.0, soc)      # 冷启动：无窗无预测 → e_hat=0
         pg = law.exec_layer(p_load, soc, lam_cold)
-        out_last, _, st_prev = _run_substeps(SUB_PER_TICK, pg, st_prev)
+        if args.exec_period == 1:
+            # 口径 v2：预热段也逐 1 s 刷新（无板 → law6 冷启动执行层）；
+            # 与既有 10 s 粒度差异登记于 warm_refresh_1s（is_formal=0 不入判据域）
+            out_last, st_prev, pg = warm_refresh_1s(law, _run_substeps, pg,
+                                                    out_last, st_prev)
+        else:
+            out_last, _, st_prev = _run_substeps(SUB_PER_TICK, pg, st_prev)
         pgen_next = pg
         f_warm.write("%d,%g,%.9g,%.9g,%.9g,%.9g,%d\n"
                      % (kk, plant.t, pg, p_load, soc, st_prev["V_dc_V"],
@@ -723,8 +839,15 @@ def main():
     csv_path = os.path.join(RESULTS, "s4_c3_closedloop.csv")
     f_csv = open(csv_path, "w")
     f_csv.write(",".join(CSV_COLS) + "\n")
+    exec_1s = args.exec_period == 1
+    exec1s_path = os.path.join(RESULTS, "s4_c3_exec1s.csv")
+    f_exec1s = open(exec1s_path, "w") if exec_1s else None
+    if f_exec1s is not None:
+        f_exec1s.write(",".join(EXEC1S_COLS) + "\n")
+    exec1s_rows = []                         # 观测面统计源（末两位=diff 列）
     rows = []
     seq = 0
+    exec_seq = 0                             # EXEC_REFRESH 独立序号（板回显不校验）
     stop_reason = None
     consec_unattr_pgen = 0
     n_drift_action = n_unattr_pgen = n_drift_pgen = 0
@@ -873,9 +996,36 @@ def main():
         f_csv.flush()
         seq += 1
 
-        # 7) 植物推进本拍剩余 999 子步（新板 P_gen_ref；ZOH 前沿 0.01 s 已登记）
+        # 8) 植物推进本拍剩余 999 子步（新板 P_gen_ref；ZOH 前沿 0.01 s 已登记）。
+        #    默认 10 s 口径：单段 ZOH 不变（冻结行为逐字节不动）。口径 v2
+        #    --exec-period 1：拆 99+9×100 段——首 99 子步（stamps t0+0.01..t0+0.99）
+        #    仍用决策 pgen，其后每整秒边界 t0+j（j=1..9）段前刷新三链并切换
+        #    植物 pgen（9×100≠999，以整秒边界+子步 100 边界语义为准，见文件头）。
         new_pgen = (float(bb["P_gen_ref"]) if board is not None else pg_bh)
-        out, _, st_prev = _run_substeps(SUB_PER_TICK - 1, new_pgen, st_prev)
+        if exec_1s:
+            out, _, st_prev = _run_substeps(SUB_PER_SEC - 1, new_pgen, st_prev)
+            for j in range(1, int(TICK_S)):
+                r1s = exec1s_refresh(law, board, d1_bh, d1_a2, t0 + j, out,
+                                     st_prev, exec_seq)
+                if not r1s["ok"]:
+                    stop_reason = "板失联（EXEC_REFRESH 重试后仍无 RSP）"
+                    break
+                exec_seq += 1
+                row1s = (r1s["t"], r1s["soc"], r1s["p_load"], r1s["v_ship"],
+                         r1s["bb_pg"], r1s["lam_bb"], r1s["bh_pg"],
+                         r1s["a2_pg"],
+                         abs(r1s["bb_pg"] - r1s["bh_pg"])
+                         if board is not None else float("nan"),
+                         abs(r1s["a2_pg"] - r1s["bh_pg"]))
+                exec1s_rows.append(row1s)
+                f_exec1s.write(",".join(_fmt(v) for v in row1s) + "\n")
+                out, _, st_prev = _run_substeps(SUB_PER_SEC, r1s["pgen_next"],
+                                                st_prev)
+                new_pgen = r1s["pgen_next"]
+            if stop_reason is not None:
+                break
+        else:
+            out, _, st_prev = _run_substeps(SUB_PER_TICK - 1, new_pgen, st_prev)
         pgen_next = new_pgen
 
         # 停机条件（G6 v2.1 硬面：同档执行层发散 / 板自振荡 / 运行性）
@@ -896,13 +1046,18 @@ def main():
                      soc_x, time.time() - t_start_wall))
 
     f_csv.close()
+    if f_exec1s is not None:
+        f_exec1s.close()
     n_done = len(rows)
 
     # ---- G6 机械化（v2.1，classify_action_face 归因 + 子类）----
     gate = build_gate(rows, args, kft, stop_reason, n_drift_action,
                       n_unattr_pgen, n_drift_pgen, n_a2_action_diff,
                       n_a2_pgen_gt1, first_unattr_pgen, drift_ticks, drift_sub,
-                      voyage_stop_tick, board, seq, t_start_wall, meta)
+                      voyage_stop_tick, board, seq, t_start_wall, meta,
+                      exec1s_stats=exec1s_stats(exec1s_rows, args.exec_period,
+                                                os.path.relpath(exec1s_path,
+                                                                REPO)))
     gate_path = os.path.join(RESULTS, "s4_c3_gate.json")
     json.dump(gate, open(gate_path, "w"), indent=1, ensure_ascii=False)
     print("[c3] 完成 %d/%d 拍；stop=%s" % (n_done, args.formal_ticks, stop_reason))
@@ -916,7 +1071,7 @@ def main():
 def build_gate(rows, args, kft, stop_reason, n_drift_action, n_unattr_pgen,
                n_drift_pgen, n_a2_action_diff, n_a2_pgen_gt1,
                first_unattr_pgen, drift_ticks, drift_sub, voyage_stop_tick,
-               board, seq, t_start_wall, meta):
+               board, seq, t_start_wall, meta, exec1s_stats=None):
     n = len(rows)
     col = {name: i for i, name in enumerate(CSV_COLS)}
 
@@ -1050,6 +1205,17 @@ def build_gate(rows, args, kft, stop_reason, n_drift_action, n_unattr_pgen,
     overall = bool(g61_pass and g64_pass and g66["undeclared_n"] == 0
                    and n == args.formal_ticks and stop_reason is None
                    and not args.dry)
+    # 口径 v2 观测面（2026-09-29 用户裁决）：--exec-period 1 时激活 EXEC_REFRESH
+    # 三链 1 s 对拍统计；10 s 冻结口径不激活（n=0）。纯观测轮——不进 G6 停机面、
+    # 不进 overall，判据由主 Agent 看首轮板跑数据后定。
+    exec1s_block = dict(exec1s_stats) if exec1s_stats is not None else {
+        "exec_period_s": 10, "exec1s_n": 0, "exec1s_diff_n": 0,
+        "exec1s_max_diff": None,
+    }
+    exec1s_block["stop_face"] = False
+    exec1s_block["note"] = ("口径 v2 观测轮：执行层 1 s 门控三链对拍只记录不停机"
+                            "（diff 判据待首轮板跑数据后由主 Agent 定）；板失联"
+                            "仍走运行性 G6-1 面（同 TICK_CTRL 语义）")
     return {
         "schema": "s4_c3_gate_v2_1",
         "created_utc": datetime.now(timezone.utc).isoformat(),
@@ -1132,6 +1298,7 @@ def build_gate(rows, args, kft, stop_reason, n_drift_action, n_unattr_pgen,
         "frequency_G6_4": g64, "g6_4_pass": g64_pass,
         "is_formal_G6_5": {"is_formal_only": True, "warmup_excluded": True},
         "events_G6_6": g66, "g6_6_pass": g66["undeclared_n"] == 0,
+        "exec1s_observation": exec1s_block,
         "overall": overall,
         "overall_note": "G6-2 与 CLOSED_LOOP_BACKEND_DRIFT 均为基线档案语义（非 "
                         "FAIL，逐拍全量记录）；overall(v2)=G6-1∧G6-3amended∧G6-4"
