@@ -1,7 +1,7 @@
 {
   "schema": "mission_v3_identifiability_gate_result_v1",
   "task": "T-022 T429_EVALUATE identifiability Gate (FR-547~551; AC-437; DGN-12 R8/R9; T429-AMENDMENT-V2 execution conformance rerun EXECFIX-01)",
-  "generated_at": "2026-09-06T18:33:58Z",
+  "generated_at": "2026-09-29T05:00:03Z",
   "freeze_verification": {
     "freeze_file": "results/mission_v3/t429_freeze_v2.json",
     "freeze_self_hash": "213127b267e0e210540ad7188fdfc0d4afc0d2ff03bf91663d8407b0978290f0",
@@ -292,6 +292,7 @@
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
           0.78461538461538471,
           0.79464285714285721,
@@ -367,6 +368,7 @@
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
           1,
           1,
@@ -414,7 +416,7 @@
         "sign_test_alpha": 0.05,
         "magnitude_threshold_policy": "no new delta-P magnitude threshold derived from development diagnostics (D1-A 83.8 kW is diagnostic only)"
       },
-      "n_slices_A": 3928,
+      "n_slices_A": 1801,
       "n_slices_B": 3247,
       "n_groups_A": 60,
       "n_groups_B": 60,
@@ -422,44 +424,46 @@
       "cohort_applied": [
         "template (same)",
         "regime (same)",
+        "reach (same)",
         "cohort cell = family (registry pairing: same base_draw directional counterfactual)"
       ],
       "cohort_relaxed": [],
-      "R_point": 0.65443676597181089,
-      "R_lcb95": 0.62523711492789347,
+      "R_point": 0.69971569849962356,
+      "R_lcb95": 0.667866902076535,
       "sbd_pass": false,
       "sbd_status": "OK",
-      "BA_point": 0.68664202087995074,
-      "BA_lcb95": 0.63540083836457284,
+      "BA_point": 0.63902958975475088,
+      "BA_lcb95": 0.58628298914237209,
       "probe_pass": false,
       "probe_status": "OK",
       "sbd": {
         "metric": "SBD separation ratio",
         "definition": "R = median(D_cross) / max(Q0.95(D_within_A), Q0.95(D_within_B)); SBD = 1 - max NCC (z-normalized equal-length 1 Hz P_load_total_kW slices; zero-padded 2n FFT; zero-norm defense -> distance 1.0; D-side audit_leakage.py semantics)",
-        "n_cross_pairs": 255729,
-        "n_within_pairs_A": 147389,
+        "n_cross_pairs": 143643,
+        "n_within_pairs_A": 40856,
         "n_within_pairs_B": 129552,
-        "R_point": 0.65443676597181089,
-        "q95_within_A": 0.74586176872253418,
+        "R_point": 0.69971569849962356,
+        "q95_within_A": 0.66384506225585938,
         "q95_within_B": 0.65926849842071533,
-        "median_cross": 0.48811936378479004,
+        "median_cross": 0.46450281143188477,
         "n_boot": 1000,
         "n_boot_valid": 1000,
         "bootstrap_seed": 42901,
         "bootstrap_unit": "split_group_id",
-        "R_lcb95": 0.62523711492789347,
+        "R_lcb95": 0.667866902076535,
         "status": "OK",
         "pass": false,
         "threshold_R_min": 1.5
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
-          0.67528800057707339,
-          0.63837130881101656,
-          0.75374805830574432,
-          0.7132206431905227,
-          0.65258209351539676
+          0.56644211370281439,
+          0.76595149253731343,
+          0.57065515009707768,
+          0.603789639714428,
+          0.688309552722121
         ],
         "n_boot": 1000,
         "n_boot_valid": 1000,
@@ -467,23 +471,23 @@
         "model": "logistic regression, base-MATLAB IRLS (no Statistics Toolbox dependency; fitglm/fitclinear probed absent), L2 C=1.000 (intercept unpenalized), class_weight balanced, fixed iteration cap 1000",
         "features": "frozen 12-dim H1-derived slice summary encoding: mean/std/min/max/p95/rms of the 1 Hz P_load_total_kW slice + six a-priori transient counts (jump up/down > 10% of mean; 10 s ramp up/down > 5% of mean; excursions above/below mean +/- 2 sd); train-only standard scaler"
       },
-      "paired_effect_pass": false,
+      "paired_effect_pass": true,
       "paired_effect_status": "OK",
       "paired_effect": {
         "status": "OK",
         "metric": "paired physical effect: signed paired delta of group-aggregated mean P_load (upstream - downstream)",
         "n_paired_groups": 60,
-        "delta_point": -94.321844872583313,
-        "delta_min": -261.00493154192719,
-        "delta_max": 208.49389009584695,
-        "sign_ok": false,
-        "ci95_lower": -123.80206673231656,
-        "ci95_upper": -61.34642136472204,
+        "delta_point": 85.5952054119679,
+        "delta_min": -206.04245665868126,
+        "delta_max": 344.67959152603123,
+        "sign_ok": true,
+        "ci95_lower": 61.147803035107181,
+        "ci95_upper": 113.08046413433891,
         "ci_excludes_zero": true,
-        "sign_test_k": 14,
-        "sign_test_p": 0.99999392664598852,
+        "sign_test_k": 49,
+        "sign_test_p": 3.7806404911983754E-7,
         "sign_test_alpha": 0.05,
-        "sign_test_ok": false,
+        "sign_test_ok": true,
         "n_boot": 1000,
         "n_boot_valid": 1000,
         "bootstrap_seed": 42901,
@@ -552,8 +556,8 @@
           "SG#6f48a0ba681db068"
         ]
       },
-      "n_cross_pairs": 255729,
-      "n_within_pairs_A": 147389,
+      "n_cross_pairs": 143643,
+      "n_within_pairs_A": 40856,
       "n_within_pairs_B": 129552,
       "status": "METRIC_FAIL"
     },
@@ -586,10 +590,10 @@
       "R_lcb95": 0.54607069492340088,
       "sbd_pass": false,
       "sbd_status": "OK",
-      "BA_point": null,
-      "BA_lcb95": null,
+      "BA_point": 0.48799575908122506,
+      "BA_lcb95": 0.46183206106870228,
       "probe_pass": false,
-      "probe_status": "INSUFFICIENT",
+      "probe_status": "OK",
       "sbd": {
         "metric": "SBD separation ratio",
         "definition": "R = median(D_cross) / max(Q0.95(D_within_A), Q0.95(D_within_B)); SBD = 1 - max NCC (z-normalized equal-length 1 Hz P_load_total_kW slices; zero-padded 2n FFT; zero-norm defense -> distance 1.0; D-side audit_leakage.py semantics)",
@@ -610,15 +614,20 @@
         "threshold_R_min": 1.5
       },
       "probe": {
-        "status": "INSUFFICIENT",
+        "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
-          0.567398119122257,
-          null,
-          0.5159620362381363,
-          0.47289698605488079,
-          0.4320506947625592
+          0.49817733990147783,
+          0.47644927536231885,
+          0.47162603669263636,
+          0.51086956521739135,
+          0.48285657823230077
         ],
-        "reason": "grouped 5-fold CV produced an invalid fold (a class is absent in a test fold)"
+        "n_boot": 1000,
+        "n_boot_valid": 1000,
+        "bootstrap_seed": 42902,
+        "model": "logistic regression, base-MATLAB IRLS (no Statistics Toolbox dependency; fitglm/fitclinear probed absent), L2 C=1.000 (intercept unpenalized), class_weight balanced, fixed iteration cap 1000",
+        "features": "frozen 12-dim H1-derived slice summary encoding: mean/std/min/max/p95/rms of the 1 Hz P_load_total_kW slice + six a-priori transient counts (jump up/down > 10% of mean; 10 s ramp up/down > 5% of mean; excursions above/below mean +/- 2 sd); train-only standard scaler"
       },
       "paired_effect_pass": false,
       "paired_effect_status": "NOT_COMPUTED",
@@ -628,8 +637,7 @@
       "n_cross_pairs": 492096,
       "n_within_pairs_A": 243951,
       "n_within_pairs_B": 247456,
-      "status": "INSUFFICIENT_IDENTIFIABILITY_EVIDENCE",
-      "insufficient_reason": "probe: grouped 5-fold CV produced an invalid fold (a class is absent in a test fold)"
+      "status": "METRIC_FAIL"
     },
     {
       "contrast_id": "SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE",
@@ -686,6 +694,7 @@
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
           0.95833333333333326,
           0.95633012820512819,
@@ -761,6 +770,7 @@
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
           0.75794943384519931,
           0.68364354920958692,
@@ -809,7 +819,7 @@
       "R_lcb95": 0.63730009425257406,
       "sbd_pass": false,
       "sbd_status": "OK",
-      "BA_point": 0.98802884615384623,
+      "BA_point": 0.9868464868464869,
       "BA_lcb95": 0.97734177215189866,
       "probe_pass": true,
       "probe_status": "OK",
@@ -834,12 +844,13 @@
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
           0.98076923076923084,
-          0.984375,
           1,
-          0.975,
-          1
+          1,
+          0.97727272727272729,
+          0.97619047619047616
         ],
         "n_boot": 1000,
         "n_boot_valid": 1000,
@@ -882,8 +893,8 @@
       "R_lcb95": 0.66943790526558278,
       "sbd_pass": false,
       "sbd_status": "OK",
-      "BA_point": 0.97137844611528812,
-      "BA_lcb95": 0.93971631205673756,
+      "BA_point": 0.96978145510403579,
+      "BA_lcb95": 0.94318181818181812,
       "probe_pass": true,
       "probe_status": "OK",
       "sbd": {
@@ -907,12 +918,13 @@
       },
       "probe": {
         "status": "OK",
+        "fold_assignment": "deterministic class-stratified greedy (grouped by split_group_id; EXECFIX-02)",
         "fold_ba": [
-          0.95238095238095233,
-          0.95714285714285707,
-          0.94736842105263164,
+          0.98333333333333339,
+          0.95161290322580649,
+          0.98214285714285721,
           1,
-          1
+          0.93181818181818188
         ],
         "n_boot": 1000,
         "n_boot_valid": 1000,
@@ -932,13 +944,13 @@
     }
   ],
   "overall": false,
-  "verdict": "FAIL_INSUFFICIENT_EVIDENCE",
+  "verdict": "FAIL_METRIC",
   "required_contrasts_total": 6,
   "required_contrasts_pass": 0,
   "fail_closed_note": "FR-547/FR-551: insufficient evidence or a failed required contrast is fail-closed; scenario redesign is the only legal remediation; thresholds/geometry/encoding are frozen and never adjusted after a failure",
   "implementation": {
     "file": "scripts/+mission_v3/+audits/identifiability.m",
-    "sha256": "c2091d4bf27f3ba1ae060071856effd9da65997ed61f09c526b44199adbab405"
+    "sha256": "869ddedad9fbe132dd64be8dc8a2e10b5fc0e5592467495ed7497b2864c77d21"
   },
   "statistics_provenance": {
     "toolbox_probe": {
@@ -957,5 +969,5 @@
     "artifact_basename_discipline_ok": true,
     "note": "products are identifiability_gate_result.json and identifiability_report.md; the D-side leakage_sbd_* naming is never reused (FR-547 / Tasks Gate R8)"
   },
-  "wall_s": 19.3491645
+  "wall_s": 23.74249175
 }

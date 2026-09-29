@@ -1,0 +1,93 @@
+{
+  "schema": "mission_v3_regression_report_v1",
+  "generated_at": "2026-09-29T04:58:59Z",
+  "mode": "run",
+  "suites": [
+    {
+      "name": "validate_registries",
+      "passed": true,
+      "n_cases": 9
+    },
+    {
+      "name": "seed_tree",
+      "passed": true,
+      "n_cases": 8
+    },
+    {
+      "name": "env_realize",
+      "passed": true,
+      "n_cases": 8
+    },
+    {
+      "name": "plan_compose",
+      "passed": false,
+      "error": ": GATE:test_plan_compose 1 case(s) failed"
+    },
+    {
+      "name": "forecast_issue",
+      "passed": true,
+      "n_cases": 8
+    },
+    {
+      "name": "kf_snapshots",
+      "passed": true,
+      "n_cases": 7
+    },
+    {
+      "name": "family_expand",
+      "passed": true,
+      "n_cases": 8
+    },
+    {
+      "name": "stack_identity",
+      "passed": true,
+      "n_cases": 7
+    },
+    {
+      "name": "producer_export",
+      "passed": true,
+      "n_cases": 8
+    },
+    {
+      "name": "negative",
+      "passed": true,
+      "n_cases": 10
+    },
+    {
+      "name": "probe_fold_stratification",
+      "passed": true,
+      "n_cases": 7
+    }
+  ],
+  "stack_identity": {
+    "composite_hash": "19180c21bef9a4285e4e0fa4dddbea0b4367bbdd98db8664410e14560dc17deb",
+    "generator_hash_domain": {
+      "component": "mission_v3_generator",
+      "ruling": "FD2 (Tasks Gate R6): the mission_v3_generator composite hash domain = top-level package functions scripts/+mission_v3/*.m (non-recursive); the tests/ subdirectory and the +audits/ audit assets are excluded",
+      "rationale": "test files are verification assets, not scientific generation logic; including them would freeze the generator identity on test additions and block T-017/T-018 test growth; +audits/ members produce evidence, not the generation chain",
+      "included_files": [
+        "dag_sample.m",
+        "eligibility.m",
+        "env_realize.m",
+        "family_expand.m",
+        "forecast_issue.m",
+        "kf_snapshots.m",
+        "nav_constraints.m",
+        "plan_compose.m",
+        "producer_confirm.m",
+        "producer_export.m",
+        "producer_prequal.m",
+        "scenario_compile.m",
+        "seed_tree.m",
+        "stack_identity.m",
+        "validate_registries.m"
+      ],
+      "excluded_dirs": [
+        "tests",
+        "+audits"
+      ]
+    }
+  },
+  "overall": false,
+  "notes": "T-018 integration + regression entry (FD1-FD6); suites are executed unmodified via run(); captured suite logs are echoed above; n_cases comes from each suite's own ALL PASS/DETECTED (n/n) summary and is null when not parseable. Registered suite side effects (not suppressed): test_plan_compose writes its example profile PNGs under results/mission_v3/plan_profile_examples/, test_negative writes results/mission_v3/negative_detection_report.json; run_all itself writes only this regression report. Zero-change snapshot (FD3): mission_v3.stack_identity collect Strict=true over the live tree (the test_stack_identity suite itself runs on tempdir fixtures). Determinism (FD2, tworun only): T-017 chain assembly style on fixture seed t018_regression_seed_01 (test fixture, not a frozen scientific value); levels realization.u_river_mps / scn fields / kf all fields / plan all fields; SHA-256 via the java MessageDigest byte path over a structured serialization in the family_expand truth_hash style"
+}

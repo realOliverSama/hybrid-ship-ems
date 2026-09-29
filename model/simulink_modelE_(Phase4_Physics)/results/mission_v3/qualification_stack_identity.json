@@ -1,7 +1,7 @@
 {
   "schema": "mission_v3_stack_identity_v1",
   "mode": "collect",
-  "generated_at": "2026-09-07T05:44:48+0800",
+  "generated_at": "2026-09-06T23:19:01+0800",
   "components": [
     {
       "component": "mission_v3_generator",

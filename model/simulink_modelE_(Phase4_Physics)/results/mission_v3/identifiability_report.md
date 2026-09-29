@@ -1,8 +1,8 @@
 # T-022 T429 EVALUATE - Identifiability Gate Report
 
-generated_at: 2026-09-06T18:33:58Z
-implementation sha256 (scripts/+mission_v3/+audits/identifiability.m): c2091d4bf27f3ba1ae060071856effd9da65997ed61f09c526b44199adbab405
-wall_s: 19.3
+generated_at: 2026-09-29T05:00:03Z
+implementation sha256 (scripts/+mission_v3/+audits/identifiability.m): 869ddedad9fbe132dd64be8dc8a2e10b5fc0e5592467495ed7497b2864c77d21
+wall_s: 23.7
 
 ## 1. Freeze verification (machine, fail-closed)
 
@@ -36,8 +36,8 @@ wall_s: 19.3
 |---|---|---|---|---|---|---|---|---|---|
 | SEG_BRIDGE_VS_HARBOR | STANDARD_SHAPE | 108/280 | 12/12 | 0.6815 | n/a (STANDARD_SHAPE) | 0.7656 | 0.6844 | 0 | METRIC_FAIL |
 | SEG_BERTH_VS_DEPARTURE | STANDARD_SHAPE | 72/104 | 12/12 | 0.8231 | n/a (STANDARD_SHAPE) | 0.9900 | 0.9712 | 1 | METRIC_FAIL |
-| DIR_UPSTREAM_VS_DOWNSTREAM | PAIRED_LEVEL_SHIFT | 3928/3247 | 60/60 | 0.6252 | pass=0 | 0.6866 | 0.6354 | 0 | METRIC_FAIL |
-| DEPTH_LOW_ID_VS_NORMAL_ID | STANDARD_SHAPE | 699/704 | 12/12 | 0.5461 | n/a (STANDARD_SHAPE) | NaN | NaN | 0 | INSUFFICIENT_IDENTIFIABILITY_EVIDENCE |
+| DIR_UPSTREAM_VS_DOWNSTREAM | PAIRED_LEVEL_SHIFT | 1801/3247 | 60/60 | 0.6679 | pass=1 | 0.6390 | 0.5863 | 0 | METRIC_FAIL |
+| DEPTH_LOW_ID_VS_NORMAL_ID | STANDARD_SHAPE | 699/704 | 12/12 | 0.5461 | n/a (STANDARD_SHAPE) | 0.4880 | 0.4618 | 0 | METRIC_FAIL |
 | SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE | STANDARD_SHAPE | 312/1088 | 12/12 | 0.6217 | n/a (STANDARD_SHAPE) | 0.9547 | 0.9161 | 1 | METRIC_FAIL |
 | SEG_TRAFFIC_FOLLOW_VS_FREE_CRUISE | STANDARD_SHAPE | 214/1532 | 35/35 | 0.5049 | n/a (STANDARD_SHAPE) | 0.7305 | 0.6648 | 0 | METRIC_FAIL |
 
@@ -69,24 +69,23 @@ wall_s: 19.3
 - metric profile (registry-routed): PAIRED_LEVEL_SHIFT; sbd_gate_bearing=0; judges: paired_physical_effect; probe
 - SBD reported as: SECONDARY_DIAGNOSTIC_NOT_APPLICABLE_TO_LEVEL_SHIFT_FACTOR
 - gate profile: PASS_DIR = PASS_paired_physical_effect AND PASS_probe (both required; DIR is not BA-only)
-- matched cohort: 60 mixed cells; applied: template (same); regime (same); cohort cell = family (registry pairing: same base_draw directional counterfactual); relaxed: none
-- pairs: cross 255729, within_A 147389, within_B 129552
-- SBD (reported): median_cross 0.4881, Q0.95 within_A 0.7459, Q0.95 within_B 0.6593, R_point 0.6544, R_lcb95 0.6252 (bootstrap 1000/1000 valid, seed 42901)
-- probe: BA_point 0.6866, BA_lcb95 0.6354 (bootstrap 1000/1000 valid, seed 42902); fold BAs [0.6753, 0.6384, 0.7537, 0.7132, 0.6526]
-- paired physical effect (gate): delta_point -94.3218 kW over 60 split groups (min -261.0049, max 208.4939); bootstrap 95% CI [-123.8021, -61.3464] excludes_zero=1; sign test k=14/60, p=1.000e+00 (alpha 0.05, ok=0)
-- paired effect PASS = sign_ok=0 AND CI excludes zero=1 AND sign test ok=0 -> 0
+- matched cohort: 60 mixed cells; applied: template (same); regime (same); reach (same); cohort cell = family (registry pairing: same base_draw directional counterfactual); relaxed: none
+- pairs: cross 143643, within_A 40856, within_B 129552
+- SBD (reported): median_cross 0.4645, Q0.95 within_A 0.6638, Q0.95 within_B 0.6593, R_point 0.6997, R_lcb95 0.6679 (bootstrap 1000/1000 valid, seed 42901)
+- probe: BA_point 0.6390, BA_lcb95 0.5863 (bootstrap 1000/1000 valid, seed 42902); fold BAs [0.5664, 0.7660, 0.5707, 0.6038, 0.6883]
+- paired physical effect (gate): delta_point 85.5952 kW over 60 split groups (min -206.0425, max 344.6796); bootstrap 95% CI [61.1478, 113.0805] excludes_zero=1; sign test k=49/60, p=3.781e-07 (alpha 0.05, ok=1)
+- paired effect PASS = sign_ok=1 AND CI excludes zero=1 AND sign test ok=1 -> 1
 - pure-host note: TRAFFIC class-A pure slices are asserted in structural conformance C2; DIR SBD magnitude carries no threshold (D1-A 83.8 kW is diagnostic only)
 
-#### DEPTH_LOW_ID_VS_NORMAL_ID (INSUFFICIENT_IDENTIFIABILITY_EVIDENCE)
+#### DEPTH_LOW_ID_VS_NORMAL_ID (METRIC_FAIL)
 
 - factor axis: depth; class_A=low_id; class_B=normal_id; gate_role=REQUIRED
 - metric profile (registry-routed): STANDARD_SHAPE; sbd_gate_bearing=1; judges: sbd; probe
 - matched cohort: 1 mixed cells; applied: manifest layer==depth only (T429_IID_DIAGNOSTIC strict selection); template==WORK_MISSION (hard filter); regime==DRY (hard filter); relaxed: none
 - pairs: cross 492096, within_A 243951, within_B 247456
 - SBD (reported): median_cross 0.5531, Q0.95 within_A 1.0000, Q0.95 within_B 0.8504, R_point 0.5531, R_lcb95 0.5461 (bootstrap 1000/1000 valid, seed 42901)
-- probe: status INSUFFICIENT
+- probe: BA_point 0.4880, BA_lcb95 0.4618 (bootstrap 1000/1000 valid, seed 42902); fold BAs [0.4982, 0.4764, 0.4716, 0.5109, 0.4829]
 - SBD gate: R_lcb95 0.5461 >= R_min 1.5 -> 0
-- FAIL-CLOSED: probe: grouped 5-fold CV produced an invalid fold (a class is absent in a test fold)
 
 #### SEG_EMERGENCY_SPRINT_VS_RETURN_CRUISE (METRIC_FAIL)
 
@@ -112,13 +111,13 @@ wall_s: 19.3
 
 | contrast_id | metric_profile | n_slices A/B | n_groups A/B | R_point | R_lcb95 | BA_point | BA_lcb95 | status |
 |---|---|---|---|---|---|---|---|---|
-| SEG_HARBOR_VS_SHALLOW_CRUISE | STANDARD_SHAPE | 280/142 | 12/13 | 0.6836 | 0.6373 | 0.9880 | 0.9773 | METRIC_FAIL |
-| SEG_BRIDGE_VS_SHALLOW_CRUISE | STANDARD_SHAPE | 224/142 | 24/13 | 0.6966 | 0.6694 | 0.9714 | 0.9397 | METRIC_FAIL |
+| SEG_HARBOR_VS_SHALLOW_CRUISE | STANDARD_SHAPE | 280/142 | 12/13 | 0.6836 | 0.6373 | 0.9868 | 0.9773 | METRIC_FAIL |
+| SEG_BRIDGE_VS_SHALLOW_CRUISE | STANDARD_SHAPE | 224/142 | 24/13 | 0.6966 | 0.6694 | 0.9698 | 0.9432 | METRIC_FAIL |
 
 ## 6. Gate verdict
 
 - overall: 0
-- verdict: FAIL_INSUFFICIENT_EVIDENCE
+- verdict: FAIL_METRIC
 - required contrasts PASS: 0 / 6
 
 FR-547/FR-551: insufficient evidence or a failed required contrast is fail-closed; scenario redesign is the only legal remediation; thresholds/geometry/encoding are frozen and never adjusted after a failure

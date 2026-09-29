@@ -1360,9 +1360,18 @@ function specs = local_contrast_specs()
         local_pred('operator', 'feasible')}, false);
     specs(end+1) = local_spec_row('SEG_BERTH_VS_DEPARTURE', 'berth', ...
         'departure', 'role', [], {local_pred('template', 'same')}, false);
+    % EXECFIX-02: the reach (same) cohort field is the mechanical mirror
+    % of the frozen registry DIR row nuisance_controls sentence
+    % ("same regime x same reach") and of the design DGN-12 contrast
+    % table; it restricts the DIR pools (SBD secondary / probe / paired
+    % effect inputs alike) to same-reach slices so the paired delta is
+    % computed over matched pure slices, per the frozen
+    % paired_effect_profile aggregation sentence.  No registry byte
+    % changes (the structured cohort_predicate is mirrored as before).
     specs(end+1) = local_spec_row('DIR_UPSTREAM_VS_DOWNSTREAM', ...
         'upstream', 'downstream', 'direction', [], { ...
-        local_pred('template', 'same'), local_pred('regime', 'same')}, ...
+        local_pred('template', 'same'), local_pred('regime', 'same'), ...
+        local_pred('reach', 'same')}, ...
         true);
     specs(end+1) = local_spec_row('DEPTH_LOW_ID_VS_NORMAL_ID', 'low_id', ...
         'normal_id', 'depth', {{'template', 'WORK_MISSION'}, ...
@@ -2031,6 +2040,11 @@ end
 function res = local_probe_eval(S, idxA, idxB, par)
     res = struct();
     res.metric = 'balanced accuracy (grouped 5-fold logistic probe)';
+    % EXECFIX-02 provenance: the fold assignment rule name is recorded on
+    % every probe record (statistical rule itself unchanged: grouped
+    % 5-fold by split_group_id, deterministic, no RNG).
+    res.fold_assignment = ['deterministic class-stratified greedy ', ...
+        '(grouped by split_group_id; EXECFIX-02)'];
     sel = [idxA(:); idxB(:)];
     y = [zeros(numel(idxA), 1); ones(numel(idxB), 1)];
     X = S.F(sel, :);
@@ -2044,18 +2058,56 @@ function res = local_probe_eval(S, idxA, idxB, par)
     res.n_class_A = numel(idxA);
     res.n_class_B = numel(idxB);
 
-    % ---- grouped 5-fold assignment (deterministic greedy balance) ------
+    % ---- grouped 5-fold assignment (deterministic class-stratified
+    % greedy balance; EXECFIX-02) ----------------------------------------
+    % Realizes the design DGN-12 documented fold property "each fold
+    % carries >= ~2 independent groups PER CLASS" that the former
+    % class-blind size-balanced assignment could not guarantee (T429 v2
+    % conformance DEPTH probe invalid-fold root cause).  Groups are
+    % still assigned whole (grouped CV by split_group_id unchanged; no
+    % RNG; fold_count and the probe bootstrap seed are untouched).  A
+    % group contributing BOTH classes (shared group, e.g. the SEG/DIR/
+    % TRAFFIC family pools) is balanced on total slices only as before;
+    % a class-pure group (e.g. the DEPTH manifest-layer pools) is placed
+    % by its own class's per-fold group count first, then total slices,
+    % then fold order.  Fails closed as before when a fold would lack a
+    % class (that now requires fewer groups of one class than folds,
+    % i.e. coverage below the design necessity, not an assignment
+    % artifact).
     ug = unique(g);
     n_g = numel(ug);
     cnt_all = accumarray(g, 1);
     cnt = cnt_all(ug);
+    cnta_all = accumarray(g, double(y == 0));
+    cntb_all = accumarray(g, double(y == 1));
+    is_shared = (cnta_all(ug) > 0) & (cntb_all(ug) > 0);
     ord = sortrows([cnt, ug], [-1, 2]);
     fmap = containers.Map('KeyType', 'double', 'ValueType', 'double');
     fold_cnt = zeros(1, par.fold_count);
+    fold_pure = zeros(2, par.fold_count);
     for k = 1:n_g
-        [~, fi] = min(fold_cnt);
-        fmap(double(ord(k, 2))) = fi;
+        gi = double(ord(k, 2));
+        sh_gi = is_shared(gi);
+        if sh_gi
+            [~, fi] = min(fold_cnt);
+        else
+            ci = 1;
+            if cntb_all(gi) > 0
+                ci = 2;
+            end
+            key_f = fold_pure(ci, :) * 1e9 + fold_cnt + ...
+                (1:par.fold_count) * 1e-6;
+            [~, fi] = min(key_f);
+        end
+        fmap(gi) = fi;
         fold_cnt(fi) = fold_cnt(fi) + ord(k, 1);
+        if ~sh_gi
+            ci = 1;
+            if cntb_all(gi) > 0
+                ci = 2;
+            end
+            fold_pure(ci, fi) = fold_pure(ci, fi) + 1;
+        end
     end
     fold_of = zeros(n, 1);
     for k = 1:n
@@ -2753,6 +2805,9 @@ function p = local_strip_probe(prb)
 % returns carry a reduced field set).
     p = struct();
     p.status = prb.status;
+    if isfield(prb, 'fold_assignment')
+        p.fold_assignment = prb.fold_assignment;
+    end
     if isfield(prb, 'fold_ba')
         p.fold_ba = prb.fold_ba;
     end

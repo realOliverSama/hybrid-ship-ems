@@ -4,7 +4,7 @@ function overall = run_all(mode)
 %   spec experiments/mission_v3/T-018_delegation_spec.md FD1-FD6).
 %
 %   run_all()                 'run' mode (default)
-%   run_all('run')            ten suites + Model E zero-change snapshot
+%   run_all('run')            eleven suites + Model E zero-change snapshot
 %   run_all('tworun')         same + full-chain determinism two-run check
 %   overall = run_all(...)    true iff everything passed
 %
@@ -15,11 +15,13 @@ function overall = run_all(mode)
 % not a +tests package, so the entry is the function name on the path):
 %   matlab -batch "addpath(fullfile(pwd,'scripts','+mission_v3','tests')); run_all('tworun');"
 %
-% FD1 suite list (ten, in order, each executed via run(...), suite scripts
-% are never modified - run_all is an entry, not a mutator):
+% FD1 suite list (eleven, in order, each executed via run(...), suite
+% scripts are never modified - run_all is an entry, not a mutator):
 %   validate_registries / seed_tree / env_realize / plan_compose /
 %   forecast_issue / kf_snapshots / family_expand / stack_identity /
-%   producer_export / negative
+%   producer_export / negative / probe_fold_stratification
+% (probe_fold_stratification appended by T-429 EXECFIX-02: fold-
+% assignment property suite for the identifiability probe.)
 % Each suite carries its own PASS/FAIL summary and GATE error.  A suite
 % failure is caught and recorded; the remaining suites still execute (audit
 % completeness).  At the end: all pass -> print and return overall=true;
@@ -83,9 +85,10 @@ function overall = run_all(mode)
 
     RA_SUITES = {'validate_registries', 'seed_tree', 'env_realize', ...
         'plan_compose', 'forecast_issue', 'kf_snapshots', ...
-        'family_expand', 'stack_identity', 'producer_export', 'negative'};
+        'family_expand', 'stack_identity', 'producer_export', 'negative', ...
+        'probe_fold_stratification'};
 
-    % ---------------- FD1: ten suites, catch - record - continue ---------
+    % ---------------- FD1: suites, catch - record - continue -------------
     ra_suites = cell(1, numel(RA_SUITES));
     for ra_i = 1:numel(RA_SUITES)
         ra_sname = RA_SUITES{ra_i};
