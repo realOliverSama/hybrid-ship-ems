@@ -73,11 +73,11 @@
 | `tools/s4_c3_preamble.py` | 【补登】C3 前置：B_HOST 同输入对拍（板 vs host 同链 100 拍；执行层 100/100 一致，11 拍 d1 差=后端漂移传递已登记） |
 | `tools/s4_c3_pack_kf_table.py` | C3-①：S20 kf 表打包器（EMS04KFT v1，profile_code=3=PILOT_FIXTURE；白名单取材 `datasets_v3/pilot/S20_composite.mat` 的 `kf.*`，禁触 stream 真值列；AST 静态自查） |
 | `tools/s4_c3_h1win_host.py` | C3-②：H1 特征窗 host 版（`ems04_h1win.c` 语义逐位复刻：301 环/11 列冻结序/f64 构造域/f32 RNE 出口/fail-closed；37 项自检） |
-| `tools/s4_c3_closedloop.py` | C3-③：闭环 runner——plantE↔board 实时闭环单航次 + 三链同录（A2_CANONICAL_HOST=C2Predictor canonical 域 / B_HOST=Chain 板源 OE 代理 / B_BOARD=板 RSP）→ G6 判据机械化 → `results/s4_c3/s4_c3_gate.json`；口径登记 `results/s4_c3/s4_c3_design_notes.md` |
-| `tools/s4_c4_battery.py` | C4：多航次电池闭环 runner（冻结电池 S02_downstream/S08_resistance_bands/S03_upstream，一次板会话顺序跑、每航次独立复位与 gate，电池级合取 → `results/s4_c4/s4_c4_gate.json`；复用 C3 组件与 v2.1 归因口径） |
+| `tools/s4_c3_closedloop.py` | C3-③：闭环 runner——plantE↔board 实时闭环单航次 + 三链同录（A2_CANONICAL_HOST=C2Predictor canonical 域 / B_HOST=Chain 板源 OE 代理 / B_BOARD=板 RSP）→ G6 判据机械化 → `results/s4_c3/s4_c3_gate.json`；口径登记 `results/s4_c3/s4_c3_design_notes.md`。**偏差④修复（2026-09-29）：`_ring_v` TICK2 字段序错位修复（v[1..3]=P_load/SOC/v_ref 契约序，R4）+ 正式首拍环 P_load sanity fail-closed 门 + `--kf-table`/`--mat`/`--bh-chain`（split 默认不变 / tflite-fp32=CPUF32 host 代理）** |
+| `tools/s4_c4_battery.py` | C4：多航次电池闭环 runner（冻结电池 S02_downstream/S08_resistance_bands/S03_upstream，一次板会话顺序跑、每航次独立复位与 gate，电池级合取 → `results/s4_c4/s4_c4_gate.json`；复用 C3 组件与 v2.1 归因口径）。**偏差④修复（2026-09-29）：随 C3 获得 `_ring_v` 修复 + 环 P_load sanity 门（逐航次正式首拍）+ `--bh-chain`（split 默认 / tflite-fp32=CPUF32 host 代理）** |
 | `plantstep_advancer.py`（改） | SCENARIOS_E 注册表扩 S02_downstream/S08_resistance_bands/S03_upstream（C4 电池 dylib） |
 | `results/s4_c2/` | C2 冒烟与 C3 前置产物（`s4_c2_gate.json`/`s4_c2_smoke_report.json`/`s4_c3_preamble_report.json`/`libems04_pms_safety.dylib`） |
-| `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档） |
+| `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档 / **`v2_archive/` 口径 v2 板跑冻结副本（2026-09-29 偏差④ 修复前基线）**；live 路径承载最新口径跑批） |
 | `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`）；另含 P3 冻结件 `S4_P3_FORMAL_ARM_FREEZE.json`（formal 臂电池覆盖 4 航次，主 Agent 定稿）与 worker 草案/Phase A 报告 |
 
 ### S4-P3 B1 段新增（2026-09-29，formal 臂流驱动植物变体 host 装配；冻结件 `results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json`，规格 `experiments/softhil_ems03_2026-09-25/S4_P3_STREAM_PLANT_SPEC.md`）

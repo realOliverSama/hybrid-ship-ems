@@ -1340,18 +1340,19 @@ def build_gate(rows, args, kft, stop_reason, n_drift_action, n_unattr_pgen,
             "pms_lib_sha": sha256_file(PMS_LIB)[:12],
             "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
             "b_host_chain": ("gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）"
-                             if args.bh_chain == "split" else
+                             if getattr(args, "bh_chain", "split") == "split" else
                              "TfliteFp32Chain（CPUF32 host 代理：固件同式 f32 归一化"
                              "+reatt_raw_fp32.tflite+同式分位变换）"),
             "a2_chain": "ppe.c2_inference.C2Predictor（FR836 float keras，"
                         "q50 kW 域）",
-            "kf_table": {"path": os.path.relpath(args.kf_table, REPO),
+            "kf_table": {"path": os.path.relpath(
+                             getattr(args, "kf_table", KF_TABLE), REPO),
                          "sha256": kft["sha256"], "n_rows": kft["n"],
                          "voyage_id": kft["voyage_id"], "profile_code": 3,
                          "profile_meaning": "PILOT_FIXTURE"},
             "constants": os.path.relpath(os.path.join(S1, "exported",
                                                       "constants.json"), REPO),
-            "s20_mat": os.path.relpath(args.mat, REPO),
+            "s20_mat": os.path.relpath(getattr(args, "mat", S20_MAT), REPO),
             "s20_mat_fixture_kind": meta["fixture_kind"],
             "scenario_side_cols": list(SCENARIO_COLS),
             "col_provenance": {

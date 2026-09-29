@@ -1,0 +1,228 @@
+{
+ "schema": "s4_c3_gate_v2_1",
+ "created_utc": "2026-09-29T11:38:11.098629+00:00",
+ "mode": "board",
+ "dry_note": null,
+ "adjudication": {
+  "decision": "用户裁决 2026-09-29：认定 B_BOARD vs B_HOST action 差异为 S3-C 已登记 REATT 后端数值漂移传播，G6-3/G6-4 一致性门对该类拍次降级资格（CLOSED_LOOP_BACKEND_DRIFT 档案，非 FAIL）；停机条件只对未归因不一致触发。",
+  "evidence": "首跑（run1，62 拍 park）：t0=890/900/910 三拍 host 两链（A2 float 与 B_HOST ORT-OE int8）彼此一致给出 action -13/-17/-18/-15 档而板一致偏离（d1 钉 -0.1 网格下界）→偏离定位于板后端；同签名已在 C3 前置对拍基线（s4_c3_preamble_report.json，11 连拍）登记。"
+ },
+ "backend_drift_archive": {
+  "rule": "G6-2 §3 语义延伸（v2.1 演绎闭合归因）：逐拍全量记录、分位数、不作为 FAIL；硬面=同档 P_gen_ref 发散/板自振荡/运行性/事件面",
+  "drift_action_diff_n": 67,
+  "drift_subclasses": {
+   "board_canonical": 36,
+   "triple": 18,
+   "host_consensus": 13
+  },
+  "drift_pgen_gt1grid_n": 16,
+  "drift_ticks": [
+   860.0,
+   890.0,
+   900.0,
+   910.0,
+   920.0,
+   930.0,
+   940.0,
+   950.0,
+   960.0,
+   970.0,
+   980.0,
+   2120.0,
+   2130.0,
+   2140.0,
+   2150.0,
+   2160.0,
+   2170.0,
+   2180.0,
+   2220.0,
+   2260.0,
+   2270.0,
+   2280.0,
+   2290.0,
+   2300.0,
+   2310.0,
+   2320.0,
+   2370.0,
+   2390.0,
+   3030.0,
+   3060.0,
+   3070.0,
+   3080.0,
+   3100.0,
+   3110.0,
+   3120.0,
+   3130.0,
+   3140.0,
+   3820.0,
+   3830.0,
+   3840.0,
+   3850.0,
+   3860.0,
+   3870.0,
+   3880.0,
+   3900.0,
+   3910.0,
+   3920.0,
+   3930.0,
+   3940.0,
+   3950.0,
+   3960.0,
+   3970.0,
+   4000.0,
+   4010.0,
+   4020.0,
+   4470.0,
+   4480.0,
+   4490.0,
+   4500.0,
+   4510.0,
+   4520.0,
+   4540.0,
+   4550.0,
+   4560.0,
+   4580.0,
+   4590.0,
+   4600.0
+  ],
+  "drift_consec_max": 10,
+  "note": "漂移拍伴随执行层 argmin 翻转（0↔800 kW）：P_load 平稳段的 J 值刀锋区（float canonical 链自身亦在相邻拍翻转），量化/构造域不同的链在平局处分辨不同——登记变换效应。"
+ },
+ "stop_reason": null,
+ "domain": {
+  "warmup_ticks": 30,
+  "formal_ticks": 541,
+  "formal_done": 541,
+  "t0_first": 300.0,
+  "decision_period_s": 10.0,
+  "is_formal_rule": "预热段 is_formal=0 不入判据域（G6-5）；正式段=kf issue 网格 300..5700"
+ },
+ "form": {
+  "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=df81b23f1e74…",
+  "board": "S4Smoke SRAM 直载（ELF 8b71d341 plan==readback，前会话载入；本会话 PING 探活 + CMD_RESET 后闭环）",
+  "pms_lib_sha": "3d2ec94fb575",
+  "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
+  "b_host_chain": "gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）",
+  "a2_chain": "ppe.c2_inference.C2Predictor（FR836 float keras，q50 kW 域）",
+  "kf_table": {
+   "path": "experiments/softhil_ems03_2026-09-25/results/s4_c3/S20_composite.kf_table.bin",
+   "sha256": "8a1f597e527ef0f242eedb6e7adcd18a62b1e0da5e9671506765456daf7068c0",
+   "n_rows": 541,
+   "voyage_id": "S20_composite",
+   "profile_code": 3,
+   "profile_meaning": "PILOT_FIXTURE"
+  },
+  "constants": "experiments/softhil_ems03_2026-09-25/ems04_s1/exported/constants.json",
+  "s20_mat": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/pilot/S20_composite.mat",
+  "s20_mat_fixture_kind": "PILOT_ONLY",
+  "scenario_side_cols": [
+   "v_ref_mps",
+   "P_hotel_kW",
+   "v_current_mps",
+   "P_prop_demand_kW",
+   "water_depth_m"
+  ],
+  "col_provenance": {
+   "live(P_load/v_ship/accel/n_prop)": "plantE 子步读数（OUT pre-integration stamp 自洽；omega=states() X 读 ×30/π）",
+   "scenario(v_ref/P_hotel/v_current/P_prop_demand)": "S20 pilot stream 时间表（t≤t0 因果切片）",
+   "const(water_depth/ctrl_mode/manual)": "20.0 / 0.0 / 0.0"
+  },
+  "sampling_grid": "A2=0.01 s stamps 全样本冻结管线聚合（右端点 t0 不采样）；B 环边界=秒边界前最后 stamp（v[0]=名义整秒）；下行 SOC/Vdc=X 边界真值、P_load/P_bat=OUT 读点",
+  "warmup_policy": "law6 冷启动（d1=0，λ=SOC 律，执行层网格）；板不参与",
+  "downlink_dis_chg": "P_bat_actual 符号拆分（G1 *_avail 能力信号不在 PlantStepE 出口；C3 口径登记）",
+  "known_items": [
+   "S4Smoke 形态 ctrl/infer_us=0（DWT 未使能）——遥测面项"
+  ]
+ },
+ "wall_s": 4002.1,
+ "seq_final": 541,
+ "runnability_G6_1": {
+  "n_ticks": 541,
+  "nack_n": 0,
+  "retry_n": 0,
+  "timeout_or_lost": false,
+  "flags_nonzero_n": 0,
+  "soc_min": 0.5929792294820212,
+  "soc_max": 0.6254813425528254,
+  "soc_bounds": [
+   0.15,
+   0.95
+  ],
+  "soc_ok": true,
+  "pgen_ramp_bound_kw_per_tick": 200.0,
+  "pgen_ramp_param": "constants.ramp=20 kW/s × dt=10 s（law6 发电机组斜率参数按控制拍折算；执行层输出无斜坡限制，见 LAW6_C2_CONSUMPTION_CONTRACT §4.3）",
+  "pgen_step_max_kw": {
+   "bb": 800.0,
+   "bh": 800.0,
+   "a2": 800.0
+  },
+  "pgen_step_over_bound_kw": {
+   "bb": 800.0,
+   "bh": 800.0,
+   "a2": 800.0
+  },
+  "mechanization_note": "首跑证据修正（2026-09-29）：执行层契约 §4.3 输出=clamp[0,1000] 逐拍 argmin、无斜坡限制，ramp=20 kW/s 是植物侧发电机模型参数（L147）——|ΔP_gen_ref|≤200 kW/拍界与冻结契约冲突，降级为遥测面（step 分布全量记录）；G6-1 运行性门保留：零 NACK/超时/中断、SOC 界、零 flags。植物侧实际跟踪（p_gen_inertia+τ=5 s）由植物数值健康检查覆盖（首跑 62 拍吸收 0↔800 跳变无非有限/异常）。",
+  "voyage_stop_tick": null
+ },
+ "g6_1_pass": true,
+ "transform_archive_G6_2": {
+  "action_diff_n": 74,
+  "pgen_gt1grid_n": 15,
+  "grid_kw": 20.0,
+  "classification": "CLOSED_LOOP_TRANSFORM_EFFECT（基线档案，非 FAIL；A2 canonical 域 vs B 部署同形域的已登记部署变换效应）"
+ },
+ "board_parity_G6_3": {
+  "action_equal_n": 474,
+  "drift_action_diff_n": 67,
+  "drift_subclasses": {
+   "board_canonical": 36,
+   "triple": 18,
+   "host_consensus": 13
+  },
+  "unattributed_action_diff_n": 0,
+  "unattributed_note": "v2.1：action 差全部经 classify_action_face 归入后端漂移档案（演绎闭合：下行同源 + 下游位级同构已证，差异仅能经 REATT 后端通道产生）；硬面只剩同档 P_gen_ref 发散 / 板自振荡 / 运行性 / 事件面",
+  "unattributed_pgen_n": 0,
+  "first_unattributed_pgen_t0": null
+ },
+ "g6_3_amended_pass": true,
+ "frequency_G6_4": {
+  "n_formal": 541,
+  "unattributed_pgen_n": 0,
+  "max_pgen_gt1_allowed": 6,
+  "oscillation": "板 P_gen_ref 10 拍滑动窗翻转计数遥测（≥6 停机），见 CSV",
+  "drift_rate_telemetry": {
+   "drift_action_n": 67,
+   "n": 541,
+   "rate": 0.12384473197781885,
+   "max_consec_drift": 10
+  }
+ },
+ "g6_4_pass": true,
+ "is_formal_G6_5": {
+  "is_formal_only": true,
+  "warmup_excluded": true
+ },
+ "events_G6_6": {
+  "declared_events": {
+   "force_start_reason": "4（S2 realized-gap，C2 冒烟已声明）",
+   "flags_nonzero": "0（infer/DP fail）",
+   "fault_latch": "0/0",
+   "baseline_fallback": "0"
+  },
+  "undeclared_events": [],
+  "undeclared_n": 0
+ },
+ "g6_6_pass": true,
+ "exec1s_observation": {
+  "exec_period_s": 1,
+  "exec1s_n": 4869,
+  "exec1s_diff_n": 151,
+  "exec1s_max_diff": 800.0,
+  "diff_def": "行级：|bb_pg−bh_pg| 或 |a2_pg−bh_pg| 任一有限值 >1e-6 计 1（NaN=干跑无 bb_1s，不参与）；max_diff 同域取最大",
+  "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c3/s4_c3_exec1s.csv",
+  "stop_face": false,
+  "note": "口径 v2 观测轮：执行层 1 s 门控三链对拍只记录不停机（diff 判据待首轮板跑数据后由主 Agent 定）；板失联仍走运行性 G6-1 面（同 TICK_CTRL 语义）"
+ },
+ "overall": true,
+ "overall_note": "G6-2 与 CLOSED_LOOP_BACKEND_DRIFT 均为基线档案语义（非 FAIL，逐拍全量记录）；overall(v2)=G6-1∧G6-3amended∧G6-4∧G6-6∧全拍完成∧无停机∧非干跑；未归因判据面=严格门。"
+}

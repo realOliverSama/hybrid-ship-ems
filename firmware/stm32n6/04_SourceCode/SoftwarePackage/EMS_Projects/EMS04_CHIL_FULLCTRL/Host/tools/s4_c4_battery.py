@@ -833,6 +833,11 @@ def main():
     ap.add_argument("--data-root", default=None,
                     help="streamE 模式 formal .mat 目录（如 model/.../datasets_v3"
                          "/formal/iid；相对路径按仓库根解析）；modelE 默认路径忽略")
+    ap.add_argument("--bh-chain", default="split",
+                    choices=("split", "tflite-fp32"),
+                    help="B_HOST 链：split=板源 OE int8 N1+N2 ORT 代理（历史默认）；"
+                         "tflite-fp32=CPUF32 板形态 host 代理（偏差④修复后对拍口径，"
+                         "实现 = c3.TfliteFp32Chain 复用不复制）")
     args = ap.parse_args()
 
     if args.selftest:
@@ -905,7 +910,10 @@ def main():
     pms_bh = PmsHost()
     pms_a2 = PmsHost()
     from gen_ref_split_v2 import Chain
-    chain = Chain()                          # 板源 OE int8 N1+N2 ORT 代理（跨航次复用）
+    if args.bh_chain == "tflite-fp32":
+        chain = c3.TfliteFp32Chain()       # CPUF32 板形态 host 代理（跨航次复用）
+    else:
+        chain = Chain()                          # 板源 OE int8 N1+N2 ORT 代理（跨航次复用）
 
     board = None
     if not args.dry:
