@@ -68,16 +68,17 @@
 
 UART_HandleTypeDef huart1;
 
+/* USER CODE BEGIN PV */
+/* hxspi1/hxspi2：USER CODE 持有（.ioc 的 XSPI1/XSPI2 仅 pin 级配置，CubeMX 不生成
+ * XSPI init/handle/宏——hal_conf.h 的 HAL_XSPI_MODULE_ENABLED 亦为手写使能），
+ * init 函数见文件尾 USER CODE 4，原型见 main.h USER CODE EFP。 */
 XSPI_HandleTypeDef hxspi1;
 XSPI_HandleTypeDef hxspi2;
 
-/* USER CODE BEGIN PV */
 #if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 static HyperRAM_ObjectTypeDef HyperRAMObject = {0};
 #if (EMS_FW_MODE == EMS_FW_MODE_NPU)
 static NORFlash_ObjectTypeDef NORFlashObject = {0};
-/* hxspi2 / MX_XSPI2_Init 由 CubeMX 依已授权 .ioc 生成（非 static，见生成代码），
- * USER CODE 不再手写同款定义。 */
 #endif
 #endif
 
@@ -239,9 +240,8 @@ int main(void)
    * PREDPARITY 注释）。顺序契约：本初始化 < ems04_fp_board_init() 内
    * ems04_fp_svc_init() 的 memset 全量清零 < 首次 s_svc 使用。 */
   /* NPU 模式的 XSPI2 初始化 + NOR memory-mapped（991 main.c:701-724 序列的
-   * NOR 部分）在 USER CODE 2 段执行：MX_XSPI2_Init 为 CubeMX 生成版、
-   * 由生成序列调用，NOR 只需在其后使能（生成代码见 "Initialize all
-   * configured peripherals" 一节）。 */
+   * NOR 部分）在 USER CODE 2 段执行：MX_XSPI2_Init 为 USER CODE 持有版
+   * （.ioc 不驱动 XSPI init 生成，定义见文件尾 USER CODE 4），NOR 只需在其后使能。 */
 #endif
 
   /* USER CODE END SysInit */
@@ -254,18 +254,11 @@ int main(void)
   led_init();         /* 初始化LED */
   uart_init(115200);  /* 初始化串口 */
 
-#if defined(EMS_REATT_UART_BAUD) && (EMS_REATT_UART_BAUD != 115200)
-  /* phase4-g（D6）：USART1 运行时波特率覆盖。CMD_REATT 请求帧 13924 B，
-   * 115200 下仅传输即 1.21 s/锚点 ×~350 锚点/航次不可接受；升至
-   * EMS_REATT_UART_BAUD（ems_config.h，默认 921600）。不修改 .ioc
-   * （CubeMX 生成态保持 115200，此覆盖为工程自有代码、单点、可回退）。
-   * 时序前提：ems_app RX 面在 ems_app_init() 才武装，此处重初始化无竞争。 */
-  huart1.Init.BaudRate = EMS_REATT_UART_BAUD;
-  if (HAL_UART_Init(&huart1) != HAL_OK)
-  {
-    Error_Handler();
-  }
-#endif
+  /* phase4-g：USART1 波特率已 .ioc 主导（2026-09-29）——.ioc 设
+   * USART1.BaudRate=921600，上方 MX_USART1_UART_Init 生成行即 921600；
+   * 原 D6 运行时覆盖块（EMS_REATT_UART_BAUD 重初始化 huart1）退役，
+   * 语义登记见 ems_config.h 注释。CMD_REATT 13924 B 长帧传输耗时随之
+   * 由 ~1.21 s/帧 降至 ~0.15 s/帧。 */
 
   /* DWT CYCCNT 使能（FR-505 infer_us/ctrl_us 测量；代码使能，不涉 .ioc/时钟树） */
   CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -275,7 +268,7 @@ int main(void)
 #if defined(DEBUG) || (defined(EMS04_PRED_PARITY) && !defined(EMS04_XIP_BOOT)) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 #if (EMS_FW_MODE == EMS_FW_MODE_NPU)
   /* 991 main.c:701-723 序列的 NOR 部分（SystemIsolation_Config 之后）：
-   * MX_XSPI2_Init（CubeMX 生成版，调用不落自动区，与 991 main.c:701 同由应用显式调用）
+   * MX_XSPI2_Init（USER CODE 持有版，与 991 main.c:701 同由应用显式调用）
    * → NOR 读权重（0x70200000/0x70400000）前提的 memory-mapped 使能。
    * Release（ROMxspi2）由 boot 链完成 XSPI2 memory-mapped，不入此分支。
    * EMS04-S3-C（用户批准 2026-09-26，仅 PRED_PARITY 形态生效）：SRAM 直载
@@ -452,7 +445,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 115200;
+  huart1.Init.BaudRate = 921600;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
@@ -483,6 +476,77 @@ static void MX_USART1_UART_Init(void)
   /* USER CODE END USART1_Init 2 */
 
 }
+
+/**
+  * @brief GPIO Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_GPIO_Init(void)
+{
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
+  /* USER CODE BEGIN MX_GPIO_Init_1 */
+  __HAL_RCC_GPIOC_CLK_ENABLE();
+  __HAL_RCC_GPIOD_CLK_ENABLE();
+  /* USER CODE END MX_GPIO_Init_1 */
+
+  /* GPIO Ports Clock Enable */
+  __HAL_RCC_GPIOE_CLK_ENABLE();
+  __HAL_RCC_GPIOP_CLK_ENABLE();
+  __HAL_RCC_GPIOO_CLK_ENABLE();
+  __HAL_RCC_GPION_CLK_ENABLE();
+  __HAL_RCC_GPIOG_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_10, GPIO_PIN_SET);
+
+  /*Configure GPIO pin : PE10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+  /*Configure GPIO pin : PG10 */
+  GPIO_InitStruct.Pin = GPIO_PIN_10;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+  /* USER CODE BEGIN MX_GPIO_Init_2 */
+  /* 按键引脚配置：KEY0(PC6)、KEY1(PD1)、KEY2(PG11) 上拉输入，WKUP(PC13) 下拉输入 */
+  GPIO_InitStruct.Pin = GPIO_PIN_6;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = GPIO_PIN_1;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = GPIO_PIN_11;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLUP;
+  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
+
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
+  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
+  /* USER CODE END MX_GPIO_Init_2 */
+}
+
+/* USER CODE BEGIN 4 */
+/* XSPI init 三件套之函数定义（自生成区迁入，2026-09-29，.ioc 主导重生成保护）：
+ * .ioc 的 XSPI1/XSPI2 仅为 pin 级配置（Appli.IPs 有 IP 名但无 XSPIx.Mode/IPParameters），
+ * CubeMX 重生成不产出 XSPI init 函数（实证 /tmp 演练：生成 main.c 无 MX_XSPI1/2_Init，
+ * USER CODE 区调用保留而定义丢失=链接断）。函数体内容与迁移前一位不变，
+ * 调用点：main() USER CODE SysInit（XSPI1）/USER CODE 2（XSPI2），顺序不变。 */
 
 /**
   * @brief XSPI1 Initialization Function
@@ -594,72 +658,6 @@ void MX_XSPI2_Init(void)
   /* USER CODE END XSPI2_Init 2 */
 
 }
-
-/**
-  * @brief GPIO Initialization Function
-  * @param None
-  * @retval None
-  */
-static void MX_GPIO_Init(void)
-{
-  GPIO_InitTypeDef GPIO_InitStruct = {0};
-  /* USER CODE BEGIN MX_GPIO_Init_1 */
-  __HAL_RCC_GPIOC_CLK_ENABLE();
-  __HAL_RCC_GPIOD_CLK_ENABLE();
-  /* USER CODE END MX_GPIO_Init_1 */
-
-  /* GPIO Ports Clock Enable */
-  __HAL_RCC_GPIOE_CLK_ENABLE();
-  __HAL_RCC_GPIOP_CLK_ENABLE();
-  __HAL_RCC_GPIOO_CLK_ENABLE();
-  __HAL_RCC_GPION_CLK_ENABLE();
-  __HAL_RCC_GPIOG_CLK_ENABLE();
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOE, GPIO_PIN_10, GPIO_PIN_SET);
-
-  /*Configure GPIO pin Output Level */
-  HAL_GPIO_WritePin(GPIOG, GPIO_PIN_10, GPIO_PIN_SET);
-
-  /*Configure GPIO pin : PE10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOE, &GPIO_InitStruct);
-
-  /*Configure GPIO pin : PG10 */
-  GPIO_InitStruct.Pin = GPIO_PIN_10;
-  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  /* USER CODE BEGIN MX_GPIO_Init_2 */
-  /* 按键引脚配置：KEY0(PC6)、KEY1(PD1)、KEY2(PG11) 上拉输入，WKUP(PC13) 下拉输入 */
-  GPIO_InitStruct.Pin = GPIO_PIN_6;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = GPIO_PIN_1;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOD, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = GPIO_PIN_11;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLUP;
-  HAL_GPIO_Init(GPIOG, &GPIO_InitStruct);
-
-  GPIO_InitStruct.Pin = GPIO_PIN_13;
-  GPIO_InitStruct.Mode = GPIO_MODE_INPUT;
-  GPIO_InitStruct.Pull = GPIO_PULLDOWN;
-  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
-  /* USER CODE END MX_GPIO_Init_2 */
-}
-
-/* USER CODE BEGIN 4 */
 
 /* USER CODE END 4 */
 

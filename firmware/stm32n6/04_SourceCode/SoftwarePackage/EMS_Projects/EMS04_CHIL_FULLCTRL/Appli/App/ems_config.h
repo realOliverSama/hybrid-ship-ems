@@ -20,15 +20,18 @@
 #define EMS_GATE_MODE 2
 #endif
 
-/* phase4-g（D6，2026-09-22 bring-up 修正）：USART1 运行时波特率覆盖。
- * ⚠ 事故教训：本宏必须经 CMake target_compile_definitions 接线
- * （cache 变量 EMS_REATT_UART_BAUD），此前只改 cache 不传编译定义，
- * #ifndef 兜底默认静默生效——板上 bring-up 全程被未接线的开关带偏。
- * 默认 115200（板载 CH340 链路久经验证；921600 实测 CH340 不可靠：
- * 高速垃圾字节流）。13924B 长帧代价 = 1.21s/帧 × ~391 锚点/航次 ≈ +8min，
- * 可接受。协议字节流与波特率无关。 */
-#ifndef EMS_REATT_UART_BAUD
-#define EMS_REATT_UART_BAUD 115200
-#endif
+/* phase4-g（D6 退役，2026-09-29）：EMS_REATT_UART_BAUD 运行时覆盖机制退役，
+ * USART1 波特率改由 .ioc 主导——EMS01_CHIL_ECMS.ioc 设 USART1.BaudRate=921600，
+ * MX_USART1_UART_Init 生成行即 921600（main.c 不再有运行时重初始化）。
+ * 历史登记（保留教训，不得静默丢弃）：
+ *  - 本宏原经 Appli/CMakeLists.txt target_compile_definitions 接线（cache 变量
+ *    EMS_REATT_UART_BAUD，默认 115200）；main.c 旧覆盖块注释曾误写"默认 921600"
+ *    造成文档漂移（实际默认 115200），本次一并修正。
+ *  - 921600 在板载 CH340 调试链路实测不可靠（高速垃圾字节流）——该结论针对
+ *    当时 debug 直连形态；现 host 工具已波特率参数化（--baud，默认 115200），
+ *    921600 主导后 host 侧需以 --baud 921600 对接。
+ *  - CMakeLists.txt 的 -DEMS_REATT_UART_BAUD 接线暂保留（宏已无消费方，
+ *    无害的孤立 -D），后续 CMake 清理时移除。
+ * 协议字节流与波特率无关。 */
 
 #endif /* EMS_CONFIG_H */

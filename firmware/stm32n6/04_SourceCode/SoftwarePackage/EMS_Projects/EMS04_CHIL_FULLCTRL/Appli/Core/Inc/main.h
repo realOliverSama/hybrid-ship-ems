@@ -69,12 +69,13 @@ typedef funcptr funcptr_NS;
 
 /* Exported functions prototypes ---------------------------------------------*/
 void Error_Handler(void);
-void MX_XSPI1_Init(void);
-void MX_XSPI2_Init(void);
 void MX_XSPIM_Init(void);
 
 /* USER CODE BEGIN EFP */
-
+/* XSPI init 三件套之原型（自生成区迁入，2026-09-29，.ioc 主导重生成保护）：
+ * CubeMX 不生成 XSPI1/XSPI2 init（.ioc 仅 pin 级配置），定义在 main.c USER CODE 4。 */
+void MX_XSPI1_Init(void);
+void MX_XSPI2_Init(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
