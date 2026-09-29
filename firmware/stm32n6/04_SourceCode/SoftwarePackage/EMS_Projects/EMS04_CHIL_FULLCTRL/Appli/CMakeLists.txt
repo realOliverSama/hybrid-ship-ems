@@ -94,6 +94,22 @@ if(EMS04_PRED_PARITY)
     # EMS04_PRED_PARITY 编译定义在 target 创建后统一追加（见 FP 源集块下方）；
     # 此处 target 尚未 add_executable，不得调用 target_* 。
 endif()
+# EMS04-S4XIP（P4-F2/F4，用户批准 2026-09-29）：flash boot 产品形态（XIP 常驻）。
+# Release 配置 + ROMxspi2_RAMxspi1（XIP @0x70100400，FSBL EXTMEM_XIP_IMAGE_OFFSET
+# =0x100000 零改动）+ FULLCTRL 全链 + EMS04_XIP_BOOT（main.c 消费：跳过应用侧
+# HyperRAM/XSPI2 重初始化——FSBL 已代做，XIP 执行态重初始化 = RCA D2 自杀分支）。
+# 必须在 PRED_PARITY 链接脚本选择块之后覆盖（FORCE 顺序缺陷 D2 的结构性纠正：
+# 形态→链接脚本单向决定，不再被后置 FORCE 逆转）。
+if(EMS04_S4_XIP)
+    if(NOT ATK_BUILD_TYPE_LOWER STREQUAL "release")
+        message(FATAL_ERROR "EMS04_S4_XIP=1 requires CMAKE_BUILD_TYPE=Release (S4XIP product form)")
+    endif()
+    if(NOT EMS04_S4_FULLCTRL)
+        message(FATAL_ERROR "EMS04_S4_XIP=1 requires EMS04_S4_FULLCTRL=1 (product form carries the full controller)")
+    endif()
+    set(STM32_LINKER_SCRIPT "STM32N647XX_ROMxspi2_RAMxspi1.ld")
+    set(EMS04_XIP_BOOT "1" CACHE STRING "forced by EMS04_S4_XIP" FORCE)
+endif()
 # EMS04 S2-PARITY（2026-09-25 主 Agent 裁决方案 c）：RamRel 精简形态。Release
 # 配置 + LRUN_RAMxspi1（SRAM 直载 [0x34000000,0x34200000)），排除 REATT 段链/
 # ladder/selftest/diag 大载荷（下方源集 genex 消费本开关）——law6 + tables +
@@ -342,6 +358,10 @@ if(EMS04_S4_FULLCTRL)
     target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
         EMS04_S4_FULLCTRL=1
         EMS04_PRED_PARITY=1)
+endif()
+# P4-F1 消费宏（XIP 守卫；仅 S4XIP 形态定义，SRAM 形态零改动）
+if(EMS04_XIP_BOOT)
+    target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS04_XIP_BOOT=1)
 endif()
 # ems_app 轮询接收（HAL_UART_Receive timeout=0）与 BSP RX 中断冲突 → 关停 BSP RX
 # （uart.c 编译开关，991 同款；main.c 已含同款约定）。

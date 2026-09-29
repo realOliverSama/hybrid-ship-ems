@@ -224,9 +224,15 @@ int main(void)
    * 任何 boot 模式下内核时钟确定 = HSI 64MHz。 */
   PeriphCommonClock_Config();
 #if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+  /* P4-F1（XIP 守卫，2026-09-29 用户批准）：EMS04_XIP_BOOT 形态（flash boot 产品
+   * 形态，链接脚本 ROMxspi2_RAMxspi1）下 HyperRAM 已由 FSBL 代做
+   * （FSBL main.c: HyperRAM_Init+EnableMemoryMappedMode 先于 BOOT_Application），
+   * 应用重初始化同 D2 自杀机制（外设复位态下重配活动总线）——跳过。 */
+#if !defined(EMS04_XIP_BOOT)
   MX_XSPI1_Init();
   HyperRAM_Init(&HyperRAMObject, &hxspi1);
   HyperRAM_EnableMemoryMappedMode(&HyperRAMObject);
+#endif
   /* EMS04-S3-C（用户批准 2026-09-26，仅 PRED_PARITY 形态生效）：Release 下
    * HyperRAM/XSPI1 使能——s_svc（485,832 B）经 .hyperram_bss (NOLOAD) 摆放于
    * HyperRAM（RAM1-2 窗溢出 + AXISRAM3-6 被 NPU arena 占用，见链接脚本
@@ -266,7 +272,7 @@ int main(void)
   DWT->CYCCNT = 0;
   DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
 
-#if defined(DEBUG) || defined(EMS04_PRED_PARITY) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
+#if defined(DEBUG) || (defined(EMS04_PRED_PARITY) && !defined(EMS04_XIP_BOOT)) || (defined(EMS_N1_LADDER) && !EMS_EXTMEM_PREINIT_BY_FSBL)
 #if (EMS_FW_MODE == EMS_FW_MODE_NPU)
   /* 991 main.c:701-723 序列的 NOR 部分（SystemIsolation_Config 之后）：
    * MX_XSPI2_Init（CubeMX 生成版，调用不落自动区，与 991 main.c:701 同由应用显式调用）
@@ -274,7 +280,11 @@ int main(void)
    * Release（ROMxspi2）由 boot 链完成 XSPI2 memory-mapped，不入此分支。
    * EMS04-S3-C（用户批准 2026-09-26，仅 PRED_PARITY 形态生效）：SRAM 直载
    * Release 形态需 NOR 只读权重池 N1@0x70B00000 / N2@0x70A00000——顺序契约：
-   * 本 memory-mapped 使能 < 首次 NPU 权重访问（ems_reatt_split 首查询）。 */
+   * 本 memory-mapped 使能 < 首次 NPU 权重访问（ems_reatt_split 首查询）。
+   * P4-F1（2026-09-29）：EMS04_XIP_BOOT（flash boot 产品形态）排除——CPU 正从
+   * XSPI2 NOR 取指（XIP）时重初始化 XSPI2 = 取指窗口崩塌自杀（黑屏停 boot ROM
+   * 根因 D2，见 S4_XIP_BOOT_RCA.md）；XIP 下 NOR memory-mapped 已由 FSBL
+   * EXTMEM_MANAGER(BOOTXIP) 完成，N1/N2 权重池（0x70A/0x70B）直接可读。 */
   MX_XSPI2_Init();
   if (NORFlash_Init(&NORFlashObject, &hxspi2,
                     HAL_RCCEx_GetPeriphCLKFreq(RCC_PERIPHCLK_XSPI2)) != NORFlash_OK)
