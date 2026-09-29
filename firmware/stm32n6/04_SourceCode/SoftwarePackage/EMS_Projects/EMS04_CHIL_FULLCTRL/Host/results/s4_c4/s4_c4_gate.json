@@ -1,6 +1,6 @@
 {
  "schema": "s4_c4_battery_gate_v1",
- "created_utc": "2026-09-29T04:19:58.922684+00:00",
+ "created_utc": "2026-09-29T11:55:45.674218+00:00",
  "mode": "board",
  "dry_note": null,
  "battery_freeze": {
@@ -37,8 +37,8 @@
     "g6_3_amended_pass": true,
     "g6_4_pass": true,
     "g6_6_pass": true,
-    "soc_min": 0.6004036727028753,
-    "soc_max": 0.601842804340746,
+    "soc_min": 0.5998445546916621,
+    "soc_max": 0.6011564057253572,
     "unattributed_pgen_n": 0,
     "drift_action_diff_n": 0,
     "undeclared_n": 0
@@ -46,7 +46,8 @@
    "artifacts": {
     "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream.csv",
     "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream_warmup.csv",
-    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream_gate.json"
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream_gate.json",
+    "exec1s_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream_exec1s.csv"
    }
   },
   {
@@ -63,8 +64,8 @@
     "g6_3_amended_pass": true,
     "g6_4_pass": true,
     "g6_6_pass": true,
-    "soc_min": 0.6003861594382789,
-    "soc_max": 0.601842804340746,
+    "soc_min": 0.5998270412183107,
+    "soc_max": 0.6011564057253572,
     "unattributed_pgen_n": 0,
     "drift_action_diff_n": 0,
     "undeclared_n": 0
@@ -72,7 +73,8 @@
    "artifacts": {
     "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands.csv",
     "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_warmup.csv",
-    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_gate.json"
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_gate.json",
+    "exec1s_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_exec1s.csv"
    }
   },
   {
@@ -89,8 +91,8 @@
     "g6_3_amended_pass": true,
     "g6_4_pass": true,
     "g6_6_pass": true,
-    "soc_min": 0.6003861594382789,
-    "soc_max": 0.601842804340746,
+    "soc_min": 0.5998270412183107,
+    "soc_max": 0.6011564057253572,
     "unattributed_pgen_n": 0,
     "drift_action_diff_n": 0,
     "undeclared_n": 0
@@ -98,7 +100,8 @@
    "artifacts": {
     "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream.csv",
     "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream_warmup.csv",
-    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream_gate.json"
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream_gate.json",
+    "exec1s_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream_exec1s.csv"
    }
   }
  ],

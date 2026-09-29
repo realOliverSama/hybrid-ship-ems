@@ -1,6 +1,6 @@
 {
  "schema": "s4_c4_voyage_gate_v1",
- "created_utc": "2026-09-29T04:15:58.438957+00:00",
+ "created_utc": "2026-09-29T11:51:56.649198+00:00",
  "mode": "board",
  "dry_note": null,
  "adjudication": {
@@ -63,7 +63,7 @@
   ],
   "battery_freeze_sha256": "ae9a37b4e881792c5794a01f22fb9eee4214e4aef66e9aaa4abba0aa9f766577"
  },
- "wall_s": 235.7,
+ "wall_s": 228.9,
  "seq_final": 31,
  "runnability_G6_1": {
   "n_ticks": 31,
@@ -71,8 +71,8 @@
   "retry_n": 0,
   "timeout_or_lost": false,
   "flags_nonzero_n": 0,
-  "soc_min": 0.6003861594382789,
-  "soc_max": 0.601842804340746,
+  "soc_min": 0.5998270412183107,
+  "soc_max": 0.6011564057253572,
   "soc_bounds": [
    0.15,
    0.95
@@ -138,6 +138,16 @@
   "undeclared_n": 0
  },
  "g6_6_pass": true,
+ "exec1s_observation": {
+  "exec_period_s": 1,
+  "exec1s_n": 279,
+  "exec1s_diff_n": 0,
+  "exec1s_max_diff": 0.0,
+  "diff_def": "行级：|bb_pg−bh_pg| 或 |a2_pg−bh_pg| 任一有限值 >1e-6 计 1（NaN=干跑无 bb_1s，不参与）；max_diff 同域取最大",
+  "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_exec1s.csv",
+  "stop_face": false,
+  "note": "口径 v2 观测轮：执行层 1 s 门控三链对拍只记录不停机（diff 判据待首轮板跑数据后由主 Agent 定）；板失联仍走运行性 G6-1 面（同 TICK_CTRL 语义）"
+ },
  "overall": true,
  "overall_note": "G6-2 与 CLOSED_LOOP_BACKEND_DRIFT 均为基线档案语义（非 FAIL，逐拍全量记录）；overall(v2)=G6-1∧G6-3amended∧G6-4∧G6-6∧全拍完成∧无停机∧非干跑；未归因判据面=严格门。",
  "voyage_id": "S08_resistance_bands",
