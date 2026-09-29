@@ -1,8 +1,8 @@
 {
  "schema": "s4_c4_battery_gate_v1",
- "created_utc": "2026-09-29T06:09:10.142572+00:00",
- "mode": "dry",
- "dry_note": "干跑无板：B_BOARD 面=NaN，G6-3/G6-4 不适用，电池 overall 恒 false",
+ "created_utc": "2026-09-29T09:19:21.698863+00:00",
+ "mode": "board",
+ "dry_note": null,
  "battery_freeze": {
   "path": "experiments/softhil_ems03_2026-09-25/results/s4_c3/S4_C4_BATTERY_FREEZE.json",
   "sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f",
@@ -31,7 +31,7 @@
    "voyage_id": "FLTA_S2_D01006_M1",
    "role": "M1_R_low",
    "scenario_id": "FLTA_S2_D01006_M1",
-   "overall": false,
+   "overall": true,
    "stop_reason": null,
    "formal_done": 408,
    "formal_ticks": 408,
@@ -44,7 +44,7 @@
     "soc_min": 0.5948238462040828,
     "soc_max": 0.6002102589499168,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 0,
+    "drift_action_diff_n": 164,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -57,7 +57,7 @@
    "voyage_id": "FLTA_S2_D01006_M2",
    "role": "M2_R_low",
    "scenario_id": "FLTA_S2_D01006_M2",
-   "overall": false,
+   "overall": true,
    "stop_reason": null,
    "formal_done": 408,
    "formal_ticks": 408,
@@ -70,7 +70,7 @@
     "soc_min": 0.5948238462040828,
     "soc_max": 0.6002102589499168,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 0,
+    "drift_action_diff_n": 169,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -83,7 +83,7 @@
    "voyage_id": "FLTA_S6_D05003_M1",
    "role": "M1_R_high",
    "scenario_id": "FLTA_S6_D05003_M1",
-   "overall": false,
+   "overall": true,
    "stop_reason": null,
    "formal_done": 320,
    "formal_ticks": 320,
@@ -96,7 +96,7 @@
     "soc_min": 0.5380464830521265,
     "soc_max": 0.5998527139073546,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 0,
+    "drift_action_diff_n": 16,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -109,7 +109,7 @@
    "voyage_id": "FLTA_S6_D05003_M2",
    "role": "M2_R_high",
    "scenario_id": "FLTA_S6_D05003_M2",
-   "overall": false,
+   "overall": true,
    "stop_reason": null,
    "formal_done": 320,
    "formal_ticks": 320,
@@ -119,10 +119,10 @@
     "g6_3_amended_pass": true,
     "g6_4_pass": true,
     "g6_6_pass": true,
-    "soc_min": 0.5389512585052498,
+    "soc_min": 0.5380464830521265,
     "soc_max": 0.5998527139073546,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 0,
+    "drift_action_diff_n": 17,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -134,6 +134,6 @@
  ],
  "skipped_voyages": [],
  "stopped_global": null,
- "overall": false,
+ "overall": true,
  "overall_note": "电池合取 = 全部计划航次 overall ∧ 无全局停机 ∧ 非干跑；单航次 park 只使该航次 overall=false 并继续下一航次，板失联（PING/RESET/TICK_CTRL 重试无效）→ 全局停止。"
 }

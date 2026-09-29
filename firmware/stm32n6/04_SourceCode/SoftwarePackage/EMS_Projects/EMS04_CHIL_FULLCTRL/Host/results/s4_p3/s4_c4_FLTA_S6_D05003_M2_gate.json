@@ -1,19 +1,37 @@
 {
  "schema": "s4_c4_voyage_gate_v1",
- "created_utc": "2026-09-29T06:09:10.138827+00:00",
- "mode": "dry",
- "dry_note": "干跑无板：B_BOARD 面=NaN，G6-3/G6-4 不适用，overall 恒 false",
+ "created_utc": "2026-09-29T09:19:21.691070+00:00",
+ "mode": "board",
+ "dry_note": null,
  "adjudication": {
   "decision": "用户裁决 2026-09-29：认定 B_BOARD vs B_HOST action 差异为 S3-C 已登记 REATT 后端数值漂移传播，G6-3/G6-4 一致性门对该类拍次降级资格（CLOSED_LOOP_BACKEND_DRIFT 档案，非 FAIL）；停机条件只对未归因不一致触发。",
   "evidence": "首跑（run1，62 拍 park）：t0=890/900/910 三拍 host 两链（A2 float 与 B_HOST ORT-OE int8）彼此一致给出 action -13/-17/-18/-15 档而板一致偏离（d1 钉 -0.1 网格下界）→偏离定位于板后端；同签名已在 C3 前置对拍基线（s4_c3_preamble_report.json，11 连拍）登记。"
  },
  "backend_drift_archive": {
   "rule": "G6-2 §3 语义延伸（v2.1 演绎闭合归因）：逐拍全量记录、分位数、不作为 FAIL；硬面=同档 P_gen_ref 发散/板自振荡/运行性/事件面",
-  "drift_action_diff_n": 0,
+  "drift_action_diff_n": 17,
   "drift_subclasses": {},
-  "drift_pgen_gt1grid_n": 0,
-  "drift_ticks": [],
-  "drift_consec_max": 0,
+  "drift_pgen_gt1grid_n": 8,
+  "drift_ticks": [
+   520.0,
+   620.0,
+   630.0,
+   750.0,
+   760.0,
+   840.0,
+   910.0,
+   920.0,
+   930.0,
+   940.0,
+   950.0,
+   960.0,
+   970.0,
+   980.0,
+   990.0,
+   1000.0,
+   1010.0
+  ],
+  "drift_consec_max": 11,
   "note": "漂移拍伴随执行层 argmin 翻转（0↔800 kW）：P_load 平稳段的 J 值刀锋区（float canonical 链自身亦在相邻拍翻转），量化/构造域不同的链在平局处分辨不同——登记变换效应。"
  },
  "stop_reason": null,
@@ -27,7 +45,7 @@
  },
  "form": {
   "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=df81b23f1e74…",
-  "board": null,
+  "board": "S4Smoke SRAM 直载（ELF 8b71d341 plan==readback，前会话载入；本会话 PING 探活 + CMD_RESET 后闭环）",
   "pms_lib_sha": "3d2ec94fb575",
   "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
   "b_host_chain": "gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）",
@@ -63,7 +81,7 @@
   ],
   "battery_freeze_sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f"
  },
- "wall_s": 216.4,
+ "wall_s": 2425.6,
  "seq_final": 320,
  "runnability_G6_1": {
   "n_ticks": 320,
@@ -71,7 +89,7 @@
   "retry_n": 0,
   "timeout_or_lost": false,
   "flags_nonzero_n": 0,
-  "soc_min": 0.5389512585052498,
+  "soc_min": 0.5380464830521265,
   "soc_max": 0.5998527139073546,
   "soc_bounds": [
    0.15,
@@ -81,12 +99,12 @@
   "pgen_ramp_bound_kw_per_tick": 200.0,
   "pgen_ramp_param": "constants.ramp=20 kW/s × dt=10 s（law6 发电机组斜率参数按控制拍折算；执行层输出无斜坡限制，见 LAW6_C2_CONSUMPTION_CONTRACT §4.3）",
   "pgen_step_max_kw": {
-   "bb": 0.0,
+   "bb": 800.0,
    "bh": 800.0,
    "a2": 800.0
   },
   "pgen_step_over_bound_kw": {
-   "bb": 0.0,
+   "bb": 800.0,
    "bh": 800.0,
    "a2": 800.0
   },
@@ -95,14 +113,14 @@
  },
  "g6_1_pass": true,
  "transform_archive_G6_2": {
-  "action_diff_n": 33,
+  "action_diff_n": 32,
   "pgen_gt1grid_n": 16,
   "grid_kw": 20.0,
   "classification": "CLOSED_LOOP_TRANSFORM_EFFECT（基线档案，非 FAIL；A2 canonical 域 vs B 部署同形域的已登记部署变换效应）"
  },
  "board_parity_G6_3": {
-  "action_equal_n": 320,
-  "drift_action_diff_n": 0,
+  "action_equal_n": 303,
+  "drift_action_diff_n": 17,
   "drift_subclasses": {},
   "unattributed_action_diff_n": 0,
   "unattributed_note": "v2.1：action 差全部经 classify_action_face 归入后端漂移档案（演绎闭合：下行同源 + 下游位级同构已证，差异仅能经 REATT 后端通道产生）；硬面只剩同档 P_gen_ref 发散 / 板自振荡 / 运行性 / 事件面",
@@ -116,10 +134,10 @@
   "max_pgen_gt1_allowed": 4,
   "oscillation": "板 P_gen_ref 10 拍滑动窗翻转计数遥测（≥6 停机），见 CSV",
   "drift_rate_telemetry": {
-   "drift_action_n": 0,
+   "drift_action_n": 17,
    "n": 320,
-   "rate": 0.0,
-   "max_consec_drift": 0
+   "rate": 0.053125,
+   "max_consec_drift": 11
   }
  },
  "g6_4_pass": true,
@@ -138,7 +156,7 @@
   "undeclared_n": 0
  },
  "g6_6_pass": true,
- "overall": false,
+ "overall": true,
  "overall_note": "G6-2 与 CLOSED_LOOP_BACKEND_DRIFT 均为基线档案语义（非 FAIL，逐拍全量记录）；overall(v2)=G6-1∧G6-3amended∧G6-4∧G6-6∧全拍完成∧无停机∧非干跑；未归因判据面=严格门。",
  "voyage_id": "FLTA_S6_D05003_M2",
  "battery_role": "M2_R_high"
