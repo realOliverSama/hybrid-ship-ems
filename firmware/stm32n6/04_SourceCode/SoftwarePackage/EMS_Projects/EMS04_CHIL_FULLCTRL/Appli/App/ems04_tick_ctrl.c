@@ -45,6 +45,7 @@
 #include "ems04_law6_c2.h"
 #include "ems04_s1_constants.h"
 #include "ems04_pms_safety.h"
+#include "ems_lcd.h"
 
 #include <math.h>
 #include <string.h>
@@ -268,6 +269,17 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     m_prof_seq = seq; m_prof_tick = tick;
     m_prof_reatt_us = infer_us; m_prof_dp_us = dp_us;
     m_prof_grid_us = ctrl_grid_us; m_prof_pms_us = ctrl_pms_us;
+    /* S4-P4 LCD 接线（产品形态演示面，用户批准 2026-09-29）：TICK_CTRL 全链
+     * 实时量 + q50 预测曲线注入（功率流/预测区复用 ems_lcd 既有面板）。
+     * v_ship 不在 TICK_CTRL 下行 8 态内 → 传 0（LCD 航速窗在该形态下为遥测
+     * 装饰位，登记于 README）；fallback = flags 非零。 */
+    {
+        float q50_lcd[EMS04_K_MAX];
+        for (int i = 0; i < EMS04_K_MAX; i++) q50_lcd[i] = q[3 * i + 1];
+        ems_lcd_notify(0.0f, P_load, (float)P_gen_ref, SOC,
+                       (m_last_flags != 0u) ? 1 : 0);
+        ems_lcd_notify_q(q50_lcd);
+    }
     uint8_t *o = out;
     wr_u32(o, seq); o += 4;
     wr_f32(o, (float)P_gen_ref); o += 4;
