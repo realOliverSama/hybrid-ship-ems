@@ -80,6 +80,10 @@ static uint8_t m_last_flags;
 static uint32_t m_prof_seq, m_prof_tick;
 static uint32_t m_prof_reatt_us, m_prof_dp_us, m_prof_grid_us, m_prof_pms_us;
 
+/* S4-P4 执行层 1 s 门控（口径 v2）：上拍决策 d1（EXEC_REFRESH 的 λ 输入） */
+static double m_last_d1;
+static int m_have_tick;
+
 /* 1 s-grid exhaustive search (contract §4.3 verbatim). */
 static double s4_exec_grid(double p_load_kw, double soc, double lam)
 {
@@ -160,6 +164,8 @@ void ems04_tick_ctrl_reset(void)
     if (!m_tbl_ok) s4_exec_init();
     ems04_pms_init(&m_pms);
     m_last_flags = 0u;
+    m_last_d1 = 0.0;
+    m_have_tick = 0;
 }
 
 /* little-endian helpers (wire = LE, same as ems_proto) */
@@ -236,6 +242,8 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
         return 0;
     }
     double e_hat = tr.dlambda_first;
+    m_last_d1 = e_hat;   /* 1 s 门控（口径 v2）的 λ 输入 */
+    m_have_tick = 1;
     const uint32_t dp_us = (uint32_t)(DWT->CYCCNT - cdp0) /
                            (uint32_t)(SystemCoreClock / 1000000u);
 
@@ -318,5 +326,43 @@ uint16_t ems04_tick_ctrl_prof(uint8_t out[EMS04_TICK_CTRL_PROF_RSP_LEN])
     wr_u32(o, m_prof_grid_us); o += 4;
     wr_u32(o, m_prof_pms_us); o += 4;
     return (uint16_t)EMS04_TICK_CTRL_PROF_RSP_LEN;
+}
+
+/* 执行层 1 s 门控（口径 v2，契约 §4.3）：与 TICK_CTRL 拍内执行层逐字同式——
+ * soc_ref_eff = SOC_ref + K_S·d1；λ = λ0 + K_soc·(soc_ref_eff − SOC)，floor 门控；
+ * P_gen_ref = s4_exec_grid(P_load, SOC, λ)。SOC/P_load/v_ship 为植物实测
+ * （host 每 1 s 下行，f32 线域与 TICK_CTRL 同口径）。 */
+uint16_t ems04_exec_refresh(const uint8_t *payload, uint16_t len,
+                            uint8_t out[EMS04_EXEC_REFRESH_RSP_LEN])
+{
+    if (len != EMS04_EXEC_REFRESH_CMD_LEN) return 0;
+    if (!m_tbl_ok) s4_exec_init();
+    if (!m_have_tick) return 0;   /* 无决策历史（RESET 后未跑 TICK_CTRL）→ NACK */
+
+    const uint8_t *p = payload;
+    uint32_t seq = rd_u32(p); p += 4;
+    float SOC = rd_f32(p); p += 4;
+    float v_ship = rd_f32(p); p += 4;
+    float P_load = rd_f32(p); p += 4;
+
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+    const uint32_t c0 = DWT->CYCCNT;
+    double soc_ref_eff = m_exec.SOC_ref + m_exec.K_S * m_last_d1;
+    double lam = m_exec.lambda0 + m_exec.K_soc * (soc_ref_eff - (double)SOC);
+    if (m_exec.K_S != 0.0) lam = (lam > m_exec.lambda_floor) ? lam : m_exec.lambda_floor;
+    double P_gen_ref = s4_exec_grid((double)P_load, (double)SOC, lam);
+    uint32_t gate_us = (uint32_t)((DWT->CYCCNT - c0) / (SystemCoreClock / 1000000u));
+    (void)gate_us;
+
+    /* LCD 1 Hz 实时量（功率流/SOC/航速——方案 C 航速旁路注入点） */
+    ems_lcd_notify(v_ship, P_load, (float)P_gen_ref, SOC,
+                   (m_last_flags != 0u) ? 1 : 0);
+
+    uint8_t *o = out;
+    wr_u32(o, seq); o += 4;
+    wr_f32(o, (float)P_gen_ref); o += 4;
+    wr_f32(o, (float)lam); o += 4;
+    return (uint16_t)EMS04_EXEC_REFRESH_RSP_LEN;
 }
 

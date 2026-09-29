@@ -436,6 +436,20 @@ static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
                                    s4_prof_rsp, n);
         break;
     }
+    case EMS04_EXEC_REFRESH_CMD: {
+        /* S4-P4：执行层 1 s 门控（口径 v2）+ LCD 航速旁路（附加通道） */
+        static uint8_t s4_er_rsp[EMS04_EXEC_REFRESH_RSP_LEN];
+        uint16_t n = ems04_exec_refresh(payload, len, s4_er_rsp);
+        if (n == 0u) {
+            ems_proto_send_nack(&ems_proto_st, (uint8_t)EMS04_EXEC_REFRESH_CMD,
+                                EMS_PROTO_ERR_LEN);
+        } else {
+            (void)ems_proto_send_frame(&ems_proto_st,
+                                       (uint8_t)EMS04_EXEC_REFRESH_RSP,
+                                       s4_er_rsp, n);
+        }
+        break;
+    }
 #endif
     case EMS_PROTO_CMD_PING:
         (void)ems_proto_send_ack(&ems_proto_st, type);

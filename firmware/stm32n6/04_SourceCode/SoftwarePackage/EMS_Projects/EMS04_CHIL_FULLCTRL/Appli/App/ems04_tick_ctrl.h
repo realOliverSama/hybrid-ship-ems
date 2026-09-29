@@ -19,6 +19,18 @@ extern "C" {
 #define EMS04_TICK_CTRL_PROF_RSP 0x11u
 #define EMS04_TICK_CTRL_PROF_RSP_LEN 24u
 
+/* S4-P4 执行层 1 s 门控 + 航速展示通道（附加命令，冻结契约零改动；用户裁决
+ * 2026-09-29 补齐契约 §4.3 "1 s 门控" 口径 v2）：
+ * CMD_EXEC_REFRESH(0x12, 16B = seq+SOC+v_ship+P_load f32)
+ *   → RSP_EXEC_REFRESH(0x13, 12B = seq+P_gen_ref+lam_eff f32)。
+ * host 每 1 s（植物子步 100 边界）下发植物实测 SOC/P_load 与航速；板以
+ * (SOC, P_load, 上拍 d1) 重算执行层 grid → P_gen_ref（0.04 ms 量级），同帧
+ * 刷新 LCD（功率流/SOC/航速 1 Hz）。 */
+#define EMS04_EXEC_REFRESH_CMD 0x12u
+#define EMS04_EXEC_REFRESH_RSP 0x13u
+#define EMS04_EXEC_REFRESH_CMD_LEN 16u
+#define EMS04_EXEC_REFRESH_RSP_LEN 12u
+
 /* reset controller state (CMD_RESET path) */
 void ems04_tick_ctrl_reset(void);
 
@@ -30,6 +42,12 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
 
 /* 回放最近一次 TICK_CTRL 的段级分账（µs；CYCCNT 周期域差值、回绕安全）。 */
 uint16_t ems04_tick_ctrl_prof(uint8_t out[EMS04_TICK_CTRL_PROF_RSP_LEN]);
+
+/* 执行层 1 s 门控（口径 v2）：以 (SOC, P_load, 上拍 d1) 重算 grid → P_gen_ref，
+ * 同帧刷新 LCD。返回 RSP 载荷长度（12）；无 TICK_CTRL 历史（d1 未初始化）时
+ * NACK（len=0）。 */
+uint16_t ems04_exec_refresh(const uint8_t *payload, uint16_t len,
+                            uint8_t out[EMS04_EXEC_REFRESH_RSP_LEN]);
 
 #ifdef __cplusplus
 }
