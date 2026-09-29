@@ -113,6 +113,7 @@
 | `Appli/App/ems04_law6_c2.c`（改） | P2：DP 位级加速 J1（FLOOR 前缀合并，单调性剪枝）+J2（机组对对称崩塌，按位比较）+J3（内层查表前置）；验证=377/377 replay 逐拍位级 + 板级 100 拍逐拍同一性 + C4 3/3 零回归；板上 DP 6.39→5.23 s |
 | `Appli/App/ems_app.c`（改） | CMD_PROF 分发接线（EMS04_S4_FULLCTRL 守卫内） |
 | `S4_XIP_BOOT_RCA.md` | **P4：XIP/flash boot 不启动 RCA（D1 build/flash hex 被任意 Release 形态覆盖 + D2 PRED_PARITY 的 XSPI2 重初始化在 XIP 执行态自杀）+ F1-F4 修复方案——烧写/断电=用户批准点（park）** |
+| `S4_PRED_PHYSICS_RCA.md` | **偏差④ RCA（2026-09-29）：预测-实况物理脱节根因定案——训练侧健康（锚 q50 MAE 4.5 kW），断层 = int8 PTQ 两管线系统性失真（锚级 −31%/−46%）× NPU 编译执行段二次失真（再 −29%）× S20 fixture kf 垃圾输入（s_plan 绝对坐标+flat、wl=水深）；「三方一致」前提证伪；影响面重审清单 + 修复方案（fp32 CPU 形态）+ 判据盲区治理建议** |
 | `results/s4_c2/s4_p2_dp_accel_memo.md` | P2 设计备忘：分账实测表、J1-J3 精确性论证、全部门禁证据、**小帧协议/1 s 拍可行性评估（结论：1 s 拍不可行，10 s 拍占空 67% 满足实时预算）** |
 | `results/s4_c2/s4_c3_preamble_report_preP2_baseline.json` | pre-P2 对拍基线封存（重跑逐拍同一性对照锚） |
 | `results/s4_c4_preP2_baseline/` | C4 冻结态封存（P2 重跑零回归对照锚） |
