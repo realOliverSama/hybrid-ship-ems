@@ -355,9 +355,11 @@ uint16_t ems04_exec_refresh(const uint8_t *payload, uint16_t len,
     uint32_t gate_us = (uint32_t)((DWT->CYCCNT - c0) / (SystemCoreClock / 1000000u));
     (void)gate_us;
 
-    /* LCD 1 Hz 实时量（功率流/SOC/航速——方案 C 航速旁路注入点） */
-    ems_lcd_notify(v_ship, P_load, (float)P_gen_ref, SOC,
-                   (m_last_flags != 0u) ? 1 : 0);
+    /* LCD 1 Hz 实时量（功率流/SOC/航速——方案 C 航速旁路注入点）。
+     * live 通道：不写 10 s 粒度历史环（避免 1s 点距压缩显示语义失真——
+     * 用户反馈 2026-09-29 修订）；历史仍由 TICK_CTRL 每 10 s 维持。 */
+    ems_lcd_notify_live(v_ship, P_load, (float)P_gen_ref, SOC,
+                        (m_last_flags != 0u) ? 1 : 0);
 
     uint8_t *o = out;
     wr_u32(o, seq); o += 4;

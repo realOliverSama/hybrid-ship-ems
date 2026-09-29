@@ -177,12 +177,7 @@ static void lcd_draw_static(void)
     uint16_t pyt = SY(350u), pyb = SY(472u);
     uint16_t span = (uint16_t)(px1 - px0), hgt = (uint16_t)(pyb - pyt);
     lcd_rect(px0, pyt, span, hgt, C_GRAY);
-    for (uint32_t v = 0u; v <= 900u; v += 300u) {
-        uint16_t yy = (uint16_t)(pyb - (uint16_t)(v * hgt / 900u));
-        (void)snprintf(buf, sizeof buf, "%u", (unsigned)v);
-        lcd_string(buf, (uint16_t)(px0 - (lcd_fs_body >> 1) * 3u - SX(2u)),
-                   (uint16_t)(yy - lcd_fs_body / 2u), C_TEXTDIM, lcd_fs_body);
-    }
+    /* 纵轴数字标签随自适应量程每秒重绘（见 lcd_draw_dynamic），骨架不再固定 */
 }
 
 /* 动态元素：每秒刷新（各区自带底色覆盖，无整屏清屏） */
@@ -238,9 +233,24 @@ static void lcd_draw_dynamic(void)
     uint16_t hgt = (uint16_t)(pyb - pyt);
     lcd_fill((uint16_t)(px0 + 1u), (uint16_t)(pyt + 1u),
              (uint16_t)(span - 2u), (uint16_t)(hgt - 2u), C_BG);
-    for (uint32_t v = 0u; v <= 900u; v += 300u) {
-        uint16_t yy = (uint16_t)(pyb - (uint16_t)(v * hgt / 900u));
+    /* S4-P4 显示层修订（用户反馈 2026-09-29：负载曲线贴底直线/瞬态不可见）：
+     * 量程自适应——取负荷历史与预测窗的窗内最大值向上取整到 300 kW 档
+     * （下限 300），网格线三等分。pilot 航次低速段（≈128 kW）也能呈现形状。 */
+    float rng_f = 300.0f;
+    for (uint32_t i = 0u; i < 30u; i++) {
+        if (lcd_load_hist[i] > rng_f) rng_f = lcd_load_hist[i];
+        if (lcd_q50_valid && lcd_q50[i] > rng_f) rng_f = lcd_q50[i];
+    }
+    uint32_t rng = ((uint32_t)((rng_f + 299.0f) / 300.0f)) * 300u;
+    for (uint32_t k = 0u; k <= 3u; k++) {
+        uint32_t v = rng * k / 3u;
+        uint16_t yy = (uint16_t)(pyb - (uint16_t)(v * hgt / rng));
         lcd_fill(px0, yy, span, 1u, C_GRID);
+        lcd_fill((uint16_t)(px0 - SX(26u)), (uint16_t)(yy - lcd_fs_body / 2u),
+                 SX(24u), (uint16_t)(lcd_fs_body + 1u), C_BG);
+        (void)snprintf(buf, sizeof buf, "%u", (unsigned)v);
+        lcd_string(buf, (uint16_t)(px0 - SX(24u)),
+                   (uint16_t)(yy - lcd_fs_body / 2u), C_TEXTDIM, lcd_fs_body);
     }
     /* 实际（红实线）：滚动历史，占左侧 2/3 时间轴 */
     for (uint16_t i = 0u; i + 1u < 30u; i++) {
@@ -249,8 +259,8 @@ static void lcd_draw_dynamic(void)
         if (a <= 0.0f || b <= 0.0f) continue;
         uint16_t x0 = (uint16_t)(px0 + (uint32_t)i * span * 2u / 3u / 29u);
         uint16_t x1 = (uint16_t)(px0 + (uint32_t)(i + 1u) * span * 2u / 3u / 29u);
-        int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / 900.0f));
-        int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / 900.0f));
+        int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / (float)rng));
+        int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / (float)rng));
         int16_t steps = (int16_t)(x1 - x0);
         if (steps < 1) steps = 1;
         for (int16_t s2 = 0; s2 <= steps; s2++) {
@@ -265,8 +275,8 @@ static void lcd_draw_dynamic(void)
             float a = lcd_q50[i], b = lcd_q50[i + 1u];
             uint16_t x0 = (uint16_t)(px0 + (uint32_t)i * span / 29u);
             uint16_t x1 = (uint16_t)(px0 + (uint32_t)(i + 1u) * span / 29u);
-            int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / 900.0f));
-            int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / 900.0f));
+            int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / (float)rng));
+            int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / (float)rng));
             int16_t steps = (int16_t)(x1 - x0);
             if (steps < 1) steps = 1;
             for (int16_t s2 = 0; s2 <= steps; s2++) {
@@ -445,6 +455,17 @@ void ems_lcd_notify(float v_ship_kn, float p_load_kw, float p_gen_kw,
     lcd_fallback = fallback;
     lcd_load_hist[lcd_hist_head] = p_load_kw;
     lcd_hist_head = (lcd_hist_head + 1u) % 30u;
+}
+
+void ems_lcd_notify_live(float v_ship_kn, float p_load_kw, float p_gen_kw,
+                         float soc, int fallback)
+{
+    (void)soc;
+    lcd_v_ship = v_ship_kn;
+    lcd_p_load = p_load_kw;
+    lcd_p_gen = p_gen_kw;
+    lcd_fallback = fallback;
+    /* 不写 lcd_load_hist：10 s 粒度历史由 TICK_CTRL 维持（轴语义 290 s 对齐） */
 }
 
 void ems_lcd_notify_q(const float q50[30])

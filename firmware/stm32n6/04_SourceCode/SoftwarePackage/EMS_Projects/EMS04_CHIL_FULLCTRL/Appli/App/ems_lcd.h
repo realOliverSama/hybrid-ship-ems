@@ -25,6 +25,10 @@ void ems_lcd_init(void);
 void ems_lcd_notify(float v_ship_kn, float p_load_kw, float p_gen_kw,
                     float soc, int fallback);
 void ems_lcd_notify_q(const float q50[30]);
+/* live 通道（1 s 门控口径 v2）：只刷新数字框（航速/功率流/SOC），不写 10 s
+ * 粒度负荷历史环——历史点距与预测轴 10 s 语义保持对齐（EXEC_REFRESH 消费）。 */
+void ems_lcd_notify_live(float v_ship_kn, float p_load_kw, float p_gen_kw,
+                         float soc, int fallback);
 void ems_lcd_poll(uint32_t now_ms);
 
 #endif /* EMS_LCD_H */
