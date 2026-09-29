@@ -507,6 +507,7 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
                     uint32_t *infer_us)
 {
     uint32_t t0 = rs_now_us();
+    const uint32_t t0_cyc = DWT->CYCCNT;  /* infer_us 回绕安全基准（周期域） */
     uint32_t t_n1;
     stai_return_code rc;
 
@@ -722,7 +723,10 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
     }
 
     if (infer_us != NULL) {
-        *infer_us = rs_now_us() - t0;
+        /* 周期域差值再换算：u32 模算术天然吸收 CYCCNT 7.16s 回绕
+         * （旧实现 µs 域相减在跨绕点产生 ~2^32 伪值，755 战役已观测）。 */
+        *infer_us = (uint32_t)(DWT->CYCCNT - t0_cyc) /
+                    (uint32_t)(SystemCoreClock / 1000000u);
     }
     {
         static uint32_t rs_t_n;

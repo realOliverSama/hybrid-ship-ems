@@ -13,7 +13,15 @@
  *                         [force_start0 f32][force_start1 f32]
  *                         [force_stop0 f32][force_stop1 f32]
  *                         [ems_health_ok f32][baseline_fallback_active f32]
+ *                         [reserved f32 = 0.0f]
  *                         [infer_us u32][ctrl_us u32][flags u8]
+ *
+ * 遥测对齐注记（P1 修复 2026-09-29）：reserved 浮点占线使 infer_us 落在
+ * 偏移 84、ctrl_us 偏移 88、flags 偏移 92——与 host 三工具（s4_c2_smoke /
+ * s4_c3_closedloop / s4_c4_battery）既有的 "20f@4 + 2I@84 + B@92" 解析
+ * 逐字节对齐；S4_RSP_LEN 93B 与帧总长不变，修复前 host 读到的
+ * "infer_us" 实为 ctrl_us、"ctrl_us" 实为 flags+padding（遥测面缺陷，
+ * 控制面 19 浮点字段布局不变，C2/C3/C4 冻结证据不受影响）。
  *
  * Per-tick full chain (10 s control tick, board holds the full controller):
  *   1) REATT local inference (hist/kf raw windows → q50 30×10 s leads, kW)
@@ -172,6 +180,13 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     if (len != S4_CMD_LEN) return 0;
     if (!m_tbl_ok) s4_exec_init();
 
+    /* FR-505 遥测自愈（P1，2026-09-29）：boot 期 DEMCR.TRCENA 被清除导致
+     * CYCCNT 冻结的实测现场（DWT_CTRL.CYCCNTENA=1 但计数器停摆，板上分钟级
+     * 会话复现；S4Smoke/BdDiagUart 均命中）。每次进 handler 重新武装——
+     * 两次寄存器写，不改控制路径任何数值语义（位级兼容保持）。 */
+    CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
+    DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
+
     const uint8_t *p = payload;
     uint32_t seq = rd_u32(p); p += 4;
     uint32_t tick = rd_u32(p); p += 4;
@@ -264,6 +279,7 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     wr_f32(o, (float)po.force_stop_req[1]); o += 4;
     wr_f32(o, (float)po.ems_health_ok); o += 4;
     wr_f32(o, (float)po.baseline_fallback_active); o += 4;
+    wr_f32(o, 0.0f); o += 4;  /* reserved：遥测对齐占线（见文件头注记） */
     wr_u32(o, infer_us); o += 4;
     wr_u32(o, ctrl_grid_us + ctrl_pms_us); o += 4;
     *o = m_last_flags;
