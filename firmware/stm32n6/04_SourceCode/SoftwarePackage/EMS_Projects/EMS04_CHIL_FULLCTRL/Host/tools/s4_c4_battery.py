@@ -118,8 +118,11 @@ def kf_table_path(vid):
 
 
 def stream_path(vid, data_root=None):
-    """stream .mat 路径（默认 pilot 目录 = 冻结行为；streamE 模式 = --data-root）。"""
+    """stream .mat 路径（默认 pilot 目录 = 冻结行为；streamE 模式 = --data-root，
+    相对路径按仓库根解析——同 s4_c3_pack_kf_table.py --mat 惯例）。"""
     root = data_root or os.path.join(c3.MODELE, "datasets_v3", "pilot")
+    if not os.path.isabs(root):
+        root = os.path.normpath(os.path.join(c3.REPO, root))
     return os.path.join(root, vid + ".mat")
 
 
@@ -194,8 +197,11 @@ def check_kf_tables(vids):
     return [kf_table_path(v) for v in vids if not os.path.isfile(kf_table_path(v))]
 
 
-def load_stream(vid, data_root=None):
-    """stream 装载（只取 SCENARIO_COLS+time_s；结构 fail-closed）。"""
+def load_stream(vid, data_root=None, resample_100hz=False):
+    """stream 装载（只取 SCENARIO_COLS+time_s；结构 fail-closed）。
+    streamE 模式 resample_100hz=True：formal stream 为 1 Hz（n=dur+1），C3 链
+    （_ring_v/st8/A2 场景侧列）按 100 Hz 索引——ZOH ×100 上采样对齐（与植物
+    shim 每行 ZOH 100 子步同语义）；默认 pilot 路径 100 Hz 原样（零改动）。"""
     from scipy.io import loadmat
     spath = stream_path(vid, data_root)
     if not os.path.isfile(spath):
@@ -209,6 +215,8 @@ def load_stream(vid, data_root=None):
         raise RuntimeError("stream 缺列 %s: %s" % (sorted(missing), spath))
     stream = {c: np.asarray(mat["stream"][c], dtype=np.float64).ravel()
               for c in need}
+    if resample_100hz:
+        stream = {c: np.repeat(v, c3.SUB_PER_SEC) for c, v in stream.items()}
     meta = {"voyage_id": str(mat["meta"]["voyage_id"]),
             "fixture_kind": str(mat["meta"]["fixture_kind"])}
     del mat
@@ -747,7 +755,7 @@ def main():
                          "S4-P3 流驱动变体（P3 冻结件 + --data-root，B1）")
     ap.add_argument("--data-root", default=None,
                     help="streamE 模式 formal .mat 目录（如 model/.../datasets_v3"
-                         "/formal/iid）；modelE 默认路径忽略")
+                         "/formal/iid；相对路径按仓库根解析）；modelE 默认路径忽略")
     args = ap.parse_args()
 
     if args.selftest:
@@ -841,7 +849,9 @@ def main():
     for vid in planned:
         print("[c4] ===== 航次 %s（role=%s，%d/%d）====="
               % (vid, role_of[vid], len(entries) + 1, len(planned)))
-        spath, stream, meta = load_stream(vid, args.data_root)
+        spath, stream, meta = load_stream(
+            vid, args.data_root,
+            resample_100hz=(args.plant_backend == "streamE"))
         if a2 is None:
             a2 = A2Assembler(stream)
         else:

@@ -119,6 +119,12 @@ C2 臂推理经板后端复跑（预测器在环 soft-HIL）。本工作区新�
 | `scripts/23E_codegen_plantstepE.m` | ★ **S4-G2 PlantStepE codegen**（S20 烘焙，GRT 主案——Model D 先例：ERT 拒连续状态；base 注入 + Inlined；manifest + 双哈希零改动门禁）→ `EMS04_CHIL_FULLCTRL/Host/plantstep_e/<scenario>/` |
 | `model/HybridShip_ModelE_PlantStepE.slx` | 20E 产物（S4 线 plant-only 变体；脚本驱动生成） |
 | `results/s4/plantstepE/plantstepE_build_audit.json` | 20E 审计（根面 In=1/Out=16、接线画像、编译、主模型零改动） |
+| `scripts/20S_stream_wiring_audit.m` | ★ **S4-P3 B2 流变体接线实测**（2026-09-29，只读）：根级全边表 + 04 合成点（双输入 Sum）/03 消费者清单/02↔03 双向环/08 降额回授 03/能量域不消费推进侧状态 → `results/s4/plantstepE/stream_wiring_audit.json` |
+| `scripts/20S_build_plantstepE_stream.m` | ★ **S4-P3 B2 流驱动植物变体构建**（Path S″，冻结件裁决）：PlantStepE → SaveAs 变体；根 Inport×4 顺序冻结（P_gen_ref_kW/P_prop_realized_kW/P_hotel_kW/v_ship_mps_replay）；R1-R10 改接（04 双输入回放注入、v_ship/x_ship/v_cmd/P_prop 遥测改源、DT 积分器 Ts=0.01→x_ship→11 语义保持）；主模型+PlantStepE 双哈希零改动门禁 + 审计 JSON |
+| `scripts/23S_codegen_plantstepE_stream.m` | ★ **S4-P3 B2 流变体 codegen**（单次构建 4 航次共用，GRT 同 23E 口径，hostRoot 相对推导）→ `EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/codegen/` + manifest |
+| `model/HybridShip_ModelE_PlantStepE_Stream.slx` | 20S 产物（S4-P3 流回放驱动变体；需求侧=stream bin 处方量，能量域 ModelE 物理闭环保留） |
+| `results/s4/plantstepE/stream_wiring_audit.json` | 20Sa 审计（168 根级边 + 重点子系统内部结构 + 专项判定） |
+| `results/s4/plantstepE/stream_build_audit.json` | 20S 审计（三模型哈希零改动、R1-R10 改接清单、根面 In=4 顺序冻结、编译、登记偏差：v_ship_mps_replay 命名/08 回授不作用于处方量/accel 装饰源） |
 
 ## Legacy / Superseded（FR-492/493：不删不搬不改行为，仅 README 标记）
 

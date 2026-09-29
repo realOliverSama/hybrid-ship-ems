@@ -92,6 +92,18 @@
 | `tools/s4_c4_battery.py`（改） | P3-B1④：`--plant-backend streamE` + `--data-root`（装配 P3 冻结件 schema `s4_p3_formal_arm_freeze_v1`；stream 数据源 = formal .mat；产物目录改 `results/s4_p3/`；kf 表/stream bin/dylib 三级启动就绪检查，dylib 缺席 → `s4_p3_gate.json` PLANTSTEP_DYLIB_PENDING 门 rc=3 待 B2）。默认 pilot/modelE 路径零改动，selftest 20/20 保持 |
 | `results/s4_p3/` | P3-B1④产物：`s4_p3_gate.json`（PLANTSTEP_DYLIB_PENDING 门，overall 恒 false，B2 以正式 4/4 合取门覆盖） |
 
+### S4-P3 B2 段新增（2026-09-29，流驱动植物变体 MATLAB 手术 + codegen + 回放保真门）
+
+| 路径 | 内容 |
+|---|---|
+| `Host/tools/plantstep_e_stream_shim.c` | P3-B2④：流驱动 shim（API 与 plantstep_e_shim.c 同形；init 经 dladdr 同目录读 `<vid>.stream.f64.bin`（EMS04STM v1），ZOH 每 100 substeps 换行喂 4 根 Inport；voyage_stop=行尽∨模型终止；`get_states` 按名映射归一到 advancer 10 键契约序——本变体生成码 X 字段序与 PlantStepE 不同，实测 2026-09-29） |
+| `Host/tools/build_plantstep_e_stream.sh` | P3-B2④：shim + 23S 生成码 → `plantstep_e_stream/<vid>/libplantstepE_stream.dylib`（`<vid>|all`；EMS_MATLAB_ROOT 注入、MAT_FILE=0 绕行；`-install_name` 固定使 4 航次 dylib **逐字节一致** sha `e987d0cd…`；前置检查 manifest+stream bin） |
+| `Host/tools/run_gp2e_stream_gate.py` | P3-B2⑤：**G-P2E 回放保真门**——子步级全程核验 P_load_total_out ≡ P_prop_realized+P_hotel（1e-9 主门）+ v_ship 直通 + x_ship ForwardEuler 积分一致性（1e-6 m）+ SOC/Vdc 健康 + 终止语义 → `results/s4_p3/gp2e_stream_gate.json`。**结果：4/4 PASS，G1/G2 逐位 0 mismatch（max diff=0），x_ship 相位 B 参考逐位一致** |
+| `Host/plantstep_e_stream/codegen/` | P3-B2③：23S GRT 生成码（单份，4 航次共用）+ `build_manifest.json`（三模型哈希零改动门禁 PASS） |
+| `Host/plantstep_e_stream/<vid>/libplantstepE_stream.dylib` | P3-B2④产物：每航次一份（同一二进制 ×4） |
+| `Host/results/s4_p3/gp2e_stream_gate.json` | P3-B2⑤门产物（4/4 合取 overall=true） |
+| `Host/results/s4_p3/s4_c4_gate.json` 等 | P3-B2⑥ host 干跑产物（`--plant-backend streamE --dry` 4 航次；dry 语义 overall 恒 false） |
+
 ### P1/P2/P4 段新增（2026-09-29，Phase 4 收官续）
 
 | 路径 | 内容 |

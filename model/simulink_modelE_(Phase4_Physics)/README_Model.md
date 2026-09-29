@@ -10,7 +10,15 @@
 - **`model/HybridShip_ModelE.slx`**——Model E 主模型（builder `scripts/+model/build_model_e.m`
   全脚本驱动生成，禁 GUI 修改）。Model 体系 = **Model D 复制分叉 + Plant 物理升级**
   （Phase 4 工作包 A 第二段 T-403~T-411 施工，T-412 Gate 验收）。
-- 配套变体：无（PlantStep/HIL 实时化推迟后续 Phase；`HybridShip_ModelE.slx` 为唯一正式模型）。
+- 配套变体：
+  - `model/HybridShip_ModelE_PlantStepE.slx`（20E，S4-G2 plant-only 闭环变体：删 05/12、
+    根 Inport=P_gen_ref_kW、16 Outport）；
+  - `model/HybridShip_ModelE_PlantStepE_Stream.slx`（20S，**S4-P3 流驱动变体**，Path S″：
+    PlantStepE 派生，根 Inport×4 = P_gen_ref_kW / P_prop_realized_kW / P_hotel_kW /
+    v_ship_mps_replay（顺序冻结），需求侧（P_load=v_prop_replay+P_hotel_replay、
+    v_ship/x_ship/v_cmd 遥测）由 formal stream bin 回放处方，能量域
+    （06/07/08/09/10/13/14/15/16）ModelE 物理闭环保留；03↔02 需求分支保留为装饰
+    支路（登记偏差）；臂差异不进植物、只经每航次 kf 表进 REATT）。
 - 500 t representative hull 口径（K_R=890、几何 53.45/7.13/2.188/C_B=0.60；`target_vessel_confirmed=false`）；
   **与 Model D 绝对量不可比是设计意图**。
 

@@ -1,0 +1,1592 @@
+{
+  "schema": "s4_p3_stream_wiring_audit_v1",
+  "created_utc": "2026-09-29T05:25:25Z",
+  "model": "HybridShip_ModelE_PlantStepE",
+  "model_sha256": "8821dd0165998523b49ea8786e9d5f1e912a9abe038edb82f3fbbdc7a123917c",
+  "readonly": true,
+  "depth1_block_names": [
+    "P_gen_ref_kW",
+    "01_Operator_Interface",
+    "02_Propulsion_Controller",
+    "03_Propulsion_Plant",
+    "04_Load_Measurement",
+    "06_Genset_System",
+    "07_PMS_v2",
+    "08_Undervolt_Derate",
+    "09_Bus_Residual_Monitor",
+    "10_Fuel_Consumption",
+    "11_Voyage_Stop_Logic",
+    "13_DC_Bus",
+    "14_Battery_Converter",
+    "15_Bus_Voltage_Monitor",
+    "16_Safety_Interlock",
+    "T_log_1",
+    "T_log_10",
+    "T_log_11",
+    "T_log_12",
+    "T_log_13",
+    "T_log_14",
+    "T_log_15",
+    "T_log_16",
+    "T_log_17",
+    "T_log_18",
+    "T_log_19",
+    "T_log_2",
+    "T_log_20",
+    "T_log_21",
+    "T_log_22",
+    "T_log_23",
+    "T_log_24",
+    "T_log_3",
+    "T_log_4",
+    "T_log_5",
+    "T_log_6",
+    "T_log_7",
+    "T_log_8",
+    "T_log_9",
+    "T_pms_10",
+    "T_pms_12",
+    "T_pms_13",
+    "T_pms_14",
+    "T_pms_15",
+    "T_pms_18",
+    "T_pms_19",
+    "T_pms_20",
+    "T_pms_21",
+    "T_pms_22",
+    "T_pms_23",
+    "T_pms_24",
+    "T_pms_25",
+    "T_pms_26",
+    "T_pms_27",
+    "T_pms_28",
+    "T_pms_29",
+    "T_pms_30",
+    "T_pms_31",
+    "T_pms_32",
+    "T_pms_33",
+    "T_pms_34",
+    "T_pms_35",
+    "T_pms_9",
+    "T_safety_10",
+    "T_safety_11",
+    "T_safety_12",
+    "T_safety_13",
+    "T_safety_14",
+    "T_safety_9",
+    "UD_safety_baseline_fallback_active",
+    "UD_safety_baseline_fallback_reason",
+    "UD_safety_ems_health_ok",
+    "UD_safety_fault_latch",
+    "UD_safety_force_start_reason",
+    "UD_safety_force_start_req",
+    "UD_safety_force_stop_reason",
+    "UD_safety_force_stop_req",
+    "t",
+    "t_s",
+    "P_load_total_kW",
+    "SOC",
+    "v_cmd_mps",
+    "v_ship_mps",
+    "acceleration_mps2",
+    "x_ship_m",
+    "fuel_total_kg",
+    "P_bat_kW",
+    "P_prop_kW",
+    "state_DG1",
+    "state_DG2",
+    "P_DG1_kW",
+    "P_DG2_kW",
+    "V_dc_V",
+    "voyage_stop",
+    "G1_bat_dis",
+    "G1_bat_chg",
+    "G1_prop_dem",
+    "G1_hotel",
+    "G1_cmd_onoff_DG1",
+    "G1_cmd_onoff_DG2",
+    "G1_P_DG1_ref_kW",
+    "G1_P_DG2_ref_kW",
+    "G1_N_dispatch",
+    "G1_commitment_state",
+    "G1_reason_code",
+    "G1_P_commit_kW",
+    "G1_dispatch_min_clamp_active",
+    "G1_dispatch_n_zero_flag",
+    "G1_force_start_req",
+    "G1_force_start_reason",
+    "G1_force_stop_req",
+    "G1_force_stop_reason",
+    "G1_ems_health_ok",
+    "G1_baseline_fallback_active",
+    "G1_baseline_fallback_reason"
+  ],
+  "depth1_block_types": [
+    "Inport",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "SubSystem",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "Terminator",
+    "UnitDelay",
+    "UnitDelay",
+    "UnitDelay",
+    "UnitDelay",
+    "UnitDelay",
+    "UnitDelay",
+    "UnitDelay",
+    "UnitDelay",
+    "Clock",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport",
+    "Outport"
+  ],
+  "edge_src_block": [
+    "P_gen_ref_kW",
+    "P_gen_ref_kW",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "01_Operator_Interface",
+    "02_Propulsion_Controller",
+    "02_Propulsion_Controller",
+    "02_Propulsion_Controller",
+    "02_Propulsion_Controller",
+    "02_Propulsion_Controller",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "04_Load_Measurement",
+    "04_Load_Measurement",
+    "04_Load_Measurement",
+    "04_Load_Measurement",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "06_Genset_System",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "08_Undervolt_Derate",
+    "08_Undervolt_Derate",
+    "09_Bus_Residual_Monitor",
+    "10_Fuel_Consumption",
+    "10_Fuel_Consumption",
+    "10_Fuel_Consumption",
+    "10_Fuel_Consumption",
+    "11_Voyage_Stop_Logic",
+    "13_DC_Bus",
+    "13_DC_Bus",
+    "13_DC_Bus",
+    "13_DC_Bus",
+    "13_DC_Bus",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "14_Battery_Converter",
+    "15_Bus_Voltage_Monitor",
+    "15_Bus_Voltage_Monitor",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "UD_safety_baseline_fallback_active",
+    "UD_safety_baseline_fallback_active",
+    "UD_safety_baseline_fallback_reason",
+    "UD_safety_baseline_fallback_reason",
+    "UD_safety_ems_health_ok",
+    "UD_safety_ems_health_ok",
+    "UD_safety_fault_latch",
+    "UD_safety_force_start_reason",
+    "UD_safety_force_start_reason",
+    "UD_safety_force_start_req",
+    "UD_safety_force_start_req",
+    "UD_safety_force_stop_reason",
+    "UD_safety_force_stop_reason",
+    "UD_safety_force_stop_req",
+    "UD_safety_force_stop_req",
+    "t"
+  ],
+  "edge_src_port_coded": [
+    1,
+    1,
+    1,
+    1,
+    2,
+    3,
+    4,
+    4,
+    4,
+    4,
+    5,
+    6,
+    7,
+    8,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    3,
+    3,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    2,
+    4,
+    5,
+    5,
+    5,
+    5,
+    6,
+    6,
+    6,
+    6,
+    7,
+    8,
+    9,
+    9,
+    1,
+    2,
+    2,
+    3,
+    4,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    9,
+    10,
+    11,
+    11,
+    12,
+    13,
+    14,
+    14,
+    15,
+    15,
+    16,
+    16,
+    17,
+    17,
+    18,
+    18,
+    19,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27,
+    28,
+    29,
+    30,
+    31,
+    32,
+    33,
+    34,
+    35,
+    1,
+    2,
+    1,
+    1,
+    2,
+    3,
+    3,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    2,
+    2,
+    2,
+    3,
+    3,
+    3,
+    4,
+    4,
+    4,
+    5,
+    6,
+    7,
+    7,
+    8,
+    8,
+    9,
+    9,
+    1,
+    2,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "edge_dst_block": [
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "02_Propulsion_Controller",
+    "v_cmd_mps",
+    "03_Propulsion_Plant",
+    "03_Propulsion_Plant",
+    "04_Load_Measurement",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "G1_hotel",
+    "T_log_1",
+    "03_Propulsion_Plant",
+    "02_Propulsion_Controller",
+    "02_Propulsion_Controller",
+    "03_Propulsion_Plant",
+    "08_Undervolt_Derate",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "G1_prop_dem",
+    "04_Load_Measurement",
+    "P_prop_kW",
+    "02_Propulsion_Controller",
+    "v_ship_mps",
+    "01_Operator_Interface",
+    "11_Voyage_Stop_Logic",
+    "x_ship_m",
+    "acceleration_mps2",
+    "T_log_2",
+    "T_log_3",
+    "T_log_4",
+    "T_log_5",
+    "T_log_6",
+    "T_log_7",
+    "13_DC_Bus",
+    "09_Bus_Residual_Monitor",
+    "07_PMS_v2",
+    "P_load_total_kW",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "10_Fuel_Consumption",
+    "P_DG1_kW",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "10_Fuel_Consumption",
+    "state_DG1",
+    "T_log_22",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "10_Fuel_Consumption",
+    "P_DG2_kW",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "10_Fuel_Consumption",
+    "state_DG2",
+    "T_log_23",
+    "T_log_24",
+    "13_DC_Bus",
+    "09_Bus_Residual_Monitor",
+    "06_Genset_System",
+    "06_Genset_System",
+    "G1_P_DG1_ref_kW",
+    "06_Genset_System",
+    "06_Genset_System",
+    "G1_P_DG2_ref_kW",
+    "06_Genset_System",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "16_Safety_Interlock",
+    "T_pms_9",
+    "G1_P_commit_kW",
+    "T_pms_10",
+    "16_Safety_Interlock",
+    "G1_N_dispatch",
+    "T_pms_12",
+    "T_pms_13",
+    "T_pms_14",
+    "G1_dispatch_min_clamp_active",
+    "T_pms_15",
+    "G1_dispatch_n_zero_flag",
+    "16_Safety_Interlock",
+    "G1_cmd_onoff_DG1",
+    "16_Safety_Interlock",
+    "G1_cmd_onoff_DG2",
+    "T_pms_18",
+    "G1_commitment_state",
+    "T_pms_19",
+    "G1_reason_code",
+    "T_pms_20",
+    "T_pms_21",
+    "T_pms_22",
+    "T_pms_23",
+    "T_pms_24",
+    "T_pms_25",
+    "T_pms_26",
+    "T_pms_27",
+    "T_pms_28",
+    "T_pms_29",
+    "T_pms_30",
+    "T_pms_31",
+    "T_pms_32",
+    "T_pms_33",
+    "T_pms_34",
+    "T_pms_35",
+    "03_Propulsion_Plant",
+    "T_log_19",
+    "T_log_15",
+    "T_log_16",
+    "T_log_17",
+    "T_log_18",
+    "fuel_total_kg",
+    "voyage_stop",
+    "16_Safety_Interlock",
+    "14_Battery_Converter",
+    "15_Bus_Voltage_Monitor",
+    "08_Undervolt_Derate",
+    "V_dc_V",
+    "13_DC_Bus",
+    "09_Bus_Residual_Monitor",
+    "P_bat_kW",
+    "07_PMS_v2",
+    "16_Safety_Interlock",
+    "SOC",
+    "07_PMS_v2",
+    "T_log_8",
+    "G1_bat_dis",
+    "07_PMS_v2",
+    "T_log_9",
+    "G1_bat_chg",
+    "T_log_10",
+    "T_log_11",
+    "16_Safety_Interlock",
+    "T_log_12",
+    "16_Safety_Interlock",
+    "T_log_13",
+    "16_Safety_Interlock",
+    "T_log_14",
+    "T_log_20",
+    "T_log_21",
+    "UD_safety_fault_latch",
+    "UD_safety_force_start_req",
+    "UD_safety_force_start_reason",
+    "UD_safety_force_stop_req",
+    "UD_safety_force_stop_reason",
+    "UD_safety_ems_health_ok",
+    "UD_safety_baseline_fallback_active",
+    "UD_safety_baseline_fallback_reason",
+    "T_safety_9",
+    "T_safety_10",
+    "T_safety_11",
+    "T_safety_12",
+    "T_safety_13",
+    "T_safety_14",
+    "07_PMS_v2",
+    "G1_baseline_fallback_active",
+    "07_PMS_v2",
+    "G1_baseline_fallback_reason",
+    "07_PMS_v2",
+    "G1_ems_health_ok",
+    "07_PMS_v2",
+    "07_PMS_v2",
+    "G1_force_start_reason",
+    "07_PMS_v2",
+    "G1_force_start_req",
+    "07_PMS_v2",
+    "G1_force_stop_reason",
+    "07_PMS_v2",
+    "G1_force_stop_req",
+    "t_s"
+  ],
+  "edge_dst_port_coded": [
+    -1,
+    -18,
+    -1,
+    -1,
+    -3,
+    -4,
+    -2,
+    -7,
+    -7,
+    -1,
+    -1,
+    -5,
+    -3,
+    -4,
+    -1,
+    -2,
+    -6,
+    -6,
+    -1,
+    -1,
+    -1,
+    -2,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -3,
+    -3,
+    -2,
+    -1,
+    -10,
+    -8,
+    -1,
+    -1,
+    -8,
+    -1,
+    -2,
+    -1,
+    -1,
+    -11,
+    -9,
+    -3,
+    -1,
+    -9,
+    -2,
+    -4,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -2,
+    -1,
+    -3,
+    -4,
+    -1,
+    -5,
+    -5,
+    -10,
+    -11,
+    -1,
+    -1,
+    -1,
+    -12,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -3,
+    -1,
+    -4,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -2,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -14,
+    -1,
+    -1,
+    -1,
+    -1,
+    -2,
+    -2,
+    -1,
+    -3,
+    -13,
+    -1,
+    -4,
+    -1,
+    -1,
+    -5,
+    -1,
+    -1,
+    -1,
+    -1,
+    -15,
+    -1,
+    -16,
+    -1,
+    -17,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -1,
+    -18,
+    -1,
+    -19,
+    -1,
+    -17,
+    -1,
+    -12,
+    -14,
+    -1,
+    -13,
+    -1,
+    -16,
+    -1,
+    -15,
+    -1,
+    -1
+  ],
+  "sub04_inport_names": [
+    "P_prop_actual_kW",
+    "P_hotel_kW"
+  ],
+  "sub04_inport_port": [
+    1,
+    2
+  ],
+  "sub04_sums": {
+    "name": "total",
+    "inputs": "++"
+  },
+  "subs_internals": [
+    {
+      "sub": "02_Propulsion_Controller",
+      "blocks": [
+        {
+          "name": "v_ref_mps",
+          "type": "Inport"
+        },
+        {
+          "name": "v_ship_mps",
+          "type": "Inport"
+        },
+        {
+          "name": "ctrl_mode",
+          "type": "Inport"
+        },
+        {
+          "name": "manual_power_cmd_pct",
+          "type": "Inport"
+        },
+        {
+          "name": "Ki",
+          "type": "Gain"
+        },
+        {
+          "name": "Ki_int",
+          "type": "Integrator"
+        },
+        {
+          "name": "Kp",
+          "type": "Gain"
+        },
+        {
+          "name": "Limit",
+          "type": "Saturate"
+        },
+        {
+          "name": "PI out",
+          "type": "Sum"
+        },
+        {
+          "name": "err",
+          "type": "Sum"
+        },
+        {
+          "name": "manual_cmd_ramp",
+          "type": "RateLimiter"
+        },
+        {
+          "name": "manual_gain",
+          "type": "Gain"
+        },
+        {
+          "name": "mode_switch",
+          "type": "Switch"
+        },
+        {
+          "name": "P_prop_demand_kW",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "03_Propulsion_Plant",
+      "blocks": [
+        {
+          "name": "P_prop_demand_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "P_prop_limit_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "v_current_mps",
+          "type": "Inport"
+        },
+        {
+          "name": "resistance_multiplier",
+          "type": "Inport"
+        },
+        {
+          "name": "water_depth_m",
+          "type": "Inport"
+        },
+        {
+          "name": "1J",
+          "type": "Gain"
+        },
+        {
+          "name": "Avail",
+          "type": "MinMax"
+        },
+        {
+          "name": "DriveLag",
+          "type": "TransferFcn"
+        },
+        {
+          "name": "ElecEff",
+          "type": "Gain"
+        },
+        {
+          "name": "F_env",
+          "type": "Constant"
+        },
+        {
+          "name": "GearRatio_omega",
+          "type": "Gain"
+        },
+        {
+          "name": "Gearbox",
+          "type": "Gain"
+        },
+        {
+          "name": "HT_delay",
+          "type": "UnitDelay"
+        },
+        {
+          "name": "P_prop_clamp",
+          "type": "Saturate"
+        },
+        {
+          "name": "Propeller_Hydrodynamics",
+          "type": "SubSystem"
+        },
+        {
+          "name": "ShaftB",
+          "type": "Gain"
+        },
+        {
+          "name": "Ship_Hull_Dynamics_E",
+          "type": "SubSystem"
+        },
+        {
+          "name": "T_motor_clamp",
+          "type": "Saturate"
+        },
+        {
+          "name": "T_req",
+          "type": "Product"
+        },
+        {
+          "name": "Wake_vs_HT",
+          "type": "SubSystem"
+        },
+        {
+          "name": "abs_omega",
+          "type": "Abs"
+        },
+        {
+          "name": "kW2W",
+          "type": "Gain"
+        },
+        {
+          "name": "omega_floor",
+          "type": "Constant"
+        },
+        {
+          "name": "omega_min",
+          "type": "MinMax"
+        },
+        {
+          "name": "omega_prop",
+          "type": "Integrator"
+        },
+        {
+          "name": "radps2rpm",
+          "type": "Gain"
+        },
+        {
+          "name": "shaft sum",
+          "type": "Sum"
+        },
+        {
+          "name": "v_ship",
+          "type": "Integrator"
+        },
+        {
+          "name": "x_ship",
+          "type": "Integrator"
+        },
+        {
+          "name": "P_prop_actual_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "v_ship_mps",
+          "type": "Outport"
+        },
+        {
+          "name": "x_ship_m",
+          "type": "Outport"
+        },
+        {
+          "name": "acceleration_mps2",
+          "type": "Outport"
+        },
+        {
+          "name": "R_hull_N",
+          "type": "Outport"
+        },
+        {
+          "name": "F_prop_eff_N",
+          "type": "Outport"
+        },
+        {
+          "name": "n_prop_rpm",
+          "type": "Outport"
+        },
+        {
+          "name": "R_shallow_N",
+          "type": "Outport"
+        },
+        {
+          "name": "HT_ratio",
+          "type": "Outport"
+        },
+        {
+          "name": "domain_warning",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "04_Load_Measurement",
+      "blocks": [
+        {
+          "name": "P_prop_actual_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "P_hotel_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "clamp0",
+          "type": "Saturate"
+        },
+        {
+          "name": "total",
+          "type": "Sum"
+        },
+        {
+          "name": "P_load_total_kW",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "08_Undervolt_Derate",
+      "blocks": [
+        {
+          "name": "V_dc_V",
+          "type": "Inport"
+        },
+        {
+          "name": "P_prop_demand_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "MotNom",
+          "type": "Constant"
+        },
+        {
+          "name": "Mot_P_nom",
+          "type": "Gain"
+        },
+        {
+          "name": "clamp0",
+          "type": "Saturate"
+        },
+        {
+          "name": "derate_fn",
+          "type": "SubSystem"
+        },
+        {
+          "name": "mot_cap",
+          "type": "MinMax"
+        },
+        {
+          "name": "unserved sum",
+          "type": "Sum"
+        },
+        {
+          "name": "P_prop_limit_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "P_unserved_kW",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "11_Voyage_Stop_Logic",
+      "blocks": [
+        {
+          "name": "x_ship_m",
+          "type": "Inport"
+        },
+        {
+          "name": "reach",
+          "type": "SubSystem"
+        },
+        {
+          "name": "voyage_stop",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "06_Genset_System",
+      "blocks": [
+        {
+          "name": "DG1_cmd_start",
+          "type": "Inport"
+        },
+        {
+          "name": "DG1_P_ref_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "DG2_cmd_start",
+          "type": "Inport"
+        },
+        {
+          "name": "DG2_P_ref_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "DG_cmd_stop",
+          "type": "Inport"
+        },
+        {
+          "name": "GensetUnitE_DG1",
+          "type": "SubSystem"
+        },
+        {
+          "name": "GensetUnitE_DG2",
+          "type": "SubSystem"
+        },
+        {
+          "name": "cmd_stop_src",
+          "type": "FromWorkspace"
+        },
+        {
+          "name": "gen sum",
+          "type": "Sum"
+        },
+        {
+          "name": "stop_combine",
+          "type": "MinMax"
+        },
+        {
+          "name": "stop_demux",
+          "type": "Demux"
+        },
+        {
+          "name": "P_DG1_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "state_DG1",
+          "type": "Outport"
+        },
+        {
+          "name": "below_min_DG1",
+          "type": "Outport"
+        },
+        {
+          "name": "start_count_DG1",
+          "type": "Outport"
+        },
+        {
+          "name": "P_DG2_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "state_DG2",
+          "type": "Outport"
+        },
+        {
+          "name": "below_min_DG2",
+          "type": "Outport"
+        },
+        {
+          "name": "start_count_DG2",
+          "type": "Outport"
+        },
+        {
+          "name": "P_gen_actual_kW",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "13_DC_Bus",
+      "blocks": [
+        {
+          "name": "P_gen_actual_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "P_bat_bus_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "P_load_total_kW",
+          "type": "Inport"
+        },
+        {
+          "name": "V_int",
+          "type": "Integrator"
+        },
+        {
+          "name": "bus sum",
+          "type": "Sum"
+        },
+        {
+          "name": "dVdt",
+          "type": "SubSystem"
+        },
+        {
+          "name": "eta_rect",
+          "type": "Gain"
+        },
+        {
+          "name": "V_dc_V",
+          "type": "Outport"
+        }
+      ]
+    },
+    {
+      "sub": "14_Battery_Converter",
+      "blocks": [
+        {
+          "name": "V_dc_V",
+          "type": "Inport"
+        },
+        {
+          "name": "EC_ASSUMED_SOC_ChgDerate_Start",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_ASSUMED_SOC_DisDerate_Start",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_ASSUMED_SOC_max",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_ASSUMED_SOC_min",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_ASSUMED_eta_dcdc",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_C1_LUT_F",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_I_limit_surrogate_A",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_OCV_LUT_V",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_P_conv_bus_max_kW",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_Q_nom_Ah",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_R0_LUT_ohm",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_R0_chg_mult",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_R1_LUT_ohm",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_SOC_LUT_nodes",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_V_max_V",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_V_min_V",
+          "type": "Constant"
+        },
+        {
+          "name": "EC_Bat_eta_coul",
+          "type": "Constant"
+        },
+        {
+          "name": "K_droop",
+          "type": "Gain"
+        },
+        {
+          "name": "SOC_int",
+          "type": "Integrator"
+        },
+        {
+          "name": "V_nom",
+          "type": "Constant"
+        },
+        {
+          "name": "battery_ecm",
+          "type": "SubSystem"
+        },
+        {
+          "name": "droop sum",
+          "type": "Sum"
+        },
+        {
+          "name": "dt_step",
+          "type": "Constant"
+        },
+        {
+          "name": "P_bat_bus_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "SOC",
+          "type": "Outport"
+        },
+        {
+          "name": "P_bat_dis_avail_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "P_bat_chg_avail_kW",
+          "type": "Outport"
+        },
+        {
+          "name": "V_bat_V",
+          "type": "Outport"
+        },
+        {
+          "name": "I_bat_A",
+          "type": "Outport"
+        },
+        {
+          "name": "battery_power_limited",
+          "type": "Outport"
+        },
+        {
+          "name": "battery_discriminant_limit",
+          "type": "Outport"
+        },
+        {
+          "name": "ecm_lut_boundary_flag",
+          "type": "Outport"
+        }
+      ]
+    }
+  ],
+  "consumers_of_03": [
+    "01_Operator_Interface",
+    "02_Propulsion_Controller",
+    "04_Load_Measurement",
+    "11_Voyage_Stop_Logic",
+    "P_prop_kW",
+    "T_log_2",
+    "T_log_3",
+    "T_log_4",
+    "T_log_5",
+    "T_log_6",
+    "T_log_7",
+    "acceleration_mps2",
+    "v_ship_mps",
+    "x_ship_m"
+  ],
+  "feed_02_to_03": true,
+  "feed_03_to_02": true,
+  "consumers_of_08": [
+    "03_Propulsion_Plant",
+    "T_log_19"
+  ],
+  "consumers_of_root_inport_pgen": [
+    "07_PMS_v2",
+    "16_Safety_Interlock"
+  ],
+  "energy_domain_sub": [
+    [
+      "06_Genset_System",
+      "07_PMS_v2",
+      "09_Bus_Residual_Monitor",
+      "10_Fuel_Consumption",
+      "13_DC_Bus",
+      "14_Battery_Converter",
+      "15_Bus_Voltage_Monitor",
+      "16_Safety_Interlock"
+    ]
+  ],
+  "energy_domain_sources": [
+    [
+      [
+        "07_PMS_v2"
+      ],
+      [
+        "01_Operator_Interface",
+        "02_Propulsion_Controller",
+        "04_Load_Measurement",
+        "06_Genset_System",
+        "14_Battery_Converter",
+        "P_gen_ref_kW",
+        "UD_safety_baseline_fallback_active",
+        "UD_safety_baseline_fallback_reason",
+        "UD_safety_ems_health_ok",
+        "UD_safety_fault_latch",
+        "UD_safety_force_start_reason",
+        "UD_safety_force_start_req",
+        "UD_safety_force_stop_reason",
+        "UD_safety_force_stop_req"
+      ],
+      [
+        "04_Load_Measurement",
+        "06_Genset_System",
+        "14_Battery_Converter"
+      ],
+      [
+        "06_Genset_System"
+      ],
+      [
+        "04_Load_Measurement",
+        "06_Genset_System",
+        "14_Battery_Converter"
+      ],
+      [
+        "13_DC_Bus"
+      ],
+      [
+        "13_DC_Bus"
+      ],
+      [
+        "01_Operator_Interface",
+        "02_Propulsion_Controller",
+        "06_Genset_System",
+        "07_PMS_v2",
+        "13_DC_Bus",
+        "14_Battery_Converter",
+        "P_gen_ref_kW"
+      ]
+    ]
+  ]
+}

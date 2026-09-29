@@ -1,0 +1,60 @@
+{
+  "schema": "s4_p3_stream_build_audit_v1",
+  "created_utc": "2026-09-29T05:39:27Z",
+  "source_model": "HybridShip_ModelE_PlantStepE",
+  "stream_model": "HybridShip_ModelE_PlantStepE_Stream",
+  "main_model": "HybridShip_ModelE",
+  "main_sha256_before": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "main_sha256_after": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "main_unchanged": true,
+  "plantstepe_sha256_before": "8821dd0165998523b49ea8786e9d5f1e912a9abe038edb82f3fbbdc7a123917c",
+  "plantstepe_sha256_after": "8821dd0165998523b49ea8786e9d5f1e912a9abe038edb82f3fbbdc7a123917c",
+  "plantstepe_unchanged": true,
+  "stream_model_sha256": "443e226d6975b3ec8fc477310fbff2bd6d448c0e835d6a79bb9970bb3e4e859f",
+  "root_inports_portorder": [
+    "P_gen_ref_kW",
+    "P_prop_realized_kW",
+    "P_hotel_kW",
+    "v_ship_mps_replay"
+  ],
+  "rewire_tags": [
+    "R1",
+    "R2",
+    "R3",
+    "R4",
+    "R5",
+    "R6",
+    "R7",
+    "R9",
+    "R10"
+  ],
+  "rewire_targets": [
+    "04_Load_Measurement",
+    "04_Load_Measurement",
+    "07_PMS_v2",
+    "G1_hotel",
+    "P_prop_kW",
+    "v_ship_mps",
+    "v_cmd_mps",
+    "x_ship_m",
+    "11_Voyage_Stop_Logic"
+  ],
+  "rewire_inports": [
+    1,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+  ],
+  "retained_decorative_branch": "02-03 demand/feedback loop + 08 derate->03 retained intact (03 outputs no longer feed 04 / root outports except acceleration_mps2 and T_log taps); replay prescribes the load — undervolt derating cannot act on a prescribed load (Path S\" inherent, REGISTERED_DEVIATION)",
+  "naming_deviation": "root Inport named v_ship_mps_replay (spec name v_ship_mps collides with the existing Outport contract name; Simulink forbids same-level duplicate names)",
+  "accel_outport_note": "Outport acceleration_mps2 kept sourced from 03/out4 (decorative; not consumed by gates / downlink 8-state)",
+  "outport_contract": "16 Outport names/order unchanged (t_s..voyage_stop); G1_* extra outports untouched",
+  "compile_ok": true,
+  "compile_msg": "update OK",
+  "solver": "ode3 @ 0.01 s (inherited, unchanged)"
+}
