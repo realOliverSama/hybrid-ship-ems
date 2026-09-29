@@ -279,7 +279,11 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
 #include "ems_stai_rt.h"
 #include "ems_reatt.h"
 #include "ems_reatt_params.h"
+#ifdef EMS_REATT_F32
+#include "../../Model/reatt8_f32/reatt8.h"
+#else
 #include "../../Model/reatt8_q/reatt8.h"
+#endif
 
 /* I/O 契约编译期防漂移（生成物再生成后布局变化在此失败） */
 _Static_assert(STAI_REATT8_IN_1_SIZE_BYTES == 300u * 11u * 4u,
@@ -288,10 +292,18 @@ _Static_assert(STAI_REATT8_IN_2_SIZE_BYTES == 30u * 6u * 4u,
                "reatt8 in2 (normalized kf [1,30,6]) must be 180 x f32 = 720 B");
 _Static_assert(STAI_REATT8_OUT_1_SIZE_BYTES == 30u * 3u * 4u,
                "reatt8 out1 (raw (m,a,b) [1,30,3]) must be 90 x f32 = 360 B");
+#ifdef EMS_REATT_F32
+/* fp32 交付形态（偏差④修复，S4_PRED_PHYSICS_RCA.md）：权重/激活体积随精度翻倍 */
+_Static_assert(STAI_REATT8_WEIGHTS_SIZE_BYTES == 4052912u,
+               "reatt8 fp32 CPU-form weights (in-binary) = 4052912 B");
+_Static_assert(STAI_REATT8_ACTIVATIONS_SIZE_BYTES == 476204u,
+               "reatt8 fp32 CPU-form activations arena = 476204 B");
+#else
 _Static_assert(STAI_REATT8_WEIGHTS_SIZE_BYTES == 1432556u,
                "reatt8 CPU-form weights (in-binary) = 1432556 B");
 _Static_assert(STAI_REATT8_ACTIVATIONS_SIZE_BYTES == 332928u,
                "reatt8 CPU-form activations arena = 332928 B");
+#endif
 
 /* stai 网络上下文（生成宏，stai.h；对齐 8 由宏内部保证） */
 STAI_NETWORK_CONTEXT_DECLARE(ems_stai_ctx_reatt8, STAI_REATT8_CONTEXT_SIZE)

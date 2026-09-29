@@ -159,6 +159,45 @@ SCENARIO_COLS = ("v_ref_mps", "P_hotel_kW", "v_current_mps", "P_prop_demand_kW",
                  "water_depth_m")
 A2_BUF_CAP = 31000                           # 0.01 stamps 滚动缓冲（>300 s 窗）
 
+# CPUF32 形态 host 代理模型（偏差④修复交付形态；S4_PRED_PHYSICS_RCA.md §5-A）
+TFLITE_FP32 = os.path.join(HOST, "..", "Model", "reatt8_q",
+                           "reatt_raw_fp32.tflite")
+
+
+class TfliteFp32Chain:
+    """CPUF32 板形态的 host 代理（--bh-chain tflite-fp32 用）。
+
+    口径 = ems_reatt.c CPU 段逐项同式：f32 域冻结归一化（gen_ref_split_v2.
+    normalize f32_domain=True，与固件 ems_reatt.c 归一化环同域）→
+    reatt_raw_fp32.tflite（== 板载生成码的源模型；host 实测 == keras fp32
+    逐位级一致）→ 固件同式单调分位变换（gen_ref_split_v2.
+    firmware_quantile_transform）。与 Chain 同接口：run(hist,kf)->{"q":(30,3)}。
+    """
+
+    def __init__(self):
+        import tensorflow as tf
+        import gen_ref_split_v2 as g
+        self._g = g
+        self._norm = g.load_norm_artifacts()
+        self._ip = tf.lite.Interpreter(model_path=TFLITE_FP32)
+        self._ip.allocate_tensors()
+        ins = self._ip.get_input_details()
+        self._i_hist = [i["index"] for i in ins if "hist" in i["name"]][0]
+        self._i_kf = [i["index"] for i in ins if "kf" in i["name"]][0]
+        self._i_out = self._ip.get_output_details()[0]["index"]
+
+    def run(self, hist_raw, kf_raw):
+        g = self._g
+        hist_n, kf_n = g.normalize(np.asarray(hist_raw, dtype=np.float32),
+                                   np.asarray(kf_raw, dtype=np.float32),
+                                   self._norm, f32_domain=True)
+        self._ip.set_tensor(self._i_hist, hist_n[None].astype(np.float32))
+        self._ip.set_tensor(self._i_kf, kf_n[None].astype(np.float32))
+        self._ip.invoke()
+        raw = np.asarray(self._ip.get_tensor(self._i_out),
+                         dtype=np.float32).reshape(30, 3)
+        return {"q": g.firmware_quantile_transform(raw)}
+
 
 def sha256_file(path):
     h = hashlib.sha256()
@@ -662,7 +701,7 @@ def exec1s_refresh(law, board, d1_bh, d1_a2, t_edge, out, st_prev, exec_seq):
     运行性语义同 TICK_CTRL 失联）。"""
     p_load_f = f32(out["P_load_total_kW"])
     soc_f = f32(st_prev["SOC"])
-    v_f = f32(st_prev["v_ship_mps"])
+    v_f = f32(st_prev["v_ship_mps"] * 1.94384)   # m/s → kn（LCD SPEED 窗口径，同 EMS03 CMD_TICK）
     bh_pg = law.exec_layer(p_load_f, soc_f, law.lam_eff(d1_bh, soc_f))
     a2_pg = law.exec_layer(p_load_f, soc_f, law.lam_eff(d1_a2, soc_f))
     bb_pg = lam_bb = float("nan")
@@ -732,6 +771,15 @@ def main():
     ap.add_argument("--exec-period", type=int, default=10,
                     help="执行层刷新周期 s（口径 v2；默认 10=冻结 10 s 口径逐字节"
                          "不变；=1 每整秒边界 EXEC_REFRESH 三链同步刷新）")
+    ap.add_argument("--kf-table", default=KF_TABLE,
+                    help="kf 表路径（默认 = 冻结 S20 口径；偏差④修复后用 "
+                         "S20_composite_v2.kf_table.bin，见 S4_PRED_PHYSICS_RCA.md §3-R3）")
+    ap.add_argument("--mat", default=S20_MAT,
+                    help="场景侧 stream 源 .mat（默认 = 冻结 S20；v2 修复件同列语义）")
+    ap.add_argument("--bh-chain", default="split",
+                    choices=("split", "tflite-fp32"),
+                    help="B_HOST 链：split=板源 OE int8 N1+N2 ORT 代理（历史默认）；"
+                         "tflite-fp32=CPUF32 板形态 host 代理（偏差④修复后对拍口径）")
     args = ap.parse_args()
     if args.exec_period not in (1, 10):
         print("[c3] FAIL-CLOSED: --exec-period 仅支持 1/10，实际 %r"
@@ -742,15 +790,16 @@ def main():
     t_start_wall = time.time()
 
     # ---- 冻结件 ----
-    kft = load_kf_table(KF_TABLE)
+    kft = load_kf_table(args.kf_table)
     print("[c3] kf 表: n=%d issue=%g..%g step=%g vid=%s sha=%s…"
           % (kft["n"], kft["issue_first"],
              kft["issue_first"] + (kft["n"] - 1) * kft["issue_step"],
              kft["issue_step"], kft["voyage_id"], kft["sha256"][:12]))
 
     from scipy.io import loadmat
-    print("[c3] 载入 S20 pilot stream（场景侧时间表列，只读）…")
-    mat = loadmat(S20_MAT, simplify_cells=True)
+    print("[c3] 载入场景 stream（场景侧时间表列，只读）：%s"
+          % os.path.basename(args.mat))
+    mat = loadmat(args.mat, simplify_cells=True)
     stream = {c: np.asarray(mat["stream"][c], dtype=np.float64).ravel()
               for c in set(SCENARIO_COLS) | {"time_s"}}
     meta = {"voyage_id": str(mat["meta"]["voyage_id"]),
@@ -763,7 +812,10 @@ def main():
     pms_bh = PmsHost()
     pms_a2 = PmsHost()
     from gen_ref_split_v2 import Chain
-    chain = Chain()                          # 板源 OE int8 N1+N2 ORT 代理（host 侧）
+    if args.bh_chain == "tflite-fp32":
+        chain = TfliteFp32Chain()   # CPUF32 板形态 host 代理（偏差④修复口径）
+    else:
+        chain = Chain()                          # 板源 OE int8 N1+N2 ORT 代理（host 侧）
     a2 = A2Assembler(stream)
     ring = H1WindowHost()
     ring.begin(0, float(stream["water_depth_m"][0]), 0.0, 0)
@@ -1261,16 +1313,19 @@ def build_gate(rows, args, kft, stop_reason, n_drift_action, n_unattr_pgen,
                 "本会话 PING 探活 + CMD_RESET 后闭环）",
             "pms_lib_sha": sha256_file(PMS_LIB)[:12],
             "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
-            "b_host_chain": "gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）",
+            "b_host_chain": ("gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）"
+                             if args.bh_chain == "split" else
+                             "TfliteFp32Chain（CPUF32 host 代理：固件同式 f32 归一化"
+                             "+reatt_raw_fp32.tflite+同式分位变换）"),
             "a2_chain": "ppe.c2_inference.C2Predictor（FR836 float keras，"
                         "q50 kW 域）",
-            "kf_table": {"path": os.path.relpath(KF_TABLE, REPO),
+            "kf_table": {"path": os.path.relpath(args.kf_table, REPO),
                          "sha256": kft["sha256"], "n_rows": kft["n"],
                          "voyage_id": kft["voyage_id"], "profile_code": 3,
                          "profile_meaning": "PILOT_FIXTURE"},
             "constants": os.path.relpath(os.path.join(S1, "exported",
                                                       "constants.json"), REPO),
-            "s20_mat": os.path.relpath(S20_MAT, REPO),
+            "s20_mat": os.path.relpath(args.mat, REPO),
             "s20_mat_fixture_kind": meta["fixture_kind"],
             "scenario_side_cols": list(SCENARIO_COLS),
             "col_provenance": {

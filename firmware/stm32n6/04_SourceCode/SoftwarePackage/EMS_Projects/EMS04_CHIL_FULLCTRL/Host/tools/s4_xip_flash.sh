@@ -10,7 +10,10 @@ if [ ! -f "$REPO/AGENTS.md" ] || [ ! -d "$REPO/model" ]; then echo "REPO 推导�
 E04="$REPO/firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL"
 CLI="/Applications/STM32CubeIDE.app/Contents/Eclipse/plugins/com.st.stm32cube.ide.mcu.externaltools.cubeprogrammer.macos64_2.2.200.202503041107/tools/bin/STM32_Programmer_CLI"
 STLDR="$REPO/firmware/stm32n6/04_SourceCode/SoftwarePackage/External_Loader/MX25UM25645G_ATK-CNN647B/Binary/MX25UM25645G_ATK-CNN647B_ExtMemLoader.stldr"
-HEX="$E04/Appli/build/S4XIP/EMS01_CHIL_ECMS_Appli.xip.hex"
+# 偏差④修复（2026-09-29）：HEX 路径可用 S4_XIP_HEX 覆盖（默认 = 历史 S4XIP 路径
+# 不变）；后验读回长度随 .xip.bin 实际尺寸（CPUF32 形态镜像 4.94MB > 原 2.2MB 窗口）
+HEX="${S4_XIP_HEX:-$E04/Appli/build/S4XIP/EMS01_CHIL_ECMS_Appli.xip.hex}"
+BIN="${HEX%.hex}.bin"
 TS="$(date +%Y%m%d_%H%M%S)"
 BK="/tmp/nor_backup_p4xip"
 mkdir -p "$BK"
@@ -41,9 +44,12 @@ echo "$HEX_SHA  $HEX" >> "$BK/${TS}_SHA256.txt"
 echo "== [2] 烧写 XIP hex @0x70100400（--verify 硬校验） =="
 "$CLI" -c port=SWD mode=HotPlug -el "$STLDR" -d "$HEX" 0x70100400 --verify 2>&1 | tail -5
 
-echo "== [3] 后验读回 2.2MB 比对 =="
-"$CLI" -c port=SWD mode=HotPlug -el "$STLDR" -u 0x70100400 0x220000 "$BK/${TS}_post_0x70100400.bin" 2>&1 | tail -2
-python3 - "$BK/${TS}_post_0x70100400.bin" "$E04/Appli/build/S4XIP/EMS01_CHIL_ECMS_Appli.xip.bin" <<'EOF'
+echo "== [3] 后验读回比对（长度 = 镜像实际尺寸） =="
+IMG_SZ=$(stat -f%z "$BIN")
+READ_LEN=$(printf '0x%x' $(( (IMG_SZ + 0xFFFF) & ~0xFFFF )))
+echo "image $IMG_SZ B → readback $READ_LEN"
+"$CLI" -c port=SWD mode=HotPlug -el "$STLDR" -u 0x70100400 "$READ_LEN" "$BK/${TS}_post_0x70100400.bin" 2>&1 | tail -2
+python3 - "$BK/${TS}_post_0x70100400.bin" "$BIN" <<'EOF'
 import sys
 nor = open(sys.argv[1],'rb').read()
 img = open(sys.argv[2],'rb').read()

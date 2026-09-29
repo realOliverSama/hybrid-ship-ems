@@ -279,11 +279,15 @@ set(EMS_PREDICTOR "tcnq" CACHE STRING "EMS01 predictor slot: mlpq | tcnq (FR-511
 #         （part_n1，权重入 ELF），N2 = Attention/Dense/Fusion/Decoder 走 NPU
 #         形态（part_n2，NOR 权重 @0x70300000）；两段经 h_past[96] f32 共享
 #         缓冲零拷贝衔接（无量化往返）。
-set(EMS_REATT_FORM "SPLIT" CACHE STRING "REAT-T inference form: CPU | NPU | SPLIT")
+# CPUF32 → 整图全 CPU **fp32** 编译形态（Model/reatt8_f32，权重 4.05 MB 入 ELF，
+#         激活 476,204 B）——偏差④修复交付形态（2026-09-29）：int8 两管线与
+#         NPU/SPLIT 段均系统性失真（S4_PRED_PHYSICS_RCA.md），fp32 == keras
+#         逐位级一致；符号命名空间与 reatt8_q 相同（互斥编入）。
+set(EMS_REATT_FORM "SPLIT" CACHE STRING "REAT-T inference form: CPU | NPU | SPLIT | CPUF32")
 
 if(NOT (EMS_REATT_FORM STREQUAL "CPU" OR EMS_REATT_FORM STREQUAL "NPU"
-        OR EMS_REATT_FORM STREQUAL "SPLIT"))
-    message(FATAL_ERROR "EMS_REATT_FORM must be CPU, NPU or SPLIT, got: ${EMS_REATT_FORM}")
+        OR EMS_REATT_FORM STREQUAL "SPLIT" OR EMS_REATT_FORM STREQUAL "CPUF32"))
+    message(FATAL_ERROR "EMS_REATT_FORM must be CPU, NPU, SPLIT or CPUF32, got: ${EMS_REATT_FORM}")
 endif()
 
 if(NOT (EMS_PREDICTOR STREQUAL "mlpq" OR EMS_PREDICTOR STREQUAL "tcnq"))
@@ -557,14 +561,18 @@ if(EMS_FW_MODE STREQUAL "NPU")
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/stai_dl4f.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/dlf1.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS04_PRED_PARITY},0>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/stai_dlf1.c>"
-            # —— 整图 CPU 形态（EMS_REATT_FORM=CPU）
+            # —— 整图 CPU 形态（EMS_REATT_FORM=CPU，int8 历史形态，保留回归用）
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPU>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q/reatt8_data.c>"
+            # —— 整图 CPU fp32 形态（EMS_REATT_FORM=CPUF32，偏差④修复交付形态）
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPUF32>>:${EMS01_APP_DIR}/ems_npu_reatt8.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPUF32>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_f32/reatt8_data.c>"
         )
         target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE
             $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>>:EMS_REATT_SERVICE=1>
             $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},NPU>>:EMS_REATT_NPU=1>
             $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:EMS_REATT_SPLIT=1>
+            $<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS04_S2_PARITY},0>,$<STREQUAL:${EMS_REATT_FORM},CPUF32>>:EMS_REATT_F32=1>
         )
     else()
         set(EMS01_AI_MW "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/STEdgeAI")
