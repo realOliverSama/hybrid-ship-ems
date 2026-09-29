@@ -102,6 +102,18 @@
 - 理由：① 与固件包内既有 ThreadX 集成方式一致（ST 官方中间件形态即 CMSIS-RTOS2 包装）；② 保留未来内核可替换性（若后续 CubeMX 为 N6 引入其他 RTOS，应用层迁移面最小）；③ CMSIS-RTOS2 语义（osDelay/osKernelLock 等）与 HAL 时基协作路径清晰；
 - ThreadX 内核源与配置（`tx_user.h`、tick 频率、中断优先级掩码 BASEPRI 语义）作为工程资产纳入 `EMS_Projects/EMS04_CHIL_FULLCTRL/Middlewares/`（vendor 包保持只读，工作区例外见 AGENTS.md §11）。
 
+### 3.2.1 ThreadX 生成链路验证结论（2026-09-30 host 实验，GO）
+
+对工作树 .ioc 副本（/tmp）追加 7 组字段（+13 行，出处 = 固件包官方参考 `Tx_Thread_Creation.ioc` + CubeMX DB `ThreadX-STM32N6xx_Configs.xml`）后 headless 生成 **59s 一次成功（Round 1，GO）**：
+
+- **无需 X-CUBE-AZRTOS-N6 扩展包**（DB 原生组件）；**无需迭代**；
+- **HAL timebase = TIM6**（工程零 TIM 占用 + ST 官方示例同选）：生成 `stm32n6xx_hal_timebase_tim.c`；ThreadX 自身 tick 仍走 SysTick（`tx_initialize_low_level.S`），两者不冲突；
+- 产物：+194 文件（内核 186 文件自动复制进工程 `Middlewares/ST/threadx/` GNU 端口，md5 与固件包一致；App 侧 8 文件：`app_threadx.c`/`app_azure_rtos.c`/`tx_user.h` 等）；main.c 的 `while(1)` 保留但不可达（`MX_ThreadX_Init()` 后 scheduler 接管），USER CODE 区保留；
+- **CMake 全自动接线**（`Appli/mx-generated.cmake`：宏 2 + include 3 + 独立 `threadx` target 171 源）；真实工程重新生成即得，EMS 自有 CMake 段不受影响；
+- **资源增量（两版 Appli 真实编译通过，Release）**：FLASH +5,296 B / RAM +3,952 B（2KB 静态池 + 1KB timer 栈 + 内核结构）；
+- **唯一缺口：CMSIS-RTOS2 包装层**（`cmsis_os2.c` + `cmsis_os2.h`）不是 CubeMX 组件，需手动接线（建议段已在实验报告，工程集成时落盘）；
+- 工程集成前置：§2 的 .ioc 回写策略落地（本轮已落地 UART 波特率与 XSPI 迁移，见 75ff918d）+ 全量重生成的 hal_conf.h 宏恢复项（§2.3）。
+
 ### 3.3 任务拆分（主循环三分结构 → 任务化）
 
 现状单线程轮询（`main.c:332-336`）拆为三任务 + 既有中断层：
@@ -154,16 +166,35 @@
 
 | 门 | 提案阈值 | 状态 |
 |---|---|---|
-| 36 锚对拍 | **MAE ≤ 1.0 kW / max ≤ 5.0 kW**（对拍对象：keras fp32 冻结管线输出） | 实验由另一 worker 进行中，**（待 worker-2 报告回填）** |
+| 36 锚对拍 | **MAE ≤ 1.0 kW / max ≤ 5.0 kW**（对拍对象：keras fp32 冻结管线输出） | **已回填（worker-2，2026-09-29）**：36 锚 mean30 口径 MAE **0.0125 kW** / max **0.0775 kW**，corr 0.99999999；全步口径 MAE 0.0155 / max 0.3056 kW——远优于门限，verdict `PASS_CANDIDATE`（`experiments/deviation4_rca/p6_fp16_report.json`） |
 | 位级回归 | CPUF32 形态 6 pilot 锚 board==keras maxdiff=0.0 基线不退化（fp16 为新形态，本门保 CPUF32 路径零回归） | 待 fp16 形态实施后回归 |
 | 门禁纪律 | 阈值为**提案**，正式定版须主 Agent 依据 worker-2 数据裁决；禁凑判据（口径 v2 §4 纪律沿用） | — |
 
 ### 4.4 板测计划
 
-1. host 侧 fp16 导出与对拍（worker-2 进行中）→ 产物与结论回填本文 §4.3；
+1. host 侧 fp16 导出与对拍（**已完成**：`reatt_raw_fp16.tflite` 2,131,748 B = 0.514×fp32，sha256 `5c836e10…`，锚级对拍过 §4.3 提案门，`p6_fp16_report.json`）→ 产物与结论已回填本文 §4.3；
 2. 达门后新增 `EMS_REATT_FORM=CPUF16` 固件形态（类比 CPUF32 引入流程：analyze/generate → host 逐位/锚级对拍 → CMake 互斥编入）；
 3. 板测：6 pilot 锚 CMD_REATT 回放（对拍 keras）+ CMD_PROF 分账推理段时延（DWT 口径，对拍 1.12 s 基线）+ C3 单航次 G6 门；
 4. 全过 → 登记 §18 日志与本文回填，CPUF32 交付形态不动。
+
+### 4.5 stedgeai 工具链支持性（2026-09-29 实测，本节为工具链事实登记）
+
+**结论：`UNSUPPORTED`**——stedgeai 4.0.1-20581 对 **fp16 权重 tflite 的 N6 全 CPU 形态（无 `--st-neural-art`）连 analyze 都无法通过**，fp16 路线的板载化在本工具链版本上不可实现（非 STORAGE_ONLY：不存在"加载时反量化"的降级路径可退）。
+
+| 项 | fp32（reatt8_f32 先例，对照） | fp16（reatt_raw_fp16.tflite，2,131,748 B） |
+|---|---|---|
+| analyze | PASS：weights 4,052,912 B / 激活 375,432 B / macc 189,482,352 / ram 375,432 B | **FAIL（exit 255）**：`INTERNAL ERROR: 'FLOAT16'`（处理至 10/171 算子即崩，首个 fp16 权重 tensor 所在 conv 层） |
+| generate（同参 + `--no-inputs-allocation --no-outputs-allocation`） | PASS（既有可部署形态） | **FAIL（exit 255）**：同一 `INTERNAL ERROR: 'FLOAT16'`，无任何 kernel 生成 |
+| fp16/Helium kernel 证据 | — | **无**（未生成任何代码，谈不上 fp16 计算路径）；提速依据（§4.1 Helium fp16 向量 MAC + NOR 带宽减半）在本工具链上**无法兑现** |
+
+实验纪律与佐证：
+
+- 参数与 reatt8_f32 先例完全一致（`--target stm32n6`，无 `--st-neural-art`）；同目录同参数 fp32 analyze PASS 且数字与 `Model/reatt8_f32/reatt8_analyze_report.txt` 存档逐项一致——失败归因于模型内容而非环境/参数；
+- 模型结构定性（tflite 解析）：104 个 f16 权重 tensor + 483 个 f32 激活 tensor + 131 个 i32 元数据，确认"weights fp16 存储 / 激活 fp32"的 weights-only fp16 转换如预期；
+- CLI 无 fp16 开关（`--input/--output-data-type` 仅 `float32|int8|uint8`）；官方 `supported_ops_tflite.html` 支持矩阵无 float16 声明，release note 中 float16 仅涉 I/O 数据类型强制解释（且要求模型 I/O 本身为 FLOAT32），均与权重 fp16 转换无关；
+- 报错原文未给出版本要求；是否测试更新版 ST Edge AI 属工具链升级决策，**上报主 Agent 裁决**（本 worker 不自行升级）。
+
+对 fp16 路线的含义：§4.3 锚级精度门（host 侧 TFLite runtime 对拍，`PASS_CANDIDATE`）与 §4.4 板测链在第 2 步（`EMS_REATT_FORM=CPUF16` 生成）处被工具链阻断；当前 fp16 唯一已验证收益是 host 侧存储减半（0.514×fp32）。板载 fp16 的可能出路（未来 stedgeai 版本 / 手写 CMSIS-NN/Helium kernel 路线）属架构层新决策，超出本文既有方案范围，待主 Agent 裁决后另行立项。
 
 ---
 
