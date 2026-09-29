@@ -439,12 +439,13 @@ def build():
         "推理后端跨域漂移（档案，维持）：C3 的 59 拍 action 差异经用户裁决（G6 §4 承接点）认定为 "
         "S3-C 已登记 REATT 后端数值漂移传播，降级为 CLOSED_LOOP_BACKEND_DRIFT 档案（逐拍全量 "
         "CSV 在库，可按任何更严规则离线重判）；P3 formal 臂 4 航次同口径延伸登记。",
-        "板形态（RCA 闭环，烧写待批准）：Release 代码 + SRAM 直载。XIP/flash boot 启动问题 RCA "
-        "定案（S4_XIP_BOOT_RCA.md）：D1 = 构建系统 atk_release_flash_files ALL-target 使 "
-        "build/flash hex 被任意 Release 形态覆盖（误烧即砖通道）；D2 = S4Full 因 CMake FORCE "
-        "顺序实为 XIP 布局，PRED_PARITY=1 使 main() 在 XIP 执行态重初始化 XSPI2/NOR → 取指窗口"
-        "崩塌自杀（旧 hex 能跑新 hex 不能跑完全解释）。修复 F1~F4（XIP 守卫/CMake 顺序+S4XIP "
-        "产品形态/hex 形态守卫/镜像维持 0x70100400）已成文，烧写/断电待用户批准（park）。",
+        "板形态（v1.1 已消除）：flash boot XIP 产品形态达成。RCA 定案（S4_XIP_BOOT_RCA.md）："
+        "D1 = 构建系统 atk_release_flash_files ALL-target 使 build/flash hex 被任意 Release 形态"
+        "覆盖（误烧即砖通道）；D2 = S4Full 因 CMake FORCE 顺序实为 XIP 布局，PRED_PARITY=1 使 "
+        "main() 在 XIP 执行态重初始化 XSPI2/NOR → 取指窗口崩塌自杀。修复 F1~F4 实施后烧写"
+        "（0x70100400，三重校验：备份 e1dfc58f/verify/读回实质差 0）→ 拨 flash boot → PING 活 + "
+        "冒烟 100/100 零 NACK + infer 中位 295 ms（NPU 从 NOR 权重池推理 = 0x70A/0x70B 窗运行时"
+        "实证）+ LCD 实时显示功率流/SOC/q50 预测曲线（s4_c2_gate_xip.json）。",
     ])
     heading(doc, "6.6  P3 formal 臂电池覆盖（偏差①消除证据，v1.1）", 2)
     para(doc, "原偏差①（电池域=pilot fixture 家族，无 M1/M2 臂轴）由 P3 消除：冻结件 "
@@ -500,8 +501,9 @@ def build():
         "经裁决档案化而非消除；执行层刀锋区（argmin 平局）是其放大器。",
         "板内每拍处理 ≈5.5 s（v1.1 实测分账：law6 DP 5.23 s 为主要项，已位级加速 1.22×），"
         "10 s 拍占用率 ≈68%——1 s 拍在当前冻结算法口径下不可行（板内计算超拍周期 5.5×）。",
-        "板形态为 Release 代码 SRAM 直载：XIP/flash boot RCA 已闭环（双缺陷定案），修复 F1~F4 "
-        "就绪，烧写/断电待用户批准——产品形态等价性冒烟在批准后补。",
+        "LCD 航速窗：TICK_CTRL 93B 冻结下行契约无 v_ship 字段，产品形态 LCD 航速显示为装饰位 "
+        "（功率流/SOC/q50 预测为真实实时量）；真实航速显示需扩契约（动冻结线格式+host 工具链）"
+        "或改绑板内已有量——待裁决。",
         "Model E 绝对量为 representative hull（target_vessel_confirmed=false），绝对油耗数值不具"
         "备实船对标意义。",
     ])
@@ -534,14 +536,16 @@ def build():
               "4 航次（M1/M2 预报质量臂）overall=%s。验收边界见 §6.5/§6.6。"
               % p3("overall", "（B3 归档中）"))
     para(doc, "验收结论（三项一句话）：产品形态 = Release 全控制器固件（REATT int8 + law6 + "
-              "PMS/Safety）SRAM 直载实时闭环，XIP 常驻形态修复就绪待烧写批准；实时预算 = 板内 "
-              "5.5 s + UART 1.2 s ≈ 6.8 s/拍，10 s 决策拍占空 68%，物理实时内；验收结论 = S4 "
-              "soft-HIL 证据面 PASS（C2/C3/C4/P3 机器化门禁全过，漂移与边界全部档案化可回溯）。")
+              "PMS/Safety）flash boot XIP 常驻运行（0x70100400，拨 boot 冒烟 100/100 零 NACK + "
+              "LCD 实时显示，s4_c2_gate_xip.json），SRAM 直载形态完成全部闭环验证；实时预算 = "
+              "板内 5.5 s + UART 1.2 s ≈ 6.8 s/拍，10 s 决策拍占空 68%，物理实时内；验收结论 = "
+              "S4 soft-HIL 证据面 PASS（C2/C3/C4/P3 机器化门禁全过 + 产品形态等价冒烟，漂移与"
+              "边界全部档案化可回溯）。")
     heading(doc, "9.3  签字", 2)
     table(doc, ["项", "内容", "签字/日期"],
           [["S3-C 终闭宣告", "契约 V2.1 PASS + 755 战役全过，正式终闭", ""],
            ["S4 soft-HIL 验收", "证据面 PASS（C2/C3/C4/P3 + P1/P2 收官）", ""],
-           ["XIP 烧写批准（后续）", "F1~F4 修复实施 + 0x70100400 烧写 + 拨 boot 冒烟", ""]])
+           ["XIP 烧写确认", "已执行（用户批准 2026-09-29）：0x70100400 烧写三重校验 + 拨 boot 冒烟 PASS", ""]])
 
     # ---- 附录 A ----
     heading(doc, "附录 A  复现命令与指纹", 1)

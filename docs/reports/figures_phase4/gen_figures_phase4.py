@@ -300,10 +300,13 @@ def fig_c4_battery():
 # ---------------------------------------------------------------- 新绘：每拍耗时
 def fig_timing():
     fig, ax = plt.subplots(figsize=(9.2, 2.9))
-    segs = [("下行 UART 13960 B@115200", 1490, C["lblue"]),
-            ("板内处理（REATT+law6 DP+PMS×1000）", 6830, C["orange"]),
-            ("RSP 上行 93 B", 9, C["gray"]),
-            ("host 三链（keras+ORT+law6+PMS×2）", 642, C["green"])]
+    # P1/P2 实测分账（CMD_PROF 0x10/0x11，CYCCNT 周期域回绕安全；DP=J1-J3 位级加速后）
+    segs = [("下行 UART 13960 B@115200", 1210, C["lblue"]),
+            ("REATT 推理（NPU int8）", 300, C["green"]),
+            ("law6 DP（位级加速 1.22× 后）", 5233, C["orange"]),
+            ("执行层 grid+PMS×1000", 4, C["gray"]),
+            ("RSP 上行 93 B", 8, C["gray"]),
+            ("host 三链（keras+ORT+law6+PMS×2）", 642, C["lblue"])]
     left = 0
     for name, v, c in segs:
         ax.barh(0, v, left=left, color=c, height=0.5, label=name)
@@ -312,13 +315,14 @@ def fig_timing():
         left += v
     ax.axvline(10000, color=C["red"], lw=1.2, ls="--")
     ax.text(10000, 0.36, "10 s 决策拍（100%）", color=C["red"], fontsize=8.5, ha="right")
+    ax.axvline(6755, color=C["orange"], lw=1.0, ls=":")
     ax.set_xlim(0, 10600); ax.set_yticks([])
-    ax.set_xlabel("每拍墙钟（ms）—— 实测合计 ≈8.97 s，占用率 ≈90%（约 1.1 倍物理实时）")
+    ax.set_xlabel("每拍墙钟（ms）—— v1.1 实测分账合计 ≈6.76 s，占用率 ≈68%（物理实时内）")
     ax.legend(fontsize=8, loc="upper center", ncol=2, framealpha=0.9)
-    ax.set_title("C3 每拍耗时分解（分相位探针 + run3 统计；板内分账待 DWT 使能）", fontsize=10)
+    ax.set_title("C3 每拍耗时分解（v1.1：DWT 实测分账 + DP 位级加速后；10 s 拍占空 68%）", fontsize=10)
     fig.tight_layout()
     save(fig, "g_fig5_5_timing.png",
-         "分相位探针（2026-09-29 实测）+ s4_c3_closedloop.csv host_ms/board_ms")
+         "CMD_PROF 板内分账（v1.1，2026-09-29）+ s4_c3_closedloop.csv host_ms/board_ms")
 
 
 def main():
