@@ -44,6 +44,21 @@ GATE_BAT = jload(os.path.join(R4, "s4_c4", "s4_c4_gate.json"), {})
 GATE_S02 = jload(os.path.join(R4, "s4_c4", "s4_c4_S02_downstream_gate.json"), {})
 GATE_S08 = jload(os.path.join(R4, "s4_c4", "s4_c4_S08_resistance_bands_gate.json"), {})
 GATE_S03 = jload(os.path.join(R4, "s4_c4", "s4_c4_S03_upstream_gate.json"), {})
+# S4-P3 v1.1：formal 臂电池（streamE）逐航次 gate
+P3_VIDS = ["FLTA_S2_D01006_M1", "FLTA_S2_D01006_M2",
+           "FLTA_S6_D05003_M1", "FLTA_S6_D05003_M2"]
+GATE_P3_BAT = jload(os.path.join(R4, "s4_p3", "s4_c4_gate.json"), {})
+GATE_P3 = {v: jload(os.path.join(R4, "s4_p3", "s4_c4_%s_gate.json" % v), {})
+           for v in P3_VIDS}
+
+
+def p3(key, default="（gate 缺失）"):
+    v = GATE_P3_BAT
+    for k in key.split("."):
+        v = v.get(k) if isinstance(v, dict) else None
+        if v is None:
+            return default
+    return v
 
 
 def c3(key, default="（gate 缺失）"):
@@ -172,7 +187,7 @@ def build():
     r = sp.add_run("——Model E 物理域重构、REAT-T 预测换代与整机 soft-HIL 验证")
     set_run_font(r, size=14, east="楷体", bold=True)
     dp = doc.add_paragraph(); dp.alignment = WD_ALIGN_PARAGRAPH.CENTER
-    r = dp.add_run("报告日期：%s（依据仓库内门禁 JSON 与会话记录整理；数字来源逐处标注）" % REPORT_DATE)
+    r = dp.add_run("报告日期：%s · 版本 v1.1（依据仓库内门禁 JSON 与会话记录整理；数字来源逐处标注）" % REPORT_DATE)
     set_run_font(r, size=10.5, east="楷体")
     doc.add_paragraph()
 
@@ -193,11 +208,18 @@ def build():
               "未来信息消融证实 K/F 通道为主要增益来源）。")
     para(doc, "整机 soft-HIL（EMS04 线）：S1 law6 C 移植 377/377 位级、S2 特征面板服务 755/755 "
               "逐字节、G1 PMS/Safety 移植 6001/6001 逐位、S3 REATT 拆分 N1+N2 上 NPU（后端跨域"
-              "数值漂移按 V2 契约登记）；C3 单航次 541 拍闭环 overall PASS（等值 89.1%，59 拍跨后端"
+              "数值漂移按 V2 契约登记）；C3 单航次 541 拍闭环 overall PASS（等值 89.1%%，59 拍跨后端"
               "漂移按用户裁决降级为 CLOSED_LOOP_BACKEND_DRIFT 档案），C4 冻结电池 3/3 航次 PASS"
-              "（零漂移、零 NACK）。三项边界如实登记：推理后端跨域漂移档案化、电池域为 pilot fixture "
-              "家族（M1/M2 臂覆盖待 formal 植物 pipeline）、板形态为 Release 代码 SRAM 直载"
-              "（XIP/flash boot 启动问题独立立项）。")
+              "（零漂移、零 NACK）。收官续段（P1~P6，v1.1）：DWT 遥测补全（板内实测分账：REATT "
+              "≈0.30 s + law6 DP 5.23 s + PMS ≈0.004 s，10 s 拍占空 ≈68%%）+ law6 DP 位级加速 "
+              "1.22×（J1 前缀合并/J2 机组对称/J3 查表前置，377/377 逐拍位级 + 板级 100 拍逐拍"
+              "同一性 + C4 零回归）；P3 formal 臂电池覆盖 4 航次（M1/M2 预报质量臂 ×2 配对族，"
+              "流驱动植物变体 G-P2E 回放保真门 4/4 逐位）overall=%s；T-429 经 EXECFIX-02 审计"
+              "实现修复重审（DIR reach 匹配 + probe 类分层折），六项身份全部 clean（0 INVALID/"
+              "0 INSUFFICIENT），终态 FAIL_METRIC（T-432 维持不解锁，NO-GO 边界归档）。两项边界"
+              "状态更新：电池域 pilot 家族局限已由 formal 臂覆盖消除；XIP/flash boot 启动问题 RCA "
+              "闭环（双缺陷定案 + F1~F4 修复方案），烧写待用户批准（park）。"
+              % p3("overall"))
 
     # ---- 1 背景与问题定义 ----
     heading(doc, "1  研究背景与问题定义", 1)
@@ -377,9 +399,13 @@ def build():
                  c3("backend_drift_archive.drift_subclasses", {}).get("triple", "0"),
                  c3("backend_drift_archive.drift_consec_max"),
                  c3("transform_archive_G6_2.action_diff_n")))
-    para(doc, "每拍耗时实测（10 s 决策拍）：下行 UART 13960 B@115200 ≈1.49 s；板内处理 ≈6.83 s"
-              "（REATT ≈0.3 s，law6 DP 21 万次转移/拍为主要项——DWT 遥测缺失，分账待补）；host 三链 "
-              "中位 0.64 s；合计 ≈9.1 s/拍，约 1.1 倍物理实时。")
+    para(doc, "每拍耗时实测（10 s 决策拍；v1.1 = DWT 遥测补全后的板内分账 + law6 DP 位级加速后）："
+              "下行 UART 13960 B@115200 ≈1.21 s；板内处理 ≈5.54 s——REATT 推理 ≈0.30 s（NPU int8，"
+              "周期域回绕安全口径）、law6 DP ≈5.23 s（J1 FLOOR 前缀合并 + J2 机组对称崩塌 + J3 查表"
+              "前置，位级加速 1.22×；加速前 6.39 s）、执行层 grid + PMS×1000 ≈0.004 s；host 三链中位 "
+              "0.64 s。合计 ≈6.8 s/拍，对 10 s 拍占用率 ≈68%（物理实时内；C3 541 拍 + C4 92 拍 + "
+              "P3 1456 拍全链零超时实证）。1 s 拍可行性：板内计算 5.5 s 已超 1 s 拍周期 5.5×，"
+              "位级红线内结构性重复已穷尽——不可行（备忘 s4_p2_dp_accel_memo.md）。")
     figure(doc, "g_fig5_2_c3_overview.png",
            "图 6-1  C3 单航次闭环总览：SOC（界内）/ 植物 P_load 与三链 P_gen_ref / 三链 Δλ（橙底=漂移档案窗）。"
            "0↔800 kW 方波段为执行层在 λ 下限处充-放电经济性近平的逐拍 argmin 切换，植物侧机组惯性吸收，无发散振荡")
@@ -408,17 +434,44 @@ def build():
            "图 6-3  C4 电池三航次：SOC 与三链 P_gen_ref（逐航次独立复位；三航次板与 B_HOST 全等值）")
     heading(doc, "6.4  每拍时序预算", 2)
     figure(doc, "g_fig5_5_timing.png", "图 6-4  每拍墙钟分解（对 10 s 决策拍，占用率约 90%）")
-    heading(doc, "6.5  验收边界（三项登记偏差）", 2)
+    heading(doc, "6.5  验收边界（登记偏差与 v1.1 状态）", 2)
     bullets(doc, [
-        "推理后端跨域漂移：C3 的 59 拍 action 差异经用户裁决（G6 §4 承接点）认定为 S3-C 已登记 "
-        "REATT 后端数值漂移传播，降级为 CLOSED_LOOP_BACKEND_DRIFT 档案（逐拍全量 CSV 在库，"
-        "可按任何更严规则离线重判）。",
-        "电池域：C4 电池取自 pilot fixture 家族（persistence 预报），G6 §2 原文的 M1(DEGRADED)/"
-        "M2(GOOD) 臂轴在 pilot 家族不存在——臂覆盖待 formal 植物 pipeline（formal FLTA 族无 "
-        "PlantStepE 植物域）。",
-        "板形态：Release 代码 + SRAM 直载（ELF 8b71d341 plan==readback）。XIP/flash boot 启动问题"
-        "（黑屏停 boot ROM 0x1800350E）独立立项，修复后补产品形态等价性冒烟。",
+        "推理后端跨域漂移（档案，维持）：C3 的 59 拍 action 差异经用户裁决（G6 §4 承接点）认定为 "
+        "S3-C 已登记 REATT 后端数值漂移传播，降级为 CLOSED_LOOP_BACKEND_DRIFT 档案（逐拍全量 "
+        "CSV 在库，可按任何更严规则离线重判）；P3 formal 臂 4 航次同口径延伸登记。",
+        "板形态（RCA 闭环，烧写待批准）：Release 代码 + SRAM 直载。XIP/flash boot 启动问题 RCA "
+        "定案（S4_XIP_BOOT_RCA.md）：D1 = 构建系统 atk_release_flash_files ALL-target 使 "
+        "build/flash hex 被任意 Release 形态覆盖（误烧即砖通道）；D2 = S4Full 因 CMake FORCE "
+        "顺序实为 XIP 布局，PRED_PARITY=1 使 main() 在 XIP 执行态重初始化 XSPI2/NOR → 取指窗口"
+        "崩塌自杀（旧 hex 能跑新 hex 不能跑完全解释）。修复 F1~F4（XIP 守卫/CMake 顺序+S4XIP "
+        "产品形态/hex 形态守卫/镜像维持 0x70100400）已成文，烧写/断电待用户批准（park）。",
     ])
+    heading(doc, "6.6  P3 formal 臂电池覆盖（偏差①消除证据，v1.1）", 2)
+    para(doc, "原偏差①（电池域=pilot fixture 家族，无 M1/M2 臂轴）由 P3 消除：冻结件 "
+              "S4_P3_FORMAL_ARM_FREEZE.json（元数据规则纯驱动、先冻结后执行）选 4 航次 = "
+              "2 配对族 × 2 预报质量臂（M1=GOOD_V1 / M2=DEGRADED_V1，_iid_ledger 权威口径）。"
+              "植物侧 = 流驱动变体（HybridShip_ModelE_PlantStepE_Stream.slx：formal 航次母线负载流"
+              "回放 + ModelE 能量域物理闭环；G-P2E 回放保真门 4/4——P_load/v_ship 逐位恒等、"
+              "x_ship 终点差 0）；臂轴经 kf 表（profile_code 1/2）进入 REATT。板在环结果：")
+    if p3("overall") is True:
+        rows = []
+        for ent in GATE_P3_BAT.get("voyages", []):
+            g6 = ent.get("g6", {})
+            rows.append([ent.get("voyage_id"), ent.get("role"),
+                         "%s/%s" % (ent.get("formal_done"), ent.get("formal_ticks")),
+                         g6.get("g6_3_amended_pass"),
+                         g6.get("drift_action_diff_n"),
+                         g6.get("unattributed_pgen_n"),
+                         "%.4f..%.4f" % (g6.get("soc_min", 0), g6.get("soc_max", 0)),
+                         str(ent.get("overall"))])
+        table(doc, ["航次", "臂", "正式拍", "G6-3 修订门", "漂移拍", "未归因", "SOC", "overall"],
+              rows)
+        para(doc, "电池合取 overall=True（4/4 航次，电池 gate %s）——**偏差①状态：已消除**；"
+                  "预报质量臂轴（GOOD_V1 vs DEGRADED_V1）上的板-Host 一致性与 pilot 电池同口径。"
+                  % p3("created_utc", "-"))
+    else:
+        para(doc, "（B3 板跑进行中/结果待归档：当前 gate overall=%s——本节表格与“已消除”结论在 "
+                  "gate overall=True 后由构建脚本自动填充。)" % p3("overall"))
 
     # ---- 7 结论与贡献 ----
     heading(doc, "7  结论与贡献", 1)
@@ -439,26 +492,56 @@ def build():
     heading(doc, "8  局限与展望", 1)
     heading(doc, "8.1  局限（如实登记）", 2)
     bullets(doc, [
-        "C 线 T-429 可辨识性审计 FINAL FAIL（0/6 必需对比 PASS）：预配准盲区间歇性不可辨识，"
-        "formal 以 amendment 放行——语料对比力证据存在缺口。",
+        "C 线 T-429 可辨识性审计（v1.1 终态）：EXECFIX-02 审计实现修复重审后 overall 仍 FAIL "
+        "（verdict FAIL_METRIC，0/6），但六项身份全部 clean（0 INVALID/0 INSUFFICIENT）——DIR 的"
+        "方向物理效应经配对检验真实存在（ΔP=+85.6 kW，p=3.8e-7，混合池 probe 判据未达），DEPTH "
+        "在当前组规模/保真度下不可辨识（负结果成立）；T-432 维持不解锁，NO-GO 边界归档。",
         "S3-C 跨后端数值漂移（板 int8 NPU vs host）：闭环上 10.9% 拍的 action 档位差（S20），"
         "经裁决档案化而非消除；执行层刀锋区（argmin 平局）是其放大器。",
-        "板内每拍处理 ~6.8 s（law6 DP 21 万次转移为主要嫌疑项，DWT 遥测缺失分账未完成），"
-        "10 s 拍占用率 83%——1 s 拍在当前形态不可行。",
-        "电池域为 pilot fixture 家族（persistence 预报、FIXTURE_CAUSAL_STUB），M1/M2 臂覆盖缺失。",
-        "XIP/flash boot 启动问题未解（SRAM 直载形态替代）。",
-        "S4Smoke 形态 DWT 遥测缺失（infer_us/ctrl_us 恒 0）；Model E 绝对量为 representative hull "
-        "（target_vessel_confirmed=false），绝对油耗数值不具备实船对标意义。",
+        "板内每拍处理 ≈5.5 s（v1.1 实测分账：law6 DP 5.23 s 为主要项，已位级加速 1.22×），"
+        "10 s 拍占用率 ≈68%——1 s 拍在当前冻结算法口径下不可行（板内计算超拍周期 5.5×）。",
+        "板形态为 Release 代码 SRAM 直载：XIP/flash boot RCA 已闭环（双缺陷定案），修复 F1~F4 "
+        "就绪，烧写/断电待用户批准——产品形态等价性冒烟在批准后补。",
+        "Model E 绝对量为 representative hull（target_vessel_confirmed=false），绝对油耗数值不具"
+        "备实船对标意义。",
     ])
     heading(doc, "8.2  展望（另立项）", 2)
     bullets(doc, [
-        "XIP/flash boot 启动 RCA 与 release 启动修复（含产品形态等价性冒烟）。",
-        "formal 臂覆盖：FLTA 族 PlantStepE 植物化 → M1/M2 臂 soft-HIL 电池。",
-        "板内 DP/推理加速（DWT 分账 → DP 内环优化/网格降维）+ 小帧协议（板侧 H1 自构造）"
-        "→ 提升墙钟加速比。",
-        "DWT 遥测补全；漂移档案的离线再判定接口（CSV 全量在库）。",
-        "T-429 可辨识性缺陷修复后重审语料对比力。",
+        "XIP/flash boot：F1~F4 修复实施 + 烧写（用户批准点）+ 拨 boot 冒烟 100 拍零 NACK = 产品"
+        "形态等价证据；LCD 实时显示（功率流/预测信息）绑定 TICK_CTRL 全链数据面为配套增量。",
+        "漂移档案的离线再判定接口（CSV 全量在库）；S3-C 后端漂移的量化收敛（换代或校准）。",
+        "1 s 拍路线：需 DP 换代（近似/降阶/离线策略表）——位级红线内已穷尽（小帧协议评估结论："
+        "仅省 UART 无补于计算，登记不必要）。",
+        "UART 921600 提速（固件开关既有）：拍墙钟 6.8→5.7 s 量级，产品形态阶段候选。",
     ])
+
+    # ---- 9 验收结论与签字页（单独成页；用户签字点 park）----
+    doc.add_page_break()
+    heading(doc, "9  验收结论与签字（单独成页；本页待用户签字，park 状态）", 1)
+    heading(doc, "9.1  S3-C FINAL closure（终闭宣告材料）", 2)
+    para(doc, "S3C_BACKEND_NUMERICAL_CONTRACT_V2_1 = PASS（2026-09-28）。资格链：V2-1 holdout "
+              "48/48 锚逐位（T4 机制全锚成立）→ V2.1 稳定性（E_rel 幅值归一口径）ρ=0.189/0.336 "
+              "≤ 0.5 → 755 全量战役（BD 腿 755/755 逐位 + ST 腿抽样 96/96 声明式逐位 + HB 腿 "
+              "755/755 对齐 + 双跑复验）→ 四 gate + 双跑全 PASS。U1/U2 已 CLOSED_AS_DIAGNOSTIC_"
+              "ONLY。终闭条件全部满足；正式终闭宣告经本页签字生效。")
+    heading(doc, "9.2  S4 整机 soft-HIL 验收结论", 2)
+    para(doc, "S4 soft-HIL 证据面验收 = PASS（2026-09-29）。证据链：S1 law6 C 移植 377/377 位级；"
+              "S2 特征面板 755/755 逐字节；G1 PMS/Safety 移植 6001/6001 逐位；S3-C 后端契约 PASS"
+              "（上）；C2 板级冒烟 100/100 零 NACK（控制面形态全正确）；C3 单航次 541 拍闭环 "
+              "overall PASS（等值 89.1%%，59 拍漂移经用户裁决降级 CLOSED_LOOP_BACKEND_DRIFT 档案"
+              " + CLOSED_LOOP_TRANSFORM_EFFECT）；C4 pilot 电池 3/3 PASS（零漂移零 NACK）；P1 遥测"
+              "补全（板内实测分账）+ P2 DP 位级加速 1.22×（三重回归全绿）；P3 formal 臂电池 "
+              "4 航次（M1/M2 预报质量臂）overall=%s。验收边界见 §6.5/§6.6。"
+              % p3("overall", "（B3 归档中）"))
+    para(doc, "验收结论（三项一句话）：产品形态 = Release 全控制器固件（REATT int8 + law6 + "
+              "PMS/Safety）SRAM 直载实时闭环，XIP 常驻形态修复就绪待烧写批准；实时预算 = 板内 "
+              "5.5 s + UART 1.2 s ≈ 6.8 s/拍，10 s 决策拍占空 68%，物理实时内；验收结论 = S4 "
+              "soft-HIL 证据面 PASS（C2/C3/C4/P3 机器化门禁全过，漂移与边界全部档案化可回溯）。")
+    heading(doc, "9.3  签字", 2)
+    table(doc, ["项", "内容", "签字/日期"],
+          [["S3-C 终闭宣告", "契约 V2.1 PASS + 755 战役全过，正式终闭", ""],
+           ["S4 soft-HIL 验收", "证据面 PASS（C2/C3/C4/P3 + P1/P2 收官）", ""],
+           ["XIP 烧写批准（后续）", "F1~F4 修复实施 + 0x70100400 烧写 + 拨 boot 冒烟", ""]])
 
     # ---- 附录 A ----
     heading(doc, "附录 A  复现命令与指纹", 1)
@@ -471,10 +554,16 @@ def build():
               ".../s4_c3_pack_kf_table.py --pack / --selfcheck\n"
               "# H1 环 host 自检 / C4 runner 自检\n"
               ".../s4_c3_h1win_host.py --selftest ; .../s4_c4_battery.py --selftest\n"
+              "# P3 formal 臂电池（streamE，4 航次）\n"
+              ".../s4_c4_battery.py --plant-backend streamE \\\n"
+              "  --data-root model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid\n"
               "# 固件门禁\n"
               "python3 firmware/gate/fw_gate.py EMS04_CHIL_FULLCTRL")
-    mono(doc, "S4Smoke ELF sha256 前缀 8b71d341（plan==readback）；PlantStepE S20 dylib df81b23f…；"
-              "kf 表（S20）8a1f597e…；冻结电池 freeze sha 见 results/s4_c4/S4_C4_BATTERY_FREEZE.json。")
+    mono(doc, "S4Smoke ELF sha256 前缀 8b71d341（plan==readback；P1/P2 修复版重载 plan==readback "
+              "a4650c0a/0da391c8/d3d1ea4b）；PlantStepE S20 dylib df81b23f…；Stream dylib e987d0cd…"
+              "（×4 一致）；kf 表（S20）8a1f597e…；冻结电池 freeze sha 见 "
+              "results/s4_c4/S4_C4_BATTERY_FREEZE.json；formal 臂冻结件 S4_P3_FORMAL_ARM_FREEZE.json "
+              "sha 43d373a8…；XIP RCA 见工程根 S4_XIP_BOOT_RCA.md。")
 
     # ---- 附录 B ----
     heading(doc, "附录 B  主要数据文件与口径", 1)

@@ -80,7 +80,7 @@
   },
   {
    "file": "g_fig5_5_timing.png",
-   "origin": "分相位探针（2026-09-29 实测）+ s4_c3_closedloop.csv host_ms/board_ms"
+   "origin": "CMD_PROF 板内分账（v1.1，2026-09-29）+ s4_c3_closedloop.csv host_ms/board_ms"
   }
  ],
  "skipped": []
