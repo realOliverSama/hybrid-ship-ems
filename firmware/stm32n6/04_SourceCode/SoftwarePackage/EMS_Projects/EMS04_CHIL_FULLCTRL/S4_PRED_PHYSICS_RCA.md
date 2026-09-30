@@ -210,3 +210,18 @@ S20 场景+植物 dylib，列为后续项。
 2. A2 vs B_HOST 差异被归档为"变换效应基线"而未逐通道核对（环错位由此逃过）；
 3. 均值/相关性类指标掩盖锚级尾部失真（EMS02 L0：mean 19.88 放行 max 250）；
 4. 闭环 runner 缺输入侧 sanity（本轮已补：环 P_load 量级 fail-closed）。
+
+### A.5 遗留①（板 DP 恒 −0.100 vs host 跳档）取证定案（2026-09-30，RTT 注入）
+
+**板 DP 层完全洗清**：dev boot + SRAM 取证固件上经 RTT beat 通道注入式直调
+`ems04_dp_tick`（跳过推理），**5/5 输入（910/900/920/SOC=0.32/0.33）与 host
+预言机位级一致**；910 全量 TickResult 逐字段吻合（dlambda_all 30/30 位级相等、
+无 fallback/oob）。叠加：dp_tick 机器码 S4Smoke↔S4XIPF32 逐条一致、四表位级
+同源、v1/v2（SPLIT 全路径）多档正常——**分歧根因不在 DP 源码/表/编译产物**，
+被隔离在 **CPUF32 flash 构建 TICK_CTRL 的运行时上下文**（DP 前紧邻 1.12 s
+stai CPU-Lite 推理；机制候选：推理后浮点状态遗留（FPSCR 舍入/FZ）、XIP NOR
+数据面、栈布局隐性踩踏——定死需 flash boot 窗口跑 CMD_DPDBG + FPSCR 取证
+补丁）。完整证据链与建议：`experiments/deviation4_rca/p5g_dpdbg_report.md`。
+附带发现：本 SRAM 构建 UART 全波特率静默（RX 环全失配垃圾、TX 未被触发；
+方向=dev boot USART1 内核时钟失配或 CH340@921600——D6 教训复现，未深挖）；
+RTT 首应答曾现单比特异常（÷4，不复发，观察项）。
