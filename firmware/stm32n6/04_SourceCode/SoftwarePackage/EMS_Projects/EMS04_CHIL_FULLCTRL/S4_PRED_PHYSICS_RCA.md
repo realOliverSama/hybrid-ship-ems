@@ -233,3 +233,27 @@ stai CPU-Lite 推理；机制候选：推理后浮点状态遗留（FPSCR 舍入
 附带发现：本 SRAM 构建 UART 全波特率静默（RX 环全失配垃圾、TX 未被触发；
 方向=dev boot USART1 内核时钟失配或 CH340@921600——D6 教训复现，未深挖）；
 RTT 首应答曾现单比特异常（÷4，不复发，观察项）。
+
+### A.6 UART 死区根因定案 + flash boot 判决备料（2026-09-30 深夜，通宵无监管执行）
+
+**UART 死区根因定案（p5k，机制①证否后的附带取证，SWD only）**：dev boot 下
+USART1"双侧死区"的 p5g 方向假设（内核时钟失配）**证否**——寄存器实证时钟链完全
+正确（CCIPR13.USART1SEL=1(CKP)、CCIPR7.PERSEL=0(HSI)、HSI/PLL1 READY、BRR=0x45、
+PRESC=0，boot banner 实际发完）。真根因 = **CH340@921600 ↔ BRR=0x45（927,536 baud，
++0.645%）链路容差失配**：14 帧 PING 全部"帧头 AA/55 与 CRC 尾部坏、长游程字节
+06/00/00 恒干净、全程零 FE/NE/ORE"（小幅失配采样相位漂移的教科书指纹）；SWD 现场
+改 BRR=0x22C（115200，−0.08%）后 **3/3 PING 收到位级完美 ACK**（双向链路当场复活，
+BRR 已恢复 0x45）。p5i 的 TX 楔死（TXFNF=0）未在干净重载后复现，列未决次要观察项。
+⇒ 判决手册主通路改为 SWD RX 环注入（不依赖 UART）；UART 可用性经可选 BRR 补丁
+恢复。详见 `experiments/deviation4_rca/p5k_uart_deadzone_rca.md`。
+
+**遗留① flash boot 判决备料完成（p5j）**：S4XIPF32 构建（含 CMD_DPDBG(0x14)/
+RSP_DPDBG(0x15)，ELF sha256 `2468a405…`，fw_gate 全 PASS·ALLOW_IOC=1）经
+`s4_xip_flash.sh` 烧录 NOR @0x70100400：备份 0x70100000+4MB（sha `9bc7a5d8…`）→
+厂商 --verify 通过 → 独立读回 4,942,696 B 实质差 0 B → FSBL 0x70000000..64KB
+前后哈希一致（`9b24a8a5…`，零 FSBL 写）、N2/N1 红线区未触碰、单次烧写尝试；
+板留 dev boot。备份与读回件归档
+`experiments/deviation4_rca/nor_backup_20261001_p5j/`。明早人工拨 flash boot 后按
+`experiments/deviation4_rca/p5j_verdict_manual.md` 15 分钟判决：d1=−0.100 → 栈
+canary/FPSCR 取证（方案已写、实施待裁决）；d1=−0.055 → XIP 数据面收口（四表
+SWD 直读 vs .xip.bin 逐字节比对）；判决不依赖 UART（SWD 环注入兜底已写入手册）。
