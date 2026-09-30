@@ -222,6 +222,14 @@ S20 场景+植物 dylib，列为后续项。
 stai CPU-Lite 推理；机制候选：推理后浮点状态遗留（FPSCR 舍入/FZ）、XIP NOR
 数据面、栈布局隐性踩踏——定死需 flash boot 窗口跑 CMD_DPDBG + FPSCR 取证
 补丁）。完整证据链与建议：`experiments/deviation4_rca/p5g_dpdbg_report.md`。
+**机制①同日证否**（p5i 实验）：UART RX 环内存注入 CMD_REATT 触发板上真实
+推理（rs_ran_before/lcd_q50 确证执行）后，RTT beat 直调 dp_tick —— 两轮 boot
+× 4 次 beat（推理后/持续性/复位后/确证闭环）d1 全部位级一致 = −0.055，无一
+翻转；S4Smoke 无 XIP，故 CPUF32 flash 分歧主嫌疑转向 **XIP 数据面/构建布局**，
+"DP 前 FPSCR 复位"修复预案不适用（详见
+`experiments/deviation4_rca/p5i_mechn1_result.md`；局限：本实验推理为 NPU
+形态，与 CPU-Lite 不同构，但其 f32 前后处理同为 FP 密集，通用 FPSCR 遗留假设
+被显著削弱）。
 附带发现：本 SRAM 构建 UART 全波特率静默（RX 环全失配垃圾、TX 未被触发；
 方向=dev boot USART1 内核时钟失配或 CH340@921600——D6 教训复现，未深挖）；
 RTT 首应答曾现单比特异常（÷4，不复发，观察项）。
