@@ -21,15 +21,20 @@
 #endif
 
 /* phase4-g（D6 退役，2026-09-29）：EMS_REATT_UART_BAUD 运行时覆盖机制退役，
- * USART1 波特率改由 .ioc 主导——EMS01_CHIL_ECMS.ioc 设 USART1.BaudRate=921600，
- * MX_USART1_UART_Init 生成行即 921600（main.c 不再有运行时重初始化）。
+ * USART1 波特率改由 .ioc 主导——EMS01_CHIL_ECMS.ioc 设 USART1.BaudRate=115200
+ * （2026-10-01 用户裁决回落；2026-09-29 曾设 921600，p5k 定量证伪退役：
+ * BRR 0x45 = 927,536 baud（+0.645%）与 CH340@921600 链路容差失配——交替位
+ * 字节必坏、零 ACK；115200 档 3/3 完美 ACK，详见
+ * experiments/deviation4_rca/p5k_uart_deadzone_rca.md），MX_USART1_UART_Init
+ * 生成行随 .ioc（main.c 不再有运行时重初始化）。
  * 历史登记（保留教训，不得静默丢弃）：
  *  - 本宏原经 Appli/CMakeLists.txt target_compile_definitions 接线（cache 变量
  *    EMS_REATT_UART_BAUD，默认 115200）；main.c 旧覆盖块注释曾误写"默认 921600"
  *    造成文档漂移（实际默认 115200），本次一并修正。
- *  - 921600 在板载 CH340 调试链路实测不可靠（高速垃圾字节流）——该结论针对
- *    当时 debug 直连形态；现 host 工具已波特率参数化（--baud，默认 115200），
- *    921600 主导后 host 侧需以 --baud 921600 对接。
+ *  - 921600 早期印象"高速垃圾字节流"（D6，debug 直连形态）与 p5k 根因一致；
+ *    921600 主导期间 host 工具已波特率参数化（--baud，默认 115200）。
+ *  - 长帧吞吐：115200 下 CMD_REATT 13924 B ≈1.21 s/帧（921600 理论 ≈0.15 s/帧，
+ *    但该档链路不可用、无实义）。
  *  - CMakeLists.txt 的 -DEMS_REATT_UART_BAUD 接线暂保留（宏已无消费方，
  *    无害的孤立 -D），后续 CMake 清理时移除。
  * 协议字节流与波特率无关。 */

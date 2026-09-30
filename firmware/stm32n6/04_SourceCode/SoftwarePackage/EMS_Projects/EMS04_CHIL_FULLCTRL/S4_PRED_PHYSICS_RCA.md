@@ -257,3 +257,28 @@ RSP_DPDBG(0x15)，ELF sha256 `2468a405…`，fw_gate 全 PASS·ALLOW_IOC=1）经
 `experiments/deviation4_rca/p5j_verdict_manual.md` 15 分钟判决：d1=−0.100 → 栈
 canary/FPSCR 取证（方案已写、实施待裁决）；d1=−0.055 → XIP 数据面收口（四表
 SWD 直读 vs .xip.bin 逐字节比对）；判决不依赖 UART（SWD 环注入兜底已写入手册）。
+
+### A.7 遗留①判决执行（2026-10-01 凌晨，flash boot UART，p5j 手册落地）
+
+**判决：−0.100 在 flash 交付形态不复现——遗留①收窄至 TICK_CTRL 全路径特有因素。**
+用户三裁决（.ioc=R1′ 方案 / 波特率回落 115200 / 取证按规划）落地后，S4XIPF32
+115200 版（hex sha `edcbfe94…`，二烧三重校验 PASS）flash boot 实跑，判决全走
+UART（**flash boot 下 SWD 被生产 boot 安全关断——probe-rs/CubeProgrammer 双证，
+p5j 手册 SWD 路径不可用，手册预判失误如实登记**）：
+
+1. CMD_DPDBG 直调（fresh gen state、跳过推理）：d1 =
+   **−0.05500000000000001（0xBFAC28F5C28F5C2A）= host 位级一致**（rc=0、oob=0、
+   fallback_n=0，RSP 800B CRC OK，5.37 s，dlambda_all 前 6 项同 p5g 基线）
+   ⇒ **②XIP 数据面/执行环境洗清**（表正确性另有烧录读回 0 实质差双证）。
+2. CMD_REATT 真实 CPU-Lite fp32 推理（RSP CRC OK，板载 q50 首步 207.48 = host
+   同值）→ 再 CMD_DPDBG：**d1 仍逐位不变** ⇒ **①fp32 推理遗留浮点状态在真
+   形态洗清**（p5i NPU 形态实验的交付形态补齐）。
+3. FPSCR/栈 canary 取证补丁未实施（分支 A 未触发；SWD 关断亦使 flash 态取证
+   不可行；判别实验已覆盖取证意图）。
+
+⇒ v3 闭环 −0.100 剩余候选仅：**跨拍持续 gen state（g 由历史拍演化，DPDBG 用
+fresh g）** 与 **tick_ctrl 调用上下文/缓冲**。下一步（无需 SWD，flash boot
+UART 即可）：从 v3 CSV 重建分歧拍 ring 输入（按 R4 修复后口径）→ CMD_TICK
+全路径复现测试 → 二分定位至单因。完整数据：`experiments/deviation4_rca/
+p5m_verdict_result.md`（本地）。工程附带：921600 退役、115200 全链可用
+（.ioc/main.c/ems_config.h 同步修正，本次提交）。

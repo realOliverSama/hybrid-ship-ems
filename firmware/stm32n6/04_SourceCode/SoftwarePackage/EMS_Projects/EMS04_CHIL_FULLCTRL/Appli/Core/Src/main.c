@@ -254,11 +254,12 @@ int main(void)
   led_init();         /* 初始化LED */
   uart_init(115200);  /* 初始化串口 */
 
-  /* phase4-g：USART1 波特率已 .ioc 主导（2026-09-29）——.ioc 设
-   * USART1.BaudRate=921600，上方 MX_USART1_UART_Init 生成行即 921600；
-   * 原 D6 运行时覆盖块（EMS_REATT_UART_BAUD 重初始化 huart1）退役，
-   * 语义登记见 ems_config.h 注释。CMD_REATT 13924 B 长帧传输耗时随之
-   * 由 ~1.21 s/帧 降至 ~0.15 s/帧。 */
+  /* phase4-g：USART1 波特率 .ioc 主导（2026-09-29 设 921600；2026-10-01 用户裁决
+   * 回落 115200）——.ioc 设 USART1.BaudRate=115200，上方 MX_USART1_UART_Init
+   * 生成行随行。921600 退役依据（p5k 定量）：BRR 0x45 = 927,536 baud（+0.645%）
+   * 与 CH340@921600 链路容差失配，帧头 AA/55 必坏、零 ACK；115200 档 3/3 完美
+   * ACK。原 D6 运行时覆盖块（EMS_REATT_UART_BAUD 重初始化 huart1）退役，
+   * 语义登记见 ems_config.h 注释。 */
 
   /* DWT CYCCNT 使能（FR-505 infer_us/ctrl_us 测量；代码使能，不涉 .ioc/时钟树） */
   CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
@@ -445,7 +446,7 @@ static void MX_USART1_UART_Init(void)
 
   /* USER CODE END USART1_Init 1 */
   huart1.Instance = USART1;
-  huart1.Init.BaudRate = 921600;
+  huart1.Init.BaudRate = 115200;
   huart1.Init.WordLength = UART_WORDLENGTH_8B;
   huart1.Init.StopBits = UART_STOPBITS_1;
   huart1.Init.Parity = UART_PARITY_NONE;
