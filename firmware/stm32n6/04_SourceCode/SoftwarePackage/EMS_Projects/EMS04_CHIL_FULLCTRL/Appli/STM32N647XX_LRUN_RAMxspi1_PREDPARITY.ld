@@ -234,6 +234,7 @@ SECTIONS
     . = ALIGN(4);
     _ebss = .;         /* define a global symbol at bss end */
     __bss_end__ = _ebss;
+    PROVIDE(__RAM_segment_used_end__ = .); /* ThreadX 动态内存基址（A 类集成，零布局变化） */
       PROVIDE( __bss_end = .);
   } >RAM
   PROVIDE( __non_tls_bss_start = ADDR(.bss) );

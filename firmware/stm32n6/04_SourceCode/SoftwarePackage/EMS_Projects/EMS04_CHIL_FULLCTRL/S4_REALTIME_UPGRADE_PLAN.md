@@ -253,3 +253,62 @@
 - 固件（本工程）：`Appli/Core/Src/main.c`、`Appli/App/ems_config.h`、`Appli/App/ems_app.c`、`Appli/App/ems04_tick_ctrl.c`、`Appli/App/ems04_tick_ctrl.h`、`Appli/App/ems_lcd.h`、`EMS01_CHIL_ECMS.ioc`
 - 结果与分析：`Host/results/s4_c2/s4_p2_dp_accel_memo.md`、`Host/results/s4_c3/s4_c3_exec1s.csv`、`README.md`、`S4_PRED_PHYSICS_RCA.md`、`S4_XIP_BOOT_RCA.md`、项目开发进展.md（2026-09-29 十四续/十五续条目）
 - RTOS 证据：`STM32Cube_FW_N6_V1.4.0/Middlewares/ST/cmsis_rtos_threadx/`（`cmsis_os2.c`）；CubeMX DB `/Applications/STMicroelectronics/STM32CubeMX.app/Contents/Resources/db/mcu/config/`（`ThreadX-STM32N6xx_Configs.xml` 存在；FREERTOS-* 22 家族无 N6；Release DB.6.0.180）
+
+---
+
+## 7. A 类实施进展登记（2026-10-01，实施会话回填）
+
+### 7.1 §2/O-1 UART 链路裁决——已闭合
+
+- 921600 **正式退役**：p5k 定量定案（BRR 0x45=927,536 baud，+0.645% 与 CH340@921600
+  链路容差失配——交替位字节必坏、零 FE/NE/ORE、换 115200 档 3/3 位级完美 ACK；
+  `experiments/deviation4_rca/p5k_uart_deadzone_rca.md`）；用户裁决 2026-10-01
+  "不确认可用则使用默认 115200" → **终值 115200**（.ioc=HEAD+BaudRate 两行、
+  main.c/ems_config.h 同步，已提交 e48aefad）。
+- §2 的 0.15s 收益**不兑现**（伴随 921600 退役归零）；对 §5.1 的 1Hz 目标无影响：
+  EXEC_REFRESH 帧极小（16B/12B），115200 下传输 ~1.4ms，瓶颈纯在调度（§3）。
+- 附带证据：CH340 USB 枚举当晚掉线 3 次（串口/ST-LINK 共 5 次 USB 异常）——链路
+  物理层稳定性问题另记，不阻塞 115200 结论。
+- §2 的 R1-R5 状态：R1 完成（.ioc 主导 115200）；R2 完成（D6 覆盖块此前已退役）；
+  R3 未动（uart_init 双重初始化仍在——后续清理项，本次零改动）；R4 完成（CKPER
+  保留）；R5 完成（host 工具 --baud 参数化已入库）。
+
+### 7.2 §3 ThreadX 任务化——集成代码完成，bring-up 阻塞一项（park）
+
+- **已完成**（详见 `experiments/deviation4_rca/p5p_threadx_bringup.md`）：
+  .ioc +18 行 ThreadX 字段组（hand-crafted，避开 6.18 重存规范化；headless 生成
+  验证通过）→ 内核 173 源 + AZURE_RTOS + app_threadx + TIM6 时基入工程；
+  cmsis_os2 包装层接线（§3.2 唯一缺口闭合，工程内副本 + EMS CMake 块）；
+  tx_user.h 按 cmsis_os2.c 硬要求配置（64 优先级/joinable 扩展/裁剪项移除）；
+  §3.3 任务拆分落地——**实现为四任务**：排水协议（Normal，永不执行命令体）/
+  快命令（AboveNormal，ems04_fastq）/ 慢执行（BelowNormal，ems04_slowq 双缓冲
+  2×13960B，重命令 FIFO 语义）/ LCD（Low）——较 PLAN 三任务的修正：重命令不得
+  在排水任务内联（否则 DP 窗内 RX 环停摆，快帧无法入快队列，PLAN 原文的结构性
+  缺口在实现评审中补上）；§3.4 治理落地（m_last_d1 seqlock、UART 发送 osMutex、
+  快/慢队列）；链接脚本 `__RAM_segment_used_end__` PROVIDE（两脚本，零布局变化）。
+  构建通过：S4Smoke SRAM 载体 + Debug（fw_gate 全 PASS）。
+- **bring-up 阻塞（park，完整现场 p5p）**：RTOS 构建 ~339ms 确定性 HardFault
+  @0xC——TIM6 IRQ 进入 HAL_TIM_IRQHandler 时 htim6.Instance==NULL；uwTick 冻结
+  于 339；四线程未创建。已证伪：TIM6 遗留 pending 竞态（加固后复现）、时基回调
+  缺失（已补，曾独立致死锁）、TIM 模块宏缺失（已补）。下会话切入路径三选一
+  已写入 p5p §2（数据观察点抓 Instance 清零者 / TIMG 频率口径（Prescaler=0x800
+  异常值）/ 改用 txgen 全量 main.c 重试）。
+- 遗留①判决（§6/O-3）：pre-RTOS DPDBG 位级基线已录（−0.055，0xBFAC28F5C28F5C2A，
+  flash CPUF32）；post-RTOS 对比待 bring-up。
+
+### 7.3 §5.2 十门状态（本会话时点）
+
+| # | 门 | 状态 |
+|---|---|---|
+| 1 | fw_gate | PASS（EMS04 全门，ALLOW_IOC=1 轮次已录） |
+| 2-8 | selftest/replay/preamble/C3/C4/P3/6锚 | 未动（依赖 bring-up 后统一回归） |
+| 9 | EXEC_REFRESH 双桶 P99<10ms | **未达**（RTOS bring-up park；基线脚本 `p5o_exec_p99.py` 就绪；pre-RTOS 窗内滞后 ~6-7s 为 PLAN §1.2 既有口径） |
+| 10 | LCD 目视 | 未动（板在 RTOS park 态） |
+
+**结案行不登记**：真 1Hz 两桶 P99 未实测达标，A 类未收口；D 类封存维持用户既定
+裁决（与 A 类收口与否解耦）。
+
+### 7.4 遗留①——已 CLOSED（本会话先行完成）
+
+TICK_CTRL 线格式错位（off-by-4B）定案+修复（RCA §A.8，commits ad9ebc8f/03502b08）：
+板上 DP/预测数学自始位级精确；用户裁决"修复先行"，ThreadX 回归基线 = 修复后口径。

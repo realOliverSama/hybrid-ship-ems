@@ -38,6 +38,17 @@ void ems_app_init(void);
  * （请求-响应协议下主机等 RSP 再发，单帧处理期间不收帧，无溢出路径）。 */
 void ems_app_poll(void);
 
+/* A 类 RTOS 化（PLAN §3.3/§3.4）：
+ *  UART 发送互斥初始化（协议/快命令任务共用 HAL 发送路径的串行化）。
+ *  须在调度器启动前调用一次（app_threadx.c）。 */
+void ems_tx_sync_init(void);
+/* 快命令任务入口：执行一条出队快命令（EXEC_REFRESH/PING/PROF 白名单）。 */
+void ems_dispatch_fast(uint8_t type, const uint8_t *payload,
+                       uint16_t len, uint32_t seq);
+/* 慢执行任务入口：执行一条出队重命令（TICK_CTRL/REATT/DPDBG/…）。 */
+void ems_dispatch_slow_exec(uint8_t type, const uint8_t *payload,
+                            uint16_t len, uint32_t seq);
+
 #ifdef __cplusplus
 }
 #endif

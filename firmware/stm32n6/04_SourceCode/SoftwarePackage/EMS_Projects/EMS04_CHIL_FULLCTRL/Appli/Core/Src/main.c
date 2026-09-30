@@ -18,6 +18,7 @@
 /* USER CODE END Header */
 /* Includes ------------------------------------------------------------------*/
 #include "main.h"
+#include "app_threadx.h"
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
@@ -319,25 +320,18 @@ int main(void)
   printf("RS-TRACE main: after lcd_init\\r\\n");
 
   /* USER CODE END 2 */
+  MX_ThreadX_Init();
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   uint32_t heartbeat = 0;
-  while (1)
-  {
-    ems_app_poll(); /* UART 帧 → INFER_TEST/PING 分发（ems_app.c，T-505） */
-    ems04_beat_poll(); /* EMS04 S2：RTT 拍帧 → law6 决策 → 16B 回帧（ems04_beat_svc.c） */
-    ems_lcd_poll(HAL_GetTick()); /* RGBLCD 1 Hz 重绘节流（NPU2 线） */
-    heartbeat++;
-    if ((heartbeat & 0x000FFFFFu) == 0u)
-    {
-      LED0_TOGGLE(); /* 心跳指示（EMS 应用替换 05_Serial 按键演示） */
-      (void)0; /* phase4-g bring-up 诊断全部移除（三探针/眨眼/回显）；心跳 LED 保留 */
-    }
-    /* USER CODE END WHILE */
+  /* A 类实时升级（PLAN §3.3，2026-10-01）：原三分轮询主循环整体迁入
+   * ThreadX 任务（app_threadx.c：协议/快命令/LCD 三任务；心跳 LED 归 LCD 任务）。
+   * MX_ThreadX_Init() 后调度器接管，此处不再可达。任务化只改变"何时处理"，
+   * 数值语义逐位不变（§5.3 位级红线；DPDBG/TICK_CTRL 回归门验证）。 */
+  /* USER CODE END WHILE */
 
-    /* USER CODE BEGIN 3 */
-  }
+  /* USER CODE BEGIN 3 */
   /* USER CODE END 3 */
 }
 
@@ -413,15 +407,15 @@ void PeriphCommonClock_Config(void)
 
   /* USER CODE BEGIN RIF_Init 1 */
 #if (EMS_FW_MODE == EMS_FW_MODE_NPU)
-  /* NPU 主端 RIMC 授权（991 main.c:392 同款）：RIMC_master={CID1,SEC|PRIV}。
+  /* NPU 主端 RIMC 授权（991 main.c:392 同款）：RIMC_master_npu={CID1,SEC|PRIV}。
    * CubeMX 仅为静态 CID≠0 的主设备生成 RIMC 块（991 因 DCMIPP/DMA2D/LTDC 存在）。
    * EMS01 无相机/LCD 主设备且 .ioc 只含 NPU_CID_RIMU-1=1，生成区仅产出 NPU
    * 从端 RISUP 行（上方 244 行），故 NPU 主端 RIMC 保留在 USER CODE。
    * 不弱化不扩大授权；991 的 DCMIPP/DMA2D/LTDC 行不移植。 */
-  RIMC_MasterConfig_t RIMC_master = {0};
-  RIMC_master.MasterCID = RIF_CID_1;
-  RIMC_master.SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV;
-  HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_NPU, &RIMC_master);
+  RIMC_MasterConfig_t RIMC_master_npu = {0};
+  RIMC_master_npu.MasterCID = RIF_CID_1;
+  RIMC_master_npu.SecPriv = RIF_ATTRIBUTE_SEC | RIF_ATTRIBUTE_PRIV;
+  HAL_RIF_RIMC_ConfigMasterAttributes(RIF_MASTER_INDEX_NPU, &RIMC_master_npu);
 #endif
   /* USER CODE END RIF_Init 1 */
   /* USER CODE BEGIN RIF_Init 2 */
@@ -693,3 +687,22 @@ void assert_failed(uint8_t *file, uint32_t line)
   /* USER CODE END 6 */
 }
 #endif /* USE_FULL_ASSERT */
+
+/**
+  * @brief  Period elapsed callback（TIM6 时基；A 类 ThreadX 集成自 CubeMX 生成版
+  *  回补——txgen main.c USER CODE 4 区段，off-by 重排时丢失）
+  * @note  TIM6 中断 → HAL_TIM_IRQHandler → 本回调直接 HAL_IncTick()。
+  */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+  /* USER CODE BEGIN Callback 0 */
+
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM6)
+  {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
+}

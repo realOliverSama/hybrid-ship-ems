@@ -82,6 +82,29 @@ static uint32_t m_prof_reatt_us, m_prof_dp_us, m_prof_grid_us, m_prof_pms_us;
 
 /* S4-P4 执行层 1 s 门控（口径 v2）：上拍决策 d1（EXEC_REFRESH 的 λ 输入） */
 static double m_last_d1;
+/* §3.4/R-2：m_last_d1 为 f64，协议任务（TICK_CTRL 写）与快命令任务
+ * （EXEC_REFRESH 读）跨任务访问，M55 上非单指令原子——seqlock 快照，
+ * 语义 = "读到最近完整拍值"，禁止半拍值。单写者，无 ABBA 死锁面。 */
+static volatile uint32_t m_d1_seq;
+
+static void m_last_d1_write(double v)
+{
+    m_d1_seq++;
+    m_last_d1 = v;
+    m_d1_seq++;
+}
+
+static double m_last_d1_read(void)
+{
+    uint32_t s0, s1;
+    double v;
+    do {
+        s0 = m_d1_seq;
+        v = m_last_d1;
+        s1 = m_d1_seq;
+    } while ((s0 != s1) || (s0 & 1u));
+    return v;
+}
 static int m_have_tick;
 
 /* 1 s-grid exhaustive search (contract §4.3 verbatim). */
@@ -248,7 +271,7 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
         return 0;
     }
     double e_hat = tr.dlambda_first;
-    m_last_d1 = e_hat;   /* 1 s 门控（口径 v2）的 λ 输入 */
+    m_last_d1_write(e_hat);   /* 1 s 门控（口径 v2）的 λ 输入（seqlock 写，§3.4） */
     m_have_tick = 1;
     const uint32_t dp_us = (uint32_t)(DWT->CYCCNT - cdp0) /
                            (uint32_t)(SystemCoreClock / 1000000u);
@@ -409,7 +432,7 @@ uint16_t ems04_exec_refresh(const uint8_t *payload, uint16_t len,
     CoreDebug->DEMCR |= CoreDebug_DEMCR_TRCENA_Msk;
     DWT->CTRL |= DWT_CTRL_CYCCNTENA_Msk;
     const uint32_t c0 = DWT->CYCCNT;
-    double soc_ref_eff = m_exec.SOC_ref + m_exec.K_S * m_last_d1;
+    double soc_ref_eff = m_exec.SOC_ref + m_exec.K_S * m_last_d1_read();
     double lam = m_exec.lambda0 + m_exec.K_soc * (soc_ref_eff - (double)SOC);
     if (m_exec.K_S != 0.0) lam = (lam > m_exec.lambda_floor) ? lam : m_exec.lambda_floor;
     double P_gen_ref = s4_exec_grid((double)P_load, (double)SOC, lam);

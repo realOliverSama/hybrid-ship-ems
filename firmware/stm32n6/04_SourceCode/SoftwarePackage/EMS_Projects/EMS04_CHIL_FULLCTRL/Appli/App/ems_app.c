@@ -47,6 +47,8 @@
 
 #include "ems_app.h"
 #include "ems_config.h"
+#include "ems04_fastq.h"
+#include "cmsis_os2.h"
 #include "ems_ctrl.h"
 #include "ems_infer.h"
 #include "ems_lcd.h" /* phase4-g NPU2：RGBLCD 可视化注入面 */
@@ -54,7 +56,9 @@
 #include "ems_proto.h"
 #include "ems_reatt.h" /* phase4-g：CMD_REATT REAT-T 板上预测服务 */
 #if defined(EMS04_S4_FULLCTRL) && EMS04_S4_FULLCTRL
-#include "ems04_tick_ctrl.h" /* S4-G4：全控制器 TICK_CTRL 服务 */
+#include "ems04_tick_ctrl.h"
+#include "ems04_fastq.h"
+#include "cmsis_os2.h" /* S4-G4：全控制器 TICK_CTRL 服务 */
 #endif
 
 #if defined(EMS04_FP_PARITY) && EMS04_FP_PARITY
@@ -83,12 +87,24 @@ static struct {
     uint8_t  soft_flags; /* FALLBACK/CLS_BAD（非保持拍结算；HELD 位不持久） */
 } ems_last;
 
-/* ---- 回调：TX（HAL 阻塞发送；len ≤ EMS_PROTO_FRAME_MAX 单帧上限） ---- */
+/* ---- 回调：TX（HAL 阻塞发送；len ≤ EMS_PROTO_FRAME_MAX 单帧上限） ----
+ * A 类 RTOS 化（§3.4）：协议任务与快命令任务共用本发送路径，osMutex 串行化
+ * 保证回帧字节流不交错（回帧内容与单线程版逐位一致，仅时序允许变化）。 */
+static osMutexId_t s_tx_mtx;
+
+void ems_tx_sync_init(void)
+{
+    s_tx_mtx = osMutexNew(NULL);
+}
+
 static void ems_uart_write(void *user, const uint8_t *buf, uint32_t len)
 {
     (void)user;
     if (len <= EMS_PROTO_FRAME_MAX) {
+        uint8_t locked = (s_tx_mtx != NULL) && (osKernelGetState() == osKernelRunning);
+        if (locked) (void)osMutexAcquire(s_tx_mtx, osWaitForever);
         (void)HAL_UART_Transmit(&huart1, (uint8_t *)buf, (uint16_t)len, 0xFFFFu);
+        if (locked) (void)osMutexRelease(s_tx_mtx);
     }
 }
 
@@ -381,8 +397,62 @@ static void ems_handle_cmd_tick(const uint8_t *payload, uint16_t len)
 }
 
 /* ---- 完整帧分发（CRC 已过；协议层语义见 ems_proto.h） ---- */
+static void ems_dispatch_core(void *user, uint8_t type, const uint8_t *payload,
+                              uint16_t len, uint32_t seq);
+/* 慢队列（重命令双缓冲拷贝队列，ems04_slowq.c；§3.3/§3.4） */
+void ems04_slowq_init(void);
+int  ems04_slowq_push(uint8_t type, const uint8_t *payload, uint16_t len,
+                      uint32_t seq);
+int  ems04_slowq_pop(uint8_t *type, const uint8_t **payload, uint16_t *len,
+                     uint32_t *seq);
+void ems04_slowq_release(void);
+
+/* 快命令集合（§3.3）：EXEC_REFRESH/PING/PROF——小帧、无重状态，交快命令任务。 */
+static uint8_t ems_is_fast_cmd(uint8_t type)
+{
+    if (type == EMS_PROTO_CMD_PING) return 1u;
+#if defined(EMS04_S4_FULLCTRL) && EMS04_S4_FULLCTRL
+    return (type == EMS04_EXEC_REFRESH_CMD) ||
+           (type == EMS04_TICK_CTRL_PROF_CMD);
+#else
+    return 0u;
+#endif
+}
+
+/* 快命令任务入口：执行一条已出队的快命令（仅接受快集合，防误投）。 */
+void ems_dispatch_fast(uint8_t type, const uint8_t *payload,
+                       uint16_t len, uint32_t seq)
+{
+    if (ems_is_fast_cmd(type)) {
+        ems_dispatch_core(NULL, type, payload, len, seq);
+    }
+}
+
+/* 慢执行任务入口：执行一条出队重命令（dispatch_core 的公开包装）。 */
+void ems_dispatch_slow_exec(uint8_t type, const uint8_t *payload,
+                            uint16_t len, uint32_t seq)
+{
+    ems_dispatch_core(NULL, type, payload, len, seq);
+}
+
+/* 协议任务分发入口（ems_proto 回调）——A 类 RTOS 化重构（PLAN §3.3）：
+ * 排水任务永不执行命令体（否则 DP 窗内 RX 环停摆、快帧到不了快队列）。
+ * 快命令 → 快队列（快任务，高优先级抢占）；重命令 → 慢队列（慢执行任务，
+ * 低优先级，FIFO 同步语义与单线程等价）；慢队列满（连续重命令突发 >2）→
+ * 内联回退（单线程语义保底，不丢帧）。 */
 static void ems_dispatch(void *user, uint8_t type, const uint8_t *payload,
                          uint16_t len, uint32_t seq)
+{
+    if (ems_is_fast_cmd(type)) {
+        if (ems04_fastq_push(type, payload, len, seq) == 0) return;
+    } else {
+        if (ems04_slowq_push(type, payload, len, seq) == 0) return;
+    }
+    ems_dispatch_core(user, type, payload, len, seq);
+}
+
+static void ems_dispatch_core(void *user, uint8_t type, const uint8_t *payload,
+                              uint16_t len, uint32_t seq)
 {
     (void)user;
     (void)seq; /* 载荷级 seq：测试命令处理函数自载荷头读取（同一字节，双路径一致） */

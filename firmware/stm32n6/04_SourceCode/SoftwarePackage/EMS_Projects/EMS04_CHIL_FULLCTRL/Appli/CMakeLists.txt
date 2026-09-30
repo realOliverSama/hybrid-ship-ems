@@ -304,6 +304,8 @@ set(EMS01_AI_MW "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/STEdgeAI")
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE "${EMS01_APP_DIR}")
 target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     "${EMS01_APP_DIR}/ems_app.c"    # UART 事件循环 + INFER_TEST/会话分发（T-505/T-506）
+    "${EMS01_APP_DIR}/ems04_fastq.c"    # A 类：快命令队列（PLAN §3.3，全形态）
+    "${EMS01_APP_DIR}/ems04_slowq.c"    # A 类：重命令双缓冲队列（PLAN §3.3，全形态）
     "${EMS01_APP_DIR}/rgblcd.c"     # vendor RGBLCD BSP 驱动本地化副本（fb 480x272 内部 SRAM；
                             # NPU2 线显示底层：ID/时序/IC16 动态分频/背光）
     "${EMS01_APP_DIR}/ems_lcd.c"    # RGBLCD 竖装可视化（NPU2 线：LTDC/DMA2D init
@@ -747,3 +749,20 @@ if(EMS04_DUMP_CHUNK)
 endif()
 # <<< EMS04-S3-A2 DUMP 分块诊断传输 END <<<
 
+
+# >>> EMS04 A 类 ThreadX CMSIS-RTOS2 包装层（2026-10-01）BEGIN >>>
+# cmsis_os2.c（ST cmsis_rtos_threadx 中间件工程内副本，PLAN §3.2 唯一缺口）+ CMSIS
+# RTOS2 标准头。threadx OBJECT 库由 mx-generated.cmake（CubeMX 维护）定义并已链接
+# 主目标；本块只补包装层源与头路径，不重复链接 threadx（避免 OBJECT 重复符号）。
+set(EMS_CMSIS_OS2_DIR "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/ST/cmsis_rtos_threadx")
+set(EMS_CMSIS_RTOS2_INC "${CMAKE_CURRENT_LIST_DIR}/../Drivers/CMSIS/RTOS2/Include")
+add_library(ems_cmsis_os2 OBJECT "${EMS_CMSIS_OS2_DIR}/cmsis_os2.c")
+target_include_directories(ems_cmsis_os2 PUBLIC
+    "${EMS_CMSIS_RTOS2_INC}"
+    "${CMAKE_CURRENT_LIST_DIR}/../Drivers/CMSIS/Include"
+    "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/ST/threadx/common/inc"
+    "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/ST/threadx/ports/cortex_m55/gnu/inc"
+    "${CMAKE_CURRENT_LIST_DIR}/Core/Inc")
+target_compile_definitions(ems_cmsis_os2 PUBLIC TX_INCLUDE_USER_DEFINE_FILE TX_SINGLE_MODE_SECURE=1 USE_DYNAMIC_MEMORY_ALLOCATION)
+target_link_libraries(${CMAKE_PROJECT_NAME} ems_cmsis_os2)
+# <<< EMS04 A 类 ThreadX CMSIS-RTOS2 包装层 END <<<
