@@ -282,3 +282,22 @@ UART 即可）：从 v3 CSV 重建分歧拍 ring 输入（按 R4 修复后口径
 全路径复现测试 → 二分定位至单因。完整数据：`experiments/deviation4_rca/
 p5m_verdict_result.md`（本地）。工程附带：921600 退役、115200 全链可用
 （.ioc/main.c/ems_config.h 同步修正，本次提交）。
+
+### A.8 遗留①终局定案：TICK_CTRL 线格式错位（off-by-4B，2026-10-01）
+
+**遗留① CLOSED——根因是集成 bug，不是数值分歧。** 判别链（UART，flash boot，
+p5n 全记录）：①TICK_CTRL#1/#2（runner 8×f32 打包，N0 钳 1 与 PMS 反馈两态）
+均 −0.100 → 复现且排除 N0；②SOC f32 舍入 delta=0 排除；③板 q50 vs host q50
+max diff 1.068e-4 kW，但 host 探针×板 q50 = −0.055、**DPDBG×板 q50 = −0.055**
+→ q50 微差与板表均不动结果；④源码逐行核数：`ems04_tick_ctrl_handle` 消费
+seq+tick+**7**×f32（36B）即 memcpy hist/kf，而 `S4_CMD_HEAD`/runner/契约均为
+**8×f32（40B）**——板消费的 hist/kf 整体错位一个 f32（pad 0.0 作首特征、kf
+尾元素丢失）；⑤**handler 口径对齐帧（7f+尾 pad）→ e_hat = −0.055 翻回**
+（lam 0.4484→0.4934 同步翻转）。⇒ 板上 DP/预测数学自始位级精确（①FPSCR/
+推理遗留、②XIP 数据面、持续 gen state、N0 假设全部独立证伪），v3/C3 的
+"板 d1 恒 −0.100"是板对**错位特征**的忠实计算；同因解释 R4 为何能漏网——
+门禁体系只做 board-vs-board / host-vs-host 对比，从未在未错位输入上做过
+board-vs-host 的 DP 层对拍（DPDBG 通道为此而建并当场命中）。修复（handler
+补齐第 8 浮点一行 / 或 runner 改 7f）属裁决项：将改变板端闭环数值口径
+（错位→真实），建议独立于 ThreadX 线单独裁决实施并重录基线；历史档案不重写。
+完整判别链：`experiments/deviation4_rca/p5n_tickctrl_misalign.md`（本地）。
