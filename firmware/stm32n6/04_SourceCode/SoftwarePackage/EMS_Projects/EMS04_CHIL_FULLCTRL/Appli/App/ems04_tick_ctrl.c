@@ -208,6 +208,12 @@ uint16_t ems04_tick_ctrl_handle(const uint8_t *payload, uint16_t len,
     float P_bat_chg = rd_f32(p); p += 4;
     float P_prop = rd_f32(p); p += 4;
     float P_hotel = rd_f32(p); p += 4;
+    /* 第 8 浮点 = 线格式保留位（S4_CMD_HEAD=40B；runner `struct.pack("<8f",…)`
+     * 尾元素恒 0.0）——2026-10-01 off-by-4B 错位修复（p5n/RCA §A.8，用户裁决
+     * "修复先行"）：此前本 handler 只消费 7×f32 即取 hist/kf，导致板端特征整体
+     * 错位一个 f32（pad 0.0 作首特征、kf 尾元素丢失），v3/C3 板 d1 恒 −0.100
+     * 与 lam/P_gen_ref 口径偏差皆源于此。修复后板端闭环回到真实输入口径。 */
+    p += 4;
     memcpy(m_hist, p, S4_HIST_FLT * 4u); p += S4_HIST_FLT * 4u;
     memcpy(m_kf, p, S4_KF_FLT * 4u);
 
