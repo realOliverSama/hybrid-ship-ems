@@ -56,8 +56,10 @@
 
 /* Private function prototypes -----------------------------------------------*/
 /* USER CODE BEGIN PFP */
-/* A 类实时升级（PLAN §3.3，2026-10-01）：单线程主循环三分结构 → 三任务。
- * 优先级（CMSIS-RTOS2 数小者高）：快命令 3 > 协议 5 > LCD 10。
+/* A 类实时升级（PLAN §3.3，2026-10-01）：单线程主循环三分结构 → 四任务
+ * （§3.3 三任务的实现修正：重命令不得内联排水——DP 窗内 RX 环停摆）。
+ * 优先级（CMSIS-RTOS2 数大者高）：快命令 AboveNormal > 排水协议 Normal >
+ * 慢执行 BelowNormal > LCD Low。
  * 位级红线：任务化只改变"何时处理"，不改变"算什么"——
  *   - 协议任务 = 原 while(1) 的 ems_app_poll + ems04_beat_poll（重命令同步执行语义不变）；
  *   - 快命令任务 = EXEC_REFRESH/PING/PROF（经 ems04_fastq 移交，DP 窗内可抢占）；
@@ -68,7 +70,9 @@ static osThreadId_t s_tid_prot;
 static osThreadId_t s_tid_fast;
 static osThreadId_t s_tid_slow;
 static osThreadId_t s_tid_lcd;
-static osThreadAttr_t s_thr_attr[3];
+static osThreadAttr_t s_thr_attr[4]; /* p5r：曾为 [3]（三任务草稿残留），创建循环
+ * 跑 4 次 → i=3 的 36B 结构体赋值越界踩 s_tid_*+htim6 头 20B——两轮会话追捕的
+ * "htim6.Instance 清零者"即此（板锤：0x341a5d70=0x800=stacks[3]、+8=8=prios[3]）。 */
 
 static void EmsProtThread(void *arg)
 {
@@ -76,7 +80,11 @@ static void EmsProtThread(void *arg)
     for (;;) {
         ems_app_poll();     /* UART 帧装配 + 分发（全部入队：排水永不阻塞，§3.3） */
         ems04_beat_poll();  /* EMS04 S2：RTT 拍帧 → law6 决策 → 16B 回帧 */
-        osThreadYield();
+        /* p5r：osThreadYield 只轮转同优先级——Prot(Normal) 永不阻塞会把
+         * Slow(BelowNormal)/LCD(Low) 永久饿死（板锤：DPDBG 入 slowq 后
+         * 无人消费）。osDelay(1)：1ms 排水节拍，115200 下 11.5B/ms 远低于
+         * 排水能力，快命令端到端附加时延 ≤1ms（门 #9 预算 10ms 内）。 */
+        osDelay(1);
     }
 }
 

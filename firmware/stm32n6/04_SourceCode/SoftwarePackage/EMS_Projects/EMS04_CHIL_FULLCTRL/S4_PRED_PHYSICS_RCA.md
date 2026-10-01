@@ -301,3 +301,19 @@ board-vs-host 的 DP 层对拍（DPDBG 通道为此而建并当场命中）。�
 补齐第 8 浮点一行 / 或 runner 改 7f）属裁决项：将改变板端闭环数值口径
 （错位→真实），建议独立于 ThreadX 线单独裁决实施并重录基线；历史档案不重写。
 完整判别链：`experiments/deviation4_rca/p5n_tickctrl_misalign.md`（本地）。
+
+### A.9 post-RTOS（ThreadX 四任务）DPDBG 位级对比（2026-10-01 续，p5r）
+
+RTOS bring-up 三根因修复后（s_thr_attr[4] / _sbrk 堆基址 / Prot osDelay，
+详见 PLAN §7.5），S4Smoke SRAM RTOS 形态（ELF 73cccc4b）重跑 A.5 同款对拍：
+- **DPDBG×p5a['910']（SWD 环注入，载荷 [seq][SOC][N0][q50×30]，gen 态
+  st=3,3 与 beat A-02 同构）**：d1 = **0xBFAC28F5C28F5C2A（−0.055）**，
+  rc=0、oob=0、fallback_n=0——与 A.5 pre-RTOS RTT 基线、A.7/A.8 flash
+  DPDBG 基线**三方逐位一致**；J_window（12.948…）/soc_end（≈0.60400）/
+  fuel（≈14.874）/dlambda_all[0]=−0.055、[1]=−0.065 全字段与 A.5 断点版
+  dump 吻合。
+- RTT beat 通道（312B 帧同输入）同构复验：d1 = 0xBFAC28F5C28F5C2A，
+  flags=DP_OK——**任务化零数值影响（§5.3 位级红线 post-RTOS PASS）**。
+- 手法登记：UART RX 环 SWD 注入前需 DCIMVAC(0xE000EF60) 按行失效
+  D-cache（UART 环无 RTT 的 cache_ci 自愈纪律）。
+完整证据：`experiments/deviation4_rca/p5r_rtos_bringup_closure.md`（本地）。

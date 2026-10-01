@@ -312,3 +312,46 @@
 
 TICK_CTRL 线格式错位（off-by-4B）定案+修复（RCA §A.8，commits ad9ebc8f/03502b08）：
 板上 DP/预测数学自始位级精确；用户裁决"修复先行"，ThreadX 回归基线 = 修复后口径。
+
+### 7.5 bring-up 收口（2026-10-01 续，p5r）——三根因闭环，位级红线 post-RTOS PASS
+
+**§7.2 的 bring-up 阻塞解除**。三轮 SWD 直证定位三个独立根因，全部修复并板验
+（完整证据 `experiments/deviation4_rca/p5r_rtos_bringup_closure.md`）：
+
+1. **"htim6.Instance 清零者"（p5p/p5q 双会话悬案）= `s_thr_attr[3]` 数组越界**：
+   声明 3 元素（三任务草稿残留）而创建循环跑 4 次——i=3 的 36B 结构体赋值
+   落在 s_tid 四连 + htim6 头 20B 上（板锤：0x341a5d70=0x800=stacks[3]、
+   +8=8=osPriorityLow 逐字段吻合）。uwTick 冻结 ~339/340 = main() 走到
+   MX_ThreadX_Init 的时刻。p5q 候选列表（内核段/LCD memset/队列 memset）作废，
+   DWT watchpoint 手段无需执行。修复 = `[3]→[4]` 一处。
+2. **newlib 堆与 ThreadX 池同基址双重分配**：`_sbrk`（sysmem.c，CubeMX 生成）
+   与 `_tx_initialize_unused_memory` 都从 `&_end` 起长——DP 路径 calloc 的
+   memset 把在线线程栈清零 → PC=0 IBUSERR（堆叠帧 LR 在 _calloc_r 内）。
+   pre-RTOS 单主人无恙，post-RTOS 首次深路径 calloc 引爆。修复 = 堆基址
+   上移池跨度+4KB（宏与 cmsis_os2.c 同源自洽）。⚠️ sysmem.c 无 USER CODE
+   区，**重生成 .ioc 会丢此修复**（.ioc 已冻结）。
+3. **Prot 任务忙旋饿死低优先级**：`osThreadYield()` 只轮转同优先级，Prot
+   (Normal) 永不阻塞 ⇒ Slow/LCD 永无 CPU（板锤：DPDBG 入 slowq 后无人消费）。
+   修复 = `osDelay(1)`（排水节拍 1ms，115200 下 11.5B/ms 远低于排水能力，
+   快命令附加时延 ≤1ms 在门 #9 预算内）。
+
+**bring-up 验证（终态 ELF 73cccc4b）**：KernelState=1(Ready)、
+_tx_thread_created_count=5、s_tid 四连全非零、htim6.Instance=0x50001000、
+uwTick 持续走。
+
+**位级红线（§5.3）post-RTOS 判定 PASS**（p5a['910'] 同输入双通道）：
+- RTT beat（通道一）：d1 = **0xBFAC28F5C28F5C2A（−0.055）** 与 p5g pre-RTOS
+  基线逐位一致，flags=DP_OK；
+- DPDBG SWD 环注入（通道二）：d1 同上，且 rc=0、J_window/soc_end/fuel/
+  dlambda_all 全字段与 p5g 断点版 dump 一致（RCA §A.9 已追加）。
+- 注入新手法登记：UART RX 环注入前 DCIMVAC(0xE000EF60) 按行失效 D-cache
+  （UART 环无 RTT 的 cache_ci 自愈）。
+
+**§5.2 门 #9：仍未达（park）**——CH340 本晚第 4 次掉线（USB 树 0x1a86 整体
+消失），µs 级 host 墙钟不可测；SWD 替代精度不可用。复跑条件与命令见 p5r §6。
+门 2-8/10 回归同样待板窗口。**结案行继续不登记**（真 1Hz 未实测）。
+
+ELF 血统与 sha 勘误（p5r §0）：ac4a35af 消息中"新 ELF sha 2d10d5c2"不存在于
+任何口径/目录——实际新 ELF = c6274ffe（p5q_final_note 标注正确）。
+
+fw_gate（三处修改后）：7/7 全 PASS（Debug+Release）。

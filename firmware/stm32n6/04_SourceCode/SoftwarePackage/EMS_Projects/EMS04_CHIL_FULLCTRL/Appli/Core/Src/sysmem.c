@@ -60,10 +60,37 @@ void *_sbrk(ptrdiff_t incr)
   const uint8_t *max_heap = (uint8_t *)stack_limit;
   uint8_t *prev_heap_end;
 
+  /* A 类 ThreadX 共存修复（p5r 板锤，2026-10-01）：cmsis_os2 MemInit 从
+   * _tx_initialize_unused_memory（= &_end，tx_initialize_low_level.S 设定）
+   * 切出 Stack/Heap 两个内核字节池（线程栈所在！）。newlib 堆若同样从
+   * &_end 起长，DP 深路径的 calloc 会把在线线程栈 memset 清零——板上
+   * 实证：PC=0 IBUSERR，栈底 0x341D2F58 即被清堆块。堆基址必须上移到
+   * 池区之上；池跨度用与 cmsis_os2.c 相同的宏推导（CMake 注入
+   * RTOS2_BYTE_POOL_STACK_SIZE=24576，PUBLIC 传播到本编译单元）。
+   * 注意：本文件为 CubeMX 生成文件且无 USER CODE 区——再生成会丢此
+   * 修复（.ioc 已冻结不再生成；变更已在 PLAN §7 登记）。 */
+#if defined(TX_INCLUDE_USER_DEFINE_FILE) && defined(USE_DYNAMIC_MEMORY_ALLOCATION)
+#ifndef RTOS2_BYTE_POOL_STACK_SIZE
+#define RTOS2_BYTE_POOL_STACK_SIZE (3u * 1024u)
+#endif
+#ifndef RTOS2_BYTE_POOL_HEAP_SIZE
+#define RTOS2_BYTE_POOL_HEAP_SIZE (4u * 1024u)
+#endif
+#ifndef RTOS2_INTERNAL_BYTE_POOL_SIZE
+#define RTOS2_INTERNAL_BYTE_POOL_SIZE 256u
+#endif
+#define EMS_SBRK_TX_POOL_SPAN \
+  (RTOS2_BYTE_POOL_STACK_SIZE + RTOS2_INTERNAL_BYTE_POOL_SIZE + \
+   RTOS2_BYTE_POOL_HEAP_SIZE + RTOS2_INTERNAL_BYTE_POOL_SIZE + 0x1000u)
+  uint8_t *heap_base = &_end + EMS_SBRK_TX_POOL_SPAN;
+#else
+  uint8_t *heap_base = &_end;
+#endif
+
   /* Initialize heap end at first call */
   if (NULL == __sbrk_heap_end)
   {
-    __sbrk_heap_end = &_end;
+    __sbrk_heap_end = heap_base;
   }
 
   /* Protect heap from growing into the reserved MSP stack */
