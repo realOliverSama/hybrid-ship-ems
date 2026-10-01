@@ -454,3 +454,6 @@ SWD 双环逐槽读回（load=106.0652 常量 / pred=205.7033 常量，30/30 对
 - 门 6（C4 电池 3 航次）运行中；门 7（P3 formal 4 航次，streamE 臂，
   `s4_c4_battery.py --plant-backend streamE --data-root
   model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid`）随后。
+- **门 6 C4 电池：PASS**——3/3 航次（S02_downstream/S03_upstream/S08_resistance_
+  bands）G6 overall 全 true，wall=699s，零停机（电池 overall=True →
+  results/s4_c4/s4_c4_gate.json）。门 7 P3 formal（streamE 臂 4 航次）运行中。
