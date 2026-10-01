@@ -457,3 +457,5 @@ SWD 双环逐槽读回（load=106.0652 常量 / pred=205.7033 常量，30/30 对
 - **门 6 C4 电池：PASS**——3/3 航次（S02_downstream/S03_upstream/S08_resistance_
   bands）G6 overall 全 true，wall=699s，零停机（电池 overall=True →
   results/s4_c4/s4_c4_gate.json）。门 7 P3 formal（streamE 臂 4 航次）运行中。
+- **门 #10 LCD 目视：PASS（用户屏上确认 2026-10-02，三区对齐版 0bc72bc5）**——
+  "屏幕显示效果不错"；60 槽布局（左过去对比/右未来预测/中缝 now）验收闭合。
