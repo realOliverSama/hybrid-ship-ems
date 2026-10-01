@@ -438,3 +438,19 @@ ELF，来源探测待修；②q50 vs 植物 P_load 的逐拍真值对拍未在 C
 SWD 双环逐槽读回（load=106.0652 常量 / pred=205.7033 常量，30/30 对齐，head
 整环回绕一致）。ELF 0bc72bc5（板载同版），fw_gate 7/7。遗留：门 #10 LCD 目视
 （对齐版待用户屏上确认）；NEXT C3 全程时红蓝将同轴追踪真实轨迹。
+
+**§7.9 RTOS 形态回归（2026-10-02 凌晨，ThreadX 板 19d5e2c6/0bc72bc5）**：
+- **门 2 selftest：PASS**（closedloop_selftest 全套件含 10 项断言组 ok=true，
+  "CLOSEDLOOP SELFTEST PASS"）；
+- **门 3 S1 C2 replay：PASS**（replay_parity_c2_p2opt：377/377，max_abs_diff=0.0，
+  网格无放宽，c_output_on_grid=1.0，oob/fallback=0；q50_f32 精确表示 True）；
+- **门 4 preamble 100 拍：PASS**（板 RTOS 形态：100 拍 P_ref 板=host 全 EQ、
+  pg>1grid=0、action_diff=14 与既有漂移归因档案同构；报告
+  results/s4_c2/s4_c3_preamble_report.json）；
+- **门 8 六锚批：推理 6/6 OK**（infer 281-285ms，capture 落盘
+  results/s3c_pilot/s3c_pilot_capture_20261001T174447.jsonl）。正式 maxdiff=0.0
+  核对需 edges（SWD 影子转储）+refs（S3C_HOST_REF npz 在库）全链——列为下会话
+  补项；今晚更强证据面 = C3 全程 541 拍 board-vs-host 一致性（530/541+11 归档）；
+- 门 6（C4 电池 3 航次）运行中；门 7（P3 formal 4 航次，streamE 臂，
+  `s4_c4_battery.py --plant-backend streamE --data-root
+  model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid`）随后。
