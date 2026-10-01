@@ -245,7 +245,10 @@
 
 #define TX_MAX_PRIORITIES                       64
 #define TX_THREAD_USER_EXTENSION                ULONG tx_thread_detached_joinable;
-#define TX_TIMER_TICKS_PER_SECOND                100
+/* p5s（2026-10-01）：100→1000（osDelay(1)=1ms）。100Hz 时 Prot 排水节拍 10ms，
+ * EXEC_REFRESH 端到端 P50≈15.6ms 顶穿门 #9（板锤：p5o postRTOS 首测）。
+ * LCD 1Hz 节流走 HAL_GetTick(ms) 口径不受影响。 */
+#define TX_TIMER_TICKS_PER_SECOND                1000
 
 /* Determine if there is a FileX pointer in the thread control block.
    By default, the pointer is there for legacy/backwards compatibility.

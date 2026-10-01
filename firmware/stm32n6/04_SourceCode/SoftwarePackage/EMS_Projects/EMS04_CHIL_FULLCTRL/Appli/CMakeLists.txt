@@ -765,5 +765,9 @@ target_include_directories(ems_cmsis_os2 PUBLIC
     "${CMAKE_CURRENT_LIST_DIR}/Core/Inc")
 target_compile_definitions(ems_cmsis_os2 PUBLIC TX_INCLUDE_USER_DEFINE_FILE TX_SINGLE_MODE_SECURE=1 USE_DYNAMIC_MEMORY_ALLOCATION)
 target_compile_definitions(ems_cmsis_os2 PUBLIC RTOS2_BYTE_POOL_STACK_SIZE=24576)  # A 类：4 任务栈 20480B+余量（p5q：默认 3KB 池装不下 4096B Prot 栈）
+# p5s（2026-10-01）：内核库也必须见到 tx_user.h——TX_TIMER_TICKS_PER_SECOND=1000
+# 在 tx_user.h 中定义，SysTick 装载与 tx_timer.c 过期计算都在 threadx 库内编译；
+# 缺此宏时内核仍按 100Hz 跑（板锤：EXEC_REFRESH P50≈15.6ms 顶穿门 #9）。
+target_compile_definitions(threadx PUBLIC TX_INCLUDE_USER_DEFINE_FILE)
 target_link_libraries(${CMAKE_PROJECT_NAME} ems_cmsis_os2)
 # <<< EMS04 A 类 ThreadX CMSIS-RTOS2 包装层 END <<<

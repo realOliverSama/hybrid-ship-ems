@@ -355,3 +355,36 @@ ELF 血统与 sha 勘误（p5r §0）：ac4a35af 消息中"新 ELF sha 2d10d5c2"
 任何口径/目录——实际新 ELF = c6274ffe（p5q_final_note 标注正确）。
 
 fw_gate（三处修改后）：7/7 全 PASS（Debug+Release）。
+
+### 7.6 门 #9 首测（2026-10-01 夜，p5s）——P50 达标，P99 差一步：tick 100Hz→1000Hz + TX 边界碰撞登记
+
+**测量通路**：CH340 串口恢复后走正规 UART（p5o 双线程版有 pyserial 并发读竞态，
+换单线程 `p5s_exec_p99_v2.py`：TICK_CTRL 发出不等待，1Hz EXEC_REFRESH 贯穿 DP 窗，
+单读取面按帧类型分类计时）。
+
+**第四个 bring-up 根因（门 #9 首测 P50≈15.6ms 直接顶穿 10ms 门）**：
+`TX_TIMER_TICKS_PER_SECOND=100`（tx_port.h 缺省）——`osDelay(1)`=10ms，Prot 排水
+节拍变成 10ms。修复 = tx_user.h 254 行 100→1000（tx_port.h 无此宏、tx_api.h 为
+#ifndef 缺省；**tx_user.h 曾在 71 行附近加 1000 但被 254 行 ST 模板自带的 100
+二次定义覆盖——重定义警告是线索**）。关键配套：`TX_INCLUDE_USER_DEFINE_FILE`
+必须同时给 threadx 内核库（CMakeLists 新增 `target_compile_definitions(threadx
+PUBLIC ...)`）——否则 tx_user.h 对内核编译单元不可见，改了也白改（板锤：两次
+重建 sha 不变）。修复后反汇编实证 `_tx_initialize_low_level` 装载值
+`mov.w r1, #1000` ✓。ELF 19d5e2c6，fw_gate 7/7 PASS。
+
+**门 #9 实测（1000Hz，p5s v2，REATT 推理 303ms 数值与 RTT/旧版逐位同）**：
+- 窗外桶：P50 7.57-7.97 / P99 8.14-8.99ms（两轮，n=12/12）✓
+- **DP 窗内桶：P50 7.48-7.57ms ✓**（结构性目标达成：快命令在 5.2s DP 窗内
+  可抢占，任务化设计意图实证）；
+- 窗内 P99 = 13.68 / 55.18ms ✗（两轮各 1 个离群，其余 39-40 样本 7.5-9.7ms）。
+  离群定位 = **DP 完成瞬间**：慢任务 RSP_TICK_CTRL 96B 阻塞 TX（115200 下
+  ~8.3ms）持 osMutex，与快任务 EXEC 应答撞车。按真实 1Hz 节拍折算，此类边界
+  碰撞 ≈1.3% 样本 >1%，严格 P99 仍命中 → **门 #9 严格判定：未达**。
+- 修复路径（下会话，范围有界）：应答发送中断化/DMA（TX 不再持锁阻塞），
+  位级无涉、仅传输层。
+- 教训：p5o 双线程读同一 pyserial 句柄有竞态（今晚两次 tick 线程崩溃的根因）；
+  测量脚本必须单读取面。
+
+**附带**：CH340 串口即板子供电——今晚 5 次掉线=5 次板子断电（SRAM 固件丢失、
+USB 树抖动），是全部"诡异现象"的总根因；建议独立供电。UART REATT 全链
+（13931B 帧→推理 303ms→q50 202-227kW→LCD 曲线点亮）在 RTOS 形态首次走通。
