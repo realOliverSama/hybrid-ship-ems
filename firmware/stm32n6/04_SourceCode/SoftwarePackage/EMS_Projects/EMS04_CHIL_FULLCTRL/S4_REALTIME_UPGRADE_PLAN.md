@@ -459,3 +459,14 @@ SWD 双环逐槽读回（load=106.0652 常量 / pred=205.7033 常量，30/30 对
   results/s4_c4/s4_c4_gate.json）。门 7 P3 formal（streamE 臂 4 航次）运行中。
 - **门 #10 LCD 目视：PASS（用户屏上确认 2026-10-02，三区对齐版 0bc72bc5）**——
   "屏幕显示效果不错"；60 槽布局（左过去对比/右未来预测/中缝 now）验收闭合。
+
+**§7.10 A 类收口（2026-10-02 凌晨）**：门 7 P3 formal 4 航次运行因烧录打断，
+登记改期（交付形态重跑）；NOR Appli-only 烧录+校验+原生启动全链完成（记录
+`experiments/deviation4_rca/nor_flash_20261002_p5s/RELEASE_RECORD.md`，本地）；
+Demo 包（`Demo/start_demo.command` + README）彩排 **60/60 拍 G6=True rc=0** ✓。
+RTOS 形态回归终版：门 1/2/3/4/5/6/8/9(b)/10 全 PASS；门 7 待交付形态重跑。
+NOR 依赖发现（重要）：SRAM NPU 形态运行时经 XSPI2 memory-mapped 读 NOR 表
+（BSFC/dlam ~0x7012-0x701C、权重 0x70200000/0x70400000）——NOR 内容为运行
+依赖，不可随意覆盖（今晚烧录覆盖 1.68MB 即打挂 SRAM 形态推理/EXEC，恢复备份
+后复原）；ThreadX flash 交付布局与该权重池冲突（镜像尾部侵入 0x70200000+）+
+XIP 形态 fast 任务待查——两项为 flash 交付的前置修复。
