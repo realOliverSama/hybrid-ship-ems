@@ -134,6 +134,16 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
 
   /* USER CODE END App_ThreadX_MEM_POOL */
   /* USER CODE BEGIN App_ThreadX_Init */
+  /* A 类 bring-up 修复（2026-10-01，p5q 板锤）：CMSIS-RTOS2 对象创建前必须
+   * osKernelInitialize()——它驱动 MemInit() 创建 Stack/Heap 内核字节池；
+   * 缺失时 osThreadNew/osMutexNew/osSemaphoreNew 全部静默返回 NULL
+   * （tx_byte_allocate 对未创建池失败），且 KernelState 停在 osKernelInactive。
+   * CubeMX 生成模板只示范 tx_* 原生 API，不含本调用。 */
+  if (osKernelInitialize() != osOK)
+  {
+    /* USER CODE BEGIN App_ThreadX_Init_KernelErr */
+    /* USER CODE END App_ThreadX_Init_KernelErr */
+  }
   /* 对象/互斥初始化（调度器启动前；cmsis_os2 对象允许 pre-kernel 创建） */
   ems_tx_sync_init();      /* UART 发送互斥（ems_app.c §3.4） */
   ems04_fastq_init();      /* 快命令队列 */
@@ -150,6 +160,12 @@ UINT App_ThreadX_Init(VOID *memory_ptr)
       s_thr_attr[i].priority = prios_os[i];
       s_thr_attr[i].stack_size = stacks[i];
       *ids[i] = osThreadNew(bodies[i], NULL, &s_thr_attr[i]);
+      if (*ids[i] == NULL) {
+          /* fail-fast：线程创建失败时在此自旋（SWD halt 可见 PC），不再静默
+           * 继续——p5q 教训：四线程 NULL 静默通过曾把根因掩埋数小时。 */
+          volatile int n = i; (void)n;
+          for (;;) { }
+      }
   }
   /* USER CODE END App_ThreadX_Init */
 

@@ -764,5 +764,6 @@ target_include_directories(ems_cmsis_os2 PUBLIC
     "${CMAKE_CURRENT_LIST_DIR}/../Middlewares/ST/threadx/ports/cortex_m55/gnu/inc"
     "${CMAKE_CURRENT_LIST_DIR}/Core/Inc")
 target_compile_definitions(ems_cmsis_os2 PUBLIC TX_INCLUDE_USER_DEFINE_FILE TX_SINGLE_MODE_SECURE=1 USE_DYNAMIC_MEMORY_ALLOCATION)
+target_compile_definitions(ems_cmsis_os2 PUBLIC RTOS2_BYTE_POOL_STACK_SIZE=24576)  # A 类：4 任务栈 20480B+余量（p5q：默认 3KB 池装不下 4096B Prot 栈）
 target_link_libraries(${CMAKE_PROJECT_NAME} ems_cmsis_os2)
 # <<< EMS04 A 类 ThreadX CMSIS-RTOS2 包装层 END <<<
