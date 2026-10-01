@@ -67,6 +67,10 @@ static float lcd_q50[30];               /* 最近一窗 q50（kW） */
 static int lcd_q50_valid;
 static float lcd_load_hist[30];         /* 实际负荷滚动（tick 注入） */
 static uint32_t lcd_hist_head;
+static float lcd_pred_hist[30];         /* p5s：每档"当时预测"（档首 q50[0]），与
+ * lcd_load_hist 同槽对齐——红蓝线 x 轴同时间点（用户指令 2026-10-01） */
+static uint32_t lcd_pred_head;
+static uint8_t lcd_pair_arm;            /* notify（实际入环）置位，notify_q 消费 */
 static uint32_t lcd_last_draw_ms;
 static int lcd_ever_drawn;
 static uint32_t lcd_frame_dbg_left;     /* 前 N 帧打印帧耗时（DWT 实测） */
@@ -239,7 +243,7 @@ static void lcd_draw_dynamic(void)
     float rng_f = 300.0f;
     for (uint32_t i = 0u; i < 30u; i++) {
         if (lcd_load_hist[i] > rng_f) rng_f = lcd_load_hist[i];
-        if (lcd_q50_valid && lcd_q50[i] > rng_f) rng_f = lcd_q50[i];
+        if (lcd_pred_hist[i] > rng_f) rng_f = lcd_pred_hist[i];
     }
     uint32_t rng = ((uint32_t)((rng_f + 299.0f) / 300.0f)) * 300u;
     for (uint32_t k = 0u; k <= 3u; k++) {
@@ -252,13 +256,13 @@ static void lcd_draw_dynamic(void)
         lcd_string(buf, (uint16_t)(px0 - SX(24u)),
                    (uint16_t)(yy - lcd_fs_body / 2u), C_TEXTDIM, lcd_fs_body);
     }
-    /* 实际（红实线）：滚动历史，占左侧 2/3 时间轴 */
+    /* 实际（红实线）：滚动历史，全时间轴（p5s 对齐修订：与预测同 x 同时刻） */
     for (uint16_t i = 0u; i + 1u < 30u; i++) {
         float a = lcd_load_hist[(lcd_hist_head + i) % 30u];
         float b = lcd_load_hist[(lcd_hist_head + i + 1u) % 30u];
         if (a <= 0.0f || b <= 0.0f) continue;
-        uint16_t x0 = (uint16_t)(px0 + (uint32_t)i * span * 2u / 3u / 29u);
-        uint16_t x1 = (uint16_t)(px0 + (uint32_t)(i + 1u) * span * 2u / 3u / 29u);
+        uint16_t x0 = (uint16_t)(px0 + (uint32_t)i * span / 29u);
+        uint16_t x1 = (uint16_t)(px0 + (uint32_t)(i + 1u) * span / 29u);
         int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / (float)rng));
         int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / (float)rng));
         int16_t steps = (int16_t)(x1 - x0);
@@ -269,26 +273,27 @@ static void lcd_draw_dynamic(void)
             rgblcd_draw_point((uint16_t)((int16_t)x0 + s2), (uint16_t)(yy + 1), C_RED);
         }
     }
-    /* 预测（蓝虚线）：30 lead，全时间轴 */
-    if (lcd_q50_valid) {
-        for (uint16_t i = 0u; i + 1u < 30u; i++) {
-            float a = lcd_q50[i], b = lcd_q50[i + 1u];
-            uint16_t x0 = (uint16_t)(px0 + (uint32_t)i * span / 29u);
-            uint16_t x1 = (uint16_t)(px0 + (uint32_t)(i + 1u) * span / 29u);
-            int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / (float)rng));
-            int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / (float)rng));
-            int16_t steps = (int16_t)(x1 - x0);
-            if (steps < 1) steps = 1;
-            for (int16_t s2 = 0; s2 <= steps; s2++) {
-                if (((uint16_t)s2 / 3u) % 2u != 0u) continue;      /* 虚线段 */
-                int16_t yy = ya + (int16_t)(((int32_t)(yb - ya) * s2) / steps);
-                rgblcd_draw_point((uint16_t)((int16_t)x0 + s2), (uint16_t)yy, C_BLUE);
-            }
+    /* 预测（蓝虚线）：对齐预测环——与红线同 x 同时刻（每档档首预测 vs 档首实际，
+     * 用户指令 2026-10-01：红蓝 x 轴对应完全相同时间点） */
+    for (uint16_t i = 0u; i + 1u < 30u; i++) {
+        float a = lcd_pred_hist[(lcd_pred_head + i) % 30u];
+        float b = lcd_pred_hist[(lcd_pred_head + i + 1u) % 30u];
+        if (a <= 0.0f || b <= 0.0f) continue;
+        uint16_t x0 = (uint16_t)(px0 + (uint32_t)i * span / 29u);
+        uint16_t x1 = (uint16_t)(px0 + (uint32_t)(i + 1u) * span / 29u);
+        int16_t ya = (int16_t)(pyb - (int32_t)(a * (float)hgt / (float)rng));
+        int16_t yb = (int16_t)(pyb - (int32_t)(b * (float)hgt / (float)rng));
+        int16_t steps = (int16_t)(x1 - x0);
+        if (steps < 1) steps = 1;
+        for (int16_t s2 = 0; s2 <= steps; s2++) {
+            if (((uint16_t)s2 / 3u) % 2u != 0u) continue;      /* 虚线段 */
+            int16_t yy = ya + (int16_t)(((int32_t)(yb - ya) * s2) / steps);
+            rgblcd_draw_point((uint16_t)((int16_t)x0 + s2), (uint16_t)yy, C_BLUE);
         }
     }
-    lcd_string("now", (uint16_t)(px0 + 2u), (uint16_t)(pyb - lcd_fs_body - SY(4u)), C_RED, lcd_fs_body);
+    lcd_string("-300s", (uint16_t)(px0 + 2u), (uint16_t)(pyb - lcd_fs_body - SY(4u)), C_RED, lcd_fs_body);
     {
-        const char *s = "+30 lead";
+        const char *s = "now";
         uint16_t w = (uint16_t)((lcd_fs_body >> 1) * 8u);
         lcd_string(s, (uint16_t)(px1 - w), (uint16_t)(pyb - lcd_fs_body - SY(4u)), C_GRAY, lcd_fs_body);
     }
@@ -366,8 +371,11 @@ void ems_lcd_init(void)
 {
     memset(lcd_q50, 0, sizeof lcd_q50);
     memset(lcd_load_hist, 0, sizeof lcd_load_hist);
+    memset(lcd_pred_hist, 0, sizeof lcd_pred_hist);
     lcd_q50_valid = 0;
     lcd_hist_head = 0;
+    lcd_pred_head = 0;
+    lcd_pair_arm = 0u;
     lcd_last_draw_ms = 0u;
     lcd_ever_drawn = 0;
     lcd_static_drawn = 0;
@@ -455,6 +463,7 @@ void ems_lcd_notify(float v_ship_kn, float p_load_kw, float p_gen_kw,
     lcd_fallback = fallback;
     lcd_load_hist[lcd_hist_head] = p_load_kw;
     lcd_hist_head = (lcd_hist_head + 1u) % 30u;
+    lcd_pair_arm = 1u;  /* 实际已入环：下一个 notify_q 的 q50[0] 与本档配对 */
 }
 
 void ems_lcd_notify_live(float v_ship_kn, float p_load_kw, float p_gen_kw,
@@ -473,6 +482,14 @@ void ems_lcd_notify_q(const float q50[30])
     if (q50 == NULL) return;
     memcpy((void *)lcd_q50, q50, sizeof lcd_q50);
     lcd_q50_valid = 1;
+    /* p5s 对齐环：仅当 notify 刚注入过同档实际（TICK_CTRL 顺序对）才入环；
+     * REATT 单独查询（无前置 notify）不配对——不污染红蓝对齐轴。 */
+    if (lcd_pair_arm) {
+        uint32_t idx = (lcd_hist_head + 29u) % 30u;  /* 最新实际所在槽 */
+        lcd_pred_hist[idx] = q50[0];                 /* 档首预测 vs 档首实际 */
+        lcd_pred_head = lcd_hist_head;
+        lcd_pair_arm = 0u;
+    }
 }
 
 void ems_lcd_poll(uint32_t now_ms)
