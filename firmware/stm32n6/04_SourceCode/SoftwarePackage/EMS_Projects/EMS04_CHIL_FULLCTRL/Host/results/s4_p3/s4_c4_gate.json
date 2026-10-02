@@ -1,6 +1,6 @@
 {
  "schema": "s4_c4_battery_gate_v1",
- "created_utc": "2026-09-29T09:19:21.698863+00:00",
+ "created_utc": "2026-10-02T18:46:05.281832+00:00",
  "mode": "board",
  "dry_note": null,
  "battery_freeze": {
@@ -44,7 +44,7 @@
     "soc_min": 0.5948238462040828,
     "soc_max": 0.6002102589499168,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 164,
+    "drift_action_diff_n": 81,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -70,7 +70,7 @@
     "soc_min": 0.5948238462040828,
     "soc_max": 0.6002102589499168,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 169,
+    "drift_action_diff_n": 100,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -93,10 +93,10 @@
     "g6_3_amended_pass": true,
     "g6_4_pass": true,
     "g6_6_pass": true,
-    "soc_min": 0.5380464830521265,
+    "soc_min": 0.5389512585052498,
     "soc_max": 0.5998527139073546,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 16,
+    "drift_action_diff_n": 33,
     "undeclared_n": 0
    },
    "artifacts": {
@@ -119,10 +119,10 @@
     "g6_3_amended_pass": true,
     "g6_4_pass": true,
     "g6_6_pass": true,
-    "soc_min": 0.5380464830521265,
+    "soc_min": 0.5389512585052498,
     "soc_max": 0.5998527139073546,
     "unattributed_pgen_n": 0,
-    "drift_action_diff_n": 17,
+    "drift_action_diff_n": 33,
     "undeclared_n": 0
    },
    "artifacts": {
