@@ -1,4 +1,4 @@
 CompileFlags:
-  CompilationDatabase: Appli/build
+  CompilationDatabase: Appli/build/Debug
 If:
   PathMatch: .*

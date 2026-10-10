@@ -1,6 +1,6 @@
 {
  "schema": "s4_c3_gate_v2_1",
- "created_utc": "2026-10-01T22:29:17.713084+00:00",
+ "created_utc": "2026-10-03T05:31:42.928699+00:00",
  "mode": "board",
  "dry_note": null,
  "adjudication": {
@@ -62,12 +62,12 @@
    "S4Smoke 形态 ctrl/infer_us=0（DWT 未使能）——遥测面项"
   ]
  },
- "wall_s": 450.0,
+ "wall_s": 472.6,
  "seq_final": 60,
  "runnability_G6_1": {
   "n_ticks": 60,
   "nack_n": 0,
-  "retry_n": 0,
+  "retry_n": 1,
   "timeout_or_lost": false,
   "flags_nonzero_n": 0,
   "soc_min": 0.5961651041575015,

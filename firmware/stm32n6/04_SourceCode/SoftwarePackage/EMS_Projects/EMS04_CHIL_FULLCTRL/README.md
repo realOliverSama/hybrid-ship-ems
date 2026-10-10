@@ -79,6 +79,7 @@
 | `results/s4_c2/` | C2 冒烟与 C3 前置产物（`s4_c2_gate.json`/`s4_c2_smoke_report.json`/`s4_c3_preamble_report.json`/`libems04_pms_safety.dylib`） |
 | `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档 / **`v2_archive/` 口径 v2 板跑冻结副本（2026-09-29 偏差④ 修复前基线）**；live 路径承载最新口径跑批） |
 | `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`）；另含 P3 冻结件 `S4_P3_FORMAL_ARM_FREEZE.json`（formal 臂电池覆盖 4 航次，主 Agent 定稿）与 worker 草案/Phase A 报告 |
+| `results/s3c_pilot/` | S3-C pilot 板跑原始捕获（`s3c_pilot_capture_20261001T174447.jsonl`，六锚逐帧 UART 抓取，门 8 六锚推理核对链的落盘证据） |
 
 ### S4-P3 B1 段新增（2026-09-29，formal 臂流驱动植物变体 host 装配；冻结件 `results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json`，规格 `experiments/softhil_ems03_2026-09-25/S4_P3_STREAM_PLANT_SPEC.md`）
 

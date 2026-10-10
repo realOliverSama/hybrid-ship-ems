@@ -1,0 +1,87 @@
+{
+  "schema": "s4_plantstepE_codegen_manifest_v1",
+  "created_utc": "2026-09-28T15:38:41Z",
+  "matlab": "26.1.0.3312084 (R2026a) Update 4",
+  "scenario": "S02_downstream",
+  "model": "HybridShip_ModelE_PlantStepE",
+  "model_sha256": "8821dd0165998523b49ea8786e9d5f1e912a9abe038edb82f3fbbdc7a123917c",
+  "main_model_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "tlc": "grt.tlc",
+  "used_grt_fallback": true,
+  "cfg_applied": [
+    [
+      "GenCodeOnly",
+      "DefaultParameterBehavior",
+      "SupportNonFinite",
+      "MatFileLogging",
+      "GenerateReport",
+      "SolverMode"
+    ]
+  ],
+  "cfg_failed": [
+    [
+      "ExternalMode"
+    ]
+  ],
+  "prior_rtw_existed": false,
+  "rtw_dir": "Host/plantstep_e/S02_downstream/HybridShip_ModelE_PlantStepE_grt_rtw",
+  "files": [
+    {
+      "name": "HybridShip_ModelE_PlantStepE.c",
+      "sha256": "62656a4aa3f3de8140b4ac857ea1d4556be91a99e0a6b2be403eea98259b674d"
+    },
+    {
+      "name": "HybridShip_ModelE_PlantStepE_data.c",
+      "sha256": "90ecf979e179356a2e291f0a74e7a06df39a76fa32d1b04d931c172287e325fb"
+    },
+    {
+      "name": "rtGetInf.c",
+      "sha256": "9360c9a1a3fb6e9327caa2a4613aa661ff4d9543a414d87a6b163ab0431561cd"
+    },
+    {
+      "name": "rtGetNaN.c",
+      "sha256": "98778cbfe70f96e05bcf0ced87163caac87d46bc012b9e2420e670a665e1cf32"
+    },
+    {
+      "name": "rt_nonfinite.c",
+      "sha256": "d41065a8947814aea89f6f9e578f1b76a0fa5e58de264ce9dabbdec010e7c914"
+    },
+    {
+      "name": "HybridShip_ModelE_PlantStepE.h",
+      "sha256": "fb102796fae6c67a87c0c0729ff10d34d10016fce78fec8331b3cebc4fea7eeb"
+    },
+    {
+      "name": "HybridShip_ModelE_PlantStepE_private.h",
+      "sha256": "22f19ba262d8731259e2897b16daa3a63872d476987c37b01f00460318a44d24"
+    },
+    {
+      "name": "HybridShip_ModelE_PlantStepE_types.h",
+      "sha256": "868ac6127002b88e80774f358b524b2a5a945b655f72dd88cfa4177d5603eadb"
+    },
+    {
+      "name": "multiword_types.h",
+      "sha256": "2c17a2deafd5b3d7b02d0181ac01147d620e51e47a5fa426cb851aa425a6eeed"
+    },
+    {
+      "name": "rtGetInf.h",
+      "sha256": "34db7311acc285ad5f3dac8a1af672ac729d9d0110a1b4ca023c2623d0fbf303"
+    },
+    {
+      "name": "rtGetNaN.h",
+      "sha256": "0f342e42ee5c5b5f42c0677f9a3516fa986588013eb04211a65eac48637c5852"
+    },
+    {
+      "name": "rt_nonfinite.h",
+      "sha256": "e49f7d40632c90591e8ce896ccc4f162705e613affc68e59e36e39937e0a34a4"
+    },
+    {
+      "name": "rtmodel.h",
+      "sha256": "b72b99690ef1f54cdd9a68d11262f30682833ecc12599865eef2e5557a012501"
+    },
+    {
+      "name": "rtwtypes.h",
+      "sha256": "7f903e0a0adeff9b60239032a981880830d8b459a481e63895521ffacd8571dd"
+    }
+  ],
+  "note": "dylib 由 Host/tools/build_plantstep_e.sh 编译（plantstep_e_shim.c + 生成码）；本脚本不编译。"
+}

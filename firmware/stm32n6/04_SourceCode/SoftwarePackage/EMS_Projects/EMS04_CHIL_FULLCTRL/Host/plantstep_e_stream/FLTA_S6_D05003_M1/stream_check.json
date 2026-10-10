@@ -1,0 +1,117 @@
+{
+ "schema": "s4_p3_stream_check_v1",
+ "created_utc": "2026-09-29T04:55:11Z",
+ "mode": "selfcheck",
+ "voyage_id": "FLTA_S6_D05003_M1",
+ "role": "M1_R_high",
+ "arm": "M1",
+ "arms_forecast": "GOOD_V1",
+ "freeze": {
+  "path": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json",
+  "sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f"
+ },
+ "source_mat": {
+  "path": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/FLTA_S6_D05003_M1.mat",
+  "sha256": "81ed0fac62778f838ace50072fcb159ed6620ca35f3706f121aecd4bc5ce715d"
+ },
+ "bin": {
+  "path": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/FLTA_S6_D05003_M1/FLTA_S6_D05003_M1.stream.f64.bin",
+  "total_bytes": 121332,
+  "sha256": "fbb64959e7d39fba66a8534d24d1f211fd493dc205567d95fcb0c8c233601ade",
+  "header_bytes": 20,
+  "row_bytes": 32,
+  "header": {
+   "magic": "EMS04STM",
+   "format_version": 1,
+   "n_rows": 3791,
+   "reserved": 0
+  },
+  "columns": [
+   "t_s",
+   "P_prop_realized_kW",
+   "P_hotel_kW",
+   "v_ship_mps"
+  ],
+  "row_layout": "f64 ×4 '<f8' C-order，全小端"
+ },
+ "grid": {
+  "n_stream": 3791,
+  "duration_s": 3790,
+  "t_first": 0.0,
+  "t_last": 3790.0
+ },
+ "fingerprint": {
+  "first_row": {
+   "i": 0,
+   "t_s_hex": "0x0.0p+0",
+   "P_prop_realized_kW_hex": "0x0.0p+0",
+   "P_hotel_kW_hex": "0x1.a031bc32d5600p+7",
+   "v_ship_mps_hex": "0x0.0p+0"
+  },
+  "last_row": {
+   "i": 3790,
+   "t_s_hex": "0x1.d9c0000000000p+11",
+   "P_prop_realized_kW_hex": "0x1.85766b29e0080p+8",
+   "P_hotel_kW_hex": "0x1.a031bc32d5600p+7",
+   "v_ship_mps_hex": "0x1.71e866ea322d0p+2"
+  }
+ },
+ "derived_identity": {
+  "definition": "P_prop_realized_kW := P_load_total_kW − P_hotel_kW",
+  "bitwise_exact_vs_source": {
+   "t_s": true,
+   "P_prop_realized_kW": true,
+   "P_hotel_kW": true,
+   "v_ship_mps": true
+  },
+  "max_abs_residual_kw_(prop+hotel)-load": 0.0
+ },
+ "checks": {
+  "readback": {
+   "magic_ok": true,
+   "version_ok": true,
+   "reserved_ok": true,
+   "n_rows_ok": true,
+   "n_rows_eq_duration_plus_1": true,
+   "total_bytes_ok": true,
+   "t_grid_ok": true,
+   "all_finite": true,
+   "on_disk_byte_identical_to_recomputed": true,
+   "bitwise_exact_vs_source": true
+  },
+  "static_audit": {
+   "forbidden_string_keys": [
+    "SOC",
+    "V_dc_V",
+    "V_bat_V",
+    "I_bat_A",
+    "P_gen_actual_kW",
+    "P_bat_actual_kW",
+    "P_bat_kW",
+    "P_bat_dis_avail_kW",
+    "P_bat_chg_avail_kW",
+    "P_prop_demand_kW",
+    "n_prop_rpm",
+    "acceleration_mps2",
+    "x_ship_m",
+    "manual_power_cmd_pct",
+    "ctrl_mode",
+    "resistance_multiplier",
+    "state_DG1",
+    "state_DG2"
+   ],
+   "whitelist_cols": [
+    "time_s",
+    "P_load_total_kW",
+    "P_hotel_kW",
+    "v_ship_mps",
+    "P_prop_realized_kW"
+   ],
+   "exempt_constants": 18,
+   "violations": [],
+   "pass": true
+  }
+ },
+ "overall": true,
+ "errors": []
+}
