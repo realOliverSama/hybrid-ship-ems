@@ -224,6 +224,10 @@ target_compile_options(${CMAKE_PROJECT_NAME} PRIVATE -ffp-contract=off)
 # phase4-g：EMS_REATT_UART_BAUD 接线（cache 变量 → 编译定义；ems_config.h 消费）。
 set(EMS_REATT_UART_BAUD "115200" CACHE STRING "USART1 runtime baud override (ems_config.h)")
 target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS_REATT_UART_BAUD=${EMS_REATT_UART_BAUD})
+# phase4-g：首窗诊断开关（NOR 探针 + 自检图 + 阶梯/S0；ems_reatt_split.c 消费）。
+# 生产 0（阶梯首窗连带 ~40s，不得进 soft-HIL 航次）；回开 -DEMS_REATT_DIAG=1。
+set(EMS_REATT_DIAG "0" CACHE STRING "First-window diag: 1=ladder+S0+selftest+NOR, 0=production")
+target_compile_definitions(${CMAKE_PROJECT_NAME} PRIVATE EMS_REATT_DIAG=${EMS_REATT_DIAG})
 # 串口日志含 %.6f（ems_app.c INFER_TEST 帧）；newlib-nano 默认无浮点 printf
 # 转换器，强制链接浮点变体，保证 T-506/T-507 人工可读遥测不失真（两后端共用）。
 target_link_options(${CMAKE_PROJECT_NAME} PRIVATE -u _printf_float)
@@ -304,27 +308,28 @@ if(EMS_FW_MODE STREQUAL "NPU")
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n1/reattn1c_data.c>"
             #    N2 Attention/Dense NPU 形态（包装 TU 仅契约断言；图与 stai 绑定分 TU）
             "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${EMS01_APP_DIR}/ems_npu_reattn2n.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n2/reattn2n.c>"
-            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/part_n2/stai_reattn2n.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/n2_lnfloat/reattn2l.c>"
+            "$<$<AND:$<CONFIG:Release>,$<STREQUAL:${EMS_REATT_FORM},SPLIT>>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/n2_lnfloat/stai_reattn2l.c>"
             # —— D2 判别实验（phase4-g，2026-09-23）：NPU 平凡自检图（双恒等 MatMul，
             #    权重 145 B 落 NOR 0x703E0000；hex = Binary/network-data-reattself.hex）。
             #    Release 全形态编入（诊断用，仅首次 REATT query 触发）。
             "$<$<CONFIG:Release>:${EMS01_APP_DIR}/ems_npu_reattself.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/reattself.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/selftest/stai_reattself.c>"
-            # —— phase4-g 夜备（2026-09-23）：N2 逐级 bisection 阶梯（dl1..dl4 子图
+            # —— phase4-g 夜备（2026-09-23）：N2 逐级 bisection 阶梯（dl1..dl3 子图
+            #    + dl4f（L4 float-LN 部署变体，2026-09-24 替换 int8-LN 版 dl4）
             #    + dlf1 整图 --Ono-clone-dma 消融；权重 hex 各自独立 NOR 池
-            #    0x70410000/0x70420000/0x70440000/0x70600000/0x70800000）。
+            #    0x70410000/0x70420000/0x70440000/0x70680000/0x70800000）。
             #    仅 Release；首次 REATT query 由 ems_reatt_split.c 触发一次。
             "$<$<CONFIG:Release>:${EMS01_APP_DIR}/ems_diag_ladder.c>"
-            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl1/dl1.c>"
-            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl1/stai_dl1.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/dl1s/dl1.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/npu_safe/dl1s/stai_dl1.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/dl2.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl2/stai_dl2.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/dl3.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl3/stai_dl3.c>"
-            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4/dl4.c>"
-            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4/stai_dl4.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/dl4f.c>"
+            "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dl4f/stai_dl4f.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/dlf1.c>"
             "$<$<CONFIG:Release>:${CMAKE_CURRENT_LIST_DIR}/../Model/reatt8_q_npu/ladder/dlf1/stai_dlf1.c>"
             # —— 整图 CPU 形态（EMS_REATT_FORM=CPU）

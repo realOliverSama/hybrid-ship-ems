@@ -179,6 +179,87 @@ void *LL_ATON_Get_User_Output_Buffer_dl4(uint32_t num)
 
 #include "dl4_ecblobs.h"
 
+/* ===== RCA 探针（非生成器产物，2026-09-23）：每个 SW 算子后定时倒出输出缓冲 ===== */
+static void dl4_dbg_dump(const char *tag, const void *p, uint32_t nbytes)
+{
+  const uint8_t *pb = (const uint8_t *)p;
+  uint32_t a0 = ((uint32_t)(uintptr_t)p) & ~31u;
+  uint32_t d0 = ((uint32_t)(uintptr_t)p) - a0;
+  uint32_t ln = (d0 + nbytes + 31u) & ~31u;
+  if (nbytes > 8192u) { nbytes = 8192u; }
+  SCB_CleanDCache_by_Addr((uint32_t *)a0, (int32_t)ln);
+  printf("RS-D4 %s n=%lu ", tag, (unsigned long)nbytes);
+  for (uint32_t i = 0u; i < nbytes; i++) { printf("%02x", (unsigned)pb[i]); }
+  printf("\r\n");
+}
+
+
+/* ===================== 局部修补：SW 通用卷积替换（非生成器产物） =====================
+ * 2026-09-23 phase4-g RCA（详见 experiments/npu_rca_2026-09-23/）。
+ * 生成器把全部 Gemm/MatMul 降成 LL_SW_GENERIC_CONV（转置视角的 4D conv），
+ * 其库路径在本构建上语义不可用（L1 同源问题已由该模式修复并 PASS）。
+ * 本函数按结构体自带 dims/strides 计算公认语义：
+ *   out[w][c] = requant( Σ_ci (in[w][ci]-izp[w?]) * (wgt[c][ci]-wzp) )
+ *             s = is[w]*ws/os,  q = round(acc*s) + ozp
+ * 主轴配对（is/izp 按输出特征 w，wzp/ws 对标量激活）与 ORT 对拍验证过。
+ * ========================================================================= */
+static void dl4_sw_conv_generic(Conv_integer_sw_info *si)
+{
+  const unsigned char *in_b  = (const unsigned char *)si->general.input.mem.start_offset;
+  const unsigned char *wg_b  = (const unsigned char *)si->weights.mem.start_offset;
+  unsigned char       *out_b = (unsigned char *)si->general.output.mem.start_offset;
+  const float   *is_p  = (const float *)si->is.mem.start_offset;
+  const int8_t  *izp_p = (const int8_t *)si->izp.mem.start_offset;
+  const float   *ws_p  = (const float *)si->ws.mem.start_offset;
+  const int8_t  *wzp_p = (const int8_t *)si->wzp.mem.start_offset;
+  const float   *os_p  = (const float *)si->os.mem.start_offset;
+  const int8_t  *ozp_p = (const int8_t *)si->ozp.mem.start_offset;
+  const int32_t *b_p   = (const int32_t *)si->bias.mem.start_offset;
+
+  const int Wn   = (int)si->general.input.dim.tensor_w;
+  const int Cin  = (int)si->general.input.dim.tensor_c;
+  const int Cout = (int)si->general.output.dim.tensor_c;
+  const int n_is   = (int)si->is.dim.num_elem;
+  const int n_izp  = (int)si->izp.dim.num_elem;
+  const int n_bias = (int)si->bias.dim.num_elem;
+
+  const size_t in_sw  = (size_t)si->general.input.stride.w;
+  const size_t in_sc  = (size_t)si->general.input.stride.c;
+  const size_t wg_sb  = (size_t)si->weights.stride.b;
+  const size_t wg_sc  = (size_t)si->weights.stride.c;
+  const size_t out_sw = (size_t)si->general.output.stride.w;
+  const size_t out_sc = (size_t)si->general.output.stride.c;
+
+  const float ws  = ws_p[0];
+  const float os  = os_p[0];
+  const int   wzp = (int)wzp_p[0];
+  const int   ozp = (int)ozp_p[0];
+
+  for (int wd = 0; wd < Wn; wd++) {
+    const int   izp = (int)izp_p[(n_izp > 1) ? wd : 0];
+    const float s   = is_p[(n_is > 1) ? wd : 0] * ws / os;
+    const unsigned char *ir = in_b + (size_t)wd * in_sw;
+    for (int cd = 0; cd < Cout; cd++) {
+      const unsigned char *wr = wg_b + (size_t)cd * wg_sb;
+      int acc = 0;
+      for (int ci = 0; ci < Cin; ci++) {
+        acc += ((int)(int8_t)ir[(size_t)ci * in_sc] - izp) *
+               ((int)(int8_t)wr[(size_t)ci * wg_sc] - wzp);
+      }
+      if (n_bias == Cout) { acc += (int)b_p[cd]; }
+      else if (n_bias == 1) { acc += (int)b_p[0]; }
+      else if (n_bias != 0) { acc += (int)b_p[0]; }  /* 兜底：未见形态 */
+      {
+        const float v = (float)acc * s;
+        int q = (int)(v + ((v >= 0.0f) ? 0.5f : -0.5f)) + ozp;
+        if (q < -128) { q = -128; } else if (q > 127) { q = 127; }
+        out_b[(size_t)wd * out_sw + (size_t)cd * out_sc] = (unsigned char)(int8_t)q;
+      }
+    }
+  }
+}
+
+
 /* scheduling epoch=0    nodes=69  ------------------------------------------------------------------- */
 
 // Epoch Controller Blob (name='_ec_blob_dl4_1') micro instructions needed
@@ -410,6 +491,7 @@ static void LL_ATON_End_EpochBlock_6(const LL_ATON_RT_EpochBlockItem_t *epoch_bl
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node DequantizeLinear_inserted_id254 mapped on EmbedNets (INTEGER) as DequantizeLinear | Category: Format-Converter */
   ll_sw_forward_dequantizelinear(&dequantizelinear1_sw_info);
+  dl4_dbg_dump("d4.1.Dequantizelinear_sw_info", dequantizelinear1_sw_info.general.output.mem.start_offset, 120u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 96864))) */
@@ -467,6 +549,7 @@ static void LL_ATON_End_EpochBlock_7(const LL_ATON_RT_EpochBlockItem_t *epoch_bl
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Sqrt_29 mapped on EmbedNets (FLOAT) as Sqrt | Category: Computational */
   ll_sw_forward_activ(&activ2_sw_info);
+  dl4_dbg_dump("d4.2.Activ_sw_info", activ2_sw_info.general.output.mem.start_offset, 120u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 96864))) */
@@ -524,6 +607,7 @@ static void LL_ATON_End_EpochBlock_8(const LL_ATON_RT_EpochBlockItem_t *epoch_bl
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Reciprocal_30 mapped on EmbedNets (FLOAT) as Reciprocal | Category: Computational */
   ll_sw_forward_activ(&activ3_sw_info);
+  dl4_dbg_dump("d4.3.Activ_sw_info", activ3_sw_info.general.output.mem.start_offset, 120u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 70816))) */
@@ -589,6 +673,7 @@ static void LL_ATON_End_EpochBlock_9(const LL_ATON_RT_EpochBlockItem_t *epoch_bl
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node QuantizeLinear_inserted_id272 mapped on EmbedNets (INTEGER) as QuantizeLinear | Category: Format-Converter */
   ll_sw_forward_quantizelinear(&quantizelinear4_sw_info);
+  dl4_dbg_dump("d4.4.Quantizelinear_sw_info", quantizelinear4_sw_info.general.output.mem.start_offset, 30u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 70784))) */
@@ -654,6 +739,7 @@ static void LL_ATON_End_EpochBlock_10(const LL_ATON_RT_EpochBlockItem_t *epoch_b
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node QuantizeLinear_inserted_id270 mapped on EmbedNets (INTEGER) as QuantizeLinear | Category: Format-Converter */
   ll_sw_forward_quantizelinear(&quantizelinear5_sw_info);
+  dl4_dbg_dump("d4.5.Quantizelinear_sw_info", quantizelinear5_sw_info.general.output.mem.start_offset, 30u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 26944))) */
@@ -741,6 +827,7 @@ static void LL_ATON_End_EpochBlock_11(const LL_ATON_RT_EpochBlockItem_t *epoch_b
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Mul_31 mapped on EmbedNets (INTEGER) as Mul | Category: Computational */
   ll_sw_forward_eltwise_integer(&eltwise_integer6_sw_info);
+  dl4_dbg_dump("d4.6.Eltwise", eltwise_integer6_sw_info.general.output.mem.start_offset, 6720u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 57344))) */
@@ -879,7 +966,8 @@ static void LL_ATON_End_EpochBlock_17(const LL_ATON_RT_EpochBlockItem_t *epoch_b
 
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Gemm_48_gemm_7_0_conv_40 mapped on EmbedNets (INTEGER) as Conv | Category: Computational */
-  ll_sw_forward_conv_integer(&conv_integer7_sw_info);
+  dl4_sw_conv_generic(&conv_integer7_sw_info);
+  dl4_dbg_dump("d4.7.Conv", conv_integer7_sw_info.general.output.mem.start_offset, 3840u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 57344))) */
@@ -1018,7 +1106,8 @@ static void LL_ATON_End_EpochBlock_25(const LL_ATON_RT_EpochBlockItem_t *epoch_b
 
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Gemm_76_gemm_19_0_conv_47 mapped on EmbedNets (INTEGER) as Conv | Category: Computational */
-  ll_sw_forward_conv_integer(&conv_integer8_sw_info);
+  dl4_sw_conv_generic(&conv_integer8_sw_info);
+  dl4_dbg_dump("d4.8.Conv", conv_integer8_sw_info.general.output.mem.start_offset, 3840u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 93952))) */
@@ -1157,7 +1246,8 @@ static void LL_ATON_End_EpochBlock_33(const LL_ATON_RT_EpochBlockItem_t *epoch_b
 
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Gemm_104_gemm_31_0_conv_54 mapped on EmbedNets (INTEGER) as Conv | Category: Computational */
-  ll_sw_forward_conv_integer(&conv_integer9_sw_info);
+  dl4_sw_conv_generic(&conv_integer9_sw_info);
+  dl4_dbg_dump("d4.9.Conv", conv_integer9_sw_info.general.output.mem.start_offset, 90u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 3840))) */
@@ -1239,6 +1329,7 @@ static void LL_ATON_End_EpochBlock_36(const LL_ATON_RT_EpochBlockItem_t *epoch_b
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node DequantizeLinear_inserted_id426 mapped on EmbedNets (INTEGER) as DequantizeLinear | Category: Format-Converter */
   ll_sw_forward_dequantizelinear(&dequantizelinear10_sw_info);
+  dl4_dbg_dump("d4.10.Dequantizelinear_sw_info", dequantizelinear10_sw_info.general.output.mem.start_offset, 360u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 1 */
   /*     start: ((uintptr_t)(ATON_LIB_PHYSICAL_TO_VIRTUAL_ADDR(0x342e0000UL + 0))) */
@@ -1308,6 +1399,7 @@ static void LL_ATON_End_EpochBlock_37(const LL_ATON_RT_EpochBlockItem_t *epoch_b
   /* Low Level SW Layer function invocation. This will exploit EmbedNets libs) */
   /* Node Add_108 mapped on EmbedNets (FLOAT) as Add | Category: Computational */
   ll_sw_forward_arith(&arith11_sw_info);
+  dl4_dbg_dump("d4.11.ArithFinal", arith11_sw_info.general.output.mem.start_offset, 360u);
   /* *** MCU cache clean (only) operation (SW, whole range) *** */
   /*     memory pool: 11 */
   /*     start: (((uintptr_t)(_mem_pool__user_io_output_0_dl4)) + 0) */

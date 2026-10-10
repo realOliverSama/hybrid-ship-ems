@@ -14,6 +14,7 @@
 | `tcn_q_v2/` | TCN-f64 **v2 重导出**（T-816b，2026-09-03；原生 dilated Conv2D，绕开 SpaceToBatch 分解图） | 4.0.1 stai 迁移（层②，2026-09-03）NPU 形态生成物；**回退资产**（tcnq 槽位已切 CPU 形态） | 同 TCN-f64 架构（v2 导出图），I/O 契约不变（1200/8/12） |
 | `tcn_q_v2_cpu/` | TCN-f64 v2 **全 CPU 编译形态**（4.0.1，无 --st-neural-art；用户指令最终路线 2026-09-03） | 当前 tcnq 槽位实际部署（权重 611KB 编入 ELF，TCN 不再依赖 NOR 权重 hex；激活区 194KB 用户缓冲绑定；Lite 内核 CM55 执行） | 同 TCN-f64 架构（同源 tflite，md5 dcd11116e320a955dca7f01ca2886d59 = ../tcn_q_v2/），I/O 契约不变（1200/8/12） |
 | `reatt8_q/` | REAT-T winner int8 **全 CPU 编译形态**（phase4-g，2026-09-22；4.0.1，无 --st-neural-art，`--name reatt8`） | Phase 4-F C2 板上预测服务（CMD_REATT；权重 1,432,556B 编入 ELF，激活 332,928B 用户缓冲；仅 Release 链接，Debug 为桩——见工程 README） | REAT-T（reatt-t018）：past TCN 6 块 causal dilated Conv1D（Cp=96）+ attention pooling + future 4 块 preLN Transformer encoder（df=128, h=4）+ 融合 + 共享单调分位头（1,012,835 参数；输出 (m,a,b)，分位变换在固件）；I/O 13200/720/360（归一化域喂入） |
+| `reatt8_q_npu/` | REAT-T **NPU 形态**（4.0.1 `--st-neural-art`） | 板上可启动但输出贴量化零点；`npu_safe/` 是去掉 epoch controller 的重编，未烧录 | 同 REAT-T；N2 子图（future+fusion+decoder）见 `part_n2/`，safe 重编见 `npu_safe/` |
 
 ## 4.0.1 stai 迁移注记（层②，2026-09-03）
 

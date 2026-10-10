@@ -5,7 +5,7 @@
  *   L1 dl1  kf → fut_proj+位置      （kf 输入通路）
  *   L2 dl2  单块 attention           （Q/K/V、QKᵀ、scale、Softmax、AV、o_proj）
  *   L3 dl3  h_past → Tile            （Unsqueeze/Reshape/Q/DQ/Slice/Tile——头号嫌疑）
- *   L4 dl4  fusion+decoder           （concat/LN/Dense/头部，golden fut_seq+h_tile 喂入）
+ *   L4F dl4f fusion+decoder（float-LN 部署变体，2026-09-24 起替换 int8-LN 版 dl4）
  * 加整图 --Ono-clone-dma 消融（F1 dlf1）装进同一固件，首次 REATT query 时依次执行，
  * 与 ORT golden（ems_diag_ladder_golden.h，禁手改）在 float 域自比对并逐级给一行判决。
  *
@@ -29,21 +29,21 @@
 #include "ems_stai_rt.h"
 #include "ems_diag_ladder_golden.h"
 
-#include "../../Model/reatt8_q_npu/ladder/dl1/dl1.h"
+#include "../../Model/reatt8_q_npu/npu_safe/dl1s/dl1.h"
 #include "../../Model/reatt8_q_npu/ladder/dl2/dl2.h"
 #include "../../Model/reatt8_q_npu/ladder/dl3/dl3.h"
-#include "../../Model/reatt8_q_npu/ladder/dl4/dl4.h"
+#include "../../Model/reatt8_q_npu/ladder/dl4f/dl4f.h"
 #include "../../Model/reatt8_q_npu/ladder/dlf1/dlf1.h"
-#include "../../Model/reatt8_q_npu/ladder/dl1/stai_dl1.h"
+#include "../../Model/reatt8_q_npu/npu_safe/dl1s/stai_dl1.h"
 #include "../../Model/reatt8_q_npu/ladder/dl2/stai_dl2.h"
 #include "../../Model/reatt8_q_npu/ladder/dl3/stai_dl3.h"
-#include "../../Model/reatt8_q_npu/ladder/dl4/stai_dl4.h"
+#include "../../Model/reatt8_q_npu/ladder/dl4f/stai_dl4f.h"
 #include "../../Model/reatt8_q_npu/ladder/dlf1/stai_dlf1.h"
 
 STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dl1, STAI_DL1_CONTEXT_SIZE)
 STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dl2, STAI_DL2_CONTEXT_SIZE)
 STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dl3, STAI_DL3_CONTEXT_SIZE)
-STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dl4, STAI_DL4_CONTEXT_SIZE)
+STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dl4f, STAI_DL4F_CONTEXT_SIZE)
 STAI_NETWORK_CONTEXT_DECLARE(dl_ctx_dlf1, STAI_DLF1_CONTEXT_SIZE)
 
 #define DL_MAX_ELEMS  4096u
@@ -59,6 +59,15 @@ typedef stai_return_code (*dl_fn_run)(stai_network *, const stai_run_mode);
 static int8_t dl_i8_in[DL_MAX_INS][DL_MAX_ELEMS];
 static float dl_f32_in[DL_MAX_INS][DL_MAX_ELEMS];
 static uint8_t dl_out_raw[DL_MAX_BYTES];
+
+/* user-allocated IO 契约缓冲（dl1.h: USER_ALLOCATED_INPUTS/OUTPUTS=1）。
+ * 这类图要求应用调 set_inputs/set_outputs 提供缓冲；否则
+ * _mem_pool__user_io_* 保持 NULL，get_inputs 只能回 NULL，epoch 描述符
+ * 运行时同样解引用 NULL——2026-09-23 hot-attach 实锤：CPU 在
+ * End_EpochBlock_3 的点积里 ldrsb 读地址 0 → PRECISERR/BFAR=0 →
+ * HardFault 静默 b. 循环（即历次 "@run 后无输出" 的真因，与 WFE 无关）。 */
+static uint8_t dl_user_in[DL_MAX_INS][DL_MAX_BYTES / 2u] __attribute__((aligned(32)));
+static uint8_t dl_user_out[DL_MAX_BYTES] __attribute__((aligned(32)));
 
 #define DL_MARK(tag, step) printf("RS-%s @%s\r\n", tag, step)
 
@@ -91,11 +100,12 @@ static int dl_wait_done(stai_network *ctx, stai_return_code rc,
 static int dl_run_stage_impl(const char *tag, stai_network *ctx,
                              dl_fn_simple init, dl_fn_info get_info,
                              dl_fn_getio get_inputs, dl_fn_getio get_outputs,
+                             dl_fn_io set_inputs, dl_fn_io set_outputs,
                              dl_fn_simple get_status,
                              dl_fn_run run, dl_fn_simple cont,
                              dl_fn_simple new_inf,
                              const float * const *ins, const uint32_t *in_elems,
-                             const float *exp)
+                             const float *exp, int dump_raw)
 {
     stai_network_info info;
     stai_ptr in_ptrs[DL_MAX_INS], out_ptrs[1];
@@ -120,9 +130,25 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
         return 1;
     }
     n_in = info.n_inputs;
+    /* user-allocated 输入：先给缓冲，再 get_inputs（返回的就是我们的缓冲） */
+    if (set_inputs != NULL) {
+        stai_ptr p[DL_MAX_INS];
+        for (stai_size i = 0u; i < n_in; i++) {
+            if ((uint32_t)info.inputs[i].size_bytes > (uint32_t)sizeof(dl_user_in[0])) {
+                printf("RS-%s FAIL insize %u\r\n", tag, (unsigned)info.inputs[i].size_bytes);
+                return 1;
+            }
+            p[i] = dl_user_in[i];
+        }
+        rc = set_inputs(ctx, p, n_in);
+        if (rc != STAI_SUCCESS) {
+            printf("RS-%s FAIL setin rc=%d\r\n", tag, (int)rc);
+            return 1;
+        }
+    }
     /* 官方流（hello_world/main_stai.c）：get_inputs/get_outputs 取运行时
-     * **自分配**缓冲指针，应用直接写入/读取——不调 set_inputs/set_outputs
-     * （对含非用户分配缓冲的图，set_inputs 会以 INVALID_IN_PTR 拒绝外部指针）。 */
+     * **自分配**缓冲指针，应用直接写入/读取——非 user-allocated 的图不调
+     * set_inputs/set_outputs（会以 INVALID_IN_PTR 拒绝外部指针）。 */
     DL_MARK(tag, "getin");
     rc = get_inputs(ctx, in_ptrs, &n_in);
     if (rc != STAI_SUCCESS || n_in != info.n_inputs) {
@@ -186,6 +212,19 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
         tol = 2.0f * out_scale;
     }
     DL_MARK(tag, "getout");
+    /* user-allocated 输出：同理先于 get_outputs 给缓冲 */
+    if (set_outputs != NULL) {
+        if ((uint32_t)info.outputs[0].size_bytes > (uint32_t)sizeof(dl_user_out)) {
+            printf("RS-%s FAIL outsize %u\r\n", tag, (unsigned)info.outputs[0].size_bytes);
+            return 1;
+        }
+        stai_ptr p = dl_user_out;
+        rc = set_outputs(ctx, &p, 1u);
+        if (rc != STAI_SUCCESS) {
+            printf("RS-%s FAIL setout rc=%d\r\n", tag, (int)rc);
+            return 1;
+        }
+    }
     rc = get_outputs(ctx, out_ptrs, &n_out);
     if (rc != STAI_SUCCESS) {
         printf("RS-%s FAIL getout rc=%d\r\n", tag, (int)rc);
@@ -201,28 +240,28 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
     }
     DL_MARK(tag, "run");
     rc = run(ctx, STAI_MODE_ASYNC);
-    /* 判别式等待：**不调 stai_ext_wfe**（L1 实测第二次 wfe 永久睡死），改为
-     * run_continue + get_nn_run_status 忙轮询，DWT 5 秒超时——单级挂起不再
-     * 拖死整个板子，TIMEOUT 本身即该级执行停滞的判据。 */
+    /* 硬件 epoch 要等 IRQ 把 triggered_events 置位。忙轮询不调 WFE 时，
+     * 完成位可能一直不来；DWT 超时又在 run_continue 外面，库函数不返回就
+     * 永远打不出 TIMEOUT。这里 WFE 一次就继续，并用拍数上限兜底。 */
     {
         stai_return_code st = rc;
-        uint32_t t0 = (uint32_t)DWT->CYCCNT;
-        uint32_t budget = (uint32_t)(SystemCoreClock * 5u);
-        uint32_t guard = 0u;
+        uint32_t spins = 0u;
+        /* 先 continue 再考虑睡。IRQ 若已经把 triggered_events 置位，
+         * 先 WFE 会把这次事件睡掉，后面不再有第二次中断。 */
         while (st != STAI_DONE) {
             if ((uint32_t)st >= (uint32_t)STAI_ERROR_GENERIC) {
                 printf("RS-%s FAIL run rc=%d\r\n", tag, (int)st);
                 return 1;
             }
             if (st == STAI_RUNNING_WFE || st == STAI_RUNNING_NO_WFE) {
-                (void)cont(ctx);
+                st = cont(ctx);
+            } else {
+                st = get_status(ctx);
             }
-            st = get_status(ctx);
-            if ((uint32_t)(DWT->CYCCNT - t0) > budget) {
+            if (++spins > 2000000u) {
                 printf("RS-%s TIMEOUT st=%d\r\n", tag, (int)st);
                 return 3;
             }
-            if (++guard == 0u) { /* wrap 无所谓 */ }
         }
     }
     SCB_InvalidateDCache_by_Addr((uint32_t *)out_ptrs[0],
@@ -251,6 +290,17 @@ static int dl_run_stage_impl(const char *tag, stai_network *ctx,
     printf("RS-%s match=%u/%u maxd=%.4g tol=%.4g %s\r\n", tag,
            (unsigned)match, (unsigned)out_elems,
            (double)maxd, (double)tol, (match == out_elems) ? "PASS" : "DIFF");
+    if (dump_raw != 0) {
+        /* DIFF 判读用：把该层原始输出全量 hex 倒出（15360B≈2.7s@115200），
+         * 主机侧与 golden 做逐元素模式分析（调试端口在正常运行态不可用）。 */
+        uint32_t nb = out_elems * (out_is_f32 ? 4u : 1u);
+        const uint8_t *ob = (const uint8_t *)out_ptrs[0];
+        printf("RS-%s raw=", tag);
+        for (uint32_t b = 0u; b < nb; b++) {
+            printf("%02x", (unsigned)ob[b]);
+        }
+        printf("\r\n");
+    }
     return (match == out_elems) ? 0 : 2;
 }
 
@@ -270,16 +320,34 @@ void ems_diag_ladder_run(void)
             printf("\r\n");
         }
     }
-    /* L3 h_past → Tile（头号嫌疑） */
+    /* L1：第一层 Dense+位置编码。整图把 [1,30,128] 编成 h=128,c=30；
+     * 这张单独编译的子图保持 h=30,c=128，且没有 epoch-controller blob。
+     * 权重与已烧的 0x70410000 逐字节相同。 */
+    {
+        const float *ins[] = { dl_l1_in0 };
+        const uint32_t ne[2] = { (uint32_t)(sizeof(dl_l1_in0) / sizeof(float)), 0u };
+        (void)dl_run_stage_impl("L1", dl_ctx_dl1, stai_dl1_init, stai_dl1_get_info,
+                                stai_dl1_get_inputs, stai_dl1_get_outputs,
+                                stai_dl1_set_inputs, stai_dl1_set_outputs,
+                                stai_ext_dl1_get_nn_run_status,
+                                stai_dl1_run, stai_ext_dl1_run_continue,
+                                stai_ext_dl1_new_inference,
+                                ins, ne, dl_l1_exp, 1);
+    }
+
+    /* L3 h_past → Tile（头号嫌疑）。2026-09-23：所有阶梯子图都是
+     * user-allocated IO（各 dlX.h USER_ALLOCATED=1），必须接 set_inputs/
+     * set_outputs，否则与 L1 初版同样 NULL HardFault。 */
     {
         const float *ins[] = { dl_l3_in0 };
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l3_in0) / sizeof(float)) };
         (void)dl_run_stage_impl("L3", dl_ctx_dl3, stai_dl3_init, stai_dl3_get_info,
                                 stai_dl3_get_inputs, stai_dl3_get_outputs,
+                                stai_dl3_set_inputs, stai_dl3_set_outputs,
                                 stai_ext_dl3_get_nn_run_status,
                                 stai_dl3_run, stai_ext_dl3_run_continue,
                                 stai_ext_dl3_new_inference,
-                                ins, ne, dl_l3_exp);
+                                ins, ne, dl_l3_exp, 1);
     }
 
     /* L2 单块 attention */
@@ -288,35 +356,28 @@ void ems_diag_ladder_run(void)
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l2_in0) / sizeof(float)) };
         (void)dl_run_stage_impl("L2", dl_ctx_dl2, stai_dl2_init, stai_dl2_get_info,
                                 stai_dl2_get_inputs, stai_dl2_get_outputs,
+                                stai_dl2_set_inputs, stai_dl2_set_outputs,
                                 stai_ext_dl2_get_nn_run_status,
                                 stai_dl2_run, stai_ext_dl2_run_continue,
                                 stai_ext_dl2_new_inference,
-                                ins, ne, dl_l2_exp);
+                                ins, ne, dl_l2_exp, 1);
     }
 
-    /* L4 fusion+decoder（golden fut_seq + h_tile） */
+    /* L4F fusion+decoder（float-LN 部署变体 dl4f；golden 为 lnfloat 链窗 0）。
+     * 2026-09-24：int8-LN 版 dl4 的首分歧=LN 块（归档 FINDINGS.md），本级回答
+     * 「L4 是否阻断部署」——对部署变体（float-LN）重测。旧 L4BUF 硬编码地址倒出
+     * 随 dl4 一并移除（地址对 dl4f 无效；如需定位用 instrument_swops 重新打桩）。 */
     {
         const float *ins[] = { dl_l4_in0, dl_l4_in1 };
         const uint32_t ne[] = { (uint32_t)(sizeof(dl_l4_in0) / sizeof(float)),
                                 (uint32_t)(sizeof(dl_l4_in1) / sizeof(float)) };
-        (void)dl_run_stage_impl("L4", dl_ctx_dl4, stai_dl4_init, stai_dl4_get_info,
-                                stai_dl4_get_inputs, stai_dl4_get_outputs,
-                                stai_ext_dl4_get_nn_run_status,
-                                stai_dl4_run, stai_ext_dl4_run_continue,
-                                stai_ext_dl4_new_inference,
-                                ins, ne, dl_l4_exp);
-    }
-
-    /* L1 kf → fut_proj+位置 */
-    {
-        const float *ins[] = { dl_l1_in0 };
-        const uint32_t ne[] = { (uint32_t)(sizeof(dl_l1_in0) / sizeof(float)) };
-        (void)dl_run_stage_impl("L1", dl_ctx_dl1, stai_dl1_init, stai_dl1_get_info,
-                                stai_dl1_get_inputs, stai_dl1_get_outputs,
-                                stai_ext_dl1_get_nn_run_status,
-                                stai_dl1_run, stai_ext_dl1_run_continue,
-                                stai_ext_dl1_new_inference,
-                                ins, ne, dl_l1_exp);
+        (void)dl_run_stage_impl("L4F", dl_ctx_dl4f, stai_dl4f_init, stai_dl4f_get_info,
+                                stai_dl4f_get_inputs, stai_dl4f_get_outputs,
+                                stai_dl4f_set_inputs, stai_dl4f_set_outputs,
+                                stai_ext_dl4f_get_nn_run_status,
+                                stai_dl4f_run, stai_ext_dl4f_run_continue,
+                                stai_ext_dl4f_new_inference,
+                                ins, ne, dl_l4_exp, 1);
     }
 
     /* F1 整图 --Ono-clone-dma 消融（golden kf + h_past） */
@@ -326,12 +387,14 @@ void ems_diag_ladder_run(void)
                                 (uint32_t)(sizeof(dl_f1_in1) / sizeof(float)) };
         (void)dl_run_stage_impl("F1", dl_ctx_dlf1, stai_dlf1_init, stai_dlf1_get_info,
                                 stai_dlf1_get_inputs, stai_dlf1_get_outputs,
+                                stai_dlf1_set_inputs, stai_dlf1_set_outputs,
                                 stai_ext_dlf1_get_nn_run_status,
                                 stai_dlf1_run, stai_ext_dlf1_run_continue,
                                 stai_ext_dlf1_new_inference,
-                                ins, ne, dl_f1_exp);
+                                ins, ne, dl_f1_exp, 1);
     }
 
+    printf("RS-LADDER done\r\n");
 }
 
 #endif /* EMS_REATT_SERVICE */

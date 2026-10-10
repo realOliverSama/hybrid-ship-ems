@@ -1,5 +1,42 @@
 # reatt8_q_npu — REAT-T **NPU 形态**部署包（ST Edge AI Core 4.0.1，Neural-ART）
 
+## 2026-09-23 safe 重编（未上板）
+
+`user_neuralart_safe.json` + `my_mpools/service_n2_safe.mpool`：去掉
+`--enable-epoch-controller`、`--enable-virtual-mem-pools`、`--Ocache-opt`、
+`--Omax-ca-pipe`、`--expand-softmax`；npuRAM 各 bank 447KB（末尾留 1KB）；
+xSPI2 `CACHEABLE_OFF`。产物在 `npu_safe/`（`dl3/`、`n2/`、`n2_nofloat/`）。
+
+- `dl3s`：0 个 EC blob，只剩 1 个 SW `Tile(float)`。原先卡住的 16 字节 stub
+  （`…003d`，`<no executed epochs>`）没有了。
+- `reattn2s` 与去掉 `--native-float` 的 `reattn2f` 调度相同：120 SW + 17 hybrid
+  + 168 HW，**0 个 EC blob**（旧 `reattn2n` 是 56 个）。9 个 `Sqrt(float)` 仍在。
+  权重 `reattn2s_atonbuf.xSPI2.raw` 913,057 B @ 0x70A00000，与已烧的 877,009 B
+  不是同一块，未替换固件、未烧录。本机这次没有 ST-LINK。
+
+## 2026-09-24 float-LN 部署变体（L4 = `dl4f`）
+
+`npu_bypass_ln_qdq.py` 拆掉 9 个 LayerNorm 的激活 Q/DQ（方差/sqrt 留浮点）→
+`npu_safe/reattn2n_lnfloat.onnx`；`npu_export_ladder_l4f.py` 以它为源按 dl4 同边界
+重切 L4 → `ladder/dl4f/`（net 名 `dl4f`），并把阶梯固件的 l4 级从 dl4 换成 dl4f。
+
+配套目录一览（本包新增）：
+
+| 目录/文件 | 用途 |
+|---|---|
+| `ladder/` | N2 逐级 bisection 阶梯（`dl1`/`dl2`/`dl2c`/`dl3`/`dl4`/`dl4f`/`dl4c`/`dlf1`/`dlfut`/`dlfutc`）；每级含 stedgeai 生成码 + ORT golden + 编译报告 |
+| `ladder/_full_with_cuts.onnx` | 带全部切点标记的 N2 整图（切子图的公共源） |
+| `my_mpools/` | 各编译形态的 memory pool 配置（`service_n2*`、`ladder_dl*`） |
+| `part_n2/` | N2 子图源（`reattn2n_src.onnx`）+ 其 int8 编译件 |
+| `selftest/` | REATT 自检小图（`reatt_selftest_int8.onnx`），上板首通冒烟用 |
+| `npu_safe/` | safe 配置重编产物（`dl1s`/`dl3`/`n2`/`n2_nofloat`/`n2_lnfloat`），CMakeLists 的 SPLIT+Release 形态直接引用其 `.c/.h` |
+| `user_neuralart*.json` | stedgeai 编译配置（`_safe` 去 epoch controller、`_nofloat`、`_dl1`） |
+
+> 入库约定：`ws/`、`st_ai_ws/`、`st_ai_output/` 为 stedgeai 生成器临时工作区，
+> 可由上述脚本重跑复现，不入库（当前由本地 `.git/info/exclude` 排除；仓库
+> `.gitignore` 未改动，是否升格为仓库级规则待定）。
+
+
 > phase4-g NPU 线（2026-09-22）。目标：REAT-T 在 STM32N6 **Neural-ART NPU** 上
 > 推理（EC blob + NOR 权重），替代/并行现有全 CPU 形态（`../reatt8_q/`）。
 > 状态：**analyze + generate 双双通过（离线闭环完成）**；固件集成与上板待做。

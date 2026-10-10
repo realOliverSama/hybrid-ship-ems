@@ -15,6 +15,8 @@
 | `npu_export_split.py` | **拆分导出（2026-09-23）** | N1 = hist→h_past（TCN 段，走 CPU 形态）；N2 = kf+h_past→raw (m,a,b)（attention/Dense 段，走 NPU）；权重自冻结 winner 移植 |
 | `npu_quantize_split.py` | **拆分 int8 量化（2026-09-23）** | `--part n1\|n2`；N2 的 h_past 标定输入取 **N1 int8 输出**（部署口径，非 fp32） |
 | `npu_export_ladder.py` | **N2 逐级 bisection 阶梯（2026-09-23 夜备）** | `cut/golden/emit-c` 三步：切 dl1..dl4 子图 + dlf1 消融变体、ORT golden 提取、固件判决数据生成；一次烧录全部跑完 |
+| `npu_bypass_ln_qdq.py` | 拆掉 N2 里 9 个 LayerNorm 的激活 Q/DQ | 方差/sqrt 保持浮点；产物 `npu_safe/reattn2n_lnfloat.onnx`，编译名 `reattn2l` |
+| `npu_export_ladder_l4f.py` | **L4 级改 float-LN 变体（2026-09-24）** | 以 `npu_safe/reattn2n_lnfloat.onnx` 为源按 dl4 同边界重切 L4 → `ladder/dl4f/`（net 名 `dl4f`）；同套 `cut`/`golden`/`emit-c` 三步，产物并入阶梯固件 |
 | `flash_ladder.sh` | 阶梯固件一键烧录（7 项全带 -v 校验） | Dev boot 下执行；清单含 appli/reattn2n@0x70A00000/dl1/dl2/dl4/dlf1/reattself |
 
 ## 与 stedgeai 的配合

@@ -397,26 +397,26 @@ STAI_API_DECLARE_END
 
 /********************************** WEIGHTS **********************************/
 #if LL_ATON_DBG_BUFFER_INFO_EXCLUDED == 0
-#define STAI_DL2_WEIGHTS_NUM (88)
+#define STAI_DL2_WEIGHTS_NUM (92)
 #define STAI_DL2_WEIGHTS_ALIGNMENTS \
   { \
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 16, 32, 32, 32, 32, 16, 16, 32, 32, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 32, 32, 16, 16 \
+    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 16, 32, 32, 32, 32, 16, 16, 32, 32, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 16, 16, 32, 32, 32, 32, 16, 16 \
   }
 #define STAI_DL2_WEIGHTS_NAMES \
   { \
-    "Gemm_8_weights_copy_180", "Gemm_17_weights_copy_181", "Gemm_33_weights_copy_182", "Gemm_47_weights_copy_183", "Gemm_17_gemm_19_0_conv_107_Dummy_BIAS", "Gemm_8_gemm_7_0_conv_100_Dummy_BIAS", "Gemm_33_gemm_55_0_conv_142_Dummy_BIAS", "Gemm_26_gemm_43_3_conv_135_Dummy_BIAS", "Gemm_26_gemm_31_0_conv_114_Dummy_BIAS", "Gemm_26_gemm_35_1_conv_121_Dummy_BIAS", "Gemm_26_gemm_39_2_conv_128_Dummy_BIAS", "Gemm_42_gemm_71_1_conv_156_Dummy_BIAS", "Gemm_42_gemm_75_2_conv_163_Dummy_BIAS", "Gemm_42_gemm_79_3_conv_170_Dummy_BIAS", "Gemm_42_gemm_67_0_conv_149_Dummy_BIAS", "Gemm_47_gemm_91_0_conv_177_Dummy_BIAS", "Identity_inserted_id422_498_atonn_internal_scale", "Identity_inserted_id422_498_atonn_internal_offset", "Gemm_17_gemm_19_0_reshape_w_106_502_atonn_internal_scale", "Gemm_17_gemm_19_0_reshape_w_106_502_atonn_internal_offset", "Gemm_17_gemm_19_0_conv_107_506_atonn_internal_scale", "Gemm_17_gemm_19_0_conv_107_506_atonn_internal_offset", "Identity_inserted_id424_510_atonn_internal_scale", "Identity_inserted_id424_510_atonn_internal_offset", "Gemm_8_gemm_7_0_reshape_w_99_514_atonn_internal_scale", "Gemm_8_gemm_7_0_reshape_w_99_514_atonn_internal_offset", "Gemm_8_gemm_7_0_conv_100_518_atonn_internal_scale", "Gemm_8_gemm_7_0_conv_100_518_atonn_internal_offset", "Identity_inserted_id426_522_atonn_internal_scale", "Identity_inserted_id426_522_atonn_internal_offset", "Gemm_33_gemm_55_0_reshape_w_141_526_atonn_internal_scale", "Gemm_33_gemm_55_0_reshape_w_141_526_atonn_internal_offset", "Gemm_33_gemm_55_0_conv_142_530_atonn_internal_scale", "Gemm_33_gemm_55_0_conv_142_530_atonn_internal_offset", "Identity_inserted_id436_534_atonn_internal_scale", "Identity_inserted_id436_534_atonn_internal_offset", "Gemm_26_gemm_43_3_reshape_w_134_538_atonn_internal_scale", "Gemm_26_gemm_43_3_reshape_w_134_538_atonn_internal_offset", "Gemm_26_gemm_43_3_conv_135_542_atonn_internal_scale", "Gemm_26_gemm_43_3_conv_135_542_atonn_internal_offset", "Identity_inserted_id438_546_atonn_internal_scale", "Identity_inserted_id438_546_atonn_internal_offset", "Gemm_26_gemm_31_0_reshape_w_113_550_atonn_internal_scale", "Gemm_26_gemm_31_0_reshape_w_113_550_atonn_internal_offset", "Gemm_26_gemm_31_0_conv_114_554_atonn_internal_scale", "Gemm_26_gemm_31_0_conv_114_554_atonn_internal_offset", "Identity_inserted_id440_558_atonn_internal_scale", "Identity_inserted_id440_558_atonn_internal_offset", "Gemm_26_gemm_35_1_reshape_w_120_562_atonn_internal_scale", "Gemm_26_gemm_35_1_reshape_w_120_562_atonn_internal_offset", "Gemm_26_gemm_35_1_conv_121_566_atonn_internal_scale", "Gemm_26_gemm_35_1_conv_121_566_atonn_internal_offset", "Identity_inserted_id442_570_atonn_internal_scale", "Identity_inserted_id442_570_atonn_internal_offset", "Gemm_26_gemm_39_2_reshape_w_127_574_atonn_internal_scale", "Gemm_26_gemm_39_2_reshape_w_127_574_atonn_internal_offset", "Gemm_26_gemm_39_2_conv_128_578_atonn_internal_scale", "Gemm_26_gemm_39_2_conv_128_578_atonn_internal_offset", "Identity_inserted_id478_590_atonn_internal_scale", "Identity_inserted_id478_590_atonn_internal_offset", "Gemm_42_gemm_71_1_reshape_w_155_594_atonn_internal_scale", "Gemm_42_gemm_71_1_reshape_w_155_594_atonn_internal_offset", "Gemm_42_gemm_71_1_conv_156_598_atonn_internal_scale", "Gemm_42_gemm_71_1_conv_156_598_atonn_internal_offset", "Identity_inserted_id482_602_atonn_internal_scale", "Identity_inserted_id482_602_atonn_internal_offset", "Gemm_42_gemm_75_2_reshape_w_162_606_atonn_internal_scale", "Gemm_42_gemm_75_2_reshape_w_162_606_atonn_internal_offset", "Gemm_42_gemm_75_2_conv_163_610_atonn_internal_scale", "Gemm_42_gemm_75_2_conv_163_610_atonn_internal_offset", "Identity_inserted_id486_614_atonn_internal_scale", "Identity_inserted_id486_614_atonn_internal_offset", "Gemm_42_gemm_79_3_reshape_w_169_618_atonn_internal_scale", "Gemm_42_gemm_79_3_reshape_w_169_618_atonn_internal_offset", "Gemm_42_gemm_79_3_conv_170_622_atonn_internal_scale", "Gemm_42_gemm_79_3_conv_170_622_atonn_internal_offset", "Identity_inserted_id490_626_atonn_internal_scale", "Identity_inserted_id490_626_atonn_internal_offset", "Gemm_42_gemm_67_0_reshape_w_148_630_atonn_internal_scale", "Gemm_42_gemm_67_0_reshape_w_148_630_atonn_internal_offset", "Gemm_42_gemm_67_0_conv_149_634_atonn_internal_scale", "Gemm_42_gemm_67_0_conv_149_634_atonn_internal_offset", "Identity_inserted_id494_638_atonn_internal_scale", "Identity_inserted_id494_638_atonn_internal_offset", "Gemm_47_gemm_91_0_reshape_w_176_642_atonn_internal_scale", "Gemm_47_gemm_91_0_reshape_w_176_642_atonn_internal_offset", "Gemm_47_gemm_91_0_conv_177_646_atonn_internal_scale", "Gemm_47_gemm_91_0_conv_177_646_atonn_internal_offset" \
+    "Gemm_8_weights_copy_180", "Gemm_17_weights_copy_181", "Gemm_33_weights_copy_182", "Gemm_47_weights_copy_183", "Gemm_17_gemm_19_0_conv_107_Dummy_BIAS", "Gemm_8_gemm_7_0_conv_100_Dummy_BIAS", "Gemm_33_gemm_55_0_conv_142_Dummy_BIAS", "Gemm_26_gemm_43_3_conv_135_Dummy_BIAS", "Gemm_26_gemm_31_0_conv_114_Dummy_BIAS", "Gemm_26_gemm_35_1_conv_121_Dummy_BIAS", "Gemm_26_gemm_39_2_conv_128_Dummy_BIAS", "Gemm_42_gemm_71_1_conv_156_Dummy_BIAS", "Gemm_42_gemm_75_2_conv_163_Dummy_BIAS", "Gemm_42_gemm_79_3_conv_170_Dummy_BIAS", "Gemm_42_gemm_67_0_conv_149_Dummy_BIAS", "Gemm_47_gemm_91_0_conv_177_Dummy_BIAS", "Identity_inserted_id386_450_atonn_internal_scale", "Identity_inserted_id386_450_atonn_internal_offset", "Gemm_17_gemm_19_0_reshape_w_106_454_atonn_internal_scale", "Gemm_17_gemm_19_0_reshape_w_106_454_atonn_internal_offset", "Gemm_17_gemm_19_0_conv_107_458_atonn_internal_scale", "Gemm_17_gemm_19_0_conv_107_458_atonn_internal_offset", "Identity_inserted_id388_462_atonn_internal_scale", "Identity_inserted_id388_462_atonn_internal_offset", "Gemm_8_gemm_7_0_reshape_w_99_466_atonn_internal_scale", "Gemm_8_gemm_7_0_reshape_w_99_466_atonn_internal_offset", "Gemm_8_gemm_7_0_conv_100_470_atonn_internal_scale", "Gemm_8_gemm_7_0_conv_100_470_atonn_internal_offset", "Identity_inserted_id390_474_atonn_internal_scale", "Identity_inserted_id390_474_atonn_internal_offset", "Gemm_33_gemm_55_0_reshape_w_141_478_atonn_internal_scale", "Gemm_33_gemm_55_0_reshape_w_141_478_atonn_internal_offset", "Gemm_33_gemm_55_0_conv_142_482_atonn_internal_scale", "Gemm_33_gemm_55_0_conv_142_482_atonn_internal_offset", "Identity_inserted_id400_486_atonn_internal_scale", "Identity_inserted_id400_486_atonn_internal_offset", "Gemm_26_gemm_43_3_reshape_w_134_490_atonn_internal_scale", "Gemm_26_gemm_43_3_reshape_w_134_490_atonn_internal_offset", "Gemm_26_gemm_43_3_conv_135_494_atonn_internal_scale", "Gemm_26_gemm_43_3_conv_135_494_atonn_internal_offset", "Identity_inserted_id402_498_atonn_internal_scale", "Identity_inserted_id402_498_atonn_internal_offset", "Gemm_26_gemm_31_0_reshape_w_113_502_atonn_internal_scale", "Gemm_26_gemm_31_0_reshape_w_113_502_atonn_internal_offset", "Gemm_26_gemm_31_0_conv_114_506_atonn_internal_scale", "Gemm_26_gemm_31_0_conv_114_506_atonn_internal_offset", "Identity_inserted_id404_510_atonn_internal_scale", "Identity_inserted_id404_510_atonn_internal_offset", "Gemm_26_gemm_35_1_reshape_w_120_514_atonn_internal_scale", "Gemm_26_gemm_35_1_reshape_w_120_514_atonn_internal_offset", "Gemm_26_gemm_35_1_conv_121_518_atonn_internal_scale", "Gemm_26_gemm_35_1_conv_121_518_atonn_internal_offset", "Identity_inserted_id406_522_atonn_internal_scale", "Identity_inserted_id406_522_atonn_internal_offset", "Gemm_26_gemm_39_2_reshape_w_127_526_atonn_internal_scale", "Gemm_26_gemm_39_2_reshape_w_127_526_atonn_internal_offset", "Gemm_26_gemm_39_2_conv_128_530_atonn_internal_scale", "Gemm_26_gemm_39_2_conv_128_530_atonn_internal_offset", "Mul_29_mul_sub2__534_atonn_internal_scale", "Mul_29_mul_sub2__534_atonn_internal_offset", "Softmax_32_538_atonn_internal_scale", "Softmax_32_538_atonn_internal_offset", "Identity_inserted_id430_542_atonn_internal_scale", "Identity_inserted_id430_542_atonn_internal_offset", "Gemm_42_gemm_71_1_reshape_w_155_546_atonn_internal_scale", "Gemm_42_gemm_71_1_reshape_w_155_546_atonn_internal_offset", "Gemm_42_gemm_71_1_conv_156_550_atonn_internal_scale", "Gemm_42_gemm_71_1_conv_156_550_atonn_internal_offset", "Identity_inserted_id434_554_atonn_internal_scale", "Identity_inserted_id434_554_atonn_internal_offset", "Gemm_42_gemm_75_2_reshape_w_162_558_atonn_internal_scale", "Gemm_42_gemm_75_2_reshape_w_162_558_atonn_internal_offset", "Gemm_42_gemm_75_2_conv_163_562_atonn_internal_scale", "Gemm_42_gemm_75_2_conv_163_562_atonn_internal_offset", "Identity_inserted_id438_566_atonn_internal_scale", "Identity_inserted_id438_566_atonn_internal_offset", "Gemm_42_gemm_79_3_reshape_w_169_570_atonn_internal_scale", "Gemm_42_gemm_79_3_reshape_w_169_570_atonn_internal_offset", "Gemm_42_gemm_79_3_conv_170_574_atonn_internal_scale", "Gemm_42_gemm_79_3_conv_170_574_atonn_internal_offset", "Identity_inserted_id442_578_atonn_internal_scale", "Identity_inserted_id442_578_atonn_internal_offset", "Gemm_42_gemm_67_0_reshape_w_148_582_atonn_internal_scale", "Gemm_42_gemm_67_0_reshape_w_148_582_atonn_internal_offset", "Gemm_42_gemm_67_0_conv_149_586_atonn_internal_scale", "Gemm_42_gemm_67_0_conv_149_586_atonn_internal_offset", "Identity_inserted_id446_590_atonn_internal_scale", "Identity_inserted_id446_590_atonn_internal_offset", "Gemm_47_gemm_91_0_reshape_w_176_594_atonn_internal_scale", "Gemm_47_gemm_91_0_reshape_w_176_594_atonn_internal_offset", "Gemm_47_gemm_91_0_conv_177_598_atonn_internal_scale", "Gemm_47_gemm_91_0_conv_177_598_atonn_internal_offset" \
   }
 #define STAI_DL2_WEIGHTS_FORMATS \
   { \
-    STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7 \
+    STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7, STAI_FORMAT_FLOAT32, STAI_FORMAT_Q7 \
   }
 #define STAI_DL2_WEIGHTS_SIZES \
   { \
-    16384, 16384, 16384, 16384, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 128, 128, 1, 1, 1, 1, 128, 128, 1, 1, 1, 1, 128, 128, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 128, 128, 1, 1, 1, 1 \
+    16384, 16384, 16384, 16384, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 30, 128, 128, 1, 1, 1, 1, 128, 128, 1, 1, 1, 1, 128, 128, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 128, 128, 1, 1, 1, 1 \
   }
 #define STAI_DL2_WEIGHTS_SIZES_BYTES \
   { \
-    16384, 16384, 16384, 16384, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 512, 128, 4, 1, 4, 1, 512, 128, 4, 1, 4, 1, 512, 128, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 512, 128, 4, 1, 4, 1 \
+    16384, 16384, 16384, 16384, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 120, 512, 128, 4, 1, 4, 1, 512, 128, 4, 1, 4, 1, 512, 128, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 4, 1, 512, 128, 4, 1, 4, 1 \
   }
 
 #define STAI_DL2_WEIGHTS_1_ALIGNMENT (32)
@@ -784,7 +784,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_17_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_17_NAME "Identity_inserted_id422_498_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_17_NAME "Identity_inserted_id386_450_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_17_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_17_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_17_SIZE (128)
@@ -806,7 +806,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_18_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_18_NAME "Identity_inserted_id422_498_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_18_NAME "Identity_inserted_id386_450_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_18_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_18_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_18_SIZE (128)
@@ -828,7 +828,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_19_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_19_NAME "Gemm_17_gemm_19_0_reshape_w_106_502_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_19_NAME "Gemm_17_gemm_19_0_reshape_w_106_454_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_19_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_19_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_19_SIZE (1)
@@ -850,7 +850,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_20_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_20_NAME "Gemm_17_gemm_19_0_reshape_w_106_502_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_20_NAME "Gemm_17_gemm_19_0_reshape_w_106_454_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_20_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_20_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_20_SIZE (1)
@@ -872,7 +872,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_21_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_21_NAME "Gemm_17_gemm_19_0_conv_107_506_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_21_NAME "Gemm_17_gemm_19_0_conv_107_458_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_21_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_21_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_21_SIZE (1)
@@ -894,7 +894,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_22_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_22_NAME "Gemm_17_gemm_19_0_conv_107_506_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_22_NAME "Gemm_17_gemm_19_0_conv_107_458_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_22_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_22_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_22_SIZE (1)
@@ -916,7 +916,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_23_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_23_NAME "Identity_inserted_id424_510_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_23_NAME "Identity_inserted_id388_462_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_23_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_23_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_23_SIZE (128)
@@ -938,7 +938,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_24_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_24_NAME "Identity_inserted_id424_510_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_24_NAME "Identity_inserted_id388_462_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_24_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_24_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_24_SIZE (128)
@@ -960,7 +960,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_25_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_25_NAME "Gemm_8_gemm_7_0_reshape_w_99_514_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_25_NAME "Gemm_8_gemm_7_0_reshape_w_99_466_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_25_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_25_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_25_SIZE (1)
@@ -982,7 +982,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_26_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_26_NAME "Gemm_8_gemm_7_0_reshape_w_99_514_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_26_NAME "Gemm_8_gemm_7_0_reshape_w_99_466_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_26_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_26_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_26_SIZE (1)
@@ -1004,7 +1004,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_27_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_27_NAME "Gemm_8_gemm_7_0_conv_100_518_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_27_NAME "Gemm_8_gemm_7_0_conv_100_470_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_27_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_27_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_27_SIZE (1)
@@ -1026,7 +1026,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_28_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_28_NAME "Gemm_8_gemm_7_0_conv_100_518_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_28_NAME "Gemm_8_gemm_7_0_conv_100_470_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_28_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_28_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_28_SIZE (1)
@@ -1048,7 +1048,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_29_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_29_NAME "Identity_inserted_id426_522_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_29_NAME "Identity_inserted_id390_474_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_29_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_29_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_29_SIZE (128)
@@ -1070,7 +1070,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_30_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_30_NAME "Identity_inserted_id426_522_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_30_NAME "Identity_inserted_id390_474_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_30_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_30_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_30_SIZE (128)
@@ -1092,7 +1092,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_31_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_31_NAME "Gemm_33_gemm_55_0_reshape_w_141_526_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_31_NAME "Gemm_33_gemm_55_0_reshape_w_141_478_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_31_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_31_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_31_SIZE (1)
@@ -1114,7 +1114,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_32_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_32_NAME "Gemm_33_gemm_55_0_reshape_w_141_526_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_32_NAME "Gemm_33_gemm_55_0_reshape_w_141_478_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_32_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_32_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_32_SIZE (1)
@@ -1136,7 +1136,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_33_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_33_NAME "Gemm_33_gemm_55_0_conv_142_530_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_33_NAME "Gemm_33_gemm_55_0_conv_142_482_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_33_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_33_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_33_SIZE (1)
@@ -1158,7 +1158,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_34_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_34_NAME "Gemm_33_gemm_55_0_conv_142_530_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_34_NAME "Gemm_33_gemm_55_0_conv_142_482_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_34_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_34_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_34_SIZE (1)
@@ -1180,7 +1180,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_35_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_35_NAME "Identity_inserted_id436_534_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_35_NAME "Identity_inserted_id400_486_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_35_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_35_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_35_SIZE (1)
@@ -1202,7 +1202,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_36_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_36_NAME "Identity_inserted_id436_534_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_36_NAME "Identity_inserted_id400_486_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_36_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_36_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_36_SIZE (1)
@@ -1224,7 +1224,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_37_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_37_NAME "Gemm_26_gemm_43_3_reshape_w_134_538_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_37_NAME "Gemm_26_gemm_43_3_reshape_w_134_490_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_37_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_37_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_37_SIZE (1)
@@ -1246,7 +1246,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_38_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_38_NAME "Gemm_26_gemm_43_3_reshape_w_134_538_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_38_NAME "Gemm_26_gemm_43_3_reshape_w_134_490_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_38_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_38_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_38_SIZE (1)
@@ -1268,7 +1268,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_39_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_39_NAME "Gemm_26_gemm_43_3_conv_135_542_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_39_NAME "Gemm_26_gemm_43_3_conv_135_494_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_39_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_39_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_39_SIZE (1)
@@ -1290,7 +1290,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_40_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_40_NAME "Gemm_26_gemm_43_3_conv_135_542_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_40_NAME "Gemm_26_gemm_43_3_conv_135_494_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_40_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_40_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_40_SIZE (1)
@@ -1312,7 +1312,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_41_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_41_NAME "Identity_inserted_id438_546_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_41_NAME "Identity_inserted_id402_498_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_41_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_41_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_41_SIZE (1)
@@ -1334,7 +1334,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_42_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_42_NAME "Identity_inserted_id438_546_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_42_NAME "Identity_inserted_id402_498_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_42_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_42_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_42_SIZE (1)
@@ -1356,7 +1356,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_43_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_43_NAME "Gemm_26_gemm_31_0_reshape_w_113_550_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_43_NAME "Gemm_26_gemm_31_0_reshape_w_113_502_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_43_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_43_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_43_SIZE (1)
@@ -1378,7 +1378,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_44_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_44_NAME "Gemm_26_gemm_31_0_reshape_w_113_550_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_44_NAME "Gemm_26_gemm_31_0_reshape_w_113_502_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_44_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_44_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_44_SIZE (1)
@@ -1400,7 +1400,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_45_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_45_NAME "Gemm_26_gemm_31_0_conv_114_554_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_45_NAME "Gemm_26_gemm_31_0_conv_114_506_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_45_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_45_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_45_SIZE (1)
@@ -1422,7 +1422,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_46_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_46_NAME "Gemm_26_gemm_31_0_conv_114_554_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_46_NAME "Gemm_26_gemm_31_0_conv_114_506_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_46_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_46_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_46_SIZE (1)
@@ -1444,7 +1444,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_47_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_47_NAME "Identity_inserted_id440_558_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_47_NAME "Identity_inserted_id404_510_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_47_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_47_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_47_SIZE (1)
@@ -1466,7 +1466,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_48_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_48_NAME "Identity_inserted_id440_558_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_48_NAME "Identity_inserted_id404_510_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_48_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_48_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_48_SIZE (1)
@@ -1488,7 +1488,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_49_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_49_NAME "Gemm_26_gemm_35_1_reshape_w_120_562_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_49_NAME "Gemm_26_gemm_35_1_reshape_w_120_514_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_49_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_49_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_49_SIZE (1)
@@ -1510,7 +1510,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_50_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_50_NAME "Gemm_26_gemm_35_1_reshape_w_120_562_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_50_NAME "Gemm_26_gemm_35_1_reshape_w_120_514_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_50_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_50_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_50_SIZE (1)
@@ -1532,7 +1532,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_51_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_51_NAME "Gemm_26_gemm_35_1_conv_121_566_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_51_NAME "Gemm_26_gemm_35_1_conv_121_518_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_51_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_51_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_51_SIZE (1)
@@ -1554,7 +1554,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_52_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_52_NAME "Gemm_26_gemm_35_1_conv_121_566_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_52_NAME "Gemm_26_gemm_35_1_conv_121_518_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_52_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_52_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_52_SIZE (1)
@@ -1576,7 +1576,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_53_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_53_NAME "Identity_inserted_id442_570_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_53_NAME "Identity_inserted_id406_522_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_53_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_53_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_53_SIZE (1)
@@ -1598,7 +1598,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_54_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_54_NAME "Identity_inserted_id442_570_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_54_NAME "Identity_inserted_id406_522_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_54_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_54_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_54_SIZE (1)
@@ -1620,7 +1620,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_55_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_55_NAME "Gemm_26_gemm_39_2_reshape_w_127_574_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_55_NAME "Gemm_26_gemm_39_2_reshape_w_127_526_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_55_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_55_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_55_SIZE (1)
@@ -1642,7 +1642,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_56_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_56_NAME "Gemm_26_gemm_39_2_reshape_w_127_574_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_56_NAME "Gemm_26_gemm_39_2_reshape_w_127_526_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_56_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_56_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_56_SIZE (1)
@@ -1664,7 +1664,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_57_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_57_NAME "Gemm_26_gemm_39_2_conv_128_578_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_57_NAME "Gemm_26_gemm_39_2_conv_128_530_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_57_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_57_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_57_SIZE (1)
@@ -1686,7 +1686,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_58_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_58_NAME "Gemm_26_gemm_39_2_conv_128_578_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_58_NAME "Gemm_26_gemm_39_2_conv_128_530_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_58_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_58_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_58_SIZE (1)
@@ -1708,7 +1708,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_59_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_59_NAME "Identity_inserted_id478_590_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_59_NAME "Mul_29_mul_sub2__534_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_59_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_59_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_59_SIZE (1)
@@ -1730,7 +1730,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_60_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_60_NAME "Identity_inserted_id478_590_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_60_NAME "Mul_29_mul_sub2__534_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_60_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_60_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_60_SIZE (1)
@@ -1752,7 +1752,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_61_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_61_NAME "Gemm_42_gemm_71_1_reshape_w_155_594_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_61_NAME "Softmax_32_538_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_61_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_61_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_61_SIZE (1)
@@ -1774,7 +1774,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_62_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_62_NAME "Gemm_42_gemm_71_1_reshape_w_155_594_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_62_NAME "Softmax_32_538_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_62_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_62_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_62_SIZE (1)
@@ -1796,7 +1796,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_63_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_63_NAME "Gemm_42_gemm_71_1_conv_156_598_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_63_NAME "Identity_inserted_id430_542_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_63_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_63_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_63_SIZE (1)
@@ -1818,7 +1818,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_64_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_64_NAME "Gemm_42_gemm_71_1_conv_156_598_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_64_NAME "Identity_inserted_id430_542_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_64_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_64_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_64_SIZE (1)
@@ -1840,7 +1840,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_65_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_65_NAME "Identity_inserted_id482_602_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_65_NAME "Gemm_42_gemm_71_1_reshape_w_155_546_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_65_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_65_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_65_SIZE (1)
@@ -1862,7 +1862,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_66_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_66_NAME "Identity_inserted_id482_602_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_66_NAME "Gemm_42_gemm_71_1_reshape_w_155_546_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_66_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_66_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_66_SIZE (1)
@@ -1884,7 +1884,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_67_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_67_NAME "Gemm_42_gemm_75_2_reshape_w_162_606_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_67_NAME "Gemm_42_gemm_71_1_conv_156_550_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_67_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_67_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_67_SIZE (1)
@@ -1906,7 +1906,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_68_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_68_NAME "Gemm_42_gemm_75_2_reshape_w_162_606_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_68_NAME "Gemm_42_gemm_71_1_conv_156_550_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_68_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_68_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_68_SIZE (1)
@@ -1928,7 +1928,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_69_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_69_NAME "Gemm_42_gemm_75_2_conv_163_610_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_69_NAME "Identity_inserted_id434_554_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_69_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_69_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_69_SIZE (1)
@@ -1950,7 +1950,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_70_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_70_NAME "Gemm_42_gemm_75_2_conv_163_610_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_70_NAME "Identity_inserted_id434_554_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_70_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_70_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_70_SIZE (1)
@@ -1972,7 +1972,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_71_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_71_NAME "Identity_inserted_id486_614_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_71_NAME "Gemm_42_gemm_75_2_reshape_w_162_558_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_71_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_71_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_71_SIZE (1)
@@ -1994,7 +1994,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_72_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_72_NAME "Identity_inserted_id486_614_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_72_NAME "Gemm_42_gemm_75_2_reshape_w_162_558_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_72_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_72_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_72_SIZE (1)
@@ -2016,7 +2016,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_73_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_73_NAME "Gemm_42_gemm_79_3_reshape_w_169_618_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_73_NAME "Gemm_42_gemm_75_2_conv_163_562_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_73_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_73_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_73_SIZE (1)
@@ -2038,7 +2038,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_74_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_74_NAME "Gemm_42_gemm_79_3_reshape_w_169_618_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_74_NAME "Gemm_42_gemm_75_2_conv_163_562_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_74_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_74_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_74_SIZE (1)
@@ -2060,7 +2060,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_75_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_75_NAME "Gemm_42_gemm_79_3_conv_170_622_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_75_NAME "Identity_inserted_id438_566_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_75_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_75_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_75_SIZE (1)
@@ -2082,7 +2082,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_76_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_76_NAME "Gemm_42_gemm_79_3_conv_170_622_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_76_NAME "Identity_inserted_id438_566_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_76_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_76_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_76_SIZE (1)
@@ -2104,7 +2104,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_77_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_77_NAME "Identity_inserted_id490_626_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_77_NAME "Gemm_42_gemm_79_3_reshape_w_169_570_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_77_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_77_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_77_SIZE (1)
@@ -2126,7 +2126,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_78_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_78_NAME "Identity_inserted_id490_626_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_78_NAME "Gemm_42_gemm_79_3_reshape_w_169_570_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_78_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_78_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_78_SIZE (1)
@@ -2148,7 +2148,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_79_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_79_NAME "Gemm_42_gemm_67_0_reshape_w_148_630_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_79_NAME "Gemm_42_gemm_79_3_conv_170_574_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_79_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_79_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_79_SIZE (1)
@@ -2170,7 +2170,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_80_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_80_NAME "Gemm_42_gemm_67_0_reshape_w_148_630_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_80_NAME "Gemm_42_gemm_79_3_conv_170_574_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_80_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_80_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_80_SIZE (1)
@@ -2192,7 +2192,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_81_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_81_NAME "Gemm_42_gemm_67_0_conv_149_634_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_81_NAME "Identity_inserted_id442_578_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_81_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_81_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_81_SIZE (1)
@@ -2214,7 +2214,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_82_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_82_NAME "Gemm_42_gemm_67_0_conv_149_634_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_82_NAME "Identity_inserted_id442_578_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_82_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_82_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_82_SIZE (1)
@@ -2236,18 +2236,18 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_83_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_83_NAME "Identity_inserted_id494_638_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_83_NAME "Gemm_42_gemm_67_0_reshape_w_148_582_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_83_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_83_FORMAT (STAI_FORMAT_FLOAT32)
-#define STAI_DL2_WEIGHTS_83_SIZE (128)
-#define STAI_DL2_WEIGHTS_83_SIZE_BYTES (512)
+#define STAI_DL2_WEIGHTS_83_SIZE (1)
+#define STAI_DL2_WEIGHTS_83_SIZE_BYTES (4)
 #define STAI_DL2_WEIGHTS_83_CHANNEL (1)
 #define STAI_DL2_WEIGHTS_83_HEIGHT (1)
-#define STAI_DL2_WEIGHTS_83_WIDTH (128)
+#define STAI_DL2_WEIGHTS_83_WIDTH (1)
 #define STAI_DL2_WEIGHTS_83_RANK (1)
 #define STAI_DL2_WEIGHTS_83_SHAPE \
   { \
-    128 \
+    1 \
   }
 #define STAI_DL2_WEIGHTS_83_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_WEIGHTS_83_SCALES \
@@ -2258,18 +2258,18 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_WEIGHTS_84_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_84_NAME "Identity_inserted_id494_638_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_84_NAME "Gemm_42_gemm_67_0_reshape_w_148_582_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_84_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_84_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_WEIGHTS_84_SIZE (128)
-#define STAI_DL2_WEIGHTS_84_SIZE_BYTES (128)
+#define STAI_DL2_WEIGHTS_84_SIZE (1)
+#define STAI_DL2_WEIGHTS_84_SIZE_BYTES (1)
 #define STAI_DL2_WEIGHTS_84_CHANNEL (1)
 #define STAI_DL2_WEIGHTS_84_HEIGHT (1)
-#define STAI_DL2_WEIGHTS_84_WIDTH (128)
+#define STAI_DL2_WEIGHTS_84_WIDTH (1)
 #define STAI_DL2_WEIGHTS_84_RANK (1)
 #define STAI_DL2_WEIGHTS_84_SHAPE \
   { \
-    128 \
+    1 \
   }
 #define STAI_DL2_WEIGHTS_84_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_WEIGHTS_84_SCALES \
@@ -2279,8 +2279,8 @@ STAI_API_DECLARE_END
   { \
   }
 
-#define STAI_DL2_WEIGHTS_85_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_85_NAME "Gemm_47_gemm_91_0_reshape_w_176_642_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_85_ALIGNMENT (16)
+#define STAI_DL2_WEIGHTS_85_NAME "Gemm_42_gemm_67_0_conv_149_586_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_85_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_85_FORMAT (STAI_FORMAT_FLOAT32)
 #define STAI_DL2_WEIGHTS_85_SIZE (1)
@@ -2301,8 +2301,8 @@ STAI_API_DECLARE_END
   { \
   }
 
-#define STAI_DL2_WEIGHTS_86_ALIGNMENT (32)
-#define STAI_DL2_WEIGHTS_86_NAME "Gemm_47_gemm_91_0_reshape_w_176_642_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_86_ALIGNMENT (16)
+#define STAI_DL2_WEIGHTS_86_NAME "Gemm_42_gemm_67_0_conv_149_586_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_86_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_86_FORMAT (STAI_FORMAT_Q7)
 #define STAI_DL2_WEIGHTS_86_SIZE (1)
@@ -2323,19 +2323,19 @@ STAI_API_DECLARE_END
   { \
   }
 
-#define STAI_DL2_WEIGHTS_87_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_87_NAME "Gemm_47_gemm_91_0_conv_177_646_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_87_ALIGNMENT (32)
+#define STAI_DL2_WEIGHTS_87_NAME "Identity_inserted_id446_590_atonn_internal_scale"
 #define STAI_DL2_WEIGHTS_87_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_87_FORMAT (STAI_FORMAT_FLOAT32)
-#define STAI_DL2_WEIGHTS_87_SIZE (1)
-#define STAI_DL2_WEIGHTS_87_SIZE_BYTES (4)
+#define STAI_DL2_WEIGHTS_87_SIZE (128)
+#define STAI_DL2_WEIGHTS_87_SIZE_BYTES (512)
 #define STAI_DL2_WEIGHTS_87_CHANNEL (1)
 #define STAI_DL2_WEIGHTS_87_HEIGHT (1)
-#define STAI_DL2_WEIGHTS_87_WIDTH (1)
+#define STAI_DL2_WEIGHTS_87_WIDTH (128)
 #define STAI_DL2_WEIGHTS_87_RANK (1)
 #define STAI_DL2_WEIGHTS_87_SHAPE \
   { \
-    1 \
+    128 \
   }
 #define STAI_DL2_WEIGHTS_87_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_WEIGHTS_87_SCALES \
@@ -2345,25 +2345,113 @@ STAI_API_DECLARE_END
   { \
   }
 
-#define STAI_DL2_WEIGHTS_88_ALIGNMENT (16)
-#define STAI_DL2_WEIGHTS_88_NAME "Gemm_47_gemm_91_0_conv_177_646_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_88_ALIGNMENT (32)
+#define STAI_DL2_WEIGHTS_88_NAME "Identity_inserted_id446_590_atonn_internal_offset"
 #define STAI_DL2_WEIGHTS_88_FLAGS (STAI_FLAG_PREALLOCATED)
 #define STAI_DL2_WEIGHTS_88_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_WEIGHTS_88_SIZE (1)
-#define STAI_DL2_WEIGHTS_88_SIZE_BYTES (1)
+#define STAI_DL2_WEIGHTS_88_SIZE (128)
+#define STAI_DL2_WEIGHTS_88_SIZE_BYTES (128)
 #define STAI_DL2_WEIGHTS_88_CHANNEL (1)
 #define STAI_DL2_WEIGHTS_88_HEIGHT (1)
-#define STAI_DL2_WEIGHTS_88_WIDTH (1)
+#define STAI_DL2_WEIGHTS_88_WIDTH (128)
 #define STAI_DL2_WEIGHTS_88_RANK (1)
 #define STAI_DL2_WEIGHTS_88_SHAPE \
   { \
-    1 \
+    128 \
   }
 #define STAI_DL2_WEIGHTS_88_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_WEIGHTS_88_SCALES \
   { \
   }
 #define STAI_DL2_WEIGHTS_88_OFFSETS \
+  { \
+  }
+
+#define STAI_DL2_WEIGHTS_89_ALIGNMENT (32)
+#define STAI_DL2_WEIGHTS_89_NAME "Gemm_47_gemm_91_0_reshape_w_176_594_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_89_FLAGS (STAI_FLAG_PREALLOCATED)
+#define STAI_DL2_WEIGHTS_89_FORMAT (STAI_FORMAT_FLOAT32)
+#define STAI_DL2_WEIGHTS_89_SIZE (1)
+#define STAI_DL2_WEIGHTS_89_SIZE_BYTES (4)
+#define STAI_DL2_WEIGHTS_89_CHANNEL (1)
+#define STAI_DL2_WEIGHTS_89_HEIGHT (1)
+#define STAI_DL2_WEIGHTS_89_WIDTH (1)
+#define STAI_DL2_WEIGHTS_89_RANK (1)
+#define STAI_DL2_WEIGHTS_89_SHAPE \
+  { \
+    1 \
+  }
+#define STAI_DL2_WEIGHTS_89_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_WEIGHTS_89_SCALES \
+  { \
+  }
+#define STAI_DL2_WEIGHTS_89_OFFSETS \
+  { \
+  }
+
+#define STAI_DL2_WEIGHTS_90_ALIGNMENT (32)
+#define STAI_DL2_WEIGHTS_90_NAME "Gemm_47_gemm_91_0_reshape_w_176_594_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_90_FLAGS (STAI_FLAG_PREALLOCATED)
+#define STAI_DL2_WEIGHTS_90_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_WEIGHTS_90_SIZE (1)
+#define STAI_DL2_WEIGHTS_90_SIZE_BYTES (1)
+#define STAI_DL2_WEIGHTS_90_CHANNEL (1)
+#define STAI_DL2_WEIGHTS_90_HEIGHT (1)
+#define STAI_DL2_WEIGHTS_90_WIDTH (1)
+#define STAI_DL2_WEIGHTS_90_RANK (1)
+#define STAI_DL2_WEIGHTS_90_SHAPE \
+  { \
+    1 \
+  }
+#define STAI_DL2_WEIGHTS_90_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_WEIGHTS_90_SCALES \
+  { \
+  }
+#define STAI_DL2_WEIGHTS_90_OFFSETS \
+  { \
+  }
+
+#define STAI_DL2_WEIGHTS_91_ALIGNMENT (16)
+#define STAI_DL2_WEIGHTS_91_NAME "Gemm_47_gemm_91_0_conv_177_598_atonn_internal_scale"
+#define STAI_DL2_WEIGHTS_91_FLAGS (STAI_FLAG_PREALLOCATED)
+#define STAI_DL2_WEIGHTS_91_FORMAT (STAI_FORMAT_FLOAT32)
+#define STAI_DL2_WEIGHTS_91_SIZE (1)
+#define STAI_DL2_WEIGHTS_91_SIZE_BYTES (4)
+#define STAI_DL2_WEIGHTS_91_CHANNEL (1)
+#define STAI_DL2_WEIGHTS_91_HEIGHT (1)
+#define STAI_DL2_WEIGHTS_91_WIDTH (1)
+#define STAI_DL2_WEIGHTS_91_RANK (1)
+#define STAI_DL2_WEIGHTS_91_SHAPE \
+  { \
+    1 \
+  }
+#define STAI_DL2_WEIGHTS_91_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_WEIGHTS_91_SCALES \
+  { \
+  }
+#define STAI_DL2_WEIGHTS_91_OFFSETS \
+  { \
+  }
+
+#define STAI_DL2_WEIGHTS_92_ALIGNMENT (16)
+#define STAI_DL2_WEIGHTS_92_NAME "Gemm_47_gemm_91_0_conv_177_598_atonn_internal_offset"
+#define STAI_DL2_WEIGHTS_92_FLAGS (STAI_FLAG_PREALLOCATED)
+#define STAI_DL2_WEIGHTS_92_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_WEIGHTS_92_SIZE (1)
+#define STAI_DL2_WEIGHTS_92_SIZE_BYTES (1)
+#define STAI_DL2_WEIGHTS_92_CHANNEL (1)
+#define STAI_DL2_WEIGHTS_92_HEIGHT (1)
+#define STAI_DL2_WEIGHTS_92_WIDTH (1)
+#define STAI_DL2_WEIGHTS_92_RANK (1)
+#define STAI_DL2_WEIGHTS_92_SHAPE \
+  { \
+    1 \
+  }
+#define STAI_DL2_WEIGHTS_92_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_WEIGHTS_92_SCALES \
+  { \
+  }
+#define STAI_DL2_WEIGHTS_92_OFFSETS \
   { \
   }
 #else  // LL_ATON_DBG_BUFFER_INFO_EXCLUDED != 0
@@ -2386,26 +2474,26 @@ STAI_API_DECLARE_END
 #endif // LL_ATON_DBG_BUFFER_INFO_EXCLUDED != 0
 
 /******************************** ACTIVATIONS ********************************/
-#define STAI_DL2_ACTIVATIONS_NUM (130)
+#define STAI_DL2_ACTIVATIONS_NUM (120)
 #define STAI_DL2_ACTIVATIONS_ALIGNMENTS \
   { \
-    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 16, 16, 16, 32, 32, 32, 32, 32, 32, 4, 32, 16, 32, 32, 16, 16, 32, 4, 8, 32, 32, 32, 32, 32, 32, 32, 16, 16, 16, 32, 32, 32, 32, 32, 32, 32, 32, 4, 8, 4, 4, 8, 4, 32, 32, 16, 32, 16, 32, 16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32 \
+    32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 4, 16, 32, 32, 16, 16, 32, 32, 4, 8, 32, 32, 32, 16, 32, 32, 32, 32, 16, 32, 16, 16, 32, 16, 32, 32, 32, 32, 16, 32, 16, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32, 32 \
   }
 #define STAI_DL2_ACTIVATIONS_NAMES \
   { \
-    "Gemm_17_weights_12_split_A_15_o_0", "Gemm_17_gemm_19_0_reshape_x_104", "Gemm_8_weights_0_split_A_3_o_0", "Gemm_8_gemm_7_0_reshape_x_97", "Gemm_8_gemm_7_0_reshape_w_99", "Gemm_33_gemm_55_0_reshape_w_141", "Gemm_17_gemm_19_0_reshape_w_106", "Gemm_33_weights_48_split_A_51_o_0", "Gemm_33_gemm_55_0_reshape_x_139", "Gemm_47_weights_84_split_A_87_o_0", "Gemm_47_gemm_91_0_reshape_x_174", "Gemm_17_gemm_19_0_reshape_x_104_inserted_out422", "Gemm_8_gemm_7_0_reshape_x_97_inserted_out424", "Gemm_33_gemm_55_0_reshape_x_139_inserted_out426", "Gemm_47_gemm_91_0_reshape_x_174_inserted_out494", "Gemm_17_gemm_19_0_conv_107", "SCRATCH_Gemm_17_gemm_19_0_conv_107_PORT_OUT", "Gemm_8_gemm_7_0_conv_100", "SCRATCH_Gemm_8_gemm_7_0_conv_100_PORT_OUT", "Gemm_33_gemm_55_0_conv_142", "SCRATCH_Gemm_33_gemm_55_0_conv_142_PORT_OUT", "Gemm_17_out_0_12_22_o", "Gemm_8_out_0_0_10_o", "Gemm_33_out_0_48_58_o", "Gemm_17_matmul_concat_out_18", "Gemm_8_matmul_concat_out_6", "Gemm_33_matmul_concat_out_54", "Add_21_out_0", "Reshape_24_out_0", "Add_12_out_0", "Reshape_15_out_0", "Add_37_out_0", "Reshape_40_out_0", "Transpose_25_out_0", "Transpose_41_out_0", "Transpose_25_out_0_24_26_o", "Transpose_41_out_0_60_61_o", "Reshape_15_out_0_inserted_out434", "Transpose_16_out_0", "Transpose_16_out_0_24_25_o", "Transpose_25_out_0_24_split_B_28_o_0", "Transpose_25_out_0_24_split_B_28_o_1", "Transpose_25_out_0_24_split_B_28_o_2", "Transpose_25_out_0_24_split_B_28_o_3", "Gemm_26_gemm_43_3_reshape_w_134", "Gemm_26_gemm_31_0_reshape_w_113", "Gemm_26_gemm_35_1_reshape_w_120", "Gemm_26_gemm_39_2_reshape_w_127", "Transpose_41_out_0_60_split_A_63_o_0", "Transpose_41_out_0_60_split_A_63_o_1", "Transpose_41_out_0_60_split_A_63_o_2", "Transpose_41_out_0_60_split_A_63_o_3", "Gemm_42_gemm_71_1_reshape_x_153", "Gemm_42_gemm_75_2_reshape_x_160", "Gemm_42_gemm_79_3_reshape_x_167", "Gemm_42_gemm_67_0_reshape_x_146", "Transpose_16_out_0_24_split_A_27_o_0", "Transpose_16_out_0_24_split_A_27_o_1", "Transpose_16_out_0_24_split_A_27_o_2", "Transpose_16_out_0_24_split_A_27_o_3", "Gemm_26_gemm_43_3_reshape_x_132", "Gemm_26_gemm_31_0_reshape_x_111", "Gemm_26_gemm_35_1_reshape_x_118", "Gemm_26_gemm_39_2_reshape_x_125", "Gemm_42_gemm_71_1_reshape_x_153_inserted_out478", "Gemm_42_gemm_75_2_reshape_x_160_inserted_out482", "Gemm_42_gemm_79_3_reshape_x_167_inserted_out486", "Gemm_42_gemm_67_0_reshape_x_146_inserted_out490", "Gemm_26_gemm_43_3_reshape_x_132_inserted_out436", "Gemm_26_gemm_43_3_conv_135", "SCRATCH_Gemm_26_gemm_43_3_conv_135_PORT_OUT", "Gemm_26_gemm_31_0_reshape_x_111_inserted_out438", "Gemm_26_gemm_35_1_reshape_x_118_inserted_out440", "Gemm_26_gemm_39_2_reshape_x_125_inserted_out442", "Gemm_26_out_0_24_46_o", "Gemm_26_gemm_31_0_conv_114", "SCRATCH_Gemm_26_gemm_31_0_conv_114_PORT_OUT", "Gemm_26_gemm_35_1_conv_121", "SCRATCH_Gemm_26_gemm_35_1_conv_121_PORT_OUT", "Gemm_26_gemm_39_2_conv_128", "SCRATCH_Gemm_26_gemm_39_2_conv_128_PORT_OUT", "Gemm_26_out_0_24_34_o", "Gemm_26_out_0_24_38_o", "Gemm_26_out_0_24_42_o", "Gemm_26_matmul_concat_out_30", "Gemm_26_out_0_24_47_o", "Mul_29_out_0", "Mul_29_out_0_cp_in_19_cp_in_20_cp_in_21", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_inserted_out466", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_22", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13_cp_in_14_cp_in_15", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13_cp_in_14_cp_in_15_cp_in_16", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13_cp_in_14_cp_in_15_cp_in_16_cp_in_17", "Softmax_32_out_0_60_62_o", "Softmax_32_out_0_60_split_B_64_o_0", "Softmax_32_out_0_60_split_B_64_o_1", "Softmax_32_out_0_60_split_B_64_o_2", "Softmax_32_out_0_60_split_B_64_o_3", "Gemm_42_gemm_71_1_reshape_w_155", "Gemm_42_gemm_75_2_reshape_w_162", "Gemm_42_gemm_79_3_reshape_w_169", "Gemm_42_gemm_67_0_reshape_w_148", "Gemm_42_gemm_71_1_conv_156", "SCRATCH_Gemm_42_gemm_71_1_conv_156_PORT_OUT", "Gemm_42_gemm_75_2_conv_163", "SCRATCH_Gemm_42_gemm_75_2_conv_163_PORT_OUT", "Gemm_42_gemm_79_3_conv_170", "SCRATCH_Gemm_42_gemm_79_3_conv_170_PORT_OUT", "Gemm_42_gemm_67_0_conv_149", "SCRATCH_Gemm_42_gemm_67_0_conv_149_PORT_OUT", "Gemm_42_out_0_60_74_o", "Gemm_42_out_0_60_78_o", "Gemm_42_out_0_60_82_o", "Gemm_42_out_0_60_70_o", "Gemm_42_matmul_concat_out_66", "Gemm_42_out_0_60_83_o", "Transpose_45_out_0", "Reshape_46_out_0", "Gemm_47_gemm_91_0_reshape_w_176", "Gemm_47_gemm_91_0_conv_177", "SCRATCH_Gemm_47_gemm_91_0_conv_177_PORT_OUT", "Gemm_47_out_0_84_94_o", "Gemm_47_matmul_concat_out_90" \
+    "Gemm_17_weights_12_split_A_15_o_0", "Gemm_17_gemm_19_0_reshape_x_104", "Gemm_8_weights_0_split_A_3_o_0", "Gemm_8_gemm_7_0_reshape_x_97", "Gemm_8_gemm_7_0_reshape_w_99", "Gemm_33_gemm_55_0_reshape_w_141", "Gemm_17_gemm_19_0_reshape_w_106", "Gemm_33_weights_48_split_A_51_o_0", "Gemm_33_gemm_55_0_reshape_x_139", "Gemm_47_weights_84_split_A_87_o_0", "Gemm_47_gemm_91_0_reshape_x_174", "Gemm_17_gemm_19_0_reshape_x_104_inserted_out386", "Gemm_8_gemm_7_0_reshape_x_97_inserted_out388", "Gemm_33_gemm_55_0_reshape_x_139_inserted_out390", "Gemm_47_gemm_91_0_reshape_x_174_inserted_out446", "Gemm_17_gemm_19_0_conv_107", "SCRATCH_Gemm_17_gemm_19_0_conv_107_PORT_OUT", "Gemm_8_gemm_7_0_conv_100", "SCRATCH_Gemm_8_gemm_7_0_conv_100_PORT_OUT", "Gemm_33_gemm_55_0_conv_142", "SCRATCH_Gemm_33_gemm_55_0_conv_142_PORT_OUT", "Gemm_17_out_0_12_22_o", "Gemm_8_out_0_0_10_o", "Gemm_33_out_0_48_58_o", "Gemm_17_matmul_concat_out_18", "Gemm_8_matmul_concat_out_6", "Gemm_33_matmul_concat_out_54", "Add_21_out_0", "Reshape_24_out_0", "Add_12_out_0", "Reshape_15_out_0", "Add_37_out_0", "Reshape_40_out_0", "Transpose_25_out_0", "Transpose_41_out_0", "Transpose_25_out_0_24_26_o", "Transpose_41_out_0_60_61_o", "Reshape_15_out_0_inserted_out398", "Transpose_16_out_0", "Transpose_16_out_0_24_25_o", "Transpose_25_out_0_24_split_B_28_o_0", "Transpose_25_out_0_24_split_B_28_o_1", "Transpose_25_out_0_24_split_B_28_o_2", "Transpose_25_out_0_24_split_B_28_o_3", "Gemm_26_gemm_43_3_reshape_w_134", "Gemm_26_gemm_31_0_reshape_w_113", "Gemm_26_gemm_35_1_reshape_w_120", "Gemm_26_gemm_39_2_reshape_w_127", "Transpose_41_out_0_60_split_A_63_o_0", "Transpose_41_out_0_60_split_A_63_o_1", "Transpose_41_out_0_60_split_A_63_o_2", "Transpose_41_out_0_60_split_A_63_o_3", "Gemm_42_gemm_71_1_reshape_x_153", "Gemm_42_gemm_75_2_reshape_x_160", "Gemm_42_gemm_79_3_reshape_x_167", "Gemm_42_gemm_67_0_reshape_x_146", "Transpose_16_out_0_24_split_A_27_o_0", "Transpose_16_out_0_24_split_A_27_o_1", "Transpose_16_out_0_24_split_A_27_o_2", "Transpose_16_out_0_24_split_A_27_o_3", "Gemm_26_gemm_43_3_reshape_x_132", "Gemm_26_gemm_31_0_reshape_x_111", "Gemm_26_gemm_35_1_reshape_x_118", "Gemm_26_gemm_39_2_reshape_x_125", "Gemm_42_gemm_71_1_reshape_x_153_inserted_out430", "Gemm_42_gemm_75_2_reshape_x_160_inserted_out434", "Gemm_42_gemm_79_3_reshape_x_167_inserted_out438", "Gemm_42_gemm_67_0_reshape_x_146_inserted_out442", "Gemm_26_gemm_43_3_reshape_x_132_inserted_out400", "Gemm_26_gemm_43_3_conv_135", "SCRATCH_Gemm_26_gemm_43_3_conv_135_PORT_OUT", "Gemm_26_gemm_31_0_reshape_x_111_inserted_out402", "Gemm_26_gemm_35_1_reshape_x_118_inserted_out404", "Gemm_26_gemm_39_2_reshape_x_125_inserted_out406", "Gemm_26_out_0_24_46_o", "Gemm_26_gemm_31_0_conv_114", "SCRATCH_Gemm_26_gemm_31_0_conv_114_PORT_OUT", "Gemm_26_gemm_35_1_conv_121", "SCRATCH_Gemm_26_gemm_35_1_conv_121_PORT_OUT", "Gemm_26_gemm_39_2_conv_128", "SCRATCH_Gemm_26_gemm_39_2_conv_128_PORT_OUT", "Gemm_26_out_0_24_34_o", "Gemm_26_out_0_24_38_o", "Gemm_26_out_0_24_42_o", "Gemm_26_matmul_concat_out_30", "Gemm_26_out_0_24_47_o", "Mul_29_out_0", "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3", "Softmax_32_out_0", "SCRATCH_Softmax_32_PORT_OUT", "Softmax_32_out_0_60_62_o", "Softmax_32_out_0_60_split_B_64_o_0", "Softmax_32_out_0_60_split_B_64_o_1", "Softmax_32_out_0_60_split_B_64_o_2", "Softmax_32_out_0_60_split_B_64_o_3", "Gemm_42_gemm_71_1_reshape_w_155", "Gemm_42_gemm_75_2_reshape_w_162", "Gemm_42_gemm_79_3_reshape_w_169", "Gemm_42_gemm_67_0_reshape_w_148", "Gemm_42_gemm_71_1_conv_156", "SCRATCH_Gemm_42_gemm_71_1_conv_156_PORT_OUT", "Gemm_42_gemm_75_2_conv_163", "SCRATCH_Gemm_42_gemm_75_2_conv_163_PORT_OUT", "Gemm_42_gemm_79_3_conv_170", "SCRATCH_Gemm_42_gemm_79_3_conv_170_PORT_OUT", "Gemm_42_gemm_67_0_conv_149", "SCRATCH_Gemm_42_gemm_67_0_conv_149_PORT_OUT", "Gemm_42_out_0_60_74_o", "Gemm_42_out_0_60_78_o", "Gemm_42_out_0_60_82_o", "Gemm_42_out_0_60_70_o", "Gemm_42_matmul_concat_out_66", "Gemm_42_out_0_60_83_o", "Transpose_45_out_0", "Reshape_46_out_0", "Gemm_47_gemm_91_0_reshape_w_176", "Gemm_47_gemm_91_0_conv_177", "SCRATCH_Gemm_47_gemm_91_0_conv_177_PORT_OUT", "Gemm_47_out_0_84_94_o", "Gemm_47_matmul_concat_out_90" \
   }
 #define STAI_DL2_ACTIVATIONS_FORMATS \
   { \
-    STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S16, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8 \
+    STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S16, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S32, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_S8, STAI_FORMAT_Q7, STAI_FORMAT_S8, STAI_FORMAT_S8 \
   }
 #define STAI_DL2_ACTIVATIONS_SIZES \
   { \
-    16384, 16384, 16384, 16384, 3840, 3840, 3840, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 3840, 515, 3840, 515, 3840, 515, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 900, 131, 960, 960, 960, 900, 900, 131, 900, 131, 900, 131, 900, 900, 900, 3600, 3600, 3600, 3600, 3600, 3600, 3600, 900, 900, 3600, 3600, 900, 900, 3600, 3600, 3600, 3600, 900, 900, 900, 900, 900, 900, 900, 900, 960, 123, 960, 123, 960, 123, 960, 123, 960, 960, 960, 960, 3840, 3840, 3840, 3840, 3840, 3840, 515, 3840, 3840 \
+    16384, 16384, 16384, 16384, 3840, 3840, 3840, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 3840, 515, 3840, 515, 3840, 515, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 900, 131, 960, 960, 960, 900, 900, 131, 900, 131, 900, 131, 900, 900, 900, 3600, 3600, 3600, 3600, 3600, 32, 3600, 900, 900, 900, 900, 900, 900, 900, 900, 960, 123, 960, 123, 960, 123, 960, 123, 960, 960, 960, 960, 3840, 3840, 3840, 3840, 3840, 3840, 515, 3840, 3840 \
   }
 #define STAI_DL2_ACTIVATIONS_SIZES_BYTES \
   { \
-    16384, 16384, 16384, 16384, 3840, 3840, 3840, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 3840, 515, 3840, 515, 3840, 515, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 900, 131, 960, 960, 960, 900, 900, 131, 900, 131, 900, 131, 900, 900, 900, 3600, 3600, 7200, 3600, 3600, 3600, 3600, 900, 900, 3600, 3600, 900, 900, 3600, 3600, 3600, 3600, 900, 900, 900, 900, 900, 900, 900, 900, 960, 123, 960, 123, 960, 123, 960, 123, 960, 960, 960, 960, 3840, 3840, 3840, 3840, 3840, 3840, 515, 3840, 3840 \
+    16384, 16384, 16384, 16384, 3840, 3840, 3840, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 16384, 3840, 515, 3840, 515, 3840, 515, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 3840, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 960, 900, 131, 960, 960, 960, 900, 900, 131, 900, 131, 900, 131, 900, 900, 900, 3600, 3600, 7200, 3600, 3600, 128, 3600, 900, 900, 900, 900, 900, 900, 900, 900, 960, 123, 960, 123, 960, 123, 960, 123, 960, 960, 960, 960, 3840, 3840, 3840, 3840, 3840, 3840, 515, 3840, 3840 \
   }
 
 #define STAI_DL2_ACTIVATIONS_1_ALIGNMENT (32)
@@ -2684,7 +2772,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_12_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_12_NAME "Gemm_17_gemm_19_0_reshape_x_104_inserted_out422"
+#define STAI_DL2_ACTIVATIONS_12_NAME "Gemm_17_gemm_19_0_reshape_x_104_inserted_out386"
 #define STAI_DL2_ACTIVATIONS_12_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_12_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_12_SIZE (16384)
@@ -2709,7 +2797,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_13_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_13_NAME "Gemm_8_gemm_7_0_reshape_x_97_inserted_out424"
+#define STAI_DL2_ACTIVATIONS_13_NAME "Gemm_8_gemm_7_0_reshape_x_97_inserted_out388"
 #define STAI_DL2_ACTIVATIONS_13_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_13_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_13_SIZE (16384)
@@ -2734,7 +2822,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_14_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_14_NAME "Gemm_33_gemm_55_0_reshape_x_139_inserted_out426"
+#define STAI_DL2_ACTIVATIONS_14_NAME "Gemm_33_gemm_55_0_reshape_x_139_inserted_out390"
 #define STAI_DL2_ACTIVATIONS_14_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_14_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_14_SIZE (16384)
@@ -2759,7 +2847,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_15_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_15_NAME "Gemm_47_gemm_91_0_reshape_x_174_inserted_out494"
+#define STAI_DL2_ACTIVATIONS_15_NAME "Gemm_47_gemm_91_0_reshape_x_174_inserted_out446"
 #define STAI_DL2_ACTIVATIONS_15_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_15_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_15_SIZE (16384)
@@ -3328,7 +3416,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_38_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_38_NAME "Reshape_15_out_0_inserted_out434"
+#define STAI_DL2_ACTIVATIONS_38_NAME "Reshape_15_out_0_inserted_out398"
 #define STAI_DL2_ACTIVATIONS_38_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_38_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_38_SIZE (3840)
@@ -4002,8 +4090,8 @@ STAI_API_DECLARE_END
     -3 \
   }
 
-#define STAI_DL2_ACTIVATIONS_65_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_65_NAME "Gemm_42_gemm_71_1_reshape_x_153_inserted_out478"
+#define STAI_DL2_ACTIVATIONS_65_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_65_NAME "Gemm_42_gemm_71_1_reshape_x_153_inserted_out430"
 #define STAI_DL2_ACTIVATIONS_65_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_65_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_65_SIZE (960)
@@ -4027,8 +4115,8 @@ STAI_API_DECLARE_END
     7 \
   }
 
-#define STAI_DL2_ACTIVATIONS_66_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_66_NAME "Gemm_42_gemm_75_2_reshape_x_160_inserted_out482"
+#define STAI_DL2_ACTIVATIONS_66_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_66_NAME "Gemm_42_gemm_75_2_reshape_x_160_inserted_out434"
 #define STAI_DL2_ACTIVATIONS_66_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_66_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_66_SIZE (960)
@@ -4052,8 +4140,8 @@ STAI_API_DECLARE_END
     7 \
   }
 
-#define STAI_DL2_ACTIVATIONS_67_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_67_NAME "Gemm_42_gemm_79_3_reshape_x_167_inserted_out486"
+#define STAI_DL2_ACTIVATIONS_67_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_67_NAME "Gemm_42_gemm_79_3_reshape_x_167_inserted_out438"
 #define STAI_DL2_ACTIVATIONS_67_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_67_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_67_SIZE (960)
@@ -4077,8 +4165,8 @@ STAI_API_DECLARE_END
     7 \
   }
 
-#define STAI_DL2_ACTIVATIONS_68_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_68_NAME "Gemm_42_gemm_67_0_reshape_x_146_inserted_out490"
+#define STAI_DL2_ACTIVATIONS_68_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_68_NAME "Gemm_42_gemm_67_0_reshape_x_146_inserted_out442"
 #define STAI_DL2_ACTIVATIONS_68_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_68_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_68_SIZE (960)
@@ -4103,7 +4191,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_69_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_69_NAME "Gemm_26_gemm_43_3_reshape_x_132_inserted_out436"
+#define STAI_DL2_ACTIVATIONS_69_NAME "Gemm_26_gemm_43_3_reshape_x_132_inserted_out400"
 #define STAI_DL2_ACTIVATIONS_69_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_69_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_69_SIZE (960)
@@ -4176,7 +4264,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_72_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_72_NAME "Gemm_26_gemm_31_0_reshape_x_111_inserted_out438"
+#define STAI_DL2_ACTIVATIONS_72_NAME "Gemm_26_gemm_31_0_reshape_x_111_inserted_out402"
 #define STAI_DL2_ACTIVATIONS_72_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_72_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_72_SIZE (960)
@@ -4201,7 +4289,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_73_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_73_NAME "Gemm_26_gemm_35_1_reshape_x_118_inserted_out440"
+#define STAI_DL2_ACTIVATIONS_73_NAME "Gemm_26_gemm_35_1_reshape_x_118_inserted_out404"
 #define STAI_DL2_ACTIVATIONS_73_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_73_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_73_SIZE (960)
@@ -4226,7 +4314,7 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_74_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_74_NAME "Gemm_26_gemm_39_2_reshape_x_125_inserted_out442"
+#define STAI_DL2_ACTIVATIONS_74_NAME "Gemm_26_gemm_39_2_reshape_x_125_inserted_out406"
 #define STAI_DL2_ACTIVATIONS_74_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_74_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_74_SIZE (960)
@@ -4275,7 +4363,7 @@ STAI_API_DECLARE_END
     -26 \
   }
 
-#define STAI_DL2_ACTIVATIONS_76_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_76_ALIGNMENT (16)
 #define STAI_DL2_ACTIVATIONS_76_NAME "Gemm_26_gemm_31_0_conv_114"
 #define STAI_DL2_ACTIVATIONS_76_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_76_FORMAT (STAI_FORMAT_S8)
@@ -4300,7 +4388,7 @@ STAI_API_DECLARE_END
     -26 \
   }
 
-#define STAI_DL2_ACTIVATIONS_77_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_77_ALIGNMENT (32)
 #define STAI_DL2_ACTIVATIONS_77_NAME "SCRATCH_Gemm_26_gemm_31_0_conv_114_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_77_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_77_FORMAT (STAI_FORMAT_Q7)
@@ -4348,7 +4436,7 @@ STAI_API_DECLARE_END
     -26 \
   }
 
-#define STAI_DL2_ACTIVATIONS_79_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_79_ALIGNMENT (16)
 #define STAI_DL2_ACTIVATIONS_79_NAME "SCRATCH_Gemm_26_gemm_35_1_conv_121_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_79_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_79_FORMAT (STAI_FORMAT_Q7)
@@ -4396,7 +4484,7 @@ STAI_API_DECLARE_END
     -26 \
   }
 
-#define STAI_DL2_ACTIVATIONS_81_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_81_ALIGNMENT (32)
 #define STAI_DL2_ACTIVATIONS_81_NAME "SCRATCH_Gemm_26_gemm_39_2_conv_128_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_81_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_81_FORMAT (STAI_FORMAT_Q7)
@@ -4569,20 +4657,20 @@ STAI_API_DECLARE_END
     0 \
   }
 
-#define STAI_DL2_ACTIVATIONS_88_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_88_NAME "Mul_29_out_0_cp_in_19_cp_in_20_cp_in_21"
-#define STAI_DL2_ACTIVATIONS_88_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_88_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_88_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3"
+#define STAI_DL2_ACTIVATIONS_88_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_88_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_88_SIZE (3600)
 #define STAI_DL2_ACTIVATIONS_88_SIZE_BYTES (3600)
 #define STAI_DL2_ACTIVATIONS_88_CHANNEL (4)
 #define STAI_DL2_ACTIVATIONS_88_HEIGHT (30)
 #define STAI_DL2_ACTIVATIONS_88_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_88_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_88_BATCH (4)
 #define STAI_DL2_ACTIVATIONS_88_RANK (4)
 #define STAI_DL2_ACTIVATIONS_88_SHAPE \
   { \
-    1, 4, 30, 30 \
+    1, 30, 30, 4 \
   }
 #define STAI_DL2_ACTIVATIONS_88_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_88_SCALES \
@@ -4595,244 +4683,242 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_89_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_89_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4"
-#define STAI_DL2_ACTIVATIONS_89_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_89_NAME "Softmax_32_out_0"
+#define STAI_DL2_ACTIVATIONS_89_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_89_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_89_SIZE (3600)
 #define STAI_DL2_ACTIVATIONS_89_SIZE_BYTES (3600)
 #define STAI_DL2_ACTIVATIONS_89_CHANNEL (4)
 #define STAI_DL2_ACTIVATIONS_89_HEIGHT (30)
 #define STAI_DL2_ACTIVATIONS_89_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_89_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_89_BATCH (4)
 #define STAI_DL2_ACTIVATIONS_89_RANK (4)
 #define STAI_DL2_ACTIVATIONS_89_SHAPE \
   { \
-    1, 4, 30, 30 \
+    1, 30, 30, 4 \
   }
 #define STAI_DL2_ACTIVATIONS_89_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_89_SCALES \
   { \
-    0.854029893875122 \
+    0.00390625 \
   }
 #define STAI_DL2_ACTIVATIONS_89_OFFSETS \
   { \
-    -26 \
+    -128 \
   }
 
 #define STAI_DL2_ACTIVATIONS_90_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_90_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5"
-#define STAI_DL2_ACTIVATIONS_90_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
-#define STAI_DL2_ACTIVATIONS_90_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_90_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_90_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_90_CHANNEL (4)
+#define STAI_DL2_ACTIVATIONS_90_NAME "SCRATCH_Softmax_32_PORT_OUT"
+#define STAI_DL2_ACTIVATIONS_90_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
+#define STAI_DL2_ACTIVATIONS_90_FORMAT (STAI_FORMAT_S32)
+#define STAI_DL2_ACTIVATIONS_90_SIZE (32)
+#define STAI_DL2_ACTIVATIONS_90_SIZE_BYTES (128)
+#define STAI_DL2_ACTIVATIONS_90_CHANNEL (1)
 #define STAI_DL2_ACTIVATIONS_90_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_90_WIDTH (900)
+#define STAI_DL2_ACTIVATIONS_90_WIDTH (32)
 #define STAI_DL2_ACTIVATIONS_90_BATCH (1)
 #define STAI_DL2_ACTIVATIONS_90_RANK (4)
 #define STAI_DL2_ACTIVATIONS_90_SHAPE \
   { \
-    1, 4, 1, 900 \
+    1, 1, 32, 1 \
   }
-#define STAI_DL2_ACTIVATIONS_90_SCALE_OFFSET_NUM (1)
+#define STAI_DL2_ACTIVATIONS_90_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_ACTIVATIONS_90_SCALES \
   { \
-    0.854029893875122 \
   }
 #define STAI_DL2_ACTIVATIONS_90_OFFSETS \
   { \
-    -26 \
   }
 
 #define STAI_DL2_ACTIVATIONS_91_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_91_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_inserted_out466"
+#define STAI_DL2_ACTIVATIONS_91_NAME "Softmax_32_out_0_60_62_o"
 #define STAI_DL2_ACTIVATIONS_91_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_91_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_91_SIZE (3600)
 #define STAI_DL2_ACTIVATIONS_91_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_91_CHANNEL (900)
-#define STAI_DL2_ACTIVATIONS_91_HEIGHT (4)
-#define STAI_DL2_ACTIVATIONS_91_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_91_BATCH (900)
-#define STAI_DL2_ACTIVATIONS_91_RANK (4)
+#define STAI_DL2_ACTIVATIONS_91_CHANNEL (4)
+#define STAI_DL2_ACTIVATIONS_91_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_91_WIDTH (30)
+#define STAI_DL2_ACTIVATIONS_91_BATCH (4)
+#define STAI_DL2_ACTIVATIONS_91_RANK (3)
 #define STAI_DL2_ACTIVATIONS_91_SHAPE \
   { \
-    1, 4, 1, 900 \
+    30, 30, 4 \
   }
 #define STAI_DL2_ACTIVATIONS_91_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_91_SCALES \
   { \
-    0.854029893875122 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_91_OFFSETS \
   { \
-    -26 \
+    -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_92_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_92_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6"
+#define STAI_DL2_ACTIVATIONS_92_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_92_NAME "Softmax_32_out_0_60_split_B_64_o_0"
 #define STAI_DL2_ACTIVATIONS_92_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_92_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_92_SIZE (900)
 #define STAI_DL2_ACTIVATIONS_92_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_92_CHANNEL (900)
-#define STAI_DL2_ACTIVATIONS_92_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_92_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_92_BATCH (900)
-#define STAI_DL2_ACTIVATIONS_92_RANK (4)
+#define STAI_DL2_ACTIVATIONS_92_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_92_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_92_WIDTH (30)
+#define STAI_DL2_ACTIVATIONS_92_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_92_RANK (3)
 #define STAI_DL2_ACTIVATIONS_92_SHAPE \
   { \
-    1, 1, 1, 900 \
+    30, 30, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_92_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_92_SCALES \
   { \
-    0.854029893875122 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_92_OFFSETS \
   { \
-    -26 \
+    -128 \
   }
 
 #define STAI_DL2_ACTIVATIONS_93_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_93_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_22"
+#define STAI_DL2_ACTIVATIONS_93_NAME "Softmax_32_out_0_60_split_B_64_o_1"
 #define STAI_DL2_ACTIVATIONS_93_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_93_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_93_SIZE (900)
 #define STAI_DL2_ACTIVATIONS_93_SIZE_BYTES (900)
 #define STAI_DL2_ACTIVATIONS_93_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_93_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_93_WIDTH (900)
+#define STAI_DL2_ACTIVATIONS_93_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_93_WIDTH (30)
 #define STAI_DL2_ACTIVATIONS_93_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_93_RANK (4)
+#define STAI_DL2_ACTIVATIONS_93_RANK (3)
 #define STAI_DL2_ACTIVATIONS_93_SHAPE \
   { \
-    1, 1, 900, 1 \
+    30, 30, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_93_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_93_SCALES \
   { \
-    0.854029893875122 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_93_OFFSETS \
   { \
-    -26 \
+    -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_94_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_94_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9"
-#define STAI_DL2_ACTIVATIONS_94_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_94_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_94_NAME "Softmax_32_out_0_60_split_B_64_o_2"
+#define STAI_DL2_ACTIVATIONS_94_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_94_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_94_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_94_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_94_CHANNEL (4)
-#define STAI_DL2_ACTIVATIONS_94_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_94_WIDTH (900)
+#define STAI_DL2_ACTIVATIONS_94_SIZE (900)
+#define STAI_DL2_ACTIVATIONS_94_SIZE_BYTES (900)
+#define STAI_DL2_ACTIVATIONS_94_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_94_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_94_WIDTH (30)
 #define STAI_DL2_ACTIVATIONS_94_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_94_RANK (4)
+#define STAI_DL2_ACTIVATIONS_94_RANK (3)
 #define STAI_DL2_ACTIVATIONS_94_SHAPE \
   { \
-    1, 4, 1, 900 \
+    30, 30, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_94_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_94_SCALES \
   { \
-    0.0078125 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_94_OFFSETS \
   { \
     -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_95_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_95_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10"
-#define STAI_DL2_ACTIVATIONS_95_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_95_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_95_NAME "Softmax_32_out_0_60_split_B_64_o_3"
+#define STAI_DL2_ACTIVATIONS_95_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_95_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_95_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_95_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_95_CHANNEL (900)
-#define STAI_DL2_ACTIVATIONS_95_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_95_WIDTH (4)
+#define STAI_DL2_ACTIVATIONS_95_SIZE (900)
+#define STAI_DL2_ACTIVATIONS_95_SIZE_BYTES (900)
+#define STAI_DL2_ACTIVATIONS_95_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_95_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_95_WIDTH (30)
 #define STAI_DL2_ACTIVATIONS_95_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_95_RANK (4)
+#define STAI_DL2_ACTIVATIONS_95_RANK (3)
 #define STAI_DL2_ACTIVATIONS_95_SHAPE \
   { \
-    1, 900, 1, 4 \
+    30, 30, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_95_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_95_SCALES \
   { \
-    0.0078125 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_95_OFFSETS \
   { \
     -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_96_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_96_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12"
+#define STAI_DL2_ACTIVATIONS_96_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_96_NAME "Gemm_42_gemm_71_1_reshape_w_155"
 #define STAI_DL2_ACTIVATIONS_96_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_96_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_96_SIZE (900)
 #define STAI_DL2_ACTIVATIONS_96_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_96_CHANNEL (900)
+#define STAI_DL2_ACTIVATIONS_96_CHANNEL (30)
 #define STAI_DL2_ACTIVATIONS_96_HEIGHT (1)
 #define STAI_DL2_ACTIVATIONS_96_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_96_BATCH (900)
+#define STAI_DL2_ACTIVATIONS_96_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_96_RANK (4)
 #define STAI_DL2_ACTIVATIONS_96_SHAPE \
   { \
-    1, 1, 1, 900 \
+    30, 1, 1, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_96_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_96_SCALES \
   { \
-    0.0078125 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_96_OFFSETS \
   { \
-    0 \
+    -128 \
   }
 
 #define STAI_DL2_ACTIVATIONS_97_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_97_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13"
+#define STAI_DL2_ACTIVATIONS_97_NAME "Gemm_42_gemm_75_2_reshape_w_162"
 #define STAI_DL2_ACTIVATIONS_97_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_97_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_97_SIZE (900)
 #define STAI_DL2_ACTIVATIONS_97_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_97_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_97_CHANNEL (30)
 #define STAI_DL2_ACTIVATIONS_97_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_97_WIDTH (900)
-#define STAI_DL2_ACTIVATIONS_97_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_97_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_97_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_97_RANK (4)
 #define STAI_DL2_ACTIVATIONS_97_SHAPE \
   { \
-    1, 1, 900, 1 \
+    30, 1, 1, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_97_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_97_SCALES \
   { \
-    0.0078125 \
+    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_97_OFFSETS \
   { \
-    0 \
+    -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_98_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_98_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13_cp_in_14_cp_in_15"
-#define STAI_DL2_ACTIVATIONS_98_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_98_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_98_NAME "Gemm_42_gemm_79_3_reshape_w_169"
+#define STAI_DL2_ACTIVATIONS_98_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_98_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_98_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_98_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_98_CHANNEL (4)
+#define STAI_DL2_ACTIVATIONS_98_SIZE (900)
+#define STAI_DL2_ACTIVATIONS_98_SIZE_BYTES (900)
+#define STAI_DL2_ACTIVATIONS_98_CHANNEL (30)
 #define STAI_DL2_ACTIVATIONS_98_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_98_WIDTH (900)
-#define STAI_DL2_ACTIVATIONS_98_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_98_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_98_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_98_RANK (4)
 #define STAI_DL2_ACTIVATIONS_98_SHAPE \
   { \
-    1, 4, 1, 900 \
+    30, 1, 1, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_98_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_98_SCALES \
@@ -4845,19 +4931,19 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_99_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_99_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13_cp_in_14_cp_in_15_cp_in_16"
-#define STAI_DL2_ACTIVATIONS_99_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_99_NAME "Gemm_42_gemm_67_0_reshape_w_148"
+#define STAI_DL2_ACTIVATIONS_99_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_99_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_99_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_99_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_99_CHANNEL (4)
-#define STAI_DL2_ACTIVATIONS_99_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_99_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_99_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_99_SIZE (900)
+#define STAI_DL2_ACTIVATIONS_99_SIZE_BYTES (900)
+#define STAI_DL2_ACTIVATIONS_99_CHANNEL (30)
+#define STAI_DL2_ACTIVATIONS_99_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_99_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_99_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_99_RANK (4)
 #define STAI_DL2_ACTIVATIONS_99_SHAPE \
   { \
-    1, 4, 30, 30 \
+    30, 1, 1, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_99_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_99_SCALES \
@@ -4870,269 +4956,261 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_100_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_100_NAME "Mul_29_out_0_cp_in_1_cp_in_2_cp_in_3_cp_in_4_cp_in_5_cp_in_6_cp_in_7_cp_in_8_cp_in_9_cp_in_10_cp_in_11_cp_in_12_cp_in_13_cp_in_14_cp_in_15_cp_in_16_cp_in_17"
-#define STAI_DL2_ACTIVATIONS_100_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_100_NAME "Gemm_42_gemm_71_1_conv_156"
+#define STAI_DL2_ACTIVATIONS_100_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_100_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_100_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_100_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_100_CHANNEL (4)
-#define STAI_DL2_ACTIVATIONS_100_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_100_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_100_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_100_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_100_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_100_CHANNEL (30)
+#define STAI_DL2_ACTIVATIONS_100_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_100_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_100_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_100_RANK (4)
 #define STAI_DL2_ACTIVATIONS_100_SHAPE \
   { \
-    1, 4, 30, 30 \
+    1, 1, 32, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_100_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_100_SCALES \
   { \
-    0.00392156885936856 \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_100_OFFSETS \
   { \
-    -128 \
+    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_101_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_101_NAME "Softmax_32_out_0_60_62_o"
-#define STAI_DL2_ACTIVATIONS_101_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
-#define STAI_DL2_ACTIVATIONS_101_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_101_SIZE (3600)
-#define STAI_DL2_ACTIVATIONS_101_SIZE_BYTES (3600)
-#define STAI_DL2_ACTIVATIONS_101_CHANNEL (4)
-#define STAI_DL2_ACTIVATIONS_101_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_101_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_101_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_101_RANK (3)
+#define STAI_DL2_ACTIVATIONS_101_NAME "SCRATCH_Gemm_42_gemm_71_1_conv_156_PORT_OUT"
+#define STAI_DL2_ACTIVATIONS_101_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
+#define STAI_DL2_ACTIVATIONS_101_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_ACTIVATIONS_101_SIZE (123)
+#define STAI_DL2_ACTIVATIONS_101_SIZE_BYTES (123)
+#define STAI_DL2_ACTIVATIONS_101_CHANNEL (123)
+#define STAI_DL2_ACTIVATIONS_101_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_101_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_101_BATCH (123)
+#define STAI_DL2_ACTIVATIONS_101_RANK (4)
 #define STAI_DL2_ACTIVATIONS_101_SHAPE \
   { \
-    4, 30, 30 \
+    1, 1, 1, 123 \
   }
-#define STAI_DL2_ACTIVATIONS_101_SCALE_OFFSET_NUM (1)
+#define STAI_DL2_ACTIVATIONS_101_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_ACTIVATIONS_101_SCALES \
   { \
-    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_101_OFFSETS \
   { \
-    -128 \
   }
 
 #define STAI_DL2_ACTIVATIONS_102_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_102_NAME "Softmax_32_out_0_60_split_B_64_o_0"
+#define STAI_DL2_ACTIVATIONS_102_NAME "Gemm_42_gemm_75_2_conv_163"
 #define STAI_DL2_ACTIVATIONS_102_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_102_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_102_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_102_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_102_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_102_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_102_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_102_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_102_RANK (3)
+#define STAI_DL2_ACTIVATIONS_102_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_102_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_102_CHANNEL (30)
+#define STAI_DL2_ACTIVATIONS_102_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_102_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_102_BATCH (30)
+#define STAI_DL2_ACTIVATIONS_102_RANK (4)
 #define STAI_DL2_ACTIVATIONS_102_SHAPE \
   { \
-    30, 30, 1 \
+    1, 1, 32, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_102_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_102_SCALES \
   { \
-    0.00392156885936856 \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_102_OFFSETS \
   { \
-    -128 \
+    8 \
   }
 
-#define STAI_DL2_ACTIVATIONS_103_ALIGNMENT (4)
-#define STAI_DL2_ACTIVATIONS_103_NAME "Softmax_32_out_0_60_split_B_64_o_1"
+#define STAI_DL2_ACTIVATIONS_103_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_103_NAME "SCRATCH_Gemm_42_gemm_75_2_conv_163_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_103_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_103_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_103_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_103_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_103_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_103_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_103_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_103_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_103_RANK (3)
+#define STAI_DL2_ACTIVATIONS_103_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_ACTIVATIONS_103_SIZE (123)
+#define STAI_DL2_ACTIVATIONS_103_SIZE_BYTES (123)
+#define STAI_DL2_ACTIVATIONS_103_CHANNEL (123)
+#define STAI_DL2_ACTIVATIONS_103_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_103_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_103_BATCH (123)
+#define STAI_DL2_ACTIVATIONS_103_RANK (4)
 #define STAI_DL2_ACTIVATIONS_103_SHAPE \
   { \
-    30, 30, 1 \
+    1, 1, 1, 123 \
   }
-#define STAI_DL2_ACTIVATIONS_103_SCALE_OFFSET_NUM (1)
+#define STAI_DL2_ACTIVATIONS_103_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_ACTIVATIONS_103_SCALES \
   { \
-    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_103_OFFSETS \
   { \
-    -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_104_ALIGNMENT (8)
-#define STAI_DL2_ACTIVATIONS_104_NAME "Softmax_32_out_0_60_split_B_64_o_2"
+#define STAI_DL2_ACTIVATIONS_104_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_104_NAME "Gemm_42_gemm_79_3_conv_170"
 #define STAI_DL2_ACTIVATIONS_104_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_104_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_104_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_104_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_104_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_104_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_104_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_104_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_104_RANK (3)
+#define STAI_DL2_ACTIVATIONS_104_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_104_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_104_CHANNEL (30)
+#define STAI_DL2_ACTIVATIONS_104_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_104_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_104_BATCH (30)
+#define STAI_DL2_ACTIVATIONS_104_RANK (4)
 #define STAI_DL2_ACTIVATIONS_104_SHAPE \
   { \
-    30, 30, 1 \
+    1, 1, 32, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_104_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_104_SCALES \
   { \
-    0.00392156885936856 \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_104_OFFSETS \
   { \
-    -128 \
+    8 \
   }
 
-#define STAI_DL2_ACTIVATIONS_105_ALIGNMENT (4)
-#define STAI_DL2_ACTIVATIONS_105_NAME "Softmax_32_out_0_60_split_B_64_o_3"
+#define STAI_DL2_ACTIVATIONS_105_ALIGNMENT (16)
+#define STAI_DL2_ACTIVATIONS_105_NAME "SCRATCH_Gemm_42_gemm_79_3_conv_170_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_105_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_105_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_105_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_105_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_105_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_105_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_105_WIDTH (30)
-#define STAI_DL2_ACTIVATIONS_105_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_105_RANK (3)
+#define STAI_DL2_ACTIVATIONS_105_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_ACTIVATIONS_105_SIZE (123)
+#define STAI_DL2_ACTIVATIONS_105_SIZE_BYTES (123)
+#define STAI_DL2_ACTIVATIONS_105_CHANNEL (123)
+#define STAI_DL2_ACTIVATIONS_105_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_105_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_105_BATCH (123)
+#define STAI_DL2_ACTIVATIONS_105_RANK (4)
 #define STAI_DL2_ACTIVATIONS_105_SHAPE \
   { \
-    30, 30, 1 \
+    1, 1, 1, 123 \
   }
-#define STAI_DL2_ACTIVATIONS_105_SCALE_OFFSET_NUM (1)
+#define STAI_DL2_ACTIVATIONS_105_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_ACTIVATIONS_105_SCALES \
   { \
-    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_105_OFFSETS \
   { \
-    -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_106_ALIGNMENT (4)
-#define STAI_DL2_ACTIVATIONS_106_NAME "Gemm_42_gemm_71_1_reshape_w_155"
+#define STAI_DL2_ACTIVATIONS_106_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_106_NAME "Gemm_42_gemm_67_0_conv_149"
 #define STAI_DL2_ACTIVATIONS_106_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_106_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_106_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_106_SIZE_BYTES (900)
+#define STAI_DL2_ACTIVATIONS_106_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_106_SIZE_BYTES (960)
 #define STAI_DL2_ACTIVATIONS_106_CHANNEL (30)
 #define STAI_DL2_ACTIVATIONS_106_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_106_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_106_WIDTH (32)
 #define STAI_DL2_ACTIVATIONS_106_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_106_RANK (4)
 #define STAI_DL2_ACTIVATIONS_106_SHAPE \
   { \
-    30, 1, 1, 30 \
+    1, 1, 32, 30 \
   }
 #define STAI_DL2_ACTIVATIONS_106_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_106_SCALES \
   { \
-    0.00392156885936856 \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_106_OFFSETS \
   { \
-    -128 \
+    8 \
   }
 
-#define STAI_DL2_ACTIVATIONS_107_ALIGNMENT (8)
-#define STAI_DL2_ACTIVATIONS_107_NAME "Gemm_42_gemm_75_2_reshape_w_162"
+#define STAI_DL2_ACTIVATIONS_107_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_107_NAME "SCRATCH_Gemm_42_gemm_67_0_conv_149_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_107_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_107_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_107_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_107_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_107_CHANNEL (30)
+#define STAI_DL2_ACTIVATIONS_107_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_ACTIVATIONS_107_SIZE (123)
+#define STAI_DL2_ACTIVATIONS_107_SIZE_BYTES (123)
+#define STAI_DL2_ACTIVATIONS_107_CHANNEL (123)
 #define STAI_DL2_ACTIVATIONS_107_HEIGHT (1)
 #define STAI_DL2_ACTIVATIONS_107_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_107_BATCH (30)
+#define STAI_DL2_ACTIVATIONS_107_BATCH (123)
 #define STAI_DL2_ACTIVATIONS_107_RANK (4)
 #define STAI_DL2_ACTIVATIONS_107_SHAPE \
   { \
-    30, 1, 1, 30 \
+    1, 1, 1, 123 \
   }
-#define STAI_DL2_ACTIVATIONS_107_SCALE_OFFSET_NUM (1)
+#define STAI_DL2_ACTIVATIONS_107_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_ACTIVATIONS_107_SCALES \
   { \
-    0.00392156885936856 \
   }
 #define STAI_DL2_ACTIVATIONS_107_OFFSETS \
   { \
-    -128 \
   }
 
-#define STAI_DL2_ACTIVATIONS_108_ALIGNMENT (4)
-#define STAI_DL2_ACTIVATIONS_108_NAME "Gemm_42_gemm_79_3_reshape_w_169"
+#define STAI_DL2_ACTIVATIONS_108_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_108_NAME "Gemm_42_out_0_60_74_o"
 #define STAI_DL2_ACTIVATIONS_108_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_108_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_108_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_108_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_108_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_108_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_108_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_108_BATCH (30)
-#define STAI_DL2_ACTIVATIONS_108_RANK (4)
+#define STAI_DL2_ACTIVATIONS_108_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_108_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_108_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_108_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_108_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_108_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_108_RANK (3)
 #define STAI_DL2_ACTIVATIONS_108_SHAPE \
   { \
-    30, 1, 1, 30 \
+    30, 32, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_108_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_108_SCALES \
   { \
-    0.00392156885936856 \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_108_OFFSETS \
   { \
-    -128 \
+    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_109_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_109_NAME "Gemm_42_gemm_67_0_reshape_w_148"
+#define STAI_DL2_ACTIVATIONS_109_NAME "Gemm_42_out_0_60_78_o"
 #define STAI_DL2_ACTIVATIONS_109_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_109_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_109_SIZE (900)
-#define STAI_DL2_ACTIVATIONS_109_SIZE_BYTES (900)
-#define STAI_DL2_ACTIVATIONS_109_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_109_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_109_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_109_BATCH (30)
-#define STAI_DL2_ACTIVATIONS_109_RANK (4)
+#define STAI_DL2_ACTIVATIONS_109_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_109_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_109_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_109_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_109_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_109_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_109_RANK (3)
 #define STAI_DL2_ACTIVATIONS_109_SHAPE \
   { \
-    30, 1, 1, 30 \
+    30, 32, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_109_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_109_SCALES \
   { \
-    0.00392156885936856 \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_109_OFFSETS \
   { \
-    -128 \
+    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_110_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_110_NAME "Gemm_42_gemm_71_1_conv_156"
+#define STAI_DL2_ACTIVATIONS_110_NAME "Gemm_42_out_0_60_82_o"
 #define STAI_DL2_ACTIVATIONS_110_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_110_FORMAT (STAI_FORMAT_S8)
 #define STAI_DL2_ACTIVATIONS_110_SIZE (960)
 #define STAI_DL2_ACTIVATIONS_110_SIZE_BYTES (960)
-#define STAI_DL2_ACTIVATIONS_110_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_110_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_110_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_110_HEIGHT (30)
 #define STAI_DL2_ACTIVATIONS_110_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_110_BATCH (30)
-#define STAI_DL2_ACTIVATIONS_110_RANK (4)
+#define STAI_DL2_ACTIVATIONS_110_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_110_RANK (3)
 #define STAI_DL2_ACTIVATIONS_110_SHAPE \
   { \
-    1, 1, 32, 30 \
+    30, 32, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_110_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_110_SCALES \
@@ -5144,43 +5222,45 @@ STAI_API_DECLARE_END
     8 \
   }
 
-#define STAI_DL2_ACTIVATIONS_111_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_111_NAME "SCRATCH_Gemm_42_gemm_71_1_conv_156_PORT_OUT"
+#define STAI_DL2_ACTIVATIONS_111_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_111_NAME "Gemm_42_out_0_60_70_o"
 #define STAI_DL2_ACTIVATIONS_111_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_111_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_ACTIVATIONS_111_SIZE (123)
-#define STAI_DL2_ACTIVATIONS_111_SIZE_BYTES (123)
-#define STAI_DL2_ACTIVATIONS_111_CHANNEL (123)
-#define STAI_DL2_ACTIVATIONS_111_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_111_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_111_BATCH (123)
-#define STAI_DL2_ACTIVATIONS_111_RANK (4)
+#define STAI_DL2_ACTIVATIONS_111_FORMAT (STAI_FORMAT_S8)
+#define STAI_DL2_ACTIVATIONS_111_SIZE (960)
+#define STAI_DL2_ACTIVATIONS_111_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_111_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_111_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_111_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_111_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_111_RANK (3)
 #define STAI_DL2_ACTIVATIONS_111_SHAPE \
   { \
-    1, 1, 1, 123 \
+    30, 32, 1 \
   }
-#define STAI_DL2_ACTIVATIONS_111_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_ACTIVATIONS_111_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_111_SCALES \
   { \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_111_OFFSETS \
   { \
+    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_112_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_112_NAME "Gemm_42_gemm_75_2_conv_163"
-#define STAI_DL2_ACTIVATIONS_112_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
+#define STAI_DL2_ACTIVATIONS_112_NAME "Gemm_42_matmul_concat_out_66"
+#define STAI_DL2_ACTIVATIONS_112_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
 #define STAI_DL2_ACTIVATIONS_112_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_112_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_112_SIZE_BYTES (960)
-#define STAI_DL2_ACTIVATIONS_112_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_112_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_112_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_112_SIZE_BYTES (3840)
+#define STAI_DL2_ACTIVATIONS_112_CHANNEL (4)
+#define STAI_DL2_ACTIVATIONS_112_HEIGHT (30)
 #define STAI_DL2_ACTIVATIONS_112_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_112_BATCH (30)
-#define STAI_DL2_ACTIVATIONS_112_RANK (4)
+#define STAI_DL2_ACTIVATIONS_112_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_112_RANK (3)
 #define STAI_DL2_ACTIVATIONS_112_SHAPE \
   { \
-    1, 1, 32, 30 \
+    4, 30, 32 \
   }
 #define STAI_DL2_ACTIVATIONS_112_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_112_SCALES \
@@ -5192,43 +5272,45 @@ STAI_API_DECLARE_END
     8 \
   }
 
-#define STAI_DL2_ACTIVATIONS_113_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_113_NAME "SCRATCH_Gemm_42_gemm_75_2_conv_163_PORT_OUT"
-#define STAI_DL2_ACTIVATIONS_113_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_113_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_ACTIVATIONS_113_SIZE (123)
-#define STAI_DL2_ACTIVATIONS_113_SIZE_BYTES (123)
-#define STAI_DL2_ACTIVATIONS_113_CHANNEL (123)
-#define STAI_DL2_ACTIVATIONS_113_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_113_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_113_BATCH (123)
+#define STAI_DL2_ACTIVATIONS_113_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_113_NAME "Gemm_42_out_0_60_83_o"
+#define STAI_DL2_ACTIVATIONS_113_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
+#define STAI_DL2_ACTIVATIONS_113_FORMAT (STAI_FORMAT_S8)
+#define STAI_DL2_ACTIVATIONS_113_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_113_SIZE_BYTES (3840)
+#define STAI_DL2_ACTIVATIONS_113_CHANNEL (4)
+#define STAI_DL2_ACTIVATIONS_113_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_113_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_113_BATCH (1)
 #define STAI_DL2_ACTIVATIONS_113_RANK (4)
 #define STAI_DL2_ACTIVATIONS_113_SHAPE \
   { \
-    1, 1, 1, 123 \
+    1, 4, 30, 32 \
   }
-#define STAI_DL2_ACTIVATIONS_113_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_ACTIVATIONS_113_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_113_SCALES \
   { \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_113_OFFSETS \
   { \
+    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_114_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_114_NAME "Gemm_42_gemm_79_3_conv_170"
-#define STAI_DL2_ACTIVATIONS_114_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
+#define STAI_DL2_ACTIVATIONS_114_NAME "Transpose_45_out_0"
+#define STAI_DL2_ACTIVATIONS_114_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
 #define STAI_DL2_ACTIVATIONS_114_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_114_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_114_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_114_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_114_SIZE_BYTES (3840)
 #define STAI_DL2_ACTIVATIONS_114_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_114_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_114_HEIGHT (4)
 #define STAI_DL2_ACTIVATIONS_114_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_114_BATCH (30)
+#define STAI_DL2_ACTIVATIONS_114_BATCH (1)
 #define STAI_DL2_ACTIVATIONS_114_RANK (4)
 #define STAI_DL2_ACTIVATIONS_114_SHAPE \
   { \
-    1, 1, 32, 30 \
+    1, 30, 4, 32 \
   }
 #define STAI_DL2_ACTIVATIONS_114_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_114_SCALES \
@@ -5240,43 +5322,45 @@ STAI_API_DECLARE_END
     8 \
   }
 
-#define STAI_DL2_ACTIVATIONS_115_ALIGNMENT (16)
-#define STAI_DL2_ACTIVATIONS_115_NAME "SCRATCH_Gemm_42_gemm_79_3_conv_170_PORT_OUT"
+#define STAI_DL2_ACTIVATIONS_115_ALIGNMENT (32)
+#define STAI_DL2_ACTIVATIONS_115_NAME "Reshape_46_out_0"
 #define STAI_DL2_ACTIVATIONS_115_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_115_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_ACTIVATIONS_115_SIZE (123)
-#define STAI_DL2_ACTIVATIONS_115_SIZE_BYTES (123)
-#define STAI_DL2_ACTIVATIONS_115_CHANNEL (123)
-#define STAI_DL2_ACTIVATIONS_115_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_115_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_115_BATCH (123)
-#define STAI_DL2_ACTIVATIONS_115_RANK (4)
+#define STAI_DL2_ACTIVATIONS_115_FORMAT (STAI_FORMAT_S8)
+#define STAI_DL2_ACTIVATIONS_115_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_115_SIZE_BYTES (3840)
+#define STAI_DL2_ACTIVATIONS_115_CHANNEL (1)
+#define STAI_DL2_ACTIVATIONS_115_HEIGHT (30)
+#define STAI_DL2_ACTIVATIONS_115_WIDTH (128)
+#define STAI_DL2_ACTIVATIONS_115_BATCH (1)
+#define STAI_DL2_ACTIVATIONS_115_RANK (3)
 #define STAI_DL2_ACTIVATIONS_115_SHAPE \
   { \
-    1, 1, 1, 123 \
+    30, 128, 1 \
   }
-#define STAI_DL2_ACTIVATIONS_115_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_ACTIVATIONS_115_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_115_SCALES \
   { \
+    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_115_OFFSETS \
   { \
+    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_116_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_116_NAME "Gemm_42_gemm_67_0_conv_149"
+#define STAI_DL2_ACTIVATIONS_116_NAME "Gemm_47_gemm_91_0_reshape_w_176"
 #define STAI_DL2_ACTIVATIONS_116_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_116_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_116_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_116_SIZE_BYTES (960)
-#define STAI_DL2_ACTIVATIONS_116_CHANNEL (30)
+#define STAI_DL2_ACTIVATIONS_116_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_116_SIZE_BYTES (3840)
+#define STAI_DL2_ACTIVATIONS_116_CHANNEL (128)
 #define STAI_DL2_ACTIVATIONS_116_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_116_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_116_BATCH (30)
+#define STAI_DL2_ACTIVATIONS_116_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_116_BATCH (128)
 #define STAI_DL2_ACTIVATIONS_116_RANK (4)
 #define STAI_DL2_ACTIVATIONS_116_SHAPE \
   { \
-    1, 1, 32, 30 \
+    30, 1, 1, 128 \
   }
 #define STAI_DL2_ACTIVATIONS_116_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_116_SCALES \
@@ -5289,347 +5373,99 @@ STAI_API_DECLARE_END
   }
 
 #define STAI_DL2_ACTIVATIONS_117_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_117_NAME "SCRATCH_Gemm_42_gemm_67_0_conv_149_PORT_OUT"
+#define STAI_DL2_ACTIVATIONS_117_NAME "Gemm_47_gemm_91_0_conv_177"
 #define STAI_DL2_ACTIVATIONS_117_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_117_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_ACTIVATIONS_117_SIZE (123)
-#define STAI_DL2_ACTIVATIONS_117_SIZE_BYTES (123)
-#define STAI_DL2_ACTIVATIONS_117_CHANNEL (123)
+#define STAI_DL2_ACTIVATIONS_117_FORMAT (STAI_FORMAT_S8)
+#define STAI_DL2_ACTIVATIONS_117_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_117_SIZE_BYTES (3840)
+#define STAI_DL2_ACTIVATIONS_117_CHANNEL (30)
 #define STAI_DL2_ACTIVATIONS_117_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_117_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_117_BATCH (123)
+#define STAI_DL2_ACTIVATIONS_117_WIDTH (128)
+#define STAI_DL2_ACTIVATIONS_117_BATCH (30)
 #define STAI_DL2_ACTIVATIONS_117_RANK (4)
 #define STAI_DL2_ACTIVATIONS_117_SHAPE \
   { \
-    1, 1, 1, 123 \
+    1, 1, 128, 30 \
   }
-#define STAI_DL2_ACTIVATIONS_117_SCALE_OFFSET_NUM (0)
+#define STAI_DL2_ACTIVATIONS_117_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_117_SCALES \
   { \
+    0.161201775074005 \
   }
 #define STAI_DL2_ACTIVATIONS_117_OFFSETS \
   { \
+    -14 \
   }
 
 #define STAI_DL2_ACTIVATIONS_118_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_118_NAME "Gemm_42_out_0_60_74_o"
+#define STAI_DL2_ACTIVATIONS_118_NAME "SCRATCH_Gemm_47_gemm_91_0_conv_177_PORT_OUT"
 #define STAI_DL2_ACTIVATIONS_118_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_118_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_118_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_118_SIZE_BYTES (960)
-#define STAI_DL2_ACTIVATIONS_118_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_118_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_118_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_118_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_118_RANK (3)
+#define STAI_DL2_ACTIVATIONS_118_FORMAT (STAI_FORMAT_Q7)
+#define STAI_DL2_ACTIVATIONS_118_SIZE (515)
+#define STAI_DL2_ACTIVATIONS_118_SIZE_BYTES (515)
+#define STAI_DL2_ACTIVATIONS_118_CHANNEL (515)
+#define STAI_DL2_ACTIVATIONS_118_HEIGHT (1)
+#define STAI_DL2_ACTIVATIONS_118_WIDTH (1)
+#define STAI_DL2_ACTIVATIONS_118_BATCH (515)
+#define STAI_DL2_ACTIVATIONS_118_RANK (4)
 #define STAI_DL2_ACTIVATIONS_118_SHAPE \
   { \
-    30, 32, 1 \
+    1, 1, 1, 515 \
   }
-#define STAI_DL2_ACTIVATIONS_118_SCALE_OFFSET_NUM (1)
+#define STAI_DL2_ACTIVATIONS_118_SCALE_OFFSET_NUM (0)
 #define STAI_DL2_ACTIVATIONS_118_SCALES \
   { \
-    0.0595723278820515 \
   }
 #define STAI_DL2_ACTIVATIONS_118_OFFSETS \
   { \
-    8 \
   }
 
 #define STAI_DL2_ACTIVATIONS_119_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_119_NAME "Gemm_42_out_0_60_78_o"
+#define STAI_DL2_ACTIVATIONS_119_NAME "Gemm_47_out_0_84_94_o"
 #define STAI_DL2_ACTIVATIONS_119_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_119_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_119_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_119_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_119_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_119_SIZE_BYTES (3840)
 #define STAI_DL2_ACTIVATIONS_119_CHANNEL (1)
 #define STAI_DL2_ACTIVATIONS_119_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_119_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_119_WIDTH (128)
 #define STAI_DL2_ACTIVATIONS_119_BATCH (1)
 #define STAI_DL2_ACTIVATIONS_119_RANK (3)
 #define STAI_DL2_ACTIVATIONS_119_SHAPE \
   { \
-    30, 32, 1 \
+    30, 128, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_119_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_119_SCALES \
   { \
-    0.0595723278820515 \
+    0.161201775074005 \
   }
 #define STAI_DL2_ACTIVATIONS_119_OFFSETS \
   { \
-    8 \
+    -14 \
   }
 
 #define STAI_DL2_ACTIVATIONS_120_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_120_NAME "Gemm_42_out_0_60_82_o"
+#define STAI_DL2_ACTIVATIONS_120_NAME "Gemm_47_matmul_concat_out_90"
 #define STAI_DL2_ACTIVATIONS_120_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
 #define STAI_DL2_ACTIVATIONS_120_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_120_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_120_SIZE_BYTES (960)
+#define STAI_DL2_ACTIVATIONS_120_SIZE (3840)
+#define STAI_DL2_ACTIVATIONS_120_SIZE_BYTES (3840)
 #define STAI_DL2_ACTIVATIONS_120_CHANNEL (1)
 #define STAI_DL2_ACTIVATIONS_120_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_120_WIDTH (32)
+#define STAI_DL2_ACTIVATIONS_120_WIDTH (128)
 #define STAI_DL2_ACTIVATIONS_120_BATCH (1)
 #define STAI_DL2_ACTIVATIONS_120_RANK (3)
 #define STAI_DL2_ACTIVATIONS_120_SHAPE \
   { \
-    30, 32, 1 \
+    30, 128, 1 \
   }
 #define STAI_DL2_ACTIVATIONS_120_SCALE_OFFSET_NUM (1)
 #define STAI_DL2_ACTIVATIONS_120_SCALES \
   { \
-    0.0595723278820515 \
+    0.161201775074005 \
   }
 #define STAI_DL2_ACTIVATIONS_120_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_121_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_121_NAME "Gemm_42_out_0_60_70_o"
-#define STAI_DL2_ACTIVATIONS_121_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_121_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_121_SIZE (960)
-#define STAI_DL2_ACTIVATIONS_121_SIZE_BYTES (960)
-#define STAI_DL2_ACTIVATIONS_121_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_121_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_121_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_121_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_121_RANK (3)
-#define STAI_DL2_ACTIVATIONS_121_SHAPE \
-  { \
-    30, 32, 1 \
-  }
-#define STAI_DL2_ACTIVATIONS_121_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_121_SCALES \
-  { \
-    0.0595723278820515 \
-  }
-#define STAI_DL2_ACTIVATIONS_121_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_122_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_122_NAME "Gemm_42_matmul_concat_out_66"
-#define STAI_DL2_ACTIVATIONS_122_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
-#define STAI_DL2_ACTIVATIONS_122_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_122_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_122_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_122_CHANNEL (4)
-#define STAI_DL2_ACTIVATIONS_122_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_122_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_122_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_122_RANK (3)
-#define STAI_DL2_ACTIVATIONS_122_SHAPE \
-  { \
-    4, 30, 32 \
-  }
-#define STAI_DL2_ACTIVATIONS_122_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_122_SCALES \
-  { \
-    0.0595723278820515 \
-  }
-#define STAI_DL2_ACTIVATIONS_122_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_123_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_123_NAME "Gemm_42_out_0_60_83_o"
-#define STAI_DL2_ACTIVATIONS_123_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
-#define STAI_DL2_ACTIVATIONS_123_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_123_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_123_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_123_CHANNEL (4)
-#define STAI_DL2_ACTIVATIONS_123_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_123_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_123_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_123_RANK (4)
-#define STAI_DL2_ACTIVATIONS_123_SHAPE \
-  { \
-    1, 4, 30, 32 \
-  }
-#define STAI_DL2_ACTIVATIONS_123_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_123_SCALES \
-  { \
-    0.0595723278820515 \
-  }
-#define STAI_DL2_ACTIVATIONS_123_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_124_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_124_NAME "Transpose_45_out_0"
-#define STAI_DL2_ACTIVATIONS_124_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_FIRST)
-#define STAI_DL2_ACTIVATIONS_124_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_124_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_124_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_124_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_124_HEIGHT (4)
-#define STAI_DL2_ACTIVATIONS_124_WIDTH (32)
-#define STAI_DL2_ACTIVATIONS_124_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_124_RANK (4)
-#define STAI_DL2_ACTIVATIONS_124_SHAPE \
-  { \
-    1, 30, 4, 32 \
-  }
-#define STAI_DL2_ACTIVATIONS_124_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_124_SCALES \
-  { \
-    0.0595723278820515 \
-  }
-#define STAI_DL2_ACTIVATIONS_124_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_125_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_125_NAME "Reshape_46_out_0"
-#define STAI_DL2_ACTIVATIONS_125_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_125_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_125_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_125_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_125_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_125_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_125_WIDTH (128)
-#define STAI_DL2_ACTIVATIONS_125_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_125_RANK (3)
-#define STAI_DL2_ACTIVATIONS_125_SHAPE \
-  { \
-    30, 128, 1 \
-  }
-#define STAI_DL2_ACTIVATIONS_125_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_125_SCALES \
-  { \
-    0.0595723278820515 \
-  }
-#define STAI_DL2_ACTIVATIONS_125_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_126_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_126_NAME "Gemm_47_gemm_91_0_reshape_w_176"
-#define STAI_DL2_ACTIVATIONS_126_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_126_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_126_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_126_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_126_CHANNEL (128)
-#define STAI_DL2_ACTIVATIONS_126_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_126_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_126_BATCH (128)
-#define STAI_DL2_ACTIVATIONS_126_RANK (4)
-#define STAI_DL2_ACTIVATIONS_126_SHAPE \
-  { \
-    30, 1, 1, 128 \
-  }
-#define STAI_DL2_ACTIVATIONS_126_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_126_SCALES \
-  { \
-    0.0595723278820515 \
-  }
-#define STAI_DL2_ACTIVATIONS_126_OFFSETS \
-  { \
-    8 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_127_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_127_NAME "Gemm_47_gemm_91_0_conv_177"
-#define STAI_DL2_ACTIVATIONS_127_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_127_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_127_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_127_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_127_CHANNEL (30)
-#define STAI_DL2_ACTIVATIONS_127_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_127_WIDTH (128)
-#define STAI_DL2_ACTIVATIONS_127_BATCH (30)
-#define STAI_DL2_ACTIVATIONS_127_RANK (4)
-#define STAI_DL2_ACTIVATIONS_127_SHAPE \
-  { \
-    1, 1, 128, 30 \
-  }
-#define STAI_DL2_ACTIVATIONS_127_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_127_SCALES \
-  { \
-    0.161201775074005 \
-  }
-#define STAI_DL2_ACTIVATIONS_127_OFFSETS \
-  { \
-    -14 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_128_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_128_NAME "SCRATCH_Gemm_47_gemm_91_0_conv_177_PORT_OUT"
-#define STAI_DL2_ACTIVATIONS_128_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_128_FORMAT (STAI_FORMAT_Q7)
-#define STAI_DL2_ACTIVATIONS_128_SIZE (515)
-#define STAI_DL2_ACTIVATIONS_128_SIZE_BYTES (515)
-#define STAI_DL2_ACTIVATIONS_128_CHANNEL (515)
-#define STAI_DL2_ACTIVATIONS_128_HEIGHT (1)
-#define STAI_DL2_ACTIVATIONS_128_WIDTH (1)
-#define STAI_DL2_ACTIVATIONS_128_BATCH (515)
-#define STAI_DL2_ACTIVATIONS_128_RANK (4)
-#define STAI_DL2_ACTIVATIONS_128_SHAPE \
-  { \
-    1, 1, 1, 515 \
-  }
-#define STAI_DL2_ACTIVATIONS_128_SCALE_OFFSET_NUM (0)
-#define STAI_DL2_ACTIVATIONS_128_SCALES \
-  { \
-  }
-#define STAI_DL2_ACTIVATIONS_128_OFFSETS \
-  { \
-  }
-
-#define STAI_DL2_ACTIVATIONS_129_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_129_NAME "Gemm_47_out_0_84_94_o"
-#define STAI_DL2_ACTIVATIONS_129_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_129_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_129_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_129_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_129_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_129_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_129_WIDTH (128)
-#define STAI_DL2_ACTIVATIONS_129_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_129_RANK (3)
-#define STAI_DL2_ACTIVATIONS_129_SHAPE \
-  { \
-    30, 128, 1 \
-  }
-#define STAI_DL2_ACTIVATIONS_129_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_129_SCALES \
-  { \
-    0.161201775074005 \
-  }
-#define STAI_DL2_ACTIVATIONS_129_OFFSETS \
-  { \
-    -14 \
-  }
-
-#define STAI_DL2_ACTIVATIONS_130_ALIGNMENT (32)
-#define STAI_DL2_ACTIVATIONS_130_NAME "Gemm_47_matmul_concat_out_90"
-#define STAI_DL2_ACTIVATIONS_130_FLAGS (STAI_FLAG_PREALLOCATED|STAI_FLAG_OVERRIDE|STAI_FLAG_CHANNEL_LAST)
-#define STAI_DL2_ACTIVATIONS_130_FORMAT (STAI_FORMAT_S8)
-#define STAI_DL2_ACTIVATIONS_130_SIZE (3840)
-#define STAI_DL2_ACTIVATIONS_130_SIZE_BYTES (3840)
-#define STAI_DL2_ACTIVATIONS_130_CHANNEL (1)
-#define STAI_DL2_ACTIVATIONS_130_HEIGHT (30)
-#define STAI_DL2_ACTIVATIONS_130_WIDTH (128)
-#define STAI_DL2_ACTIVATIONS_130_BATCH (1)
-#define STAI_DL2_ACTIVATIONS_130_RANK (3)
-#define STAI_DL2_ACTIVATIONS_130_SHAPE \
-  { \
-    30, 128, 1 \
-  }
-#define STAI_DL2_ACTIVATIONS_130_SCALE_OFFSET_NUM (1)
-#define STAI_DL2_ACTIVATIONS_130_SCALES \
-  { \
-    0.161201775074005 \
-  }
-#define STAI_DL2_ACTIVATIONS_130_OFFSETS \
   { \
     -14 \
   }

@@ -40,12 +40,12 @@
 #include "ems_reatt.h"
 #include "ems_reatt_params.h"
 #include "../../Model/reatt8_q_npu/part_n1/reattn1c.h"
-#include "../../Model/reatt8_q_npu/part_n2/reattn2n.h"
-#include "../../Model/reatt8_q_npu/part_n2/stai_reattn2n.h"
+#include "../../Model/reatt8_q_npu/npu_safe/n2_lnfloat/reattn2l.h"
+#include "../../Model/reatt8_q_npu/npu_safe/n2_lnfloat/stai_reattn2l.h"
 
 /* 两网络上下文（生成宏展开为 stai_network=uint8_t 字节数组，stai.h） */
 STAI_NETWORK_CONTEXT_DECLARE(rs_ctx_n1, STAI_REATTN1C_CONTEXT_SIZE)
-STAI_NETWORK_CONTEXT_DECLARE(rs_ctx_n2, STAI_REATTN2N_CONTEXT_SIZE)
+STAI_NETWORK_CONTEXT_DECLARE(rs_ctx_n2, STAI_REATTN2L_CONTEXT_SIZE)
 
 /* N1（CPU 形态）：I/O f32 + 激活 arena（权重在 .rodata，无需 set_weights） */
 static uint8_t rs_n1_act[STAI_REATTN1C_ACTIVATIONS_SIZE_BYTES] __attribute__((aligned(32)));
@@ -53,8 +53,8 @@ static float rs_n1_hist[EMS_REATT_HIST_N] __attribute__((aligned(32)));
 static float rs_n1_hpast[96u] __attribute__((aligned(32)));
 
 /* N2（NPU 形态）：kf int8 + h_past f32（与 N1 输出同缓冲，零拷贝）+ 输出 int8 */
-static int8_t rs_n2_kf[LL_ATON_REATTN2N_IN_1_SIZE_BYTES] __attribute__((aligned(32)));
-static int8_t rs_n2_out[LL_ATON_REATTN2N_OUT_1_SIZE_BYTES] __attribute__((aligned(32)));
+static int8_t rs_n2_kf[LL_ATON_REATTN2L_IN_1_SIZE_BYTES] __attribute__((aligned(32)));
+static int8_t rs_n2_out[LL_ATON_REATTN2L_OUT_1_SIZE_BYTES] __attribute__((aligned(32)));
 
 static float rs_kf_scale;
 static int32_t rs_kf_zp;
@@ -218,10 +218,10 @@ static int rs_init_once(void)
         const stai_tensor *t_hp = NULL;
         const stai_tensor *t_out = NULL;
 
-        if (stai_reattn2n_init(rs_ctx_n2) != STAI_SUCCESS) {
+        if (stai_reattn2l_init(rs_ctx_n2) != STAI_SUCCESS) {
             printf("RS-FAIL n2init\r\n"); return 1;
         }
-        if (stai_reattn2n_get_info(rs_ctx_n2, &info) != STAI_SUCCESS) {
+        if (stai_reattn2l_get_info(rs_ctx_n2, &info) != STAI_SUCCESS) {
             printf("RS-FAIL n2info\r\n"); return 1;
         }
         if (info.n_inputs < 2u || info.n_outputs < 1u) {
@@ -231,10 +231,10 @@ static int rs_init_once(void)
         for (stai_size i = 0u; i < info.n_inputs; i++) {
             const stai_tensor *t = &info.inputs[i];
             if (t->format == STAI_FORMAT_S8
-                    && t->size_bytes == LL_ATON_REATTN2N_IN_1_SIZE_BYTES) {
+                    && t->size_bytes == LL_ATON_REATTN2L_IN_1_SIZE_BYTES) {
                 t_kf = t;
             } else if (t->format == STAI_FORMAT_FLOAT32
-                    && t->size_bytes == LL_ATON_REATTN2N_IN_2_SIZE_BYTES) {
+                    && t->size_bytes == LL_ATON_REATTN2L_IN_2_SIZE_BYTES) {
                 t_hp = t;
             }
         }
@@ -242,7 +242,7 @@ static int rs_init_once(void)
         /* 混合精度契约（形态漂移在此拒绝，而非静默量化错） */
         if (t_kf == NULL || t_hp == NULL
                 || t_out->format != STAI_FORMAT_S8
-                || t_out->size_bytes != LL_ATON_REATTN2N_OUT_1_SIZE_BYTES) {
+                || t_out->size_bytes != LL_ATON_REATTN2L_OUT_1_SIZE_BYTES) {
             printf("RS-FAIL n2io kf=%p hp=%p of=%d os=%u\r\n",
                    (const void *)t_kf, (const void *)t_hp,
                    (int)t_out->format, (unsigned)t_out->size_bytes); return 1;
@@ -264,24 +264,30 @@ static int rs_init_once(void)
 }
 
 /* S0 判别探针：golden 输入（kf 归一化 f32 + h_past f32）直接走**服务生命周期**
- * 跑 reattn2n，输出原始 int8 90 B。若 S0 输出正确而服务路径退化 ⇒ 毒在 N1 的
- * h_past；若 S0 也退化 ⇒ 图/编译本身坏（与输入无关）。 */
+ * 跑 reattn2l，输出原始 int8 90 B。若 S0 输出正确而服务路径退化 ⇒ 毒在 N1 的
+ * h_past；若 S0 也退化 ⇒ 图/编译本身坏（与输入无关）。
+ * 2026-09-24 两处修正（ORT A/B 实锤）：
+ *  ① kf_norm 已是 norm_ext 域，不再套 KF_MEAN/SCALE（原写法=双重归一化）；
+ *  ② reattn2l 编译图把 kf 输入声明为 [1,6,30]（内部 Transpose 回 [1,30,6]），
+ *     物理缓冲必须 ch-major（转置序）写入——转置喂入 maxd=18.1kW vs golden，
+ *     直写序 maxd=315.9kW。 */
 int ems_reatt_n2_golden_probe(const float kf_norm[EMS_REATT_KF_N],
                               const float h_past[96u],
                               int8_t raw_out[EMS_REATT_Q_N])
 {
-    stai_ptr in_ptrs[LL_ATON_REATTN2N_IN_NUM], out_ptrs[1];
+    stai_ptr in_ptrs[LL_ATON_REATTN2L_IN_NUM], out_ptrs[1];
     stai_return_code rc;
 
     if (rs_init_once() != 0) {
         return 1;
     }
+    /* 2026-09-24 修复：kf_norm 已是 norm_ext 归一化域（golden dl_f1_in0），
+     * 不可再套 (v-KF_MEAN)/KF_SCALE（双重归一化）；且编译图 kf 输入为
+     * [1,6,30] ch-major，本缓冲必须转置序写入（idx=ch*30+k）。 */
     for (uint32_t k = 0u; k < EMS_REATT_KF_T; k++) {
         for (uint32_t ch = 0u; ch < EMS_REATT_KF_CH_N; ch++) {
-            uint32_t idx = k * EMS_REATT_KF_CH_N + ch;
-            float v = (kf_norm[idx] - EMS_REATT_KF_MEAN[ch * EMS_REATT_KF_T + k])
-                      / EMS_REATT_KF_SCALE[ch * EMS_REATT_KF_T + k];
-            rs_n2_kf[idx] = rs_quant(v, rs_kf_scale, rs_kf_zp);
+            rs_n2_kf[ch * EMS_REATT_KF_T + k] = rs_quant(kf_norm[k * EMS_REATT_KF_CH_N + ch],
+                                                         rs_kf_scale, rs_kf_zp);
         }
     }
     memcpy(rs_n1_hpast, h_past, 96u * sizeof(float));
@@ -291,19 +297,19 @@ int ems_reatt_n2_golden_probe(const float kf_norm[EMS_REATT_KF_N],
     in_ptrs[0] = (stai_ptr)rs_n2_kf;
     in_ptrs[1] = (stai_ptr)rs_n1_hpast;
     out_ptrs[0] = (stai_ptr)rs_n2_out;
-    if (stai_reattn2n_set_inputs(rs_ctx_n2, in_ptrs, LL_ATON_REATTN2N_IN_NUM) != STAI_SUCCESS
-            || stai_reattn2n_set_outputs(rs_ctx_n2, out_ptrs, LL_ATON_REATTN2N_OUT_NUM) != STAI_SUCCESS) {
+    if (stai_reattn2l_set_inputs(rs_ctx_n2, in_ptrs, LL_ATON_REATTN2L_IN_NUM) != STAI_SUCCESS
+            || stai_reattn2l_set_outputs(rs_ctx_n2, out_ptrs, LL_ATON_REATTN2L_OUT_NUM) != STAI_SUCCESS) {
         printf("RS-S0 FAIL setio\r\n");
         return 1;
     }
     if (rs_ran_before) {
-        if (stai_ext_reattn2n_new_inference(rs_ctx_n2) != STAI_SUCCESS) {
+        if (stai_ext_reattn2l_new_inference(rs_ctx_n2) != STAI_SUCCESS) {
             printf("RS-S0 FAIL newinf\r\n");
             return 1;
         }
     }
-    rc = stai_reattn2n_run(rs_ctx_n2, STAI_MODE_ASYNC);
-    if (rs_wait_done(rs_ctx_n2, rc, stai_ext_reattn2n_run_continue) != 0) {
+    rc = stai_reattn2l_run(rs_ctx_n2, STAI_MODE_ASYNC);
+    if (rs_wait_done(rs_ctx_n2, rc, stai_ext_reattn2l_run_continue) != 0) {
         printf("RS-S0 FAIL run\r\n");
         return 1;
     }
@@ -326,7 +332,10 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
         return 1;
     }
 
-    /* ---- D2 判别诊断：仅首次 query 执行（NOR 校验和 + 平凡自检图） ---- */
+    /* ---- D2 判别诊断：仅首次 query 执行（NOR 校验和 + 平凡自检图 + 阶梯/S0） ----
+     * 生产关闭：阶梯含 5 级对拍 + S0，首窗连带 ~40s，不得进 soft-HIL 航次。
+     * 回开：cmake -DEMS_REATT_DIAG=1 重编（CMake cache 变量，同 UART_BAUD 接线）。 */
+#if EMS_REATT_DIAG
     {
         static bool rs_diag_done;
         if (!rs_diag_done) {
@@ -339,6 +348,7 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
             }
         }
     }
+#endif
 
     /* ---- 阶段 1：hist 归一化（冻结常数，ems_reatt_params.h） ---- */
     for (uint32_t t = 0u; t < EMS_REATT_H1_T; t++) {
@@ -367,13 +377,16 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
     }
     t_n1 = rs_now_us();
 
-    /* ---- 阶段 3：kf 归一化 + 量化 → N2 输入 1（int8） ---- */
+    /* ---- 阶段 3：kf 归一化 + 量化 → N2 输入 1（int8）----
+     * 2026-09-24：reattn2l 编译图 kf 输入声明为 [1,6,30]（内部 Transpose 回
+     * [1,30,6]），物理缓冲按 ch-major（转置序）写入（ORT A/B 实锤：转置喂入
+     * maxd=18.1kW vs golden，直写序 maxd=315.9kW）。 */
     for (uint32_t k = 0u; k < EMS_REATT_KF_T; k++) {
         for (uint32_t ch = 0u; ch < EMS_REATT_KF_CH_N; ch++) {
             uint32_t idx = k * EMS_REATT_KF_CH_N + ch;
             float v = (kf_raw[idx] - EMS_REATT_KF_MEAN[ch * EMS_REATT_KF_T + k])
                       / EMS_REATT_KF_SCALE[ch * EMS_REATT_KF_T + k];
-            rs_n2_kf[idx] = rs_quant(v, rs_kf_scale, rs_kf_zp);
+            rs_n2_kf[ch * EMS_REATT_KF_T + k] = rs_quant(v, rs_kf_scale, rs_kf_zp);
         }
     }
 
@@ -385,23 +398,23 @@ int ems_reatt_query(const float hist_raw[EMS_REATT_HIST_N],
 
     {
         static uint32_t rs_diag_n;
-        stai_ptr in_ptrs[LL_ATON_REATTN2N_IN_NUM];
-        stai_ptr out_ptrs[LL_ATON_REATTN2N_OUT_NUM];
+        stai_ptr in_ptrs[LL_ATON_REATTN2L_IN_NUM];
+        stai_ptr out_ptrs[LL_ATON_REATTN2L_OUT_NUM];
         in_ptrs[0] = (stai_ptr)rs_n2_kf;
         in_ptrs[1] = (stai_ptr)rs_n1_hpast;
         out_ptrs[0] = (stai_ptr)rs_n2_out;
-        if (stai_reattn2n_set_inputs(rs_ctx_n2, in_ptrs, LL_ATON_REATTN2N_IN_NUM) != STAI_SUCCESS
-                || stai_reattn2n_set_outputs(rs_ctx_n2, out_ptrs, LL_ATON_REATTN2N_OUT_NUM) != STAI_SUCCESS) {
+        if (stai_reattn2l_set_inputs(rs_ctx_n2, in_ptrs, LL_ATON_REATTN2L_IN_NUM) != STAI_SUCCESS
+                || stai_reattn2l_set_outputs(rs_ctx_n2, out_ptrs, LL_ATON_REATTN2L_OUT_NUM) != STAI_SUCCESS) {
             printf("RS-FAIL n2setio\r\n"); return 1;
         }
         if (rs_ran_before) {
             /* stai 契约：new_inference 仅在上一异步推理之后准备下一拍；首拍非法 */
-            if (stai_ext_reattn2n_new_inference(rs_ctx_n2) != STAI_SUCCESS) {
+            if (stai_ext_reattn2l_new_inference(rs_ctx_n2) != STAI_SUCCESS) {
                 printf("RS-FAIL n2newinf\r\n"); return 1;
             }
         }
-        rc = stai_reattn2n_run(rs_ctx_n2, STAI_MODE_ASYNC);
-        if (rs_wait_done(rs_ctx_n2, rc, stai_ext_reattn2n_run_continue) != 0) {
+        rc = stai_reattn2l_run(rs_ctx_n2, STAI_MODE_ASYNC);
+        if (rs_wait_done(rs_ctx_n2, rc, stai_ext_reattn2l_run_continue) != 0) {
             printf("RS-FAIL n2run rc=%d\r\n", (int)rc); return 1;
         }
         rs_ran_before = true;

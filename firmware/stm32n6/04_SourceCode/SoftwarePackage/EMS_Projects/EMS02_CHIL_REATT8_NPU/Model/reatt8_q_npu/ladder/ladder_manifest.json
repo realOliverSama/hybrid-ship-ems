@@ -85,7 +85,7 @@
   },
   {
     "stage": "l4",
-    "net": "dl4",
+    "net": "dl4f",
     "n_in": 2,
     "out_bytes": 360,
     "bounds": {
@@ -113,7 +113,7 @@
         "class": "integer",
         "type": "S8"
       },
-      "Add_108_out_0": {
+      "Add_96_out_0": {
         "params": [
           null,
           null
