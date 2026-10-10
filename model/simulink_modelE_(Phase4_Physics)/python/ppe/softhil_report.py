@@ -57,8 +57,22 @@ def pair_analysis(voyages):
     rows = []
     for vid in voyages:
         sh = load(os.path.join(SOFT_HIL, vid, "C2.json"))
-        c2 = load(os.path.join(GENB, vid, "C2.json"))
+        c2_path = os.path.join(GENB, vid, "C2.json")
         p0_path = os.path.join(GENB, vid, "P0.json")
+        if not os.path.isfile(c2_path):
+            # genB 语料覆盖缺口（如 2026-09-24 抽样命中 M2 航次）：无冻结
+            # host C2 基线可配对。如实标注 NO_GENB_BASELINE，board 自身指标
+            # 与 q50 keras 重放（board_queries.jsonl）仍有效，不得静默跳过。
+            rows.append({
+                "voyage_id": vid,
+                "pairing": "NO_GENB_BASELINE",
+                "fuel_board_kg": sh["fuel_raw_kg"],
+                "SOC_end_board": sh["SOC_end"],
+                "J_FEC_board_kg": sh["J_FEC_kg"],
+                "n_segments_board": sh.get("n_segments"),
+            })
+            continue
+        c2 = load(c2_path)
         row = {
             "voyage_id": vid,
             "fuel_board_kg": sh["fuel_raw_kg"],
@@ -155,8 +169,12 @@ def main(argv=None):
         "voyages": rows,
         "q50_replay": replay,
         "identity": {
-            "freeze_root_match_all": all(r["freeze_root_match"] for r in rows),
-            "slx_match_all": all(r["slx_match"] for r in rows),
+            "freeze_root_match_all": all(r["freeze_root_match"] for r in rows
+                                         if "freeze_root_match" in r),
+            "slx_match_all": all(r["slx_match"] for r in rows
+                                 if "slx_match" in r),
+            "no_genb_baseline": [r["voyage_id"] for r in rows
+                                 if "freeze_root_match" not in r],
         },
     }
     os.makedirs(OUT_DIR, exist_ok=True)
@@ -168,6 +186,11 @@ def main(argv=None):
              "| voyage | fuel_board | fuel_host | Δfuel kg | Δfuel % | ΔSOC_end | ΔJ_FEC |",
              "|---|---|---|---|---|---|---|"]
     for r in rows:
+        if "fuel_host_kg" not in r:
+            lines.append(
+                f"| {r['voyage_id']} | {r['fuel_board_kg']:.2f} | "
+                f"NO_GENB_BASELINE | — | — | — | — |")
+            continue
         lines.append(
             f"| {r['voyage_id']} | {r['fuel_board_kg']:.2f} | "
             f"{r['fuel_host_kg']:.2f} | {r['d_fuel_kg']:+.2f} | "

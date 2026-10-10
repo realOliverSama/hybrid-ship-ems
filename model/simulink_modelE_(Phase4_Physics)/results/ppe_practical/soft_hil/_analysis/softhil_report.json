@@ -1,0 +1,61 @@
+{
+  "schema": "phase4g_softhil_report_v1",
+  "nonformal": true,
+  "pairing": "soft-HIL C2-board − frozen genB C2-host (same voyage/arm/freeze chain)",
+  "voyages": [
+    {
+      "voyage_id": "FLTA_S2_D01009_M1",
+      "fuel_board_kg": 155.7769893018654,
+      "fuel_host_kg": 156.24999918515002,
+      "d_fuel_kg": -0.4730098832846181,
+      "d_fuel_pct": -0.30272632688088547,
+      "SOC_end_board": 0.598209212126169,
+      "SOC_end_host": 0.5991046512687899,
+      "d_SOC_end": -0.000895439142620913,
+      "J_FEC_board_kg": 156.8239575874096,
+      "J_FEC_host_kg": 156.77345689880644,
+      "d_J_FEC_kg": 0.050500688603165145,
+      "n_segments_board": 437,
+      "n_segments_host": 437,
+      "freeze_root_match": true,
+      "slx_match": true,
+      "fuel_p0_kg": 160.71732548766178,
+      "board_vs_p0_kg": -4.940336185796383,
+      "host_vs_p0_kg": -4.467326302511765
+    }
+  ],
+  "q50_replay": {
+    "n_anchors": 377,
+    "agg": {
+      "rmse_kW": {
+        "mean": 26.734199464193104,
+        "p50": 25.63443387119907,
+        "p99": 67.30886824499656,
+        "max": 94.4975508356812
+      },
+      "mae_kW": {
+        "mean": 25.12425879993658,
+        "p50": 23.215735117594402,
+        "p99": 67.1036279703776,
+        "max": 93.43513615926106
+      },
+      "infer_us": {
+        "mean": 375921320.74005306,
+        "p50": 596285.0,
+        "p99": 4288408044.36,
+        "max": 4288409047.0
+      },
+      "roundtrip_ms": {
+        "mean": 2703.5241379310346,
+        "p50": 2674.1,
+        "p99": 2891.0560000000005,
+        "max": 3004.2
+      }
+    }
+  },
+  "identity": {
+    "freeze_root_match_all": true,
+    "slx_match_all": true,
+    "no_genb_baseline": []
+  }
+}
