@@ -1,7 +1,7 @@
 {
   "schema": "modelE_structure_fingerprint_v1",
   "model": "HybridShip_ModelE",
-  "generated_at": "2026-10-15T20:35:45***",
+  "generated_at": "2026-10-15T21:54:48***",
   "n_blocks": 1086,
   "n_lines": 1050,
   "blocks": [
@@ -5004,6 +5004,11 @@
       "name": "G_P_bat_dis_avail_kW"
     },
     {
+      "path": "HybridShip_ModelE/G_P_commit_kW",
+      "type": "Goto",
+      "name": "G_P_commit_kW"
+    },
+    {
       "path": "HybridShip_ModelE/G_P_gen_actual_kW",
       "type": "Goto",
       "name": "G_P_gen_actual_kW"
@@ -5012,6 +5017,16 @@
       "path": "HybridShip_ModelE/G_P_gen_ref_kW",
       "type": "Goto",
       "name": "G_P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_gen_surplus_kW",
+      "type": "Goto",
+      "name": "G_P_gen_surplus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_gen_unserved_kW",
+      "type": "Goto",
+      "name": "G_P_gen_unserved_kW"
     },
     {
       "path": "HybridShip_ModelE/G_P_hotel_kW",
@@ -5042,6 +5057,11 @@
       "path": "HybridShip_ModelE/G_P_prop_limit_kW",
       "type": "Goto",
       "name": "G_P_prop_limit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_recovery_actual_kW",
+      "type": "Goto",
+      "name": "G_P_recovery_actual_kW"
     },
     {
       "path": "HybridShip_ModelE/G_SOC",
@@ -5099,9 +5119,24 @@
       "name": "G_cmd_onoff_DG2"
     },
     {
+      "path": "HybridShip_ModelE/G_commitment_state",
+      "type": "Goto",
+      "name": "G_commitment_state"
+    },
+    {
       "path": "HybridShip_ModelE/G_ctrl_mode",
       "type": "Goto",
       "name": "G_ctrl_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/G_dispatch_min_clamp_active",
+      "type": "Goto",
+      "name": "G_dispatch_min_clamp_active"
+    },
+    {
+      "path": "HybridShip_ModelE/G_dispatch_n_zero_flag",
+      "type": "Goto",
+      "name": "G_dispatch_n_zero_flag"
     },
     {
       "path": "HybridShip_ModelE/G_ecm_lut_boundary_flag",
@@ -5169,9 +5204,19 @@
       "name": "G_force_stop_req_d"
     },
     {
+      "path": "HybridShip_ModelE/G_fuel_total_kW",
+      "type": "Goto",
+      "name": "G_fuel_total_kW"
+    },
+    {
       "path": "HybridShip_ModelE/G_manual_power_cmd_pct",
       "type": "Goto",
       "name": "G_manual_power_cmd_pct"
+    },
+    {
+      "path": "HybridShip_ModelE/G_reason_code",
+      "type": "Goto",
+      "name": "G_reason_code"
     },
     {
       "path": "HybridShip_ModelE/G_resistance_multiplier",
@@ -5192,6 +5237,11 @@
       "path": "HybridShip_ModelE/G_t",
       "type": "Goto",
       "name": "G_t"
+    },
+    {
+      "path": "HybridShip_ModelE/G_u_recovery",
+      "type": "Goto",
+      "name": "G_u_recovery"
     },
     {
       "path": "HybridShip_ModelE/G_v_current_mps",
@@ -5279,46 +5329,6 @@
       "name": "T_07_10"
     },
     {
-      "path": "HybridShip_ModelE/T_07_12",
-      "type": "Terminator",
-      "name": "T_07_12"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_13",
-      "type": "Terminator",
-      "name": "T_07_13"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_14",
-      "type": "Terminator",
-      "name": "T_07_14"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_15",
-      "type": "Terminator",
-      "name": "T_07_15"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_18",
-      "type": "Terminator",
-      "name": "T_07_18"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_19",
-      "type": "Terminator",
-      "name": "T_07_19"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_20",
-      "type": "Terminator",
-      "name": "T_07_20"
-    },
-    {
-      "path": "HybridShip_ModelE/T_07_21",
-      "type": "Terminator",
-      "name": "T_07_21"
-    },
-    {
       "path": "HybridShip_ModelE/T_07_22",
       "type": "Terminator",
       "name": "T_07_22"
@@ -5389,11 +5399,6 @@
       "name": "T_07_35"
     },
     {
-      "path": "HybridShip_ModelE/T_07_9",
-      "type": "Terminator",
-      "name": "T_07_9"
-    },
-    {
       "path": "HybridShip_ModelE/T_08_2",
       "type": "Terminator",
       "name": "T_08_2"
@@ -5412,11 +5417,6 @@
       "path": "HybridShip_ModelE/T_10_2",
       "type": "Terminator",
       "name": "T_10_2"
-    },
-    {
-      "path": "HybridShip_ModelE/T_10_3",
-      "type": "Terminator",
-      "name": "T_10_3"
     },
     {
       "path": "HybridShip_ModelE/T_14_5",

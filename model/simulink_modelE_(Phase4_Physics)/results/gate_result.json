@@ -1,7 +1,7 @@
 {
   "schema": "modelE_gate_result_v1",
   "spec": "phase4-a2-model-e-construction / T-412",
-  "generated_at": "2026-10-15T19:14:49***",
+  "generated_at": "2026-10-15T21:41:43***",
   "overall": true,
   "checks": {
     "G1": {
@@ -218,7 +218,7 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 61.00910425
+          "total_wall_time_s": 90.109305083333339
         }
       ],
       "required_fields": 97,
@@ -234,21 +234,6 @@
         "law=0 OK (bench nominal verified)",
         "law=5 OK (bench nominal verified)"
       ]
-    }
-  },
-  "negative_validation": {
-    "defects": [],
-    "defect_A_hull_K_R": {
-      "pass_detected": true,
-      "P_prop_kW": 172.27890879888119
-    },
-    "defect_B_ocv_lut": {
-      "pass_detected": true,
-      "manifest_consistent": true
-    },
-    "recovery": {
-      "pass": true,
-      "P_prop_kW": 298.38204633793589
     }
   }
 }

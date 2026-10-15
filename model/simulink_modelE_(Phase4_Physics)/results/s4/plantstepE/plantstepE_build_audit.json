@@ -1,10 +1,10 @@
 {
   "schema": "s4_plantstepE_build_audit_v1",
-  "created_utc": "2026-10-15T11:53:22Z",
+  "created_utc": "2026-10-15T13:42:51Z",
   "main_model": "HybridShip_ModelE",
   "plantstep_model": "HybridShip_ModelE_PlantStepE",
-  "main_sha256_before": "4b70e18c014afe055c6134df87ad0c20a18544a13279e917dc4e99071059d559",
-  "main_sha256_after": "4b70e18c014afe055c6134df87ad0c20a18544a13279e917dc4e99071059d559",
+  "main_sha256_before": "9fdd00bd25ab53b9a0ff6c136b5a5b65b5bb4c3af506b28fed993ba106721cd4",
+  "main_sha256_after": "9fdd00bd25ab53b9a0ff6c136b5a5b65b5bb4c3af506b28fed993ba106721cd4",
   "main_unchanged": true,
   "prior_ps_existed": true,
   "removed_subsystems": [

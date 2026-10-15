@@ -1,6 +1,6 @@
 {
  "schema": "s4_p3_gp2e_stream_gate_v1",
- "created_utc": "2026-09-29T05:48:44.218938+00:00",
+ "created_utc": "2026-10-15T13:53:59.269677+00:00",
  "freeze": {
   "path": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json",
   "sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f"
@@ -13,7 +13,7 @@
  "voyages": [
   {
    "voyage_id": "FLTA_S2_D01006_M1",
-   "dylib_sha256": "e987d0cd3b9a4386ea255b68e33abe890a77d93b5fc3d0f004bb895f6516dc7b",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
    "n_rows": 4680,
    "n_substeps": 468000,
    "p_gen_const_kw": 300.0,
@@ -62,12 +62,12 @@
     "pass": true
    },
    "t_end_s": 4679.9974999999995,
-   "fuel_end_kg": 198.2955826934701,
+   "fuel_end_kg": 0.0,
    "overall": true
   },
   {
    "voyage_id": "FLTA_S2_D01006_M2",
-   "dylib_sha256": "e987d0cd3b9a4386ea255b68e33abe890a77d93b5fc3d0f004bb895f6516dc7b",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
    "n_rows": 4680,
    "n_substeps": 468000,
    "p_gen_const_kw": 300.0,
@@ -116,12 +116,12 @@
     "pass": true
    },
    "t_end_s": 4679.9974999999995,
-   "fuel_end_kg": 198.2955826934701,
+   "fuel_end_kg": 0.0,
    "overall": true
   },
   {
    "voyage_id": "FLTA_S6_D05003_M1",
-   "dylib_sha256": "e987d0cd3b9a4386ea255b68e33abe890a77d93b5fc3d0f004bb895f6516dc7b",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
    "n_rows": 3791,
    "n_substeps": 379100,
    "p_gen_const_kw": 300.0,
@@ -170,12 +170,12 @@
     "pass": true
    },
    "t_end_s": 3790.9975000000004,
-   "fuel_end_kg": 160.40762288830044,
+   "fuel_end_kg": 0.0,
    "overall": true
   },
   {
    "voyage_id": "FLTA_S6_D05003_M2",
-   "dylib_sha256": "e987d0cd3b9a4386ea255b68e33abe890a77d93b5fc3d0f004bb895f6516dc7b",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
    "n_rows": 3791,
    "n_substeps": 379100,
    "p_gen_const_kw": 300.0,
@@ -224,7 +224,7 @@
     "pass": true
    },
    "t_end_s": 3790.9975000000004,
-   "fuel_end_kg": 160.40762288830044,
+   "fuel_end_kg": 0.0,
    "overall": true
   }
  ],

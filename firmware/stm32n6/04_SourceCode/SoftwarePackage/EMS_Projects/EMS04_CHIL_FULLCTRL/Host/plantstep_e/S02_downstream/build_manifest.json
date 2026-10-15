@@ -1,11 +1,11 @@
 {
   "schema": "s4_plantstepE_codegen_manifest_v1",
-  "created_utc": "2026-09-28T15:38:41Z",
-  "matlab": "26.1.0.3312084 (R2026a) Update 4",
+  "created_utc": "2026-10-15T13:49:13Z",
+  "matlab": "26.1.0.3346908 (R2026a) Update 5",
   "scenario": "S02_downstream",
   "model": "HybridShip_ModelE_PlantStepE",
-  "model_sha256": "8821dd0165998523b49ea8786e9d5f1e912a9abe038edb82f3fbbdc7a123917c",
-  "main_model_sha256": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "model_sha256": "dec6f288b83d6137008ba6b6a6f2d4a88d08e3a5f6db798d184023a7c8829404",
+  "main_model_sha256": "9fdd00bd25ab53b9a0ff6c136b5a5b65b5bb4c3af506b28fed993ba106721cd4",
   "tlc": "grt.tlc",
   "used_grt_fallback": true,
   "cfg_applied": [
@@ -23,64 +23,64 @@
       "ExternalMode"
     ]
   ],
-  "prior_rtw_existed": false,
+  "prior_rtw_existed": true,
   "rtw_dir": "Host/plantstep_e/S02_downstream/HybridShip_ModelE_PlantStepE_grt_rtw",
   "files": [
     {
       "name": "HybridShip_ModelE_PlantStepE.c",
-      "sha256": "62656a4aa3f3de8140b4ac857ea1d4556be91a99e0a6b2be403eea98259b674d"
+      "sha256": "be861eae375979d64ddf5e7b16aad4fc75d8e9fba19132d8844d3da64ac453be"
     },
     {
       "name": "HybridShip_ModelE_PlantStepE_data.c",
-      "sha256": "90ecf979e179356a2e291f0a74e7a06df39a76fa32d1b04d931c172287e325fb"
+      "sha256": "09fecfcbb0ff34a9ffabbaa757b9a92edb29a72f68140c337cf818d1f618cdf6"
     },
     {
       "name": "rtGetInf.c",
-      "sha256": "9360c9a1a3fb6e9327caa2a4613aa661ff4d9543a414d87a6b163ab0431561cd"
+      "sha256": "e1b0778f8fc31324212a20d8bde044c58158aec7d95eb02f80b51b15ba2237b1"
     },
     {
       "name": "rtGetNaN.c",
-      "sha256": "98778cbfe70f96e05bcf0ced87163caac87d46bc012b9e2420e670a665e1cf32"
+      "sha256": "cee8c75d554e0e25c4b4fa6f73ef95b756a0a729027e041a6d70770f96cc6073"
     },
     {
       "name": "rt_nonfinite.c",
-      "sha256": "d41065a8947814aea89f6f9e578f1b76a0fa5e58de264ce9dabbdec010e7c914"
+      "sha256": "0911b01af5380d4231d8af9dd01c64150924177ec4437f20ff7553a7907db613"
     },
     {
       "name": "HybridShip_ModelE_PlantStepE.h",
-      "sha256": "fb102796fae6c67a87c0c0729ff10d34d10016fce78fec8331b3cebc4fea7eeb"
+      "sha256": "6eeac5498518cff82343c6b1783847746487ccaf4fed09f47d98e56177c7abe5"
     },
     {
       "name": "HybridShip_ModelE_PlantStepE_private.h",
-      "sha256": "22f19ba262d8731259e2897b16daa3a63872d476987c37b01f00460318a44d24"
+      "sha256": "12cdf211005476305c92d170896b2f6d693ec2be78ed12c434c899c15d9df20c"
     },
     {
       "name": "HybridShip_ModelE_PlantStepE_types.h",
-      "sha256": "868ac6127002b88e80774f358b524b2a5a945b655f72dd88cfa4177d5603eadb"
+      "sha256": "e91854bc9254966fb22fdef7f3333c87bf163c4b14a52b94ac31b1dfc736da40"
     },
     {
       "name": "multiword_types.h",
-      "sha256": "2c17a2deafd5b3d7b02d0181ac01147d620e51e47a5fa426cb851aa425a6eeed"
+      "sha256": "f4770fc5da7a6f2bc36e30b731111a0e3a8ecae996bac5a32b66a3a7b2de50b1"
     },
     {
       "name": "rtGetInf.h",
-      "sha256": "34db7311acc285ad5f3dac8a1af672ac729d9d0110a1b4ca023c2623d0fbf303"
+      "sha256": "32c14fb81e33dc095b313309d1e5b943653f89dc64f10c8d3db0abc0ccc4060e"
     },
     {
       "name": "rtGetNaN.h",
-      "sha256": "0f342e42ee5c5b5f42c0677f9a3516fa986588013eb04211a65eac48637c5852"
+      "sha256": "ea324626073906ee37431ec7447f52033b5a2db64e000856ebf13e7b3818af6f"
     },
     {
       "name": "rt_nonfinite.h",
-      "sha256": "e49f7d40632c90591e8ce896ccc4f162705e613affc68e59e36e39937e0a34a4"
+      "sha256": "aa291aefa768d0f1b6e1f33cabcab3d85d54ef9eb3ef0ec5624e9136140e07e0"
     },
     {
       "name": "rtmodel.h",
-      "sha256": "b72b99690ef1f54cdd9a68d11262f30682833ecc12599865eef2e5557a012501"
+      "sha256": "79c1772018735e6dfed69b2bc34a62d84e530409c5a912ed343b55c523486508"
     },
     {
       "name": "rtwtypes.h",
-      "sha256": "7f903e0a0adeff9b60239032a981880830d8b459a481e63895521ffacd8571dd"
+      "sha256": "3e931ac6072dab3cdfce45f51c67a4797ed91e9fde334a7bb8812ffb2cc4b9a1"
     }
   ],
   "note": "dylib 由 Host/tools/build_plantstep_e.sh 编译（plantstep_e_shim.c + 生成码）；本脚本不编译。"
