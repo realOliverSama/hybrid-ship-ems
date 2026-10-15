@@ -68,7 +68,7 @@ C2 臂推理经板后端复跑（预测器在环 soft-HIL）。本工作区新�
 | `config/gate_baseline_modele.json` | A2 冻结物理基线 v1.0（**永久保留不回写**，DD-9） |
 | `config/gate_baseline_modele_candidate_v1_1.json` | ★ B 包 candidate 基线 v1.1（DD-9 Step B 机器检查 4/4 过；**promotion 需 T-014 用户书面批准**） |
 | `config/_legacy_reference/` | 复制分叉带入的 legacy config（Model_Parameters/Scenarios/GateThresholds/Ecms_Phase0_Config/*.mat/gate_baseline_smoke.json）——**不入路径、不参与运行**，仅证据对照（OQ-8） |
-| `scripts/+model/` | ★ builder 与子系统源码：`build_model_e.m`（顶层构建器）、`code_hull_e/wake_ht_e/propeller_e`（船体浅水/w(H/T)/螺旋桨 block 源码）、`code_genset_unit_e/fuel_e`（双机组/燃油）、`battery_sop_limits/code_battery_ecm_e`（SOP/1RC ECM）、**`code_pms_demand_e/code_dispatch_e/code_safety_interlock_e/build_commitment_chart_e/build_pms_v2_e/build_safety_interlock_e`（B 包 PMS v2 四层/Stateflow chart/Safety 层）**、`write_config_manifest`/`sha256_file`/`export_structure_fingerprint`/`run_scenario_sim` |
+| `scripts/+model/` | ★ builder 与子系统源码：`build_model_e.m`（顶层构建器；2026-10-15 起 `wireTopLevel` 为 From/Goto 总线制网表 + `layoutTopLevel` 端口对齐/正交布线收尾）、`code_hull_e/wake_ht_e/propeller_e`（船体浅水/w(H/T)/螺旋桨 block 源码）、`code_genset_unit_e/fuel_e`（双机组/燃油）、`battery_sop_limits/code_battery_ecm_e`（SOP/1RC ECM）、**`code_pms_demand_e/code_dispatch_e/code_safety_interlock_e/build_commitment_chart_e/build_pms_v2_e/build_safety_interlock_e`（B 包 PMS v2 四层/Stateflow chart/Safety 层）**、`write_config_manifest`/`sha256_file`/`export_structure_fingerprint`/`run_scenario_sim` |
 | `scripts/+gate_e/` | ★ T-412 物理 Gate：`check_g1~g6` 六类判据 + 测试台 runner + `gate_assign_bench_inputs`（确定性指令注入） |
 | `scripts/+gate_ctrl/` | ★ **B 包 43 号控制层 Gate**：`run_gate`（编排）、`get_ds/metrics_of/audit_rows_of/saturation_events`（数据与指标后处理）、`check_c1~c7` 七类判据、`injection_scenarios`（S1~S5 注入定义）、`make_candidate_v1_1`/`diff_baseline_v1_1`（DD-9 基线纪律）、`run_negative`（44 号主体）、`write_result` |
 | `scripts/tests/` | 单元/集成测试 harness（纯 MATLAB）+ 三链集成规格 notes + **T-002/003/004/005 单测 + t008 变体编译矩阵 + build_commitment_harness** + **F 包 `test_t445_config.m`（T-001）** |
@@ -115,12 +115,12 @@ C2 臂推理经板后端复跑（预测器在环 soft-HIL）。本工作区新�
 | `artifacts/t445/` | **F-owned 本地产物**（SimState checkpoint / 段日志，不入库；父目录 `artifacts/` 已 gitignore） |
 | `predictor_v3/` | ★ **E 包 predictor-v3 Python 包**（T-002 `data_access.py` sealed 访问门；T-003 `ood_materialize.py` OOD 窗口物化薄驱动；T-004 `norm_ext.py`；T-005 `features/quantile/metrics/inference_stats/seeds/train/registry.py` 统一 harness；`tests/` 45 例全绿；详见该目录 README.md。**预测模型：施工作业中，截至 T-005 无已训练模型工件**） |
 | `reports/parameter_audit.csv` | builder 生成的参数审计（ParamMeta，40 项） |
-| `scripts/20E_build_plantstepE_model.m` | ★ **S4-G2 PlantStepE 构建**（2026-09-28）：装载 ModelE → SaveAs 副本原位变换（删 05/12、根 Inport=P_gen_ref_kW 续接 07/16 消费者、根 Outport 16 项按名映射、11 内删 Stop 块）；主模型哈希零改动门禁 + 审计 JSON（SA-1 修正：07/16 保留于植物子集，C3 变体待 S4-G1 后） |
+| `scripts/20E_build_plantstepE_model.m` | ★ **S4-G2 PlantStepE 构建**（2026-09-28；2026-10-15 适配 From/Goto 网口径）：装载 ModelE → SaveAs 副本原位变换（删 05/12、根 Inport=P_gen_ref_kW 续接既有 Goto tag、根 Outport 16 项复用/新增 From 按名映射、**21 项 G1_* 对拍 Outport 显式编码**（闭合 2026-10-15 前手工加入件的可复现性缺口）、11 内删 Stop 块）；主模型哈希零改动门禁 + 审计 JSON（SA-1 修正：07/16 保留于植物子集，C3 变体待 S4-G1 后） |
 | `scripts/23E_codegen_plantstepE.m` | ★ **S4-G2 PlantStepE codegen**（S20 烘焙，GRT 主案——Model D 先例：ERT 拒连续状态；base 注入 + Inlined；manifest + 双哈希零改动门禁）→ `EMS04_CHIL_FULLCTRL/Host/plantstep_e/<scenario>/` |
 | `model/HybridShip_ModelE_PlantStepE.slx` | 20E 产物（S4 线 plant-only 变体；脚本驱动生成） |
 | `results/s4/plantstepE/plantstepE_build_audit.json` | 20E 审计（根面 In=1/Out=16、接线画像、编译、主模型零改动） |
 | `scripts/20S_stream_wiring_audit.m` | ★ **S4-P3 B2 流变体接线实测**（2026-09-29，只读）：根级全边表 + 04 合成点（双输入 Sum）/03 消费者清单/02↔03 双向环/08 降额回授 03/能量域不消费推进侧状态 → `results/s4/plantstepE/stream_wiring_audit.json` |
-| `scripts/20S_build_plantstepE_stream.m` | ★ **S4-P3 B2 流驱动植物变体构建**（Path S″，冻结件裁决）：PlantStepE → SaveAs 变体；根 Inport×4 顺序冻结（P_gen_ref_kW/P_prop_realized_kW/P_hotel_kW/v_ship_mps_replay）；R1-R10 改接（04 双输入回放注入、v_ship/x_ship/v_cmd/P_prop 遥测改源、DT 积分器 Ts=0.01→x_ship→11 语义保持）；主模型+PlantStepE 双哈希零改动门禁 + 审计 JSON |
+| `scripts/20S_build_plantstepE_stream.m` | ★ **S4-P3 B2 流驱动植物变体构建**（Path S″，冻结件裁决）：PlantStepE → SaveAs 变体；根 Inport×4 顺序冻结（P_gen_ref_kW/P_prop_realized_kW/P_hotel_kW/v_ship_mps_replay）；R1-R10 改接（04 双输入回放注入、v_ship/x_ship/v_cmd/P_prop 遥测改源、DT 积分器 Ts=0.01→x_ship→11 语义保持；2026-10-15 起改接=拆除喂入 From 块换回放源直连）；主模型+PlantStepE 双哈希零改动门禁 + 审计 JSON |
 | `scripts/23S_codegen_plantstepE_stream.m` | ★ **S4-P3 B2 流变体 codegen**（单次构建 4 航次共用，GRT 同 23E 口径，hostRoot 相对推导）→ `EMS04_CHIL_FULLCTRL/Host/plantstep_e_stream/codegen/` + manifest |
 | `model/HybridShip_ModelE_PlantStepE_Stream.slx` | 20S 产物（S4-P3 流回放驱动变体；需求侧=stream bin 处方量，能量域 ModelE 物理闭环保留） |
 | `results/s4/plantstepE/stream_wiring_audit.json` | 20Sa 审计（168 根级边 + 重点子系统内部结构 + 专项判定） |

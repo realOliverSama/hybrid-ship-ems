@@ -1,7 +1,7 @@
 {
   "schema": "modelE_gate_result_v1",
   "spec": "phase4-a2-model-e-construction / T-412",
-  "generated_at": "2026-09-05T01:49:20***",
+  "generated_at": "2026-10-15T19:14:49***",
   "overall": true,
   "checks": {
     "G1": {
@@ -193,8 +193,8 @@
         {
           "item": "comparability_fail_closed",
           "pass": true,
-          "required_fields": 96,
-          "compared_fields": 96,
+          "required_fields": 97,
+          "compared_fields": 97,
           "skipped_fields": 0,
           "skipped_detail": [],
           "extra_fields_in_run_b": []
@@ -202,8 +202,8 @@
         {
           "item": "comparison_count_equals_required",
           "pass": true,
-          "N_compared": 96,
-          "N_required": 96
+          "N_compared": 97,
+          "N_required": 97
         },
         {
           "item": "no_extra_fields_in_run_b",
@@ -218,11 +218,11 @@
         {
           "item": "runtime_informational",
           "pass": true,
-          "total_wall_time_s": 88.651201875
+          "total_wall_time_s": 61.00910425
         }
       ],
-      "required_fields": 96,
-      "compared_fields": 96,
+      "required_fields": 97,
+      "compared_fields": 97,
       "skipped_fields": 0,
       "comparability_pass": true,
       "pass": true

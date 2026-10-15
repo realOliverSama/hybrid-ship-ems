@@ -3,13 +3,18 @@
 %  用途: 装载 HybridShip_ModelE -> SaveAs 生成被控对象子集变体
 %        HybridShip_ModelE_PlantStepE.slx（plant-only）：
 %          - 删除 05_EMS_Controller 与 12_Data_Logging；
-%          - 根 Inport P_gen_ref_kW 原位替代 05 输出（07_PMS_v2/16_Safety_Interlock
-%            的 P_gen_ref 消费端口同源续接）；
+%          - 根 Inport P_gen_ref_kW 原位替代 05 输出（续接既有 Goto tag
+%            'P_gen_ref_kW'，07_PMS_v2/16_Safety_Interlock 的 From 消费端零改动）；
 %          - 根 Outport 16 项暴露闭环接口（前 7 项 = 05 的 7 输入同源同端口，
 %            承接 Model D CMD_TICK 载荷契约；8-16 项为 fuel/P_bat/P_prop/
 %            voyage_stop/state_DG1/state_DG2/P_DG1/P_DG2/V_dc_V）；
+%          - 21 项 G1_* 根 Outport（S4-G1 位级对拍面）显式编码（2026-10-15 前
+%            为手工加入件，现收编进本脚本，闭合可复现性缺口）；
 %          - 11_Voyage_Stop_Logic 内部 reach/1 分支出 voyage_stop Outport
 %            （原仅驱动 Stop 块，分支不改语义）。
+%  ★ 主模型 2026-10-15 起 From/Goto 总线制顶层（build_model_e wireTopLevel）：
+%    模块输入左侧 From(tag)、输出右侧 Goto(tag)；本脚本手术全部改为
+%    "From/Goto 网口径"操作（复用/新增 From，不再做分支线手术）。
 %  ★ 规格修正 SA-1（主 Agent 2026-09-28，接线事实驱动）：
 %    S4 spec §2-G2 原文"删除 05/07/16/12，根 Inport=P_gen_ref"按字面执行不可行——
 %    根级接线实测 P_gen_ref 仅被 07_PMS_v2 与 16_Safety_Interlock 消费，植物物理
@@ -81,18 +86,41 @@ outNames = {'t_s', 'P_load_total_kW', 'SOC', 'v_cmd_mps', 'v_ship_mps', ...
     'acceleration_mps2', 'x_ship_m', ...                      % 1..7（≡ CMD_TICK）
     'fuel_total_kg', 'P_bat_kW', 'P_prop_kW', 'voyage_stop', ... % 8..11（Model D 契约）
     'state_DG1', 'state_DG2', 'P_DG1_kW', 'P_DG2_kW', 'V_dc_V'}; % 12..16（S4 扩展）
-% Outport 8-11 的源（子系统内部 Outport 块名；端口号动态解析）
+% Outport 8-16 的源（From/Goto 网口径：tag = 主模型 wireTopLevel 网名）
 extSrc = { ...
-    'fuel_total_kg', '10_Fuel_Consumption',  'fuel_total_kg'; ...
-    'P_bat_kW',      '14_Battery_Converter', 'P_bat_bus_kW'; ...
-    'P_prop_kW',     '03_Propulsion_Plant',  'P_prop_actual_kW'};
+    'fuel_total_kg', 'fuel_total_kg'; ...
+    'P_bat_kW',      'P_bat_bus_kW'; ...
+    'P_prop_kW',     'P_prop_actual_kW'};
 % Outport 12-16 同法
 extSrc2 = { ...
-    'state_DG1', '06_Genset_System', 'state_DG1'; ...
-    'state_DG2', '06_Genset_System', 'state_DG2'; ...
-    'P_DG1_kW',  '06_Genset_System', 'P_DG1_kW'; ...
-    'P_DG2_kW',  '06_Genset_System', 'P_DG2_kW'; ...
-    'V_dc_V',    '13_DC_Bus',        'V_dc_V'};
+    'state_DG1', 'state_DG1'; ...
+    'state_DG2', 'state_DG2'; ...
+    'P_DG1_kW',  'P_DG1_kW'; ...
+    'P_DG2_kW',  'P_DG2_kW'; ...
+    'V_dc_V',    'V_dc_V'};
+% 21 项 G1_* 根 Outport（S4-G1 位级对拍面；源 = From(tag)，UD 后段用 _d tag）
+g1Taps = { ...
+    'G1_hotel',                     'P_hotel_kW'; ...
+    'G1_prop_dem',                  'P_prop_demand_kW'; ...
+    'G1_bat_dis',                   'P_bat_dis_avail_kW'; ...
+    'G1_bat_chg',                   'P_bat_chg_avail_kW'; ...
+    'G1_cmd_onoff_DG1',             'cmd_onoff_DG1'; ...
+    'G1_cmd_onoff_DG2',             'cmd_onoff_DG2'; ...
+    'G1_P_DG1_ref_kW',              'P_DG1_ref_kW'; ...
+    'G1_P_DG2_ref_kW',              'P_DG2_ref_kW'; ...
+    'G1_N_dispatch',                'N_dispatch'; ...
+    'G1_commitment_state',          'commitment_state'; ...
+    'G1_reason_code',               'reason_code'; ...
+    'G1_P_commit_kW',               'P_commit_kW'; ...
+    'G1_dispatch_min_clamp_active', 'dispatch_min_clamp_active'; ...
+    'G1_dispatch_n_zero_flag',      'dispatch_n_zero_flag'; ...
+    'G1_force_start_req',           'force_start_req_d'; ...
+    'G1_force_start_reason',        'force_start_reason_d'; ...
+    'G1_force_stop_req',            'force_stop_req_d'; ...
+    'G1_force_stop_reason',         'force_stop_reason_d'; ...
+    'G1_ems_health_ok',             'ems_health_ok_d'; ...
+    'G1_baseline_fallback_active',  'baseline_fallback_active_d'; ...
+    'G1_baseline_fallback_reason',  'baseline_fallback_reason_d'};
 
 try
     % ---- 装载主模型 ----
@@ -118,13 +146,15 @@ try
     if ~isequal(sort(in5Name), sort(emsInNames))
         error('GATE:PLANTSTEPE:EMS_IN — 05 输入清单不符: %s', strjoin(in5Name, ','));
     end
-    % ---- 05 接线画像（主模型上记录"拓扑文本"；句柄在副本内重解析——
-    %      SaveAs 后旧句柄全部失效，禁止跨副本携带） ----
-    % 输入侧：以 05 子系统端口序号（=内部 Inport 块 Port 值）为键记录源口文本；
-    % 输出侧：以"消费者子系统 + 其 Inport 序号"为键记录。
-    srcDesc = cell(1, 7);
-    srcPortNo = zeros(1, 7);
+    % ---- 05 接线画像（From/Goto 网口径，主模型上记录；SaveAs 后句柄失效，
+    %      副本内按"05 输入名 -> From 块名 / tag"文本重解析） ----
+    % 输入侧：以 05 子系统端口序号（=内部 Inport 块 Port 值）为键记录
+    %         喂入 From 块名与其 GotoTag；
+    % 输出侧：记录 05 输出口所挂 Goto 的 tag，及同 tag 的全部 From 消费者。
     ph5 = get_param(b5, 'PortHandles');
+    srcFromName = cell(1, 7);
+    srcTag = cell(1, 7);
+    srcPortNo = zeros(1, 7);
     for i = 1:7
         portNo = str2double(get_param([b5 '/' emsInNames{i}], 'Port'));
         srcPortNo(i) = portNo;
@@ -133,27 +163,42 @@ try
             error('GATE:PLANTSTEPE:EMS_IN_UNCONNECTED — 05/%s 根级未连线', emsInNames{i});
         end
         sp = get_param(lh, 'SrcPortHandle');
-        srcDesc{i} = sprintf('%s/%s', strrep(get_param(sp,'Parent'), [MDL_MAIN '/'], ''), ...
-                             get_param(sp, 'Name'));
+        sb = get_param(sp, 'Parent');
+        if ~strcmp(get_param(sb, 'BlockType'), 'From')
+            error('GATE:PLANTSTEPE:EMS_IN_NOT_FROM — 05/%s 现源非 From（%s）', ...
+                emsInNames{i}, sb);
+        end
+        srcFromName{i} = strrep(sb, [MDL_MAIN '/'], '');
+        srcTag{i} = get_param(sb, 'GotoTag');
     end
+    fprintf('[20E] 05 输入 From 口径: %s\n', strjoin(srcTag, ' | '));
+    % 05 输出：必须挂 Goto tag 'P_gen_ref_kW'；消费者 = 同 tag 的 From
+    pgenTag = 'P_gen_ref_kW';
     lhOut = get_param(ph5.Outport(1), 'Line');
     if lhOut == -1
         error('GATE:PLANTSTEPE:EMS_OUT — 05 输出未连线');
     end
-    dstsMain = get_param(lhOut, 'DstPortHandle');
-    dstSub = cell(1, numel(dstsMain));
-    dstIdx = zeros(1, numel(dstsMain));
-    dstDesc = cell(1, numel(dstsMain));
-    for j = 1:numel(dstsMain)
-        dstBlk = get_param(dstsMain(j), 'Parent');
-        dstSub{j} = strrep(dstBlk, [MDL_MAIN '/'], '');
+    spOut = get_param(lhOut, 'DstPortHandle');
+    gotoBlk = get_param(spOut, 'Parent');
+    if ~strcmp(get_param(gotoBlk, 'BlockType'), 'Goto') || ...
+            ~strcmp(get_param(gotoBlk, 'GotoTag'), pgenTag)
+        error('GATE:PLANTSTEPE:EMS_OUT_GOTO — 05 输出未挂 Goto(%s)', pgenTag);
+    end
+    allFrom = find_system(MDL_MAIN, 'SearchDepth', 1, 'BlockType', 'From');
+    ftags = get_param(allFrom, 'GotoTag');
+    dstSub = {}; dstIdx = []; dstDesc = {};
+    for j = find(strcmp(ftags, pgenTag)).'   % .'：find 返回列向量，转行逐个迭代
+        lhF = get_param(get_param(allFrom{j}, 'PortHandles').Outport(1), 'Line');
+        dp = get_param(lhF, 'DstPortHandle');
+        dstBlk = get_param(dp, 'Parent');
+        dstSub{end+1} = strrep(dstBlk, [MDL_MAIN '/'], ''); %#ok<SAGROW>
         phD = get_param(dstBlk, 'PortHandles');
-        idx = find(phD.Inport == dstsMain(j), 1);
+        idx = find(phD.Inport == dp, 1);
         if isempty(idx)
-            error('GATE:PLANTSTEPE:DST_PORT — 消费者 %s 输入口未定位', dstSub{j});
+            error('GATE:PLANTSTEPE:DST_PORT — 消费者 %s 输入口未定位', dstSub{end});
         end
-        dstIdx(j) = idx;
-        dstDesc{j} = sprintf('%s/in%d', dstSub{j}, idx);
+        dstIdx(end+1) = idx; %#ok<SAGROW>
+        dstDesc{end+1} = sprintf('%s/in%d', dstSub{end}, idx); %#ok<SAGROW>
     end
     fprintf('[20E] 05/P_gen_ref 消费者: %s\n', strjoin(dstDesc, ' | '));
 
@@ -164,40 +209,36 @@ try
     save_system(MDL_MAIN, psPath);   % 主模型不落盘（仅另存副本）
     ps = MDL_PS;
 
-    % ---- 副本内句柄重解析（SaveAs 后主模型句柄失效） ----
+    % ---- 副本内文本重解析（SaveAs 后主模型句柄失效） ----
     ps5 = [ps '/05_EMS_Controller'];
     ph5ps = get_param(ps5, 'PortHandles');
     srcHandles = cell(1, 7);
     for i = 1:7
         lh = get_param(ph5ps.Inport(srcPortNo(i)), 'Line');
-        srcHandles{i} = get_param(lh, 'SrcPortHandle');
-    end
-    dsts = zeros(1, numel(dstSub));
-    for j = 1:numel(dstSub)
-        phD = get_param([ps '/' dstSub{j}], 'PortHandles');
-        dsts(j) = phD.Inport(dstIdx(j));
+        srcHandles{i} = get_param(lh, 'SrcPortHandle');   % From 块输出口（副本内句柄）
     end
 
     % ---- 原位变换 ①: 删除 05 / 12 ----
+    % 05 的 7 个喂入 From 与输出口 Goto 均为根级独立块，随删除各留下（Goto 输入悬空，
+    % 由变换 ② 的根 Inport 续接；From 输出悬空，由变换 ③ 的根 Outport 复用）
     delete_block(ps5);
     % 12_Data_Logging：根级 T_* Terminator 不经 12（本日接线实测），直删安全
     delete_block([ps '/12_Data_Logging']);
 
-    % ---- 原位变换 ②: 根 Inport P_gen_ref_kW 续接 05 原消费者 ----
-    % 先清 05 删除后残留的悬空线（src=-1 的线仍占据目的端口）
-    for j = 1:numel(dsts)
-        lhD = get_param(dsts(j), 'Line');
-        if lhD ~= -1
-            delete_line(lhD);
-        end
-    end
-    add_block('simulink/Sources/In1', [ps '/P_gen_ref_kW'], 'Position', [50 40 90 68]);
+    % ---- 原位变换 ②: 根 Inport P_gen_ref_kW 续接既有 Goto(tag) ----
+    % （07_PMS_v2/16_Safety_Interlock 的 From 消费端零改动，tag 自动解析到新源；
+    %   05 删除后 Goto 输入口可能残留悬空线，先清理再续接）
+    add_block('simulink/Sources/In1', [ps '/P_gen_ref_kW'], 'Position', [40 410 90 438]);
     iph = get_param([ps '/P_gen_ref_kW'], 'PortHandles');
-    for j = 1:numel(dsts)
-        add_line(ps, iph.Outport(1), dsts(j), 'autorouting', 'on');
+    gBlkPs = [ps '/' strrep(gotoBlk, [MDL_MAIN '/'], '')];
+    gph = get_param(gBlkPs, 'PortHandles');
+    lhG = get_param(gph.Inport(1), 'Line');
+    if lhG ~= -1
+        delete_line(lhG);
     end
+    add_line(ps, iph.Outport(1), gph.Inport(1), 'autorouting', 'on');
 
-    % ---- 原位变换 ③: Outport 1..7（05 输入同源同端口；按【名字】对应——
+    % ---- 原位变换 ③: Outport 1..7（复用 05 原喂入 From；按【名字】对应——
     %      05 端口序（P_load,SOC,accel,t,v_cmd,v_ship,x）与 Model D CMD_TICK
     %      载荷序（t_s,P_load,SOC,v_cmd,v_ship,accel,x）不同，按名解析禁按位） ----
     for i = 1:7
@@ -217,27 +258,40 @@ try
         if isempty(j)
             error('GATE:PLANTSTEPE:NAME — 05 无输入 %s', srcKey);
         end
-        add_block('simulink/Sinks/Out1', [ps '/' nm], 'Position', [900 40+50*i 940 68+50*i]);
+        fp = get_param(srcHandles{j}, 'Parent');     % 副本内 From 块路径
+        set_param(fp, 'Name', ['F_tap_' srcKey]);   % 改名以反映接口角色
+        add_block('simulink/Sinks/Out1', [ps '/' nm], 'Position', [300 410+50*i 340 438+50*i]);
         oph = get_param([ps '/' nm], 'PortHandles');
+        lhT = get_param(srcHandles{j}, 'Line');      % 05 删除后 From 输出可能残留悬空线
+        if lhT ~= -1
+            delete_line(lhT);
+        end
         add_line(ps, srcHandles{j}, oph.Inport(1), 'autorouting', 'on');
     end
 
-    % ---- 原位变换 ④: Outport 8-11 / 12-16（子系统内部 Outport 块名动态解析） ----
+    % ---- 原位变换 ④: Outport 8-16（From(tag) → Outport，tag = 主模型网名） ----
     allExt = [extSrc; extSrc2];
     for r = 1:size(allExt, 1)
-        nm = allExt{r,1}; sub = allExt{r,2}; inner = allExt{r,3};
-        ib = find_system([ps '/' sub], 'SearchDepth', 1, 'BlockType', 'Outport');
-        ibn = strrep(ib, [ps '/' sub '/'], '');
-        idx = find(strcmp(ibn, inner), 1);
-        if isempty(idx)
-            error('GATE:PLANTSTEPE:EXT_SRC — %s 内未找到 Outport %s', sub, inner);
-        end
-        % 先验证该端口根级确有连线（有分支依据）；无也允许直连
-        subPH = get_param([ps '/' sub], 'PortHandles');
-        srcPH = subPH.Outport(idx);
-        add_block('simulink/Sinks/Out1', [ps '/' nm], 'Position', [900 420+50*r 940 448+50*r]);
+        nm = allExt{r,1}; tag = allExt{r,2};
+        fb = [ps '/F_out_' tag];
+        add_block('simulink/Signal Routing/From', fb, ...
+            'Position', [2600 420+50*r 2740 448+50*r], 'GotoTag', tag, 'ShowName', 'off');
+        fph = get_param(fb, 'PortHandles').Outport(1);
+        add_block('simulink/Sinks/Out1', [ps '/' nm], 'Position', [2800 420+50*r 2840 448+50*r]);
         oph = get_param([ps '/' nm], 'PortHandles');
-        add_line(ps, srcPH, oph.Inport(1), 'autorouting', 'on');
+        add_line(ps, fph, oph.Inport(1), 'autorouting', 'on');
+    end
+
+    % ---- 原位变换 ④b: G1_* 21 项对拍 Outport（From(tag) → Outport） ----
+    for r = 1:size(g1Taps, 1)
+        nm = g1Taps{r,1}; tag = g1Taps{r,2};
+        fb = [ps '/F_g1_' tag];
+        add_block('simulink/Signal Routing/From', fb, ...
+            'Position', [2900 60+50*r 3040 88+50*r], 'GotoTag', tag, 'ShowName', 'off');
+        fph = get_param(fb, 'PortHandles').Outport(1);
+        add_block('simulink/Sinks/Out1', [ps '/' nm], 'Position', [3100 60+50*r 3140 88+50*r]);
+        oph = get_param([ps '/' nm], 'PortHandles');
+        add_line(ps, fph, oph.Inport(1), 'autorouting', 'on');
     end
 
     % ---- 原位变换 ⑤: voyage_stop（11 内 reach/1 分支） ----
@@ -253,7 +307,7 @@ try
     % 删除 Stop Simulation 块（ERT 不支持；停车语义由闭环 harness 经 voyage_stop
     % 输出承担——Model D G-P2 先例同口径，仅 PlantStepE 副本内，主模型零改动）
     delete_block([b11 '/stop']);
-    add_block('simulink/Sinks/Out1', [ps '/voyage_stop'], 'Position', [900 700 940 728]);
+    add_block('simulink/Sinks/Out1', [ps '/voyage_stop'], 'Position', [2800 900 2840 928]);
     vph = get_param([ps '/voyage_stop'], 'PortHandles');
     p11 = get_param(b11, 'PortHandles');
     add_line(ps, p11.Outport(end), vph.Inport(1), 'autorouting', 'on');
@@ -263,8 +317,10 @@ try
     % ---- 根面盘点 ----
     rootIn = find_system(ps, 'SearchDepth', 1, 'BlockType', 'Inport');
     rootOut = find_system(ps, 'SearchDepth', 1, 'BlockType', 'Outport');
-    fprintf('[20E] PlantStepE 根面: In=%d（P_gen_ref_kW）, Out=%d\n', numel(rootIn), numel(rootOut));
-    if numel(rootIn) ~= 1 || numel(rootOut) ~= numel(outNames)
+    nOutExpect = numel(outNames) + size(g1Taps, 1);   % 16 契约面 + 21 G1 对拍面
+    fprintf('[20E] PlantStepE 根面: In=%d（P_gen_ref_kW）, Out=%d（契约 16 + G1 %d）\n', ...
+        numel(rootIn), numel(rootOut), size(g1Taps, 1));
+    if numel(rootIn) ~= 1 || numel(rootOut) ~= nOutExpect
         error('GATE:PLANTSTEPE:ROOTFACE — 根面数量不符 In=%d Out=%d', numel(rootIn), numel(rootOut));
     end
 
@@ -317,10 +373,19 @@ audit.prior_ps_existed = st.prior_ps_existed;
 audit.removed_subsystems = {removedSubs};
 audit.retained_pms_safety = true;
 audit.spec_amendment_SA1 = '07_PMS_v2/16_Safety_Interlock retained in plant subset: P_gen_ref has no direct plant consumer; plant physics consumes 07 outputs (DG enables/refs). 07/16-deletion variant deferred to C3 after S4-G1 board port. See header SA-1.';
-audit.ems_input_sources = srcDesc;
+audit.ems_input_from_tags = srcTag;               % From/Goto 网口径（2026-10-15）
 audit.pgen_ref_consumers = dstDesc;
 audit.root_inports = {'P_gen_ref_kW'};
 audit.root_outports = {outNames};
+audit.g1_tap_outports = {g1Taps(:,1)};
+audit.g1_tap_source_tags = {g1Taps(:,2)};
+audit.g1_taps_note = ['21 G1_* outports (S4-G1 bit-exact compare face) now created ' ...
+    'explicitly by this script (were hand-added state before 2026-10-15; ' ...
+    'reproducibility gap closed). Sourced via From(tag); UD-delayed override ' ...
+    'fields use the _d (post-UnitDelay) tags.'];
+audit.topology_note = ['main model top level is From/Goto bus-style since ' ...
+    '2026-10-15 (build_model_e wireTopLevel); this script adapts surgery to ' ...
+    'tag-plane operations (reuse/add From blocks instead of branch-line surgery).'];
 audit.compile_ok = st.compile_ok;
 audit.compile_msg = st.compile_msg;
 audit.solver = 'ode3 @ 0.01 s (inherited, unchanged)';

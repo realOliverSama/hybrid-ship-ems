@@ -10,7 +10,8 @@
 %      欠压降额不再作用于处方负载 —— Path S″ 固有语义，登记 REGISTERED_DEVIATION；
 %    - 能量域（06/07/09/10/13/14/15/16）不直接消费 v_ship/n_prop/accel（实测）；
 %    - P_hotel 的 07/in2 与 G1_hotel 消费者一并改接回放列（母线口径一致性）。
-%  手术清单（SaveAs 副本内，全部脚本化）:
+%  手术清单（SaveAs 副本内，全部脚本化；2026-10-15 起 From/Goto 网口径：
+%    被改接端口的喂入 From 块整体拆除，换回放源直连）：
 %    R1 04/in1:  03/out1              -> 根 Inport P_prop_realized_kW
 %    R2 04/in2:  01/out4              -> 根 Inport P_hotel_kW
 %    R3 07/in2:  01/out4              -> 根 Inport P_hotel_kW
@@ -78,26 +79,34 @@ try
     save_system(MDL_PS, stPath);          % PS 本体不落盘（20E 同法）
     m = MDL_ST;                           % SaveAs 后加载名 = 新文件名
 
-    % ---- R1/R2 前置断言: 04 双输入现源与审计一致 ----
+    % ---- R1/R2 前置断言: 04 双输入现源与审计一致（From/Goto 网口径） ----
+    % 主模型 2026-10-15 起顶层为 From/Goto 总线制：04/in1 应由 From(tag
+    % 'P_prop_actual_kW'，即 03/out1 网)、04/in2 由 From(tag 'P_hotel_kW'，
+    % 即 01/out4 网) 喂入。
     b04 = [m '/04_Load_Measurement'];
     ph04 = get_param(b04, 'PortHandles');
-    wantSrc = {'03_Propulsion_Plant', '01_Operator_Interface'};
+    wantTag = {'P_prop_actual_kW', 'P_hotel_kW'};
     for p = 1:2
         lh = get_param(ph04.Inport(p), 'Line');
         if lh == -1, error('GATE:P3STREAM:WIRE — 04/in%d 未连线', p); end
         sp = get_param(lh, 'SrcPortHandle');
-        if ~strcmp(get_param(sp, 'Parent'), [m '/' wantSrc{p}])
-            error('GATE:P3STREAM:WIRE — 04/in%d 现源 %s 与审计不符（期望 %s）', ...
-                p, get_param(sp, 'Parent'), wantSrc{p});
+        sb = get_param(sp, 'Parent');
+        if ~strcmp(get_param(sb, 'BlockType'), 'From')
+            error('GATE:P3STREAM:WIRE — 04/in%d 现源非 From（%s）', p, sb);
+        end
+        tg = get_param(sb, 'GotoTag');
+        if ~strcmp(tg, wantTag{p})
+            error('GATE:P3STREAM:WIRE — 04/in%d From tag %s 与审计不符（期望 %s）', ...
+                p, tg, wantTag{p});
         end
     end
     % ---- 根 Inport ×3（端口顺序冻结: 1=P_gen_ref_kW 既有） ----
     add_block('simulink/Sources/In1', [m '/P_prop_realized_kW'], ...
-        'Position', [50 120 90 148]);
+        'Position', [40 1900 90 1928]);
     add_block('simulink/Sources/In1', [m '/P_hotel_kW'], ...
-        'Position', [50 200 90 228]);
+        'Position', [40 1970 90 1998]);
     add_block('simulink/Sources/In1', [m '/v_ship_mps_replay'], ...
-        'Position', [50 280 90 308]);
+        'Position', [40 2040 90 2068]);
     set_param([m '/P_gen_ref_kW'], 'Port', '1');
     set_param([m '/P_prop_realized_kW'], 'Port', '2');
     set_param([m '/P_hotel_kW'], 'Port', '3');
@@ -110,11 +119,13 @@ try
     add_block('simulink/Discrete/Discrete-Time Integrator', ...
         [m '/x_ship_replay_int'], ...
         'IntegratorMethod', 'ForwardEuler', 'SampleTime', '0.01', ...
-        'InitialCondition', '0', 'Position', [200 280 260 320]);
+        'InitialCondition', '0', 'Position', [260 2035 320 2075]);
     phIX = get_param([m '/x_ship_replay_int'], 'PortHandles');
     add_line(m, phVS.Outport(1), phIX.Inport(1), 'autorouting', 'on');
 
-    % ---- R1..R10 改接（表驱动；dst 子系统路径相对 m，in 端口号，新源句柄） ----
+    % ---- R1..R10 改接（表驱动；dst 子系统/Outport 路径相对 m，in 端口号，新源句柄） ----
+    % From/Goto 网口径：被改接端口当前由 From 块喂入 → 删线并删除该 From 块，
+    % 再以回放源直连目的端口（其余同 tag 的 From 消费者不受影响）。
     rwDst = {b04, b04, [m '/07_PMS_v2'], [m '/G1_hotel'], [m '/P_prop_kW'], ...
              [m '/v_ship_mps'], [m '/v_cmd_mps'], [m '/x_ship_m'], ...
              [m '/11_Voyage_Stop_Logic']};
@@ -130,10 +141,17 @@ try
             error('GATE:P3STREAM:WIRE — %s/in%d 未连线（与审计不符，%s）', ...
                 rwDst{r}, rwIn(r), rwTag{r});
         end
+        fb = get_param(get_param(lh, 'SrcPortHandle'), 'Parent');
+        if ~strcmp(get_param(fb, 'BlockType'), 'From')
+            error('GATE:P3STREAM:WIRE — %s/in%d 现源非 From（%s，%s）', ...
+                rwDst{r}, rwIn(r), fb, rwTag{r});
+        end
+        fbTag = get_param(fb, 'GotoTag');
         delete_line(lh);
+        delete_block(fb);
         add_line(m, rwSrc{r}, phD.Inport(rwIn(r)), 'autorouting', 'on');
-        fprintf('[20S] %s: %s/in%d 改接 OK\n', rwTag{r}, ...
-            strrep(rwDst{r}, [m '/'], ''), rwIn(r));
+        fprintf('[20S] %s: %s/in%d 改接 OK（拆除 From[%s]）\n', rwTag{r}, ...
+            strrep(rwDst{r}, [m '/'], ''), rwIn(r), fbTag);
     end
     st.rewire_ok = true;
 

@@ -24,6 +24,13 @@
 
 ## 2. Simulink 模型结构（顶层 16 块，由总到分）
 
+顶层接线形态（2026-10-15 可读性重构，builder `wireTopLevel`）：**16 模块间 From/Goto
+总线制**——模块之间无直连信号线；每个模块输入口左侧接 `From(tag)`、输出口右侧接
+`Goto(tag)`（tag = 源端口信号名，多扇出 = 1 Goto + N From），无消费者的输出直接接
+Terminator；模块 4×4 网格排布，`UD_safety_*` 一拍防环链与根 Clock 独立成列。
+From/Goto 与直连线语义零差（无延迟/滤波），logsout 打点仍在源端口；新旧模型同工况
+logsout 96 信号逐位一致（2026-10-15 等价性验证）。
+
 顶层功率流（B 包 T-007 后）：`01_Operator_Interface` → `02_Propulsion_Controller` →
 `03_Propulsion_Plant` → `04_Load_Measurement` → `13_DC_Bus`（750 V 聚合单母线）⇄ `14_Battery_Converter`；
 `05_EMS_Controller`（七变体）→ **`07_PMS_v2`（四层 PMS + source selector，替换 Legacy_Commitment_Adapter）**

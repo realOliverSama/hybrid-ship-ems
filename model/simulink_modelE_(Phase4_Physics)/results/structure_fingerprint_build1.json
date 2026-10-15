@@ -1,127 +1,132 @@
 {
   "schema": "modelE_structure_fingerprint_v1",
   "model": "HybridShip_ModelE",
-  "generated_at": "2026-09-04T03:58:29***",
-  "n_blocks": 687,
-  "n_lines": 695,
+  "generated_at": "2026-10-15T20:35:45***",
+  "n_blocks": 1086,
+  "n_lines": 1050,
   "blocks": [
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager",
+      "path": "HybridShip_ModelE/01_Operator_Interface",
       "type": "SubSystem",
-      "name": "01_Scenario_Manager"
+      "name": "01_Operator_Interface"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/x_ship_m",
+      "path": "HybridShip_ModelE/01_Operator_Interface/x_ship_m",
       "type": "Inport",
       "name": "x_ship_m"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_cdef",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CC_cdef",
       "type": "Constant",
       "name": "CC_cdef"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ckv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CC_ckv",
       "type": "Constant",
       "name": "CC_ckv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ckx",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CC_ckx",
       "type": "Constant",
       "name": "CC_ckx"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ctt",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CC_ctt",
       "type": "Constant",
       "name": "CC_ctt"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_ctv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CC_ctv",
       "type": "Constant",
       "name": "CC_ctv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CC_cvmode",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CC_cvmode",
       "type": "Constant",
       "name": "CC_cvmode"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_kv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CV_kv",
       "type": "Constant",
       "name": "CV_kv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_kx",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CV_kx",
       "type": "Constant",
       "name": "CV_kx"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_tt",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CV_tt",
       "type": "Constant",
       "name": "CV_tt"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_tv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CV_tv",
       "type": "Constant",
       "name": "CV_tv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_vdef",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CV_vdef",
       "type": "Constant",
       "name": "CV_vdef"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/CV_vmode",
+      "path": "HybridShip_ModelE/01_Operator_Interface/CV_vmode",
       "type": "Constant",
       "name": "CV_vmode"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_amp",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_amp",
       "type": "Constant",
       "name": "C_amp"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_bands",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_bands",
       "type": "Constant",
       "name": "C_bands"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_pos",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_ctrl_mode",
+      "type": "Constant",
+      "name": "C_ctrl_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_pos",
       "type": "Constant",
       "name": "C_pos"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_profile",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_profile",
       "type": "Constant",
       "name": "C_profile"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_rampT",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_rampT",
       "type": "Constant",
       "name": "C_rampT"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_vtarget",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_vtarget",
       "type": "Constant",
       "name": "C_vtarget"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/C_water_depth",
+      "path": "HybridShip_ModelE/01_Operator_Interface/C_water_depth",
       "type": "Constant",
       "name": "C_water_depth"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/Hotel",
+      "path": "HybridShip_ModelE/01_Operator_Interface/Hotel",
       "type": "Constant",
       "name": "Hotel"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/ScenID",
+      "path": "HybridShip_ModelE/01_Operator_Interface/ScenID",
       "type": "Constant",
       "name": "ScenID"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile",
       "type": "SubSystem",
       "name": "current_profile",
       "mf_signature": "",
@@ -129,67 +134,72 @@
       "chart_update": "INHERITED"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/x",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/x",
       "type": "Inport",
       "name": "x"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/t",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/t",
       "type": "Inport",
       "name": "t"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/mode",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/mode",
       "type": "Inport",
       "name": "mode"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/kx",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/kx",
       "type": "Inport",
       "name": "kx"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/kv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/kv",
       "type": "Inport",
       "name": "kv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/v_def",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/v_def",
       "type": "Inport",
       "name": "v_def"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/tt",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/tt",
       "type": "Inport",
       "name": "tt"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/tv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/tv",
       "type": "Inport",
       "name": "tv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/ Demux ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/ Demux ",
       "type": "Demux",
       "name": " Demux "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/ SFunction ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/ SFunction ",
       "type": "S-Function",
       "name": " SFunction "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/ Terminator ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/ Terminator ",
       "type": "Terminator",
       "name": " Terminator "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/current_profile/vc",
+      "path": "HybridShip_ModelE/01_Operator_Interface/current_profile/vc",
       "type": "Outport",
       "name": "vc"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile",
+      "path": "HybridShip_ModelE/01_Operator_Interface/manual_cmd_src",
+      "type": "FromWorkspace",
+      "name": "manual_cmd_src"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile",
       "type": "SubSystem",
       "name": "resist_profile",
       "mf_signature": "",
@@ -197,72 +207,72 @@
       "chart_update": "INHERITED"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/x",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/x",
       "type": "Inport",
       "name": "x"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/profile",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/profile",
       "type": "Inport",
       "name": "profile"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/pos",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/pos",
       "type": "Inport",
       "name": "pos"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/amp",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/amp",
       "type": "Inport",
       "name": "amp"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/rampT",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/rampT",
       "type": "Inport",
       "name": "rampT"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/bands",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/bands",
       "type": "Inport",
       "name": "bands"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/v_target",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/v_target",
       "type": "Inport",
       "name": "v_target"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/ Demux ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/ Demux ",
       "type": "Demux",
       "name": " Demux "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/ SFunction ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/ SFunction ",
       "type": "S-Function",
       "name": " SFunction "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/ Terminator ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/ Terminator ",
       "type": "Terminator",
       "name": " Terminator "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resist_profile/m",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resist_profile/m",
       "type": "Outport",
       "name": "m"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/t_clock",
+      "path": "HybridShip_ModelE/01_Operator_Interface/t_clock",
       "type": "Clock",
       "name": "t_clock"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd ramp",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd ramp",
       "type": "RateLimiter",
       "name": "v_cmd ramp"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile",
       "type": "SubSystem",
       "name": "v_cmd_profile",
       "mf_signature": "",
@@ -270,142 +280,177 @@
       "chart_update": "INHERITED"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/x",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/x",
       "type": "Inport",
       "name": "x"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/t",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/t",
       "type": "Inport",
       "name": "t"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/mode",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/mode",
       "type": "Inport",
       "name": "mode"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/kx",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/kx",
       "type": "Inport",
       "name": "kx"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/kv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/kv",
       "type": "Inport",
       "name": "kv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/v_def",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/v_def",
       "type": "Inport",
       "name": "v_def"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/tt",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/tt",
       "type": "Inport",
       "name": "tt"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/tv",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/tv",
       "type": "Inport",
       "name": "tv"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/ Demux ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/ Demux ",
       "type": "Demux",
       "name": " Demux "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/ SFunction ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/ SFunction ",
       "type": "S-Function",
       "name": " SFunction "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/ Terminator ",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/ Terminator ",
       "type": "Terminator",
       "name": " Terminator "
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_profile/v",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_cmd_profile/v",
       "type": "Outport",
       "name": "v"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_cmd_mps",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_ref_mps",
       "type": "Outport",
-      "name": "v_cmd_mps"
+      "name": "v_ref_mps"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/v_current_mps",
+      "path": "HybridShip_ModelE/01_Operator_Interface/v_current_mps",
       "type": "Outport",
       "name": "v_current_mps"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/resistance_multiplier",
+      "path": "HybridShip_ModelE/01_Operator_Interface/resistance_multiplier",
       "type": "Outport",
       "name": "resistance_multiplier"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/P_hotel_kW",
+      "path": "HybridShip_ModelE/01_Operator_Interface/P_hotel_kW",
       "type": "Outport",
       "name": "P_hotel_kW"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/scenario_id",
+      "path": "HybridShip_ModelE/01_Operator_Interface/scenario_id",
       "type": "Outport",
       "name": "scenario_id"
     },
     {
-      "path": "HybridShip_ModelE/01_Scenario_Manager/water_depth_m",
+      "path": "HybridShip_ModelE/01_Operator_Interface/water_depth_m",
       "type": "Outport",
       "name": "water_depth_m"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller",
+      "path": "HybridShip_ModelE/01_Operator_Interface/ctrl_mode",
+      "type": "Outport",
+      "name": "ctrl_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/01_Operator_Interface/manual_power_cmd_pct",
+      "type": "Outport",
+      "name": "manual_power_cmd_pct"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Propulsion_Controller",
       "type": "SubSystem",
-      "name": "02_Ship_Speed_Controller"
+      "name": "02_Propulsion_Controller"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/v_cmd_mps",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/v_ref_mps",
       "type": "Inport",
-      "name": "v_cmd_mps"
+      "name": "v_ref_mps"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/v_ship_mps",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/v_ship_mps",
       "type": "Inport",
       "name": "v_ship_mps"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Ki",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/ctrl_mode",
+      "type": "Inport",
+      "name": "ctrl_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/manual_power_cmd_pct",
+      "type": "Inport",
+      "name": "manual_power_cmd_pct"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/Ki",
       "type": "Gain",
       "name": "Ki"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Ki_int",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/Ki_int",
       "type": "Integrator",
       "name": "Ki_int"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Kp",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/Kp",
       "type": "Gain",
       "name": "Kp"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/Limit",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/Limit",
       "type": "Saturate",
       "name": "Limit"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/PI out",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/PI out",
       "type": "Sum",
       "name": "PI out"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/err",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/err",
       "type": "Sum",
       "name": "err"
     },
     {
-      "path": "HybridShip_ModelE/02_Ship_Speed_Controller/P_prop_demand_kW",
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/manual_cmd_ramp",
+      "type": "RateLimiter",
+      "name": "manual_cmd_ramp"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/manual_gain",
+      "type": "Gain",
+      "name": "manual_gain"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/mode_switch",
+      "type": "Switch",
+      "name": "mode_switch"
+    },
+    {
+      "path": "HybridShip_ModelE/02_Propulsion_Controller/P_prop_demand_kW",
       "type": "Outport",
       "name": "P_prop_demand_kW"
     },
@@ -2470,14 +2515,19 @@
       "name": "start_count"
     },
     {
-      "path": "HybridShip_ModelE/06_Genset_System/cmd_stop_default",
-      "type": "Constant",
-      "name": "cmd_stop_default"
+      "path": "HybridShip_ModelE/06_Genset_System/cmd_stop_src",
+      "type": "FromWorkspace",
+      "name": "cmd_stop_src"
     },
     {
       "path": "HybridShip_ModelE/06_Genset_System/gen sum",
       "type": "Sum",
       "name": "gen sum"
+    },
+    {
+      "path": "HybridShip_ModelE/06_Genset_System/stop_combine",
+      "type": "MinMax",
+      "name": "stop_combine"
     },
     {
       "path": "HybridShip_ModelE/06_Genset_System/stop_demux",
@@ -2528,6 +2578,817 @@
       "path": "HybridShip_ModelE/06_Genset_System/P_gen_actual_kW",
       "type": "Outport",
       "name": "P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2",
+      "type": "SubSystem",
+      "name": "07_PMS_v2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_gen_ref_kW",
+      "type": "Inport",
+      "name": "P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_load_total_kW",
+      "type": "Inport",
+      "name": "P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_bat_dis_avail_kW",
+      "type": "Inport",
+      "name": "P_bat_dis_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_bat_chg_avail_kW",
+      "type": "Inport",
+      "name": "P_bat_chg_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_prop_demand_kW",
+      "type": "Inport",
+      "name": "P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_hotel_kW",
+      "type": "Inport",
+      "name": "P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/state_DG1",
+      "type": "Inport",
+      "name": "state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/state_DG2",
+      "type": "Inport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_DG1_kW",
+      "type": "Inport",
+      "name": "P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_DG2_kW",
+      "type": "Inport",
+      "name": "P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/fault_latch",
+      "type": "Inport",
+      "name": "fault_latch"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/force_start_req",
+      "type": "Inport",
+      "name": "force_start_req"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/force_start_reason",
+      "type": "Inport",
+      "name": "force_start_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/force_stop_req",
+      "type": "Inport",
+      "name": "force_stop_req"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/force_stop_reason",
+      "type": "Inport",
+      "name": "force_stop_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/ems_health_ok",
+      "type": "Inport",
+      "name": "ems_health_ok"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/baseline_fallback_active",
+      "type": "Inport",
+      "name": "baseline_fallback_active"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/baseline_fallback_reason",
+      "type": "Inport",
+      "name": "baseline_fallback_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/C_force_P1",
+      "type": "Constant",
+      "name": "C_force_P1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/C_force_P2",
+      "type": "Constant",
+      "name": "C_force_P2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/C_force_mode",
+      "type": "Constant",
+      "name": "C_force_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/C_one",
+      "type": "Constant",
+      "name": "C_one"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/C_source_mode",
+      "type": "Constant",
+      "name": "C_source_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/C_stop_zero",
+      "type": "Constant",
+      "name": "C_stop_zero"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor",
+      "type": "SubSystem",
+      "name": "PMS_Commitment_Supervisor"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/P_commit_kW",
+      "type": "Inport",
+      "name": "P_commit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/state_DG2",
+      "type": "Inport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/fault_latch_DG1",
+      "type": "Inport",
+      "name": "fault_latch_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/fault_latch_DG2",
+      "type": "Inport",
+      "name": "fault_latch_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/force_start_dg2_req",
+      "type": "Inport",
+      "name": "force_start_dg2_req"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/force_start_reason",
+      "type": "Inport",
+      "name": "force_start_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/force_stop_dg2_req",
+      "type": "Inport",
+      "name": "force_stop_dg2_req"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/force_stop_reason",
+      "type": "Inport",
+      "name": "force_stop_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/cmd_onoff_DG1",
+      "type": "Outport",
+      "name": "cmd_onoff_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/cmd_onoff_DG2",
+      "type": "Outport",
+      "name": "cmd_onoff_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/commitment_state",
+      "type": "Outport",
+      "name": "commitment_state"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/reason_code",
+      "type": "Outport",
+      "name": "reason_code"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/start_hold_timer",
+      "type": "Outport",
+      "name": "start_hold_timer"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/stop_hold_timer",
+      "type": "Outport",
+      "name": "stop_hold_timer"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/online_timer",
+      "type": "Outport",
+      "name": "online_timer"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_valid",
+      "type": "Outport",
+      "name": "audit_valid"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_old_state",
+      "type": "Outport",
+      "name": "audit_old_state"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_new_state",
+      "type": "Outport",
+      "name": "audit_new_state"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_P_commit_kW",
+      "type": "Outport",
+      "name": "audit_P_commit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_t_start_hold",
+      "type": "Outport",
+      "name": "audit_t_start_hold"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_t_stop_hold",
+      "type": "Outport",
+      "name": "audit_t_stop_hold"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_t_online",
+      "type": "Outport",
+      "name": "audit_t_online"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Commitment_Supervisor/audit_safety_override",
+      "type": "Outport",
+      "name": "audit_safety_override"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy",
+      "type": "SubSystem",
+      "name": "PMS_Demand_Policy",
+      "mf_signature": "",
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/P_load_gen_kW",
+      "type": "Inport",
+      "name": "P_load_gen_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/N_dispatch_fb",
+      "type": "Inport",
+      "name": "N_dispatch_fb"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/P_gen_req_baseline_kW",
+      "type": "Outport",
+      "name": "P_gen_req_baseline_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/P_commit_kW",
+      "type": "Outport",
+      "name": "P_commit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/u_recovery",
+      "type": "Outport",
+      "name": "u_recovery"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Demand_Policy/P_recovery_actual_kW",
+      "type": "Outport",
+      "name": "P_recovery_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator",
+      "type": "SubSystem",
+      "name": "PMS_Dispatch_Allocator",
+      "mf_signature": "",
+      "sample_time": "-1",
+      "chart_update": "INHERITED"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/P_gen_req_eff_kW",
+      "type": "Inport",
+      "name": "P_gen_req_eff_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/state_DG1",
+      "type": "Inport",
+      "name": "state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/state_DG2",
+      "type": "Inport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/dispatch_eligible_DG1",
+      "type": "Inport",
+      "name": "dispatch_eligible_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/dispatch_eligible_DG2",
+      "type": "Inport",
+      "name": "dispatch_eligible_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/ Demux ",
+      "type": "Demux",
+      "name": " Demux "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/ SFunction ",
+      "type": "S-Function",
+      "name": " SFunction "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/ Terminator ",
+      "type": "Terminator",
+      "name": " Terminator "
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/P_DG1_ref_kW",
+      "type": "Outport",
+      "name": "P_DG1_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/P_DG2_ref_kW",
+      "type": "Outport",
+      "name": "P_DG2_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/N_dispatch",
+      "type": "Outport",
+      "name": "N_dispatch"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/P_gen_unserved_kW",
+      "type": "Outport",
+      "name": "P_gen_unserved_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/P_gen_surplus_kW",
+      "type": "Outport",
+      "name": "P_gen_surplus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/dispatch_min_clamp_active",
+      "type": "Outport",
+      "name": "dispatch_min_clamp_active"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/PMS_Dispatch_Allocator/dispatch_n_zero_flag",
+      "type": "Outport",
+      "name": "dispatch_n_zero_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/SW_EN1",
+      "type": "Switch",
+      "name": "SW_EN1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/SW_EN2",
+      "type": "Switch",
+      "name": "SW_EN2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/SW_REF1",
+      "type": "Switch",
+      "name": "SW_REF1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/SW_REF2",
+      "type": "Switch",
+      "name": "SW_REF2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/SW_STOP",
+      "type": "Switch",
+      "name": "SW_STOP"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/Source_Selector",
+      "type": "Switch",
+      "name": "Source_Selector"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/UD_N_dispatch_fb",
+      "type": "UnitDelay",
+      "name": "UD_N_dispatch_fb"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/UD_state_DG1",
+      "type": "UnitDelay",
+      "name": "UD_state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/UD_state_DG2",
+      "type": "UnitDelay",
+      "name": "UD_state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/X_b2g_P_load",
+      "type": "Gain",
+      "name": "X_b2g_P_load"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/X_b2g_bat_chg",
+      "type": "Gain",
+      "name": "X_b2g_bat_chg"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/X_b2g_bat_dis",
+      "type": "Gain",
+      "name": "X_b2g_bat_dis"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP1_pos",
+      "type": "SubSystem",
+      "name": "cmp_fP1_pos"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP1_pos/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP1_pos/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP1_pos/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP1_pos/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP2_pos",
+      "type": "SubSystem",
+      "name": "cmp_fP2_pos"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP2_pos/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP2_pos/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP2_pos/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_fP2_pos/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_force_on",
+      "type": "SubSystem",
+      "name": "cmp_force_on"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_force_on/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_force_on/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_force_on/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_force_on/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_health_bad",
+      "type": "SubSystem",
+      "name": "cmp_health_bad"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_health_bad/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_health_bad/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_health_bad/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_health_bad/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_mode_baseline",
+      "type": "SubSystem",
+      "name": "cmp_mode_baseline"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_mode_baseline/u",
+      "type": "Inport",
+      "name": "u"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_mode_baseline/Compare",
+      "type": "RelationalOperator",
+      "name": "Compare"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_mode_baseline/Constant",
+      "type": "Constant",
+      "name": "Constant"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmp_mode_baseline/y",
+      "type": "Outport",
+      "name": "y"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/elig_not1",
+      "type": "Logic",
+      "name": "elig_not1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/elig_not2",
+      "type": "Logic",
+      "name": "elig_not2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/fault_demux",
+      "type": "Demux",
+      "name": "fault_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/fs_req_demux",
+      "type": "Demux",
+      "name": "fs_req_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/fstop_req_demux",
+      "type": "Demux",
+      "name": "fstop_req_demux"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/inv1",
+      "type": "Sum",
+      "name": "inv1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/inv2",
+      "type": "Sum",
+      "name": "inv2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/or_baseline",
+      "type": "Logic",
+      "name": "or_baseline"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/stop_mux",
+      "type": "Mux",
+      "name": "stop_mux"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/DG1_enable",
+      "type": "Outport",
+      "name": "DG1_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_DG1_ref_kW",
+      "type": "Outport",
+      "name": "P_DG1_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/DG2_enable",
+      "type": "Outport",
+      "name": "DG2_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_DG2_ref_kW",
+      "type": "Outport",
+      "name": "P_DG2_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/DG_cmd_stop",
+      "type": "Outport",
+      "name": "DG_cmd_stop"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_load_gen_kW",
+      "type": "Outport",
+      "name": "P_load_gen_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_bat_dis_avail_g_kW",
+      "type": "Outport",
+      "name": "P_bat_dis_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_bat_chg_avail_g_kW",
+      "type": "Outport",
+      "name": "P_bat_chg_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_commit_kW",
+      "type": "Outport",
+      "name": "P_commit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_gen_req_eff_kW",
+      "type": "Outport",
+      "name": "P_gen_req_eff_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/N_dispatch",
+      "type": "Outport",
+      "name": "N_dispatch"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_gen_unserved_kW",
+      "type": "Outport",
+      "name": "P_gen_unserved_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_gen_surplus_kW",
+      "type": "Outport",
+      "name": "P_gen_surplus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/dispatch_min_clamp_active",
+      "type": "Outport",
+      "name": "dispatch_min_clamp_active"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/dispatch_n_zero_flag",
+      "type": "Outport",
+      "name": "dispatch_n_zero_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmd_onoff_DG1",
+      "type": "Outport",
+      "name": "cmd_onoff_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/cmd_onoff_DG2",
+      "type": "Outport",
+      "name": "cmd_onoff_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/commitment_state",
+      "type": "Outport",
+      "name": "commitment_state"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/reason_code",
+      "type": "Outport",
+      "name": "reason_code"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/u_recovery",
+      "type": "Outport",
+      "name": "u_recovery"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/P_recovery_actual_kW",
+      "type": "Outport",
+      "name": "P_recovery_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/start_hold_timer",
+      "type": "Outport",
+      "name": "start_hold_timer"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/stop_hold_timer",
+      "type": "Outport",
+      "name": "stop_hold_timer"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/online_timer",
+      "type": "Outport",
+      "name": "online_timer"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_valid",
+      "type": "Outport",
+      "name": "audit_valid"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_old_state",
+      "type": "Outport",
+      "name": "audit_old_state"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_new_state",
+      "type": "Outport",
+      "name": "audit_new_state"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_P_commit_kW",
+      "type": "Outport",
+      "name": "audit_P_commit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_t_start_hold",
+      "type": "Outport",
+      "name": "audit_t_start_hold"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_t_stop_hold",
+      "type": "Outport",
+      "name": "audit_t_stop_hold"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_t_online",
+      "type": "Outport",
+      "name": "audit_t_online"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/audit_safety_override",
+      "type": "Outport",
+      "name": "audit_safety_override"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/selector_baseline_active",
+      "type": "Outport",
+      "name": "selector_baseline_active"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/out_baseline_fallback_active",
+      "type": "Outport",
+      "name": "out_baseline_fallback_active"
+    },
+    {
+      "path": "HybridShip_ModelE/07_PMS_v2/out_baseline_fallback_reason",
+      "type": "Outport",
+      "name": "out_baseline_fallback_reason"
     },
     {
       "path": "HybridShip_ModelE/08_Undervolt_Derate",
@@ -3280,232 +4141,1372 @@
       "name": "alarm_transient"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter",
+      "path": "HybridShip_ModelE/16_Safety_Interlock",
       "type": "SubSystem",
-      "name": "Legacy_Commitment_Adapter"
+      "name": "16_Safety_Interlock"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/P_gen_ref_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/state_DG1",
+      "type": "Inport",
+      "name": "state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/state_DG2",
+      "type": "Inport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/cmd_onoff_DG1",
+      "type": "Inport",
+      "name": "cmd_onoff_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/cmd_onoff_DG2",
+      "type": "Inport",
+      "name": "cmd_onoff_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_load_gen_kW",
+      "type": "Inport",
+      "name": "P_load_gen_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_prop_demand_kW",
+      "type": "Inport",
+      "name": "P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_hotel_kW",
+      "type": "Inport",
+      "name": "P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_DG1_kW",
+      "type": "Inport",
+      "name": "P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_DG2_kW",
+      "type": "Inport",
+      "name": "P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_bat_dis_avail_g_kW",
+      "type": "Inport",
+      "name": "P_bat_dis_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_bat_chg_avail_g_kW",
+      "type": "Inport",
+      "name": "P_bat_chg_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/N_dispatch",
+      "type": "Inport",
+      "name": "N_dispatch"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/Vdc_V",
+      "type": "Inport",
+      "name": "Vdc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/bat_flag_1",
+      "type": "Inport",
+      "name": "bat_flag_1"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/bat_flag_2",
+      "type": "Inport",
+      "name": "bat_flag_2"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/bat_flag_3",
+      "type": "Inport",
+      "name": "bat_flag_3"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/P_gen_ref_kW",
       "type": "Inport",
       "name": "P_gen_ref_kW"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/C_force_P1_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/C_source_mode",
       "type": "Constant",
-      "name": "C_force_P1_kW"
+      "name": "C_source_mode"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/C_force_P2_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/C_voyage_active",
       "type": "Constant",
-      "name": "C_force_P2_kW"
+      "name": "C_voyage_active"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/C_force_mode",
-      "type": "Constant",
-      "name": "C_force_mode"
-    },
-    {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock",
       "type": "SubSystem",
-      "name": "adapter",
+      "name": "PMS_Safety_Interlock",
       "mf_signature": "",
-      "sample_time": "-1",
-      "chart_update": "INHERITED"
+      "sample_time": "0.01",
+      "chart_update": "DISCRETE"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/P_gen_ref_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/state_DG1",
+      "type": "Inport",
+      "name": "state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/state_DG2",
+      "type": "Inport",
+      "name": "state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/cmd_onoff_1",
+      "type": "Inport",
+      "name": "cmd_onoff_1"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/cmd_onoff_2",
+      "type": "Inport",
+      "name": "cmd_onoff_2"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_load_gen_kW",
+      "type": "Inport",
+      "name": "P_load_gen_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_prop_dem_kW",
+      "type": "Inport",
+      "name": "P_prop_dem_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_hotel_kW",
+      "type": "Inport",
+      "name": "P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_DG1_kW",
+      "type": "Inport",
+      "name": "P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_DG2_kW",
+      "type": "Inport",
+      "name": "P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_bat_dis_avail_g_kW",
+      "type": "Inport",
+      "name": "P_bat_dis_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_bat_chg_avail_g_kW",
+      "type": "Inport",
+      "name": "P_bat_chg_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/N_dispatch",
+      "type": "Inport",
+      "name": "N_dispatch"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/SOC",
+      "type": "Inport",
+      "name": "SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/Vdc_V",
+      "type": "Inport",
+      "name": "Vdc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/bat_flag_1",
+      "type": "Inport",
+      "name": "bat_flag_1"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/bat_flag_2",
+      "type": "Inport",
+      "name": "bat_flag_2"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/bat_flag_3",
+      "type": "Inport",
+      "name": "bat_flag_3"
+    },
+    {
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/P_gen_ref_kW",
       "type": "Inport",
       "name": "P_gen_ref_kW"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/force_mode",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/ems_health_raw",
       "type": "Inport",
-      "name": "force_mode"
+      "name": "ems_health_raw"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/force_P1_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/nominal_is_ems",
       "type": "Inport",
-      "name": "force_P1_kW"
+      "name": "nominal_is_ems"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/force_P2_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/voyage_active",
       "type": "Inport",
-      "name": "force_P2_kW"
+      "name": "voyage_active"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/ Demux ",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/ Demux ",
       "type": "Demux",
       "name": " Demux "
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/ SFunction ",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/ SFunction ",
       "type": "S-Function",
       "name": " SFunction "
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/ Terminator ",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/ Terminator ",
       "type": "Terminator",
       "name": " Terminator "
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/DG1_enable",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/force_start_req",
       "type": "Outport",
-      "name": "DG1_enable"
+      "name": "force_start_req"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/P_DG1_ref_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/force_start_reason",
       "type": "Outport",
-      "name": "P_DG1_ref_kW"
+      "name": "force_start_reason"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/DG2_enable",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/force_stop_req",
       "type": "Outport",
-      "name": "DG2_enable"
+      "name": "force_stop_req"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/adapter/P_DG2_ref_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/force_stop_reason",
       "type": "Outport",
-      "name": "P_DG2_ref_kW"
+      "name": "force_stop_reason"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/DG1_enable",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/fault_latch",
       "type": "Outport",
-      "name": "DG1_enable"
+      "name": "fault_latch"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/P_DG1_ref_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/ems_health_ok",
       "type": "Outport",
-      "name": "P_DG1_ref_kW"
+      "name": "ems_health_ok"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/DG2_enable",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/baseline_fallback_active",
       "type": "Outport",
-      "name": "DG2_enable"
+      "name": "baseline_fallback_active"
     },
     {
-      "path": "HybridShip_ModelE/Legacy_Commitment_Adapter/P_DG2_ref_kW",
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/baseline_fallback_reason",
       "type": "Outport",
-      "name": "P_DG2_ref_kW"
+      "name": "baseline_fallback_reason"
     },
     {
-      "path": "HybridShip_ModelE/T_log_1",
-      "type": "Terminator",
-      "name": "T_log_1"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/min_gen_surplus_unresolved",
+      "type": "Outport",
+      "name": "min_gen_surplus_unresolved"
     },
     {
-      "path": "HybridShip_ModelE/T_log_10",
-      "type": "Terminator",
-      "name": "T_log_10"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/D_firm_kW",
+      "type": "Outport",
+      "name": "D_firm_kW"
     },
     {
-      "path": "HybridShip_ModelE/T_log_11",
-      "type": "Terminator",
-      "name": "T_log_11"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/S2_supply_gap_kW",
+      "type": "Outport",
+      "name": "S2_supply_gap_kW"
     },
     {
-      "path": "HybridShip_ModelE/T_log_12",
-      "type": "Terminator",
-      "name": "T_log_12"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/flag_soc_low",
+      "type": "Outport",
+      "name": "flag_soc_low"
     },
     {
-      "path": "HybridShip_ModelE/T_log_13",
-      "type": "Terminator",
-      "name": "T_log_13"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/flag_vdc_low",
+      "type": "Outport",
+      "name": "flag_vdc_low"
     },
     {
-      "path": "HybridShip_ModelE/T_log_14",
-      "type": "Terminator",
-      "name": "T_log_14"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/PMS_Safety_Interlock/flag_bat_passthrough",
+      "type": "Outport",
+      "name": "flag_bat_passthrough"
     },
     {
-      "path": "HybridShip_ModelE/T_log_15",
-      "type": "Terminator",
-      "name": "T_log_15"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/ems_health_src",
+      "type": "FromWorkspace",
+      "name": "ems_health_src"
     },
     {
-      "path": "HybridShip_ModelE/T_log_16",
-      "type": "Terminator",
-      "name": "T_log_16"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/fault_latch",
+      "type": "Outport",
+      "name": "fault_latch"
     },
     {
-      "path": "HybridShip_ModelE/T_log_17",
-      "type": "Terminator",
-      "name": "T_log_17"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/force_start_req",
+      "type": "Outport",
+      "name": "force_start_req"
     },
     {
-      "path": "HybridShip_ModelE/T_log_18",
-      "type": "Terminator",
-      "name": "T_log_18"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/force_start_reason",
+      "type": "Outport",
+      "name": "force_start_reason"
     },
     {
-      "path": "HybridShip_ModelE/T_log_19",
-      "type": "Terminator",
-      "name": "T_log_19"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/force_stop_req",
+      "type": "Outport",
+      "name": "force_stop_req"
     },
     {
-      "path": "HybridShip_ModelE/T_log_2",
-      "type": "Terminator",
-      "name": "T_log_2"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/force_stop_reason",
+      "type": "Outport",
+      "name": "force_stop_reason"
     },
     {
-      "path": "HybridShip_ModelE/T_log_20",
-      "type": "Terminator",
-      "name": "T_log_20"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/ems_health_ok",
+      "type": "Outport",
+      "name": "ems_health_ok"
     },
     {
-      "path": "HybridShip_ModelE/T_log_21",
-      "type": "Terminator",
-      "name": "T_log_21"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/baseline_fallback_active",
+      "type": "Outport",
+      "name": "baseline_fallback_active"
     },
     {
-      "path": "HybridShip_ModelE/T_log_22",
-      "type": "Terminator",
-      "name": "T_log_22"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/baseline_fallback_reason",
+      "type": "Outport",
+      "name": "baseline_fallback_reason"
     },
     {
-      "path": "HybridShip_ModelE/T_log_23",
-      "type": "Terminator",
-      "name": "T_log_23"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/min_gen_surplus_unresolved",
+      "type": "Outport",
+      "name": "min_gen_surplus_unresolved"
     },
     {
-      "path": "HybridShip_ModelE/T_log_24",
-      "type": "Terminator",
-      "name": "T_log_24"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/D_firm_kW",
+      "type": "Outport",
+      "name": "D_firm_kW"
     },
     {
-      "path": "HybridShip_ModelE/T_log_3",
-      "type": "Terminator",
-      "name": "T_log_3"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/S2_supply_gap_kW",
+      "type": "Outport",
+      "name": "S2_supply_gap_kW"
     },
     {
-      "path": "HybridShip_ModelE/T_log_4",
-      "type": "Terminator",
-      "name": "T_log_4"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/flag_soc_low",
+      "type": "Outport",
+      "name": "flag_soc_low"
     },
     {
-      "path": "HybridShip_ModelE/T_log_5",
-      "type": "Terminator",
-      "name": "T_log_5"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/flag_vdc_low",
+      "type": "Outport",
+      "name": "flag_vdc_low"
     },
     {
-      "path": "HybridShip_ModelE/T_log_6",
-      "type": "Terminator",
-      "name": "T_log_6"
+      "path": "HybridShip_ModelE/16_Safety_Interlock/flag_bat_passthrough",
+      "type": "Outport",
+      "name": "flag_bat_passthrough"
     },
     {
-      "path": "HybridShip_ModelE/T_log_7",
-      "type": "Terminator",
-      "name": "T_log_7"
+      "path": "HybridShip_ModelE/F_01_Operator_Interface_x_ship_m",
+      "type": "From",
+      "name": "F_01_Operator_Interface_x_ship_m"
     },
     {
-      "path": "HybridShip_ModelE/T_log_8",
-      "type": "Terminator",
-      "name": "T_log_8"
+      "path": "HybridShip_ModelE/F_02_Propulsion_Controller_ctrl_mode",
+      "type": "From",
+      "name": "F_02_Propulsion_Controller_ctrl_mode"
     },
     {
-      "path": "HybridShip_ModelE/T_log_9",
+      "path": "HybridShip_ModelE/F_02_Propulsion_Controller_manual_power_cmd_pct",
+      "type": "From",
+      "name": "F_02_Propulsion_Controller_manual_power_cmd_pct"
+    },
+    {
+      "path": "HybridShip_ModelE/F_02_Propulsion_Controller_v_ref_mps",
+      "type": "From",
+      "name": "F_02_Propulsion_Controller_v_ref_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/F_02_Propulsion_Controller_v_ship_mps",
+      "type": "From",
+      "name": "F_02_Propulsion_Controller_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/F_03_Propulsion_Plant_P_prop_demand_kW",
+      "type": "From",
+      "name": "F_03_Propulsion_Plant_P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_03_Propulsion_Plant_P_prop_limit_kW",
+      "type": "From",
+      "name": "F_03_Propulsion_Plant_P_prop_limit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_03_Propulsion_Plant_resistance_multiplier",
+      "type": "From",
+      "name": "F_03_Propulsion_Plant_resistance_multiplier"
+    },
+    {
+      "path": "HybridShip_ModelE/F_03_Propulsion_Plant_v_current_mps",
+      "type": "From",
+      "name": "F_03_Propulsion_Plant_v_current_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/F_03_Propulsion_Plant_water_depth_m",
+      "type": "From",
+      "name": "F_03_Propulsion_Plant_water_depth_m"
+    },
+    {
+      "path": "HybridShip_ModelE/F_04_Load_Measurement_P_hotel_kW",
+      "type": "From",
+      "name": "F_04_Load_Measurement_P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_04_Load_Measurement_P_prop_actual_kW",
+      "type": "From",
+      "name": "F_04_Load_Measurement_P_prop_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_P_load_total_kW",
+      "type": "From",
+      "name": "F_05_EMS_Controller_P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_SOC",
+      "type": "From",
+      "name": "F_05_EMS_Controller_SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_acceleration_mps2",
+      "type": "From",
+      "name": "F_05_EMS_Controller_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_t",
+      "type": "From",
+      "name": "F_05_EMS_Controller_t"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_v_ref_mps",
+      "type": "From",
+      "name": "F_05_EMS_Controller_v_ref_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_v_ship_mps",
+      "type": "From",
+      "name": "F_05_EMS_Controller_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/F_05_EMS_Controller_x_ship_m",
+      "type": "From",
+      "name": "F_05_EMS_Controller_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/F_06_Genset_System_DG1_enable",
+      "type": "From",
+      "name": "F_06_Genset_System_DG1_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/F_06_Genset_System_DG2_enable",
+      "type": "From",
+      "name": "F_06_Genset_System_DG2_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/F_06_Genset_System_DG_cmd_stop",
+      "type": "From",
+      "name": "F_06_Genset_System_DG_cmd_stop"
+    },
+    {
+      "path": "HybridShip_ModelE/F_06_Genset_System_P_DG1_ref_kW",
+      "type": "From",
+      "name": "F_06_Genset_System_P_DG1_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_06_Genset_System_P_DG2_ref_kW",
+      "type": "From",
+      "name": "F_06_Genset_System_P_DG2_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_DG1_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_DG2_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_bat_chg_avail_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_bat_chg_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_bat_dis_avail_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_bat_dis_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_gen_ref_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_hotel_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_load_total_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_P_prop_demand_kW",
+      "type": "From",
+      "name": "F_07_PMS_v2_P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_SOC",
+      "type": "From",
+      "name": "F_07_PMS_v2_SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_baseline_fallback_active_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_baseline_fallback_active_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_baseline_fallback_reason_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_baseline_fallback_reason_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_ems_health_ok_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_ems_health_ok_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_fault_latch_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_fault_latch_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_force_start_reason_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_force_start_reason_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_force_start_req_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_force_start_req_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_force_stop_reason_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_force_stop_reason_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_force_stop_req_d",
+      "type": "From",
+      "name": "F_07_PMS_v2_force_stop_req_d"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_state_DG1",
+      "type": "From",
+      "name": "F_07_PMS_v2_state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/F_07_PMS_v2_state_DG2",
+      "type": "From",
+      "name": "F_07_PMS_v2_state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/F_08_Undervolt_Derate_P_prop_demand_kW",
+      "type": "From",
+      "name": "F_08_Undervolt_Derate_P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_08_Undervolt_Derate_V_dc_V",
+      "type": "From",
+      "name": "F_08_Undervolt_Derate_V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/F_09_Bus_Residual_Monitor_P_bat_bus_kW",
+      "type": "From",
+      "name": "F_09_Bus_Residual_Monitor_P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_09_Bus_Residual_Monitor_P_gen_actual_kW",
+      "type": "From",
+      "name": "F_09_Bus_Residual_Monitor_P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_09_Bus_Residual_Monitor_P_load_total_kW",
+      "type": "From",
+      "name": "F_09_Bus_Residual_Monitor_P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_10_Fuel_Consumption_P_DG1_kW",
+      "type": "From",
+      "name": "F_10_Fuel_Consumption_P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_10_Fuel_Consumption_P_DG2_kW",
+      "type": "From",
+      "name": "F_10_Fuel_Consumption_P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_10_Fuel_Consumption_state_DG1",
+      "type": "From",
+      "name": "F_10_Fuel_Consumption_state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/F_10_Fuel_Consumption_state_DG2",
+      "type": "From",
+      "name": "F_10_Fuel_Consumption_state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/F_11_Voyage_Stop_Logic_x_ship_m",
+      "type": "From",
+      "name": "F_11_Voyage_Stop_Logic_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/F_13_DC_Bus_P_bat_bus_kW",
+      "type": "From",
+      "name": "F_13_DC_Bus_P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_13_DC_Bus_P_gen_actual_kW",
+      "type": "From",
+      "name": "F_13_DC_Bus_P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_13_DC_Bus_P_load_total_kW",
+      "type": "From",
+      "name": "F_13_DC_Bus_P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_14_Battery_Converter_V_dc_V",
+      "type": "From",
+      "name": "F_14_Battery_Converter_V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/F_15_Bus_Voltage_Monitor_V_dc_V",
+      "type": "From",
+      "name": "F_15_Bus_Voltage_Monitor_V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_N_dispatch",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_N_dispatch"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_DG1_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_DG2_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_bat_chg_avail_g_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_bat_chg_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_bat_dis_avail_g_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_bat_dis_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_gen_ref_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_hotel_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_load_gen_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_load_gen_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_P_prop_demand_kW",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_SOC",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_V_dc_V",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_battery_discriminant_limit",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_battery_discriminant_limit"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_battery_power_limited",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_battery_power_limited"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_cmd_onoff_DG1",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_cmd_onoff_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_cmd_onoff_DG2",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_cmd_onoff_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_ecm_lut_boundary_flag",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_ecm_lut_boundary_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_state_DG1",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/F_16_Safety_Interlock_state_DG2",
+      "type": "From",
+      "name": "F_16_Safety_Interlock_state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_baseline_fallback_active_baseline_fallback_active",
+      "type": "From",
+      "name": "F_UD_safety_baseline_fallback_active_baseline_fallback_active"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_baseline_fallback_reason_baseline_fallback_reason",
+      "type": "From",
+      "name": "F_UD_safety_baseline_fallback_reason_baseline_fallback_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_ems_health_ok_ems_health_ok",
+      "type": "From",
+      "name": "F_UD_safety_ems_health_ok_ems_health_ok"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_fault_latch_fault_latch",
+      "type": "From",
+      "name": "F_UD_safety_fault_latch_fault_latch"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_force_start_reason_force_start_reason",
+      "type": "From",
+      "name": "F_UD_safety_force_start_reason_force_start_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_force_start_req_force_start_req",
+      "type": "From",
+      "name": "F_UD_safety_force_start_req_force_start_req"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_force_stop_reason_force_stop_reason",
+      "type": "From",
+      "name": "F_UD_safety_force_stop_reason_force_stop_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/F_UD_safety_force_stop_req_force_stop_req",
+      "type": "From",
+      "name": "F_UD_safety_force_stop_req_force_stop_req"
+    },
+    {
+      "path": "HybridShip_ModelE/G_DG1_enable",
+      "type": "Goto",
+      "name": "G_DG1_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/G_DG2_enable",
+      "type": "Goto",
+      "name": "G_DG2_enable"
+    },
+    {
+      "path": "HybridShip_ModelE/G_DG_cmd_stop",
+      "type": "Goto",
+      "name": "G_DG_cmd_stop"
+    },
+    {
+      "path": "HybridShip_ModelE/G_N_dispatch",
+      "type": "Goto",
+      "name": "G_N_dispatch"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_DG1_kW",
+      "type": "Goto",
+      "name": "G_P_DG1_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_DG1_ref_kW",
+      "type": "Goto",
+      "name": "G_P_DG1_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_DG2_kW",
+      "type": "Goto",
+      "name": "G_P_DG2_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_DG2_ref_kW",
+      "type": "Goto",
+      "name": "G_P_DG2_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_bat_bus_kW",
+      "type": "Goto",
+      "name": "G_P_bat_bus_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_bat_chg_avail_g_kW",
+      "type": "Goto",
+      "name": "G_P_bat_chg_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_bat_chg_avail_kW",
+      "type": "Goto",
+      "name": "G_P_bat_chg_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_bat_dis_avail_g_kW",
+      "type": "Goto",
+      "name": "G_P_bat_dis_avail_g_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_bat_dis_avail_kW",
+      "type": "Goto",
+      "name": "G_P_bat_dis_avail_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_gen_actual_kW",
+      "type": "Goto",
+      "name": "G_P_gen_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_gen_ref_kW",
+      "type": "Goto",
+      "name": "G_P_gen_ref_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_hotel_kW",
+      "type": "Goto",
+      "name": "G_P_hotel_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_load_gen_kW",
+      "type": "Goto",
+      "name": "G_P_load_gen_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_load_total_kW",
+      "type": "Goto",
+      "name": "G_P_load_total_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_prop_actual_kW",
+      "type": "Goto",
+      "name": "G_P_prop_actual_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_prop_demand_kW",
+      "type": "Goto",
+      "name": "G_P_prop_demand_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_P_prop_limit_kW",
+      "type": "Goto",
+      "name": "G_P_prop_limit_kW"
+    },
+    {
+      "path": "HybridShip_ModelE/G_SOC",
+      "type": "Goto",
+      "name": "G_SOC"
+    },
+    {
+      "path": "HybridShip_ModelE/G_V_dc_V",
+      "type": "Goto",
+      "name": "G_V_dc_V"
+    },
+    {
+      "path": "HybridShip_ModelE/G_acceleration_mps2",
+      "type": "Goto",
+      "name": "G_acceleration_mps2"
+    },
+    {
+      "path": "HybridShip_ModelE/G_baseline_fallback_active",
+      "type": "Goto",
+      "name": "G_baseline_fallback_active"
+    },
+    {
+      "path": "HybridShip_ModelE/G_baseline_fallback_active_d",
+      "type": "Goto",
+      "name": "G_baseline_fallback_active_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_baseline_fallback_reason",
+      "type": "Goto",
+      "name": "G_baseline_fallback_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/G_baseline_fallback_reason_d",
+      "type": "Goto",
+      "name": "G_baseline_fallback_reason_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_battery_discriminant_limit",
+      "type": "Goto",
+      "name": "G_battery_discriminant_limit"
+    },
+    {
+      "path": "HybridShip_ModelE/G_battery_power_limited",
+      "type": "Goto",
+      "name": "G_battery_power_limited"
+    },
+    {
+      "path": "HybridShip_ModelE/G_cmd_onoff_DG1",
+      "type": "Goto",
+      "name": "G_cmd_onoff_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/G_cmd_onoff_DG2",
+      "type": "Goto",
+      "name": "G_cmd_onoff_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/G_ctrl_mode",
+      "type": "Goto",
+      "name": "G_ctrl_mode"
+    },
+    {
+      "path": "HybridShip_ModelE/G_ecm_lut_boundary_flag",
+      "type": "Goto",
+      "name": "G_ecm_lut_boundary_flag"
+    },
+    {
+      "path": "HybridShip_ModelE/G_ems_health_ok",
+      "type": "Goto",
+      "name": "G_ems_health_ok"
+    },
+    {
+      "path": "HybridShip_ModelE/G_ems_health_ok_d",
+      "type": "Goto",
+      "name": "G_ems_health_ok_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_fault_latch",
+      "type": "Goto",
+      "name": "G_fault_latch"
+    },
+    {
+      "path": "HybridShip_ModelE/G_fault_latch_d",
+      "type": "Goto",
+      "name": "G_fault_latch_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_start_reason",
+      "type": "Goto",
+      "name": "G_force_start_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_start_reason_d",
+      "type": "Goto",
+      "name": "G_force_start_reason_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_start_req",
+      "type": "Goto",
+      "name": "G_force_start_req"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_start_req_d",
+      "type": "Goto",
+      "name": "G_force_start_req_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_stop_reason",
+      "type": "Goto",
+      "name": "G_force_stop_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_stop_reason_d",
+      "type": "Goto",
+      "name": "G_force_stop_reason_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_stop_req",
+      "type": "Goto",
+      "name": "G_force_stop_req"
+    },
+    {
+      "path": "HybridShip_ModelE/G_force_stop_req_d",
+      "type": "Goto",
+      "name": "G_force_stop_req_d"
+    },
+    {
+      "path": "HybridShip_ModelE/G_manual_power_cmd_pct",
+      "type": "Goto",
+      "name": "G_manual_power_cmd_pct"
+    },
+    {
+      "path": "HybridShip_ModelE/G_resistance_multiplier",
+      "type": "Goto",
+      "name": "G_resistance_multiplier"
+    },
+    {
+      "path": "HybridShip_ModelE/G_state_DG1",
+      "type": "Goto",
+      "name": "G_state_DG1"
+    },
+    {
+      "path": "HybridShip_ModelE/G_state_DG2",
+      "type": "Goto",
+      "name": "G_state_DG2"
+    },
+    {
+      "path": "HybridShip_ModelE/G_t",
+      "type": "Goto",
+      "name": "G_t"
+    },
+    {
+      "path": "HybridShip_ModelE/G_v_current_mps",
+      "type": "Goto",
+      "name": "G_v_current_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/G_v_ref_mps",
+      "type": "Goto",
+      "name": "G_v_ref_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/G_v_ship_mps",
+      "type": "Goto",
+      "name": "G_v_ship_mps"
+    },
+    {
+      "path": "HybridShip_ModelE/G_water_depth_m",
+      "type": "Goto",
+      "name": "G_water_depth_m"
+    },
+    {
+      "path": "HybridShip_ModelE/G_x_ship_m",
+      "type": "Goto",
+      "name": "G_x_ship_m"
+    },
+    {
+      "path": "HybridShip_ModelE/T_01_5",
       "type": "Terminator",
-      "name": "T_log_9"
+      "name": "T_01_5"
+    },
+    {
+      "path": "HybridShip_ModelE/T_03_10",
+      "type": "Terminator",
+      "name": "T_03_10"
+    },
+    {
+      "path": "HybridShip_ModelE/T_03_5",
+      "type": "Terminator",
+      "name": "T_03_5"
+    },
+    {
+      "path": "HybridShip_ModelE/T_03_6",
+      "type": "Terminator",
+      "name": "T_03_6"
+    },
+    {
+      "path": "HybridShip_ModelE/T_03_7",
+      "type": "Terminator",
+      "name": "T_03_7"
+    },
+    {
+      "path": "HybridShip_ModelE/T_03_8",
+      "type": "Terminator",
+      "name": "T_03_8"
+    },
+    {
+      "path": "HybridShip_ModelE/T_03_9",
+      "type": "Terminator",
+      "name": "T_03_9"
+    },
+    {
+      "path": "HybridShip_ModelE/T_06_3",
+      "type": "Terminator",
+      "name": "T_06_3"
+    },
+    {
+      "path": "HybridShip_ModelE/T_06_4",
+      "type": "Terminator",
+      "name": "T_06_4"
+    },
+    {
+      "path": "HybridShip_ModelE/T_06_7",
+      "type": "Terminator",
+      "name": "T_06_7"
+    },
+    {
+      "path": "HybridShip_ModelE/T_06_8",
+      "type": "Terminator",
+      "name": "T_06_8"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_10",
+      "type": "Terminator",
+      "name": "T_07_10"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_12",
+      "type": "Terminator",
+      "name": "T_07_12"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_13",
+      "type": "Terminator",
+      "name": "T_07_13"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_14",
+      "type": "Terminator",
+      "name": "T_07_14"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_15",
+      "type": "Terminator",
+      "name": "T_07_15"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_18",
+      "type": "Terminator",
+      "name": "T_07_18"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_19",
+      "type": "Terminator",
+      "name": "T_07_19"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_20",
+      "type": "Terminator",
+      "name": "T_07_20"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_21",
+      "type": "Terminator",
+      "name": "T_07_21"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_22",
+      "type": "Terminator",
+      "name": "T_07_22"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_23",
+      "type": "Terminator",
+      "name": "T_07_23"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_24",
+      "type": "Terminator",
+      "name": "T_07_24"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_25",
+      "type": "Terminator",
+      "name": "T_07_25"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_26",
+      "type": "Terminator",
+      "name": "T_07_26"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_27",
+      "type": "Terminator",
+      "name": "T_07_27"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_28",
+      "type": "Terminator",
+      "name": "T_07_28"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_29",
+      "type": "Terminator",
+      "name": "T_07_29"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_30",
+      "type": "Terminator",
+      "name": "T_07_30"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_31",
+      "type": "Terminator",
+      "name": "T_07_31"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_32",
+      "type": "Terminator",
+      "name": "T_07_32"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_33",
+      "type": "Terminator",
+      "name": "T_07_33"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_34",
+      "type": "Terminator",
+      "name": "T_07_34"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_35",
+      "type": "Terminator",
+      "name": "T_07_35"
+    },
+    {
+      "path": "HybridShip_ModelE/T_07_9",
+      "type": "Terminator",
+      "name": "T_07_9"
+    },
+    {
+      "path": "HybridShip_ModelE/T_08_2",
+      "type": "Terminator",
+      "name": "T_08_2"
+    },
+    {
+      "path": "HybridShip_ModelE/T_09_1",
+      "type": "Terminator",
+      "name": "T_09_1"
+    },
+    {
+      "path": "HybridShip_ModelE/T_10_1",
+      "type": "Terminator",
+      "name": "T_10_1"
+    },
+    {
+      "path": "HybridShip_ModelE/T_10_2",
+      "type": "Terminator",
+      "name": "T_10_2"
+    },
+    {
+      "path": "HybridShip_ModelE/T_10_3",
+      "type": "Terminator",
+      "name": "T_10_3"
+    },
+    {
+      "path": "HybridShip_ModelE/T_14_5",
+      "type": "Terminator",
+      "name": "T_14_5"
+    },
+    {
+      "path": "HybridShip_ModelE/T_14_6",
+      "type": "Terminator",
+      "name": "T_14_6"
+    },
+    {
+      "path": "HybridShip_ModelE/T_15_1",
+      "type": "Terminator",
+      "name": "T_15_1"
+    },
+    {
+      "path": "HybridShip_ModelE/T_15_2",
+      "type": "Terminator",
+      "name": "T_15_2"
+    },
+    {
+      "path": "HybridShip_ModelE/T_16_10",
+      "type": "Terminator",
+      "name": "T_16_10"
+    },
+    {
+      "path": "HybridShip_ModelE/T_16_11",
+      "type": "Terminator",
+      "name": "T_16_11"
+    },
+    {
+      "path": "HybridShip_ModelE/T_16_12",
+      "type": "Terminator",
+      "name": "T_16_12"
+    },
+    {
+      "path": "HybridShip_ModelE/T_16_13",
+      "type": "Terminator",
+      "name": "T_16_13"
+    },
+    {
+      "path": "HybridShip_ModelE/T_16_14",
+      "type": "Terminator",
+      "name": "T_16_14"
+    },
+    {
+      "path": "HybridShip_ModelE/T_16_9",
+      "type": "Terminator",
+      "name": "T_16_9"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_baseline_fallback_active",
+      "type": "UnitDelay",
+      "name": "UD_safety_baseline_fallback_active"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_baseline_fallback_reason",
+      "type": "UnitDelay",
+      "name": "UD_safety_baseline_fallback_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_ems_health_ok",
+      "type": "UnitDelay",
+      "name": "UD_safety_ems_health_ok"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_fault_latch",
+      "type": "UnitDelay",
+      "name": "UD_safety_fault_latch"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_force_start_reason",
+      "type": "UnitDelay",
+      "name": "UD_safety_force_start_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_force_start_req",
+      "type": "UnitDelay",
+      "name": "UD_safety_force_start_req"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_force_stop_reason",
+      "type": "UnitDelay",
+      "name": "UD_safety_force_stop_reason"
+    },
+    {
+      "path": "HybridShip_ModelE/UD_safety_force_stop_req",
+      "type": "UnitDelay",
+      "name": "UD_safety_force_stop_req"
     },
     {
       "path": "HybridShip_ModelE/t",

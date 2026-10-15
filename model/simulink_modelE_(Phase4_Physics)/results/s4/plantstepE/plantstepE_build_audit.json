@@ -1,10 +1,10 @@
 {
   "schema": "s4_plantstepE_build_audit_v1",
-  "created_utc": "2026-09-28T07:13:09Z",
+  "created_utc": "2026-10-15T11:53:22Z",
   "main_model": "HybridShip_ModelE",
   "plantstep_model": "HybridShip_ModelE_PlantStepE",
-  "main_sha256_before": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
-  "main_sha256_after": "190de549e38303823a1cae44d253fc1e4c32fdfb3d4b8f625a21507632d442b9",
+  "main_sha256_before": "4b70e18c014afe055c6134df87ad0c20a18544a13279e917dc4e99071059d559",
+  "main_sha256_after": "4b70e18c014afe055c6134df87ad0c20a18544a13279e917dc4e99071059d559",
   "main_unchanged": true,
   "prior_ps_existed": true,
   "removed_subsystems": [
@@ -15,14 +15,14 @@
   ],
   "retained_pms_safety": true,
   "spec_amendment_SA1": "07_PMS_v2/16_Safety_Interlock retained in plant subset: P_gen_ref has no direct plant consumer; plant physics consumes 07 outputs (DG enables/refs). 07/16-deletion variant deferred to C3 after S4-G1 board port. See header SA-1.",
-  "ems_input_sources": [
-    "04_Load_Measurement/P_load_total_kW",
-    "14_Battery_Converter/SOC",
-    "03_Propulsion_Plant/acceleration_mps2",
-    "t/",
-    "01_Operator_Interface/v_ref_mps",
-    "03_Propulsion_Plant/v_ship_mps",
-    "03_Propulsion_Plant/x_ship_m"
+  "ems_input_from_tags": [
+    "P_load_total_kW",
+    "SOC",
+    "acceleration_mps2",
+    "t",
+    "v_ref_mps",
+    "v_ship_mps",
+    "x_ship_m"
   ],
   "pgen_ref_consumers": [
     "07_PMS_v2/in1",
@@ -51,6 +51,58 @@
       "V_dc_V"
     ]
   ],
+  "g1_tap_outports": [
+    [
+      "G1_hotel",
+      "G1_prop_dem",
+      "G1_bat_dis",
+      "G1_bat_chg",
+      "G1_cmd_onoff_DG1",
+      "G1_cmd_onoff_DG2",
+      "G1_P_DG1_ref_kW",
+      "G1_P_DG2_ref_kW",
+      "G1_N_dispatch",
+      "G1_commitment_state",
+      "G1_reason_code",
+      "G1_P_commit_kW",
+      "G1_dispatch_min_clamp_active",
+      "G1_dispatch_n_zero_flag",
+      "G1_force_start_req",
+      "G1_force_start_reason",
+      "G1_force_stop_req",
+      "G1_force_stop_reason",
+      "G1_ems_health_ok",
+      "G1_baseline_fallback_active",
+      "G1_baseline_fallback_reason"
+    ]
+  ],
+  "g1_tap_source_tags": [
+    [
+      "P_hotel_kW",
+      "P_prop_demand_kW",
+      "P_bat_dis_avail_kW",
+      "P_bat_chg_avail_kW",
+      "cmd_onoff_DG1",
+      "cmd_onoff_DG2",
+      "P_DG1_ref_kW",
+      "P_DG2_ref_kW",
+      "N_dispatch",
+      "commitment_state",
+      "reason_code",
+      "P_commit_kW",
+      "dispatch_min_clamp_active",
+      "dispatch_n_zero_flag",
+      "force_start_req_d",
+      "force_start_reason_d",
+      "force_stop_req_d",
+      "force_stop_reason_d",
+      "ems_health_ok_d",
+      "baseline_fallback_active_d",
+      "baseline_fallback_reason_d"
+    ]
+  ],
+  "g1_taps_note": "21 G1_* outports (S4-G1 bit-exact compare face) now created explicitly by this script (were hand-added state before 2026-10-15; reproducibility gap closed). Sourced via From(tag); UD-delayed override fields use the _d (post-UnitDelay) tags.",
+  "topology_note": "main model top level is From/Goto bus-style since 2026-10-15 (build_model_e wireTopLevel); this script adapts surgery to tag-plane operations (reuse/add From blocks instead of branch-line surgery).",
   "compile_ok": true,
   "compile_msg": "update OK",
   "solver": "ode3 @ 0.01 s (inherited, unchanged)",
