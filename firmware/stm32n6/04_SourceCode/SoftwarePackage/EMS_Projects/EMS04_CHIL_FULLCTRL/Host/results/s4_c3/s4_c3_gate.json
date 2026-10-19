@@ -1,6 +1,6 @@
 {
  "schema": "s4_c3_gate_v2_1",
- "created_utc": "2026-10-03T05:31:42.928699+00:00",
+ "created_utc": "2026-10-19T04:44:01.805942+00:00",
  "mode": "board",
  "dry_note": null,
  "adjudication": {
@@ -19,18 +19,18 @@
  "stop_reason": null,
  "domain": {
   "warmup_ticks": 30,
-  "formal_ticks": 60,
-  "formal_done": 60,
+  "formal_ticks": 541,
+  "formal_done": 541,
   "t0_first": 300.0,
   "decision_period_s": 10.0,
   "is_formal_rule": "预热段 is_formal=0 不入判据域（G6-5）；正式段=kf issue 网格 300..5700"
  },
  "form": {
-  "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=df81b23f1e74…",
+  "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=7749c0e7da29…",
   "board": "S4Smoke SRAM 直载（ELF 8b71d341 plan==readback，前会话载入；本会话 PING 探活 + CMD_RESET 后闭环）",
   "pms_lib_sha": "3d2ec94fb575",
   "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
-  "b_host_chain": "gen_ref_split_v2.Chain（板源 OE int8 N1+N2 ORT 代理）",
+  "b_host_chain": "TfliteFp32Chain（CPUF32 host 代理：固件同式 f32 归一化+reatt_raw_fp32.tflite+同式分位变换）",
   "a2_chain": "ppe.c2_inference.C2Predictor（FR836 float keras，q50 kW 域）",
   "kf_table": {
    "path": "experiments/softhil_ems03_2026-09-25/results/s4_c3/S20_composite.kf_table.bin",
@@ -62,16 +62,16 @@
    "S4Smoke 形态 ctrl/infer_us=0（DWT 未使能）——遥测面项"
   ]
  },
- "wall_s": 472.6,
- "seq_final": 60,
+ "wall_s": 4529.0,
+ "seq_final": 541,
  "runnability_G6_1": {
-  "n_ticks": 60,
+  "n_ticks": 541,
   "nack_n": 0,
-  "retry_n": 1,
+  "retry_n": 0,
   "timeout_or_lost": false,
   "flags_nonzero_n": 0,
-  "soc_min": 0.5961651041575015,
-  "soc_max": 0.6011564057253572,
+  "soc_min": 0.5926940406725051,
+  "soc_max": 0.626319402967972,
   "soc_bounds": [
    0.15,
    0.95
@@ -94,13 +94,13 @@
  },
  "g6_1_pass": true,
  "transform_archive_G6_2": {
-  "action_diff_n": 2,
-  "pgen_gt1grid_n": 2,
+  "action_diff_n": 0,
+  "pgen_gt1grid_n": 0,
   "grid_kw": 20.0,
   "classification": "CLOSED_LOOP_TRANSFORM_EFFECT（基线档案，非 FAIL；A2 canonical 域 vs B 部署同形域的已登记部署变换效应）"
  },
  "board_parity_G6_3": {
-  "action_equal_n": 60,
+  "action_equal_n": 541,
   "drift_action_diff_n": 0,
   "drift_subclasses": {},
   "unattributed_action_diff_n": 0,
@@ -110,13 +110,13 @@
  },
  "g6_3_amended_pass": true,
  "frequency_G6_4": {
-  "n_formal": 60,
+  "n_formal": 541,
   "unattributed_pgen_n": 0,
-  "max_pgen_gt1_allowed": 1,
+  "max_pgen_gt1_allowed": 6,
   "oscillation": "板 P_gen_ref 10 拍滑动窗翻转计数遥测（≥6 停机），见 CSV",
   "drift_rate_telemetry": {
    "drift_action_n": 0,
-   "n": 60,
+   "n": 541,
    "rate": 0.0,
    "max_consec_drift": 0
   }
@@ -138,12 +138,10 @@
  },
  "g6_6_pass": true,
  "exec1s_observation": {
-  "exec_period_s": 1,
-  "exec1s_n": 540,
-  "exec1s_diff_n": 18,
-  "exec1s_max_diff": 800,
-  "diff_def": "行级：|bb_pg−bh_pg| 或 |a2_pg−bh_pg| 任一有限值 >1e-6 计 1（NaN=干跑无 bb_1s，不参与）；max_diff 同域取最大",
-  "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c3/s4_c3_exec1s.csv",
+  "exec_period_s": 10,
+  "exec1s_n": 0,
+  "exec1s_diff_n": 0,
+  "exec1s_max_diff": null,
   "stop_face": false,
   "note": "口径 v2 观测轮：执行层 1 s 门控三链对拍只记录不停机（diff 判据待首轮板跑数据后由主 Agent 定）；板失联仍走运行性 G6-1 面（同 TICK_CTRL 语义）"
  },

@@ -77,9 +77,9 @@
 | `tools/s4_c4_battery.py` | C4：多航次电池闭环 runner（冻结电池 S02_downstream/S08_resistance_bands/S03_upstream，一次板会话顺序跑、每航次独立复位与 gate，电池级合取 → `results/s4_c4/s4_c4_gate.json`；复用 C3 组件与 v2.1 归因口径）。**偏差④修复（2026-09-29）：随 C3 获得 `_ring_v` 修复 + 环 P_load sanity 门（逐航次正式首拍）+ `--bh-chain`（split 默认 / tflite-fp32=CPUF32 host 代理）** |
 | `plantstep_advancer.py`（改） | SCENARIOS_E 注册表扩 S02_downstream/S08_resistance_bands/S03_upstream（C4 电池 dylib） |
 | `results/s4_c2/` | C2 冒烟与 C3 前置产物（`s4_c2_gate.json`/`s4_c2_smoke_report.json`/`s4_c3_preamble_report.json`/`libems04_pms_safety.dylib`） |
-| `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档 / **`v2_archive/` 口径 v2 板跑冻结副本（2026-09-29 偏差④ 修复前基线）**；live 路径承载最新口径跑批） |
-| `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`）；另含 P3 冻结件 `S4_P3_FORMAL_ARM_FREEZE.json`（formal 臂电池覆盖 4 航次，主 Agent 定稿）与 worker 草案/Phase A 报告 |
-| `results/s3c_pilot/` | S3-C pilot 板跑原始捕获（`s3c_pilot_capture_20261001T174447.jsonl`，六锚逐帧 UART 抓取，门 8 六锚推理核对链的落盘证据） |
+| `results/s4_c3/` | C3 产物（`s4_c3_warmup.csv` 预热记录 / `s4_c3_closedloop.csv` 三链逐拍 / `s4_c3_gate.json` G6 判定 / `s4_c3_design_notes.md` 口径登记 / `run1_park_archive/`+`run2_rulestop_archive/` 原始记录归档 / **`v2_archive/` 口径 v2 板跑冻结副本（2026-09-29 偏差④ 修复前基线）**；live 路径承载最新口径跑批；`s4_c3_split_era_archive/` = SPLIT 形态时代结果冻结副本（2026-10-18 归档）） |
+| `results/s4_c4/` | C4 产物（每航次 CSV+warmup+gate / 电池级 `s4_c4_gate.json`）；另含 P3 冻结件 `S4_P3_FORMAL_ARM_FREEZE.json`（formal 臂电池覆盖 4 航次，主 Agent 定稿）与 worker 草案/Phase A 报告；`s4_c4_split_era_archive/` = SPLIT 形态时代结果冻结副本（2026-10-18 归档） |
+| `results/s3c_pilot/` | S3-C pilot 板跑原始捕获（`s3c_pilot_capture_20261001T174447.jsonl`，六锚逐帧 UART 抓取，门 8 六锚推理核对链的落盘证据；2026-10-18/19 CPUF32+ThreadX 重跑 capture 三件；`s3c_pilot_split_era_archive/` = SPLIT 形态时代旧件冻结副本） |
 
 ### S4-P3 B1 段新增（2026-09-29，formal 臂流驱动植物变体 host 装配；冻结件 `results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json`，规格 `experiments/softhil_ems03_2026-09-25/S4_P3_STREAM_PLANT_SPEC.md`）
 
@@ -98,7 +98,7 @@
 | `Demo/README.md` | 演示前置条件/观察点/停止重跑说明 |
 
 | `tools/s4_c4_battery.py`（改） | P3-B1④：`--plant-backend streamE` + `--data-root`（装配 P3 冻结件 schema `s4_p3_formal_arm_freeze_v1`；stream 数据源 = formal .mat；产物目录改 `results/s4_p3/`；kf 表/stream bin/dylib 三级启动就绪检查，dylib 缺席 → `s4_p3_gate.json` PLANTSTEP_DYLIB_PENDING 门 rc=3 待 B2）。默认 pilot/modelE 路径零改动，selftest 20/20 保持 |
-| `results/s4_p3/` | P3-B1④产物：`s4_p3_gate.json`（PLANTSTEP_DYLIB_PENDING 门，overall 恒 false，B2 以正式 4/4 合取门覆盖） |
+| `results/s4_p3/` | P3-B1④产物：`s4_p3_gate.json`（PLANTSTEP_DYLIB_PENDING 门，overall 恒 false，B2 以正式 4/4 合取门覆盖）；`s4_p3_split_era_archive/` = SPLIT 形态时代结果冻结副本（2026-10-18 归档） |
 
 ### S4-P3 B2 段新增（2026-09-29，流驱动植物变体 MATLAB 手术 + codegen + 回放保真门）
 

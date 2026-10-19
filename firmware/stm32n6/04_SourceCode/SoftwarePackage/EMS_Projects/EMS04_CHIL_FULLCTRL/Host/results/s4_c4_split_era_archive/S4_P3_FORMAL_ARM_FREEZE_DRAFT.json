@@ -1,0 +1,144 @@
+{
+  "schema": "s4_p3_formal_arm_freeze_draft_v1",
+  "status": "DRAFT_PENDING_MAIN_AGENT_FREEZE",
+  "status_note": "本文件是选择规则草案（P3 Phase A 产出），不是正式冻结件。主 Agent 完成 A3 SCENARIOS 映射裁决与臂标签裁决后方可冻结执行；冻结动作与本文件 sha256 引用方式由主 Agent 决定（可批准本文件转正或另立正式冻结件）。冻结前禁执行，冻结后禁改 battery/rule 字段。",
+  "created_utc": "2026-09-29T11:18:00+08:00",
+  "author": "worker-1 P3 Phase A",
+  "contract": "S4_G6_ACCEPTANCE.md §2（覆盖 M1/M2 两臂与低/中/高负荷；选择只用航次元数据（臂、负荷均值、时长）；冻结后执行，禁按结果挑样/换样）+ P3 任务书（M1/M2 各 ≥2 航次、dur≥600s 域、SCENARIOS 存在性核查）",
+  "universe": {
+    "source": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/*.mat",
+    "ledger": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/_iid_ledger.json",
+    "allocation_plan": "model/simulink_modelE_(Phase4_Physics)/datasets_v3/formal/iid/formal_draw_allocation_plan_iid.json",
+    "n_voyages": 576,
+    "mat_format": "MATLAB 5.0 MAT-file（v7 兼容，scipy.io.loadmat 可读；非 v7.3/HDF5，无需 h5py）",
+    "integrity_pass": "576/576（文件 sha256 == ledger.artifact_sha256；meta.voyage_id 一致；meta.voyage_duration_s == ledger.duration_s）",
+    "fixture_kind": {"NONE": 576},
+    "forecast_provenance_class": {"CAUSAL_GENERATOR": 576},
+    "disposition": {"ACCEPT": 576},
+    "duration_s": {"min": 3222, "median": 4070, "max": 4818, "all_ge_600": true},
+    "n_kf_issue_rows": {"min": 263, "median": 347.5, "max": 422},
+    "arms": {
+      "M1": {"n": 144, "arms_forecast": "GOOD_V1", "arms_traffic": "ON", "load_mean_kw": [221.7, 483.4], "load_median_kw": 301.51},
+      "M2": {"n": 144, "arms_forecast": "DEGRADED_V1", "arms_traffic": "ON", "load_mean_kw": [221.7, 483.4], "load_median_kw": 301.51},
+      "M3": {"n": 144, "arms_forecast": "GOOD_V1", "arms_traffic": "OFF", "note": "traffic OFF 臂，不在 P3 formal 臂电池域"},
+      "M4": {"n": 144, "arms_forecast": "DEGRADED_V1", "arms_traffic": "OFF", "note": "traffic OFF 臂，不在 P3 formal 臂电池域"}
+    },
+    "stratum_balance": "voyage_id S 段 = stratum 计划索引 S1..S9（3 航线模板 ROUTINE_PATROL/EMERGENCY_RESPONSE/WORK_MISSION × 3 regime NORMAL/FLOOD/DRY）；S×arm 共 36 组合，每组合恰 16 航次",
+    "pairing_property": "M1 与 M2 同族（同 base_draw_index）逐对存在（144/144 对），且同对 load_mean 一致（<0.05 kW，负荷流相同，仅 forecast 质量臂不同）——天然配对臂对照"
+  },
+  "arm_semantics": {
+    "ledger_authoritative": {"M1": "GOOD_V1 + traffic ON", "M2": "DEGRADED_V1 + traffic ON", "M3": "GOOD_V1 + traffic OFF", "M4": "DEGRADED_V1 + traffic OFF"},
+    "evidence": "576/576 一致：_iid_ledger.json arms_forecast/arms_traffic + mat meta.forecast_quality_profile_id + meta.intervention",
+    "g6_label_deviation": {
+      "status": "REGISTERED_NOTE_ESCALATED",
+      "note": "G6 §2 与 P3 任务书将 M1 标注为 DEGRADED 臂、M2 标注为 GOOD 臂，与 formal ledger 权威编码（M1=GOOD_V1/M2=DEGRADED_V1）相反。本草案以 ledger/meta 为权威语义；两臂各取 3 航次的约束不受标签影响（选择集相同），但冻结文本的臂命名需主 Agent 裁决后定稿。"
+    }
+  },
+  "selection_rule_frozen_draft": [
+    "域：formal/iid 全体 ledger ACCEPT 航次 ∧ voyage_duration_s ≥ 600 ∧ Phase A 完整性检查全通过（文件 sha256 对账、meta 一致性、kf 白名单 8 字段、issue 网格 300:10 唯一步长、lead 网格 10:10:300、6 内容列形状 (n,30)、forecast_provenance 6 子段、stream SCENARIO_COLS 5 列 + time_s + P_load_total_kW）——本域 576/576 全通过，域 = 全体 576 航次",
+    "臂域：仅 M1（GOOD_V1, traffic ON）与 M2（DEGRADED_V1, traffic ON）；M3/M4（traffic OFF）不在本电池域",
+    "负荷轴：load_mean = stream.P_load_total_kW 全程均值（元数据面，与控制结果无关，同 S4-C4 冻结件口径）",
+    "每臂独立取三点：R_low = load_mean 最小者；R_high = load_mean 最大者；R_mid = |load_mean − median(本臂 load_mean)| 最小者（平局取 voyage_id 字典序小者；若与已选 R_low/R_high 重合则顺延次近者）",
+    "每臂 ≥2 航次约束由 R_low/R_high 天然满足（实际 3+3 = 6 航次）；两臂选择相互独立，禁止跨臂配额调剂",
+    "规则纯元数据驱动（臂、负荷均值、时长、完整性），先冻结后执行，禁按结果挑样/换样（G6 §2）"
+  ],
+  "selection_margin_notes": {
+    "M1_median_load_mean_kw": 301.509,
+    "M2_median_load_mean_kw": 301.509,
+    "R_mid_margin": "两臂 R_mid 均为 D01005（load_mean=301.87，|dev|≈0.36 kW）；次近为 D02001（load_mean=301.15，|dev|≈0.36 kW），近似平局由 voyage_id 字典序 S2<S3 决出（两臂同序，配对性保持）。第三近 D07017（|dev|≈1.00）。",
+    "low_high_margin": "R_low=221.73（域最小）、R_high=483.41（域最大），无平局"
+  },
+  "battery": [
+    {"role": "M1_R_low", "voyage_id": "FLTA_S2_D01006_M1", "arm": "M1", "arms_forecast": "GOOD_V1", "arms_traffic": "ON", "intervention": "traffic=ON;forecast=GOOD_V1",
+     "S_code": "S2", "S_semantics": "stratum 索引 → STRAT_ROUTINE_PATROL__FLOOD（非 SCENARIOS 表场景码）", "stratum_id": "STRAT_ROUTINE_PATROL__FLOOD", "template_id": "ROUTINE_PATROL", "regime_id": "FLOOD",
+     "duration_s": 4679, "load_mean_kw": 221.73, "load_min_kw": 98.9, "load_max_kw": 678.6,
+     "n_kf_issue_rows": 408, "issue_grid": "300:10:4370", "water_depth_first_m": 9.046,
+     "fixture_kind": "NONE", "forecast_provenance_class": "CAUSAL_GENERATOR", "forecast_generator_id": "mission_v3_env_forecast", "forecast_generator_version": "1.0.0-candidate",
+     "family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1006@F1", "base_draw_index": 1006,
+     "artifact_sha256": "5d0e93f0bbaee479ce60a19ce880819e43f7b989b6c39ca73fb53c58cb5b5cfa",
+     "kf_whitelist_complete": true, "paired_with": "FLTA_S2_D01006_M2"},
+    {"role": "M1_R_mid", "voyage_id": "FLTA_S2_D01005_M1", "arm": "M1", "arms_forecast": "GOOD_V1", "arms_traffic": "ON", "intervention": "traffic=ON;forecast=GOOD_V1",
+     "S_code": "S2", "S_semantics": "stratum 索引 → STRAT_ROUTINE_PATROL__FLOOD（非 SCENARIOS 表场景码）", "stratum_id": "STRAT_ROUTINE_PATROL__FLOOD", "template_id": "ROUTINE_PATROL", "regime_id": "FLOOD",
+     "duration_s": 4420, "load_mean_kw": 301.87, "load_min_kw": 99.7, "load_max_kw": 766.6,
+     "n_kf_issue_rows": 383, "issue_grid": "300:10:4120", "water_depth_first_m": 7.509,
+     "fixture_kind": "NONE", "forecast_provenance_class": "CAUSAL_GENERATOR", "forecast_generator_id": "mission_v3_env_forecast", "forecast_generator_version": "1.0.0-candidate",
+     "family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1005@F1", "base_draw_index": 1005,
+     "artifact_sha256": "6bf00e65884e926315f65a3fd642f3ed9f425b26209202a86873bc258c93e0cb",
+     "kf_whitelist_complete": true, "paired_with": "FLTA_S2_D01005_M2"},
+    {"role": "M1_R_high", "voyage_id": "FLTA_S6_D05003_M1", "arm": "M1", "arms_forecast": "GOOD_V1", "arms_traffic": "ON", "intervention": "traffic=ON;forecast=GOOD_V1",
+     "S_code": "S6", "S_semantics": "stratum 索引 → STRAT_EMERGENCY_RESPONSE__DRY（非 SCENARIOS 表场景码）", "stratum_id": "STRAT_EMERGENCY_RESPONSE__DRY", "template_id": "EMERGENCY_RESPONSE", "regime_id": "DRY",
+     "duration_s": 3790, "load_mean_kw": 483.41, "load_min_kw": 208.1, "load_max_kw": 908.1,
+     "n_kf_issue_rows": 320, "issue_grid": "300:10:3490", "water_depth_first_m": 5.956,
+     "fixture_kind": "NONE", "forecast_provenance_class": "CAUSAL_GENERATOR", "forecast_generator_id": "mission_v3_env_forecast", "forecast_generator_version": "1.0.0-candidate",
+     "family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5003@F1", "base_draw_index": 5003,
+     "artifact_sha256": "81ed0fac62778f838ace50072fcb159ed6620ca35f3706f121aecd4bc5ce715d",
+     "kf_whitelist_complete": true, "paired_with": "FLTA_S6_D05003_M2"},
+    {"role": "M2_R_low", "voyage_id": "FLTA_S2_D01006_M2", "arm": "M2", "arms_forecast": "DEGRADED_V1", "arms_traffic": "ON", "intervention": "traffic=ON;forecast=DEGRADED_V1",
+     "S_code": "S2", "S_semantics": "stratum 索引 → STRAT_ROUTINE_PATROL__FLOOD（非 SCENARIOS 表场景码）", "stratum_id": "STRAT_ROUTINE_PATROL__FLOOD", "template_id": "ROUTINE_PATROL", "regime_id": "FLOOD",
+     "duration_s": 4679, "load_mean_kw": 221.73, "load_min_kw": 98.9, "load_max_kw": 678.6,
+     "n_kf_issue_rows": 408, "issue_grid": "300:10:4370", "water_depth_first_m": 9.046,
+     "fixture_kind": "NONE", "forecast_provenance_class": "CAUSAL_GENERATOR", "forecast_generator_id": "mission_v3_env_forecast", "forecast_generator_version": "1.0.0-candidate",
+     "family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1006@F1", "base_draw_index": 1006,
+     "artifact_sha256": "a9b91736499f96ef224d409b0fff04f2f88c9dc1830f2c22b3e8ececbdeea09f",
+     "kf_whitelist_complete": true, "paired_with": "FLTA_S2_D01006_M1"},
+    {"role": "M2_R_mid", "voyage_id": "FLTA_S2_D01005_M2", "arm": "M2", "arms_forecast": "DEGRADED_V1", "arms_traffic": "ON", "intervention": "traffic=ON;forecast=DEGRADED_V1",
+     "S_code": "S2", "S_semantics": "stratum 索引 → STRAT_ROUTINE_PATROL__FLOOD（非 SCENARIOS 表场景码）", "stratum_id": "STRAT_ROUTINE_PATROL__FLOOD", "template_id": "ROUTINE_PATROL", "regime_id": "FLOOD",
+     "duration_s": 4420, "load_mean_kw": 301.87, "load_min_kw": 99.7, "load_max_kw": 766.6,
+     "n_kf_issue_rows": 383, "issue_grid": "300:10:4120", "water_depth_first_m": 7.509,
+     "fixture_kind": "NONE", "forecast_provenance_class": "CAUSAL_GENERATOR", "forecast_generator_id": "mission_v3_env_forecast", "forecast_generator_version": "1.0.0-candidate",
+     "family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#1005@F1", "base_draw_index": 1005,
+     "artifact_sha256": "7fd08f1a9da53f3c7ca0bf48aa072ebbdb7ed41142bac0c8b0bfae755c07d0fc",
+     "kf_whitelist_complete": true, "paired_with": "FLTA_S2_D01005_M1"},
+    {"role": "M2_R_high", "voyage_id": "FLTA_S6_D05003_M2", "arm": "M2", "arms_forecast": "DEGRADED_V1", "arms_traffic": "ON", "intervention": "traffic=ON;forecast=DEGRADED_V1",
+     "S_code": "S6", "S_semantics": "stratum 索引 → STRAT_EMERGENCY_RESPONSE__DRY（非 SCENARIOS 表场景码）", "stratum_id": "STRAT_EMERGENCY_RESPONSE__DRY", "template_id": "EMERGENCY_RESPONSE", "regime_id": "DRY",
+     "duration_s": 3790, "load_mean_kw": 483.41, "load_min_kw": 208.1, "load_max_kw": 908.1,
+     "n_kf_issue_rows": 320, "issue_grid": "300:10:3490", "water_depth_first_m": 5.956,
+     "fixture_kind": "NONE", "forecast_provenance_class": "CAUSAL_GENERATOR", "forecast_generator_id": "mission_v3_env_forecast", "forecast_generator_version": "1.0.0-candidate",
+     "family_id": "MISSION_V3_T432_STAGEA_SEED_2026_09_07#5003@F1", "base_draw_index": 5003,
+     "artifact_sha256": "940e3ad705bb309500148605a6a1f99e3991ba0ad63fdabb15207791728f75cf",
+     "kf_whitelist_complete": true, "paired_with": "FLTA_S6_D05003_M1"}
+  ],
+  "battery_totals": {"n_voyages": 6, "per_arm": {"M1": 3, "M2": 3}, "total_formal_ticks": 2222, "note": "每航次正式拍数 = n_kf_issue_rows（约为 S4-C4 单航次 30~31 拍的 10~13 倍；电池总规模为 C4 的约 24 倍，板会话时长需主 Agent 规划）"},
+  "variant_minimal_alternative": {
+    "description": "若板会话规模是硬约束，可退到每臂 R_low + R_high 两点（4 航次，共 1456 正式拍），仍满足任务书 M1≥2 + M2≥2；但 G6 §2 的'低/中/高负荷'覆盖降为'低/高'两档",
+    "status": "备选，不改变主推荐；取舍由主 Agent 冻结时决定"
+  },
+  "scenarios_mapping_check": {
+    "check": "A3：选中航次 S 码是否在 ModelE_TestScenarios.m SCENARIOS 表内有对应场景定义",
+    "selected_S_codes": ["S2", "S6"],
+    "S_code_semantics": {
+      "finding": "FLTA 航次 id 的 S 段是 mission_v3 fleet 生成的 stratum 计划索引，不是 ModelE SCENARIOS 表场景码",
+      "evidence_gen": "scripts/+fleet_v3/gen_iid.m L262: voyage_id = sprintf('%s_S%d_D%05d_M%d', local_prefix(plan), si_plan, bdi, k)——S 段 = si_plan（stratum 计划索引）",
+      "evidence_balance": "S1..S9 ↔ 9 个 stratum（S2=STRAT_ROUTINE_PATROL__FLOOD，S6=STRAT_EMERGENCY_RESPONSE__DRY），每 S×arm 恰 16 航次",
+      "evidence_meta": "选中航次 mat 内 meta.scenario_id = voyage_id 本身（如 'FLTA_S2_D01006_M1'）——mission_v3 航次自为场景，并非 SCENARIOS 表条目的实例化"
+    },
+    "table_domain_fact": "ModelE_TestScenarios.m 实有场景：S01~S10（id 1..10）、S20 复合航次、S31~S36 浅水六档（E05）；S11~S19、S21~S29 槽位不存在",
+    "numeric_coincidence": "选中 S 码数字（2、6）落在表内数字域（SCENARIOS(2)=S02_downstream、SCENARIOS(6)=S06_resistance_step），但 stratum 语义与这两场景无生成关系（S2 航次是 FLOOD regime 巡逻航线、S6 是 DRY regime 应急出动，均非 5000 m 定速顺水/阻力阶跃场景）",
+    "conclusion": "ESCALATED_OPEN —— 选中航次的 S 码在 SCENARIOS 表内无真实对应场景定义（数字重合属伪映射）。按 P3 任务书 A3 约定停止映射、不上报自建 SCN 参数，交主 Agent 裁决（见 escalation E1）"
+  },
+  "kf_whitelist_check": {
+    "whitelist_source": "Host/tools/s4_c3_pack_kf_table.py（只读参照）",
+    "kf_fields": ["issue_time_s", "lead_s", "v_plan_mps", "s_plan_m", "h_chart_m", "P_hotel_plan_kW", "u_fcst_mps", "wl_fcst_m"],
+    "meta_fields": ["meta.voyage_id", "meta.fixture_kind", "meta.forecast_provenance.{forecast_generator_id, forecast_generator_version, forecast_generator_hash, issue_time_s, source_cutoff_time_s, forecast_provenance_class}"],
+    "result": "576/576 全通过（8 kf 字段齐全；issue_first=300.0、步长唯一=10.0；lead_s 形状 (n,30) 且取值集合 = 10:10:300；6 内容列形状 (n,30)；provenance 6 子段齐全；header 字段长度预检域内：voyage_id≤32 ASCII、gen_id≤32、gen_ver≤16、gen_hash≤64 均满足）",
+    "stream_cols_for_runner": "SCENARIO_COLS（v_ref_mps/P_hotel_kW/v_current_mps/P_prop_demand_kW/water_depth_m）+ time_s + P_load_total_kW 在 576/576 全部在位",
+    "profile_code_note": "pack_kf_table.py 冻结 profile_code=3（PILOT_FIXTURE）；1=GOOD_V1、2=DEGRADED_V1 已登记未占用——formal 臂打包需 profile_code 泛化（Phase B 设计点，本阶段不改任何既有文件）"
+  },
+  "escalations": [
+    {"id": "E1_SCENARIOS_MAPPING", "severity": "BLOCKING_FOR_FREEZE",
+     "observed": "选中航次 S 码（S2/S6）是 mission_v3 stratum 索引；数字上落在 SCENARIOS 表（S02/S06 槽位存在）但语义无关，meta.scenario_id=航次自身 id，SCENARIOS_E 植物注册表（plantstep_advancer.py L74）亦只有 4 个 pilot 烘焙场景、无任何 formal 航次条目",
+     "decision_required": "formal 臂闭环的植物场景与 SCN 参数来源如何定义（禁止由本 worker 从 mission_v3 流重建 SCN 参数）；A3 判定'表内存在真实映射'还是'确认缺失后另行设计 formal 植物域'"},
+    {"id": "E2_ARM_LABEL_DEVIATION", "severity": "NAMING_ONLY_NON_BLOCKING_FOR_SELECTION",
+     "observed": "G6 §2 与任务书的臂标签（M1=DEGRADED/M2=GOOD）与 formal ledger 权威编码（M1=GOOD_V1/M2=DEGRADED_V1，576/576 一致）相反",
+     "decision_required": "冻结文本臂命名以哪份为准（本草案按 ledger 权威书写并登记偏差）；选择集在两种标签下相同，不受影响"}
+  ],
+  "phase_b_prerequisites_non_blocking": [
+    "s4_c4_battery.py 数据源硬编码 datasets_v3/pilot/ 与 experiments s4_c3 kf 表目录——formal 臂需要 runner 泛化或派生 runner（主 Agent 设计决策）",
+    "pack_kf_table.py profile_code 冻结为 3（PILOT_FIXTURE）——formal 两臂应使用已登记的 1=GOOD_V1 / 2=DEGRADED_V1",
+    "plantstep_advancer.py SCENARIOS_E 只有 S20_composite_voyage/S02_downstream/S08_resistance_bands/S03_upstream 四个 pilot 烘焙 dylib 条目——formal 航次无 PlantStepE 植物域（与 S4_C4_BATTERY_FREEZE.json arm_coverage_deviation 记录一致）",
+    "板会话规模：主推荐 6 航次 = 2222 正式拍（C4 电池为 92 拍）"
+  ],
+  "provenance_rule": "本文件为草案（DRAFT）；主 Agent 冻结后，执行产物（每航次 gate 与电池级 gate）须引用冻结文件 sha256；禁在执行后修改 battery/selection_rule 字段；选择过程未读任何控制/闭环结果数据（纯元数据 + stream 负荷均值面）",
+  "generation_method": "Phase A 只读盘点：.venv_tf python + scipy.io.loadmat 遍历 formal/iid 576 个 .mat（格式识别、sha256 对账、meta/kf/stream 白名单核查、load_mean 计算、逐臂中位边距计算），未修改任何既有文件，未使用 MATLAB/板/串口",
+  "phase_a_report": "Host/results/s4_c4/S4_P3_PHASE_A_REPORT.md"
+}

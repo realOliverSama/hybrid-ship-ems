@@ -1,0 +1,139 @@
+{
+ "schema": "s4_c4_battery_gate_v1",
+ "created_utc": "2026-10-02T18:46:05.281832+00:00",
+ "mode": "board",
+ "dry_note": null,
+ "battery_freeze": {
+  "path": "experiments/softhil_ems03_2026-09-25/results/s4_c3/S4_C4_BATTERY_FREEZE.json",
+  "sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f",
+  "schema": "s4_p3_formal_arm_freeze_v1",
+  "battery_order": [
+   {
+    "role": "M1_R_low",
+    "voyage_id": "FLTA_S2_D01006_M1"
+   },
+   {
+    "role": "M2_R_low",
+    "voyage_id": "FLTA_S2_D01006_M2"
+   },
+   {
+    "role": "M1_R_high",
+    "voyage_id": "FLTA_S6_D05003_M1"
+   },
+   {
+    "role": "M2_R_high",
+    "voyage_id": "FLTA_S6_D05003_M2"
+   }
+  ]
+ },
+ "voyages": [
+  {
+   "voyage_id": "FLTA_S2_D01006_M1",
+   "role": "M1_R_low",
+   "scenario_id": "FLTA_S2_D01006_M1",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 408,
+   "formal_ticks": 408,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.5948238462040828,
+    "soc_max": 0.6002102589499168,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 81,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S2_D01006_M1.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S2_D01006_M1_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S2_D01006_M1_gate.json"
+   }
+  },
+  {
+   "voyage_id": "FLTA_S2_D01006_M2",
+   "role": "M2_R_low",
+   "scenario_id": "FLTA_S2_D01006_M2",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 408,
+   "formal_ticks": 408,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.5948238462040828,
+    "soc_max": 0.6002102589499168,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 100,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S2_D01006_M2.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S2_D01006_M2_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S2_D01006_M2_gate.json"
+   }
+  },
+  {
+   "voyage_id": "FLTA_S6_D05003_M1",
+   "role": "M1_R_high",
+   "scenario_id": "FLTA_S6_D05003_M1",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 320,
+   "formal_ticks": 320,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.5389512585052498,
+    "soc_max": 0.5998527139073546,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 33,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S6_D05003_M1.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S6_D05003_M1_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S6_D05003_M1_gate.json"
+   }
+  },
+  {
+   "voyage_id": "FLTA_S6_D05003_M2",
+   "role": "M2_R_high",
+   "scenario_id": "FLTA_S6_D05003_M2",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 320,
+   "formal_ticks": 320,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.5389512585052498,
+    "soc_max": 0.5998527139073546,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 33,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S6_D05003_M2.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S6_D05003_M2_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_p3/s4_c4_FLTA_S6_D05003_M2_gate.json"
+   }
+  }
+ ],
+ "skipped_voyages": [],
+ "stopped_global": null,
+ "overall": true,
+ "overall_note": "电池合取 = 全部计划航次 overall ∧ 无全局停机 ∧ 非干跑；单航次 park 只使该航次 overall=false 并继续下一航次，板失联（PING/RESET/TICK_CTRL 重试无效）→ 全局停止。"
+}

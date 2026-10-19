@@ -1,6 +1,6 @@
 {
  "schema": "s4_c4_voyage_gate_v1",
- "created_utc": "2026-10-01T17:54:55.035581+00:00",
+ "created_utc": "2026-10-19T04:55:08.168030+00:00",
  "mode": "board",
  "dry_note": null,
  "adjudication": {
@@ -26,7 +26,7 @@
   "is_formal_rule": "预热段 is_formal=0 不入判据域（G6-5）；正式段=kf issue 网格 300..5700"
  },
  "form": {
-  "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=df81b23f1e74…",
+  "plant": "PlantStepE GRT dylib (S20_composite_voyage) sha=7749c0e7da29…",
   "board": "S4Smoke SRAM 直载（ELF 8b71d341 plan==readback，前会话载入；本会话 PING 探活 + CMD_RESET 后闭环）",
   "pms_lib_sha": "3d2ec94fb575",
   "law6_lib": "libems04_law6_c2.dylib（S1 377/377 位级证据）",
@@ -63,12 +63,12 @@
   ],
   "battery_freeze_sha256": "ae9a37b4e881792c5794a01f22fb9eee4214e4aef66e9aaa4abba0aa9f766577"
  },
- "wall_s": 229.9,
+ "wall_s": 259.9,
  "seq_final": 31,
  "runnability_G6_1": {
   "n_ticks": 31,
   "nack_n": 0,
-  "retry_n": 1,
+  "retry_n": 0,
   "timeout_or_lost": false,
   "flags_nonzero_n": 0,
   "soc_min": 0.6003861594382789,

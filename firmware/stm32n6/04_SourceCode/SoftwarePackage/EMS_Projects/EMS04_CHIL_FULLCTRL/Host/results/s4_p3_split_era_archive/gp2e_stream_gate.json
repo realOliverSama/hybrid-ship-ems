@@ -1,0 +1,233 @@
+{
+ "schema": "s4_p3_gp2e_stream_gate_v1",
+ "created_utc": "2026-10-15T13:53:59.269677+00:00",
+ "freeze": {
+  "path": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/S4_P3_FORMAL_ARM_FREEZE.json",
+  "sha256": "43d373a84f321a7b2ea4900c9404f86a10a40f8eac3d7aacb43ca83b6a30848f"
+ },
+ "model_sha256_note": "stream 模型 443e226d…（20S 审计）；dylib sha 见各航次",
+ "tolerances": {
+  "identity": 1e-09,
+  "xship_end_m": 1e-06
+ },
+ "voyages": [
+  {
+   "voyage_id": "FLTA_S2_D01006_M1",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
+   "n_rows": 4680,
+   "n_substeps": 468000,
+   "p_gen_const_kw": 300.0,
+   "G1_pload_identity": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G2_vship_passthrough": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_mps": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G3_pprop_passthrough_info": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0
+   },
+   "G4_xship_integration": {
+    "ref": "ForwardEuler Ts=0.01 on bin v_ship (ZOH)",
+    "phase_A_incl_current_step": {
+     "max_abs_diff_m": 0.053122497511139954,
+     "end_abs_diff_m": 0.009646390935813542
+    },
+    "phase_B_excl_current_step": {
+     "max_abs_diff_m": 9.094947017729282e-13,
+     "end_abs_diff_m": 0.0
+    },
+    "x_end_m": 18249.35465848622,
+    "x_ref_end_A_m": 18249.364304877156,
+    "pass": true
+   },
+   "G5_health": {
+    "nan_n": 0,
+    "soc_min": 0.5978297499233337,
+    "soc_max": 0.6724524020807462,
+    "vdc_min": 701.7777964983561,
+    "vdc_max": 769.2112835315565,
+    "pass": true
+   },
+   "G6_stop": {
+    "midrun_stop_samples_n": 0,
+    "voyage_stop_final_out": 0,
+    "voyage_stop_api_final": 0,
+    "pass": true
+   },
+   "t_end_s": 4679.9974999999995,
+   "fuel_end_kg": 0.0,
+   "overall": true
+  },
+  {
+   "voyage_id": "FLTA_S2_D01006_M2",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
+   "n_rows": 4680,
+   "n_substeps": 468000,
+   "p_gen_const_kw": 300.0,
+   "G1_pload_identity": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G2_vship_passthrough": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_mps": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G3_pprop_passthrough_info": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0
+   },
+   "G4_xship_integration": {
+    "ref": "ForwardEuler Ts=0.01 on bin v_ship (ZOH)",
+    "phase_A_incl_current_step": {
+     "max_abs_diff_m": 0.053122497511139954,
+     "end_abs_diff_m": 0.009646390935813542
+    },
+    "phase_B_excl_current_step": {
+     "max_abs_diff_m": 9.094947017729282e-13,
+     "end_abs_diff_m": 0.0
+    },
+    "x_end_m": 18249.35465848622,
+    "x_ref_end_A_m": 18249.364304877156,
+    "pass": true
+   },
+   "G5_health": {
+    "nan_n": 0,
+    "soc_min": 0.5978297499233337,
+    "soc_max": 0.6724524020807462,
+    "vdc_min": 701.7777964983561,
+    "vdc_max": 769.2112835315565,
+    "pass": true
+   },
+   "G6_stop": {
+    "midrun_stop_samples_n": 0,
+    "voyage_stop_final_out": 0,
+    "voyage_stop_api_final": 0,
+    "pass": true
+   },
+   "t_end_s": 4679.9974999999995,
+   "fuel_end_kg": 0.0,
+   "overall": true
+  },
+  {
+   "voyage_id": "FLTA_S6_D05003_M1",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
+   "n_rows": 3791,
+   "n_substeps": 379100,
+   "p_gen_const_kw": 300.0,
+   "G1_pload_identity": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G2_vship_passthrough": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_mps": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G3_pprop_passthrough_info": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0
+   },
+   "G4_xship_integration": {
+    "ref": "ForwardEuler Ts=0.01 on bin v_ship (ZOH)",
+    "phase_A_incl_current_step": {
+     "max_abs_diff_m": 0.0703247478998037,
+     "end_abs_diff_m": 0.05779809693012794
+    },
+    "phase_B_excl_current_step": {
+     "max_abs_diff_m": 4.547473508864641e-13,
+     "end_abs_diff_m": 0.0
+    },
+    "x_end_m": 16024.361874424447,
+    "x_ref_end_A_m": 16024.419672521377,
+    "pass": true
+   },
+   "G5_health": {
+    "nan_n": 0,
+    "soc_min": 0.4020664866484398,
+    "soc_max": 0.612831502194452,
+    "vdc_min": 688.2902861266965,
+    "vdc_max": 758.2902861033687,
+    "pass": true
+   },
+   "G6_stop": {
+    "midrun_stop_samples_n": 0,
+    "voyage_stop_final_out": 0,
+    "voyage_stop_api_final": 0,
+    "pass": true
+   },
+   "t_end_s": 3790.9975000000004,
+   "fuel_end_kg": 0.0,
+   "overall": true
+  },
+  {
+   "voyage_id": "FLTA_S6_D05003_M2",
+   "dylib_sha256": "28e2f87953f7f9a253a10db358db7ced8da59969d5625d27824d5dd6c98e04df",
+   "n_rows": 3791,
+   "n_substeps": 379100,
+   "p_gen_const_kw": 300.0,
+   "G1_pload_identity": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G2_vship_passthrough": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_mps": 0.0,
+    "tol": 1e-09,
+    "pass": true
+   },
+   "G3_pprop_passthrough_info": {
+    "bitwise_mismatch_n": 0,
+    "max_abs_diff_kw": 0.0
+   },
+   "G4_xship_integration": {
+    "ref": "ForwardEuler Ts=0.01 on bin v_ship (ZOH)",
+    "phase_A_incl_current_step": {
+     "max_abs_diff_m": 0.0703247478998037,
+     "end_abs_diff_m": 0.05779809693012794
+    },
+    "phase_B_excl_current_step": {
+     "max_abs_diff_m": 4.547473508864641e-13,
+     "end_abs_diff_m": 0.0
+    },
+    "x_end_m": 16024.361874424447,
+    "x_ref_end_A_m": 16024.419672521377,
+    "pass": true
+   },
+   "G5_health": {
+    "nan_n": 0,
+    "soc_min": 0.4020664866484398,
+    "soc_max": 0.612831502194452,
+    "vdc_min": 688.2902861266965,
+    "vdc_max": 758.2902861033687,
+    "pass": true
+   },
+   "G6_stop": {
+    "midrun_stop_samples_n": 0,
+    "voyage_stop_final_out": 0,
+    "voyage_stop_api_final": 0,
+    "pass": true
+   },
+   "t_end_s": 3790.9975000000004,
+   "fuel_end_kg": 0.0,
+   "overall": true
+  }
+ ],
+ "overall": true,
+ "overall_note": "G-P2E 回放保真门 = 4/4 合取（G1 1e-9 主门 + G2 直通 + G4 x_ship 1e-6 m + G5 健康 + G6 终止语义）"
+}

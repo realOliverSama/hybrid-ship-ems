@@ -1,0 +1,109 @@
+{
+ "schema": "s4_c4_battery_gate_v1",
+ "created_utc": "2026-10-01T17:58:44.453894+00:00",
+ "mode": "board",
+ "dry_note": null,
+ "battery_freeze": {
+  "path": "experiments/softhil_ems03_2026-09-25/results/s4_c3/S4_C4_BATTERY_FREEZE.json",
+  "sha256": "ae9a37b4e881792c5794a01f22fb9eee4214e4aef66e9aaa4abba0aa9f766577",
+  "schema": "s4_c4_battery_freeze_v1",
+  "battery_order": [
+   {
+    "role": "R_low",
+    "voyage_id": "S02_downstream"
+   },
+   {
+    "role": "R_mid",
+    "voyage_id": "S08_resistance_bands"
+   },
+   {
+    "role": "R_high",
+    "voyage_id": "S03_upstream"
+   }
+  ]
+ },
+ "voyages": [
+  {
+   "voyage_id": "S02_downstream",
+   "role": "R_low",
+   "scenario_id": "2_S02_downstream",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 30,
+   "formal_ticks": 30,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.6004036727028753,
+    "soc_max": 0.601842804340746,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 0,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S02_downstream_gate.json"
+   }
+  },
+  {
+   "voyage_id": "S08_resistance_bands",
+   "role": "R_mid",
+   "scenario_id": "8_S08_resistance_bands",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 31,
+   "formal_ticks": 31,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.6003861594382789,
+    "soc_max": 0.601842804340746,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 0,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S08_resistance_bands_gate.json"
+   }
+  },
+  {
+   "voyage_id": "S03_upstream",
+   "role": "R_high",
+   "scenario_id": "3_S03_upstream",
+   "overall": true,
+   "stop_reason": null,
+   "formal_done": 31,
+   "formal_ticks": 31,
+   "board_lost": false,
+   "g6": {
+    "g6_1_pass": true,
+    "g6_3_amended_pass": true,
+    "g6_4_pass": true,
+    "g6_6_pass": true,
+    "soc_min": 0.6003861594382789,
+    "soc_max": 0.601842804340746,
+    "unattributed_pgen_n": 0,
+    "drift_action_diff_n": 0,
+    "undeclared_n": 0
+   },
+   "artifacts": {
+    "csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream.csv",
+    "warmup_csv": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream_warmup.csv",
+    "gate": "firmware/stm32n6/04_SourceCode/SoftwarePackage/EMS_Projects/EMS04_CHIL_FULLCTRL/Host/results/s4_c4/s4_c4_S03_upstream_gate.json"
+   }
+  }
+ ],
+ "skipped_voyages": [],
+ "stopped_global": null,
+ "overall": true,
+ "overall_note": "电池合取 = 全部计划航次 overall ∧ 无全局停机 ∧ 非干跑；单航次 park 只使该航次 overall=false 并继续下一航次，板失联（PING/RESET/TICK_CTRL 重试无效）→ 全局停止。"
+}
